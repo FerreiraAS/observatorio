@@ -1,0 +1,115 @@
+---
+title: Downloads
+output:
+  html_document:
+    toc: true
+    css:
+      - /CSS/logo-above-toc.css
+      - /CSS/narrow-margins.css
+      - /CSS/responsive.css
+---
+
+<!--install and/or load all R packages-->
+```{r setup, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%", results = "hide"}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = 'center',
+  results = "asis",
+  include = TRUE,
+  out.width = "100%",
+  knitr.kable.NA = '--',
+  knitr.table.format = "html"
+)
+source("Scripts/all-required-packages.R", local = knitr::knit_global())
+```
+
+<!--script for inserting LOGO ABOVE THE TOC-->
+```{js}
+$(document).ready(function() {
+  $('#TOC').parent().prepend('<div id=\"nav_logo\"><img src="PPG/Images/logo-programa.png"></div>');
+  });
+```
+
+<!--script for sharing-->
+<p align="right">
+```{r share}
+# home <- "https://ppgcr-unisuam.github.io/observatoriocr/"
+home <- metadata$repository_url
+source("Scripts/social-media-sharing.R", local = knitr::knit_global())
+```
+</p>
+
+<br>
+
+## **Documentos** {.tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Vigentes**
+
+```{r documentos-vigentes, eval = has.downloads}
+# read separate sheets
+vigentes.raw <-
+  read_excel("PPG/Downloads.xlsx",
+             sheet = "Vigentes",
+             col_types = c("text"))
+
+# replace the link by a tag
+for (i in 1:dim(vigentes.raw)[1]) {
+  vigentes.raw[i, 3] <-
+    paste("[↗️](", vigentes.raw[i, 3], '){target="_blank"}', sep = "")
+}
+
+# print table
+print(
+  kable(vigentes.raw, align = c("l", rep(
+    "c", ncol(vigentes.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Revogados**
+
+```{r documentos-revogados, eval = has.downloads}
+# read separate sheets
+revogados.raw <-
+  read_excel("PPG/Downloads.xlsx",
+             sheet = "Revogados",
+             col_types = c("text"))
+
+# replace the link by a tag
+for (i in 1:dim(revogados.raw)[1]) {
+  revogados.raw[i, 3] <-
+    paste("[↗️](", revogados.raw[i, 3], '){target="_blank"}', sep = "")
+}
+
+# print table
+print(
+  kable(revogados.raw, align = c("l", rep(
+    "c", ncol(revogados.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>

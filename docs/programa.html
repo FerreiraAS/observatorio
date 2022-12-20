@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Programa</title>
+
+<script src="site_libs/header-attrs-2.19/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/CSS/logo-above-toc.css" type="text/css" />
+<link rel="stylesheet" href="/CSS/narrow-margins.css" type="text/css" />
+<link rel="stylesheet" href="/CSS/responsive.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Programa
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="programa.html">Programa</a>
+    </li>
+    <li>
+      <a href="programa.html#apresentacao">Apresentação</a>
+    </li>
+    <li>
+      <a href="programa.html#breve-historico">Breve histórico</a>
+    </li>
+    <li>
+      <a href="programa.html#area-concentracao">Área de concentração</a>
+    </li>
+    <li>
+      <a href="programa.html#linha-pesquisa">Linhas de pesquisa</a>
+    </li>
+    <li>
+      <a href="programa.html#projeto-pesquisa">Projetos de pesquisa</a>
+    </li>
+    <li>
+      <a href="programa.html#agenda-pesquisa">Agendas de pesquisa</a>
+    </li>
+    <li>
+      <a href="programa.html#financiadores">Financiadores</a>
+    </li>
+    <li>
+      <a href="programa.html#bolsas">Bolsas de estudo</a>
+    </li>
+    <li>
+      <a href="programa.html#cursos">Cursos</a>
+    </li>
+    <li>
+      <a href="programa.html#estrutura-curricular">Estrutura curricular</a>
+    </li>
+    <li>
+      <a href="programa.html#turmas">Turmas</a>
+    </li>
+    <li>
+      <a href="programa.html#calendarios">Calendários</a>
+    </li>
+    <li>
+      <a href="programa.html#infraestrutura">Infraestrutura</a>
+    </li>
+    <li>
+      <a href="programa.html#convenios">Convênios Institucionais</a>
+    </li>
+    <li>
+      <a href="programa.html#cooperacao">Cooperação entre instituições</a>
+    </li>
+    <li>
+      <a href="programa.html#internacional">Internacionalização</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Pessoas
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="pessoas.html">Pessoas</a>
+    </li>
+    <li>
+      <a href="pessoas.html#secretaria">Secretaria</a>
+    </li>
+    <li>
+      <a href="pessoas.html#colegiado">Colegiado</a>
+    </li>
+    <li>
+      <a href="pessoas.html#coordenacao">Coordenação</a>
+    </li>
+    <li>
+      <a href="pessoas.html#docentes">Docentes</a>
+    </li>
+    <li>
+      <a href="pessoas.html#posdocs">Pós-doutorandos</a>
+    </li>
+    <li>
+      <a href="pessoas.html#discentes">Discentes</a>
+    </li>
+    <li>
+      <a href="pessoas.html#egressos">Egressos</a>
+    </li>
+    <li>
+      <a href="pessoas.html#grupos-pesquisa">Grupos de pesquisa</a>
+    </li>
+    <li>
+      <a href="pessoas.html#grupos-externos">Grupos de pesquisa externos</a>
+    </li>
+    <li>
+      <a href="pessoas.html#participantes-externos">Participantes externos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Produções
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="producoes.html">Produções</a>
+    </li>
+    <li>
+      <a href="producoes.html#TCC">Trabalhos de conclusão</a>
+    </li>
+    <li>
+      <a href="producoes.html#repositorios">Repositórios</a>
+    </li>
+    <li>
+      <a href="producoes.html#bibliografica">Produção bibliográfica</a>
+    </li>
+    <li>
+      <a href="producoes.html#tecnica">Produção técnica</a>
+    </li>
+    <li>
+      <a href="producoes.html#registros">Registros de protocolos</a>
+    </li>
+    <li>
+      <a href="producoes.html#portais">Portais de periódicos</a>
+    </li>
+    <li>
+      <a href="producoes.html#metricas">Métricas</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Destaques
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="destaques.html">Destaques</a>
+    </li>
+    <li>
+      <a href="destaques.html#egressos-destaque">Egressos</a>
+    </li>
+    <li>
+      <a href="destaques.html#TCC-destaque">Dissertações/Teses</a>
+    </li>
+    <li>
+      <a href="destaques.html#produtos-destaque">Produções</a>
+    </li>
+    <li>
+      <a href="destaques.html#premios">Prêmios</a>
+    </li>
+    <li>
+      <a href="destaques.html#representatividade">Representatividade</a>
+    </li>
+    <li>
+      <a href="destaques.html#divulgacao">Divulgação</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Impacto
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="impacto.html">Impacto</a>
+    </li>
+    <li>
+      <a href="impacto.html#impacto-educacional">Educacional</a>
+    </li>
+    <li>
+      <a href="impacto.html#impacto-cientifico">Científico</a>
+    </li>
+    <li>
+      <a href="impacto.html#impacto-sociocultural">Sociocultural</a>
+    </li>
+    <li>
+      <a href="impacto.html#impacto-tecnologico">Tecnológico/Econômico</a>
+    </li>
+    <li>
+      <a href="impacto.html#acoes-pandemia">Ações durante a pandemia</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Galeria
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="galeria.html">Galeria</a>
+    </li>
+    <li>
+      <a href="galeria.html#videos">Videos</a>
+    </li>
+    <li>
+      <a href="galeria.html#podcasts">Podcasts</a>
+    </li>
+    <li>
+      <a href="galeria.html#fotos">Fotos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Autoavaliação
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="autoavaliacao.html">Autoavaliação</a>
+    </li>
+    <li>
+      <a href="autoavaliacao.html#planejamento">Planejamento estratégico</a>
+    </li>
+    <li>
+      <a href="autoavaliacao.html#metodologia">Metodologia</a>
+    </li>
+    <li>
+      <a href="autoavaliacao.html#ficha">Fichas de avaliação</a>
+    </li>
+    <li>
+      <a href="autoavaliacao.html#dados">Fontes de dados</a>
+    </li>
+    <li>
+      <a href="autoavaliacao.html#autoavaliacao">Autoavaliação</a>
+    </li>
+    <li>
+      <a href="autoavaliacao.html#programa">1. Programa</a>
+    </li>
+    <li>
+      <a href="autoavaliacao.html#formacao">2. Formação</a>
+    </li>
+    <li>
+      <a href="autoavaliacao.html#impacto">3. Impacto na sociedade</a>
+    </li>
+    <li>
+      <a href="autoavaliacao.html#resultados">Resultados</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="downloads.html">Downloads</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-link"></span>
+     
+    
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/avaliacao/sobre-a-avaliacao/areas-avaliacao/sobre-as-areas-de-avaliacao/colegio-de-ciencias-da-vida/ciencias-da-saude/educacao-fisica">Área 21</a>
+    </li>
+    <li>
+      <a href="https://www.fef.unicamp.br/fef/posgraduacao/forumpg21">Forum da Área 21</a>
+    </li>
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Chamadas públicas</a>
+      <ul class="dropdown-menu" role="menu">
+        <li>
+          <a href="https://www.faperj.br/?id=28.5.7">FAPERJ</a>
+        </li>
+        <li>
+          <a href="https://www.gov.br/capes/pt-br/assuntos/editais-capes">CAPES</a>
+        </li>
+        <li>
+          <a href="https://www.gov.br/cnpq/pt-br">CNPq</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="mailto:cienciasdareabilitacao@souunisuam.com.br">
+    <span class="fa fa-envelope"></span>
+     
+    
+  </a>
+</li>
+<li>
+  <a href="https://www.instagram.com/ppgcr_unisuam/">
+    <span class="fa fa-instagram"></span>
+     
+    
+  </a>
+</li>
+<li>
+  <a href="https://www.facebook.com/people/Ciências-da-Reabilitação/100010029900421/">
+    <span class="fa fa-facebook"></span>
+     
+    
+  </a>
+</li>
+<li>
+  <a href="https://github.com/ppgcr-unisuam/observatoriocr">
+    <span class="fa fa-github"></span>
+     
+    
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<!--Script for adding a Google Translation bar-->
+
+<html lang="pt-BR">
+<div align="right" id="google_translate_element"></div>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'pt'}, 'google_translate_element');
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> 
+
+</html>
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Programa</h1>
+
+</div>
+
+
+<!--install and/or load all R packages-->
+<!--script for inserting LOGO ABOVE THE TOC-->
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#TOC').parent().prepend('<div id=\"nav_logo\"><img src="PPG/Images/logo-programa.png"></div>');
+  });
+</script>
+<!--script for sharing-->
+<p align="right">
+<em>Compartilhe</em>   <a
+href="https://twitter.com/share?url="><svg preserveAspectRatio="none" aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:2em;width:2em;vertical-align:-0.125em;margin-left:0.2em;margin-right:0.2em;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-48.9 158.8c.2 2.8.2 5.7.2 8.5 0 86.7-66 186.6-186.6 186.6-37.2 0-71.7-10.8-100.7-29.4 5.3.6 10.4.8 15.8.8 30.7 0 58.9-10.4 81.4-28-28.8-.6-53-19.5-61.3-45.5 10.1 1.5 19.2 1.5 29.6-1.2-30-6.1-52.5-32.5-52.5-64.4v-.8c8.7 4.9 18.9 7.9 29.6 8.3a65.447 65.447 0 0 1-29.2-54.6c0-12.2 3.2-23.4 8.9-33.1 32.3 39.8 80.8 65.8 135.2 68.6-9.3-44.5 24-80.6 64-80.6 18.9 0 35.9 7.9 47.9 20.7 14.8-2.8 29-8.3 41.6-15.8-4.9 15.2-15.2 28-28.8 36.1 13.2-1.4 26-5.1 37.8-10.2-8.9 13.1-20.1 24.7-32.9 34z"/></svg></a>
+<a
+href="https://www.facebook.com/sharer.php?u="><svg preserveAspectRatio="none" aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:2em;width:2em;vertical-align:-0.125em;margin-left:0.2em;margin-right:0.2em;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M400 32H48A48 48 0 0 0 0 80v352a48 48 0 0 0 48 48h137.25V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.27c-30.81 0-40.42 19.12-40.42 38.73V256h68.78l-11 71.69h-57.78V480H400a48 48 0 0 0 48-48V80a48 48 0 0 0-48-48z"/></svg></a>
+<a
+href="https://www.linkedin.com/shareArticle?mini=true&amp;url="><svg preserveAspectRatio="none" aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:2em;width:2em;vertical-align:-0.125em;margin-left:0.2em;margin-right:0.2em;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg></a>
+</p>
+<p><br></p>
+<div id="apresentacao" class="section level2 tabset">
+<h2 class="tabset"><strong>Apresentação</strong></h2>
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<div id="descrição" class="section level3">
+<h3><strong>Descrição</strong></h3>
+<p>O PROGRAMA DE PÓS-GRADUAÇÃO EM CIÊNCIAS DA REABILITAÇÃO DA UNISUAM
+(PPGCR-UNISUAM) tem por objetivo formar profissionais, em nível de
+Mestrado e Doutorado, para atuação em pesquisa científica e no ensino
+superior na área de Ciências da Reabilitação, bem como estimular a
+autonomia de pesquisadores por meio de Estágio Pós-Doutoral.</p>
+<p><br></p>
+<p>O PPGCR-UNISUAM tem sua sede na Rua Dona Isabel 94, Bonsucesso, RJ,
+CEP 21032-060. O PPGCR-UNISUAM insere-se na <a
+href="https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/programa/quantitativos/quantitativoAreaConhecimento.xhtml?areaAvaliacao=21">Grande
+Área de Conhecimento de Ciências da Saúde (40000001), na Área Básica de
+Educação Física (40900002), Subárea de Fisioterapia e Terapia
+Ocupacional (40800008)</a>. O PPGCR-UNISUAM oferece as titulações de
+Mestre em Ciências da Reabilitação e Doutor em Ciências da Reabilitação,
+além do Estágio Pós-Doutoral em Ciências da Reabilitação.</p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="dados-cadastrais" class="section level3">
+<h3><strong>Dados cadastrais</strong></h3>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="sucupira" class="section level3">
+<h3><strong>Sucupira</strong></h3>
+<iframe src="https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/programa/viewPrograma.jsf?popup=true&amp;cd_programa=31063012002P4" style="width:100%; height:500px; border:0;">
+</iframe>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/programa/viewPrograma.jsf?popup=true&amp;cd_programa=31063012002P4"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="section" class="section level3">
+<h3><strong>2020-2017</strong></h3>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="section-1" class="section level3">
+<h3><strong>2016-2013</strong></h3>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="section-2" class="section level3">
+<h3><strong>2012-2010</strong></h3>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="pré-2010" class="section level3">
+<h3><strong>Pré-2010</strong></h3>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="breve-historico" class="section level2 tabset">
+<h2 class="tabset"><strong>Breve histórico</strong></h2>
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<div id="section-3" class="section level3">
+<h3><strong>2020-2017</strong></h3>
+<p>No atual quadriênio, 2017-2020, o PPGCR-UNISUAM amplia seu
+compromisso com formação de recursos humanos qualificada, de produção
+intelectual internacional e captação de financiamentos para pesquisa. Em
+síntese do período 2017-2020, o corpo docente passa por um processo de
+renovação e completa 2020 com 12 docentes permanentes credenciados, além
+de 4 pesquisadores que passaram pelo Estágio Pós-doutoral (1 com bolsa
+PNPD-CAPES e 2 pesquisadores estrangeiros). Um total de 87 Mestres e 8
+Doutores foram titulados com tempo médio de titulação de 28 e 49 meses,
+respectivamente. A produção de artigos alcançou 160 artigos em
+periódicos nacionais e internacionais indexados no PubMed.
+Adicionalmente, 25 projetos foram contemplados em editais da FAPERJ,
+CAPES e CNPq – merecendo destaque 3 editais de “Jovem Cientista do Nosso
+Estado”, 2 editais de “Universidades Sediadas no RJ” e 1 bolsa de
+Pesquisador do CNPq – somando aproximadamente R$2.000.000,00 em recursos
+captados no quadriênio (cerca de R$4.170.000,00 desde a formação do
+Grupo de Pesquisa). Em continuidade à política de fixação de docentes
+para o PPGCR-UNISUAM, o bolsista no quadriênio foi contratado para
+compor o quadro de docentes permanentes do Programa. Estes resultados no
+quadriênio vigente e contextualizados com os demais indicadores reiteram
+o compromisso do grupo de pesquisadores em desenvolver a Ciência no
+Estado e no País.</p>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="section-4" class="section level3">
+<h3><strong>2016-2013</strong></h3>
+<p>No quadriênio de 2013-2016, o PPGCR-UNISUAM manteve seu compromisso
+com a qualidade na formação de recursos humanos, produção intelectual e
+captação de financiamentos. Em síntese desse quadriênio, o corpo docente
+foi estabilizado em 13 docentes permanentes (mais 1 colaborador), 66
+mestres foram titulados em tempo médio de 26 meses e 121 artigos foram
+indexados no PubMed. Adicionalmente, 33 projetos foram contemplados em
+editais da FAPERJ e CNPq – merecendo destaque 13 editais de Auxílio à
+Pesquisa, 2 editais temáticos de “Apoio ao Desenvolvimento de Inovações
+no Esporte”, 2 editais de “Jovem Cientista do Nosso Estado” e 1 bolsa de
+Pós-Doutorado no Exterior – somando aproximadamente R$1.800.000,00 em
+recursos e bolsas PROSUP captados no período (cerca de R$2.100.000,00 no
+total). Estes resultados, contextualizados com os demais indicadores do
+PPGCR-UNISUAM para a Área 21 nesse período, resultaram na manutenção no
+<a
+href="https://www.gov.br/capes/pt-br/assuntos/noticias/divulgado-o-resultado-da-1-etapa-da-avaliacao-quadrienal-2017">conceito
+4</a>, mostrando a consistência do desenvolvimento do PPGCR-UNISUAM em
+uma Área ainda em expansão .</p>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="section-5" class="section level3">
+<h3><strong>2012-2010</strong></h3>
+<p>No triênio de 2010-2012, o PPGCR-UNISUAM obteve um crescimento
+quantitativo e qualitativo, tanto na formação de recursos humanos
+(docentes em nível superior) quanto no desenvolvimento científico e
+produção intelectual, assim como na captação de recursos para
+financiamento de PP. Em síntese desse triênio, o corpo docente foi
+expandido para 14 docentes permanentes (mais 2 colaboradores), 18
+mestres foram titulados em tempo médio de 23 meses e 19 artigos foram
+indexados no PubMed. Adicionalmente, 10 projetos foram contemplados em
+editais da FAPERJ e CAPES – 4 editais de Auxílio à Pesquisa, 3 editais
+de Apoio ao Pesquisador Recém-Contratado, 2 editais de Apoios a Eventos
+e 1 edital de “Jovem Cientista do Nosso Estado” – somando
+aproximadamente R$120.000,00 em captação de recursos no período
+(R$315.000,00 no total). Estes resultados, contextualizados com os
+demais indicadores do PPGCR-UNISUAM para a Área 21, culminaram no
+conceito 4 já em sua primeira avaliação trienal, conforme <a
+href="http://pesquisa.in.gov.br/imprensa/jsp/visualiza/index.jsp?data=23/05/2017&amp;jornal=1&amp;pagina=14&amp;totalArquivos=184">Portaria
+n° 656, publicada no D.O.U. de 23/5/2017, Seção 1, Págs. 14</a>.</p>
+<p><br></p>
+<p>O comprometimento institucional no fortalecimento das políticas de
+pesquisa é novamente reforçado no PDI 2012-2016, no qual são definidas
+ações de estímulo à pesquisa por meio de capacitação e fixação de
+docentes titulados na IES. Em 2013, ainda somente com o curso de
+Mestrado autorizado, o PPGCR-UNISUAM foi contemplado com 1 bolsa de
+Estágio Pós-Doutoral, acompanhando a implantação do Programa Nacional de
+Pós-Doutorado (PNPD) da CAPES, de acordo com a <a
+href="https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/bolsas/bolsas-no-pais/pnpd-capes">Portaria
+Nº 086 de 3/7/2013</a>. A política da IES foi então dedicada à
+utilização da bolsa para captação e fixação de docentes para o
+PPGCR-UNISUAM. Devido ao excelente desempenho dos pesquisadores durante
+o Estágio Pós-Doutoral, todos os 2 pesquisadores bolsistas no período
+2013-2016 foram contratados para compor o quadro de docentes permanentes
+do Programa. O amadurecimento da experiência do corpo docente na
+orientação dos mestrandos e a continuada elevação da produção acadêmica
+do grupo viabilizaram o envio da Proposta de Curso Novo de Doutorado
+Acadêmico em Ciências da Reabilitação. A proposta de curso, submetida em
+2014, foi também aprovada após primeira avaliação. O curso de Doutorado
+Acadêmico do PPGCR-UNISUAM foi então instalado em 2015, logo após a
+recomendação CAPES, conforme <a
+href="http://pesquisa.in.gov.br/imprensa/jsp/visualiza/index.jsp?data=19/08/2016&amp;jornal=1&amp;pagina=13&amp;totalArquivos=256">Portaria
+n° 919, publicada no D.O.U. de 18/8/2016, Seção 1, Pág. 13</a>.</p>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="pré-2010-1" class="section level3">
+<h3><strong>Pré-2010</strong></h3>
+<p>A valorização da pesquisa científica no meio acadêmico e a busca
+constante pela excelência na formação docente são ambas características
+da UNISUAM, evidenciadas a partir do Plano de Desenvolvimento
+Institucional (PDI) 2003-2007 quando, com recursos próprios, criou o
+Programa Institucional de Bolsas de Iniciação Científica (PIBIC). A
+partir deste PDI, a UNISUAM passa a atribuir carga horária remunerada
+para que seus docentes exerçam atividades de pesquisa científica. A
+partir do PDI 2003-2007, a UNISUAM iniciou a contratação de docentes
+titulados (doutores) com o objetivo de instituir a Pós-Graduação Stricto
+Sensu na área de Ciências da Reabilitação. A atuação conjunta do grupo
+de pesquisa da UNISUAM iniciou-se com o estudo dos documentos da Área
+21, seguida da definição criteriosa tanto da AC quanto das respectivas
+LP, de modo a nortear os PP e a respectiva produção intelectual. Este
+processo culminou na certificação do <a
+href="http://dgp.cnpq.br/dgp/espelhogrupo/6275564297217717">Grupo de
+Pesquisa em Fisioterapia</a> da UNISUAM no DGP-CNPq em 2005 ,
+substituído a partir de 2017 por novos grupos.</p>
+<p><br></p>
+<p>No período de 2005 a 2009, em consonância com o PDI 2008-2012, o
+grupo de pesquisa foi progressivamente ampliado e fortalecido;
+participavam do grupo 10 docentes, capazes de captar recursos para seus
+projetos via editais e de publicar seus resultados em periódicos
+científicos. Ao todo, foram contemplados 4 projetos em editais de
+agências regionais de fomento à pesquisa (Fundação de Amparo à Pesquisa
+do Estado do Rio de Janeiro – FAPERJ), sendo 3 editais de Auxílio à
+Pesquisa e 1 edital temático em “Apoio à Construção da Cidadania da
+Pessoa com Deficiência”, somando aproximadamente R$170.000,00. A
+produção científica da UNISUAM foi impulsionada, mostrando em 2009 ainda
+como Grupo de Pesquisa, já com 3 artigos publicados indexados somente no
+PubMed. A participação dos alunos da graduação com bolsas do PIBIC foi
+decisiva para o desenvolvimento das pesquisas nessa etapa. Visando
+promover e aprimorar os aspectos éticos da pesquisa, os docentes do
+Grupo de Pesquisa em Fisioterapia organizaram o <a
+href="https://www.unisuam.edu.br/pesquisa-extensao-e-inova/pesquisa-e-inovacao">Comitê
+de Ética em Pesquisa (CEP)</a> da IES, que foi aprovado pelo Comissão
+Nacional de Ética em Pesquisa (CONEP) pela Carta nº. 341 CONEP/CNS/MS de
+10/04/2006. Desde sua criação, os docentes do Grupo de Pesquisa fazem
+parte deste comitê nas funções de coordenação, coordenação adjunta e/ou
+de membros efetivos.</p>
+<p><br></p>
+<p>A sequência desses fatos, somada ao total apoio institucional e ao
+desenvolvimento técnico-científico do grupo, resultou na elaboração da
+Proposta de Curso Novo de Mestrado Acadêmico em Ciências da
+Reabilitação. A proposta de curso, submetida em meados de 2009, foi
+aprovada após primeira avaliação. O Curso de Mestrado Acadêmico do
+Programa de Pós-Graduação em Ciências da Reabilitação da UNISUAM
+(PPGCR-UNISUAM) foi então instalado em 2010, logo após a recomendação da
+Coordenação de Aperfeiçoamento de Pessoal de Nível Superior (CAPES), com
+conceito 3, conforme <a
+href="http://pesquisa.in.gov.br/imprensa/jsp/visualiza/index.jsp?data=19/08/2010&amp;jornal=1&amp;pagina=10&amp;totalArquivos=136">Portaria
+n° 1045, publicada no D.O.U. de 19/8/2010, Seção 1, Pág. 10</a>. O
+pioneirismo da UNISUAM na Pós-Graduação em Ciências da Reabilitação
+revitaliza então o mesmo ideal de 1979 com a absorção do curso de
+graduação em Fisioterapia no RJ.</p>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="area-concentracao" class="section level2 tabset">
+<h2 class="tabset"><strong>Área de concentração</strong></h2>
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<div id="descrição-1" class="section level3">
+<h3><strong>Descrição</strong></h3>
+<p>O PPGCR-UNISUAM organiza sua ÁREA DE CONCENTRAÇÃO (AC), LINHAS DE
+PESQUISA (LP) e PROJETOS DE PESQUISA (PP) de acordo com o princípio
+geral de que a reabilitação está centrada no binômio
+avaliação-intervenção, em todas as fases do processo saúde-doença, em
+diversas populações sob o modelo biopsicossocial. Atendem-se assim às
+demandas por investigação em níveis de atenção primária (prevenção e
+promoção da saúde), secundária (diagnóstico precoce e intervenção
+imediata) e terciária (reabilitação) nas diversas especialidades da
+Fisioterapia em particular área e da saúde em geral.</p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="atual" class="section level3">
+<h3><strong>Atual</strong></h3>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="inativas" class="section level3">
+<h3><strong>Inativas</strong></h3>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="linha-pesquisa" class="section level2 tabset">
+<h2 class="tabset"><strong>Linhas de pesquisa</strong></h2>
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<div id="descrição-2" class="section level3">
+<h3><strong>Descrição</strong></h3>
+<p>A partir desta AC são derivadas as 3 LP vigentes: ABORDAGEM
+TERAPÊUTICA EM REABILITAÇÃO, AVALIAÇÃO FUNCIONAL EM REABILITAÇÃO e
+REABILITAÇÃO NO ESPORTE E NO ESPORTE ADAPTADO. Mediante a expansão do
+corpo docente e Laboratorios, com consequente aumento da diversidade dos
+PP, uma LP (AVALIAÇÃO FUNCIONAL E ATIVIDADE FÍSICA) foi encerrada e
+outra (AVALIAÇÃO E INTERVENÇÃO NO ESPORTE ADAPTADO) foi renomeada e
+redefinida em sua descrição. A atual organização das LP reforça a
+interdisciplinaridade e transdisciplinaridade dos PP do PPGCR-UNISUAM,
+caracterizado por aliar áreas específicas do conhecimento de seus
+docentes e discentes para responder às questões que uma única área ou
+especialidade não responderia adequadamente. As LP e suas respectivas
+descrições são revisadas continuamente, sendo a última atualização em
+2017, a partir das sugestões do parecer da Comissão de Avaliação
+Quadrienal 2017.</p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="atual-1" class="section level3">
+<h3><strong>Atual</strong></h3>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="inativas-1" class="section level3">
+<h3><strong>Inativas</strong></h3>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="projeto-pesquisa" class="section level2 tabset">
+<h2 class="tabset"><strong>Projetos de pesquisa</strong></h2>
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<div id="descrição-3" class="section level3">
+<h3><strong>Descrição</strong></h3>
+<p>Os docentes vinculados ao PPGCR são orientados a coordenar até 2 PP
+institucionais (“guarda-chuva”) por LP, sendo cada PP vinculado a uma LP
+diferente. Adicionalmente, os docentes são estimulados a colaborar nos
+projetos das diferentes LP, de modo que a transdisciplinaridade gere
+aspectos inovadores para as Ciências da Reabilitação. Desse modo, PP
+anteriores a 2017 têm sido concluídos e substituídos por novos projetos
+institucionais, promovendo assim uma melhor distribuição dos PP e
+respectivas produções entre as LP. Considerando-se a interação de
+fatores tais como as áreas de formação e atuação dos docentes, a
+temática dos PP, e sua aderência aos grupos de pesquisa, evidencia-se
+certa assimetria na distribuição dos PP entre as LP ativas.</p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="section-6" class="section level3 tabset">
+<h3 class="tabset"><strong>2024-2021</strong></h3>
+<div id="figura" class="section level4">
+<h4><strong>Figura</strong></h4>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="tabela" class="section level4">
+<h4><strong>Tabela</strong></h4>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="lista" class="section level4">
+<h4><strong>Lista</strong></h4>
+<p><br></p>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="section-7" class="section level3 tabset">
+<h3 class="tabset"><strong>2020-2017</strong></h3>
+<div id="figura-1" class="section level4">
+<h4><strong>Figura</strong></h4>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="tabela-1" class="section level4">
+<h4><strong>Tabela</strong></h4>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="lista-1" class="section level4">
+<h4><strong>Lista</strong></h4>
+<p><br></p>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="section-8" class="section level3 tabset">
+<h3 class="tabset"><strong>2016-2013</strong></h3>
+<div id="figura-2" class="section level4">
+<h4><strong>Figura</strong></h4>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="tabela-2" class="section level4">
+<h4><strong>Tabela</strong></h4>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="lista-2" class="section level4">
+<h4><strong>Lista</strong></h4>
+<p><br></p>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="section-9" class="section level3 tabset">
+<h3 class="tabset"><strong>2012-2010</strong></h3>
+<div id="figura-3" class="section level4">
+<h4><strong>Figura</strong></h4>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="tabela-3" class="section level4">
+<h4><strong>Tabela</strong></h4>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="lista-3" class="section level4">
+<h4><strong>Lista</strong></h4>
+<p><br></p>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+</div>
+<div id="agenda-pesquisa" class="section level2 tabset">
+<h2 class="tabset"><strong>Agendas de pesquisa</strong></h2>
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<div id="aepsesrj" class="section level3">
+<h3><strong>AEPSES/RJ</strong></h3>
+<iframe src="https://www.saude.rj.gov.br/comum/code/MostrarArquivo.php?C=NTIyNjQ%2C" style="width:100%; height:500px; border:0;">
+</iframe>
+<p><em>Fontes:</em> <a
+href="https://www.saude.rj.gov.br/comum/code/MostrarArquivo.php?C=NTIyNjQ%2C"><strong>Secretaria
+de Estado de Saúde - RJ</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="msbr" class="section level3">
+<h3><strong>MS/BR</strong></h3>
+<iframe src="https://bvsms.saude.gov.br/bvs/publicacoes/agenda_prioridades_pesquisa_ms.pdf" style="width:100%; height:500px; border:0;">
+</iframe>
+<p><em>Fontes:</em> <a
+href="https://bvsms.saude.gov.br/bvs/publicacoes/agenda_prioridades_pesquisa_ms.pdf"><strong>Ministério
+da Saúde</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="mctibr" class="section level3">
+<h3><strong>MCTI/BR</strong></h3>
+<iframe src="https://www.in.gov.br/en/web/dou/-/portaria-mcti-n-5.109-de-16-de-agosto-de-2021-338589059" style="width:100%; height:500px; border:0;">
+</iframe>
+<p><em>Fontes:</em> <a
+href="https://www.in.gov.br/en/web/dou/-/portaria-mcti-n-5.109-de-16-de-agosto-de-2021-338589059"><strong>Ministério
+da Ciência, Tecnologia e Inovação</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="onu" class="section level3">
+<h3><strong>ONU</strong></h3>
+<iframe src="https://sustainabledevelopment.un.org/content/documents/21252030%20Agenda%20for%20Sustainable%20Development%20web.pdf" style="width:100%; height:500px; border:0;">
+</iframe>
+<p><em>Fontes:</em> <a
+href="https://sustainabledevelopment.un.org/content/documents/21252030%20Agenda%20for%20Sustainable%20Development%20web.pdf"><strong>Organização
+das Nações Unidas</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="financiadores" class="section level2 tabset">
+<h2 class="tabset"><strong>Financiadores</strong></h2>
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<div id="section-10" class="section level3">
+<h3><strong>2024-2021</strong></h3>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="section-11" class="section level3">
+<h3><strong>2020-2017</strong></h3>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="section-12" class="section level3">
+<h3><strong>2016-2013</strong></h3>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="section-13" class="section level3">
+<h3><strong>2012-2010</strong></h3>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="pré-2010-2" class="section level3">
+<h3><strong>Pré-2010</strong></h3>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="bolsas" class="section level2 tabset">
+<h2 class="tabset"><strong>Bolsas de estudo</strong></h2>
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<div id="prosup" class="section level3">
+<h3><strong>PROSUP</strong></h3>
+<p><br></p>
+<iframe src="https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/bolsas/bolsas-no-pais/programa-de-suporte-a-pos-graduacao-de-instituicoes-de-ensino-particulares-prosup" style="width:100%; height:600px; border:0;">
+</iframe>
+<p><br></p>
+<p><em>Fontes:</em> <a
+href="https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/bolsas/bolsas-no-pais/programa-de-suporte-a-pos-graduacao-de-instituicoes-de-ensino-particulares-prosup"><strong>CAPES</strong></a></p>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="cotas" class="section level3">
+<h3><strong>Cotas</strong></h3>
+<p><br></p>
+<p><em>Em construção</em></p>
+<p><br></p>
+<p><em>Fontes:</em> <a
+href="http://transparencia.capes.gov.br/transparencia/xhtml/index.faces"><strong>Transparência
+CAPES</strong></a>, <a
+href="https://scba.capes.gov.br"><strong>SCBA</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="portarias" class="section level3">
+<h3><strong>Portarias</strong></h3>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="agradecimento" class="section level3">
+<h3><strong>Agradecimento</strong></h3>
+<p><br></p>
+<iframe src="https://www.in.gov.br/materia/-/asset_publisher/Kujrw0TZC2Mb/content/id/39729251/do1-2018-09-05-portaria-n-206-de-4-de-setembro-de-2018-39729135" style="width:100%; height:600px; border:0;">
+</iframe>
+<p><br></p>
+<p><em>Fontes:</em> <a
+href="https://www.in.gov.br/materia/-/asset_publisher/Kujrw0TZC2Mb/content/id/39729251/do1-2018-09-05-portaria-n-206-de-4-de-setembro-de-2018-39729135"><strong>Diário
+Oficial da União</strong></a></p>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="cursos" class="section level2 tabset">
+<h2 class="tabset"><strong>Cursos</strong></h2>
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<div id="níveis" class="section level3">
+<h3><strong>Níveis</strong></h3>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="objetivos" class="section level3">
+<h3><strong>Objetivos</strong></h3>
+<p>O curso de Mestrado Acadêmico em Ciências da Reabilitação objetiva a
+qualificação do pós-graduando para docência em nível superior e pesquisa
+por meio do aprimoramento do conhecimento acadêmico e profissional. O
+curso proporciona ao aluno bases técnico-científicas para a pesquisa e o
+ensino, tornando-o apto a exercer as atividades da docente de nível
+universitário e inseri-lo em atividades de pesquisa.</p>
+<p><br></p>
+<p>O curso de Doutorado Acadêmico em Ciências da Reabilitação objetiva a
+formação de pesquisadores independentes com capacidade de produzir
+evidências científicas em Ciências da Reabilitação, bem como atuar na
+docência superior. O curso visa a intensificação do aprendizado e a
+consolidação do conhecimento científico, visando formar pesquisadores
+independentes com capacidade de desenvolver projetos de pesquisa e
+orientar discentes nos diferentes níveis de formação acadêmica.</p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="créditos" class="section level3">
+<h3><strong>Créditos</strong></h3>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="calculadora-creditos" class="section level3">
+<h3><strong>Calculadora de créditos</strong></h3>
+<div id="doutorado" class="section level4 tabset">
+<h4 class="tabset"><strong>Doutorado</strong></h4>
+<center>
+<strong>TOTAL REQUERIDO:
+<code>{r eval = has.dados.cadastrais} dados.do.programa.raw[1,3]</code>
+CR</strong> <br> Créditos OBRIGATÓRIOS marcados:
+<strong id=msgOBRDSC></strong> <br> Créditos ELETIVOS marcados:
+<strong id=msgELEDSC></strong>
+</center>
+<div id="obrigatórios" class="section level5">
+<h5><strong>Obrigatórios</strong></h5>
+<!--script for generating CALCULATOR FORM-->
+<script type="text/javascript">
+function chkcontrol3(j) {
+var sumOBRDSC=0;
+for(var i=0; i < document.formOBRDSC.ckb.length; i++){
+  if(document.formOBRDSC.ckb[i].checked){
+    sumOBRDSC = sumOBRDSC + parseInt(document.formOBRDSC.ckb[i].value);
+    }
+  document.getElementById("msgOBRDSC").innerHTML= sumOBRDSC + " CR";
+  }
+}
+</script>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="eletivos" class="section level5">
+<h5><strong>Eletivos</strong></h5>
+<!--script for generating CALCULATOR FORM-->
+<script type="text/javascript">
+function chkcontrol4(j) {
+var sumELEDSC=0;
+for(var i=0; i < document.formELEDSC.ckb.length; i++){
+  if(document.formELEDSC.ckb[i].checked){
+    sumELEDSC = sumELEDSC + parseInt(document.formELEDSC.ckb[i].value);
+    }
+  document.getElementById("msgELEDSC").innerHTML= sumELEDSC + " CR";
+  }
+}
+</script>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="mestrado" class="section level4 tabset">
+<h4 class="tabset"><strong>Mestrado</strong></h4>
+<center>
+<strong>TOTAL REQUERIDO:
+<code>{r eval = has.dados.cadastrais} dados.do.programa.raw[1,2]</code>
+CR</strong> <br> Créditos OBRIGATÓRIOS marcados:
+<strong id=msgOBRMSC></strong> <br> Créditos ELETIVOS marcados:
+<strong id=msgELEMSC></strong>
+</center>
+<div id="obrigatórios-1" class="section level5">
+<h5><strong>Obrigatórios</strong></h5>
+<!--script for generating CALCULATOR FORM-->
+<script type="text/javascript">
+function chkcontrol1(j) {
+var sumOBRMSC=0;
+for(var i=0; i < document.formOBRMSC.ckb.length; i++){
+  if(document.formOBRMSC.ckb[i].checked){
+    sumOBRMSC = sumOBRMSC + parseInt(document.formOBRMSC.ckb[i].value);
+    }
+  document.getElementById("msgOBRMSC").innerHTML= sumOBRMSC + " CR";
+  }
+}
+</script>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="eletivos-1" class="section level5">
+<h5><strong>Eletivos</strong></h5>
+<!--script for generating CALCULATOR FORM-->
+<script type="text/javascript">
+function chkcontrol2(j) {
+var sumELEMSC=0;
+for(var i=0; i < document.formELEMSC.ckb.length; i++){
+  if(document.formELEMSC.ckb[i].checked){
+    sumELEMSC = sumELEMSC + parseInt(document.formELEMSC.ckb[i].value);
+    }
+  document.getElementById("msgELEMSC").innerHTML= sumELEMSC + " CR";
+  }
+}
+</script>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+</div>
+</div>
+<div id="estrutura-curricular" class="section level2 tabset">
+<h2 class="tabset"><strong>Estrutura curricular</strong></h2>
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<div id="descrição-4" class="section level3">
+<h3><strong>Descrição</strong></h3>
+<p>A estrutura curricular do Programa de Pós-graduação em Ciências das
+Reabilitação foi elaborada visando a efetivação do perfil do egresso dos
+cursos de Mestrado e Doutorado Acadêmicos. As disciplinas da estrutura
+curricular estão organizadas simultaneamente em Eixos, Área de
+Concentração/Linhas de Pesquisa e Caráter.</p>
+<p><br></p>
+<p>O Eixo Básico compreende as disciplinas consideradas fundamentais
+para o pensamento científico e a formulação de problemas de pesquisa. O
+Eixo Científico inclui disciplinas que oferecem recursos para elaboração
+de projetos de pesquisa e divulgação dos seus resultados, seja na forma
+de manuscritos e/ou apresentações de trabalhos. O Eixo Pedagógico agrega
+as disciplinas que enfatizam as habilidade e competências para atuação
+no nível superior (ensino e pesquisa) em níveis de graduação e
+pós-graduação. O Eixo Inovador compreende as disciplinas com foco na
+utilização e desenvolvimento de recursos tecnológicos em reabilitação
+bem como a discussão de tópicos inovadores em pesquisa. Considerando que
+esses três Eixos apresentam caráter independente do tema da pesquisa, as
+suas disciplinas são consideradas como Transversais. Nestes eixos, o
+Caráter Obrigatório ou Eletivo das disciplinas é determinando
+considerando-se as diferenças entre os perfis do egresso dos cursos de
+Mestrado e Doutorado.</p>
+<p><br></p>
+<p>O Eixo Técnico agrupa as disciplinas de caráter especialista, com
+ementas voltadas para temas de pesquisa mais específicos. Assim, as
+disciplinas deste Eixo são subdivididas de acordo com a única Área de
+Concentração do Programa e suas Linhas de Pesquisa: Avaliação Funcional
+em Reabilitação; Abordagem Terapêutica em Reabilitação; e Reabilitação
+no Esporte e no Esporte Adaptado. Pelo mesmo argumento, são todas de
+Caráter Eletivo.</p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="síntese" class="section level3">
+<h3><strong>Síntese</strong></h3>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="ementas" class="section level3">
+<h3><strong>Ementas</strong></h3>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="disciplinas" class="section level3">
+<h3><strong>Disciplinas</strong></h3>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="bibliografia" class="section level3">
+<h3><strong>Bibliografia</strong></h3>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="inativas-2" class="section level3">
+<h3><strong>Inativas</strong></h3>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="turmas" class="section level2 tabset">
+<h2 class="tabset"><strong>Turmas</strong></h2>
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<div id="síntese-1" class="section level3">
+<h3><strong>Síntese</strong></h3>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="section-14" class="section level3 tabset">
+<h3 class="tabset"><strong>2024-2021</strong></h3>
+<div id="disciplinas-1" class="section level4">
+<h4><strong>Disciplinas</strong></h4>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="docentes" class="section level4">
+<h4><strong>Docentes</strong></h4>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="section-15" class="section level3">
+<h3><strong>2020-2017</strong></h3>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="section-16" class="section level3">
+<h3><strong>2016-2013</strong></h3>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="section-17" class="section level3">
+<h3><strong>2012-2010</strong></h3>
+<p><em>Fontes:</em> <a
+href="https://sucupira.capes.gov.br/sucupira/"><strong>Plataforma
+Sucupira</strong></a></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="calendarios" class="section level2">
+<h2><strong>Calendários</strong></h2>
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<div id="sede" class="section level3">
+<h3><strong>Sede</strong></h3>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="cooperação-interinstitucional" class="section level3">
+<h3><strong>Cooperação Interinstitucional</strong></h3>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="infraestrutura" class="section level2 tabset">
+<h2 class="tabset"><strong>Infraestrutura</strong></h2>
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<div id="laboratórios" class="section level3">
+<h3><strong>Laboratórios</strong></h3>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+<p><br></p>
+</div>
+<div id="planta" class="section level3">
+<h3><strong>Planta</strong></h3>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="convenios" class="section level2">
+<h2><strong>Convênios institucionais</strong></h2>
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<p><br></p>
+<div
+id="cefan---centro-de-educação-física-almirante-adalberto-nunes-da-marinha-do-brasil"
+class="section level3">
+<h3><strong>CEFAN - Centro de Educação Física Almirante Adalberto Nunes
+da Marinha do Brasil</strong></h3>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="apb---academia-paralímpica-brasileira" class="section level3">
+<h3><strong>APB - Academia Paralímpica Brasileira</strong></h3>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="ufrj---universidade-federal-do-rio-de-janeiro"
+class="section level3">
+<h3><strong>UFRJ - Universidade Federal do Rio de Janeiro</strong></h3>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="ufmg---universidade-federal-de-minas-gerais"
+class="section level3">
+<h3><strong>UFMG - Universidade Federal de Minas Gerais</strong></h3>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="puc-rj-pontifícia-universidade-católica-rio-de-janeiro"
+class="section level3">
+<h3><strong>PUC-RJ Pontifícia Universidade Católica, Rio de
+Janeiro</strong></h3>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="cooperacao" class="section level2">
+<h2><strong>Cooperação entre instituições</strong></h2>
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<div id="em-andamento" class="section level3 tabset">
+<h3 class="tabset"><strong>Em andamento</strong></h3>
+<div id="dinter" class="section level4">
+<h4><strong>2019-2023 DINTER</strong></h4>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="pci" class="section level4">
+<h4><strong>2021-2023 PCI</strong></h4>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="concluídos" class="section level3 tabset">
+<h3 class="tabset"><strong>Concluídos</strong></h3>
+<div id="minter" class="section level4">
+<h4><strong>2019-2021 MINTER</strong></h4>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+</div>
+<div id="internacional" class="section level2 tabset">
+<h2 class="tabset"><strong>Internacionalização</strong></h2>
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+</div>
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:5px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+<!--FUNDING AGENCIES BADGES-->
+<table class="table" style="background-color:white">
+  <tr>
+    <td width="20%" style='vertical-align: middle;'>
+      <a href="https://www.unisuam.edu.br"><img align="center" src="PPG/Images/logo-programa.png"></a>
+      </td>
+    <td width="20%" style='vertical-align: middle;'>
+      <a href="https://www.gov.br/capes/pt-br"><img align="center" src="PPG/Images/logo-capes.png"></a> 
+      </td>
+    <td width="20%" style='vertical-align: middle;'>
+      <a href="https://www.gov.br/cnpq/pt-br"><img align="center" src="PPG/Images/logo-cnpq.png"></a>
+    </td>
+    <td width="20%" style='vertical-align: middle;'>
+      <a href="http://www.faperj.br"><img align="center" src="PPG/Images/logo-faperj.png"></a>
+    </td>
+    <td width="20%" style='vertical-align: middle;'>
+      <a href="http://brasil.un.org/pt-br/sdgs"><img align="center" src="PPG/Images/logo-ods.png"></a>
+    </td>
+  </tr>
+</table>
+
+<br>
+
+<!--CREATIVE COMMONTS BADGE-->
+<div style="text-align: center">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Observatório CR</span> de <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Arthur de Sa Ferreira</span> está licenciado com uma Licença <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons - Atribuição-NãoComercial 4.0 Internacional</a>.
+</div>
+
+<div style="text-align: center; font-size:14px">
+  <p>Copyright &copy; 2021 Arthur de Sá Ferreira, PhD, em nome do colegiado do PPGCR-UNISUAM. Todos os direitos reservados. Última atualização em <span id="datetime"></span><script>var dt = new Date().toLocaleDateString(); document.getElementById("datetime").innerHTML=dt.toLocaleString();</script> </div>
+
+<br>
+
+<!--print visitor counter-->
+<div style="text-align: center">
+  <a style="float:center" href="https://hits.seeyoufarm.com">
+    <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Frehab-tech.github.io%2Fobservatoriocr%2F&count_bg=%23E1761A&title_bg=%235185D7&icon=&icon_color=%23E7E7E7&title=Visitas&edge_flat=false"/>
+  </a>
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

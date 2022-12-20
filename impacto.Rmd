@@ -1,0 +1,1059 @@
+---
+title: Impacto
+output:
+  html_document:
+    toc: true
+    css:
+      - /CSS/logo-above-toc.css
+      - /CSS/narrow-margins.css
+      - /CSS/responsive.css
+---
+
+<!--install and/or load all R packages-->
+```{r setup, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%", results = "hide"}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = 'center',
+  results = "asis",
+  include = TRUE,
+  out.width = "100%",
+  knitr.kable.NA = '--',
+  knitr.table.format = "html"
+)
+source("Scripts/all-required-packages.R", local = knitr::knit_global())
+```
+
+<!--script for inserting LOGO ABOVE THE TOC-->
+```{js}
+$(document).ready(function() {
+  $('#TOC').parent().prepend('<div id=\"nav_logo\"><img src="PPG/Images/logo-programa.png"></div>');
+  });
+```
+
+<!--script for sharing-->
+<p align="right">
+```{r share}
+# home <- "https://ppgcr-unisuam.github.io/observatoriocr/"
+home <- metadata$repository_url
+source("Scripts/social-media-sharing.R", local = knitr::knit_global())
+```
+</p>
+
+<!--script for generating ALTMETRIC badges-->
+<script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
+
+<!--script for generating multiple DIMENSIONS badges-->
+<script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
+
+<!--script for generating multiple PLUMX badges-->
+<script type="text/javascript" src="//cdn.plu.mx/widget-all.js"></script>
+
+<br>
+
+## **Impacto educacional** {#impacto-educacional}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Formação discente** {.tabset}
+
+#### **Cotas de bolsas de estudo**
+
+<br>
+
+*Em construção*
+
+<br>
+
+*Fontes:* [**Transparência CAPES**](http://transparencia.capes.gov.br/transparencia/xhtml/index.faces), [**SCBA**](https://scba.capes.gov.br)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Bolsistas** {.tabset}
+
+##### **Doutorado**
+
+```{r bolsistas-dsc, eval = has.sucupira}
+# select level
+course.level <- "TESE"
+
+# load custom function
+source("Scripts/get-initials.R", local = knitr::knit_global())
+
+# bolsistas
+sheet <- "TCC - Financiadores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+bolsistas <- sucupira.raw
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# filter students
+bolsistas <- bolsistas[bolsistas$`Tipo de Trabalho de Conclusão` == course.level, ]
+
+# get years
+bolsistas$'Ano de Defesa' <- substr(as.Date(bolsistas$`Data da Defesa`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+bolsistas$`Nome do Autor` <- toTitleCase(tolower(bolsistas$`Nome do Autor`))
+bolsistas$`Nome do Orientador` <- toTitleCase(tolower(bolsistas$`Nome do Orientador`))
+
+# drop columns
+bolsistas <- bolsistas %>% select("Ano de Defesa", "Nome do Autor", "Nome do Orientador", "Nome do Financiador", "Quantidade de Meses")
+
+# drop NA values in "Quantidade de Meses"
+bolsistas <- bolsistas[complete.cases(bolsistas), ]
+
+if (dim(bolsistas)[1] != 0) {
+  ids <- order(bolsistas$'Ano de Defesa', decreasing = TRUE)
+  table <- bolsistas[ids,]
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table, title = "Bolsistas - Doutorado")
+} else {
+  cat("*Sem dados para exibir*")
+}
+```
+
+<br>
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+##### **Mestrado**
+
+```{r bolsistas-msc, eval = has.sucupira}
+# select level
+course.level <- "DISSERTAÇÃO"
+
+# load custom function
+source("Scripts/get-initials.R", local = knitr::knit_global())
+
+# bolsistas
+sheet <- "TCC - Financiadores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+bolsistas <- sucupira.raw
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# filter students
+bolsistas <- bolsistas[bolsistas$`Tipo de Trabalho de Conclusão` == course.level, ]
+
+# get years
+bolsistas$'Ano de Defesa' <- substr(as.Date(bolsistas$`Data da Defesa`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+bolsistas$`Nome do Autor` <- toTitleCase(tolower(bolsistas$`Nome do Autor`))
+bolsistas$`Nome do Orientador` <- toTitleCase(tolower(bolsistas$`Nome do Orientador`))
+
+# drop columns
+bolsistas <- bolsistas %>% select("Ano de Defesa", "Nome do Autor", "Nome do Orientador", "Nome do Financiador", "Quantidade de Meses")
+
+# drop NA values in "Quantidade de Meses"
+bolsistas <- bolsistas[complete.cases(bolsistas), ]
+
+if (dim(bolsistas)[1] != 0) {
+  ids <- order(bolsistas$'Ano de Defesa', decreasing = TRUE)
+  table <- bolsistas[ids,]
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table, title = "Bolsistas - Mestrado")
+} else {
+  cat("*Sem dados para exibir*")
+}
+```
+
+<br>
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Produção acadêmica** {.tabset}
+
+#### **Teses**
+
+```{r tcc-dsc-financiados, eval = has.sucupira}
+# bolsistas
+sheet <- "TCC - Financiadores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+bolsistas.tcc <- sucupira.raw
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# get years
+bolsistas.tcc$'Ano de Defesa' <- substr(as.Date(bolsistas.tcc$`Data da Defesa`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+bolsistas.tcc$`Nome do Autor` <- toTitleCase(tolower(bolsistas.tcc$`Nome do Autor`))
+bolsistas.tcc$`Nome do Orientador` <- toTitleCase(tolower(bolsistas.tcc$`Nome do Orientador`))
+bolsistas.tcc$`Nome do Trabalho de Conclusão` <- toTitleCase(tolower(bolsistas.tcc$`Nome do Trabalho de Conclusão`))
+
+bolsistas.tcc <- bolsistas.tcc[bolsistas.tcc$`Tipo de Trabalho de Conclusão` == "TESE", ]
+
+# drop columns
+bolsistas.tcc <- bolsistas.tcc %>% select("Ano de Defesa", "Linha de Pesquisa", "Nome do Autor", "Nome do Trabalho de Conclusão", "Nome do Financiador")
+
+# drop NA values in "Quantidade de Meses"
+bolsistas.tcc <- bolsistas.tcc[complete.cases(bolsistas.tcc), ]
+
+if (dim(bolsistas.tcc)[1] != 0) {
+  ids <- order(bolsistas.tcc$'Ano de Defesa', bolsistas.tcc$'Linha de Pesquisa', decreasing = TRUE)
+  table <- bolsistas.tcc[ids,]
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table, title = "Dissertações e Teses - Bolsistas")
+} else {
+  cat("*Sem dados para exibir*")
+}
+```
+
+<br>
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Dissertações**
+
+```{r tcc-msc-financiados, eval = has.sucupira}
+# bolsistas
+sheet <- "TCC - Financiadores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+bolsistas.tcc <- sucupira.raw
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# get years
+bolsistas.tcc$'Ano de Defesa' <- substr(as.Date(bolsistas.tcc$`Data da Defesa`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+bolsistas.tcc$`Nome do Autor` <- toTitleCase(tolower(bolsistas.tcc$`Nome do Autor`))
+bolsistas.tcc$`Nome do Orientador` <- toTitleCase(tolower(bolsistas.tcc$`Nome do Orientador`))
+bolsistas.tcc$`Nome do Trabalho de Conclusão` <- toTitleCase(tolower(bolsistas.tcc$`Nome do Trabalho de Conclusão`))
+
+bolsistas.tcc <- bolsistas.tcc[bolsistas.tcc$`Tipo de Trabalho de Conclusão` == "DISSERTAÇÃO", ]
+
+# drop columns
+bolsistas.tcc <- bolsistas.tcc %>% select("Ano de Defesa", "Linha de Pesquisa", "Nome do Autor", "Nome do Trabalho de Conclusão", "Nome do Financiador")
+
+# drop NA values in "Quantidade de Meses"
+bolsistas.tcc <- bolsistas.tcc[complete.cases(bolsistas.tcc), ]
+
+if (dim(bolsistas.tcc)[1] != 0) {
+  ids <- order(bolsistas.tcc$'Ano de Defesa', bolsistas.tcc$'Linha de Pesquisa', decreasing = TRUE)
+  table <- bolsistas.tcc[ids,]
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table, title = "Dissertações e Teses - Bolsistas")
+} else {
+  cat("*Sem dados para exibir*")
+}
+```
+
+<br>
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Impacto científico** {#impacto-cientifico}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Periódicos institucionais**
+
+<iframe src="https://revistas.unisuam.edu.br" style="width:100%; height:600px; border:0;"></iframe>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Anuário de patentes**
+
+<iframe src="https://revistas.unisuam.edu.br/index.php/patentes" style="width:100%; height:600px; border:0;"></iframe>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Comitê de ética em pesquisa** {.tabset}
+
+<br>
+
+#### **Resoluções e normativas CNS**
+
+<iframe src="http://conselho.saude.gov.br/o-que-e-rss/92-comissoes/conep/normativas-conep/642-lista-de-resolucoes-conep" style="width:100%; height:600px; border:0;"></iframe>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Plataforma Brasil CONEP**
+
+<iframe src="https://plataformabrasil.saude.gov.br/login.jsf" style="width:100%; height:600px; border:0;"></iframe>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Comitê de Ética em Pesquisa** {#CEP .tabset}
+
+<p align="center">
+[<img align="center" src="Images/logo-cep.png">](https://www.unisuam.edu.br/pesquisa-e-inovacao/){target="_blank"}
+</p>
+
+<br>
+
+##### **Documentos vigentes**
+
+```{r cep-vigentes, eval = has.cep}
+# read separate sheets
+vigentes.raw <-
+  read_excel("PPG/CEP.xlsx",
+             sheet = "Vigentes",
+             col_types = c("text"))
+
+# replace the link by a tag
+for (i in 1:dim(vigentes.raw)[1]) {
+  vigentes.raw[i, 3] <-
+    paste("[↗️](", vigentes.raw[i, 3], '){target="_blank"}', sep = "")
+}
+
+# print table
+print(
+  kable(vigentes.raw, align = c("l", rep(
+    "c", ncol(vigentes.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+##### **Documentos revogados**
+
+```{r cep-revogados, eval = has.cep}
+# read separate sheets
+revogados.raw <-
+  read_excel("PPG/CEP.xlsx",
+             sheet = "Revogados",
+             col_types = c("text"))
+
+# replace the link by a tag
+for (i in 1:dim(revogados.raw)[1]) {
+  revogados.raw[i, 3] <-
+    paste("[↗️](", revogados.raw[i, 3], '){target="_blank"}', sep = "")
+}
+
+# print table
+print(
+  kable(revogados.raw, align = c("l", rep(
+    "c", ncol(revogados.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Impacto sociocultural** {#impacto-sociocultural}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Organização de eventos** {.tabset}
+
+<br>
+
+#### **Semana de Pesquisa, Extensão e Inovação** {.tabset}
+
+##### **Programação**
+
+<br>
+
+<div class="sizer" text-align:"center">
+  <div class="embed-responsive embed-responsive-16by9">
+    <iframe class="embed-responsive-item" src="https://hotsite.unisuam.edu.br/xviiispe/index.php" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+##### **Apresentações**
+
+<br>
+
+<div class="sizer" text-align:"center">
+  <div class="embed-responsive embed-responsive-16by9">
+    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/sBn1gOF8Atg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Simpósio Paradesportivo Carioca**
+
+<br>
+
+<div class="sizer" text-align:"center">
+  <div class="embed-responsive embed-responsive-16by9">
+    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/1O_S0kEW9Rk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+<div class="sizer" text-align:"center">
+  <div class="embed-responsive embed-responsive-16by9">
+    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/i_PZ-Bgy1dE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Impacto tecnológico/econômico** {#impacto-tecnologico}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+*Em construção!*
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Ações durante a pandemia** {#acoes-pandemia}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+```{r pandemia-termos}
+pandemia <-
+  c(
+    "19nCoV",
+    "2019 Novel Coronavirus",
+    "2019-nCoV",
+    "2019 nCoV",
+    "coronavirus disease 2019",
+    "Coronavirus Disease 2019",
+    "Coronavirus Disease 2019",
+    "COVID -19",
+    "COVID 19",
+    "COVID 2019",
+    "COVID longa",
+    "COVID- 19",
+    "COVID-19",
+    "COVID-2019",
+    "COVID",
+    "COVID19",
+    "COVID2019",
+    "doença do coronavirus 2019",
+    "doença do novo coronavirus 2019",
+    "doença do novo coronavirus",
+    "long COVID",
+    "nCoV",
+    "New Coronavirus",
+    "Novo Coronavirus",
+    "pós - COVID",
+    "pós- COVID",
+    "pós -COVID",
+    "pós COVID",
+    "pós-COVID",
+    "post - COVID",
+    "post- COVID",
+    "post -COVID",
+    "post COVID",
+    "post-COVID",
+    "postCOVID",
+    "SARS coronavirus 2",
+    "SARS Coronavirus 2",
+    "SARS CoV 2",
+    "SARS COV 2",
+    "SARS-CoV-2",
+    "SARS-COV-2",
+    "SARS-CoV2",
+    "SARS-COV2",
+    "SARSCoV-2",
+    "SARSCOV-2",
+    "SARSCoV2",
+    "SARSCOV2",
+    "severe acute respiratory syndrome coronavirus 2",
+    "Severe Acute Respiratory Syndrome Coronavirus 2",
+    "síndrome respiratória aguda grave",
+    "pandemic",
+    "pandemia"
+  )
+```
+
+```{r pandemia-filtro, eval = has.producao}
+# selecting those with COVID in the title
+doi_unique_artigos_impacto <-
+  doi_unique_artigos[grep(paste(tolower(pandemia), collapse = "|"), tolower(doi_unique_artigos$title)),]
+my_dois_works_artigos_impacto <-
+  my_dois_works_artigos[grep(paste(tolower(pandemia), collapse = "|"), tolower(my_dois_works_artigos$title)),]
+references_artigos_impacto <-
+  references_artigos[grep(paste(tolower(pandemia), collapse = "|"), tolower(references_artigos[,2])),]
+
+# selecting those with COVID in the title
+doi_unique_resumos_impacto <-
+  doi_unique_resumos[grep(paste(tolower(pandemia), collapse = "|"), tolower(doi_unique_resumos$title)),]
+my_dois_works_resumos_impacto <-
+  my_dois_works_resumos[grep(paste(tolower(pandemia), collapse = "|"), tolower(my_dois_works_resumos$title)),]
+references_resumos_impacto <-
+  references_resumos[grep(paste(tolower(pandemia), collapse = "|"), tolower(references_resumos)[,2]),]
+
+# selecting those with COVID in the title
+doi_unique_eventos_impacto <-
+  doi_unique_eventos[grep(paste(tolower(pandemia), collapse = "|"), tolower(doi_unique_eventos$title)),]
+my_dois_works_eventos_impacto <-
+  my_dois_works_eventos[grep(paste(tolower(pandemia), collapse = "|"), tolower(my_dois_works_eventos$title)),]
+references_eventos_impacto <-
+  references_eventos[grep(paste(tolower(pandemia), collapse = "|"), tolower(references_eventos)[,2]),]
+```
+
+### **Projetos de pesquisa**
+
+```{r pandemia-projetos, eval = has.sucupira}
+# projetos - membros
+sheet <- "Projetos - Membros"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)
+periodo <- as.character(seq(min(periodos), max(periodos)))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+projetos.all <-
+  unique(projetos.all[projetos.all$`Membro Responsável` == "Sim",])
+
+# selecting those with COVID in the title
+projetos <-
+  projetos.all[grep(paste(tolower(pandemia), collapse = "|"),
+                    tolower(projetos.all$`Nome do Projeto de Pesquisa`)),]
+
+if (dim(projetos)[1] != 0) {
+  # select data DOCENTES
+  table.projetos <-
+    cbind(
+      projetos$`Nome do Membro do Projeto`,
+      projetos$`Nome do Projeto de Pesquisa`,
+      projetos$`Linha de Pesquisa`
+    )
+  table.projetos <- table.projetos[order(table.projetos[, 1]), ]
+  # print tables
+  table.projetos[, 1] <-
+    as.vector(unlist(lapply(table.projetos[, 1], FUN = str_to_upper)))
+  table.projetos[, 2] <-
+    as.vector(unlist(lapply(table.projetos[, 2], FUN = str_to_sentence)))
+  table.projetos[, 3] <-
+    as.vector(unlist(lapply(table.projetos[, 3], FUN = str_to_title)))
+  
+  colnames(table.projetos) <-
+    c("Nome do Membro Responsável",
+      "Nome do Projeto de Pesquisa",
+      "Linha de Pesquisa")
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table.projetos, title = "Ações durante a Pandemia - Projetos de Pesquisa")
+} else {
+  cat('\n\n')
+  cat('*Sem produção para exibir no período*')
+  cat('\n\n')
+}
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Financiadores**
+
+```{r pandemia-financiadores, eval = has.financiadores}
+# this chunk requires additional data that may  be available
+has.file <-
+  !is.error(try(financiadores.raw <-
+                  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores"),
+                silent = TRUE)
+  )
+
+if (has.file) {
+  financiadores.sub <-
+    financiadores.raw %>% select("Ano",
+                                 "Agência",
+                                 "Edital",
+                                 "Processo No.",
+                                 "Título do projeto",
+                                 "Programa")
+  fonte.sub <- financiadores.raw %>% select("Fonte")
+  
+  financiadores <-
+    financiadores.sub[complete.cases(financiadores.sub), ]
+  fonte <- fonte.sub[complete.cases(financiadores.sub), ]
+  
+  # selecting those with COVID in the title
+  financiadores <-
+    financiadores[grep(paste(tolower(pandemia), collapse = "|"),
+                       tolower(financiadores$`Título do projeto`)), ]
+  fonte <-
+    fonte[grep(paste(tolower(pandemia), collapse = "|"),
+               tolower(financiadores$`Título do projeto`)), ]
+  
+  if (dim(financiadores)[1] != 0)
+  {
+    Abrir <- matrix(NA, nrow = dim(financiadores)[1])
+    colnames(Abrir) <- "Abrir"
+    # add hyperlinks
+    for (i in 1:dim(fonte)[1])
+    {
+      if (!is.na(fonte[i, 1]))
+      {
+        Abrir[i] <-
+          paste0('<a href="',
+                 fonte[i, 1],
+                 '" target="_blank"',
+                 '>',
+                 '↗️' ,
+                 '</a>')
+      }
+    }
+    
+    financiadores <- cbind(financiadores, Abrir)
+    financiadores <-
+      financiadores[order(financiadores$Ano, decreasing = TRUE),]
+  } else {
+    cat('\n\n')
+    cat('*Sem dados para exibir*')
+    cat('\n\n')
+  }
+  cat('\n\n')
+} else {
+  cat('\n')
+  cat('*Sem dados para exibir*')
+  cat('\n')
+}
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+try(create_dt(financiadores, title = "Ações durante a Pandemia - Financiadores"), silent = TRUE)
+
+if (has.file){
+  cat(
+    "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
+  )
+}
+```
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Trabalhos de conclusão de curso**
+
+```{r pandemia-tcc, eval = has.sucupira}
+# tcc
+sheet <- "TCC"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)
+periodo <- as.character(seq(min(periodos), max(periodos)))
+tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+
+# selecting those with COVID in the title
+tccs <-
+  tcc.all[grep(paste(tolower(pandemia), collapse = "|"),
+               tolower(tcc.all$`Nome do Trabalho de Conclusão`)),]
+
+if (dim(tccs)[1] != 0) {
+  # select data
+  table.tcc <-
+    cbind(
+      format((as.Date(
+        gsub("/", "-", tccs$'Data da Defesa'), "%d-%d-%Y"
+      )), "%Y"),
+      tccs$`Tipo de Trabalho de Conclusão`,
+      tccs$`Nome do Trabalho de Conclusão`,
+      tccs$`Nome do Autor`,
+      tccs$`Nome do Orientador`
+    )
+  table.tcc <-
+    table.tcc[order(table.tcc[, 1], table.tcc[, 2], table.tcc[, 3]), ]
+  
+  # print tables
+  table.tcc[, 2] <-
+    as.vector(unlist(lapply(table.tcc[, 2], FUN = str_to_title)))
+  table.tcc[, 3] <-
+    as.vector(unlist(lapply(table.tcc[, 3], FUN = str_to_title)))
+  table.tcc[, 4] <-
+    as.vector(unlist(lapply(table.tcc[, 4], FUN = str_to_title)))
+  table.tcc[, 5] <-
+    as.vector(unlist(lapply(table.tcc[, 5], FUN = str_to_title)))
+  
+  colnames(table.tcc) <-
+    c("Ano", "Nível", "Título", "Autor", "Orientador")
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table.tcc, title = "Ações durante a Pandemia - Trabalhos de conclusào de curso")
+} else {
+  cat('\n\n')
+  cat('*Sem produção para exibir no período*')
+  cat('\n\n')
+}
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Artigos completos** {.tabset}
+
+```{r pandemia-artigos-completos, eval = has.artigos.completos}
+# bind sources
+doi_unique <- doi_unique_artigos_impacto
+my_dois_works <- my_dois_works_artigos_impacto
+references <- references_artigos_impacto
+
+# available years of publication
+years <-
+  na.omit(sort(unique(
+    c(doi_unique$published_on, my_dois_works$published_on)
+  ), decreasing = TRUE))
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+} else {
+  # print export buttons
+  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
+  print_buttons_dt(references, title = "Ações durante a Pandemia - Artigos completos")
+}
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+  cat('*Sem produção para exibir*')
+  cat('\n')
+} else {
+  # section header
+  cat('\n\n<!-- -->\n\n')
+  cat(
+    paste(
+      "*Produtos (n = ",
+      max(dim(doi_unique)[1], 0) + max(dim(my_dois_works)[1], 0),
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+      sep = ""
+    )
+  )
+  cat('<br>')
+  
+  for (year in 1:length(years)) {
+    # print tab header
+    cat('\n\n<!-- -->\n\n')
+    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    
+    # print table of papers with/without badges
+    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
+    table.with.badges(
+      show.Altmetric = TRUE,
+      show.Dimensions = TRUE,
+      show.PlumX = TRUE,
+      show.CiteScore = TRUE,
+      show.SJR = TRUE,
+      show.Qualis = TRUE,
+      doi_unique = tryCatch(
+        doi_unique[doi_unique$published_on == years[year], ],
+        error = function(e) {
+          return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+        }
+      ),
+      my_dois_works = tryCatch(
+        my_dois_works[my_dois_works$published_on == years[year], ],
+        error = function(e) {
+          return(my_dois_works <- list())
+        }
+      ),
+      citescore = citescore,
+      scimago = scimago,
+      qualis = qualis
+    )
+  }
+}
+```
+
+<br>
+
+### **Artigos resumos** {.tabset}
+
+```{r pandemia-artigos-resumos, eval = has.artigos.resumos}
+# bind sources
+doi_unique <- doi_unique_resumos_impacto
+my_dois_works <- my_dois_works_resumos_impacto
+references <- references_resumos_impacto
+
+# available years of publication
+years <-
+  na.omit(sort(unique(
+    c(doi_unique$published_on, my_dois_works$published_on)
+  ), decreasing = TRUE))
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+} else {
+  # print export buttons
+  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
+  print_buttons_dt(references, title = "Ações durante a Pandemia - Artigos resumos")
+}
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+  cat('*Sem produção para exibir*')
+  cat('\n')
+} else {
+  # section header
+  cat('\n\n<!-- -->\n\n')
+  cat(
+    paste(
+      "*Produtos (n = ",
+      max(dim(doi_unique)[1], 0) + max(dim(my_dois_works)[1], 0),
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+      sep = ""
+    )
+  )
+  cat('<br>')
+  
+  for (year in 1:length(years)) {
+    # print tab header
+    cat('\n\n<!-- -->\n\n')
+    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    
+    # print table of papers with/without badges
+    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
+    table.with.badges(
+      show.Altmetric = TRUE,
+      show.Dimensions = TRUE,
+      show.PlumX = TRUE,
+      show.CiteScore = TRUE,
+      show.SJR = TRUE,
+      show.Qualis = TRUE,
+      doi_unique = tryCatch(
+        doi_unique[doi_unique$published_on == years[year], ],
+        error = function(e) {
+          return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+        }
+      ),
+      my_dois_works = tryCatch(
+        my_dois_works[my_dois_works$published_on == years[year], ],
+        error = function(e) {
+          return(my_dois_works <- list())
+        }
+      ),
+      citescore = citescore,
+      scimago = scimago,
+      qualis = qualis
+    )
+  }
+}
+```
+
+<br>
+
+### **Trabalhos em anais de eventos** {.tabset}
+
+```{r pandemia-resumos-eventos, eval = has.eventos}
+# bind sources
+doi_unique <- doi_unique_eventos_impacto
+my_dois_works <- my_dois_works_eventos_impacto
+references <- references_eventos_impacto
+
+# available years of publication
+years <-
+  na.omit(sort(unique(
+    c(doi_unique$published_on, my_dois_works$published_on)
+  ), decreasing = TRUE))
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+} else {
+  # print export buttons
+  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
+  print_buttons_dt(references, title = "Ações durante a Pandemia - Trabalhos em eventos")
+}
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+  cat('*Sem produção para exibir*')
+  cat('\n')
+} else {
+  # section header
+  cat('\n\n<!-- -->\n\n')
+  cat(
+    paste(
+      "*Produtos (n = ",
+      max(dim(doi_unique)[1], 0) + max(dim(my_dois_works)[1], 0),
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+      sep = ""
+    )
+  )
+  cat('<br>')
+  
+  for (year in 1:length(years)) {
+    # print tab header
+    cat('\n\n<!-- -->\n\n')
+    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    
+    # print table of papers with/without badges
+    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
+    table.with.badges(
+      show.Altmetric = TRUE,
+      show.Dimensions = TRUE,
+      show.PlumX = TRUE,
+      show.CiteScore = TRUE,
+      show.SJR = TRUE,
+      show.Qualis = TRUE,
+      doi_unique = tryCatch(
+        doi_unique[doi_unique$published_on == years[year], ],
+        error = function(e) {
+          return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+        }
+      ),
+      my_dois_works = tryCatch(
+        my_dois_works[my_dois_works$published_on == years[year], ],
+        error = function(e) {
+          return(my_dois_works <- list())
+        }
+      ),
+      citescore = citescore,
+      scimago = scimago,
+      qualis = qualis
+    )
+  }
+}
+```
+
+<br>
+
+### **Prêmios** {.tabset #premios}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+```{r pandemia-premios, eval = has.premios}
+# read separate sheets
+file.path <- "PPG/Prêmios.xlsx"
+tabs <- excel_sheets(file.path)
+topics <- c()
+premios.list <- vector(mode = "list", length = length(tabs))
+
+# iterate across sheets
+for (j in 1:length(tabs)) {
+  premios <-
+    read_excel(file.path,
+               sheet = tabs[j],
+               col_types = c("text", "text", "text"))
+  
+  # selecting those with COVID in the title
+  premios <-
+    premios[grep(paste(tolower(pandemia), collapse = "|"), tolower(premios$Documento)), ]
+  
+  if (dim(premios)[1] > 0) {
+    # replace the link by a tag
+    for (i in 1:dim(premios)[1]) {
+      premios[i, 1] <-
+        paste("#### **", as.character(as.Date(as.numeric(premios[i, 1]), origin = "1899-12-30")), "**", sep = "")
+      premios[i, 3] <-
+        paste("[↗️](", premios[i, 3], '){target="_blank"}', sep = "")
+    }
+    
+    # drop date column
+    premios <- premios[, -1]
+    # store data to print table
+    premios.list[[j]] <- premios
+    
+    # store data to plot wordcloud
+    topics <- rbind(topics, premios[i, 1])
+  }
+}
+
+# iterate across sheets
+for (j in 1:length(tabs)) {
+  if (!is.null(dim(premios.list[[j]])[1])) {
+    cat('\n\n<!-- -->\n\n')
+    cat("#### **", tabs[j], "**", "\n", sep = "")
+    cat('\n\n<!-- -->\n\n')
+    print(
+      kable(premios.list[[j]], align = c("l", rep(
+        "c", ncol(premios) - 2
+      ), "r")) %>% kable_styling(
+        bootstrap_options = c("hover", "condensed", "responsive"),
+        full_width = T,
+        position = "center"
+      )
+    )
+    cat('\n\n<!-- -->\n\n')
+    cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  }
+}
+```
+
+<br>

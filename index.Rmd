@@ -1,0 +1,1861 @@
+---
+title: "OBSERVATÓRIO"
+output:
+  html_document:
+    toc: false
+---
+
+<!--install and/or load all R packages-->
+```{r setup, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%", results = "hide"}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = 'center',
+  results = "asis",
+  include = TRUE,
+  out.width = "100%",
+  knitr.kable.NA = '--',
+  knitr.table.format = "html"
+)
+source("Scripts/all-required-packages.R", local = knitr::knit_global())
+```
+
+---
+title: "OBSERVATÓRIO `r ifelse(has.dados.cadastrais, sigla.PPG, "")`"
+---
+
+<!--script for hover effect on table-->
+```{css}
+.table-hover > tbody > tr:hover { 
+  background-color: #18BC9C;
+  }
+```
+
+<!--custom CSS scripts for THIS PAGE ONLY-->
+
+<!--script for background color-->
+```{css}
+body {
+  background-color: #2C3E50 !important;
+  color: white;
+  }
+```
+
+<!--script for centering titles-->
+```{css}
+h1.title {
+  text-align: center;
+  font-weight: bold;
+}
+h1 {
+  text-align: center;
+  font-weight: bold;
+}
+h2 {
+  text-align: center;
+  font-weight: bold;
+}
+h3 {
+  text-align: center;
+  font-weight: bold;
+}
+```
+
+<!--script for removing background shading of carousel controls-->
+```{css}
+.carousel-control.left, .carousel-control.right {
+   background-image:none !important;
+   filter:none !important;
+   }
+```
+
+<br>
+
+<br>
+
+```{r landingpage-logo}
+has.logo.ies <- file.exists("PPG/Images/logo-IES.png")
+```
+
+<center>
+
+`r if(has.logo.ies){cat('<img src=\"PPG/Images/logo-IES.png\" align=\"center\"/>')}`
+
+<br>
+
+<p style="font-size:1.5em"> O **Observatório `r ifelse(has.dados.cadastrais, toupper(sigla.PPG), "")`** é uma iniciativa do **Programa de Pós-graduação em `r ifelse(has.dados.cadastrais, nome.PPG, "")`** do [`r ifelse(has.dados.cadastrais, toTitleCase(as.character(nome.IES)), "")`](`r ifelse(has.sucupira, site.PPG, "")`) que envolve o registro, o acompanhamento e a análise agregada e estruturada de dados para divulgação transparente de suas atividades, planejamentos, ações e impactos, tornando-os acessíveis à sociedade.</p>
+
+</center>
+
+<br>
+
+<br>
+
+```{r sintese-coerencia, include = FALSE, eval = has.sucupira}
+# projetos
+sheet <- "Linhas de Pesquisa - Projetos"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# remove duplicated lines across years
+sucupira.raw <- unique(sucupira.raw)
+
+# remove duplicated projects ("EM ANDAMENTO" vs. "CONCLUÍDO" -> keep "CONCLUÍDO")
+projetos.id <- unique(sucupira.raw$`Identificador do Projeto`)
+sucupira <- c()
+for(i in 1:length(projetos.id)){
+  matches <- sucupira.raw[sucupira.raw$`Identificador do Projeto` == projetos.id[i], ]
+  if(dim(matches)[1] == 1){
+    sucupira <- bind_rows(sucupira, matches)
+  } else {
+    keep <- matches[matches$Situação == "CONCLUÍDO" | !is.na(matches$`Data de Fim da Linha`), ]
+    sucupira <- bind_rows(sucupira, keep)
+  }
+}
+
+# update base data
+sucupira.raw <- sucupira
+
+# structure the alluvial plot
+alluv.data <-
+  data.frame(
+    sucupira.raw$`Área de Concentração`,
+    sucupira.raw$`Linha de Pesquisa`,
+    sucupira.raw$`Nome do Projeto de Pesquisa`,
+    sucupira.raw$`Data de Início da Linha`,
+    sucupira.raw$`Data de Fim da Linha`
+  )
+
+# replace full date by year only
+alluv.data$sucupira.raw..Data.de.Início.da.Linha. <-
+  format(as.Date(
+    alluv.data$sucupira.raw..Data.de.Início.da.Linha.,
+    "%d/%m/%Y"
+  ),
+  format = "%Y")
+alluv.data$sucupira.raw..Data.de.Fim.da.Linha. <-
+  format(as.Date(alluv.data$sucupira.raw..Data.de.Fim.da.Linha., "%d/%m/%Y"),
+         format = "%Y")
+
+# replace NA values by current year
+alluv.data$sucupira.raw..Data.de.Fim.da.Linha.[is.na(alluv.data$sucupira.raw..Data.de.Fim.da.Linha.)] <-
+  format(Sys.Date(), format = "%Y")
+
+# remove data without AC or LP
+alluv.data <- alluv.data[!is.na(alluv.data$sucupira.raw..Área.de.Concentração.) & !is.na(alluv.data$sucupira.raw..Linha.de.Pesquisa.), ]
+
+# ordering by dates
+alluv.data <-
+  alluv.data[order(
+    alluv.data$sucupira.raw..Data.de.Início.,
+    alluv.data$sucupira.raw..Data.de.Fim.da.Linha.,
+    alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa.,
+    decreasing = FALSE
+  ),]
+
+# summary data for plot table
+current.AC <-
+  unique(alluv.data$sucupira.raw..Área.de.Concentração.[alluv.data$sucupira.raw..Data.de.Fim.da.Linha. == format(Sys.Date(), format = "%Y")])
+
+old.AC <-
+  unique(alluv.data$sucupira.raw..Área.de.Concentração.[alluv.data$sucupira.raw..Data.de.Fim.da.Linha. == format(Sys.Date(), format = "%Y")])
+old.AC <- old.AC[!old.AC %in% c(current.AC, NA)]
+
+old.LP <-
+  unique(alluv.data$sucupira.raw..Linha.de.Pesquisa.[alluv.data$sucupira.raw..Data.de.Fim.da.Linha. != format(Sys.Date(), format = "%Y")])
+
+current.LP <-
+  unique(alluv.data$sucupira.raw..Linha.de.Pesquisa.)
+current.LP <- current.LP[!current.LP %in% c(old.LP, NA)]
+
+# get all history
+areas <- 
+  sort(c(current.AC, old.AC))
+
+linhas <-
+  sort(c(current.LP, old.LP))
+
+# remove data from inactive LP
+if(length(old.LP) != 0) {
+  alluv.data <-
+    alluv.data[!(
+      alluv.data$sucupira.raw..Linha.de.Pesquisa. == old.LP &
+        alluv.data$sucupira.raw..Data.de.Fim.da.Linha. == format(Sys.Date(), format = "%Y")
+    ),]
+}
+
+summ.AC.LP <-
+  as.data.frame(
+    table(
+      alluv.data$sucupira.raw..Área.de.Concentração.,
+      alluv.data$sucupira.raw..Linha.de.Pesquisa.,
+      alluv.data$sucupira.raw..Data.de.Início.da.Linha.,
+      alluv.data$sucupira.raw..Data.de.Fim.da.Linha.
+    )
+  )
+
+# drop freq = 0 values
+summ.AC.LP <- summ.AC.LP[summ.AC.LP$Freq != 0, ]
+
+colnames(summ.AC.LP) <- c("AC", "LP", "Inicio", "Fim", "Freq")
+
+# insert data from later LP
+extra <- c()
+for(i in 1:dim(summ.AC.LP)[1]){
+  if(as.character(summ.AC.LP$Inicio[i]) > min(as.character(summ.AC.LP$Inicio))){
+    extra <- rbind(extra, c(as.character(summ.AC.LP$AC[i]), as.character(summ.AC.LP$LP[i]), min(as.character(summ.AC.LP$Inicio)), as.character(summ.AC.LP$Inicio[i]), as.character(summ.AC.LP$Freq[i])))
+  }
+}
+extra <- as.data.frame(extra)
+colnames(extra) <- c("AC", "LP", "Inicio", "Fim", "Freq")
+
+summ.AC.LP <- rbind(summ.AC.LP, extra)
+
+# code PP names for display
+alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa. <- as.numeric(as.factor(alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa.))
+
+# drop names columns
+summ.AC.LP <- summ.AC.LP[, -(1:2)]
+
+# rename cols
+colnames(summ.AC.LP) <- c("source", "target", "value")
+
+summ.LP.PP <-
+  as.data.frame(
+    table(
+      alluv.data$sucupira.raw..Linha.de.Pesquisa.,
+      alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa.
+    )
+  )
+colnames(summ.LP.PP) <- c("source", "target", "value")
+
+# count projects only once
+summ.LP.PP$value[summ.LP.PP$value != 0] <- 1
+
+# remove zeroed-value data
+summ.AC.LP <- summ.AC.LP[summ.AC.LP$value != 0,]
+
+# A connection data frame is a list of flows with intensity for each flow
+links <- summ.AC.LP
+
+# From these flows we need to create a node data frame: it lists every entities involved in the flow
+nodes <- data.frame(
+  name = c(as.character(links$source), 
+  as.character(links$target)) %>% unique()
+)
+
+# With networkD3, connection must be provided using id, not using real name like in the links dataframe.. So we need to reformat it.
+links$IDsource <- match(links$source, nodes$name) - 1 
+links$IDtarget <- match(links$target, nodes$name) - 1
+
+# plot 1 (fluxo AC -> LP)
+dir.path <- file.path(getwd(), "index_files", "figure-html")
+dir.create(dir.path, recursive = TRUE)
+sn.title <- "Área de Concentração - Linha de Pesquisa"
+
+# plot 1
+
+# Make the Network
+sn <- sankeyNetwork(Links = links, Nodes = nodes,
+              Source = "IDsource", Target = "IDtarget",
+              Value = "value", NodeID = "name", fontSize = 14,
+              sinksRight=FALSE) %>%
+  htmlwidgets::prependContent(
+    htmltools::tags$h1(style = "position:absolute; left:50%; transform:translateX(-50%); background-color:#2C3E50; font-size:20px; color:white; line-height:normal;", sn.title)
+  ) %>%
+  htmlwidgets::prependContent(
+    htmltools::tags$body(style = "font-family:'Lato','Helvetica Neue',Helvetica, Arial,sans-serif; background-color:#2C3E50; margin:0; padding:0;")
+  ) %>%
+  htmlwidgets::onRender(
+  'function(el, x) {
+    d3.selectAll(".node text")
+        .style("fill", "white");
+  }'
+)
+
+# save it in html
+saveWidget(sn, file.path(dir.path, "tmp.html"), selfcontained = F)
+
+# and in png
+webshot(
+  url = file.path(dir.path, "tmp.html"),
+  file = file.path(dir.path, paste0(sheet, ".png")),
+  delay = 5,
+  vwidth = round(1344 * 0.7),
+  vheight = round(960 * 0.7)
+)
+
+# delete the tmp folder and file
+unlink(file.path(dir.path, "tmp_files"), recursive = TRUE)
+unlink(file.path(dir.path, "tmp.html"))
+
+# plot 2
+
+# plot area setup
+layout.m <- matrix(c(1, 2, 3, 4), ncol = 2, byrow = FALSE)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+summ.coerencia.1 <- c(length(unique(current.AC)),
+                    length(unique(current.LP)))
+names(summ.coerencia.1) <-
+  c("Área de Concentração \n (ativas)", "Linhas de Pesquisa \n (ativas)")
+
+summ.coerencia.2 <- c(length(unique(old.AC)),
+                    length(unique(old.LP)))
+names(summ.coerencia.2) <-
+  c("Área de Concentração \n (inativas)", "Linhas de Pesquisa \n (inativas)")
+
+summ.data <- c(summ.coerencia.1, summ.coerencia.2)
+source("Scripts/plot-summaries.R", local = knitr::knit_global())
+```
+
+```{r sintese-coerencia-carousel, eval = has.sucupira}
+# carousel
+bs_carousel(id = "coerencia-carousel",
+            use_indicators = FALSE,
+            use_controls = TRUE) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-1.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-2.png"))
+
+cat('\n\n')
+cat(
+  "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)"
+)
+```
+
+<br>
+
+<br>
+
+```{r sintese-temas, include = FALSE, eval = has.sucupira}
+# file path to save the wordclouds
+dir.path <- file.path(getwd(), "index_files", "figure-html")
+dir.create(dir.path, recursive = TRUE)
+
+# projetos
+sheet <- "Projetos"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+data.to.cloud <- sucupira.raw$`Nome do Projeto de Pesquisa`
+cloud.title <- "Temas de Projetos"
+source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
+
+# dissertações e teses
+sheet <- "TCC"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+data.to.cloud <- sucupira.raw$`Nome do Trabalho de Conclusão`
+cloud.title <- "Dissertações e Teses"
+source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
+
+# artigos
+sheet <- "Produções"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+data.to.cloud <- sucupira.raw$`Nome da Produção`
+cloud.title <- "Temas de Produção"
+source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
+```
+
+```{r sintese-temas-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", out.width = "100%", eval = has.sucupira}
+# carousel of wordclouds
+bs_carousel(id = "temas-carouse",
+            use_indicators = FALSE,
+            use_controls = TRUE) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/Projetos.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/TCC.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/Produções.png"))
+
+cat('\n\n')
+cat(
+  "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)"
+)
+```
+
+<br>
+
+<br>
+
+```{r sintese-projetos, include = FALSE, eval = has.sucupira}
+# projetos - membros
+sheet <- "Projetos - Membros"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+
+# get all history of 'linha de pesquisa'
+linhas <-
+  as.character(na.exclude(unique(sucupira.raw$`Linha de Pesquisa`)))
+
+# initialize data structure
+andamento.ano <-
+  matrix(NA, nrow = length(linhas), ncol = length(anos))
+colnames(andamento.ano) <- anos
+rownames(andamento.ano) <- linhas
+concluido.ano <- andamento.ano
+
+# iterate across all Sucupira list elements to search for active and closed projects
+for (i in 1:length(anos)) {
+  # active
+  projetos <- sucupira.list[[i]]
+  projetos <-
+    projetos[projetos$`Membro Responsável` == "Sim" &
+               projetos$Situação == "EM ANDAMENTO",]
+  for (j in 1:length(linhas)) {
+    andamento.ano[j, i] <-
+      sum(projetos$`Linha de Pesquisa` == linhas[j], na.rm = TRUE)
+  }
+  # closed
+  projetos <- sucupira.list[[i]]
+  projetos <-
+    projetos[projetos$`Membro Responsável` == "Sim" &
+               projetos$Situação == "CONCLUÍDO",]
+  for (j in 1:length(linhas)) {
+    concluido.ano[j, i] <-
+      sum(projetos$`Linha de Pesquisa` == linhas[j], na.rm = TRUE)
+  }
+}
+projetos.ano <- andamento.ano + concluido.ano
+projetos.ano <-
+  projetos.ano[, order(colnames(projetos.ano), decreasing = FALSE)]
+
+membros <-
+  data.frame(sucupira.raw$`Nome do Membro do Projeto`,
+             sucupira.raw$`Categoria do Membro do Projeto`)
+membros <- membros[!duplicated(membros), ]
+categorias <-
+  table(membros$sucupira.raw..Categoria.do.Membro.do.Projeto.)
+
+# calculate summary statistics for projetos
+summ.table.projetos <-
+  c(paste0(
+    formatC(
+      sum(na.omit(concluido.ano)),
+      format = "d",
+      digits = 0,
+      big.mark = ".",
+      decimal.mark = ","
+    )
+  ),
+  paste0(
+    formatC(
+      sum(na.omit(andamento.ano[, dim(andamento.ano)[2]])),
+      format = "d",
+      digits = 0,
+      big.mark = ".",
+      decimal.mark = ","
+    )
+  ),
+  categorias,
+  sum(categorias))
+names(summ.table.projetos) <-
+  c("Projetos concluídos",
+    "Projetos em andamento",
+    names(categorias),
+    "Total")
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+# plot 1 (total de projetos por linha, por ano)
+barplot(projetos.ano,
+        ylab = "N",
+        col = brewer.pal(n = length(linhas), name = "Set3"))
+title(main = "Projetos por Linha de Pesquisa",
+      outer = TRUE,
+      cex.main = 1.7)
+legend(
+  "topright",
+  legend = linhas,
+  fill = brewer.pal(n = length(linhas), name = "Set3"),
+  text.col = "white",
+  box.lwd = 0,
+  bty = "n",
+  horiz = FALSE,
+  cex = 0.70,
+)
+
+# plot 2 (percentual de projetos por linha, por ano)
+barplot(
+  scale(
+    as.matrix(projetos.ano),
+    center = FALSE,
+    scale = colSums(as.matrix(projetos.ano))
+  ) * 100,
+  ylab = "%",
+  col = brewer.pal(n = length(linhas), name = "Set3"),
+  ylim = c(0, 100)
+)
+title(main = "Projetos por Linha de Pesquisa",
+      outer = TRUE,
+      cex.main = 1.7)
+
+# plot 3 (summary table in plot)
+
+# plot area setup
+layout.m <- matrix(c(1, 1, 1, 2, 2, 2, 3, 4, 5, 6, 7, 8),
+                   ncol = 3,
+                   byrow = TRUE)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+summ.data <- summ.table.projetos
+source("Scripts/plot-summaries.R", local = knitr::knit_global())
+```
+
+```{r sintese-projetos-carousel, eval = has.sucupira}
+# carousel
+bs_carousel(id = "projetos-carousel",
+            use_indicators = FALSE,
+            use_controls = TRUE) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-projetos-1.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-projetos-2.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-projetos-3.png"))
+
+cat('\n\n')
+cat(
+  "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)"
+)
+```
+
+<br>
+
+<br>
+
+```{r sintese-financiadores, include = FALSE, eval = has.financiadores}
+# this chunk requires additional data that may be available
+
+options("scipen" = 100)
+
+financiadores.raw <-
+  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+# select variables to display
+financiadores <-
+  financiadores.raw %>% select("Ano", "Agência", "Programa", "Total", "Proponente")
+
+# drop rows with empty cells
+financiadores <- financiadores[complete.cases(financiadores), ]
+
+# generate cross-table
+N.editais.agencia.ano <-
+  table(financiadores$'Agência', financiadores$'Ano')
+N.editais.agencia.ano <-
+  N.editais.agencia.ano[, order(colnames(N.editais.agencia.ano), decreasing = FALSE)]
+
+# get all 'agencias'
+agencias <-
+  na.exclude(rownames(N.editais.agencia.ano))
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+# plot 1 (financiadores per agency by year (absolute frequency)
+barplot(N.editais.agencia.ano,
+        ylab = "N",
+        col = brewer.pal(n = length(agencias), name = "Set3"))
+title(main = "Editais financiados por agência",
+      outer = TRUE,
+      cex.main = 1.7)
+legend(
+  "topleft",
+  legend = agencias,
+  fill = brewer.pal(n = length(agencias), name = "Set3"),
+  text.col = "white",
+  box.lwd = 0,
+  bty = "n",
+  horiz = FALSE,
+  cex = 1,
+)
+
+# generate cross-table
+T.editais.agencia.ano <-
+  with(financiadores, tapply(
+    financiadores$Total,
+    list(financiadores$'Agência', financiadores$'Ano'),
+    FUN = sum
+  ))
+
+# add zero to not available values
+T.editais.agencia.ano[is.na(T.editais.agencia.ano)] <- 0
+
+T.editais.agencia.ano <-
+  T.editais.agencia.ano[, order(colnames(T.editais.agencia.ano), decreasing = FALSE)]
+
+# get all 'agencias'
+agencias <-
+  na.exclude(rownames(T.editais.agencia.ano))
+
+# plot 2 (financiadores per agency by year (absolute frequency))
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+barplot(T.editais.agencia.ano,
+        ylab = "R$",
+        col = brewer.pal(n = length(agencias), name = "Set3"))
+title(main = "Valores financiados por agência",
+      outer = TRUE,
+      cex.main = 1.7)
+legend(
+  "topleft",
+  legend = agencias,
+  fill = brewer.pal(n = length(agencias), name = "Set3"),
+  text.col = "white",
+  box.lwd = 0,
+  bty = "n",
+  horiz = FALSE,
+  cex = 1,
+)
+
+# generate cross-table
+professores.ano <-
+  rowSums(table(financiadores$Ano, financiadores$Proponente) != 0)
+
+# plot 3 (financiadores per docente by year (absolute frequency))
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+barplot(professores.ano,
+        ylab = "N",
+        col = rep(brewer.pal(n = 9, name = "Set3")[1], length(professores.ano)))
+title(main = "Docentes com financiamento",
+      outer = TRUE,
+      cex.main = 1.7)
+
+# plot 4 (top-10 editais)
+
+editais <- financiadores$Programa
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+# plot area setup
+par(mar = c(1.5, 15, 1, 1))
+
+top <- min(length(na.omit(unique(editais))), 10)
+data.editais <-
+  na.omit(data.frame(name = names(sort(
+    table(editais), decreasing = TRUE
+  )[1:top]),
+  value = as.numeric(sort(
+    table(editais), decreasing = TRUE
+  )[1:top])))
+
+# break vector names in 2 lines
+text.2.break <- data.editais$name
+source("Scripts/line-2-break.R", local = knitr::knit_global())
+data.editais$name <- broken_text
+
+barplot(
+  height = rev(data.editais$value),
+  names = rev(data.editais$name),
+  xlab = "N",
+  col = rep(brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
+  horiz = T,
+  las = 1,
+  cex.names = 0.7
+)
+title(
+  main = paste0("Top-", top, " editais"),
+  outer = TRUE,
+  cex.main = 1.7
+)
+
+# plot 5 (top-10 agencias)
+
+agencias <- financiadores$Agência
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+# plot area setup
+par(mar = c(1.5, 15, 1, 1))
+
+top <- min(length(na.omit(unique(agencias))), 10)
+data.agencias <-
+  na.omit(data.frame(name = names(sort(
+    table(agencias), decreasing = TRUE
+  )[1:top]),
+  value = as.numeric(sort(
+    table(agencias), decreasing = TRUE
+  )[1:top])))
+
+# break vector names in 2 lines
+text.2.break <- data.agencias$name
+source("Scripts/line-2-break.R", local = knitr::knit_global())
+data.agencias$name <- broken_text
+
+barplot(
+  height = rev(data.agencias$value),
+  names = rev(data.agencias$name),
+  xlab = "N",
+  col = rep(brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
+  horiz = T,
+  las = 1,
+  cex.names = 0.7
+)
+title(
+  main = paste0("Top-", top, " agências"),
+  outer = TRUE,
+  cex.main = 1.7
+)
+
+# calculate summary statistics for financiamentos
+summ.table.financiadores <- matrix(0, nrow = 1, ncol = 5)
+summ.table.financiadores <-
+  cbind(
+    paste0(
+      formatC(
+        length(na.omit(financiadores$Total)),
+        format = "d",
+        digits = 0,
+        big.mark = ".",
+        decimal.mark = ","
+      )
+    ),
+    paste0(
+      "R$ ",
+      formatC(
+        sum(na.omit(financiadores$Total)),
+        format = "f",
+        digits = 2,
+        big.mark = ".",
+        decimal.mark = ","
+      )
+    ),
+    paste0("R$ ", formatC(
+      median(na.omit(financiadores$Total)),
+      format = "f",
+      digits = 0,
+      big.mark = "."
+    )),
+    paste0("R$ ", formatC(
+      min(na.omit(financiadores$Total)),
+      format = "f",
+      digits = 0,
+      big.mark = "."
+    )),
+    paste0("R$ ",
+           formatC(
+             max(na.omit(financiadores$Total)),
+             format = "f",
+             digits = 0,
+             big.mark = "."
+           ))
+  )
+names(summ.table.financiadores) <-
+  c("Editais financiados",
+    "Total de financiamentos",
+    "Mediana anual",
+    "Menor",
+    "Maior")
+
+# plot 6 (summary table in plot)
+
+# plot area setup
+layout.m <-
+  matrix(c(1, 1, 2, 2, 3, 3, 4, 5), ncol = 2, byrow = TRUE)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+summ.data <- summ.table.financiadores
+source("Scripts/plot-summaries.R", local = knitr::knit_global())
+
+cat('\n\n')
+cat(
+  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **PPG**"
+)
+```
+
+```{r sintese-financiadores-carousel, eval = has.financiadores}
+# this chunk requires additional data that may be available
+bs_carousel(id = "financiadores-carousel",
+            use_indicators = FALSE,
+            use_controls = TRUE) %>%
+  bs_append(
+    id = "financiadores-carousel",
+    content = bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-1.png")
+  ) %>%
+  bs_append(
+    id = "financiadores-carousel",
+    content = bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-2.png")
+  ) %>%
+  bs_append(
+    id = "financiadores-carousel",
+    content = bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-3.png")
+  ) %>%
+  bs_append(
+    id = "financiadores-carousel",
+    content = bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-4.png")
+  ) %>%
+  bs_append(
+    id = "financiadores-carousel",
+    content = bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-5.png")
+  ) %>%
+  bs_append(
+    id = "financiadores-carousel",
+    content = bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-6.png")
+  )
+
+cat('\n\n')
+cat(
+  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **PPG**"
+)
+```
+
+<br>
+
+<br>
+
+```{r sintese-producao, include = FALSE, eval = has.producao}
+# this chunk requires additional data that may be available
+
+# read data
+try(artigos <-
+      data.frame(read_excel(
+        paste0("PPG/Produção.xlsx"),
+        sheet = "PI.completos",
+        col_types = c("text")
+      )))
+
+# read data
+try(resumos <-
+      data.frame(read_excel(
+        paste0("PPG/Produção.xlsx"),
+        sheet = "PI.resumos",
+        col_types = c("text")
+      )))
+
+# read data
+try(eventos <-
+      data.frame(read_excel(
+        paste0("PPG/Produção.xlsx"),
+        sheet = "PI.eventos",
+        col_types = c("text")
+      )))
+
+# bind papers and letters/abstracts and events (all with DOI)
+artigos <- rbind(artigos[, 1:11], resumos[, 1:11],  eventos[, 1:11])
+
+# Data cleaning
+artigos <- artigos[complete.cases(artigos$DOI), ]
+artigos$WebQualis[artigos$WebQualis == "Sem WebQualis"] <- "NA"
+
+# remove os aceitos
+artigos <-
+  artigos[artigos$Publicado.em != "Aceito",]
+
+# Qualis
+qualis.PPG <- c()
+for(i in 1:length(estratos)){
+  qualis.PPG[i] <- sum(artigos$WebQualis == estratos[i])/length(artigos$WebQualis) * 100
+}
+names(qualis.PPG) <- estratos
+
+# SJR
+SJR <- c()
+for (i in 1:dim(artigos)[1]) {
+  SJR.i <-
+    as.numeric(scimago[grep(gsub("-", "", artigos$ISSN[i]), scimago$Issn), 6])
+  SJR <-
+    c(SJR, ifelse(identical(SJR.i, numeric(0)) |
+                    all(is.na(SJR.i)), NA, SJR.i))
+}
+
+# generate cross tables of artigos per year
+table.1 <- table(artigos$Publicado.em)
+
+table.2 <- t(table(artigos$Publicado.em, artigos$WebQualis))
+table.2 <- apply(table.2, 2, rev)
+table.2 <- table.2[order(rownames(table.2)), ]
+
+table.3 <- data.frame(artigos$Publicado.em, SJR)
+table.3.median <-
+  aggregate(
+    table.3,
+    by = list(artigos$Publicado.em),
+    FUN = median,
+    na.rm = TRUE
+  )
+table.3.median <- t(as.matrix(table.3.median[,-2]))
+table.3.median <- as.numeric(table.3.median[-1, ])
+names(table.3.median) <- names(table.1)
+
+table.4 <- data.frame(artigos$Revista..digite.ou.selecione.na.lista., SJR)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+# plot 1 (total de produção bilbiográfica, por ano)
+barplot(table.1,
+        ylab = "N",
+        col = rep(brewer.pal(n = 9, name = "Set3")[1], length(table.1)))
+title(main = "Produção Bibliográfica",
+      outer = TRUE,
+      cex.main = 1.7)
+
+# plot 2 (total de produção bilbiográfica, por estrato, por ano)
+barplot(table.2,
+        ylab = "Estrato",
+        col = colorRampPalette(brewer.pal(9, "Blues"))(length(estratos)))
+title(main = "Qualidade da produção (Qualis)",
+      outer = TRUE,
+      cex.main = 1.7)
+legend(
+  "topleft",
+  legend = estratos,
+  fill = colorRampPalette(brewer.pal(9, "Blues"))(length(estratos)),
+  text.col = "white",
+  box.lwd = 0,
+  bty = "n",
+  horiz = FALSE,
+  cex = 1,
+)
+
+# plot 3 (percentual de produção bilbiográfica, por estrato, por ano)
+barplot(
+  scale(
+    as.matrix(table.2),
+    center = FALSE,
+    scale = colSums(as.matrix(table.2))
+  ) * 100,
+  ylab = "%",
+  col = colorRampPalette(brewer.pal(9, "Blues"))(length(estratos)),
+  ylim = c(0, 100)
+)
+title(main = "Qualidade da produção (Qualis)",
+      outer = TRUE,
+      cex.main = 1.7)
+
+# plot 4 (violin plot of SJR por ano)
+vioplot(as.numeric(table.3[, 2]) ~ as.numeric(table.3[, 1]),
+        xlab = NA,
+        ylab = "SJR")
+title(main = "Qualidade da produção (SJR)",
+      outer = TRUE,
+      cex.main = 1.7)
+
+# plot 5 (top-10 journals)
+
+journals.SJR <- unique(table.4)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+# plot area setup
+par(mar = c(1.5, 15, 1, 1))
+
+top <- min(dim(na.omit(unique(journals.SJR)))[1], 10)
+data.journals <-
+  na.omit(
+    data.frame(
+      name = journals.SJR$artigos.Revista..digite.ou.selecione.na.lista.[order(journals.SJR$SJR, decreasing = TRUE)][1:top],
+      value = as.numeric(sort(journals.SJR$SJR, decreasing = TRUE)[1:top])
+    )
+  )
+
+# break vector names in 2 lines
+text.2.break <- data.journals$name
+source("Scripts/line-2-break.R", local = knitr::knit_global())
+data.journals$name <- broken_text
+
+options(digits = 10)
+barplot(
+  height = rev(data.journals$value),
+  names = rev(data.journals$name),
+  xlab = "SJR",
+  col = rep(brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
+  horiz = T,
+  las = 1,
+  cex.names = 0.7
+)
+title(
+  main = paste0("Top-", top, " periódicos (SJR)"),
+  outer = TRUE,
+  cex.main = 1.7
+)
+options(digits = 2)
+
+# plot 6 (barplot of QUALIS e SJR)
+
+# plot area setup
+layout.m <- matrix(c(1, 2),
+                   ncol = 2,
+                   byrow = TRUE)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+barplot(
+  -rev(qualis.base),
+  horiz = TRUE,
+  xlab = "%",
+  ylab = "Estratos",
+  xlim = c(-max(qualis.base, qualis.PPG), max(qualis.base, qualis.PPG)),
+  ylim = c(0, length(unique(qualis.base)) + 3),
+  col = brewer.pal(n = 9, name = "Set3")[1],
+  sub = "Base",
+  cex.names = 0.7,
+  xaxt='n', ann = FALSE
+)
+barplot(
+  rev(qualis.PPG),
+  horiz = TRUE,
+  xlab = "%",
+  ylab = "Estratos",
+  xlim = c(-max(qualis.base, qualis.PPG), max(qualis.base, qualis.PPG)),
+  ylim = c(0, length(unique(qualis.base)) + 3),
+  col = brewer.pal(n = 9, name = "Set3")[2],
+  sub = "Programa",
+  cex.names = 0.7,
+  xaxt='n', ann = FALSE,
+  add = TRUE
+)
+axis(1, at = round(c(
+  -max(qualis.base, qualis.PPG), 0, max(qualis.base, qualis.PPG)
+)), labels = round(c(
+  max(qualis.base, qualis.PPG), 0, max(qualis.base, qualis.PPG)
+)))
+title(main = "Distribuição de estratos Qualis e SJR",
+      outer = TRUE,
+      cex.main = 1.7)
+legend(
+  "topleft",
+  legend = c("Base", "Programa"),
+  fill = brewer.pal(n = 9, name = "Set3")[1:2],
+  text.col = "white",
+  box.lwd = 0,
+  bty = "n",
+  horiz = TRUE,
+  cex = 1
+)
+
+# hist SJR base e PPG
+SJR.base <- na.omit(scimago$SJR)
+SJR.PPG <- na.omit(SJR)
+
+vioplot(
+  as.numeric(SJR.base),
+  col = brewer.pal(n = 9, name = "Set3")[1],
+  xlab = NA,
+  side = "left",
+  ylim = c(min(
+    as.numeric(SJR.base), as.numeric(SJR.PPG)
+  ), max(
+    as.numeric(SJR.base), as.numeric(SJR.PPG)
+  )),
+  ylab = "SJR",
+  xaxt='n', ann = FALSE
+)
+vioplot(
+  as.numeric(SJR.PPG),
+  col = brewer.pal(n = 9, name = "Set3")[2],
+  xlab = NA,
+  side = "right",
+  ylim = c(min(
+    as.numeric(SJR.base), as.numeric(SJR.PPG)
+  ), max(
+    as.numeric(SJR.base), as.numeric(SJR.PPG)
+  )),
+  ylab = "SJR",
+  xaxt='n', ann = FALSE,
+  add = TRUE
+)
+
+# plot 7 (summary table in plot)
+
+# calculate summary statistics for producao
+summ.table.producao <-
+  cbind(
+    sum(table.1),
+    formatC(
+      min(table.1, na.rm = TRUE),
+      format = "d",
+      digits = 0,
+      big.mark = "."
+    ),
+    formatC(
+      median(table.1, na.rm = TRUE),
+      format = "d",
+      digits = 0,
+      big.mark = "."
+    ),
+    formatC(
+      max(table.1, na.rm = TRUE),
+      format = "d",
+      digits = 0,
+      big.mark = "."
+    ),
+    formatC(
+      min(SJR, na.rm = TRUE),
+      format = "f",
+      digits = 3,
+      big.mark = "."
+    ),
+    formatC(
+      median(SJR, na.rm = TRUE),
+      format = "f",
+      digits = 3,
+      big.mark = "."
+    ),
+    formatC(
+      max(SJR, na.rm = TRUE),
+      format = "f",
+      digits = 3,
+      big.mark = "."
+    ),
+    paste0(
+      formatC(
+        sum(table.2[1:4,]) / sum(table.2) * 100,
+        format = "d",
+        digits = 0,
+        big.mark = "."
+      ),
+      "%"
+    ),
+    paste0(
+      formatC(
+        sum(table.2[5:8,]) / sum(table.2) * 100,
+        format = "d",
+        digits = 0,
+        big.mark = "."
+      ),
+      "%"
+    ),
+    paste0(
+      formatC(
+        sum(table.2[9:10,]) / sum(table.2) * 100,
+        format = "d",
+        digits = 0,
+        big.mark = "."
+      ),
+      "%"
+    )
+  )
+
+names(summ.table.producao) <-
+  c(
+    "Artigos publicados",
+    "Mínimo",
+    "Mediana anual",
+    "Máximo",
+    "Menor",
+    "Mediana SJR",
+    "Maior",
+    "A1-A4",
+    "B1-B4",
+    "Outros"
+  )
+
+# plot area setup
+layout.m <- matrix(c(1, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+                   ncol = 3,
+                   byrow = TRUE)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+summ.data <- summ.table.producao
+source("Scripts/plot-summaries.R", local = knitr::knit_global())
+```
+
+```{r sintese-producao-carousel, eval = has.producao}
+# this chunk requires additional data that may be available
+
+# carousel
+bs_carousel(id = "producao-carousel",
+            use_indicators = FALSE,
+            use_controls = TRUE) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-1.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-2.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-3.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-4.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-5.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-6.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-7.png"))
+
+cat('\n\n')
+cat(
+  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **PPG**"
+)
+```
+
+<br>
+
+<br>
+
+```{r sintese-pessoal, include = FALSE, eval = has.discentes}
+# this chunk requires additional data that may be available
+
+discentes.raw <-
+  read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
+
+# separating egressos (master and doctoral) and current canditates
+discentes <-
+  discentes.raw[discentes.raw$`Status SAGA` == "Matriculado" |
+                  discentes.raw$`Status SAGA` == "Pré-inscrito",]
+egressos <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
+mestres <- egressos[egressos$Curso == "Mestrado",]
+doutores <- egressos[egressos$Curso == "Doutorado",]
+
+# identifying available courses
+cursos <- levels(as.factor(c(discentes$Curso, egressos$Curso)))
+
+# reading BR geospatial data from IPEA
+datasets <- list_geobr()$years[3]
+last.update <-
+  as.numeric(strsplit(datasets, ", ")[[1]][length(strsplit(datasets, ", ")[[1]]) - 1])
+states <-
+  read_state(
+    code_state = "all",
+    year = last.update,
+    simplified = TRUE,
+    showProgress = FALSE
+  )
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+# generate plot of egressos per year
+table.1 <- table(egressos$Curso, egressos$`Ano Titulação`)
+
+# plot 1 (egressos titulados)
+barplot(as.matrix(table.1),
+        ylab = "Egressos",
+        col = brewer.pal(n = 9, name = "Set3"))
+title(main = "Formação de pessoal de nível superior",
+      outer = TRUE,
+      cex.main = 1.7)
+legend(
+  "topleft",
+  legend = cursos,
+  fill = brewer.pal(n = 9, name = "Set3"),
+  text.col = "white",
+  box.lwd = 0,
+  bty = "n",
+  horiz = FALSE,
+  cex = 1
+)
+
+# generate plot of tempo para titulação per year
+table.2.msc <-
+  data.frame(mestres$`Ano Titulação`,
+             as.numeric(mestres$`Tempo de Curso (meses)`))
+table.2.dsc <-
+  data.frame(doutores$`Ano Titulação`,
+             as.numeric(doutores$`Tempo de Curso (meses)`))
+
+# plot 2 (violin plot of tempo para titulação por ano)
+vioplot(
+  as.numeric(table.2.msc[, 2]) ~ as.numeric(table.2.msc[, 1]),
+  col = brewer.pal(n = 9, name = "Set3")[2],
+  xlab = NA,
+  side = "left",
+  at = sort(unique(as.numeric(table.2.msc[, 1]))),
+  ylim = c(min(
+    as.numeric(table.2.msc[, 2]), as.numeric(table.2.dsc[, 2])
+  ), max(
+    as.numeric(table.2.msc[, 2]), as.numeric(table.2.dsc[, 2])
+  )),
+  ylab = "Meses"
+)
+vioplot(
+  as.numeric(table.2.dsc[, 2]) ~ as.numeric(table.2.dsc[, 1]),
+  col = brewer.pal(n = 9, name = "Set3")[1],
+  xlab = NA,
+  side = "right",
+  ylab = "Meses",
+  at = sort(unique(as.numeric(table.2.dsc[, 1]))),
+  ylim = c(min(
+    as.numeric(table.2.msc[, 2]), as.numeric(table.2.dsc[, 2])
+  ), max(
+    as.numeric(table.2.msc[, 2]), as.numeric(table.2.dsc[, 2])
+  )),
+  add = TRUE
+)
+title(main = "Tempo para titulação",
+      outer = TRUE,
+      cex.main = 1.7)
+legend(
+  "topleft",
+  legend = cursos,
+  fill = brewer.pal(n = 9, name = "Set3"),
+  text.col = "white",
+  box.lwd = 0,
+  bty = "n",
+  horiz = FALSE,
+  cex = 1
+)
+
+# plot 3 (geospatial plot of candidates)
+states$discentes <- rep(NA, dim(states)[1])
+UF <- as.data.frame(table(discentes$UF))
+for (i in 1:length(UF$Var1)) {
+  states$discentes[states$abbrev_state == UF$Var1[i]] <- UF$Freq[i]
+}
+
+p1 <- ggplot() +
+  geom_sf(data = states, aes(fill = discentes), color = "grey") +
+  scale_fill_distiller(
+    palette = "Spectral",
+    name = "Egressos, n",
+    limits = c(min(0, UF$Freq), max(UF$Freq)),
+    na.value = "grey"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = 'bottom',
+    legend.title = element_text(colour = "white"),
+    legend.text = element_text(colour = "white")
+  ) +
+  theme(
+    plot.margin = unit(c(0, 0, 0, 0), "cm"),
+    panel.background = element_rect(fill = '#2C3E50', colour = '#2C3E50'),
+    plot.background = element_rect(fill = '#2C3E50', colour = '#2C3E50'),
+    panel.grid.major = element_line(colour = "transparent"),
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    plot.title = element_text(size = 20, color = "white", face = "bold")
+  ) +
+  ggtitle("Distribuição regional de discentes")
+
+data <-
+  as.data.frame(table(c(discentes$UF[discentes$UF == "RJ"], rep(
+    "Outras UF", length(discentes$UF[discentes$UF != "RJ"])
+  ))))
+colnames(data) <- c("Regiões", "N")
+
+p2 <- ggplot(data, aes(x = "", y = N, fill = Regiões)) +
+  scale_fill_manual(values = c("darkblue", "lightblue")) +
+  geom_bar(stat = "identity") +
+  coord_polar("y", start = 0) +
+  theme_void() +
+  theme(
+    legend.position = 'bottom',
+    legend.title = element_blank(),
+    legend.text = element_text(colour = "white")
+  ) +
+  theme(
+    plot.margin = unit(c(0, 0, 0, 0), "cm"),
+    panel.background = element_rect(fill = '#2C3E50', colour = '#2C3E50'),
+    plot.background = element_rect(fill = '#2C3E50', colour = '#2C3E50')
+  )
+
+data <- as.data.frame(table(discentes$Curso))
+colnames(data) <- c("Cursos", "N")
+
+p3 <- ggplot(data, aes(x = "", y = N, fill = Cursos)) +
+  scale_fill_manual(values = c("darkblue", "lightblue")) +
+  geom_bar(stat = "identity") +
+  coord_polar("y", start = 0) +
+  theme_void() +
+  theme(
+    legend.position = 'bottom',
+    legend.title = element_blank(),
+    legend.text = element_text(colour = "white")
+  ) +
+  theme(
+    plot.margin = unit(c(0, 0, 0, 0), "cm"),
+    panel.background = element_rect(fill = '#2C3E50', colour = '#2C3E50'),
+    plot.background = element_rect(fill = '#2C3E50', colour = '#2C3E50')
+  )
+
+g <-
+  arrangeGrob(p1,
+              p2,
+              p3,
+              layout_matrix = rbind(c(1, 2), c(1, 3)),
+              widths = c(7 / 10, 3 / 10))
+
+g2 <- ggdraw(g) +
+  theme(plot.background = element_rect(fill = "#2C3E50", color = NA))
+
+plot(g2)
+
+# plot 4 (geospatial plot of egressos)
+states$egressos <- rep(NA, dim(states)[1])
+UF <- as.data.frame(table(egressos$UF))
+for (i in 1:length(UF$Var1)) {
+  states$egressos[states$abbrev_state == UF$Var1[i]] <- UF$Freq[i]
+}
+
+p1 <- ggplot() +
+  geom_sf(data = states, aes(fill = egressos), color = "grey") +
+  scale_fill_distiller(
+    palette = "Spectral",
+    name = "Egressos, n",
+    limits = c(min(0, UF$Freq), max(UF$Freq)),
+    na.value = "grey"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = 'bottom',
+    legend.title = element_text(colour = "white"),
+    legend.text = element_text(colour = "white")
+  ) +
+  theme(
+    plot.margin = unit(c(0, 0, 0, 0), "cm"),
+    panel.background = element_rect(fill = '#2C3E50', colour = '#2C3E50'),
+    plot.background = element_rect(fill = '#2C3E50', colour = '#2C3E50'),
+    panel.grid.major = element_line(colour = "transparent"),
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    plot.title = element_text(size = 20, color = "white", face = "bold")
+  ) +
+  ggtitle("Distribuição regional de egressos")
+
+data <-
+  as.data.frame(table(c(egressos$UF[egressos$UF == "RJ"], rep(
+    "Outras UF", length(egressos$UF[egressos$UF != "RJ"])
+  ))))
+colnames(data) <- c("Regiões", "N")
+
+p2 <- ggplot(data, aes(x = "", y = N, fill = Regiões)) +
+  scale_fill_manual(values = c("darkblue", "lightblue")) +
+  geom_bar(stat = "identity") +
+  coord_polar("y", start = 0) +
+  theme_void() +
+  theme(
+    legend.position = 'bottom',
+    legend.title = element_blank(),
+    legend.text = element_text(colour = "white")
+  ) +
+  theme(
+    plot.margin = unit(c(0, 0, 0, 0), "cm"),
+    panel.background = element_rect(fill = '#2C3E50', colour = '#2C3E50'),
+    plot.background = element_rect(fill = '#2C3E50', colour = '#2C3E50')
+  )
+
+data <- as.data.frame(table(egressos$Curso))
+colnames(data) <- c("Cursos", "N")
+
+p3 <- ggplot(data, aes(x = "", y = N, fill = Cursos)) +
+  scale_fill_manual(values = c("darkblue", "lightblue")) +
+  geom_bar(stat = "identity") +
+  coord_polar("y", start = 0) +
+  theme_void() +
+  theme(
+    legend.position = 'bottom',
+    legend.title = element_blank(),
+    legend.text = element_text(colour = "white")
+  ) +
+  theme(
+    plot.margin = unit(c(0, 0, 0, 0), "cm"),
+    panel.background = element_rect(fill = '#2C3E50', colour = '#2C3E50'),
+    plot.background = element_rect(fill = '#2C3E50', colour = '#2C3E50')
+  )
+
+g <-
+  arrangeGrob(p1,
+              p2,
+              p3,
+              layout_matrix = rbind(c(1, 2), c(1, 3)),
+              widths = c(7 / 10, 3 / 10))
+
+g2 <- ggdraw(g) +
+  theme(plot.background = element_rect(fill = "#2C3E50", color = NA))
+
+plot(g2)
+
+# plot 5 (summary table in plot)
+
+# calculate summary statistics for pessoal
+summ.table.pessoal <-
+  cbind(
+    sum(table.1),
+    formatC(
+      sum(table.1[2, ], na.rm = TRUE),
+      format = "d",
+      digits = 0,
+      big.mark = "."
+    ),
+    formatC(
+      sum(table.1[1, ], na.rm = TRUE),
+      format = "d",
+      digits = 0,
+      big.mark = "."
+    ),
+    formatC(
+      median(
+        table.2.msc$as.numeric.mestres..Tempo.de.Curso..meses...,
+        na.rm = TRUE
+      ),
+      format = "d",
+      digits = 0,
+      big.mark = "."
+    ),
+    formatC(
+      median(
+        table.2.dsc$as.numeric.doutores..Tempo.de.Curso..meses...,
+        na.rm = TRUE
+      ),
+      format = "d",
+      digits = 0,
+      big.mark = "."
+    ),
+    dim(discentes)[1],
+    sum(discentes$Curso == "Mestrado"),
+    sum(discentes$Curso == "Doutorado")
+  )
+
+names(summ.table.pessoal) <-
+  c(
+    "Egressos",
+    "Mestres",
+    "Doutores",
+    "Meses",
+    "Meses",
+    "Candidatos",
+    "Mestrandos",
+    "Doutorandos"
+  )
+
+# plot area setup
+layout.m <- matrix(c(1, 2, 3, 1, 4, 5, 6, 7, 8),
+                   ncol = 3,
+                   byrow = TRUE)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+summ.data <- summ.table.pessoal
+source("Scripts/plot-summaries.R", local = knitr::knit_global())
+```
+
+```{r sintese-pessoal-carousel, eval = has.discentes}
+# carousel
+bs_carousel(id = "pessoal-carousel",
+            use_indicators = FALSE,
+            use_controls = TRUE) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-1.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-2.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-3.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-4.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-5.png"))
+
+cat('\n\n')
+cat(
+  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **PPG**"
+)
+```
+
+<br>
+
+<br>
+
+```{r sintese-rede, include = FALSE, eval = has.sucupira}
+# projetos
+sheet <- "Projetos - Membros"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# create edge matrix
+proj.id <-
+  as.factor(sucupira.raw$`Identificador do Projeto de Pesquisa`)
+n.proj <- nlevels(proj.id)
+membros <- sort(unique(sucupira.raw$`Nome do Membro do Projeto`))
+n.membros <- length(membros)
+categ <- as.factor(sucupira.raw$`Categoria do Membro do Projeto`)
+n.categ <- nlevels(categ)
+edge.matrix <- matrix(NA, nrow = 0, ncol = 2)
+colnames(edge.matrix) <- c("from", "to")
+
+# loop across all projects to populate the edge matrix
+for (i in 1:n.proj) {
+  # get the members by project id
+  membros.proj <-
+    unique(sucupira.raw$`Nome do Membro do Projeto`[proj.id == levels(proj.id)[i]])
+  # only vote for upper diagonal elements
+  for (n in 1:length(membros.proj)) {
+    for (m in n:length(membros.proj)) {
+      if (n != m) {
+        # find members
+        row.n <- match(membros.proj[n], membros)
+        col.m <- match(membros.proj[m], membros)
+        new.edge <- cbind(membros[row.n], membros[col.m])
+        # add edges
+        edge.matrix <- rbind(edge.matrix, new.edge)
+      }
+    }
+  }
+}
+
+# build the graph object
+network <- graph_from_edgelist(edge.matrix, directed = FALSE)
+
+# set member category and color
+colrs <- brewer.pal(n = n.categ, name = "Set3")
+for (i in 1:length(V(network))) {
+  categ.id <-
+    match(V(network)[[i]]$name, sucupira.raw$`Nome do Membro do Projeto`)
+  V(network)[[i]]$categ <-
+    sucupira.raw$`Categoria do Membro do Projeto`[categ.id]
+  col.id <- match(V(network)[[i]]$categ, levels(categ))
+  V(network)[i]$color <- colrs[col.id]
+}
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+# plot 1
+plot(
+  network,
+  directed = FALSE,
+  arrow.mode = 0,
+  vertex.label = NA,
+  vertex.frame.color = "darkgrey",
+  vertex.size = log(degree(network, mode = "all")) * 1.2,
+  edge.color = "lightgrey",
+  edge.lty = "solid",
+  edge.size = edge.betweenness(network),
+  edge.curved = .2
+)
+legend(
+  "bottomleft",
+  legend = levels(categ),
+  pch = 19,
+  col = colrs,
+  text.col = "white",
+  bty = "n",
+  horiz = FALSE,
+  cex = 0.8
+)
+title(main = "Membros de projetos de pesquisa",
+      outer = TRUE,
+      cex.main = 1.7)
+
+# file path to save the wordclouds
+dir.path <- file.path(getwd(), "index_files", "figure-html")
+dir.create(dir.path, recursive = TRUE)
+
+# IES participantes externos
+sheet <- "Participante Externo"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+sucupira.raw <- sucupira.raw[!duplicated(sucupira.raw), ]
+IES <- sucupira.raw$`Instituição de Origem`
+IES <- IES[!is.na(IES)]
+países <- na.omit(sucupira.raw$`País da Instituição de Origem`)
+mundo <-
+  na.omit(sucupira.raw$`País da Instituição de Origem`[sucupira.raw$`País da Instituição de Origem` != "Brasil"])
+
+part.ext.nac <-
+  na.omit(sucupira.raw$`Nome do Participante`[sucupira.raw$`País da Instituição de Origem` == "Brasil"])
+part.ext.inter <-
+  na.omit(sucupira.raw$`Nome do Participante`[sucupira.raw$`País da Instituição de Origem` != "Brasil"])
+
+IES.nac <-
+  na.omit(sucupira.raw$`Instituição de Origem`[sucupira.raw$`País da Instituição de Origem` == "Brasil"])
+IES.inter <-
+  na.omit(sucupira.raw$`Instituição de Origem`[sucupira.raw$`País da Instituição de Origem` != "Brasil"])
+
+# get initials
+data.to.abbrev <- IES
+source("Scripts/get-abbrev.R", local = knitr::knit_global())
+
+ranked.ies <- c()
+rank <- 1
+for (i in 1:length(sort(table(abbrev), decreasing = FALSE))) {
+  ranked.ies <-
+    c(ranked.ies,
+      rep(names(sort(table(
+        abbrev
+      ))[i]), match(sort(table(
+        abbrev
+      ))[i][[1]], unique(sort(
+        table(abbrev)
+      )))))
+}
+data.to.cloud <- ranked.ies
+cloud.title <- "Instituições"
+source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
+
+# plot 3
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+# plot area setup
+par(mar = c(1.5, 15, 1, 1))
+
+top <- min(length(na.omit(unique(IES.nac))), 10)
+data.nac <-
+  na.omit(data.frame(name = names(sort(
+    table(IES.nac), decreasing = TRUE
+  )[1:top]),
+  value = as.numeric(sort(
+    table(IES.nac), decreasing = TRUE
+  )[1:top])))
+
+# break vector names in 2 lines
+text.2.break <- data.nac$name
+source("Scripts/line-2-break.R", local = knitr::knit_global())
+data.nac$name <- broken_text
+
+barplot(
+  height = rev(data.nac$value),
+  names = rev(data.nac$name),
+  xlab = "N",
+  col = rep(brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
+  horiz = T,
+  las = 1,
+  cex.names = 0.7
+)
+title(
+  main = paste0("Top-", top, " nacionais"),
+  outer = TRUE,
+  cex.main = 1.7
+)
+
+# plot 4
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+# plot area setup
+par(mar = c(1.5, 15, 1, 1))
+
+top <- min(length(na.omit(unique(IES.inter))), 10)
+data.inter <-
+  na.omit(data.frame(name = names(sort(
+    table(IES.inter), decreasing = TRUE
+  )[1:top]),
+  value = as.numeric(sort(
+    table(IES.inter), decreasing = TRUE
+  )[1:top])))
+
+# break vector names in 2 lines
+text.2.break <- data.inter$name
+source("Scripts/line-2-break.R", local = knitr::knit_global())
+data.inter$name <- broken_text
+
+barplot(
+  height = rev(data.inter$value),
+  names = rev(data.inter$name),
+  xlab = "N",
+  col = rep(brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
+  horiz = T,
+  las = 1,
+  cex.names = 0.7
+)
+title(
+  main = paste0("Top-", top, " internacionais"),
+  outer = TRUE,
+  cex.main = 1.7
+)
+
+# plot 5
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+# plot area setup
+par(mar = c(1.5, 15, 1, 1))
+
+top <- min(length(na.omit(unique(mundo))), 10)
+data.pais <-
+  na.omit(data.frame(name = names(sort(
+    table(mundo), decreasing = TRUE
+  )[1:top]),
+  value = as.numeric(sort(
+    table(mundo), decreasing = TRUE
+  )[1:top])))
+
+# break vector names in 2 lines
+text.2.break <- data.pais$name
+source("Scripts/line-2-break.R", local = knitr::knit_global())
+data.pais$name <- broken_text
+
+barplot(
+  height = rev(data.pais$value),
+  names = rev(data.pais$name),
+  xlab = "N",
+  col = rep(brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
+  horiz = T,
+  las = 1,
+  cex.names = 0.7
+)
+title(
+  main = paste0("Top-", top, " países"),
+  outer = TRUE,
+  cex.main = 1.7
+)
+
+# plot 6 (summary table in plot)
+
+# calculate summary statistics for IES
+summ.table.ies <-
+  cbind(
+    length(unique(na.omit(IES.nac))) + length(unique(na.omit(IES.inter))),
+    length(unique(na.omit(IES.nac))),
+    length(unique(na.omit(IES.inter))),
+    length(unique(na.omit(part.ext.nac))) + length(unique(na.omit(part.ext.inter))),
+    length(unique(na.omit(part.ext.nac))),
+    length(unique(na.omit(part.ext.inter)))
+  )
+
+names(summ.table.ies) <-
+  c(
+    "Instituições colaboradoras",
+    "Nacionais",
+    "Internacionais",
+    "Participantes externos",
+    "Nacionais",
+    "Internacionais"
+  )
+
+# plot area setup
+layout.m <- matrix(c(1, 1, 2, 3, 4, 4, 5, 6),
+                   ncol = 2,
+                   byrow = TRUE)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+summ.data <- summ.table.ies
+source("Scripts/plot-summaries.R", local = knitr::knit_global())
+```
+
+```{r sintese-rede-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", out.width = "100%", eval = has.sucupira}
+# carousel
+bs_carousel(id = "rede-carousel",
+            use_indicators = FALSE,
+            use_controls = TRUE) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-rede-1.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/Participante Externo.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-rede-2.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-rede-3.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-rede-4.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-rede-5.png"))
+
+cat('\n\n')
+cat(
+  "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)"
+)
+```
+
+<br>
+
+<br>
+
+<div><center><img width="10%" height="10%" src="https://raw.githubusercontent.com/rstudio/hex-stickers/main/thumbs/RStudio.png"> Esta página foi desenvolvida em [**`r R.version$version.string`**](https://www.rstudio.com) usando [**R markdown**](https://rmarkdown.rstudio.com)
+</center></div>
+
+<br>
+
+<br>
+
+```{r session-info}
+sessioninfo::session_info()%>%
+  details::details(
+    summary = 'Current session info',
+    open = FALSE
+  )
+```
+
+<br>

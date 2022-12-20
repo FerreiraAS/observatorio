@@ -1,0 +1,636 @@
+---
+title: Destaques
+output:
+  html_document:
+    toc: true
+    css:
+      - /CSS/logo-above-toc.css
+      - /CSS/narrow-margins.css
+      - /CSS/responsive.css
+---
+
+<!--install and/or load all R packages-->
+```{r setup, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%", results = "hide"}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = 'center',
+  results = "asis",
+  include = TRUE,
+  out.width = "100%",
+  knitr.kable.NA = '--',
+  knitr.table.format = "html"
+)
+source("Scripts/all-required-packages.R", local = knitr::knit_global())
+```
+
+<!--script for inserting LOGO ABOVE THE TOC-->
+```{js}
+$(document).ready(function() {
+  $('#TOC').parent().prepend('<div id=\"nav_logo\"><img src="PPG/Images/logo-programa.png"></div>');
+  });
+```
+
+<!--script for sharing-->
+<p align="right">
+```{r share}
+# home <- "https://ppgcr-unisuam.github.io/observatoriocr/"
+home <- metadata$repository_url
+source("Scripts/social-media-sharing.R", local = knitr::knit_global())
+```
+</p>
+
+<!--script for generating ALTMETRIC badges-->
+<script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
+
+<!--script for generating multiple DIMENSIONS badges-->
+<script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
+
+<!--script for generating multiple PLUMX badges-->
+<script type="text/javascript" src="//cdn.plu.mx/widget-all.js"></script>
+
+<br>
+
+## **Egressos de Destaque** {.tabset #egressos-destaque}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+```{r egressos-destaque, eval = has.destaques}
+# read separate sheets
+file.path <- "PPG/Destaques.xlsx"
+tabs <- excel_sheets(file.path)
+topics <- c()
+premios.list <- vector(mode = "list", length = length(tabs))
+
+# iterate across sheets
+for (j in 1:length(tabs)) {
+  premios <-
+    read_excel(file.path,
+               sheet = tabs[j],
+               col_types = c("text", "text", "text"))
+  # replace the link by a tag
+  for (i in 1:dim(premios)[1]) {
+    premios[i, 1] <-
+      paste("### **", as.character(as.Date(as.numeric(premios[i, 1]), origin = "1899-12-30")), "**", sep = "")
+    premios[i, 3] <-
+      paste("[↗️](", premios[i, 3], '){target="_blank"}', sep = "")
+  }
+  
+  # drop date column
+  premios <- premios[, -1]
+  # store data to print table
+  premios.list[[j]] <- premios
+  
+  # store data to plot wordcloud
+  topics <- rbind(topics, premios[i, 1])
+}
+
+# iterate across sheets
+for (j in 1:length(tabs)) {
+  cat('\n\n<!-- -->\n\n')
+  cat("### **", tabs[j], "**", "\n", sep = "")
+  cat('\n\n<!-- -->\n\n')
+  print(
+    kable(premios.list[[j]], align = c("l", rep(
+      "c", ncol(premios) - 2
+    ), "r")) %>% kable_styling(
+      bootstrap_options = c("hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+  cat('\n\n<!-- -->\n\n')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+```
+
+<br>
+
+### **Ana Paula Antunes Ferreira, DSc**
+
+**Presidente**, *Osteopathic International Alliance (2021-2022)*
+
+<br>
+
+<iframe src="https://oialliance.org/about-us/board-of-directors/" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**Osteopathic International Alliance**](https://oialliance.org)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Carla Porto Loreunço, DSc**
+
+**Membro Titular**, *Comissão da Câmara Técnica em Fisioterapia Vestibular do Conselho Regional de Fisioterapia e Terapia Ocupacional da 2ª Região (2020)*
+
+<br>
+
+<iframe src="https://www.crefito2.gov.br/home_profissional/comissoes_e_camaras_tecnicas" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**Crefito-2**](https://www.crefito2.gov.br/home_profissional/comissoes_e_camaras_tecnicas)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Gabriel Parisotto, MSc**
+
+**Coordenador**, *Associação Brasileira de Fisioterapia Cardiorrespiratória e Fisioterapia em Terapia Intensiva, Núcleo Roraima (2022)*
+
+<br>
+
+<iframe src="https://assobrafir.com.br/regionais/roraima/" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**ASSOBRAFIR**](https://assobrafir.com.br/regionais/roraima/)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Dissertações/Teses de destaque** {#TCC-destaque}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+*Em construção!*
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Produções de destaque** {#produtos-destaque}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Atenção e visibilidade^1,2,3^ (Top-20)** {.tabset}
+
+```{r destaque-visibilidade, eval = has.producao}
+# bind sources
+doi_unique <-
+  bind_rows(doi_unique_artigos,
+            doi_unique_resumos,
+            doi_unique_preprints,
+            doi_unique_livros_capitulos,
+            doi_unique_eventos)
+my_dois_works <-
+  bind_rows(my_dois_works_artigos,
+            my_dois_works_resumos,
+            my_dois_works_preprints,
+            my_dois_works_livros_capitulos,
+            my_dois_works_eventos)
+references <-
+  rbind(references_artigos,
+            references_resumos,
+            references_preprints,
+            references_livros_capitulos,
+            references_eventos)
+
+# sort columns by Altmetric then year
+ordering <-
+  order(-as.numeric(doi_unique$score),-as.numeric(doi_unique$published_on))
+doi_unique <- doi_unique[ordering, ]
+references <- references[ordering, ]
+
+# TOP (removing papers with no Altmetric)
+top <- min(dim(doi_unique)[1], 20)
+doi_unique <- doi_unique[1:top, ]
+my_dois_works <- list()
+references <- references[1:top, ]
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+} else {
+  # print export buttons
+  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
+  print_buttons_dt(references, title = "Produção de destaque - Atenção e visibilidade")
+}
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+  cat('*Sem produção para exibir*')
+  cat('\n')
+} else {
+  # section header
+  cat('\n\n<!-- -->\n\n')
+  cat(
+    paste(
+      "*Produtos (n = ",
+      max(dim(doi_unique)[1], 0) + max(dim(my_dois_works)[1], 0),
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+      sep = ""
+    )
+  )
+  cat('<br>')
+  
+  # print tab header
+  cat('\n\n<!-- -->\n\n')
+  
+  # print table of papers with/without badges
+  source("Scripts/papers-with-badges.R", local = knitr::knit_global())
+  table.with.badges(
+      show.Altmetric = TRUE,
+      show.Dimensions = TRUE,
+      show.PlumX = TRUE,
+      show.CiteScore = TRUE,
+      show.SJR = TRUE,
+      show.Qualis = TRUE,
+    doi_unique = tryCatch(
+      doi_unique,
+      error = function(e) {
+        return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+      }
+    ),
+    my_dois_works = tryCatch(
+      my_dois_works,
+      error = function(e) {
+        return(my_dois_works <- list())
+      }
+    ),
+      citescore = citescore,
+      scimago = scimago,
+      qualis = qualis
+  )
+}
+```
+
+### **Prestígio do periódico^4,5^ (Top-20)**
+
+```{r destaque-prestigio, eval = has.producao}
+# bind sources
+doi_unique <-
+  bind_rows(doi_unique_artigos,
+            doi_unique_resumos,
+            doi_unique_eventos)
+my_dois_works <-
+  bind_rows(my_dois_works_artigos,
+            my_dois_works_resumos,
+            my_dois_works_eventos)
+references <-
+  rbind(references_artigos,
+            references_resumos,
+            references_eventos)
+
+# TOP (removing papers with no SJR)
+SJRs <- c()
+for (k in 1:length(doi_unique$doi)) {
+  SJR.k <-
+    scimago[grep(gsub("-", "", doi_unique$issn[k]), scimago$Issn), 6]
+  SJRs <- rbind(SJRs, ifelse(length(SJR.k) == 1, SJR.k, NA))
+}
+
+doi_unique$SJRs <- SJRs
+
+# sort columns by Altmetric then year
+ordering <- order(-as.numeric(doi_unique$SJRs),
+                   -as.numeric(doi_unique$published_on))
+doi_unique <- doi_unique[ordering,]
+references <- references[ordering,]
+
+top <- min(dim(doi_unique)[1], 20)
+doi_unique <- doi_unique[1:top,]
+my_dois_works <- list()
+references <- references[1:top,]
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+} else {
+  # print export buttons
+  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
+  print_buttons_dt(references, title = "Produção de destaque - Prestígio do periódico")
+}
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+  cat('*Sem produção para exibir*')
+  cat('\n')
+} else {
+  # section header
+  cat('\n\n<!-- -->\n\n')
+  cat(
+    paste(
+      "*Produtos (n = ",
+      max(dim(doi_unique)[1], 0) + max(dim(my_dois_works)[1], 0),
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+      sep = ""
+    )
+  )
+  cat('<br>')
+  
+  # print tab header
+  cat('\n\n<!-- -->\n\n')
+  
+  # print table of papers with/without badges
+  source("Scripts/papers-with-badges.R", local = knitr::knit_global())
+  table.with.badges(
+      show.Altmetric = TRUE,
+      show.Dimensions = TRUE,
+      show.PlumX = TRUE,
+      show.CiteScore = TRUE,
+      show.SJR = TRUE,
+      show.Qualis = TRUE,
+    doi_unique = tryCatch(
+      doi_unique,
+      error = function(e) {
+        return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+      }
+    ),
+    my_dois_works = tryCatch(
+      my_dois_works,
+      error = function(e) {
+        return(my_dois_works <- list())
+      }
+    ),
+      citescore = citescore,
+      scimago = scimago,
+      qualis = qualis
+  )
+}
+```
+
+## **Prêmios** {.tabset #premios}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+```{r premios, eval = has.premios}
+# read separate sheets
+file.path <- "PPG/Prêmios.xlsx"
+tabs <- excel_sheets(file.path)
+topics <- c()
+premios.list <- vector(mode = "list", length = length(tabs))
+
+# iterate across sheets
+for (j in 1:length(tabs)) {
+  premios <-
+    read_excel(file.path,
+               sheet = tabs[j],
+               col_types = c("text", "text", "text"))
+  # replace the link by a tag
+  for (i in 1:dim(premios)[1]) {
+    premios[i, 1] <-
+      paste("### **", as.character(as.Date(as.numeric(premios[i, 1]), origin = "1899-12-30")), "**", sep = "")
+    premios[i, 3] <-
+      paste("[↗️](", premios[i, 3], '){target="_blank"}', sep = "")
+  }
+  
+  # drop date column
+  premios <- premios[, -1]
+  # store data to print table
+  premios.list[[j]] <- premios
+  
+  # store data to plot wordcloud
+  topics <- rbind(topics, premios[i, 1])
+}
+
+# iterate across sheets
+for (j in 1:length(tabs)) {
+  cat('\n\n<!-- -->\n\n')
+  cat("### **", tabs[j], "**", "\n", sep = "")
+  cat('\n\n<!-- -->\n\n')
+  print(
+    kable(premios.list[[j]], align = c("l", rep(
+      "c", ncol(premios) - 2
+    ), "r")) %>% kable_styling(
+      bootstrap_options = c("hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+  cat('\n\n<!-- -->\n\n')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+```
+
+<br>
+
+## **Representatividade** {#representatividade}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Associações e entidades** {.tabset}
+
+#### **ABRAPG-Ft**
+
+<iframe src="https://abrapg-ft.org.br/portal/" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**ABRAPG-FT**](https://abrapg-ft.org.br/portal/)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+#### **Comitê Gestor do Forum 21**
+
+<br>
+
+<iframe src="https://iframely.net/678B7BG" style="width:100%; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**UNICAMP**](https://www.fef.unicamp.br/fef/posgraduacao/forumpg21)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+### **Periódicos** {.tabset}
+
+#### **Corpo editorial**
+
+<br>
+
+*Em construção*
+
+<br>
+
+*Fontes:* [**ORCID**](https://orcid.org)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Revisores**
+
+<br>
+
+```{r revisores, eval = has.sucupira}
+# docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# keep active professors and remove duplicated data
+sucupira <-
+  sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`), ]
+sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupira$ORCID),]
+
+orcids <-
+  gsub("(.{14})(.*)$",
+       "\\1-\\2",
+       gsub(
+         "(.{9})(.*)$",
+         "\\1-\\2",
+         gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
+       ))
+
+for (id in 1:length(orcids)) {
+  reviewer.name <- sucupira.unique$`Nome Docente`[id]
+  my_orcid <- orcids[id]
+  source("Scripts/reviewer-board.R", local = knitr::knit_global())
+}
+```
+
+<br>
+
+*Fontes:* [**ORCID**](https://orcid.org)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Divulgação** {#divulgacao}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+<br>
+
+### **Blog institucional** {.tabset}
+
+<br>
+
+```{r blogs-ies, eval = has.blog.ies}
+# read separate sheets
+file.path <- "PPG/Blog_IES.xlsx"
+tabs <- excel_sheets(file.path)
+topics <- c()
+news.list <- vector(mode = "list", length = length(tabs))
+
+# iterate across sheets
+for (j in 1:length(tabs)) {
+  news <-
+    read_excel(file.path,
+               sheet = tabs[j],
+               col_types = c("text", "text", "text"))
+  # replace the link by a tag
+  for (i in 1:dim(news)[1]) {
+    news[i, 1] <-
+      paste("#### **", as.character(as.Date(as.numeric(news[i, 1]), origin = "1899-12-30")), "**", sep = "")
+    news[i, 3] <-
+      paste("[↗️](", news[i, 3], '){target="_blank"}', sep = "")
+  }
+  
+  # drop date column
+  news <- news[, -1]
+  # store data to print table
+  news.list[[j]] <- news
+  
+  # store data to plot wordcloud
+  topics <- rbind(topics, news[i, 1])
+}
+
+# iterate across sheets
+for (j in 1:length(tabs)) {
+  cat('\n\n<!-- -->\n\n')
+  cat("#### **", tabs[j], "**", "\n", sep = "")
+  cat('\n\n<!-- -->\n\n')
+  print(
+    kable(news.list[[j]], align = c("l", rep("c", ncol(
+      news
+    ) - 2), "r")) %>% kable_styling(
+      bootstrap_options = c("hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+  cat('\n\n<!-- -->\n\n')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+```
+
+<br>
+
+### **Blogs externos** {.tabset}
+
+<br>
+
+```{r blogs-externos, eval = has.blog.externos}
+# read separate sheets
+file.path <- "PPG/Blog_externos.xlsx"
+tabs <- excel_sheets(file.path)
+topics <- c()
+news.list <- vector(mode = "list", length = length(tabs))
+
+# iterate across sheets
+for (j in 1:length(tabs)) {
+  news <-
+    read_excel(file.path,
+               sheet = tabs[j],
+               col_types = c("text", "text", "text"))
+  # replace the link by a tag
+  for (i in 1:dim(news)[1]) {
+    news[i, 1] <-
+      paste("#### **", as.character(as.Date(as.numeric(news[i, 1]), origin = "1899-12-30")), "**", sep = "")
+    news[i, 3] <-
+      paste("[↗️](", news[i, 3], '){target="_blank"}', sep = "")
+  }
+  
+  # drop date column
+  news <- news[, -1]
+  # store data to print table
+  news.list[[j]] <- news
+  
+  # store data to plot wordcloud
+  topics <- rbind(topics, news[i, 1])
+}
+
+# iterate across sheets
+for (j in 1:length(tabs)) {
+  cat('\n\n<!-- -->\n\n')
+  cat("#### **", tabs[j], "**", "\n", sep = "")
+  cat('\n\n<!-- -->\n\n')
+  print(
+    kable(news.list[[j]], align = c("l", rep("c", ncol(
+      news
+    ) - 2), "r")) %>% kable_styling(
+      bootstrap_options = c("hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+  cat('\n\n<!-- -->\n\n')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+```
+
+<br>

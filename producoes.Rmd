@@ -1,0 +1,1128 @@
+---
+title: Produções acadêmicas
+output:
+  html_document:
+    toc: true
+    css:
+      - /CSS/logo-above-toc.css
+      - /CSS/narrow-margins.css
+      - /CSS/responsive.css
+---
+
+<!--install and/or load all R packages-->
+```{r setup, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%", results = "hide"}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = 'center',
+  results = "asis",
+  include = TRUE,
+  out.width = "100%",
+  knitr.kable.NA = '--',
+  knitr.table.format = "html"
+)
+source("Scripts/all-required-packages.R", local = knitr::knit_global())
+```
+
+<!--script for inserting LOGO ABOVE THE TOC-->
+```{js}
+$(document).ready(function() {
+  $('#TOC').parent().prepend('<div id=\"nav_logo\"><img src="PPG/Images/logo-programa.png"></div>');
+  });
+```
+
+<!--script for sharing-->
+<p align="right">
+```{r share}
+# home <- "https://ppgcr-unisuam.github.io/observatoriocr/"
+home <- metadata$repository_url
+source("Scripts/social-media-sharing.R", local = knitr::knit_global())
+```
+</p>
+
+<!--script for generating ALTMETRIC badges-->
+<script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
+
+<!--script for generating multiple DIMENSIONS badges-->
+<script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
+
+<!--script for generating multiple PLUMX badges-->
+<script type="text/javascript" src="//cdn.plu.mx/widget-all.js"></script>
+
+## **Trabalhos de conclusão** {#TCC}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Teses**
+
+```{r tcc-dsc, eval = has.sucupira}
+# tcc
+sheet <- "TCC"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)
+periodo <- as.character(seq(min(periodos), max(periodos)))
+tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+
+tccs <- tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "TESE", ]
+
+# select data
+table.tcc <-
+  cbind(
+    format((as.Date(
+      gsub("/", "-", tccs$'Data da Defesa'), "%d-%m-%Y"
+    )), "%Y"),
+    tccs$`Linha de Pesquisa`,
+    tccs$`Nome do Trabalho de Conclusão`,
+    tccs$`Nome do Autor`,
+    tccs$`Nome do Orientador`
+  )
+table.tcc <-
+  table.tcc[order(table.tcc[, 1], table.tcc[, 2], table.tcc[, 3]),]
+
+# print tables
+table.tcc[, 2] <-
+  as.vector(unlist(lapply(table.tcc[, 2], FUN = str_to_title)))
+table.tcc[, 3] <-
+  as.vector(unlist(lapply(table.tcc[, 3], FUN = str_to_title)))
+table.tcc[, 4] <-
+  as.vector(unlist(lapply(table.tcc[, 4], FUN = str_to_title)))
+table.tcc[, 5] <-
+  as.vector(unlist(lapply(table.tcc[, 5], FUN = str_to_title)))
+
+colnames(table.tcc) <-
+  c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador")
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table.tcc, title = "Dissertações e Teses")
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Dissertações**
+
+```{r tcc-msc, eval = has.sucupira}
+# tcc
+sheet <- "TCC"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)
+periodo <- as.character(seq(min(periodos), max(periodos)))
+tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+
+tccs <- tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "DISSERTAÇÃO", ]
+
+# select data
+table.tcc <-
+  cbind(
+    format((as.Date(
+      gsub("/", "-", tccs$'Data da Defesa'), "%d-%m-%Y"
+    )), "%Y"),
+    tccs$`Linha de Pesquisa`,
+    tccs$`Nome do Trabalho de Conclusão`,
+    tccs$`Nome do Autor`,
+    tccs$`Nome do Orientador`
+  )
+table.tcc <-
+  table.tcc[order(table.tcc[, 1], table.tcc[, 2], table.tcc[, 3]),]
+
+# print tables
+table.tcc[, 2] <-
+  as.vector(unlist(lapply(table.tcc[, 2], FUN = str_to_title)))
+table.tcc[, 3] <-
+  as.vector(unlist(lapply(table.tcc[, 3], FUN = str_to_title)))
+table.tcc[, 4] <-
+  as.vector(unlist(lapply(table.tcc[, 4], FUN = str_to_title)))
+table.tcc[, 5] <-
+  as.vector(unlist(lapply(table.tcc[, 5], FUN = str_to_title)))
+
+colnames(table.tcc) <-
+  c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador")
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table.tcc, title = "Dissertações e Teses")
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Repositórios** {#repositorios}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Institucional** {.tabset}
+
+#### **Sede** {.tabset}
+
+```{r repositorios-mestrado-sede, eval = has.repositorios}
+# read separate sheets
+repositorio <- read_excel("PPG/Repositórios.xlsx", sheet = "Sede")
+
+cat(paste('##### **', repositorio[1,2], '**', sep = ""))
+
+cat('\n\n')
+
+cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[1,3], '#list" style="width:100%; height:600px; border:0;"></iframe>', sep = ""))
+
+cat('\n\n')
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+```{r repositorios-doutorado-sede, eval = has.repositorios}
+# read separate sheets
+repositorio <- read_excel("PPG/Repositórios.xlsx", sheet = "Sede")
+
+cat(paste('##### **', repositorio[2,2], '**', sep = ""))
+
+cat('\n\n')
+
+cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[2,3], '#list" style="width:100%; height:600px; border:0;"></iframe>', sep = ""))
+
+cat('\n\n')
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Cooperação Interinstitucional** {.tabset}
+
+```{r repositorios-mestrado-cooperacao, eval = has.repositorios}
+# read separate sheets
+repositorio <- read_excel("PPG/Repositórios.xlsx", sheet = "Cooperação")
+
+cat(paste('##### **', repositorio[1,2], '**', sep = ""))
+
+cat('\n\n')
+
+cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[1,3], '#list" style="width:100%; height:600px; border:0;"></iframe>', sep = ""))
+
+cat('\n\n')
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+```{r repositorios-doutorado-cooperacao, eval = has.repositorios}
+# read separate sheets
+repositorio <- read_excel("PPG/Repositórios.xlsx", sheet = "Cooperação")
+
+cat(paste('##### **', repositorio[2,2], '**', sep = ""))
+
+cat('\n\n')
+
+cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[2,3], '#list" style="width:100%; height:600px; border:0;"></iframe>', sep = ""))
+
+cat('\n\n')
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Externos** {.tabset}
+
+#### **Deposita IBICT**
+
+<iframe src="https://deposita.ibict.br" style="width:100%; height:600px; border:0;"></iframe>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Catálogo CAPES**
+
+<iframe src="https://catalogodeteses.capes.gov.br/catalogo-teses" style="width:100%; height:600px; border:0;"></iframe>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Sistema de Submissão de TCC**
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+<iframe src="https://sstcc.unisuam.edu.br/" style="width:100%; height:600px; border:0;"></iframe>
+
+*Fontes:* [**SSTCC**](https://sstcc.unisuam.edu.br/)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Produção bibliográfica** {#bibliografica}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Artigos completos em periódicos** {.tabset}
+
+```{r artigos-completos, eval = has.artigos.completos}
+# bind sources
+doi_unique <- doi_unique_artigos
+my_dois_works <- my_dois_works_artigos
+references <- references_artigos
+
+# available years of publication
+years <-
+  na.omit(sort(unique(
+    c(doi_unique$published_on, my_dois_works$published_on)
+  ), decreasing = TRUE))
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+} else {
+  # print export buttons
+  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
+  print_buttons_dt(references, title = "Artigos completos em periódicos")
+}
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+  cat('*Sem produção para exibir*')
+  cat('\n')
+} else {
+  # section header
+  cat('\n\n<!-- -->\n\n')
+  cat(
+    paste(
+      "*Produtos (n = ",
+      max(dim(doi_unique)[1], 0) + max(dim(my_dois_works)[1], 0),
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+      sep = ""
+    )
+  )
+  cat('<br>')
+  
+  for (year in 1:length(years)) {
+    # print tab header
+    cat('\n\n<!-- -->\n\n')
+    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    
+    # print table of papers with/without badges
+    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
+    table.with.badges(
+      show.Altmetric = TRUE,
+      show.Dimensions = TRUE,
+      show.PlumX = TRUE,
+      show.CiteScore = TRUE,
+      show.SJR = TRUE,
+      show.Qualis = TRUE,
+      doi_unique = tryCatch(
+        doi_unique[doi_unique$published_on == years[year], ],
+        error = function(e) {
+          return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+        }
+      ),
+      my_dois_works = tryCatch(
+        my_dois_works[my_dois_works$published_on == years[year], ],
+        error = function(e) {
+          return(my_dois_works <- list())
+        }
+      ),
+      citescore = citescore,
+      scimago = scimago,
+      qualis = qualis
+    )
+  }
+}
+```
+
+<br>
+
+### **Artigos resumos em periódicos** {.tabset}
+
+```{r artigos-resumos, eval = has.artigos.resumos}
+# bind sources
+doi_unique <- doi_unique_resumos
+my_dois_works <- my_dois_works_resumos
+references <- references_resumos
+
+# available years of publication
+years <-
+  na.omit(sort(unique(
+    c(doi_unique$published_on, my_dois_works$published_on)
+  ), decreasing = TRUE))
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+} else {
+  # print export buttons
+  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
+  print_buttons_dt(references, title = "Artigos resumos em periódicos")
+}
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+  cat('*Sem produção para exibir*')
+  cat('\n')
+} else {
+  # section header
+  cat('\n\n<!-- -->\n\n')
+  cat(
+    paste(
+      "*Produtos (n = ",
+      max(dim(doi_unique)[1], 0) + max(dim(my_dois_works)[1], 0),
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+      sep = ""
+    )
+  )
+  cat('<br>')
+  
+  for (year in 1:length(years)) {
+    # print tab header
+    cat('\n\n<!-- -->\n\n')
+    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    
+    # print table of papers with/without badges
+    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
+    table.with.badges(
+      show.Altmetric = TRUE,
+      show.Dimensions = TRUE,
+      show.PlumX = TRUE,
+      show.CiteScore = TRUE,
+      show.SJR = TRUE,
+      show.Qualis = TRUE,
+      doi_unique = tryCatch(
+        doi_unique[doi_unique$published_on == years[year], ],
+        error = function(e) {
+          return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+        }
+      ),
+      my_dois_works = tryCatch(
+        my_dois_works[my_dois_works$published_on == years[year], ],
+        error = function(e) {
+          return(my_dois_works <- list())
+        }
+      ),
+      citescore = citescore,
+      scimago = scimago,
+      qualis = qualis
+    )
+  }
+}
+```
+
+<br>
+
+### **Preprints** {.tabset}
+
+```{r preprints, eval = has.preprints}
+# bind sources
+doi_unique <- doi_unique_preprints
+my_dois_works <- my_dois_works_preprints
+references <- references_preprints
+
+# available years of publication
+years <-
+  na.omit(sort(unique(
+    c(doi_unique$published_on, my_dois_works$published_on)
+  ), decreasing = TRUE))
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+} else {
+  # print export buttons
+  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
+  print_buttons_dt(references, title = "Artigos preprints")
+}
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+  cat('*Sem produção para exibir*')
+  cat('\n')
+} else {
+  # section header
+  cat('\n\n<!-- -->\n\n')
+  cat(
+    paste(
+      "*Produtos (n = ",
+      max(dim(doi_unique)[1], 0) + max(dim(my_dois_works)[1], 0),
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+      sep = ""
+    )
+  )
+  cat('<br>')
+  
+  for (year in 1:length(years)) {
+    # print tab header
+    cat('\n\n<!-- -->\n\n')
+    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    
+    # print table of papers with/without badges
+    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
+    table.with.badges(
+      show.Altmetric = TRUE,
+      show.Dimensions = TRUE,
+      show.PlumX = TRUE,
+      show.CiteScore = FALSE,
+      show.SJR = FALSE,
+      show.Qualis = FALSE,
+      doi_unique = tryCatch(
+        doi_unique[doi_unique$published_on == years[year], ],
+        error = function(e) {
+          return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+        }
+      ),
+      my_dois_works = tryCatch(
+        my_dois_works[my_dois_works$published_on == years[year], ],
+        error = function(e) {
+          return(my_dois_works <- list())
+        }
+      ),
+      citescore = citescore,
+      scimago = scimago,
+      qualis = qualis
+    )
+  }
+}
+```
+
+<br>
+
+### **Livros e capítulos**  {.tabset}
+
+```{r livros-capitulos, eval = has.capitulos}
+# bind sources
+doi_unique <- doi_unique_livros_capitulos
+my_dois_works <- my_dois_works_livros_capitulos
+references <- references_livros_capitulos
+
+# available years of publication
+years <-
+  na.omit(sort(unique(
+    c(doi_unique$published_on, my_dois_works$published_on)
+  ), decreasing = TRUE))
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+} else {
+  # print export buttons
+  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
+  print_buttons_dt(references, title = "Livros e capítulos")
+}
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+  cat('*Sem produção para exibir*')
+  cat('\n')
+} else {
+  # section header
+  cat('\n\n<!-- -->\n\n')
+  cat(
+    paste(
+      "*Produtos (n = ",
+      max(dim(doi_unique)[1], 0) + max(dim(my_dois_works)[1], 0),
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+      sep = ""
+    )
+  )
+  cat('<br>')
+  
+  for (year in 1:length(years)) {
+    # print tab header
+    cat('\n\n<!-- -->\n\n')
+    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    
+    # print table of papers with/without badges
+    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
+    table.with.badges(
+      show.Altmetric = TRUE,
+      show.Dimensions = TRUE,
+      show.PlumX = TRUE,
+      show.CiteScore = FALSE,
+      show.SJR = FALSE,
+      show.Qualis = FALSE,
+      doi_unique = tryCatch(
+        doi_unique[doi_unique$published_on == years[year], ],
+        error = function(e) {
+          return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+        }
+      ),
+      my_dois_works = tryCatch(
+        my_dois_works[my_dois_works$published_on == years[year], ],
+        error = function(e) {
+          return(my_dois_works <- list())
+        }
+      ),
+      citescore = citescore,
+      scimago = scimago,
+      qualis = qualis
+    )
+  }
+}
+```
+
+<br>
+
+#### **Online**  {.tabset}
+
+##### **Medidas de Desempenho Físico e Funcional de Pessoas Idosas**
+
+<iframe src="https://www.medbookeditora.com.br/product-page/medidas-de-desempenho-f%C3%ADsico-e-funcional-de-idosos" style="width:100%; height:600px; border:0;"></iframe>
+
+*Fontes:* [**Medbook Editora**](https://www.medbookeditora.com.br/product-page/medidas-de-desempenho-f%C3%ADsico-e-funcional-de-idosos)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+##### **Ciência Aplicada ao Exercício Físico e ao Esporte**
+
+<iframe src="https://www.editoraappris.com.br/produto/6220-cincia-aplicada-ao-exerccio-fsico-e-ao-esporte" style="width:100%; height:600px; border:0;"></iframe>
+
+*Fontes:* [**Appris Editora**](https://www.editoraappris.com.br/produto/6220-cincia-aplicada-ao-exerccio-fsico-e-ao-esporte)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+##### **Deficiência e inclusão pelo esporte no contexto militar**
+
+<iframe src="https://www.editoracrv.com.br/produtos/detalhes/36691-crv" style="width:100%; height:600px; border:0;"></iframe>
+
+*Fontes:* [**CRV Editora**](https://www.editoracrv.com.br/produtos/detalhes/36691-crv)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+##### **O Gol de Rodas**
+
+<iframe src="https://ogolderodas.com.br" style="width:100%; height:600px; border:0;"></iframe>
+
+*Fontes:* [**Construtores de Memórias**](https://construtoresdememorias.com)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+##### **Uma Jornada para Entender a Dor**
+
+<iframe src="http://pesquisaemdor.com.br" style="width:100%; height:600px; border:0;"></iframe>
+
+*Fontes:* [**Pesquisa em Dor**](http://pesquisaemdor.com.br)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+##### **Livros do Museu do Esporte**
+
+<iframe src="https://www.emuseudoesporte.com.br/br/home" style="width:100%; height:600px; border:0;"></iframe>
+
+
+*Fontes:* [**eMuseu do Esporte**]https://www.emuseudoesporte.com.br/br/home)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Produção técnica** {#tecnica}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Trabalhos em anais de eventos** {.tabset}
+
+```{r resumos-eventos, eval = has.eventos}
+# bind sources
+doi_unique <- doi_unique_eventos
+my_dois_works <- my_dois_works_eventos
+references <- references_eventos
+
+# available years of publication
+years <-
+  na.omit(sort(unique(
+    c(doi_unique$published_on, my_dois_works$published_on)
+  ), decreasing = TRUE))
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+} else {
+  # print export buttons
+  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
+  print_buttons_dt(references, title = "Trabalhos em anais de eventos científicos")
+}
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+  cat('*Sem produção para exibir*')
+  cat('\n')
+} else {
+  # section header
+  cat('\n\n<!-- -->\n\n')
+  cat(
+    paste(
+      "*Produtos (n = ",
+      max(dim(doi_unique)[1], 0) + max(dim(my_dois_works)[1], 0),
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+      sep = ""
+    )
+  )
+  cat('<br>')
+  
+  for (year in 1:length(years)) {
+    # print tab header
+    cat('\n\n<!-- -->\n\n')
+    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    
+    # print table of papers with/without badges
+    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
+    table.with.badges(
+      show.Altmetric = TRUE,
+      show.Dimensions = TRUE,
+      show.PlumX = TRUE,
+      show.CiteScore = TRUE,
+      show.SJR = TRUE,
+      show.Qualis = TRUE,
+      doi_unique = tryCatch(
+        doi_unique[doi_unique$published_on == years[year], ],
+        error = function(e) {
+          return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+        }
+      ),
+      my_dois_works = tryCatch(
+        my_dois_works[my_dois_works$published_on == years[year], ],
+        error = function(e) {
+          return(my_dois_works <- list())
+        }
+      ),
+      citescore = citescore,
+      scimago = scimago,
+      qualis = qualis
+    )
+  }
+}
+```
+
+<br>
+
+### **Desenvolvimento de aplicativos** {.tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+#### **SuiteEBG**
+
+```{r softwares-ebg, eval = has.softwares}
+# read separate sheets
+softwares.raw <- read_excel("PPG/Softwares.xlsx", sheet = "SuiteEBG", col_types = c("text"))
+
+# replace the link by a tag
+for(i in 1:dim(softwares.raw)[1]){
+  softwares.raw[i,3] <- paste("[↗️](", softwares.raw[i,3], '){target="_blank"}', sep = "")
+}
+
+# print table
+print(kable(softwares.raw, align = c("l", rep("c", ncol(softwares.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+```
+
+<style>
+th, td {
+  padding: 10px;
+}
+</style>
+<table class="center">
+  <tr>
+    <td>
+      [<img align="center" src="Softwares/SuiteEBG.png">](https://drive.google.com/drive/folders/1UGyANs87k2S_8utHrkzPzxsUP_ZM-VoH?usp=sharing){target="_blank"}
+    </td>
+  </tr>
+</table>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **SuiteMYO**
+
+```{r softwares-myo, eval = has.softwares}
+# read separate sheets
+softwares.raw <- read_excel("PPG/Softwares.xlsx", sheet = "SuiteMYO", col_types = c("text"))
+
+# replace the link by a tag
+for(i in 1:dim(softwares.raw)[1]){
+  softwares.raw[i,3] <- paste("[↗️](", softwares.raw[i,3], '){target="_blank"}', sep = "")
+}
+
+# print table
+print(kable(softwares.raw, align = c("l", rep("c", ncol(softwares.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+```
+
+<style>
+th, td {
+  padding: 10px;
+}
+</style>
+<table class="center">
+  <tr>
+    <td>
+      [<img align="center" src="Softwares/SuiteMYO.png">](https://drive.google.com/drive/folders/1UGyANs87k2S_8utHrkzPzxsUP_ZM-VoH?usp=sharing){target="_blank"}
+    </td>
+  </tr>
+</table>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **SuiteTCM**
+
+```{r softwares-tcm, eval = has.softwares}
+# read separate sheets
+softwares.raw <- read_excel("PPG/Softwares.xlsx", sheet = "SuiteTCM", col_types = c("text"))
+
+# replace the link by a tag
+for(i in 1:dim(softwares.raw)[1]){
+  softwares.raw[i,3] <- paste("[↗️](", softwares.raw[i,3], '){target="_blank"}', sep = "")
+}
+
+# print table
+print(kable(softwares.raw, align = c("l", rep("c", ncol(softwares.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+```
+
+<style>
+th, td {
+  padding: 10px;
+}
+</style>
+<table class="center">
+  <tr>
+    <td>
+      [<img align="center" src="Softwares/SuiteTCM.png">](https://drive.google.com/drive/folders/1UGyANs87k2S_8utHrkzPzxsUP_ZM-VoH?usp=sharing){target="_blank"}
+    </td>
+  </tr>
+</table>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **wiiVIEW**
+
+```{r softwares-wbb, eval = has.softwares}
+# read separate sheets
+softwares.raw <- read_excel("PPG/Softwares.xlsx", sheet = "wiiVIEW", col_types = c("text"))
+
+# replace the link by a tag
+for(i in 1:dim(softwares.raw)[1]){
+  softwares.raw[i,3] <- paste("[↗️](", softwares.raw[i,3], '){target="_blank"}', sep = "")
+}
+
+# print table
+print(kable(softwares.raw, align = c("l", rep("c", ncol(softwares.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+```
+
+<style>
+th, td {
+  padding: 10px;
+}
+</style>
+<table class="center">
+  <tr>
+    <td>
+      [<img align="center" src="Softwares/wiiVIEW.png">](https://drive.google.com/drive/folders/1UGyANs87k2S_8utHrkzPzxsUP_ZM-VoH?usp=sharing){target="_blank"}
+    </td>
+  </tr>
+</table>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **PainMAP**
+
+<br>
+
+*Em construção*
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Fitaro**
+
+<br>
+
+<iframe src="https://fitaro.com.br" style="width:100%; height:600px; border:0;"></iframe>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Registros de protocolos** {#registros .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **ClinicalTrials.gov**
+
+<br>
+
+<iframe src="https://clinicaltrials.gov/ct2/results?term=UNISUAM+OR+%22Centro+Universitário+Augusto+Motta%22" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**ClinicalTrials.gov**](https://clinicaltrials.gov)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **ReBEC**
+
+<br>
+
+<iframe src="https://ensaiosclinicos.gov.br" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**Fundação Oswaldo Cruz)**](https://ensaiosclinicos.gov.br)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **PROSPERO**
+
+<br>
+
+<iframe src="https://www.crd.york.ac.uk/prospero/#loginpage" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**National Institute for Health Research**](https://www.crd.york.ac.uk/prospero/#loginpage)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **PRECIS-2**
+
+<br>
+
+<iframe src="https://www.precis-2.org" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**Health Informatics Centre (University of Dundee)**](https://www.precis-2.org)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **WHO UTN**
+
+<br>
+
+<iframe src="https://www.who.int/clinical-trials-registry-platform/unambiguous-trial-identification/the-universal-trial-number-(utn)" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**World Health Organization**](https://www.who.int/clinical-trials-registry-platform/unambiguous-trial-identification/the-universal-trial-number-(utn))
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Portais de Periódicos** {#portais .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **SciELO**
+
+<br>
+
+<iframe src="https://search.scielo.org/?q=au%3ARicciardi%2C+Gualtiero&lang=pt&count=15&from=0&output=site&sort=&format=summary&fb=&page=1&q=%28aff_institution%3AUNISUAM%29+OR+%28aff_institution%3A%22Centro+Universitário+Augusto+Motta%22%29&lang=pt&page=1" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**Scientific Electronic Library Online**](https://scielo.org)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **PubMed**
+
+<br>
+
+<iframe src="https://pubmed.ncbi.nlm.nih.gov/?term=%22UNISUAM%22+OR+%22centro+universitário+augusto+motta%22+OR+%22Centro+Universitario+Augusto+Motta%22&sort=relevance" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**PubMed**](https://pubmed.ncbi.nlm.nih.gov)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Sobre as Métricas** {#metricas .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Metrics Toolkit**
+
+<br>
+
+<iframe src="http://www.metrics-toolkit.org/metrics/" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**Metrics Toolkit**](http://www.metrics-toolkit.org)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Altmetric**
+
+<br>
+
+<iframe src="https://www.altmetric.com" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**Alternative Metric**](https://www.altmetric.com)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Dimensions**
+
+<br>
+
+<iframe src="https://www.dimensions.ai" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**Digital Science & Research Solutions Inc.**](https://www.dimensions.ai)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **PlumX**
+
+<br>
+
+<iframe src="https://plu.mx" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**Elsevier**](https://plu.mx)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Scientific Journal Rankings**
+
+<br>
+
+<iframe src="https://www.scimagojr.com" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**Scientific Journal Ranking**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Qualis Periódicos**
+
+<br>
+
+<iframe src="https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>

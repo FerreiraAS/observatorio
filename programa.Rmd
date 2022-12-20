@@ -1,0 +1,3294 @@
+---
+title: Programa
+output:
+  html_document:
+    toc: true
+    css:
+      - /CSS/logo-above-toc.css
+      - /CSS/narrow-margins.css
+      - /CSS/responsive.css
+---
+
+<!--install and/or load all R packages-->
+```{r setup, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%", results = "hide"}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = 'center',
+  results = "asis",
+  include = TRUE,
+  out.width = "100%",
+  knitr.kable.NA = '--',
+  knitr.table.format = "html"
+)
+source("Scripts/all-required-packages.R", local = knitr::knit_global())
+```
+
+<!--script for inserting LOGO ABOVE THE TOC-->
+```{js}
+$(document).ready(function() {
+  $('#TOC').parent().prepend('<div id=\"nav_logo\"><img src="PPG/Images/logo-programa.png"></div>');
+  });
+```
+
+<!--script for sharing-->
+<p align="right">
+```{r share}
+# home <- "https://ppgcr-unisuam.github.io/observatoriocr/"
+home <- metadata$repository_url
+source("Scripts/social-media-sharing.R", local = knitr::knit_global())
+```
+</p>
+
+<br>
+
+## **Apresentação** {.tabset #apresentacao}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Descrição**
+
+O PROGRAMA DE PÓS-GRADUAÇÃO EM CIÊNCIAS DA REABILITAÇÃO DA UNISUAM (PPGCR-UNISUAM) tem por objetivo formar profissionais, em nível de Mestrado e Doutorado, para atuação em pesquisa científica e no ensino superior na área de Ciências da Reabilitação, bem como estimular a autonomia de pesquisadores por meio de Estágio Pós-Doutoral.
+
+<br>
+
+O PPGCR-UNISUAM tem sua sede na Rua Dona Isabel 94, Bonsucesso, RJ, CEP 21032-060. O PPGCR-UNISUAM insere-se na [Grande Área de Conhecimento de Ciências da Saúde (40000001), na Área Básica de Educação Física (40900002), Subárea de Fisioterapia e Terapia Ocupacional (40800008)](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/programa/quantitativos/quantitativoAreaConhecimento.xhtml?areaAvaliacao=21). O PPGCR-UNISUAM oferece as titulações de Mestre em Ciências da Reabilitação e Doutor em Ciências da Reabilitação, além do Estágio Pós-Doutoral em Ciências da Reabilitação.
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Dados cadastrais**
+
+```{r apresentacao, eval = has.dados.cadastrais}
+# read separate sheets
+dados.do.programa.raw <-
+  read_excel("PPG/Dados Cadastrais.xlsx",
+             sheet = "Dados do programa",
+             col_types = c("text"))
+colnames(dados.do.programa.raw) <-
+  seq(1:dim(dados.do.programa.raw)[2])
+
+endereco.raw <-
+  read_excel("PPG/Dados Cadastrais.xlsx",
+             sheet = "Endereço",
+             col_types = c("text"))
+colnames(endereco.raw) <- seq(1:dim(endereco.raw)[2])
+
+# resolve long URLs
+for (i in 1:dim(endereco.raw)[1]) {
+  if (length(grep("https://", endereco.raw[i, 2])) != 0) {
+    endereco.raw[i, 2] <-
+      paste('[↗️](', endereco.raw[i, 2], '){target="_blank"}', sep = "")
+  }
+}
+
+# print tables
+table <- unname(as.data.frame(rbind(dados.do.programa.raw, endereco.raw)))
+
+print(
+  kable(table, align = c("l", rep("c", ncol(
+    table
+  ) - 2), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Sucupira**
+
+<iframe src="https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/programa/viewPrograma.jsf?popup=true&cd_programa=31063012002P4" style="width:100%; height:500px; border:0;"></iframe>
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/programa/viewPrograma.jsf?popup=true&cd_programa=31063012002P4)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **2020-2017**
+
+```{r documentos-historicos-2020, eval = has.apresentacao}
+# read separate sheets
+quadrienal2017.raw <-
+  read_excel("PPG/Apresentação.xlsx",
+             sheet = "2017-2020 Quadrienal",
+             col_types = c("text"))
+
+# replace the link by a tag
+for (i in 1:dim(quadrienal2017.raw)[1]) {
+  quadrienal2017.raw[i, 3] <-
+    paste("[↗️](", quadrienal2017.raw[i, 3], '){target="_blank"}', sep = "")
+}
+
+# print table
+print(
+  kable(quadrienal2017.raw, align = c("l", rep(
+    "c", ncol(quadrienal2017.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **2016-2013**
+
+```{r documentos-historicos-2016, eval = has.apresentacao}
+# read separate sheets
+quadrienal2013.raw <-
+  read_excel("PPG/Apresentação.xlsx",
+             sheet = "2013-2016 Quadrienal",
+             col_types = c("text"))
+
+# replace the link by a tag
+for (i in 1:dim(quadrienal2013.raw)[1]) {
+  quadrienal2013.raw[i, 3] <-
+    paste("[↗️](", quadrienal2013.raw[i, 3], '){target="_blank"}', sep = "")
+}
+
+# print table
+print(
+  kable(quadrienal2013.raw, align = c("l", rep(
+    "c", ncol(quadrienal2013.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **2012-2010**
+
+```{r documentos-historicos-2012, eval = has.apresentacao}
+# read separate sheets
+trienal2010.raw <-
+  read_excel("PPG/Apresentação.xlsx",
+             sheet = "2010-2012 Trienal",
+             col_types = c("text"))
+
+# replace the link by a tag
+for (i in 1:dim(trienal2010.raw)[1]) {
+  trienal2010.raw[i, 3] <-
+    paste("[↗️](", trienal2010.raw[i, 3], '){target="_blank"}', sep = "")
+}
+
+# print table
+print(
+  kable(trienal2010.raw, align = c("l", rep(
+    "c", ncol(trienal2010.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Pré-2010**
+
+```{r documentos-historicos-2010, eval = has.apresentacao}
+# read separate sheets
+historico.raw <-
+  read_excel("PPG/Apresentação.xlsx",
+             sheet = "2006-2010 APCN",
+             col_types = c("text"))
+
+# replace the link by a tag
+for (i in 1:dim(historico.raw)[1]) {
+  historico.raw[i, 3] <-
+    paste("[↗️](", historico.raw[i, 3], '){target="_blank"}', sep = "")
+}
+
+# print table
+print(
+  kable(historico.raw, align = c("l", rep(
+    "c", ncol(historico.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Breve histórico** {.tabset #breve-historico}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **2020-2017**
+
+No atual quadriênio, 2017-2020, o PPGCR-UNISUAM amplia seu compromisso com formação de recursos humanos qualificada, de produção intelectual internacional e captação de financiamentos para pesquisa. Em síntese do período 2017-2020, o corpo docente passa por um processo de renovação e completa 2020 com 12 docentes permanentes credenciados, além de 4 pesquisadores que passaram pelo Estágio Pós-doutoral (1 com bolsa PNPD-CAPES e 2 pesquisadores estrangeiros). Um total de 87 Mestres e 8 Doutores foram titulados com tempo médio de titulação de 28 e 49 meses, respectivamente. A produção de artigos alcançou 160 artigos em periódicos nacionais e internacionais indexados no PubMed. Adicionalmente, 25 projetos foram contemplados em editais da FAPERJ, CAPES e CNPq – merecendo destaque 3 editais de “Jovem Cientista do Nosso Estado”, 2 editais de “Universidades Sediadas no RJ” e 1 bolsa de Pesquisador do CNPq – somando aproximadamente R$2.000.000,00 em recursos captados no quadriênio (cerca de R$4.170.000,00 desde a formação do Grupo de Pesquisa). Em continuidade à política de fixação de docentes para o PPGCR-UNISUAM, o bolsista no quadriênio foi contratado para compor o quadro de docentes permanentes do Programa. Estes resultados no quadriênio vigente e contextualizados com os demais indicadores reiteram o compromisso do grupo de pesquisadores em desenvolver a Ciência no Estado e no País.
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **2016-2013**
+
+No quadriênio de 2013-2016, o PPGCR-UNISUAM manteve seu compromisso com a qualidade na formação de recursos humanos, produção intelectual e captação de financiamentos. Em síntese desse quadriênio, o corpo docente foi estabilizado em 13 docentes permanentes (mais 1 colaborador), 66 mestres foram titulados em tempo médio de 26 meses e 121 artigos foram indexados no PubMed. Adicionalmente, 33 projetos foram contemplados em editais da FAPERJ e CNPq – merecendo destaque 13 editais de Auxílio à Pesquisa, 2 editais temáticos de “Apoio ao Desenvolvimento de Inovações no Esporte”, 2 editais de “Jovem Cientista do Nosso Estado” e 1 bolsa de Pós-Doutorado no Exterior – somando aproximadamente R$1.800.000,00 em recursos e bolsas PROSUP captados no período (cerca de R$2.100.000,00 no total). Estes resultados, contextualizados com os demais indicadores do PPGCR-UNISUAM para a Área 21 nesse período, resultaram na manutenção no [conceito 4](https://www.gov.br/capes/pt-br/assuntos/noticias/divulgado-o-resultado-da-1-etapa-da-avaliacao-quadrienal-2017), mostrando a consistência do desenvolvimento do PPGCR-UNISUAM em uma Área ainda em expansão .
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **2012-2010**
+
+No triênio de 2010-2012, o PPGCR-UNISUAM obteve um crescimento quantitativo e qualitativo, tanto na formação de recursos humanos (docentes em nível superior) quanto no desenvolvimento científico e produção intelectual, assim como na captação de recursos para financiamento de PP. Em síntese desse triênio, o corpo docente foi expandido para 14 docentes permanentes (mais 2 colaboradores), 18 mestres foram titulados em tempo médio de 23 meses e 19 artigos foram indexados no PubMed. Adicionalmente, 10 projetos foram contemplados em editais da FAPERJ e CAPES – 4 editais de Auxílio à Pesquisa, 3 editais de Apoio ao Pesquisador Recém-Contratado, 2 editais de Apoios a Eventos e 1 edital de “Jovem Cientista do Nosso Estado” – somando aproximadamente R$120.000,00 em captação de recursos no período (R$315.000,00 no total). Estes resultados, contextualizados com os demais indicadores do PPGCR-UNISUAM para a Área 21, culminaram no conceito 4 já em sua primeira avaliação trienal, conforme [Portaria n° 656, publicada no D.O.U. de 23/5/2017, Seção 1, Págs. 14](http://pesquisa.in.gov.br/imprensa/jsp/visualiza/index.jsp?data=23/05/2017&jornal=1&pagina=14&totalArquivos=184).
+
+<br>
+
+O comprometimento institucional no fortalecimento das políticas de pesquisa é novamente reforçado no PDI 2012-2016, no qual são definidas ações de estímulo à pesquisa por meio de capacitação e fixação de docentes titulados na IES. Em 2013, ainda somente com o curso de Mestrado autorizado, o PPGCR-UNISUAM foi contemplado com 1 bolsa de Estágio Pós-Doutoral, acompanhando a implantação do Programa Nacional de Pós-Doutorado (PNPD) da CAPES, de acordo com a [Portaria Nº 086 de 3/7/2013](https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/bolsas/bolsas-no-pais/pnpd-capes). A política da IES foi então dedicada à utilização da bolsa para captação e fixação de docentes para o PPGCR-UNISUAM. Devido ao excelente desempenho dos pesquisadores durante o Estágio Pós-Doutoral, todos os 2 pesquisadores bolsistas no período 2013-2016 foram contratados para compor o quadro de docentes permanentes do Programa. O amadurecimento da experiência do corpo docente na orientação dos mestrandos e a continuada elevação da produção acadêmica do grupo viabilizaram o envio da Proposta de Curso Novo de Doutorado Acadêmico em Ciências da Reabilitação. A proposta de curso, submetida em 2014, foi também aprovada após primeira avaliação. O curso de Doutorado Acadêmico do PPGCR-UNISUAM foi então instalado em 2015, logo após a recomendação CAPES, conforme [Portaria n° 919, publicada no D.O.U. de 18/8/2016, Seção 1, Pág. 13](http://pesquisa.in.gov.br/imprensa/jsp/visualiza/index.jsp?data=19/08/2016&jornal=1&pagina=13&totalArquivos=256).
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Pré-2010**
+
+A valorização da pesquisa científica no meio acadêmico e a busca constante pela excelência na formação docente são ambas características da UNISUAM, evidenciadas a partir do Plano de Desenvolvimento Institucional (PDI) 2003-2007 quando, com recursos próprios, criou o Programa Institucional de Bolsas de Iniciação Científica (PIBIC). A partir deste PDI, a UNISUAM passa a atribuir carga horária remunerada para que seus docentes exerçam atividades de pesquisa científica. A partir do PDI 2003-2007, a UNISUAM iniciou a contratação de docentes titulados (doutores) com o objetivo de instituir a Pós-Graduação Stricto Sensu na área de Ciências da Reabilitação. A atuação conjunta do grupo de pesquisa da UNISUAM iniciou-se com o estudo dos documentos da Área 21, seguida da definição criteriosa tanto da AC quanto das respectivas LP, de modo a nortear os PP e a respectiva produção intelectual. Este processo culminou na certificação do [Grupo de Pesquisa em Fisioterapia](http://dgp.cnpq.br/dgp/espelhogrupo/6275564297217717) da UNISUAM no DGP-CNPq em 2005 , substituído a partir de 2017 por novos grupos.
+
+<br>
+
+No período de 2005 a 2009, em consonância com o PDI 2008-2012, o grupo de pesquisa foi progressivamente ampliado e fortalecido; participavam do grupo 10 docentes, capazes de captar recursos para seus projetos via editais e de publicar seus resultados em periódicos científicos. Ao todo, foram contemplados 4 projetos em editais de agências regionais de fomento à pesquisa (Fundação de Amparo à Pesquisa do Estado do Rio de Janeiro – FAPERJ), sendo 3 editais de Auxílio à Pesquisa e 1 edital temático em “Apoio à Construção da Cidadania da Pessoa com Deficiência”, somando aproximadamente R$170.000,00. A produção científica da UNISUAM foi impulsionada, mostrando em 2009 ainda como Grupo de Pesquisa, já com 3 artigos publicados indexados somente no PubMed. A participação dos alunos da graduação com bolsas do PIBIC foi decisiva para o desenvolvimento das pesquisas nessa etapa. Visando promover e aprimorar os aspectos éticos da pesquisa, os docentes do Grupo de Pesquisa em Fisioterapia organizaram o [Comitê de Ética em Pesquisa (CEP)](https://www.unisuam.edu.br/pesquisa-extensao-e-inova/pesquisa-e-inovacao) da IES, que foi aprovado pelo Comissão Nacional de Ética em Pesquisa (CONEP) pela Carta nº. 341 CONEP/CNS/MS de 10/04/2006. Desde sua criação, os docentes do Grupo de Pesquisa fazem parte deste comitê nas funções de coordenação, coordenação adjunta e/ou de membros efetivos.
+
+<br>
+
+A sequência desses fatos, somada ao total apoio institucional e ao desenvolvimento técnico-científico do grupo, resultou na elaboração da Proposta de Curso Novo de Mestrado Acadêmico em Ciências da Reabilitação. A proposta de curso, submetida em meados de 2009, foi aprovada após primeira avaliação. O Curso de Mestrado Acadêmico do Programa de Pós-Graduação em Ciências da Reabilitação da UNISUAM (PPGCR-UNISUAM) foi então instalado em 2010, logo após a recomendação da Coordenação de Aperfeiçoamento de Pessoal de Nível Superior (CAPES), com conceito 3, conforme [Portaria n° 1045, publicada no D.O.U. de 19/8/2010, Seção 1, Pág. 10](http://pesquisa.in.gov.br/imprensa/jsp/visualiza/index.jsp?data=19/08/2010&jornal=1&pagina=10&totalArquivos=136). O pioneirismo da UNISUAM na Pós-Graduação em Ciências da Reabilitação revitaliza então o mesmo ideal de 1979 com a absorção do curso de graduação em Fisioterapia no RJ.
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Área de concentração** {.tabset #area-concentracao}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Descrição**
+
+O PPGCR-UNISUAM organiza sua ÁREA DE CONCENTRAÇÃO (AC), LINHAS DE PESQUISA (LP) e PROJETOS DE PESQUISA (PP) de acordo com o princípio geral de que a reabilitação está centrada no binômio avaliação-intervenção, em todas as fases do processo saúde-doença, em diversas populações sob o modelo biopsicossocial. Atendem-se assim às demandas por investigação em níveis de atenção primária (prevenção e promoção da saúde), secundária (diagnóstico precoce e intervenção imediata) e terciária (reabilitação) nas diversas especialidades da Fisioterapia em particular área e da saúde em geral.
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Atual**
+
+```{r area-concetracao, eval = has.dados.cadastrais}
+area.raw <-
+  read_excel("PPG/Dados Cadastrais.xlsx",
+             sheet = "AC",
+             col_types = c("text"))
+area.raw$Fim <- NULL
+
+# print tables
+print(
+  kable(area.raw, align = c("l", rep(
+    "c", ncol(area.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Inativas**
+
+```{r area-concetracao-inativas, eval = has.dados.cadastrais}
+areas.raw <-
+  read_excel("PPG/Dados Cadastrais.xlsx",
+             sheet = "AC",
+             col_types = c("text"))
+areas.inativas <- areas.raw[!is.na(areas.raw$Fim),]
+areas.inativas <-
+  areas.inativas[order(areas.inativas$Fim, decreasing = TRUE),]
+
+# print tables
+if (dim(areas.inativas)[1] != 0) {
+  print(
+    kable(areas.inativas, align = c("l", rep(
+      "c", ncol(areas.inativas) - 2
+    ), "r")) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+} else {
+  cat("*Sem dados para exibir*")
+}
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Linhas de pesquisa** {.tabset #linha-pesquisa}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Descrição**
+
+A partir desta AC são derivadas as 3 LP vigentes: ABORDAGEM TERAPÊUTICA EM REABILITAÇÃO, AVALIAÇÃO FUNCIONAL EM REABILITAÇÃO e REABILITAÇÃO NO ESPORTE E NO ESPORTE ADAPTADO. Mediante a expansão do corpo docente e Laboratorios, com consequente aumento da diversidade dos PP, uma LP (AVALIAÇÃO FUNCIONAL E ATIVIDADE FÍSICA) foi encerrada e outra (AVALIAÇÃO E INTERVENÇÃO NO ESPORTE ADAPTADO) foi renomeada e redefinida em sua descrição. A atual organização das LP reforça a interdisciplinaridade e transdisciplinaridade dos PP do PPGCR-UNISUAM, caracterizado por aliar áreas específicas do conhecimento de seus docentes e discentes para responder às questões que uma única área ou especialidade não responderia adequadamente. As LP e suas respectivas descrições são revisadas continuamente, sendo a última atualização em 2017, a partir das sugestões do parecer da Comissão de Avaliação Quadrienal 2017.
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Atual**
+
+```{r linhas-de-pesquisa-atual, eval = has.dados.cadastrais}
+linhas.raw <-
+  read_excel("PPG/Dados Cadastrais.xlsx",
+             sheet = "LP",
+             col_types = c("text"))
+linhas.atual <- linhas.raw[is.na(linhas.raw$Fim),]
+linhas.atual$Fim <- NULL
+
+# print tables
+print(
+  kable(linhas.atual, align = c("l", rep(
+    "c", ncol(linhas.atual) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Inativas**
+
+```{r linhas-de-pesquisa-inativas, eval = has.dados.cadastrais}
+linhas.raw <-
+  read_excel("PPG/Dados Cadastrais.xlsx",
+             sheet = "LP",
+             col_types = c("text"))
+linhas.inativas <- linhas.raw[!is.na(linhas.raw$Fim),]
+linhas.inativas <-
+  linhas.inativas[order(linhas.inativas$Fim, decreasing = TRUE),]
+
+# print tables
+if (dim(linhas.inativas)[1] != 0) {
+  print(
+    kable(linhas.inativas, align = c("l", rep(
+      "c", ncol(linhas.inativas) - 2
+    ), "r")) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+} else {
+  cat("*Sem dados para exibir*")
+}
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Projetos de pesquisa** {.tabset #projeto-pesquisa}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Descrição**
+
+Os docentes vinculados ao PPGCR são orientados a coordenar até 2 PP institucionais (“guarda-chuva”) por LP, sendo cada PP vinculado a uma LP diferente. Adicionalmente, os docentes são estimulados a colaborar nos projetos das diferentes LP, de modo que a transdisciplinaridade gere aspectos inovadores para as Ciências da Reabilitação. Desse modo, PP anteriores a 2017 têm sido concluídos e substituídos por novos projetos institucionais, promovendo assim uma melhor distribuição dos PP e respectivas produções entre as LP. Considerando-se a interação de fatores tais como as áreas de formação e atuação dos docentes, a temática dos PP, e sua aderência aos grupos de pesquisa, evidencia-se certa assimetria na distribuição dos PP entre as LP ativas.
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **2024-2021** {.tabset}
+
+#### **Figura**
+
+```{r projetos-de-pesquisa-2024-grafico, eval = has.sucupira}
+# projetos - membros
+sheet <- "Projetos - Membros"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)[na.omit(match(c(2021:2024), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
+projetos <- unique(projetos)
+
+# select data DOCENTES
+projetos.doc <- projetos[projetos$`Categoria do Membro do Projeto` =="Docente", ]
+table.doc <- table(projetos.doc$`Nome do Membro do Projeto`, projetos.doc$`Linha de Pesquisa`)
+# add row totals
+table.doc <- cbind(table.doc, rowSums(table.doc))
+colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
+# add column totals
+table.doc <- rbind(table.doc, colSums(table.doc))
+rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
+# print tables
+# print(kable(table.doc, align = c("l", rep("c", ncol(table.doc)-2), "r"), caption = "Docentes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+# line break
+cat("  \n")
+cat("  \n")
+
+# select data POS-DOC
+table.posdoc <- NULL
+projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
+if(length(projetos.posdoc)[1] != 0){
+  table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
+  # add row totals
+  table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
+  colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
+  # add column totals
+  table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
+  rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
+  # print tables
+  # print(kable(table.posdoc, align = c("l", rep("c", ncol(table.posdoc)-2), "r"), caption = "Pós-Doutorandos") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+}
+
+# line break
+cat("  \n")
+cat("  \n")
+  
+# proporção de projetos por linha de pesquisa
+layout(matrix(c(1,2,3,3), nrow = 2, ncol = 2, byrow = TRUE), heights = c(0.7,0.3))
+par(oma=c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
+levels <- unique(c(colnames(table.doc), colnames(table.posdoc)))
+levels <- levels[which(levels != "N")]
+pie(head(colSums(table.doc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Docentes")
+if(dim(projetos.posdoc)[1] != 0){
+  pie(head(colSums(table.posdoc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Pós-Doutorandos")
+} else {
+  plot(0, type = 'n', axes = FALSE)
+}
+plot(0, type = 'n', axes = FALSE)
+legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 0.7)
+title("Projetos de Pesquisa", outer = TRUE)
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Tabela**
+
+```{r projetos-de-pesquisa-2024-tabela, eval = has.sucupira}
+# projetos - membros
+sheet <- "Projetos - Membros"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)[na.omit(match(c(2021:2024), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
+projetos <- unique(projetos)
+
+# select data DOCENTES
+projetos.doc <- projetos[projetos$`Categoria do Membro do Projeto` =="Docente", ]
+table.doc <- table(projetos.doc$`Nome do Membro do Projeto`, projetos.doc$`Linha de Pesquisa`)
+# add row totals
+table.doc <- cbind(table.doc, rowSums(table.doc))
+colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
+# add column totals
+table.doc <- rbind(table.doc, colSums(table.doc))
+rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
+# print tables
+print(kable(table.doc, align = c("c", rep("c", ncol(table.doc)-2), "r"), caption = "Docentes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+# line break
+cat("  \n")
+cat("  \n")
+
+# select data POS-DOC
+table.posdoc <- NULL
+projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
+if(dim(projetos.posdoc)[1] != 0){
+  table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
+  # add row totals
+  table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
+  colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
+  # add column totals
+  table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
+  rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
+  # print tables
+  print(kable(table.posdoc, align = c("c", rep("c", ncol(table.posdoc)-2), "r"), caption = "Pós-Doutorandos") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+}
+
+# line break
+cat("  \n")
+cat("  \n")
+  
+# proporção de projetos por linha de pesquisa
+# layout(matrix(c(1,2,3,3), nrow = 2, ncol = 2, byrow = TRUE), heights = c(0.7,0.3))
+# par(oma=c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
+# levels <- unique(c(colnames(table.doc), colnames(table.posdoc)))
+# levels <- levels[which(levels != "N")]
+# pie(head(colSums(table.doc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Docentes")
+# if(dim(projetos.posdoc)[1] != 0){
+#   pie(head(colSums(table.posdoc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Pós-Doutorandos")
+# } else {
+#   plot(0, type = 'n', axes = FALSE)
+# }
+# plot(0, type = 'n', axes = FALSE)
+# legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 1)
+# title("Projetos de Pesquisa", outer = TRUE)
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Lista**
+
+<br>
+
+```{r projetos-de-pesquisa-2024-lista, eval = has.sucupira}
+# projetos - membros
+sheet <- "Projetos - Membros"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)[na.omit(match(c(2021:2024), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
+projetos <- unique(projetos)
+
+table.projetos <- cbind(projetos$`Nome do Membro do Projeto`, projetos$`Nome do Projeto de Pesquisa`, projetos$`Linha de Pesquisa`)
+table.projetos <- table.projetos[order(table.projetos[, 1]), ]
+labels <- colnames(table.projetos)
+# print tables
+table.projetos[, 1] <- as.vector(unlist(lapply(table.projetos[, 1], FUN = str_to_upper)))
+table.projetos[, 2] <- as.vector(unlist(lapply(table.projetos[, 2], FUN = str_to_sentence)))
+table.projetos[, 3] <- as.vector(unlist(lapply(table.projetos[, 3], FUN = str_to_title)))
+
+colnames(table.projetos) <- c("Nome do Membro Responsável", "Nome do Projeto de Pesquisa", "Linha de Pesquisa")
+
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(table.projetos, title = "Projetos de Pesquisa 2021-2024")
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **2020-2017** {.tabset}
+
+#### **Figura**
+
+```{r projetos-de-pesquisa-2020-grafico, eval = has.sucupira}
+# projetos - membros
+sheet <- "Projetos - Membros"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)[na.omit(match(c(2017:2020), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "CONCLUÍDO", ]
+projetos <- unique(projetos)
+
+# select data DOCENTES
+projetos.doc <- projetos[projetos$`Categoria do Membro do Projeto` =="Docente", ]
+table.doc <- table(projetos.doc$`Nome do Membro do Projeto`, projetos.doc$`Linha de Pesquisa`)
+# add row totals
+table.doc <- cbind(table.doc, rowSums(table.doc))
+colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
+# add column totals
+table.doc <- rbind(table.doc, colSums(table.doc))
+rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
+# print tables
+# print(kable(table.doc, align = c("l", rep("c", ncol(table.doc)-2), "r"), caption = "Docentes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+# line break
+cat("  \n")
+cat("  \n")
+
+# select data POS-DOC
+table.posdoc <- NULL
+projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
+if(dim(projetos.posdoc)[1] != 0){
+  table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
+  # add row totals
+  table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
+  colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
+  # add column totals
+  table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
+  rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
+  # print tables
+  # print(kable(table.posdoc, align = c("l", rep("c", ncol(table.posdoc)-2), "r"), caption = "Pós-Doutorandos") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+}
+
+# line break
+cat("  \n")
+cat("  \n")
+  
+# proporção de projetos por linha de pesquisa
+layout(matrix(c(1,2,3,3), nrow = 2, ncol = 2, byrow = TRUE), heights = c(0.7,0.3))
+par(oma=c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
+levels <- unique(c(colnames(table.doc), colnames(table.posdoc)))
+levels <- levels[which(levels != "N")]
+pie(head(colSums(table.doc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Docentes")
+if(dim(projetos.posdoc)[1] != 0){
+  pie(head(colSums(table.posdoc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Pós-Doutorandos")
+} else {
+  plot(0, type = 'n', axes = FALSE)
+}
+plot(0, type = 'n', axes = FALSE)
+legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 0.7)
+title("Projetos de Pesquisa", outer = TRUE)
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Tabela**
+
+```{r projetos-de-pesquisa-2020-tabela, eval = has.sucupira}
+# projetos - membros
+sheet <- "Projetos - Membros"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)[na.omit(match(c(2017:2020), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "CONCLUÍDO", ]
+projetos <- unique(projetos)
+
+# select data DOCENTES
+projetos.doc <- projetos[projetos$`Categoria do Membro do Projeto` =="Docente", ]
+table.doc <- table(projetos.doc$`Nome do Membro do Projeto`, projetos.doc$`Linha de Pesquisa`)
+# add row totals
+table.doc <- cbind(table.doc, rowSums(table.doc))
+colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
+# add column totals
+table.doc <- rbind(table.doc, colSums(table.doc))
+rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
+# print tables
+print(kable(table.doc, align = c("c", rep("c", ncol(table.doc)-2), "r"), caption = "Docentes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+# line break
+cat("  \n")
+cat("  \n")
+
+# select data POS-DOC
+table.posdoc <- NULL
+projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
+if(dim(projetos.posdoc)[1] != 0){
+  table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
+  # add row totals
+  table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
+  colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
+  # add column totals
+  table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
+  rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
+  # print tables
+  print(kable(table.posdoc, align = c("c", rep("c", ncol(table.posdoc)-2), "r"), caption = "Pós-Doutorandos") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+}
+
+# line break
+cat("  \n")
+cat("  \n")
+  
+# proporção de projetos por linha de pesquisa
+# layout(matrix(c(1,2,3,3), nrow = 2, ncol = 2, byrow = TRUE), heights = c(0.7,0.3))
+# par(oma=c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
+# levels <- unique(c(colnames(table.doc), colnames(table.posdoc)))
+# levels <- levels[which(levels != "N")]
+# pie(head(colSums(table.doc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Docentes")
+# if(dim(projetos.posdoc)[1] != 0){
+#   pie(head(colSums(table.posdoc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Pós-Doutorandos")
+# } else {
+#   plot(0, type = 'n', axes = FALSE)
+# }
+# plot(0, type = 'n', axes = FALSE)
+# legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 1)
+# title("Projetos de Pesquisa", outer = TRUE)
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Lista**
+
+<br>
+
+```{r projetos-de-pesquisa-2020-lista, eval = has.sucupira}
+# projetos - membros
+sheet <- "Projetos - Membros"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)[na.omit(match(c(2017:2020), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "CONCLUÍDO", ]
+projetos <- unique(projetos)
+
+table.projetos <- cbind(projetos$`Nome do Membro do Projeto`, projetos$`Nome do Projeto de Pesquisa`, projetos$`Linha de Pesquisa`)
+table.projetos <- table.projetos[order(table.projetos[, 1]), ]
+labels <- colnames(table.projetos)
+# print tables
+table.projetos[, 1] <- as.vector(unlist(lapply(table.projetos[, 1], FUN = str_to_upper)))
+table.projetos[, 2] <- as.vector(unlist(lapply(table.projetos[, 2], FUN = str_to_sentence)))
+table.projetos[, 3] <- as.vector(unlist(lapply(table.projetos[, 3], FUN = str_to_title)))
+
+colnames(table.projetos) <- c("Nome do Membro Responsável", "Nome do Projeto de Pesquisa", "Linha de Pesquisa")
+
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(table.projetos, title = "Projetos de Pesquisa 2020-2017")
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **2016-2013** {.tabset}
+
+#### **Figura**
+
+```{r projetos-de-pesquisa-2016-grafico, eval = has.sucupira}
+# projetos - membros
+sheet <- "Projetos - Membros"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)[na.omit(match(c(2013:2016), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "CONCLUÍDO", ]
+projetos <- unique(projetos)
+
+# select data DOCENTES
+projetos.doc <- projetos[projetos$`Categoria do Membro do Projeto` =="Docente", ]
+table.doc <- table(projetos.doc$`Nome do Membro do Projeto`, projetos.doc$`Linha de Pesquisa`)
+# add row totals
+table.doc <- cbind(table.doc, rowSums(table.doc))
+colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
+# add column totals
+table.doc <- rbind(table.doc, colSums(table.doc))
+rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
+# print tables
+# print(kable(table.doc, align = c("l", rep("c", ncol(table.doc)-2), "r"), caption = "Docentes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+# line break
+cat("  \n")
+cat("  \n")
+
+# select data POS-DOC
+table.posdoc <- NULL
+projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
+if(dim(projetos.posdoc)[1] != 0){
+  table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
+  # add row totals
+  table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
+  colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
+  # add column totals
+  table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
+  rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
+  # print tables
+  # print(kable(table.posdoc, align = c("l", rep("c", ncol(table.posdoc)-2), "r"), caption = "Pós-Doutorandos") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+}
+
+# line break
+cat("  \n")
+cat("  \n")
+  
+# proporção de projetos por linha de pesquisa
+layout(matrix(c(1,2,3,3), nrow = 2, ncol = 2, byrow = TRUE), heights = c(0.7,0.3))
+par(oma=c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
+levels <- unique(c(colnames(table.doc), colnames(table.posdoc)))
+levels <- levels[which(levels != "N")]
+pie(head(colSums(table.doc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Docentes")
+if(dim(projetos.posdoc)[1] != 0){
+  pie(head(colSums(table.posdoc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Pós-Doutorandos")
+} else {
+  plot(0, type = 'n', axes = FALSE)
+}
+plot(0, type = 'n', axes = FALSE)
+legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 0.7)
+title("Projetos de Pesquisa", outer = TRUE)
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Tabela**
+
+```{r projetos-de-pesquisa-2016-tabela, eval = has.sucupira}
+# projetos - membros
+sheet <- "Projetos - Membros"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)[na.omit(match(c(2013:2016), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "CONCLUÍDO", ]
+projetos <- unique(projetos)
+
+# select data DOCENTES
+projetos.doc <- projetos[projetos$`Categoria do Membro do Projeto` =="Docente", ]
+table.doc <- table(projetos.doc$`Nome do Membro do Projeto`, projetos.doc$`Linha de Pesquisa`)
+# add row totals
+table.doc <- cbind(table.doc, rowSums(table.doc))
+colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
+# add column totals
+table.doc <- rbind(table.doc, colSums(table.doc))
+rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
+# print tables
+print(kable(table.doc, align = c("c", rep("c", ncol(table.doc)-2), "r"), caption = "Docentes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+# line break
+cat("  \n")
+cat("  \n")
+
+# select data POS-DOC
+table.posdoc <- NULL
+projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
+if(dim(projetos.posdoc)[1] != 0){
+  table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
+  # add row totals
+  table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
+  colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
+  # add column totals
+  table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
+  rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
+  # print tables
+  print(kable(table.posdoc, align = c("c", rep("c", ncol(table.posdoc)-2), "r"), caption = "Pós-Doutorandos") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+}
+
+# line break
+cat("  \n")
+cat("  \n")
+  
+# proporção de projetos por linha de pesquisa
+# layout(matrix(c(1,2,3,3), nrow = 2, ncol = 2, byrow = TRUE), heights = c(0.7,0.3))
+# par(oma=c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
+# levels <- unique(c(colnames(table.doc), colnames(table.posdoc)))
+# levels <- levels[which(levels != "N")]
+# pie(head(colSums(table.doc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Docentes")
+# if(dim(projetos.posdoc)[1] != 0){
+#   pie(head(colSums(table.posdoc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Pós-Doutorandos")
+# } else {
+#   plot(0, type = 'n', axes = FALSE)
+# }
+# plot(0, type = 'n', axes = FALSE)
+# legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 1)
+# title("Projetos de Pesquisa", outer = TRUE)
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Lista**
+
+<br>
+
+```{r projetos-de-pesquisa-2016-lista, eval = has.sucupira}
+# projetos - membros
+sheet <- "Projetos - Membros"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)[na.omit(match(c(2013:2016), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "CONCLUÍDO", ]
+projetos <- unique(projetos)
+
+table.projetos <- cbind(projetos$`Nome do Membro do Projeto`, projetos$`Nome do Projeto de Pesquisa`, projetos$`Linha de Pesquisa`)
+table.projetos <- table.projetos[order(table.projetos[, 1]), ]
+labels <- colnames(table.projetos)
+# print tables
+table.projetos[, 1] <- as.vector(unlist(lapply(table.projetos[, 1], FUN = str_to_upper)))
+table.projetos[, 2] <- as.vector(unlist(lapply(table.projetos[, 2], FUN = str_to_sentence)))
+table.projetos[, 3] <- as.vector(unlist(lapply(table.projetos[, 3], FUN = str_to_title)))
+
+colnames(table.projetos) <- c("Nome do Membro Responsável", "Nome do Projeto de Pesquisa", "Linha de Pesquisa")
+
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(table.projetos, title = "Projetos de Pesquisa 2013-2016")
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **2012-2010** {.tabset}
+
+#### **Figura**
+
+```{r projetos-de-pesquisa-concluidos-2012-grafico, eval = has.sucupira}
+# projetos - membros
+sheet <- "Projetos - Membros"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)[na.omit(match(c(2010:2012), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "CONCLUÍDO", ]
+projetos <- unique(projetos)
+
+# select data DOCENTES
+projetos.doc <- projetos[projetos$`Categoria do Membro do Projeto` =="Docente", ]
+table.doc <- table(projetos.doc$`Nome do Membro do Projeto`, projetos.doc$`Linha de Pesquisa`)
+# add row totals
+table.doc <- cbind(table.doc, rowSums(table.doc))
+colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
+# add column totals
+table.doc <- rbind(table.doc, colSums(table.doc))
+rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
+# print tables
+# print(kable(table.doc, align = c("l", rep("c", ncol(table.doc)-2), "r"), caption = "Docentes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+# line break
+cat("  \n")
+cat("  \n")
+
+# select data POS-DOC
+projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
+if(dim(projetos.posdoc)[1] != 0){
+  table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
+  # add row totals
+  table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
+  colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
+  # add column totals
+  table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
+  rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
+  # print tables
+  # print(kable(table.posdoc, align = c("l", rep("c", ncol(table.posdoc)-2), "r"), caption = "Pós-Doutorandos") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+}
+
+# line break
+cat("  \n")
+cat("  \n")
+  
+# proporção de projetos por linha de pesquisa
+layout(matrix(c(1,2,3,3), nrow = 2, ncol = 2, byrow = TRUE), heights = c(0.7,0.3))
+par(oma=c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
+levels <- unique(c(colnames(table.doc), colnames(table.posdoc)))
+levels <- levels[which(levels != "N")]
+pie(head(colSums(table.doc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Docentes")
+if(dim(projetos.posdoc)[1] != 0){
+  pie(head(colSums(table.posdoc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Pós-Doutorandos")
+} else {
+  plot(0, type = 'n', axes = FALSE)
+}
+plot(0, type = 'n', axes = FALSE)
+legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 0.7)
+title("Projetos de Pesquisa", outer = TRUE)
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Tabela**
+
+```{r projetos-de-pesquisa-concluidos-2012-tabela, eval = has.sucupira}
+# projetos - membros
+sheet <- "Projetos - Membros"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)[na.omit(match(c(2010:2012), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "CONCLUÍDO", ]
+projetos <- unique(projetos)
+
+# select data DOCENTES
+projetos.doc <- projetos[projetos$`Categoria do Membro do Projeto` =="Docente", ]
+table.doc <- table(projetos.doc$`Nome do Membro do Projeto`, projetos.doc$`Linha de Pesquisa`)
+# add row totals
+table.doc <- cbind(table.doc, rowSums(table.doc))
+colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
+# add column totals
+table.doc <- rbind(table.doc, colSums(table.doc))
+rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
+# print tables
+print(kable(table.doc, align = c("c", rep("c", ncol(table.doc)-2), "r"), caption = "Docentes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+# line break
+cat("  \n")
+cat("  \n")
+
+# select data POS-DOC
+projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
+if(dim(projetos.posdoc)[1] != 0){
+  table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
+  # add row totals
+  table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
+  colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
+  # add column totals
+  table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
+  rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
+  # print tables
+  print(kable(table.posdoc, align = c("c", rep("c", ncol(table.posdoc)-2), "r"), caption = "Pós-Doutorandos") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+}
+
+# line break
+cat("  \n")
+cat("  \n")
+  
+# proporção de projetos por linha de pesquisa
+# layout(matrix(c(1,2,3,3), nrow = 2, ncol = 2, byrow = TRUE), heights = c(0.7,0.3))
+# par(oma=c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
+# levels <- unique(c(colnames(table.doc), colnames(table.posdoc)))
+# levels <- levels[which(levels != "N")]
+# pie(head(colSums(table.doc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Docentes")
+# if(dim(projetos.posdoc)[1] != 0){
+#   pie(head(colSums(table.posdoc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Pós-Doutorandos")
+# } else {
+#   plot(0, type = 'n', axes = FALSE)
+# }
+# plot(0, type = 'n', axes = FALSE)
+# legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 1)
+# title("Projetos de Pesquisa", outer = TRUE)
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Lista**
+
+<br>
+
+```{r projetos-de-pesquisa-2012-lista, eval = has.sucupira}
+# projetos - membros
+sheet <- "Projetos - Membros"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)[na.omit(match(c(2010:2012), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "CONCLUÍDO", ]
+projetos <- unique(projetos)
+
+table.projetos <- cbind(projetos$`Nome do Membro do Projeto`, projetos$`Nome do Projeto de Pesquisa`, projetos$`Linha de Pesquisa`)
+table.projetos <- table.projetos[order(table.projetos[, 1]), ]
+labels <- colnames(table.projetos)
+# print tables
+table.projetos[, 1] <- as.vector(unlist(lapply(table.projetos[, 1], FUN = str_to_upper)))
+table.projetos[, 2] <- as.vector(unlist(lapply(table.projetos[, 2], FUN = str_to_sentence)))
+table.projetos[, 3] <- as.vector(unlist(lapply(table.projetos[, 3], FUN = str_to_title)))
+
+colnames(table.projetos) <- c("Nome do Membro Responsável", "Nome do Projeto de Pesquisa", "Linha de Pesquisa")
+
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(table.projetos, title = "Projetos de Pesquisa 2010-2012")
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Agendas de pesquisa** {.tabset #agenda-pesquisa}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **AEPSES/RJ**
+
+<iframe src="https://www.saude.rj.gov.br/comum/code/MostrarArquivo.php?C=NTIyNjQ%2C" style="width:100%; height:500px; border:0;"></iframe>
+
+*Fontes:* [**Secretaria de Estado de Saúde - RJ**](https://www.saude.rj.gov.br/comum/code/MostrarArquivo.php?C=NTIyNjQ%2C)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **MS/BR**
+
+<iframe src="https://bvsms.saude.gov.br/bvs/publicacoes/agenda_prioridades_pesquisa_ms.pdf" style="width:100%; height:500px; border:0;"></iframe>
+
+*Fontes:* [**Ministério da Saúde**](https://bvsms.saude.gov.br/bvs/publicacoes/agenda_prioridades_pesquisa_ms.pdf)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **MCTI/BR**
+
+<iframe src="https://www.in.gov.br/en/web/dou/-/portaria-mcti-n-5.109-de-16-de-agosto-de-2021-338589059" style="width:100%; height:500px; border:0;"></iframe>
+
+*Fontes:* [**Ministério da Ciência, Tecnologia e Inovação**](https://www.in.gov.br/en/web/dou/-/portaria-mcti-n-5.109-de-16-de-agosto-de-2021-338589059)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **ONU**
+
+<iframe src="https://sustainabledevelopment.un.org/content/documents/21252030%20Agenda%20for%20Sustainable%20Development%20web.pdf" style="width:100%; height:500px; border:0;"></iframe>
+
+*Fontes:* [**Organização das Nações Unidas**](https://sustainabledevelopment.un.org/content/documents/21252030%20Agenda%20for%20Sustainable%20Development%20web.pdf)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Financiadores** {.tabset #financiadores}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **2024-2021**
+
+```{r historico-financiadores-2024, eval = has.financiadores}
+# this chunk requires additional data that may  be available
+financiadores.raw <-
+  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+financiadores.sub <-
+  financiadores.raw %>% select("Ano",
+                               "Agência",
+                               "Edital",
+                               "Processo No.",
+                               "Título do projeto",
+                               "Programa")
+fonte.sub <- financiadores.raw %>% select("Fonte")
+
+financiadores <-
+  financiadores.sub[complete.cases(financiadores.sub), ]
+fonte <- fonte.sub[complete.cases(financiadores.sub), ]
+
+fonte <-
+  fonte[financiadores$Ano >= 2021 & financiadores$Ano <= 2024, ]
+financiadores <-
+  financiadores[financiadores$Ano >= 2021 &
+                  financiadores$Ano <= 2024, ]
+
+if (dim(financiadores)[1] != 0) {
+  Abrir <- matrix(NA, nrow = dim(financiadores)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(fonte)[1])
+  {
+    if (!is.na(fonte[i, 1]))
+    {
+      Abrir[i] <-
+        paste0('<a href="',
+               fonte[i, 1],
+               '" target="_blank"',
+               '>',
+               '↗️' ,
+               '</a>')
+    }
+  }
+  financiadores <- cbind(financiadores, Abrir)
+  financiadores <-
+    financiadores[order(financiadores$Ano, decreasing = TRUE), ]
+} else {
+  cat('\n\n')
+  cat('*Sem dados para exibir*')
+  cat('\n\n')
+}
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+try(create_dt(financiadores, title = "Ações durante a Pandemia - Financiadores"),
+    silent = TRUE)
+
+cat('\n\n')
+cat(
+  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
+)
+```
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **2020-2017**
+
+```{r historico-financiadores-2020, eval = has.financiadores}
+# this chunk requires additional data that may  be available
+financiadores.raw <-
+  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+financiadores.sub <-
+  financiadores.raw %>% select("Ano",
+                               "Agência",
+                               "Edital",
+                               "Processo No.",
+                               "Título do projeto",
+                               "Programa")
+fonte.sub <- financiadores.raw %>% select("Fonte")
+
+financiadores <-
+  financiadores.sub[complete.cases(financiadores.sub),]
+fonte <- fonte.sub[complete.cases(financiadores.sub),]
+
+fonte <-
+  fonte[financiadores$Ano >= 2017 & financiadores$Ano <= 2020,]
+financiadores <-
+  financiadores[financiadores$Ano >= 2017 &
+                  financiadores$Ano <= 2020,]
+
+if (dim(financiadores)[1] != 0) {
+  Abrir <- matrix(NA, nrow = dim(financiadores)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(fonte)[1])
+  {
+    if (!is.na(fonte[i, 1]))
+    {
+      Abrir[i] <-
+        paste0('<a href="',
+               fonte[i, 1],
+               '" target="_blank"',
+               '>',
+               '↗️' ,
+               '</a>')
+    }
+  }
+  financiadores <- cbind(financiadores, Abrir)
+  financiadores <-
+    financiadores[order(financiadores$Ano, decreasing = TRUE),]
+} else {
+  cat('\n\n')
+  cat('*Sem dados para exibir*')
+  cat('\n\n')
+}
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+try(create_dt(financiadores, title = "Ações durante a Pandemia - Financiadores"),
+    silent = TRUE)
+
+cat('\n\n')
+cat(
+  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
+)
+```
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **2016-2013**
+
+```{r historico-financiadores-2016, eval = has.financiadores}
+# this chunk requires additional data that may  be available
+financiadores.raw <-
+  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+financiadores.sub <-
+  financiadores.raw %>% select("Ano",
+                               "Agência",
+                               "Edital",
+                               "Processo No.",
+                               "Título do projeto",
+                               "Programa")
+fonte.sub <- financiadores.raw %>% select("Fonte")
+
+financiadores <-
+  financiadores.sub[complete.cases(financiadores.sub),]
+fonte <- fonte.sub[complete.cases(financiadores.sub),]
+
+fonte <-
+  fonte[financiadores$Ano >= 2013 & financiadores$Ano <= 2016,]
+financiadores <-
+  financiadores[financiadores$Ano >= 2013 &
+                  financiadores$Ano <= 2016,]
+
+if (dim(financiadores)[1] != 0) {
+  Abrir <- matrix(NA, nrow = dim(financiadores)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(fonte)[1])
+  {
+    if (!is.na(fonte[i, 1]))
+    {
+      Abrir[i] <-
+        paste0('<a href="',
+               fonte[i, 1],
+               '" target="_blank"',
+               '>',
+               '↗️' ,
+               '</a>')
+    }
+  }
+  financiadores <- cbind(financiadores, Abrir)
+  financiadores <-
+    financiadores[order(financiadores$Ano, decreasing = TRUE),]
+} else {
+  cat('\n\n')
+  cat('*Sem dados para exibir*')
+  cat('\n\n')
+}
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+try(create_dt(financiadores, title = "Ações durante a Pandemia - Financiadores"),
+    silent = TRUE)
+
+cat('\n\n')
+cat(
+  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
+)
+```
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **2012-2010**
+
+```{r historico-financiadores-2012, eval = has.financiadores}
+# this chunk requires additional data that may  be available
+financiadores.raw <-
+  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+financiadores.sub <-
+  financiadores.raw %>% select("Ano",
+                               "Agência",
+                               "Edital",
+                               "Processo No.",
+                               "Título do projeto",
+                               "Programa")
+fonte.sub <- financiadores.raw %>% select("Fonte")
+
+financiadores <-
+  financiadores.sub[complete.cases(financiadores.sub),]
+fonte <- fonte.sub[complete.cases(financiadores.sub),]
+
+fonte <-
+  fonte[financiadores$Ano >= 2010 & financiadores$Ano <= 2012,]
+financiadores <-
+  financiadores[financiadores$Ano >= 2010 &
+                  financiadores$Ano <= 2012,]
+
+if (dim(financiadores)[1] != 0) {
+  Abrir <- matrix(NA, nrow = dim(financiadores)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(fonte)[1])
+  {
+    if (!is.na(fonte[i, 1]))
+    {
+      Abrir[i] <-
+        paste0('<a href="',
+               fonte[i, 1],
+               '" target="_blank"',
+               '>',
+               '↗️' ,
+               '</a>')
+    }
+  }
+  financiadores <- cbind(financiadores, Abrir)
+  financiadores <-
+    financiadores[order(financiadores$Ano, decreasing = TRUE),]
+} else {
+  cat('\n\n')
+  cat('*Sem dados para exibir*')
+  cat('\n\n')
+}
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+try(create_dt(financiadores, title = "Ações durante a Pandemia - Financiadores"),
+    silent = TRUE)
+
+cat('\n\n')
+cat(
+  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
+)
+```
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Pré-2010**
+
+```{r historico-financiadores-2010, eval = has.financiadores}
+# this chunk requires additional data that may  be available
+financiadores.raw <-
+  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+financiadores.sub <-
+  financiadores.raw %>% select("Ano",
+                               "Agência",
+                               "Edital",
+                               "Processo No.",
+                               "Título do projeto",
+                               "Programa")
+fonte.sub <- financiadores.raw %>% select("Fonte")
+
+financiadores <-
+  financiadores.sub[complete.cases(financiadores.sub),]
+fonte <- fonte.sub[complete.cases(financiadores.sub),]
+
+fonte <-
+  fonte[financiadores$Ano < 2010,]
+financiadores <-
+  financiadores[financiadores$Ano < 2010,]
+
+if (dim(financiadores)[1] != 0) {
+  Abrir <- matrix(NA, nrow = dim(financiadores)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(fonte)[1])
+  {
+    if (!is.na(fonte[i, 1]))
+    {
+      Abrir[i] <-
+        paste0('<a href="',
+               fonte[i, 1],
+               '" target="_blank"',
+               '>',
+               '↗️' ,
+               '</a>')
+    }
+  }
+  financiadores <- cbind(financiadores, Abrir)
+  financiadores <-
+    financiadores[order(financiadores$Ano, decreasing = TRUE),]
+} else {
+  cat('\n\n')
+  cat('*Sem dados para exibir*')
+  cat('\n\n')
+}
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+try(create_dt(financiadores, title = "Ações durante a Pandemia - Financiadores"),
+    silent = TRUE)
+
+cat('\n\n')
+cat(
+  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
+)
+```
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Bolsas de estudo** {.tabset #bolsas}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **PROSUP**
+
+<br>
+
+<iframe src="https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/bolsas/bolsas-no-pais/programa-de-suporte-a-pos-graduacao-de-instituicoes-de-ensino-particulares-prosup" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/bolsas/bolsas-no-pais/programa-de-suporte-a-pos-graduacao-de-instituicoes-de-ensino-particulares-prosup)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Cotas**
+
+<br>
+
+*Em construção*
+
+<br>
+
+*Fontes:* [**Transparência CAPES**](http://transparencia.capes.gov.br/transparencia/xhtml/index.faces), [**SCBA**](https://scba.capes.gov.br)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Portarias**
+
+```{r bolsas, eval = has.bolsas}
+# read separate sheets
+turmas.raw <- read_excel("PPG/Bolsas.xlsx", sheet = "PortariaBolsas", col_types = c("text"))
+
+Abrir <- matrix(NA, nrow = dim(turmas.raw)[1])
+colnames(Abrir) <- "Abrir"
+# add hyperlinks
+for(i in 1:dim(turmas.raw)[1]){
+  if(!is.na(turmas.raw[i,3])){
+    Abrir[i] <- paste0('<a href="', turmas.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>", sep = "")
+  }
+}
+
+turmas <- cbind(turmas.raw[,-3], Abrir)
+turmas <- turmas[order(turmas$Publicação, decreasing = TRUE), ]
+
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(turmas, title = "Portarias Bolsas CAPES")
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Agradecimento**
+
+<br>
+
+<iframe src="https://www.in.gov.br/materia/-/asset_publisher/Kujrw0TZC2Mb/content/id/39729251/do1-2018-09-05-portaria-n-206-de-4-de-setembro-de-2018-39729135" style="width:100%; height:600px; border:0;"></iframe>
+
+<br>
+
+*Fontes:* [**Diário Oficial da União**](https://www.in.gov.br/materia/-/asset_publisher/Kujrw0TZC2Mb/content/id/39729251/do1-2018-09-05-portaria-n-206-de-4-de-setembro-de-2018-39729135)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Cursos** {.tabset #cursos}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Níveis**
+
+```{r cursos, eval = has.dados.cadastrais}
+# read separate sheets
+cursos.raw <- read_excel("PPG/Dados Cadastrais.xlsx", sheet = "Cursos", col_types = c("text"))
+
+# print tables
+print(kable(cursos.raw, align = c("l", rep("c", ncol(cursos.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Objetivos**
+
+O curso de Mestrado Acadêmico em Ciências da Reabilitação objetiva a qualificação do pós-graduando para docência em nível superior e pesquisa por meio do aprimoramento do conhecimento acadêmico e profissional. O curso proporciona ao aluno bases técnico-científicas para a pesquisa e o ensino, tornando-o apto a exercer as atividades da docente de nível universitário e inseri-lo em atividades de pesquisa.
+
+<br>
+
+O curso de Doutorado Acadêmico em Ciências da Reabilitação objetiva a formação de pesquisadores independentes com capacidade de produzir evidências científicas em Ciências da Reabilitação, bem como atuar na docência superior. O curso visa a intensificação do aprendizado e a consolidação do conhecimento científico, visando formar pesquisadores independentes com capacidade de desenvolver projetos de pesquisa e orientar discentes nos diferentes níveis de formação acadêmica.
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Créditos**
+
+```{r creditos, eval = has.dados.cadastrais}
+# read separate sheets
+creditos.raw <- read_excel("PPG/Dados Cadastrais.xlsx", sheet = "Créditos", col_types = c("text"))
+
+# print tables
+print(kable(creditos.raw, align = c("l", rep("c", ncol(creditos.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Calculadora de créditos** {#calculadora-creditos}
+
+```{r calculadora-creditos, eval = has.dados.cadastrais}
+dados.do.programa.raw <-
+  read_excel("PPG/Dados Cadastrais.xlsx",
+             sheet = "Créditos",
+             col_types = c("text"))
+colnames(dados.do.programa.raw) <-
+  seq(1:dim(dados.do.programa.raw)[2])
+```
+
+#### **Doutorado** {.tabset}
+
+<center>
+  **TOTAL REQUERIDO: ```{r eval = has.dados.cadastrais} dados.do.programa.raw[1,3]``` CR**
+  <br>
+  Créditos OBRIGATÓRIOS marcados: <strong id=msgOBRDSC></strong>
+  <br>
+  Créditos ELETIVOS marcados: <strong id=msgELEDSC></strong>
+</center>
+
+##### **Obrigatórios**
+
+<!--script for generating CALCULATOR FORM-->
+```{js OBRDSC}
+function chkcontrol3(j) {
+var sumOBRDSC=0;
+for(var i=0; i < document.formOBRDSC.ckb.length; i++){
+  if(document.formOBRDSC.ckb[i].checked){
+    sumOBRDSC = sumOBRDSC + parseInt(document.formOBRDSC.ckb[i].value);
+    }
+  document.getElementById("msgOBRDSC").innerHTML= sumOBRDSC + " CR";
+  }
+}
+```
+
+```{r calculadora-doutorado-obrigatorias, eval = has.sucupira}
+# disciplinas
+sheet <- "Disciplinas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# read separate sheets
+disciplinas.raw <- sucupira.list[[format(Sys.Date(), "%Y")]]
+disciplinas.raw <-
+  disciplinas.raw[is.na(disciplinas.raw$`Data de fim`),]
+disciplinas.dsc <-
+  disciplinas.raw[which(`dim<-`(grepl('Doutorado', disciplinas.raw$`Nível do Curso`), dim(disciplinas.raw$`Nível do Curso`)), arr.ind = TRUE),]
+
+if (length(disciplinas.dsc) != 0) {
+  table.dsc <-
+    cbind(
+      disciplinas.dsc$`Nome da Disciplina`,
+      disciplinas.dsc$`Indicadora de disciplina obrigatória`,
+      disciplinas.dsc$`Quantidade de créditos`,
+      disciplinas.dsc$`Carga Horária`
+    )
+  colnames(table.dsc) <- c("Disciplina", "Obrigatória", "CR", "CH")
+  
+  # filtra e exibe apenas as obrigatórias
+  table.dsc <- table.dsc[table.dsc[, 2] == "Sim",]
+  table.dsc <- table.dsc[complete.cases(table.dsc),]
+  table.dsc <- table.dsc[,-2]
+  
+  cat('<form name=formOBRDSC method=post action=check.php>')
+  cat('<table class=\"table table-striped\">')
+  for (i in 1:dim(table.dsc)[1]) {
+    cat(
+      '<tr><td><input type=\"checkbox\" name=\"ckb\" value=\"',
+      table.dsc[i, 2],
+      '\" onclick=\"chkcontrol3(',
+      i - 1,
+      ')\">',
+      paste0(table.dsc[i, 1], ' (', table.dsc[i, 2], ' CR) (', table.dsc[i, 3]),
+      ' CH)',
+      '</input></td></tr>'
+    )
+  }
+  cat('</table></form>')
+}
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+##### **Eletivos**
+
+<!--script for generating CALCULATOR FORM-->
+```{js ELEDSC}
+function chkcontrol4(j) {
+var sumELEDSC=0;
+for(var i=0; i < document.formELEDSC.ckb.length; i++){
+  if(document.formELEDSC.ckb[i].checked){
+    sumELEDSC = sumELEDSC + parseInt(document.formELEDSC.ckb[i].value);
+    }
+  document.getElementById("msgELEDSC").innerHTML= sumELEDSC + " CR";
+  }
+}
+```
+
+```{r calculadora-doutorado-eletivas, eval = has.sucupira}
+# disciplinas
+sheet <- "Disciplinas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# read separate sheets
+disciplinas.raw <- sucupira.list[[format(Sys.Date(), "%Y")]]
+disciplinas.raw <-
+  disciplinas.raw[is.na(disciplinas.raw$`Data de fim`),]
+disciplinas.dsc <-
+  disciplinas.raw[which(`dim<-`(grepl('Doutorado', disciplinas.raw$`Nível do Curso`), dim(disciplinas.raw$`Nível do Curso`)), arr.ind = TRUE),]
+
+if (length(disciplinas.dsc) != 0) {
+  table.dsc <-
+    cbind(
+      disciplinas.dsc$`Nome da Disciplina`,
+      disciplinas.dsc$`Indicadora de disciplina obrigatória`,
+      disciplinas.dsc$`Quantidade de créditos`,
+      disciplinas.dsc$`Carga Horária`
+    )
+  colnames(table.dsc) <- c("Disciplina", "Eletiva", "CR", "CH")
+  
+  # filtra e exibe apenas as obrigatórias
+  table.dsc <- table.dsc[table.dsc[, 2] == "Não",]
+  table.dsc <- table.dsc[complete.cases(table.dsc),]
+  table.dsc <- table.dsc[,-2]
+  
+  cat('<form name=formELEDSC method=post action=check.php>')
+  cat('<table class=\"table table-striped\">')
+  for (i in 1:dim(table.dsc)[1]) {
+    cat(
+      '<tr><td><input type=\"checkbox\" name=\"ckb\" value=\"',
+      table.dsc[i, 2],
+      '\" onclick=\"chkcontrol4(',
+      i - 1,
+      ')\">',
+      paste0(table.dsc[i, 1], ' (', table.dsc[i, 2], ' CR) (', table.dsc[i, 3]),
+      ' CH)',
+      '</input></td></tr>'
+    )
+  }
+  cat('</table></form>')
+}
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Mestrado** {.tabset}
+
+<center>
+  **TOTAL REQUERIDO: ```{r eval = has.dados.cadastrais} dados.do.programa.raw[1,2]``` CR**
+  <br>
+  Créditos OBRIGATÓRIOS marcados: <strong id=msgOBRMSC></strong>
+  <br>
+  Créditos ELETIVOS marcados: <strong id=msgELEMSC></strong>
+</center>
+
+##### **Obrigatórios**
+
+<!--script for generating CALCULATOR FORM-->
+```{js OBRMSC}
+function chkcontrol1(j) {
+var sumOBRMSC=0;
+for(var i=0; i < document.formOBRMSC.ckb.length; i++){
+  if(document.formOBRMSC.ckb[i].checked){
+    sumOBRMSC = sumOBRMSC + parseInt(document.formOBRMSC.ckb[i].value);
+    }
+  document.getElementById("msgOBRMSC").innerHTML= sumOBRMSC + " CR";
+  }
+}
+```
+
+```{r calculadora-mestrado-obrigatorias, eval = has.sucupira}
+# disciplinas
+sheet <- "Disciplinas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# read separate sheets
+disciplinas.raw <- sucupira.list[[format(Sys.Date(), "%Y")]]
+disciplinas.raw <-
+  disciplinas.raw[is.na(disciplinas.raw$`Data de fim`),]
+disciplinas.msc <-
+  disciplinas.raw[which(`dim<-`(grepl('Mestrado', disciplinas.raw$`Nível do Curso`), dim(disciplinas.raw$`Nível do Curso`)), arr.ind = TRUE),]
+
+if (length(disciplinas.msc) != 0) {
+  table.msc <-
+    cbind(
+      disciplinas.msc$`Nome da Disciplina`,
+      disciplinas.msc$`Indicadora de disciplina obrigatória`,
+      disciplinas.msc$`Quantidade de créditos`,
+      disciplinas.msc$`Carga Horária`
+    )
+  colnames(table.msc) <- c("Disciplina", "Obrigatória", "CR", "CH")
+  
+  # filtra e exibe apenas as obrigatórias
+  table.msc <- table.msc[table.msc[, 2] == "Sim",]
+  table.msc <- table.msc[complete.cases(table.msc),]
+  table.msc <- table.msc[,-2]
+  
+  cat('<form name=formOBRMSC method=post action=check.php>')
+  cat('<table class=\"table table-striped\">')
+  for (i in 1:dim(table.msc)[1]) {
+    cat(
+      '<tr><td><input type=\"checkbox\" name=\"ckb\" value=\"',
+      table.msc[i, 2],
+      '\" onclick=\"chkcontrol1(',
+      i - 1,
+      ')\">',
+      paste0(table.msc[i, 1], ' (', table.msc[i, 2], ' CR) (', table.msc[i, 3]),
+      ' CH)',
+      '</input></td></tr>'
+    )
+  }
+  cat('</table></form>')
+}
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+##### **Eletivos**
+
+<!--script for generating CALCULATOR FORM-->
+```{js ELEMSC}
+function chkcontrol2(j) {
+var sumELEMSC=0;
+for(var i=0; i < document.formELEMSC.ckb.length; i++){
+  if(document.formELEMSC.ckb[i].checked){
+    sumELEMSC = sumELEMSC + parseInt(document.formELEMSC.ckb[i].value);
+    }
+  document.getElementById("msgELEMSC").innerHTML= sumELEMSC + " CR";
+  }
+}
+```
+
+```{r calculadora-mestrado-eletivas, eval = has.sucupira}
+# projetos
+sheet <- "Disciplinas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# read separate sheets
+disciplinas.raw <- sucupira.list[[format(Sys.Date(), "%Y")]]
+disciplinas.raw <-
+  disciplinas.raw[is.na(disciplinas.raw$`Data de fim`),]
+disciplinas.msc <-
+  disciplinas.raw[which(`dim<-`(grepl('Mestrado', disciplinas.raw$`Nível do Curso`), dim(disciplinas.raw$`Nível do Curso`)), arr.ind = TRUE),]
+
+if (length(disciplinas.msc) != 0) {
+  table.msc <-
+    cbind(
+      disciplinas.msc$`Nome da Disciplina`,
+      disciplinas.msc$`Indicadora de disciplina obrigatória`,
+      disciplinas.msc$`Quantidade de créditos`,
+      disciplinas.msc$`Carga Horária`
+    )
+  colnames(table.msc) <- c("Disciplina", "Eletiva", "CR", "CH")
+  
+  # filtra e exibe apenas as obrigatórias
+  table.msc <- table.msc[table.msc[, 2] == "Não",]
+  table.msc <- table.msc[complete.cases(table.msc),]
+  table.msc <- table.msc[,-2]
+  
+  cat('<form name=formELEMSC method=post action=check.php>')
+  cat('<table class=\"table table-striped\">')
+  for (i in 1:dim(table.msc)[1]) {
+    cat(
+      '<tr><td><input type=\"checkbox\" name=\"ckb\" value=\"',
+      table.msc[i, 2],
+      '\" onclick=\"chkcontrol2(',
+      i - 1,
+      ')\">',
+      paste0(table.msc[i, 1], ' (', table.msc[i, 2], ' CR) (', table.msc[i, 3]),
+      ' CH)',
+      '</input></td></tr>'
+    )
+  }
+  cat('</table></form>')
+}
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Estrutura curricular** {.tabset #estrutura-curricular}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Descrição**
+
+A estrutura curricular do Programa de Pós-graduação em Ciências das Reabilitação foi elaborada visando a efetivação do perfil do egresso dos cursos de Mestrado e Doutorado Acadêmicos. As disciplinas da estrutura curricular estão organizadas simultaneamente em Eixos, Área de Concentração/Linhas de Pesquisa e Caráter.
+
+<br>
+
+O Eixo Básico compreende as disciplinas consideradas fundamentais para o pensamento científico e a formulação de problemas de pesquisa. O Eixo Científico inclui disciplinas que oferecem recursos para elaboração de projetos de pesquisa e divulgação dos seus resultados, seja na forma de manuscritos e/ou apresentações de trabalhos. O Eixo Pedagógico agrega as disciplinas que enfatizam as habilidade e competências para atuação no nível superior (ensino  e pesquisa) em níveis de graduação e pós-graduação. O Eixo Inovador compreende as disciplinas com foco na utilização e desenvolvimento de recursos tecnológicos em reabilitação bem como a discussão de tópicos inovadores em pesquisa. Considerando que esses três Eixos apresentam caráter independente do tema da pesquisa, as suas disciplinas são consideradas como Transversais. Nestes eixos, o Caráter Obrigatório ou Eletivo das disciplinas é determinando considerando-se as diferenças entre os perfis do egresso dos cursos de Mestrado e Doutorado.
+
+<br>
+
+O Eixo Técnico agrupa as disciplinas de caráter especialista, com ementas voltadas para temas de pesquisa mais específicos. Assim, as disciplinas deste Eixo são subdivididas de acordo com a única Área de Concentração do Programa e suas Linhas de Pesquisa: Avaliação Funcional em Reabilitação; Abordagem Terapêutica em Reabilitação; e Reabilitação no Esporte e no Esporte Adaptado. Pelo mesmo argumento, são todas de Caráter Eletivo.
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Síntese**
+
+```{r estrutura-academica-atual-grafico, eval = has.sucupira}
+# load custom function
+source("Scripts/get-initials.R", local = knitr::knit_global())
+
+# projetos
+sheet <- "Disciplinas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# read separate sheets
+disciplinas.raw <- sucupira.list[[format(Sys.Date(), "%Y")]]
+disciplinas.raw <- disciplinas.raw[is.na(disciplinas.raw$`Data de fim`), ]
+
+disciplinas.msc <-
+  disciplinas.raw[which(`dim<-`(grepl('Mestrado', disciplinas.raw$`Nível do Curso`), dim(disciplinas.raw$`Nível do Curso`)), arr.ind = TRUE),]
+table.msc <- cbind(disciplinas.msc$`Nome da Disciplina`, disciplinas.msc$`Indicadora de disciplina obrigatória`, disciplinas.msc$`Quantidade de créditos`, disciplinas.msc$`Carga Horária`)
+colnames(table.msc) <- c("Disciplina", "Obrigatória", "CR", "CH")
+
+disciplinas.msc <-
+  disciplinas.raw[which(`dim<-`(grepl('Doutorado', disciplinas.raw$`Nível do Curso`), dim(disciplinas.raw$`Nível do Curso`)), arr.ind = TRUE),]
+table.dsc <- cbind(disciplinas.dsc$`Nome da Disciplina`, disciplinas.dsc$`Indicadora de disciplina obrigatória`, disciplinas.dsc$`Quantidade de créditos`, disciplinas.dsc$`Carga Horária`)
+colnames(table.dsc) <- c("Disciplina", "Obrigatória", "CR", "CH")
+
+table <- merge(table.msc, table.dsc, by="Disciplina", all.x = TRUE, all.y = TRUE)
+colnames(table) <- c("Disciplina", "Obrigatória (MA)", "CR (MA)", "CH (MA)", "Obrigatória (DA)", "CR (DA)", "CH (DA)")
+
+# print tables
+# kable(table)
+
+# line break
+# cat("  \n")
+# cat("  \n")
+
+layout(matrix(c(1,2,3,3), nrow = 2, ncol = 2, byrow = TRUE), heights = c(0.7,0.3))
+par(oma=c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
+# generate plot of total per course
+pie(table(table.msc[, which(colnames(table.msc) == "Obrigatória")]), labels = NA, col = brewer.pal(n = min(unique(colnames(table.msc)),3), name = "Set3"), init.angle = 90, main = "Mestrado")
+pie(table(table.dsc[, which(colnames(table.dsc) == "Obrigatória")]), labels = NA, col = brewer.pal(n = min(unique(colnames(table.dsc)),3), name = "Set3"), init.angle = 90, main = "Doutorado")
+plot(0, type = 'n', axes = FALSE)
+obrigatoria <- unique(disciplinas.raw$`Indicadora de disciplina obrigatória`)
+obrigatoria[which(obrigatoria == "Sim")] <- "Obrigatória"
+obrigatoria[which(obrigatoria == "Não")] <- "Eletiva"
+legend("center", legend = obrigatoria, fill = brewer.pal(n = length(obrigatoria), name = "Set3"), box.lwd = 0, cex = 1)
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Ementas**
+
+```{r ementas, eval = has.bibliografia}
+# read separate sheets
+bibliografia.raw <-
+  read_excel("PPG/Bibliografia.xlsx",
+             sheet = "Ementas",
+             col_types = c("text"))
+link_ementas <- bibliografia.raw[, 3]
+
+cat(
+  '<iframe src=\"',
+  as.character(link_ementas),
+  '/preview" style=\"width:100%; height:500px; border:0;\"></iframe>',
+  sep = ""
+)
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Disciplinas**
+
+```{r estrutura-academica-atual-tabela, eval = has.sucupira}
+# load custom function
+source("Scripts/get-initials.R", local = knitr::knit_global())
+
+# projetos
+sheet <- "Disciplinas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# read separate sheets
+disciplinas.raw <- sucupira.list[[format(Sys.Date(), "%Y")]]
+disciplinas.raw <- disciplinas.raw[is.na(disciplinas.raw$`Data de fim`), ]
+
+disciplinas.msc <-
+  disciplinas.raw[which(`dim<-`(grepl('Mestrado', disciplinas.raw$`Nível do Curso`), dim(disciplinas.raw$`Nível do Curso`)), arr.ind = TRUE),]
+table.msc <- cbind(disciplinas.msc$`Nome da Disciplina`, disciplinas.msc$`Indicadora de disciplina obrigatória`, disciplinas.msc$`Quantidade de créditos`, disciplinas.msc$`Carga Horária`)
+colnames(table.msc) <- c("Disciplina", "Obrigatória", "CR", "CH")
+
+disciplinas.dsc <-
+  disciplinas.raw[which(`dim<-`(grepl('Doutorado', disciplinas.raw$`Nível do Curso`), dim(disciplinas.raw$`Nível do Curso`)), arr.ind = TRUE),]
+table.dsc <- cbind(disciplinas.dsc$`Nome da Disciplina`, disciplinas.dsc$`Indicadora de disciplina obrigatória`, disciplinas.dsc$`Quantidade de créditos`, disciplinas.dsc$`Carga Horária`)
+colnames(table.dsc) <- c("Disciplina", "Obrigatória", "CR", "CH")
+
+table <- merge(table.msc, table.dsc, by="Disciplina", all.x = TRUE, all.y = TRUE)
+colnames(table) <- c("Disciplina", "Obrigatória (MA)", "CR (MA)", "CH (MA)", "Obrigatória (DA)", "CR (DA)", "CH (DA)")
+
+# print tables
+print(kable(table, align = c("l", rep("c", ncol(table)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Bibliografia**
+
+```{r bibliografia, eval = has.bibliografia}
+# read separate sheets
+bibliografia.raw <- read_excel("PPG/Bibliografia.xlsx", sheet = "Bibliografia", col_types = c("text"))
+
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(bibliografia.raw, title = "Bibliografia")
+```
+
+<br>
+
+```{r bibliografia-ano, eval = has.bibliografia}
+# read separate sheets
+bibliografia.raw <- read_excel("PPG/Bibliografia.xlsx", sheet = "Bibliografia", col_types = c("text"))
+
+bib.ano.raw <- bibliografia.raw$Referência
+bib.ano <- as.numeric(na.exclude(str_extract(bib.ano.raw, "[' '][2-2][0-9][0-9][0-9]")))
+bib.ano <- as.numeric(na.exclude(str_extract(bib.ano.raw, "[' '][1-1][9-9][5-9][0-9]|[2-2][0-0][0-2][0-1]")))
+
+par(oma=c(2, 0.1, 2, 0.1), mar = c(5, 4, 2, 2))
+# generate plot of conceitos per year
+hist(bib.ano, xlab = "Ano de publicação", ylab = "Referências (N)", col = brewer.pal(n = 3, name = "Set3")[1], main = NULL)
+title("Referências bibliográficas, por ano de publicação", outer = TRUE)
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Inativas**
+
+```{r estrutura-academica-inativa, eval = has.sucupira}
+# load custom function
+source("Scripts/get-initials.R", local = knitr::knit_global())
+
+# disciplinas
+sheet <- "Disciplinas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+disciplinas.raw <- sucupira.raw
+disciplinas.raw <- disciplinas.raw[!is.na(disciplinas.raw$`Data de fim`), ]
+
+disciplinas.msc <-
+  disciplinas.raw[which(`dim<-`(grepl('Mestrado', disciplinas.raw$`Nível do Curso`), dim(disciplinas.raw$`Nível do Curso`)), arr.ind = TRUE),]
+table.msc <- cbind(disciplinas.msc$`Nome da Disciplina`, disciplinas.msc$`Indicadora de disciplina obrigatória`, disciplinas.msc$`Quantidade de créditos`, disciplinas.msc$`Carga Horária`, disciplinas.msc$`Data de fim`)
+colnames(table.msc) <- c("Disciplina", "Obrigatória", "CR", "CH", "Fim")
+
+disciplinas.dsc <-
+  disciplinas.raw[which(`dim<-`(grepl('Doutorado', disciplinas.raw$`Nível do Curso`), dim(disciplinas.raw$`Nível do Curso`)), arr.ind = TRUE),]
+table.dsc <- cbind(disciplinas.dsc$`Nome da Disciplina`, disciplinas.dsc$`Indicadora de disciplina obrigatória`, disciplinas.dsc$`Quantidade de créditos`, disciplinas.dsc$`Carga Horária`, disciplinas.dsc$`Data de fim`)
+colnames(table.dsc) <- c("Disciplina", "Obrigatória", "CR", "CH", "Fim")
+
+table <- merge(table.msc, table.dsc, by="Disciplina", all.x = TRUE, all.y = TRUE)
+colnames(table) <- c("Disciplina", "Obrigatória (MA)", "CR (MA)", "CH (MA)", "Fim", "Obrigatória (DA)", "CR (DA)", "CH (DA)", "Fim")
+
+# print tables
+print(kable(unique(table), row.names = FALSE, align = c("l", rep("c", ncol(table)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Turmas** {.tabset #turmas}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Síntese**
+
+```{r turmas-tabela, eval = has.sucupira}
+# turmas
+sheet <- "Turmas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+turmas.raw <- sucupira.raw
+
+# build a cross table DISCIPLINA vs. ANO
+turmas.raw <-
+  turmas.raw[turmas.raw$`Indicador de responsável principal` == "Sim", ]
+turmas.raw$`Período/Ano` <-
+  paste(
+    sub(".*/", "", turmas.raw$`Período/Ano`),
+    sub("/.*", "", turmas.raw$`Período/Ano`),
+    sep = "/"
+  )
+cross.table.turmas <-
+  as.matrix(table(turmas.raw$`Nível do curso`, turmas.raw$`Período/Ano`))
+
+# generate plot of total per year
+par(
+  oma = c(2, 0.1, 2, 0.1),
+  mar = c(5, 4, 2, 2),
+  bg = '#2C3E50',
+  col.lab = "white",
+  col.axis = "white",
+  fg = "white",
+  col.main = "white"
+)
+# generate plot of turmas per year
+barplot(
+  cross.table.turmas,
+  las = 2,
+  ylab = "Turmas",
+  main = "Quantidade de turmas",
+  col = c("darkblue", "lightblue"),
+  beside = TRUE,
+  bty = "n"
+)
+legend(
+  "topleft",
+  legend = levels(as.factor(turmas.raw$`Nível do curso`)),
+  fill = c("darkblue", "lightblue"),
+  box.lty = 0
+)
+
+# line break
+cat("  \n")
+cat("  \n")
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **2024-2021** {.tabset}
+
+#### **Disciplinas**
+
+```{r turmas-disciplinas-2024, eval = has.sucupira}
+# load custom function
+source("Scripts/get-initials.R", local = knitr::knit_global())
+
+# turmas
+sheet <- "Turmas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# bind all sheets
+periodos <-
+  names(sucupira.list)[na.omit(match(c(2021:2024), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
+
+if (dim(turmas.raw)[1] != 0) {
+  # build a cross table DISCIPLINA vs. ANO
+  turmas.raw$`Período/Ano` <-
+    paste(
+      sub(".*/", "", turmas.raw$`Período/Ano`),
+      sub("/.*", "", turmas.raw$`Período/Ano`),
+      sep = "/"
+    )
+  cross.table.turmas <-
+    as.matrix(table(
+      initials(turmas.raw$`Nome da Disciplina`),
+      turmas.raw$`Período/Ano`
+    ))
+  Oferecida <- colSums(cross.table.turmas)
+  Oferecida[Oferecida > 0] <- "✅"
+  Oferecida[Oferecida == 0] <- ""
+  turmas.oferecidas <- rbind(Oferecida, cross.table.turmas)
+  turmas.oferecidas[turmas.oferecidas > 0] <- "✔"
+  turmas.oferecidas[turmas.oferecidas == 0] <- ""
+  if (length(colnames(turmas.oferecidas)) > 1) {
+    turmas.oferecidas <-
+      turmas.oferecidas[, order(colnames(turmas.oferecidas), decreasing = TRUE)]
+  }
+  print(
+    kable(turmas.oferecidas, align = c("l", rep(
+      "c",  max(0, ncol(turmas.oferecidas) - 2)
+    ), "r")) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+  
+  # line break
+  cat("  \n")
+  cat("  \n")
+  
+  legenda.turma <-
+    unique(cbind(
+      initials(turmas.raw$`Nome da Disciplina`),
+      turmas.raw$`Nome da Disciplina`
+    ))
+  legenda.turma <- legenda.turma[order(legenda.turma[, 1]),]
+  cat(paste(
+    "*",
+    legenda.turma[, 1],
+    ": ",
+    lapply(legenda.turma[, 2], str_to_title),
+    "*",
+    sep = "",
+    collapse = "; "
+  ))
+  
+  # line break
+  cat("  \n")
+  cat("  \n")
+  
+  legenda.doc <-
+    unique(cbind(
+      initials(turmas.raw$`Nome do responsável`),
+      turmas.raw$`Nome do responsável`
+    ))
+  legenda.doc <- legenda.doc[order(legenda.doc[, 1]),]
+  cat(paste(
+    "*",
+    legenda.doc[, 1],
+    ": ",
+    lapply(legenda.doc[, 2], str_to_title),
+    "*",
+    sep = "",
+    collapse = "; "
+  ))
+}
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Docentes**
+
+```{r turmas-docentes-2024, eval = has.sucupira}
+# load custom function
+source("Scripts/get-initials.R", local = knitr::knit_global())
+
+# disciplinas
+sheet <- "Disciplinas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# bind all sheets
+periodos <-
+  names(sucupira.list)[na.omit(match(c(2021:2024), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+disciplinas.raw <-
+  do.call(rbind.data.frame, sucupira.list[periodos])
+disciplinas.raw <-
+  disciplinas.raw[is.na(disciplinas.raw$`Data de fim`),]
+
+# turmas
+sheet <- "Turmas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# read separate sheets
+turmas.raw <- sucupira.list[[format(Sys.Date(), "%Y")]]
+
+if (dim(disciplinas.raw)[1] != 0) {
+  disciplinas.msc <-
+    disciplinas.raw[which(`dim<-`(
+      grepl('Mestrado', disciplinas.raw$`Nível do Curso`),
+      dim(disciplinas.raw$`Nível do Curso`)
+    ), arr.ind = TRUE), ]
+  table.msc <-
+    cbind(
+      disciplinas.msc$`Nome da Disciplina`,
+      disciplinas.msc$`Indicadora de disciplina obrigatória`,
+      disciplinas.msc$`Quantidade de créditos`,
+      disciplinas.msc$`Carga Horária`
+    )
+  colnames(table.msc) <- c("Disciplina", "Obrigatória", "CR", "CH")
+  
+  disciplinas.dsc <-
+    disciplinas.raw[which(`dim<-`(
+      grepl('Doutorado', disciplinas.raw$`Nível do Curso`),
+      dim(disciplinas.raw$`Nível do Curso`)
+    ), arr.ind = TRUE), ]
+  table.dsc <-
+    cbind(
+      disciplinas.dsc$`Nome da Disciplina`,
+      disciplinas.dsc$`Indicadora de disciplina obrigatória`,
+      disciplinas.dsc$`Quantidade de créditos`,
+      disciplinas.dsc$`Carga Horária`
+    )
+  colnames(table.dsc) <- c("Disciplina", "Obrigatória", "CR", "CH")
+  
+  table <-
+    merge(
+      table.msc,
+      table.dsc,
+      by = "Disciplina",
+      all.x = TRUE,
+      all.y = TRUE
+    )
+  colnames(table) <-
+    c(
+      "Disciplina",
+      "Obrigatória (MA)",
+      "CR (MA)",
+      "CH (MA)",
+      "Obrigatória (DA)",
+      "CR (DA)",
+      "CH (DA)"
+    )
+  
+  # build a cross table DISCIPLINA vs. DOCENTE
+  cross.table.turmas <-
+    as.matrix(table(
+      initials(turmas.raw$`Nome da Disciplina`),
+      initials(turmas.raw$`Nome do responsável`)
+    ))
+  Responsável <- colSums(cross.table.turmas)
+  Responsável[Responsável > 0] <- "✅"
+  Responsável[Responsável == 0] <- ""
+  turmas.docentes <- rbind(Responsável, cross.table.turmas)
+  turmas.docentes[turmas.docentes > 0] <- "✔"
+  turmas.docentes[turmas.docentes == 0] <- ""
+  print(
+    kable(turmas.docentes, align = c("l", rep(
+      "c", ncol(turmas.docentes) - 2
+    ), "r")) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+  
+  # line break
+  cat("  \n")
+  cat("  \n")
+  
+  legenda.turma <-
+    unique(cbind(
+      initials(turmas.raw$`Nome da Disciplina`),
+      turmas.raw$`Nome da Disciplina`
+    ))
+  legenda.turma <- legenda.turma[order(legenda.turma[, 1]),]
+  cat(paste(
+    "*",
+    legenda.turma[, 1],
+    ": ",
+    lapply(legenda.turma[, 2], str_to_title),
+    "*",
+    sep = "",
+    collapse = "; "
+  ))
+  
+  # line break
+  cat("  \n")
+  cat("  \n")
+  
+  legenda.doc <-
+    unique(cbind(
+      initials(turmas.raw$`Nome do responsável`),
+      turmas.raw$`Nome do responsável`
+    ))
+  legenda.doc <- legenda.doc[order(legenda.doc[, 1]),]
+  cat(paste(
+    "*",
+    legenda.doc[, 1],
+    ": ",
+    lapply(legenda.doc[, 2], str_to_title),
+    "*",
+    sep = "",
+    collapse = "; "
+  ))
+}
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **2020-2017**
+
+```{r turmas-2020, eval = has.sucupira}
+# load custom function
+source("Scripts/get-initials.R", local = knitr::knit_global())
+
+# turmas
+sheet <- "Turmas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# bind all sheets
+periodos <-
+  names(sucupira.list)[na.omit(match(c(2017:2020), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
+
+if (dim(turmas.raw)[1] != 0) {
+  # build a cross table DISCIPLINA vs. ANO
+  turmas.raw$`Período/Ano` <-
+    paste(
+      sub(".*/", "", turmas.raw$`Período/Ano`),
+      sub("/.*", "", turmas.raw$`Período/Ano`),
+      sep = "/"
+    )
+  cross.table.turmas <-
+    as.matrix(table(
+      initials(turmas.raw$`Nome da Disciplina`),
+      turmas.raw$`Período/Ano`
+    ))
+  Oferecida <- colSums(cross.table.turmas)
+  Oferecida[Oferecida > 0] <- "✅"
+  Oferecida[Oferecida == 0] <- ""
+  turmas.oferecidas <- rbind(Oferecida, cross.table.turmas)
+  turmas.oferecidas[turmas.oferecidas > 0] <- "✔"
+  turmas.oferecidas[turmas.oferecidas == 0] <- ""
+  if (length(colnames(turmas.oferecidas)) > 1) {
+    turmas.oferecidas <-
+      turmas.oferecidas[, order(colnames(turmas.oferecidas), decreasing = TRUE)]
+  }
+  print(
+    kable(turmas.oferecidas, align = c("l", rep(
+      "c", ncol(turmas.oferecidas) - 2
+    ), "r")) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+  
+  # line break
+  cat("  \n")
+  cat("  \n")
+  
+  legenda.turma <-
+    unique(cbind(
+      initials(turmas.raw$`Nome da Disciplina`),
+      turmas.raw$`Nome da Disciplina`
+    ))
+  legenda.turma <- legenda.turma[order(legenda.turma[, 1]),]
+  cat(paste(
+    "*",
+    legenda.turma[, 1],
+    ": ",
+    lapply(legenda.turma[, 2], str_to_title),
+    "*",
+    sep = "",
+    collapse = "; "
+  ))
+}
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **2016-2013**
+
+```{r turmas-2016, eval = has.sucupira}
+# load custom function
+source("Scripts/get-initials.R", local = knitr::knit_global())
+
+# turmas
+sheet <- "Turmas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# bind all sheets
+periodos <-
+  names(sucupira.list)[na.omit(match(c(2013:2016), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
+
+if (dim(turmas.raw)[1] != 0) {
+  # build a cross table DISCIPLINA vs. ANO
+  turmas.raw$`Período/Ano` <-
+    paste(
+      sub(".*/", "", turmas.raw$`Período/Ano`),
+      sub("/.*", "", turmas.raw$`Período/Ano`),
+      sep = "/"
+    )
+  cross.table.turmas <-
+    as.matrix(table(
+      initials(turmas.raw$`Nome da Disciplina`),
+      turmas.raw$`Período/Ano`
+    ))
+  Oferecida <- colSums(cross.table.turmas)
+  Oferecida[Oferecida > 0] <- "✅"
+  Oferecida[Oferecida == 0] <- ""
+  turmas.oferecidas <- rbind(Oferecida, cross.table.turmas)
+  turmas.oferecidas[turmas.oferecidas > 0] <- "✔"
+  turmas.oferecidas[turmas.oferecidas == 0] <- ""
+  if (length(colnames(turmas.oferecidas)) > 1) {
+    turmas.oferecidas <-
+      turmas.oferecidas[, order(colnames(turmas.oferecidas), decreasing = TRUE)]
+  }
+  print(
+    kable(turmas.oferecidas, align = c("l", rep(
+      "c", ncol(turmas.oferecidas) - 2
+    ), "r")) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+  
+  # line break
+  cat("  \n")
+  cat("  \n")
+  
+  legenda.turma <-
+    unique(cbind(
+      initials(turmas.raw$`Nome da Disciplina`),
+      turmas.raw$`Nome da Disciplina`
+    ))
+  legenda.turma <- legenda.turma[order(legenda.turma[, 1]),]
+  cat(paste(
+    "*",
+    legenda.turma[, 1],
+    ": ",
+    lapply(legenda.turma[, 2], str_to_title),
+    "*",
+    sep = "",
+    collapse = "; "
+  ))
+}
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **2012-2010**
+
+```{r turmas-2012, eval = has.sucupira}
+# load custom function
+source("Scripts/get-initials.R", local = knitr::knit_global())
+
+# turmas
+sheet <- "Turmas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# bind all sheets
+periodos <-
+  names(sucupira.list)[na.omit(match(c(2010:2012), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
+
+if (dim(turmas.raw)[1] != 0) {
+  # build a cross table DISCIPLINA vs. ANO
+  turmas.raw$`Período/Ano` <-
+    paste(
+      sub(".*/", "", turmas.raw$`Período/Ano`),
+      sub("/.*", "", turmas.raw$`Período/Ano`),
+      sep = "/"
+    )
+  cross.table.turmas <-
+    as.matrix(table(
+      initials(turmas.raw$`Nome da Disciplina`),
+      turmas.raw$`Período/Ano`
+    ))
+  Oferecida <- colSums(cross.table.turmas)
+  Oferecida[Oferecida > 0] <- "✅"
+  Oferecida[Oferecida == 0] <- ""
+  turmas.oferecidas <- rbind(Oferecida, cross.table.turmas)
+  turmas.oferecidas[turmas.oferecidas > 0] <- "✔"
+  turmas.oferecidas[turmas.oferecidas == 0] <- ""
+  if (length(colnames(turmas.oferecidas)) > 1) {
+    turmas.oferecidas <-
+      turmas.oferecidas[, order(colnames(turmas.oferecidas), decreasing = TRUE)]
+  }
+  print(
+    kable(turmas.oferecidas, align = c("l", rep(
+      "c", ncol(turmas.oferecidas) - 2
+    ), "r")) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+  
+  # line break
+  cat("  \n")
+  cat("  \n")
+  
+  legenda.turma <-
+    unique(cbind(
+      initials(turmas.raw$`Nome da Disciplina`),
+      turmas.raw$`Nome da Disciplina`
+    ))
+  legenda.turma <- legenda.turma[order(legenda.turma[, 1]),]
+  cat(paste(
+    "*",
+    legenda.turma[, 1],
+    ": ",
+    lapply(legenda.turma[, 2], str_to_title),
+    "*",
+    sep = "",
+    collapse = "; "
+  ))
+}
+```
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Calendários** {#calendarios}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Sede**
+
+```{r calendarios-sede, eval = has.calendarios}
+# read separate sheets
+turmas.raw <- read_excel("PPG/Calendários.xlsx", sheet = "Sede", col_types = c("text"))
+
+Abrir <- matrix(NA, nrow = dim(turmas.raw)[1])
+colnames(Abrir) <- "Abrir"
+# add hyperlinks
+for(i in 1:dim(turmas.raw)[1]){
+  if(!is.na(turmas.raw[i,3])){
+    Abrir[i] <- paste0('<a href="', turmas.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>", sep = "")
+  }
+}
+
+turmas <- cbind(turmas.raw[,-3], Abrir)
+turmas <- turmas[order(turmas$Publicação, decreasing = TRUE), ]
+
+# print table
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(turmas, title = "Calendários")
+```
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Cooperação Interinstitucional**
+
+```{r calendarios-cooperacao, eval = has.calendarios}
+# read separate sheets
+turmas.raw <- read_excel("PPG/Calendários.xlsx", sheet = "Cooperação", col_types = c("text"))
+
+Abrir <- matrix(NA, nrow = dim(turmas.raw)[1])
+colnames(Abrir) <- "Abrir"
+# add hyperlinks
+for(i in 1:dim(turmas.raw)[1]){
+  if(!is.na(turmas.raw[i,3])){
+    Abrir[i] <- paste0('<a href="', turmas.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>", sep = "")
+  }
+}
+
+turmas <- cbind(turmas.raw[,-3], Abrir)
+turmas <- turmas[order(turmas$Publicação, decreasing = TRUE), ]
+
+# print table
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(turmas, title = "Calendários")
+```
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Infraestrutura** {.tabset #infraestrutura}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Laboratórios**
+
+```{r laboratorios-descritivo, eval = has.laboratorios}
+# read separate sheets
+dados.lab <- read_excel("PPG/Laboratórios.xlsx", sheet = "Dados")
+
+# print tables
+print(
+  kable(dados.lab, digits = 0, align = c("l", rep(
+    "c", ncol(dados.lab) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+```{r laboratorios-equipamentos, eval = has.laboratorios}
+# read data
+labs <-
+  read_excel("PPG/Laboratórios.xlsx",
+             sheet = "Dados",
+             col_types = c("text"))
+
+for (i in 1:dim(labs)[1]) {
+  lab <-
+    read_excel("PPG/Laboratórios.xlsx",
+               sheet = paste("Lab", i, sep = ""))
+  name <- names(lab[1])
+  
+  cat('\n\n<!-- -->\n\n')
+  name <- names(lab[1])
+  colnames(lab) <- lab[1, ]
+  
+  cat('\n\n<!-- -->\n\n')
+  cat("### **", paste("Lab. ", i, sep = ""), "**", "\n", sep = "")
+  cat('\n\n<!-- -->\n\n')
+  cat('<center>\n')
+  cat("**", name, "**", sep = "")
+  cat('\n\n<!-- -->\n\n')
+  cat('\n</center>')
+  
+  cat('<div class = "row"><div class = "col-md-6">')
+  cat('<center>\n')
+  cat('\n\n<!-- -->\n\n')
+  lab <- lab[-1,]
+  cat(paste0("![](", getwd(), "/PPG/Labs/Lab-", i, ".jpg)"), "\n")
+  cat('\n\n<!-- -->\n\n')
+  cat('\n</center>')
+  cat('</div>')
+  
+  cat('<div class = "col-md-6">')
+  cat('<center>\n')
+  cat('\n\n<!-- -->\n\n')
+  print(
+    kable(lab, digits = 0, align = c("l", rep("c", ncol(
+      lab
+    ) - 2), "r")) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )  %>% scroll_box(width = "100%", height = "250px")
+  )
+  cat('\n</center>')
+  cat('</div></div>')
+  
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+```
+
+<br>
+
+### **Planta**
+
+```{r laboratorios-planta, eval = has.laboratorios}
+knitr::include_graphics(file.path(getwd(), "PPG", "Labs", "Planta.png"))
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Convênios institucionais** {#convenios}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+<br>
+
+### **CEFAN - Centro de Educação Física Almirante Adalberto Nunes da Marinha do Brasil**
+
+<br>
+
+```{r documentos-convenios-cefan, eval = has.convenios}
+# read separate sheets
+vigentes.raw <-
+  read_excel("PPG/Convênios.xlsx",
+             sheet = "CEFAN",
+             col_types = c("text"))
+
+# replace the link by a tag
+for (i in 1:dim(vigentes.raw)[1]) {
+  vigentes.raw[i, 3] <-
+    paste("[↗️](", vigentes.raw[i, 3], '){target="_blank"}', sep = "")
+}
+
+# print table
+print(
+  kable(vigentes.raw, align = c("l", rep(
+    "c", ncol(vigentes.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **APB - Academia Paralímpica Brasileira**
+
+<br>
+
+```{r documentos-convenios-apb, eval = has.convenios}
+# read separate sheets
+vigentes.raw <-
+  read_excel("PPG/Convênios.xlsx",
+             sheet = "APB",
+             col_types = c("text"))
+
+# replace the link by a tag
+for (i in 1:dim(vigentes.raw)[1]) {
+  vigentes.raw[i, 3] <-
+    paste("[↗️](", vigentes.raw[i, 3], '){target="_blank"}', sep = "")
+}
+
+# print table
+print(
+  kable(vigentes.raw, align = c("l", rep(
+    "c", ncol(vigentes.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **UFRJ - Universidade Federal do Rio de Janeiro**
+
+<br>
+
+```{r documentos-convenios-ufrj, eval = has.convenios}
+# read separate sheets
+vigentes.raw <-
+  read_excel("PPG/Convênios.xlsx",
+             sheet = "UFRJ",
+             col_types = c("text"))
+
+# replace the link by a tag
+for (i in 1:dim(vigentes.raw)[1]) {
+  vigentes.raw[i, 3] <-
+    paste("[↗️](", vigentes.raw[i, 3], '){target="_blank"}', sep = "")
+}
+
+# print table
+print(
+  kable(vigentes.raw, align = c("l", rep(
+    "c", ncol(vigentes.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **UFMG - Universidade Federal de Minas Gerais**
+
+<br>
+
+```{r documentos-convenios-ufmg, eval = has.convenios}
+# read separate sheets
+vigentes.raw <-
+  read_excel("PPG/Convênios.xlsx",
+             sheet = "UFMG",
+             col_types = c("text"))
+
+# replace the link by a tag
+for (i in 1:dim(vigentes.raw)[1]) {
+  vigentes.raw[i, 3] <-
+    paste("[↗️](", vigentes.raw[i, 3], '){target="_blank"}', sep = "")
+}
+
+# print table
+print(
+  kable(vigentes.raw, align = c("l", rep(
+    "c", ncol(vigentes.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **PUC-RJ Pontifícia Universidade Católica, Rio de Janeiro**
+
+<br>
+
+```{r documentos-convenios-puc-rj, eval = has.convenios}
+# read separate sheets
+vigentes.raw <-
+  read_excel("PPG/Convênios.xlsx",
+             sheet = "PUC-RJ",
+             col_types = c("text"))
+
+# replace the link by a tag
+for (i in 1:dim(vigentes.raw)[1]) {
+  vigentes.raw[i, 3] <-
+    paste("[↗️](", vigentes.raw[i, 3], '){target="_blank"}', sep = "")
+}
+
+# print table
+print(
+  kable(vigentes.raw, align = c("l", rep(
+    "c", ncol(vigentes.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Cooperação entre instituições** {#cooperacao}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Em andamento** {.tabset}
+
+#### **2019-2023 DINTER**
+
+```{r dinter-andamento, eval = has.cooperacoes}
+# read separate sheets
+interinstitucional.raw <-
+  read_excel("PPG/Cooperações.xlsx",
+             sheet = "Dinter2019",
+             col_types = c("text"))
+
+# replace the link by a tag
+for (i in 1:dim(interinstitucional.raw)[1]) {
+  interinstitucional.raw[i, 3] <-
+    paste("[↗️](",
+          interinstitucional.raw[i, 3],
+          '){target="_blank"}',
+          sep = "")
+}
+
+# print table
+print(
+  kable(interinstitucional.raw, align = c("l", rep(
+    "c", ncol(interinstitucional.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **2021-2023 PCI**
+
+```{r minter-andamento, eval = has.cooperacoes}
+# read separate sheets
+interinstitucional.raw <-
+  read_excel("PPG/Cooperações.xlsx",
+             sheet = "PCI2021",
+             col_types = c("text"))
+
+# replace the link by a tag
+for (i in 1:dim(interinstitucional.raw)[1]) {
+  interinstitucional.raw[i, 3] <-
+    paste("[↗️](",
+          interinstitucional.raw[i, 3],
+          '){target="_blank"}',
+          sep = "")
+}
+
+# print table
+print(
+  kable(interinstitucional.raw, align = c("l", rep(
+    "c", ncol(interinstitucional.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Concluídos** {.tabset}
+
+#### **2019-2021 MINTER**
+
+```{r minter-concluido, eval = has.cooperacoes}
+# read separate sheets
+interinstitucional.raw <-
+  read_excel("PPG/Cooperações.xlsx",
+             sheet = "Minter2019",
+             col_types = c("text"))
+
+# replace the link by a tag
+for (i in 1:dim(interinstitucional.raw)[1]) {
+  interinstitucional.raw[i, 3] <-
+    paste("[↗️](",
+          interinstitucional.raw[i, 3],
+          '){target="_blank"}',
+          sep = "")
+}
+
+# print table
+print(
+  kable(interinstitucional.raw, align = c("l", rep(
+    "c", ncol(interinstitucional.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Internacionalização** {.tabset #internacional}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+```{r internacional, eval = has.internacionalizacao}
+# read separate sheets
+file.path <- "PPG/Internacionalização.xlsx"
+tabs <- excel_sheets(file.path)
+topics <- c()
+news.list <- vector(mode = "list", length = length(tabs))
+
+# iterate across sheets
+for (j in 1:length(tabs)) {
+  news <-
+    read_excel(file.path,
+               sheet = tabs[j],
+               col_types = c("text", "text", "text"))
+  # replace the link by a tag
+  for (i in 1:dim(news)[1]) {
+    news[i, 1] <-
+      paste("### **", as.character(as.Date(as.numeric(news[i, 1]), origin = "1899-12-30")), "**", sep = "")
+    news[i, 3] <-
+      paste("[↗️](", news[i, 3], '){target="_blank"}', sep = "")
+  }
+  
+  # drop date column
+  news <- news[,-1]
+  # store data to print table
+  news.list[[j]] <- news
+  
+  # store data to plot wordcloud
+  topics <- rbind(topics, news[i, 1])
+}
+
+# iterate across sheets
+for (j in 1:length(tabs)) {
+  cat('\n\n<!-- -->\n\n')
+  cat("### **", tabs[j], "**", "\n", sep = "")
+  cat('\n\n<!-- -->\n\n')
+  print(
+    kable(news.list[[j]], align = c("l", rep("c", ncol(
+      news
+    ) - 2), "r")) %>% kable_styling(
+      bootstrap_options = c("hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+  cat('\n\n<!-- -->\n\n')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+```

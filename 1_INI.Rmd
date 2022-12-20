@@ -1,0 +1,476 @@
+<!--install and/or load all R packages-->
+```{r setup, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%", results = "hide"}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = 'center',
+  results = "asis",
+  include = TRUE,
+  out.width = "100%",
+  knitr.kable.NA = '--',
+  knitr.table.format = "html"
+)
+source("Scripts/all-required-packages.R", local = knitr::knit_global())
+```
+
+<!--create (if non existent) all required folders-->
+```{r folders}
+dir.create(file.path(getwd(), "PPG"), showWarnings = FALSE)
+dir.create(file.path(getwd(), "Sucupira"), showWarnings = FALSE)
+```
+
+```{r try-sucupira}
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R")
+has.sucupira <- length(sucupira.list) != 0
+```
+
+```{r try-ppg-files}
+# list all PPG files
+files.to.read <-
+  list.dirs(file.path(getwd(), "PPG"),
+            full.names = TRUE,
+            recursive = FALSE)
+has.PPG.files <- length(files.to.read) != 0
+```
+
+<!--read METRIC files-->
+```{r metrics}
+source(file.path("Scripts", "sjr.R"), local = knitr::knit_global())
+source(file.path("Scripts", "citescore.R"), local = knitr::knit_global())
+source(file.path("Scripts", "webqualis.R"), local = knitr::knit_global())
+```
+
+<!--check available files in PPG folder-->
+```{r try-apresentacao}
+has.apresentacao <-
+  !is.error(try(read_excel(paste0("PPG/Apresentação.xlsx"), sheet = 1),
+                silent = TRUE))
+```
+
+```{r try-autoavaliacoes}
+has.autoavaliacoes <-
+  !is.error(try(read_excel(paste0("PPG/Autoavaliações.xlsx"), sheet = 1),
+                silent = TRUE))
+```
+
+```{r try-bibliografia}
+has.bibliografia <-
+  !is.error(try(read_excel(paste0("PPG/Bibliografia.xlsx"), sheet = 1),
+                silent = TRUE))
+```
+
+```{r try-blog-externos}
+has.blog.externos <-
+  !is.error(try(read_excel(paste0("PPG/Blog_externos.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-blog-ies}
+has.blog.ies <-
+  !is.error(try(read_excel(paste0("PPG/Blog_IES.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-bolsas}
+has.bolsas <-
+  !is.error(try(read_excel(paste0("PPG/Bolsas.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-calendarios}
+has.calendarios <-
+  !is.error(try(read_excel(paste0("PPG/Calendários.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-cep}
+has.cep <-
+  !is.error(try(read_excel(paste0("PPG/CEP.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-convenios}
+has.convenios <-
+  !is.error(try(read_excel(paste0("PPG/Convênios.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-cooperacoes}
+has.cooperacoes <-
+  !is.error(try(read_excel(paste0("PPG/Cooperações.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-dados-cadastrais}
+has.dados.cadastrais <-
+  !is.error(try(read_excel(paste0("PPG/Dados Cadastrais.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-destaques}
+has.destaques <-
+  !is.error(try(read_excel(paste0("PPG/Destaques.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-discentes}
+has.discentes <-
+  !is.error(try(read_excel(paste0("PPG/Discentes.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-docentes-posdocs}
+has.docentes.posdocs <-
+  !is.error(try(read_excel(paste0("PPG/Docentes e Pós-Docs.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-donwloads}
+has.downloads <-
+  !is.error(try(read_excel(paste0("PPG/Donwloads.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-financiadores}
+has.financiadores <-
+  !is.error(try(read_excel("PPG/Financiadores.xlsx", sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-grupos-pesquisa}
+has.grupos.pesquisa <-
+  !is.error(try(read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-internacionalizacao}
+has.internacionalizacao <-
+  !is.error(try(read_excel(paste0("PPG/Internacionalização.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-inventario}
+has.inventario <-
+  !is.error(try(read_excel(paste0("PPG/Inventário.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-laboratorios}
+has.laboratorios <-
+  !is.error(try(read_excel(paste0("PPG/Laboratórios.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-notas}
+has.notas <-
+  !is.error(try(read_excel(paste0("PPG/Notas.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-premios}
+has.premios <-
+  !is.error(try(read_excel(paste0("PPG/Prêmios.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-producao}
+has.artigos.completos <-
+  !is.error(try(read_excel(paste0("PPG/Produção.xlsx"), sheet = "PI.completos"), silent = TRUE)
+  )
+
+has.artigos.resumos <-
+  !is.error(try(read_excel(paste0("PPG/Produção.xlsx"), sheet = "PI.resumos"), silent = TRUE)
+  )
+
+has.preprints <-
+  !is.error(try(read_excel(paste0("PPG/Produção.xlsx"), sheet = "PI.preprints"), silent = TRUE)
+  )
+
+has.capitulos <-
+  !is.error(try(read_excel(paste0("PPG/Produção.xlsx"), sheet = "PI.livros"), silent = TRUE)
+  )
+
+has.eventos <-
+  !is.error(try(read_excel(paste0("PPG/Produção.xlsx"), sheet = "PI.eventos"), silent = TRUE)
+  )
+
+has.producao <-
+  any(has.artigos.completos, has.artigos.resumos, has.preprints, has.eventos)
+```
+
+```{r try-repositorios}
+has.repositorios <-
+  !is.error(try(read_excel(paste0("PPG/Repositórios.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-softwares}
+has.softwares <-
+  !is.error(try(read_excel(paste0("PPG/Softwares.xlsx"), sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r ppg-data, eval = has.dados.cadastrais}
+# get initials from the PPG data
+nome.PPG <-
+  read_excel("PPG/Dados Cadastrais.xlsx",
+             sheet = "Dados do programa",
+             col_types = c("text"))[2, 2]
+
+nome.PPG.split <- str_split_1(as.character(nome.PPG)[[1]], " ")
+match.stopwords <-
+  match(str_split_1(as.character(nome.PPG)[[1]], " "), stopwords("portuguese"))
+nome.PPG.no.stopwords <-
+  paste(nome.PPG.split[is.na(match.stopwords)], collapse = " ")
+source("Scripts/get-initials.R")
+sigla.PPG <- initials(nome.PPG.no.stopwords)
+
+site.PPG <-
+  read_excel("PPG/Dados Cadastrais.xlsx",
+             sheet = "Endereço",
+             col_types = c("text"))[7, 2]
+
+# qualquer planilha para obter os dados da IES
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+nome.IES <- unique(sucupira.raw$`IES Nome`)
+sigla.IES <- unique(sucupira.raw$`IES Sigla`)
+```
+
+<!--get data-->
+```{r metrics-artigos, cache = TRUE, cache.path = "cache/artigos/", eval = has.artigos.completos}
+# read data
+sheet.ix <- "PI.completos"
+data.sheet <-
+  data.frame(read_excel(
+    "PPG/Produção.xlsx",
+    sheet = sheet.ix,
+    col_types = c("text")
+  ))
+
+# Data cleaning
+dois <-
+  as.data.frame(na.omit(data.sheet[, match("DOI", colnames(data.sheet))]))
+colnames(dois) <- "DOI"
+
+# cria metadados para rastreio pelo Altmetric
+source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
+
+# get metrics from Altmetric and CrossRef
+source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
+
+# store to use downstream
+dois_artigos <- dois
+doi_unique_artigos <- doi_unique
+my_dois_works_artigos <- my_dois_works
+
+# obtain formatted references
+formatted_citations <-
+  rcrossref::cr_cn(
+    c(doi_unique$doi, my_dois_works$doi),
+    format = "text",
+    raw = TRUE,
+    style = "american-medical-association"
+  )
+formatted_citations <- substring(formatted_citations, 3)
+formatted_citations <-
+  cbind(seq(1, length(formatted_citations)), formatted_citations)
+colnames(formatted_citations) <- c("ID", "Reference")
+
+references_artigos <- formatted_citations
+```
+
+<!--get data-->
+```{r metrics-resumos, cache = TRUE, cache.path = "cache/resumos/", eval = has.artigos.resumos}
+# read data
+sheet.ix <- "PI.resumos"
+data.sheet <-
+  data.frame(read_excel(
+    "PPG/Produção.xlsx",
+    sheet = sheet.ix,
+    col_types = c("text")
+  ))
+
+# Data cleaning
+dois <-
+  as.data.frame(na.omit(data.sheet[, match("DOI", colnames(data.sheet))]))
+colnames(dois) <- "DOI"
+
+# cria metadados para rastreio pelo Altmetric
+source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
+
+# get metrics from Altmetric and CrossRef
+source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
+
+# store to use downstream
+dois_resumos <- dois
+doi_unique_resumos <- doi_unique
+my_dois_works_resumos <- my_dois_works
+
+# obtain formatted references
+formatted_citations <-
+  rcrossref::cr_cn(
+    c(doi_unique$doi, my_dois_works$doi),
+    format = "text",
+    raw = TRUE,
+    style = "american-medical-association"
+  )
+formatted_citations <- substring(formatted_citations, 3)
+formatted_citations <-
+  cbind(seq(1, length(formatted_citations)), formatted_citations)
+colnames(formatted_citations) <- c("ID", "Reference")
+
+references_resumos <- formatted_citations
+```
+
+<!--get data-->
+```{r metrics-preprints, cache = TRUE, cache.path = "cache/preprints/", eval = has.preprints}
+# read data
+sheet.ix <- "PI.preprints"
+data.sheet <-
+  data.frame(read_excel(
+    "PPG/Produção.xlsx",
+    sheet = sheet.ix,
+    col_types = c("text")
+  ))
+
+# Data cleaning
+dois <-
+  as.data.frame(na.omit(data.sheet[, match("DOI", colnames(data.sheet))]))
+colnames(dois) <- "DOI"
+
+# cria metadados para rastreio pelo Altmetric
+source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
+
+# get metrics from Altmetric and CrossRef
+source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
+
+# store to use downstream
+dois_preprints <- dois
+doi_unique_preprints <- doi_unique
+my_dois_works_preprints <- my_dois_works
+
+# obtain formatted references
+formatted_citations <-
+  rcrossref::cr_cn(
+    c(doi_unique$doi, my_dois_works$doi),
+    format = "text",
+    raw = TRUE,
+    style = "american-medical-association"
+  )
+formatted_citations <- substring(formatted_citations, 3)
+formatted_citations <-
+  cbind(seq(1, length(formatted_citations)), formatted_citations)
+colnames(formatted_citations) <- c("ID", "Reference")
+
+references_preprints <- formatted_citations
+```
+
+<!--get data-->
+```{r metrics-livros-capitulos, cache = TRUE, cache.path = "cache/livros_capitulos/", eval = has.capitulos}
+# read data
+sheet.ix <- "PI.livros"
+data.sheet <-
+  data.frame(read_excel(
+    "PPG/Produção.xlsx",
+    sheet = sheet.ix,
+    col_types = c("text")
+  ))
+
+# Data cleaning
+dois <-
+  as.data.frame(na.omit(data.sheet[, match("DOI", colnames(data.sheet))]))
+colnames(dois) <- "DOI"
+
+# cria metadados para rastreio pelo Altmetric
+source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
+
+# get metrics from Altmetric and CrossRef
+source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
+
+# store to use downstream
+dois_livros_capitulos <- dois
+doi_unique_livros_capitulos <- doi_unique
+my_dois_works_livros_capitulos <- my_dois_works
+
+# obtain formatted references
+formatted_citations <-
+  rcrossref::cr_cn(
+    c(doi_unique$doi, my_dois_works$doi),
+    format = "text",
+    raw = TRUE,
+    style = "american-medical-association"
+  )
+formatted_citations <- substring(formatted_citations, 3)
+formatted_citations <-
+  cbind(seq(1, length(formatted_citations)), formatted_citations)
+colnames(formatted_citations) <- c("ID", "Reference")
+
+references_livros_capitulos <- formatted_citations
+```
+
+<!--get data-->
+```{r metrics-eventos, cache = TRUE, cache.path = "cache/eventos/", eval = has.eventos}
+# read data
+sheet.ix <- "PI.eventos"
+data.sheet <-
+  data.frame(read_excel(
+    "PPG/Produção.xlsx",
+    sheet = sheet.ix,
+    col_types = c("text")
+  ))
+
+# Data cleaning
+dois <-
+  as.data.frame(na.omit(data.sheet[, match("DOI", colnames(data.sheet))]))
+colnames(dois) <- "DOI"
+
+# cria metadados para rastreio pelo Altmetric
+source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
+
+# get metrics from Altmetric and CrossRef
+source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
+
+# store to use downstream
+dois_eventos <- dois
+doi_unique_eventos <- doi_unique
+my_dois_works_eventos <- my_dois_works
+
+# obtain formatted references
+formatted_citations <-
+  rcrossref::cr_cn(
+    c(doi_unique$doi, my_dois_works$doi),
+    format = "text",
+    raw = TRUE,
+    style = "american-medical-association"
+  )
+formatted_citations <- substring(formatted_citations, 3)
+formatted_citations <-
+  cbind(seq(1, length(formatted_citations)), formatted_citations)
+colnames(formatted_citations) <- c("ID", "Reference")
+
+references_eventos <- formatted_citations
+```

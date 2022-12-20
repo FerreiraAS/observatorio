@@ -1,0 +1,230 @@
+---
+title: Observatório
+date: '`r format(Sys.Date())`'
+author:
+  - name: PPGCR-UNISUAM
+  - email: "cienciasdareabilitacao@souunisuam.com.br"
+repository_url: https://ppgcr-unisuam.github.io/observatoriocr/
+creative_commons: CC BY-NC
+output_dir: docs
+include:
+  - 1_INI.html
+  - header.html
+  - google-translate.html
+  - footer.html
+  - /CSS
+  - /Metrics
+  - /PPG
+  - /Scripts
+  - /Sucupira
+  - /Texts
+search: true
+navbar:
+  left:
+    - text: ""
+      icon: "fa-home"
+      href: index.html
+    - text: "Programa"
+      href: [programa.html]
+      menu:
+        - text: "Programa"
+          href: [programa.html]
+        - text: "Apresentação"
+          href: [programa.html#apresentacao]
+        - text: "Breve histórico"
+          href: [programa.html#breve-historico]
+        - text: "Área de concentração"
+          href: [programa.html#area-concentracao]
+        - text: "Linhas de pesquisa"
+          href: [programa.html#linha-pesquisa]
+        - text: "Projetos de pesquisa"
+          href: [programa.html#projeto-pesquisa]
+        - text: "Agendas de pesquisa"
+          href: [programa.html#agenda-pesquisa]
+        - text: "Financiadores"
+          href: [programa.html#financiadores]
+        - text: "Bolsas de estudo"
+          href: [programa.html#bolsas]
+        - text: "Cursos"
+          href: [programa.html#cursos]
+        - text: "Estrutura curricular"
+          href: [programa.html#estrutura-curricular]
+        - text: "Turmas"
+          href: [programa.html#turmas]
+        - text: "Calendários"
+          href: [programa.html#calendarios]
+        - text: "Infraestrutura"
+          href: [programa.html#infraestrutura]
+        - text: "Convênios Institucionais"
+          href: [programa.html#convenios]
+        - text: "Cooperação entre instituições"
+          href: [programa.html#cooperacao]
+        - text: "Internacionalização"
+          href: [programa.html#internacional]
+    - text: "Pessoas"
+      href: [pessoas.html]
+      menu:
+        - text: "Pessoas"
+          href: [pessoas.html]
+        - text: "Secretaria"
+          href: [pessoas.html#secretaria]
+        - text: "Colegiado"
+          href: [pessoas.html#colegiado]
+        - text: "Coordenação"
+          href: [pessoas.html#coordenacao]
+        - text: "Docentes"
+          href: [pessoas.html#docentes]
+        - text: "Pós-doutorandos"
+          href: [pessoas.html#posdocs]
+        - text: "Discentes"
+          href: [pessoas.html#discentes]
+        - text: "Egressos"
+          href: [pessoas.html#egressos]
+        - text: "Grupos de pesquisa"
+          href: [pessoas.html#grupos-pesquisa]
+        - text: "Grupos de pesquisa externos"
+          href: [pessoas.html#grupos-externos]
+        - text: "Participantes externos"
+          href: [pessoas.html#participantes-externos]
+    - text: "Produções"
+      href: [producoes.html]
+      menu:
+        - text: "Produções"
+          href: [producoes.html]
+        - text: "Trabalhos de conclusão"
+          href: [producoes.html#TCC]
+        - text: "Repositórios"
+          href: [producoes.html#repositorios]
+        - text: "Produção bibliográfica"
+          href: [producoes.html#bibliografica]
+        - text: "Produção técnica"
+          href: [producoes.html#tecnica]
+        - text: "Registros de protocolos"
+          href: [producoes.html#registros]
+        - text: "Portais de periódicos"
+          href: [producoes.html#portais]
+        - text: "Métricas"
+          href: [producoes.html#metricas]
+    - text: "Destaques"
+      href: destaques.html
+      menu:
+        - text: "Destaques"
+          href: [destaques.html]
+        - text: "Egressos"
+          href: [destaques.html#egressos-destaque]
+        - text: "Dissertações/Teses"
+          href: [destaques.html#TCC-destaque]
+        - text: "Produções"
+          href: [destaques.html#produtos-destaque]
+        - text: "Prêmios"
+          href: [destaques.html#premios]
+        - text: "Representatividade"
+          href: [destaques.html#representatividade]
+        - text: "Divulgação"
+          href: [destaques.html#divulgacao]
+    - text: "Impacto"
+      href: [impacto.html]
+      menu:
+        - text: "Impacto"
+          href: [impacto.html]
+        - text: "Educacional"
+          href: [impacto.html#impacto-educacional]
+        - text: "Científico"
+          href: [impacto.html#impacto-cientifico]
+        - text: "Sociocultural"
+          href: [impacto.html#impacto-sociocultural]
+        - text: "Tecnológico/Econômico"
+          href: [impacto.html#impacto-tecnologico]
+        - text: "Ações durante a pandemia"
+          href: [impacto.html#acoes-pandemia]
+    - text: "Galeria"
+      href: [galeria.html]
+      menu:
+        - text: "Galeria"
+          href: [galeria.html]
+        - text: "Videos"
+          href: [galeria.html#videos]
+        - text: "Podcasts"
+          href: [galeria.html#podcasts]
+        - text: "Fotos"
+          href: [galeria.html#fotos]
+    - text: "Autoavaliação"
+      href: autoavaliacao.html
+      menu:
+        - text: "Autoavaliação"
+          href: [autoavaliacao.html]
+        - text: "Planejamento estratégico"
+          href: [autoavaliacao.html#planejamento]
+        - text: "Metodologia"
+          href: [autoavaliacao.html#metodologia]
+        - text: "Fichas de avaliação"
+          href: [autoavaliacao.html#ficha]
+        - text: "Fontes de dados"
+          href: [autoavaliacao.html#dados]
+        - text: "Autoavaliação"
+          href: [autoavaliacao.html#autoavaliacao]
+        - text: "1. Programa"
+          href: [autoavaliacao.html#programa]
+        - text: "2. Formação"
+          href: [autoavaliacao.html#formacao]
+        - text: "3. Impacto na sociedade"
+          href: [autoavaliacao.html#impacto]
+        - text: "Resultados"
+          href: [autoavaliacao.html#resultados]
+    - text: "Downloads"
+      href: [downloads.html]
+  right:
+    - text: ""
+      icon: "fa-link"
+      menu:
+      - text: "Área 21"
+        href: [https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/avaliacao/sobre-a-avaliacao/areas-avaliacao/sobre-as-areas-de-avaliacao/colegio-de-ciencias-da-vida/ciencias-da-saude/educacao-fisica]
+      - text: "Forum da Área 21"
+        href: [https://www.fef.unicamp.br/fef/posgraduacao/forumpg21]
+      - text: "Chamadas públicas"
+        menu:
+        - text: "FAPERJ"
+          href: [https://www.faperj.br/?id=28.5.7]
+        - text: "CAPES"
+          href: [https://www.gov.br/capes/pt-br/assuntos/editais-capes]
+        - text: "CNPq"
+          href: [https://www.gov.br/cnpq/pt-br]
+    - text: ""
+      icon: "fa-envelope"
+      href: [mailto:cienciasdareabilitacao@souunisuam.com.br]
+    - text: ""
+      icon: "fa-instagram"
+      href: [https://www.instagram.com/ppgcr_unisuam/]
+    - text: ""
+      icon: "fa-facebook"
+      href: [https://www.facebook.com/people/Ciências-da-Reabilitação/100010029900421/]
+    - text: ""
+      icon: "fa-github"
+      href: [https://github.com/ppgcr-unisuam/observatoriocr]
+
+output:
+  html_document:
+    theme: flatly
+    highlight: textmate
+    include:
+      in_header: [header.html]
+      before_body: [google-translate.html]
+      after_body: [footer.html]
+    css:
+      - style.css
+      - /CSS/responsive.css
+      - /CSS/narrow-margins.css
+      - /CSS/logo-above-toc.css
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    edit: null
+    sharing:
+      facebook: yes
+      twitter: yes
+      google: yes
+      all:
+        - facebook
+        - twitter
+        - google
+---

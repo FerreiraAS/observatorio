@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Downloads</title>
+
+<script src="site_libs/header-attrs-2.19/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/CSS/logo-above-toc.css" type="text/css" />
+<link rel="stylesheet" href="/CSS/narrow-margins.css" type="text/css" />
+<link rel="stylesheet" href="/CSS/responsive.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Programa
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="programa.html">Programa</a>
+    </li>
+    <li>
+      <a href="programa.html#apresentacao">Apresentação</a>
+    </li>
+    <li>
+      <a href="programa.html#breve-historico">Breve histórico</a>
+    </li>
+    <li>
+      <a href="programa.html#area-concentracao">Área de concentração</a>
+    </li>
+    <li>
+      <a href="programa.html#linha-pesquisa">Linhas de pesquisa</a>
+    </li>
+    <li>
+      <a href="programa.html#projeto-pesquisa">Projetos de pesquisa</a>
+    </li>
+    <li>
+      <a href="programa.html#agenda-pesquisa">Agendas de pesquisa</a>
+    </li>
+    <li>
+      <a href="programa.html#financiadores">Financiadores</a>
+    </li>
+    <li>
+      <a href="programa.html#bolsas">Bolsas de estudo</a>
+    </li>
+    <li>
+      <a href="programa.html#cursos">Cursos</a>
+    </li>
+    <li>
+      <a href="programa.html#estrutura-curricular">Estrutura curricular</a>
+    </li>
+    <li>
+      <a href="programa.html#turmas">Turmas</a>
+    </li>
+    <li>
+      <a href="programa.html#calendarios">Calendários</a>
+    </li>
+    <li>
+      <a href="programa.html#infraestrutura">Infraestrutura</a>
+    </li>
+    <li>
+      <a href="programa.html#convenios">Convênios Institucionais</a>
+    </li>
+    <li>
+      <a href="programa.html#cooperacao">Cooperação entre instituições</a>
+    </li>
+    <li>
+      <a href="programa.html#internacional">Internacionalização</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Pessoas
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="pessoas.html">Pessoas</a>
+    </li>
+    <li>
+      <a href="pessoas.html#secretaria">Secretaria</a>
+    </li>
+    <li>
+      <a href="pessoas.html#colegiado">Colegiado</a>
+    </li>
+    <li>
+      <a href="pessoas.html#coordenacao">Coordenação</a>
+    </li>
+    <li>
+      <a href="pessoas.html#docentes">Docentes</a>
+    </li>
+    <li>
+      <a href="pessoas.html#posdocs">Pós-doutorandos</a>
+    </li>
+    <li>
+      <a href="pessoas.html#discentes">Discentes</a>
+    </li>
+    <li>
+      <a href="pessoas.html#egressos">Egressos</a>
+    </li>
+    <li>
+      <a href="pessoas.html#grupos-pesquisa">Grupos de pesquisa</a>
+    </li>
+    <li>
+      <a href="pessoas.html#grupos-externos">Grupos de pesquisa externos</a>
+    </li>
+    <li>
+      <a href="pessoas.html#participantes-externos">Participantes externos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Produções
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="producoes.html">Produções</a>
+    </li>
+    <li>
+      <a href="producoes.html#TCC">Trabalhos de conclusão</a>
+    </li>
+    <li>
+      <a href="producoes.html#repositorios">Repositórios</a>
+    </li>
+    <li>
+      <a href="producoes.html#bibliografica">Produção bibliográfica</a>
+    </li>
+    <li>
+      <a href="producoes.html#tecnica">Produção técnica</a>
+    </li>
+    <li>
+      <a href="producoes.html#registros">Registros de protocolos</a>
+    </li>
+    <li>
+      <a href="producoes.html#portais">Portais de periódicos</a>
+    </li>
+    <li>
+      <a href="producoes.html#metricas">Métricas</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Destaques
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="destaques.html">Destaques</a>
+    </li>
+    <li>
+      <a href="destaques.html#egressos-destaque">Egressos</a>
+    </li>
+    <li>
+      <a href="destaques.html#TCC-destaque">Dissertações/Teses</a>
+    </li>
+    <li>
+      <a href="destaques.html#produtos-destaque">Produções</a>
+    </li>
+    <li>
+      <a href="destaques.html#premios">Prêmios</a>
+    </li>
+    <li>
+      <a href="destaques.html#representatividade">Representatividade</a>
+    </li>
+    <li>
+      <a href="destaques.html#divulgacao">Divulgação</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Impacto
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="impacto.html">Impacto</a>
+    </li>
+    <li>
+      <a href="impacto.html#impacto-educacional">Educacional</a>
+    </li>
+    <li>
+      <a href="impacto.html#impacto-cientifico">Científico</a>
+    </li>
+    <li>
+      <a href="impacto.html#impacto-sociocultural">Sociocultural</a>
+    </li>
+    <li>
+      <a href="impacto.html#impacto-tecnologico">Tecnológico/Econômico</a>
+    </li>
+    <li>
+      <a href="impacto.html#acoes-pandemia">Ações durante a pandemia</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Galeria
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="galeria.html">Galeria</a>
+    </li>
+    <li>
+      <a href="galeria.html#videos">Videos</a>
+    </li>
+    <li>
+      <a href="galeria.html#podcasts">Podcasts</a>
+    </li>
+    <li>
+      <a href="galeria.html#fotos">Fotos</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Autoavaliação
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="autoavaliacao.html">Autoavaliação</a>
+    </li>
+    <li>
+      <a href="autoavaliacao.html#planejamento">Planejamento estratégico</a>
+    </li>
+    <li>
+      <a href="autoavaliacao.html#metodologia">Metodologia</a>
+    </li>
+    <li>
+      <a href="autoavaliacao.html#ficha">Fichas de avaliação</a>
+    </li>
+    <li>
+      <a href="autoavaliacao.html#dados">Fontes de dados</a>
+    </li>
+    <li>
+      <a href="autoavaliacao.html#autoavaliacao">Autoavaliação</a>
+    </li>
+    <li>
+      <a href="autoavaliacao.html#programa">1. Programa</a>
+    </li>
+    <li>
+      <a href="autoavaliacao.html#formacao">2. Formação</a>
+    </li>
+    <li>
+      <a href="autoavaliacao.html#impacto">3. Impacto na sociedade</a>
+    </li>
+    <li>
+      <a href="autoavaliacao.html#resultados">Resultados</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="downloads.html">Downloads</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-link"></span>
+     
+    
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/avaliacao/sobre-a-avaliacao/areas-avaliacao/sobre-as-areas-de-avaliacao/colegio-de-ciencias-da-vida/ciencias-da-saude/educacao-fisica">Área 21</a>
+    </li>
+    <li>
+      <a href="https://www.fef.unicamp.br/fef/posgraduacao/forumpg21">Forum da Área 21</a>
+    </li>
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Chamadas públicas</a>
+      <ul class="dropdown-menu" role="menu">
+        <li>
+          <a href="https://www.faperj.br/?id=28.5.7">FAPERJ</a>
+        </li>
+        <li>
+          <a href="https://www.gov.br/capes/pt-br/assuntos/editais-capes">CAPES</a>
+        </li>
+        <li>
+          <a href="https://www.gov.br/cnpq/pt-br">CNPq</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="mailto:cienciasdareabilitacao@souunisuam.com.br">
+    <span class="fa fa-envelope"></span>
+     
+    
+  </a>
+</li>
+<li>
+  <a href="https://www.instagram.com/ppgcr_unisuam/">
+    <span class="fa fa-instagram"></span>
+     
+    
+  </a>
+</li>
+<li>
+  <a href="https://www.facebook.com/people/Ciências-da-Reabilitação/100010029900421/">
+    <span class="fa fa-facebook"></span>
+     
+    
+  </a>
+</li>
+<li>
+  <a href="https://github.com/ppgcr-unisuam/observatoriocr">
+    <span class="fa fa-github"></span>
+     
+    
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<!--Script for adding a Google Translation bar-->
+
+<html lang="pt-BR">
+<div align="right" id="google_translate_element"></div>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'pt'}, 'google_translate_element');
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> 
+
+</html>
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Downloads</h1>
+
+</div>
+
+
+<!--install and/or load all R packages-->
+<!--script for inserting LOGO ABOVE THE TOC-->
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#TOC').parent().prepend('<div id=\"nav_logo\"><img src="PPG/Images/logo-programa.png"></div>');
+  });
+</script>
+<!--script for sharing-->
+<p align="right">
+<em>Compartilhe</em>   <a
+href="https://twitter.com/share?url="><svg preserveAspectRatio="none" aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:2em;width:2em;vertical-align:-0.125em;margin-left:0.2em;margin-right:0.2em;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-48.9 158.8c.2 2.8.2 5.7.2 8.5 0 86.7-66 186.6-186.6 186.6-37.2 0-71.7-10.8-100.7-29.4 5.3.6 10.4.8 15.8.8 30.7 0 58.9-10.4 81.4-28-28.8-.6-53-19.5-61.3-45.5 10.1 1.5 19.2 1.5 29.6-1.2-30-6.1-52.5-32.5-52.5-64.4v-.8c8.7 4.9 18.9 7.9 29.6 8.3a65.447 65.447 0 0 1-29.2-54.6c0-12.2 3.2-23.4 8.9-33.1 32.3 39.8 80.8 65.8 135.2 68.6-9.3-44.5 24-80.6 64-80.6 18.9 0 35.9 7.9 47.9 20.7 14.8-2.8 29-8.3 41.6-15.8-4.9 15.2-15.2 28-28.8 36.1 13.2-1.4 26-5.1 37.8-10.2-8.9 13.1-20.1 24.7-32.9 34z"/></svg></a>
+<a
+href="https://www.facebook.com/sharer.php?u="><svg preserveAspectRatio="none" aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:2em;width:2em;vertical-align:-0.125em;margin-left:0.2em;margin-right:0.2em;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M400 32H48A48 48 0 0 0 0 80v352a48 48 0 0 0 48 48h137.25V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.27c-30.81 0-40.42 19.12-40.42 38.73V256h68.78l-11 71.69h-57.78V480H400a48 48 0 0 0 48-48V80a48 48 0 0 0-48-48z"/></svg></a>
+<a
+href="https://www.linkedin.com/shareArticle?mini=true&amp;url="><svg preserveAspectRatio="none" aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:2em;width:2em;vertical-align:-0.125em;margin-left:0.2em;margin-right:0.2em;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg></a>
+</p>
+<p><br></p>
+<div id="documentos" class="section level2 tabset">
+<h2 class="tabset"><strong>Documentos</strong></h2>
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<div id="vigentes" class="section level3">
+<h3><strong>Vigentes</strong></h3>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+<div id="revogados" class="section level3">
+<h3><strong>Revogados</strong></h3>
+<p><br></p>
+<p><a style="float:right" href="#top"><b>Início  </b>⬆️</a></p>
+<p><br></p>
+</div>
+</div>
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:5px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+<!--FUNDING AGENCIES BADGES-->
+<table class="table" style="background-color:white">
+  <tr>
+    <td width="20%" style='vertical-align: middle;'>
+      <a href="https://www.unisuam.edu.br"><img align="center" src="PPG/Images/logo-programa.png"></a>
+      </td>
+    <td width="20%" style='vertical-align: middle;'>
+      <a href="https://www.gov.br/capes/pt-br"><img align="center" src="PPG/Images/logo-capes.png"></a> 
+      </td>
+    <td width="20%" style='vertical-align: middle;'>
+      <a href="https://www.gov.br/cnpq/pt-br"><img align="center" src="PPG/Images/logo-cnpq.png"></a>
+    </td>
+    <td width="20%" style='vertical-align: middle;'>
+      <a href="http://www.faperj.br"><img align="center" src="PPG/Images/logo-faperj.png"></a>
+    </td>
+    <td width="20%" style='vertical-align: middle;'>
+      <a href="http://brasil.un.org/pt-br/sdgs"><img align="center" src="PPG/Images/logo-ods.png"></a>
+    </td>
+  </tr>
+</table>
+
+<br>
+
+<!--CREATIVE COMMONTS BADGE-->
+<div style="text-align: center">
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Observatório CR</span> de <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Arthur de Sa Ferreira</span> está licenciado com uma Licença <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons - Atribuição-NãoComercial 4.0 Internacional</a>.
+</div>
+
+<div style="text-align: center; font-size:14px">
+  <p>Copyright &copy; 2021 Arthur de Sá Ferreira, PhD, em nome do colegiado do PPGCR-UNISUAM. Todos os direitos reservados. Última atualização em <span id="datetime"></span><script>var dt = new Date().toLocaleDateString(); document.getElementById("datetime").innerHTML=dt.toLocaleString();</script> </div>
+
+<br>
+
+<!--print visitor counter-->
+<div style="text-align: center">
+  <a style="float:center" href="https://hits.seeyoufarm.com">
+    <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Frehab-tech.github.io%2Fobservatoriocr%2F&count_bg=%23E1761A&title_bg=%235185D7&icon=&icon_color=%23E7E7E7&title=Visitas&edge_flat=false"/>
+  </a>
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
