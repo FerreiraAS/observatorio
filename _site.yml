@@ -8,16 +8,14 @@ repository_url: https://ppgcr-unisuam.github.io/observatoriocr/
 creative_commons: CC BY-NC
 output_dir: docs
 include:
-  - 1_INI.html
   - header.html
   - google-translate.html
   - footer.html
-  - /CSS
-  - /Metrics
-  - /PPG
-  - /Scripts
-  - /Sucupira
-  - /Texts
+  - CSS
+  - Metrics
+  - PPG
+  - Scripts
+  - Sucupira
 search: true
 navbar:
   left:
@@ -212,9 +210,9 @@ output:
       after_body: [footer.html]
     css:
       - style.css
-      - /CSS/responsive.css
-      - /CSS/narrow-margins.css
-      - /CSS/logo-above-toc.css
+      - CSS/responsive.css
+      - CSS/narrow-margins.css
+      - CSS/logo-above-toc.css
     toc: true
     toc_depth: 3
     toc_float: true
