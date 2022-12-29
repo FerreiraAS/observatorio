@@ -45,102 +45,109 @@ source(file.path("Scripts", "webqualis.R"), local = knitr::knit_global())
 <!--check available files in PPG folder-->
 ```{r try-apresentacao}
 has.apresentacao <-
-  !is.error(try(read_excel(paste0("PPG/Apresentação.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Apresentação.xlsx", sheet = 1),
                 silent = TRUE))
 ```
 
 ```{r try-autoavaliacoes}
 has.autoavaliacoes <-
-  !is.error(try(read_excel(paste0("PPG/Autoavaliações.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Autoavaliações.xlsx", sheet = 1),
                 silent = TRUE))
 ```
 
 ```{r try-bibliografia}
 has.bibliografia <-
-  !is.error(try(read_excel(paste0("PPG/Bibliografia.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Bibliografia.xlsx", sheet = 1),
                 silent = TRUE))
 ```
 
 ```{r try-blog-externos}
 has.blog.externos <-
-  !is.error(try(read_excel(paste0("PPG/Blog_externos.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Blog_externos.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
 ```{r try-blog-ies}
 has.blog.ies <-
-  !is.error(try(read_excel(paste0("PPG/Blog_IES.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Blog_IES.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
 ```{r try-bolsas}
 has.bolsas <-
-  !is.error(try(read_excel(paste0("PPG/Bolsas.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Bolsas.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
 ```{r try-calendarios}
 has.calendarios <-
-  !is.error(try(read_excel(paste0("PPG/Calendários.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Calendários.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
 ```{r try-cep}
 has.cep <-
-  !is.error(try(read_excel(paste0("PPG/CEP.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/CEP.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
 ```{r try-convenios}
 has.convenios <-
-  !is.error(try(read_excel(paste0("PPG/Convênios.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Convênios.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
 ```{r try-cooperacoes}
 has.cooperacoes <-
-  !is.error(try(read_excel(paste0("PPG/Cooperações.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Cooperações.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
 ```{r try-dados-cadastrais}
 has.dados.cadastrais <-
-  !is.error(try(read_excel(paste0("PPG/Dados Cadastrais.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Dados Cadastrais.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
 ```{r try-destaques}
 has.destaques <-
-  !is.error(try(read_excel(paste0("PPG/Destaques.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Destaques.xlsx", sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-descricao}
+has.descricao <-
+  !is.error(try(read.delim("PPG/Descrição.txt"),
                 silent = TRUE)
   )
 ```
 
 ```{r try-discentes}
 has.discentes <-
-  !is.error(try(read_excel(paste0("PPG/Discentes.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Discentes.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
 ```{r try-docentes-posdocs}
 has.docentes.posdocs <-
-  !is.error(try(read_excel(paste0("PPG/Docentes e Pós-Docs.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
 ```{r try-donwloads}
 has.downloads <-
-  !is.error(try(read_excel(paste0("PPG/Donwloads.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Donwloads.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
@@ -161,58 +168,58 @@ has.grupos.pesquisa <-
 
 ```{r try-internacionalizacao}
 has.internacionalizacao <-
-  !is.error(try(read_excel(paste0("PPG/Internacionalização.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Internacionalização.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
 ```{r try-inventario}
 has.inventario <-
-  !is.error(try(read_excel(paste0("PPG/Inventário.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Inventário.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
 ```{r try-laboratorios}
 has.laboratorios <-
-  !is.error(try(read_excel(paste0("PPG/Laboratórios.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Laboratórios.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
 ```{r try-notas}
 has.notas <-
-  !is.error(try(read_excel(paste0("PPG/Notas.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Notas.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
 ```{r try-premios}
 has.premios <-
-  !is.error(try(read_excel(paste0("PPG/Prêmios.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Prêmios.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
 ```{r try-producao}
 has.artigos.completos <-
-  !is.error(try(read_excel(paste0("PPG/Produção.xlsx"), sheet = "PI.completos"), silent = TRUE)
+  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.completos"), silent = TRUE)
   )
 
 has.artigos.resumos <-
-  !is.error(try(read_excel(paste0("PPG/Produção.xlsx"), sheet = "PI.resumos"), silent = TRUE)
+  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.resumos"), silent = TRUE)
   )
 
 has.preprints <-
-  !is.error(try(read_excel(paste0("PPG/Produção.xlsx"), sheet = "PI.preprints"), silent = TRUE)
+  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.preprints"), silent = TRUE)
   )
 
 has.capitulos <-
-  !is.error(try(read_excel(paste0("PPG/Produção.xlsx"), sheet = "PI.livros"), silent = TRUE)
+  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.livros"), silent = TRUE)
   )
 
 has.eventos <-
-  !is.error(try(read_excel(paste0("PPG/Produção.xlsx"), sheet = "PI.eventos"), silent = TRUE)
+  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.eventos"), silent = TRUE)
   )
 
 has.producao <-
@@ -221,14 +228,14 @@ has.producao <-
 
 ```{r try-repositorios}
 has.repositorios <-
-  !is.error(try(read_excel(paste0("PPG/Repositórios.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Repositórios.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
 ```{r try-softwares}
 has.softwares <-
-  !is.error(try(read_excel(paste0("PPG/Softwares.xlsx"), sheet = 1),
+  !is.error(try(read_excel("PPG/Softwares.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
