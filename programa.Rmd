@@ -128,7 +128,7 @@ cat(paste0(
 
 <br>
 
-```{r apresentacao-periodos, eval = has.apresentacao}
+```{r apresentacao-periodos, eval = has.apresentacao.abas}
 # initialize all sheets
 abas <- excel_sheets("PPG/Apresentação.xlsx")
 
