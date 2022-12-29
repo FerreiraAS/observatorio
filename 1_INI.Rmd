@@ -227,10 +227,13 @@ has.producao <-
 ```
 
 ```{r try-repositorios}
-has.repositorios <-
-  !is.error(try(read_excel("PPG/Repositórios.xlsx", sheet = 1),
-                silent = TRUE)
-  )
+has.repositorios.sede <-
+  !is.error(try(read_excel("PPG/Repositórios.xlsx", sheet =  "Sede"),
+                silent = TRUE))
+
+has.repositorios.cooperacao <-
+  !is.error(try(read_excel("PPG/Repositórios.xlsx", sheet = "Cooperação"),
+                silent = TRUE))
 ```
 
 ```{r try-softwares}

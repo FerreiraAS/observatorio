@@ -166,7 +166,7 @@ colnames(table.tcc) <-
 
 #### **Sede** {.tabset}
 
-```{r repositorios-mestrado-sede, eval = has.repositorios}
+```{r repositorios-mestrado-sede, eval = has.repositorios.sede}
 # read separate sheets
 repositorio <- read_excel("PPG/Repositórios.xlsx", sheet = "Sede")
 
@@ -183,7 +183,7 @@ cat('\n\n')
 
 <br>
 
-```{r repositorios-doutorado-sede, eval = has.repositorios}
+```{r repositorios-doutorado-sede, eval = has.repositorios.sede}
 # read separate sheets
 repositorio <- read_excel("PPG/Repositórios.xlsx", sheet = "Sede")
 
@@ -202,7 +202,7 @@ cat('\n\n')
 
 #### **Cooperação Interinstitucional** {.tabset}
 
-```{r repositorios-mestrado-cooperacao, eval = has.repositorios}
+```{r repositorios-mestrado-cooperacao, eval = has.repositorios.cooperacao}
 # read separate sheets
 repositorio <- read_excel("PPG/Repositórios.xlsx", sheet = "Cooperação")
 
@@ -219,7 +219,7 @@ cat('\n\n')
 
 <br>
 
-```{r repositorios-doutorado-cooperacao, eval = has.repositorios}
+```{r repositorios-doutorado-cooperacao, eval = has.repositorios.cooperacao}
 # read separate sheets
 repositorio <- read_excel("PPG/Repositórios.xlsx", sheet = "Cooperação")
 
