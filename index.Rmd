@@ -846,17 +846,18 @@ try(eventos <-
 artigos <- rbind(artigos[, 1:11], resumos[, 1:11],  eventos[, 1:11])
 
 # Data cleaning
-artigos <- artigos[complete.cases(artigos$DOI), ]
+artigos <- artigos[complete.cases(artigos$DOI),]
 artigos$WebQualis[artigos$WebQualis == "Sem WebQualis"] <- "NA"
 
 # remove os aceitos
 artigos <-
-  artigos[artigos$Publicado.em != "Aceito",]
+  artigos[artigos$Publicado.em != "Aceito", ]
 
 # Qualis
 qualis.PPG <- c()
-for(i in 1:length(estratos)){
-  qualis.PPG[i] <- sum(artigos$WebQualis == estratos[i])/length(artigos$WebQualis) * 100
+for (i in 1:length(estratos)) {
+  qualis.PPG[i] <-
+    sum(artigos$WebQualis == estratos[i]) / length(artigos$WebQualis) * 100
 }
 names(qualis.PPG) <- estratos
 
@@ -875,7 +876,7 @@ table.1 <- table(artigos$Publicado.em)
 
 table.2 <- t(table(artigos$Publicado.em, artigos$WebQualis))
 table.2 <- apply(table.2, 2, rev)
-table.2 <- table.2[order(rownames(table.2)), ]
+table.2 <- table.2[order(rownames(table.2)),]
 
 table.3 <- data.frame(artigos$Publicado.em, SJR)
 table.3.median <-
@@ -885,35 +886,44 @@ table.3.median <-
     FUN = median,
     na.rm = TRUE
   )
-table.3.median <- t(as.matrix(table.3.median[,-2]))
-table.3.median <- as.numeric(table.3.median[-1, ])
+table.3.median <- t(as.matrix(table.3.median[, -2]))
+table.3.median <- as.numeric(table.3.median[-1,])
 names(table.3.median) <- names(table.1)
 
-table.4 <- data.frame(artigos$Revista..digite.ou.selecione.na.lista., SJR)
+table.4 <-
+  data.frame(artigos$Revista..digite.ou.selecione.na.lista., SJR)
 
 # plot area setup
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 
+# Define the number of colors you want
+nb.cols <- length(unique(estratos))
+mycolors <- colorRampPalette(brewer.pal(9, "Set3"))(nb.cols)
+
 # plot 1 (total de produção bilbiográfica, por ano)
 barplot(table.1,
         ylab = "N",
-        col = rep(brewer.pal(n = 9, name = "Set3")[1], length(table.1)))
+        col = rep(mycolors[1], length(table.1)))
 title(main = "Produção Bibliográfica",
       outer = TRUE,
       cex.main = 1.7)
 
+# Define the number of colors you want
+nb.cols <- length(unique(estratos))
+mycolors <- colorRampPalette(brewer.pal(9, "Blues"))(nb.cols)
+
 # plot 2 (total de produção bilbiográfica, por estrato, por ano)
 barplot(table.2,
         ylab = "Estrato",
-        col = colorRampPalette(brewer.pal(9, "Blues"))(length(estratos)))
+        col = mycolors)
 title(main = "Qualidade da produção (Qualis)",
       outer = TRUE,
       cex.main = 1.7)
 legend(
   "topleft",
   legend = estratos,
-  fill = colorRampPalette(brewer.pal(9, "Blues"))(length(estratos)),
+  fill = mycolors,
   text.col = "white",
   box.lwd = 0,
   bty = "n",
@@ -929,7 +939,7 @@ barplot(
     scale = colSums(as.matrix(table.2))
   ) * 100,
   ylab = "%",
-  col = colorRampPalette(brewer.pal(9, "Blues"))(length(estratos)),
+  col = mycolors,
   ylim = c(0, 100)
 )
 title(main = "Qualidade da produção (Qualis)",
@@ -969,12 +979,16 @@ text.2.break <- data.journals$name
 source("Scripts/line-2-break.R", local = knitr::knit_global())
 data.journals$name <- broken_text
 
+# Define the number of colors you want
+nb.cols <- length(unique(estratos))
+mycolors <- colorRampPalette(brewer.pal(9, "Set3"))(nb.cols)
+
 options(digits = 10)
 barplot(
   height = rev(data.journals$value),
   names = rev(data.journals$name),
   xlab = "SJR",
-  col = rep(brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
+  col = rep(mycolors[1], length(1:top)),
   horiz = T,
   las = 1,
   cex.names = 0.7
@@ -1001,10 +1015,11 @@ barplot(
   ylab = "Estratos",
   xlim = c(-max(qualis.base, qualis.PPG), max(qualis.base, qualis.PPG)),
   ylim = c(0, length(unique(qualis.base)) + 3),
-  col = brewer.pal(n = 9, name = "Set3")[1],
+  col = mycolors[1],
   sub = "Base",
   cex.names = 0.7,
-  xaxt='n', ann = FALSE
+  xaxt = 'n',
+  ann = FALSE
 )
 barplot(
   rev(qualis.PPG),
@@ -1013,10 +1028,11 @@ barplot(
   ylab = "Estratos",
   xlim = c(-max(qualis.base, qualis.PPG), max(qualis.base, qualis.PPG)),
   ylim = c(0, length(unique(qualis.base)) + 3),
-  col = brewer.pal(n = 9, name = "Set3")[2],
+  col = mycolors[2],
   sub = "Programa",
   cex.names = 0.7,
-  xaxt='n', ann = FALSE,
+  xaxt = 'n',
+  ann = FALSE,
   add = TRUE
 )
 axis(1, at = round(c(
@@ -1030,7 +1046,7 @@ title(main = "Distribuição de estratos Qualis e SJR",
 legend(
   "topleft",
   legend = c("Base", "Programa"),
-  fill = brewer.pal(n = 9, name = "Set3")[1:2],
+  fill = mycolors[1:2],
   text.col = "white",
   box.lwd = 0,
   bty = "n",
@@ -1044,7 +1060,7 @@ SJR.PPG <- na.omit(SJR)
 
 vioplot(
   as.numeric(SJR.base),
-  col = brewer.pal(n = 9, name = "Set3")[1],
+  col = mycolors[1],
   xlab = NA,
   side = "left",
   ylim = c(min(
@@ -1053,11 +1069,12 @@ vioplot(
     as.numeric(SJR.base), as.numeric(SJR.PPG)
   )),
   ylab = "SJR",
-  xaxt='n', ann = FALSE
+  xaxt = 'n',
+  ann = FALSE
 )
 vioplot(
   as.numeric(SJR.PPG),
-  col = brewer.pal(n = 9, name = "Set3")[2],
+  col = mycolors[2],
   xlab = NA,
   side = "right",
   ylim = c(min(
@@ -1066,7 +1083,8 @@ vioplot(
     as.numeric(SJR.base), as.numeric(SJR.PPG)
   )),
   ylab = "SJR",
-  xaxt='n', ann = FALSE,
+  xaxt = 'n',
+  ann = FALSE,
   add = TRUE
 )
 
@@ -1114,7 +1132,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[1:4,]) / sum(table.2) * 100,
+        sum(table.2[1:4, ]) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1123,7 +1141,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[5:8,]) / sum(table.2) * 100,
+        sum(table.2[5:8, ]) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1132,7 +1150,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[9:10,]) / sum(table.2) * 100,
+        sum(table.2[9:10, ]) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
