@@ -3,8 +3,8 @@ title: Observatório
 date: '`r format(Sys.Date())`'
 author:
   - name: PPGCR-UNISUAM
-  - email: "cienciasdareabilitacao@souunisuam.com.br"
-repository_url: https://ppgcr-unisuam.github.io/observatoriocr/
+  - email: "arthur_sf@icloud.com"
+repository_url: https://github.com/FerreiraAS
 creative_commons: CC BY-NC
 output_dir: docs
 include:
@@ -189,16 +189,16 @@ navbar:
           href: [https://www.gov.br/cnpq/pt-br]
     - text: ""
       icon: "fa-envelope"
-      href: [mailto:cienciasdareabilitacao@souunisuam.com.br]
+      href: [mailto:arthur_sf@icloud.com]
     - text: ""
       icon: "fa-instagram"
-      href: [https://www.instagram.com/ppgcr_unisuam/]
+      href: [https://www.instagram.com/arthur.sa.ferreira/]
     - text: ""
       icon: "fa-facebook"
-      href: [https://www.facebook.com/people/Ciências-da-Reabilitação/100010029900421/]
+      href: [https://pt-br.facebook.com/arthur.sa.ferreira]
     - text: ""
       icon: "fa-github"
-      href: [https://github.com/ppgcr-unisuam/observatoriocr]
+      href: [https://github.com/FerreiraAS/observatorio]
 
 output:
   html_document:
