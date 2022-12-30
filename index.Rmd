@@ -875,9 +875,9 @@ for (i in 1:dim(artigos)[1]) {
 table.1 <- table(artigos$Publicado.em)
 
 table.2 <- t(table(artigos$Publicado.em, artigos$WebQualis))
-table.2 <- apply(table.2, 2, rev)
 table.2 <- table.2[order(rownames(table.2)),]
 rownames(table.2)[rownames(table.2) == "NA"] <- "Sem qualis"
+# table.2 <- apply(table.2, 2, rev)
 
 table.3 <- data.frame(artigos$Publicado.em, SJR)
 table.3.median <-
@@ -917,7 +917,7 @@ mycolors <- colorRampPalette(brewer.pal(9, "Blues"))(nb.cols)
 # plot 2 (total de produção bilbiográfica, por estrato, por ano)
 barplot(table.2,
         ylab = "Estrato",
-        col = mycolors)
+        col = rev(mycolors))
 title(main = "Qualidade da produção (Qualis)",
       outer = TRUE,
       cex.main = 1.7)
@@ -940,7 +940,7 @@ barplot(
     scale = colSums(as.matrix(table.2))
   ) * 100,
   ylab = "%",
-  col = mycolors,
+  col = rev(mycolors),
   ylim = c(0, 100)
 )
 title(main = "Qualidade da produção (Qualis)",
