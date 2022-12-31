@@ -107,12 +107,15 @@ sucupira.raw <- unique(sucupira.raw)
 # remove duplicated projects ("EM ANDAMENTO" vs. "CONCLUÍDO" -> keep "CONCLUÍDO")
 projetos.id <- unique(sucupira.raw$`Identificador do Projeto`)
 sucupira <- c()
-for(i in 1:length(projetos.id)){
-  matches <- sucupira.raw[sucupira.raw$`Identificador do Projeto` == projetos.id[i], ]
-  if(dim(matches)[1] == 1){
+for (i in 1:length(projetos.id)) {
+  matches <-
+    sucupira.raw[sucupira.raw$`Identificador do Projeto` == projetos.id[i],]
+  if (dim(matches)[1] == 1) {
     sucupira <- bind_rows(sucupira, matches)
   } else {
-    keep <- matches[matches$Situação == "CONCLUÍDO" | !is.na(matches$`Data de Fim da Linha`), ]
+    keep <-
+      matches[matches$Situação == "CONCLUÍDO" |
+                !is.na(matches$`Data de Fim da Linha`),]
     sucupira <- bind_rows(sucupira, keep)
   }
 }
@@ -146,7 +149,9 @@ alluv.data$sucupira.raw..Data.de.Fim.da.Linha.[is.na(alluv.data$sucupira.raw..Da
   format(Sys.Date(), format = "%Y")
 
 # remove data without AC or LP
-alluv.data <- alluv.data[!is.na(alluv.data$sucupira.raw..Área.de.Concentração.) & !is.na(alluv.data$sucupira.raw..Linha.de.Pesquisa.), ]
+alluv.data <-
+  alluv.data[!is.na(alluv.data$sucupira.raw..Área.de.Concentração.) &
+               !is.na(alluv.data$sucupira.raw..Linha.de.Pesquisa.),]
 
 # ordering by dates
 alluv.data <-
@@ -155,7 +160,7 @@ alluv.data <-
     alluv.data$sucupira.raw..Data.de.Fim.da.Linha.,
     alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa.,
     decreasing = FALSE
-  ),]
+  ), ]
 
 # summary data for plot table
 current.AC <-
@@ -173,19 +178,19 @@ current.LP <-
 current.LP <- current.LP[!current.LP %in% c(old.LP, NA)]
 
 # get all history
-areas <- 
+areas <-
   sort(c(current.AC, old.AC))
 
 linhas <-
   sort(c(current.LP, old.LP))
 
 # remove data from inactive LP
-if(length(old.LP) != 0) {
+if (length(old.LP) != 0) {
   alluv.data <-
     alluv.data[!(
       alluv.data$sucupira.raw..Linha.de.Pesquisa. == old.LP &
         alluv.data$sucupira.raw..Data.de.Fim.da.Linha. == format(Sys.Date(), format = "%Y")
-    ),]
+    ), ]
 }
 
 summ.AC.LP <-
@@ -199,15 +204,23 @@ summ.AC.LP <-
   )
 
 # drop freq = 0 values
-summ.AC.LP <- summ.AC.LP[summ.AC.LP$Freq != 0, ]
+summ.AC.LP <- summ.AC.LP[summ.AC.LP$Freq != 0,]
 
 colnames(summ.AC.LP) <- c("AC", "LP", "Inicio", "Fim", "Freq")
 
 # insert data from later LP
 extra <- c()
-for(i in 1:dim(summ.AC.LP)[1]){
-  if(as.character(summ.AC.LP$Inicio[i]) > min(as.character(summ.AC.LP$Inicio))){
-    extra <- rbind(extra, c(as.character(summ.AC.LP$AC[i]), as.character(summ.AC.LP$LP[i]), min(as.character(summ.AC.LP$Inicio)), as.character(summ.AC.LP$Inicio[i]), as.character(summ.AC.LP$Freq[i])))
+for (i in 1:dim(summ.AC.LP)[1]) {
+  if (as.character(summ.AC.LP$Inicio[i]) > min(as.character(summ.AC.LP$Inicio))) {
+    extra <-
+      rbind(extra,
+            c(
+              as.character(summ.AC.LP$AC[i]),
+              as.character(summ.AC.LP$LP[i]),
+              min(as.character(summ.AC.LP$Inicio)),
+              as.character(summ.AC.LP$Inicio[i]),
+              as.character(summ.AC.LP$Freq[i])
+            ))
   }
 }
 extra <- as.data.frame(extra)
@@ -216,7 +229,8 @@ colnames(extra) <- c("AC", "LP", "Inicio", "Fim", "Freq")
 summ.AC.LP <- rbind(summ.AC.LP, extra)
 
 # code PP names for display
-alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa. <- as.numeric(as.factor(alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa.))
+alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa. <-
+  as.numeric(as.factor(alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa.))
 
 # drop names columns
 summ.AC.LP <- summ.AC.LP[, -(1:2)]
@@ -237,61 +251,56 @@ colnames(summ.LP.PP) <- c("source", "target", "value")
 summ.LP.PP$value[summ.LP.PP$value != 0] <- 1
 
 # remove zeroed-value data
-summ.AC.LP <- summ.AC.LP[summ.AC.LP$value != 0,]
+summ.AC.LP <- summ.AC.LP[summ.AC.LP$value != 0, ]
 
 # A connection data frame is a list of flows with intensity for each flow
 links <- summ.AC.LP
 
 # From these flows we need to create a node data frame: it lists every entities involved in the flow
-nodes <- data.frame(
-  name = c(as.character(links$source), 
-  as.character(links$target)) %>% unique()
-)
+nodes <- data.frame(name = c(as.character(links$source),
+                             as.character(links$target)) %>% unique())
 
-# With networkD3, connection must be provided using id, not using real name like in the links dataframe.. So we need to reformat it.
-links$IDsource <- match(links$source, nodes$name) - 1 
-links$IDtarget <- match(links$target, nodes$name) - 1
+# We need a data frame giving a hierarchical structure. Let's consider the flare dataset:
+edges <-
+  cbind(
+    alluv.data$sucupira.raw..Área.de.Concentração.,
+    alluv.data$sucupira.raw..Linha.de.Pesquisa.
+  )
+edges1 <- aggregate(alluv.data$sucupira.raw..Linha.de.Pesquisa., by = list(alluv.data$sucupira.raw..Área.de.Concentração., alluv.data$sucupira.raw..Linha.de.Pesquisa.), FUN=length)
 
-# plot 1 (fluxo AC -> LP)
-dir.path <- file.path(getwd(), "index_files", "figure-html")
-dir.create(dir.path, recursive = TRUE)
-sn.title <- "Área de Concentração - Linha de Pesquisa"
+# Usually we associate another dataset that give information about each node of the dataset:
+vertices <- NULL
+
+# Then we have to make a 'graph' object using the igraph library:
+mygraph <- graph_from_data_frame( edges1[,1:2], vertices=vertices )
 
 # plot 1
-
-# Make the Network
-sn <- sankeyNetwork(Links = links, Nodes = nodes,
-              Source = "IDsource", Target = "IDtarget",
-              Value = "value", NodeID = "name", fontSize = 14,
-              sinksRight=FALSE) %>%
-  htmlwidgets::prependContent(
-    htmltools::tags$h1(style = "position:absolute; left:50%; transform:translateX(-50%); background-color:#2C3E50; font-size:20px; color:white; line-height:normal;", sn.title)
-  ) %>%
-  htmlwidgets::prependContent(
-    htmltools::tags$body(style = "font-family:'Lato','Helvetica Neue',Helvetica, Arial,sans-serif; background-color:#2C3E50; margin:0; padding:0;")
-  ) %>%
-  htmlwidgets::onRender(
-  'function(el, x) {
-    d3.selectAll(".node text")
-        .style("fill", "white");
-  }'
+par(
+  oma = c(0, 0, 0, 0),
+  mar = c(0, 0, 0, 0),
+  bg = '#2C3E50',
+  col.lab = "white",
+  col.axis = "white",
+  fg = "white",
+  col.main = "white"
 )
 
-# save it in html
-saveWidget(sn, file.path(dir.path, "tmp.html"), selfcontained = F)
-
-# and in png
-webshot(
-  url = file.path(dir.path, "tmp.html"),
-  file = file.path(dir.path, paste0(sheet, ".png")),
-  delay = 5,
-  vwidth = round(1344 * 0.7),
-  vheight = round(960 * 0.7)
-)
-
-# delete the tmp folder and file
-unlink(file.path(dir.path, "tmp_files"), recursive = TRUE)
-unlink(file.path(dir.path, "tmp.html"))
+# Make the plot
+ggraph(mygraph, layout = 'circlepack', weight = c(0, edges1[, 3])) +
+  geom_node_circle(aes(fill = as.factor(depth))) +
+  scale_colour_brewer(brewer.pal(n = 9, name = "Set3")) +
+  scale_fill_discrete(labels = c("Áreas de concentração", "Linhas de pesquisa")) +
+  theme_void() +
+  theme(
+    panel.border = element_blank(),
+    panel.background = element_rect(fill = '#2C3E50', color='#2C3E50'),
+    plot.background = element_rect(fill = '#2C3E50', color='#2C3E50'),
+    legend.background = element_rect(fill = "#2C3E50",  color = "#2C3E50"),
+    legend.box.background = element_rect(fill = "#2C3E50",  color = "#2C3E50"),
+    legend.position = "top",
+    legend.title = element_blank(),
+    legend.text = element_text(color = "white", size = 14)
+  )
 
 # plot 2
 
@@ -300,14 +309,16 @@ layout.m <- matrix(c(1, 2, 3, 4), ncol = 2, byrow = FALSE)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 
 summ.coerencia.1 <- c(length(unique(current.AC)),
-                    length(unique(current.LP)))
+                      length(unique(current.LP)))
 names(summ.coerencia.1) <-
-  c("Área de Concentração \n (ativas)", "Linhas de Pesquisa \n (ativas)")
+  c("Áreas de Concentração \n (ativas)",
+    "Linhas de Pesquisa \n (ativas)")
 
 summ.coerencia.2 <- c(length(unique(old.AC)),
-                    length(unique(old.LP)))
+                      length(unique(old.LP)))
 names(summ.coerencia.2) <-
-  c("Área de Concentração \n (inativas)", "Linhas de Pesquisa \n (inativas)")
+  c("Áreas de Concentração \n (inativas)",
+    "Linhas de Pesquisa \n (inativas)")
 
 summ.data <- c(summ.coerencia.1, summ.coerencia.2)
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
@@ -322,9 +333,7 @@ bs_carousel(id = "coerencia-carousel",
   bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-2.png"))
 
 cat('\n\n')
-cat(
-  "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)"
-)
+cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
 ```
 
 <br>
@@ -368,9 +377,7 @@ bs_carousel(id = "temas-carouse",
   bs_append(content = bs_carousel_image(src = "index_files/figure-html/Produções.png"))
 
 cat('\n\n')
-cat(
-  "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)"
-)
+cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
 ```
 
 <br>
@@ -402,7 +409,7 @@ for (i in 1:length(anos)) {
   projetos <- sucupira.list[[i]]
   projetos <-
     projetos[projetos$`Membro Responsável` == "Sim" &
-               projetos$Situação == "EM ANDAMENTO",]
+               projetos$Situação == "EM ANDAMENTO", ]
   for (j in 1:length(linhas)) {
     andamento.ano[j, i] <-
       sum(projetos$`Linha de Pesquisa` == linhas[j], na.rm = TRUE)
@@ -411,7 +418,7 @@ for (i in 1:length(anos)) {
   projetos <- sucupira.list[[i]]
   projetos <-
     projetos[projetos$`Membro Responsável` == "Sim" &
-               projetos$Situação == "CONCLUÍDO",]
+               projetos$Situação == "CONCLUÍDO", ]
   for (j in 1:length(linhas)) {
     concluido.ano[j, i] <-
       sum(projetos$`Linha de Pesquisa` == linhas[j], na.rm = TRUE)
@@ -424,7 +431,7 @@ projetos.ano <-
 membros <-
   data.frame(sucupira.raw$`Nome do Membro do Projeto`,
              sucupira.raw$`Categoria do Membro do Projeto`)
-membros <- membros[!duplicated(membros), ]
+membros <- membros[!duplicated(membros),]
 categorias <-
   table(membros$sucupira.raw..Categoria.do.Membro.do.Projeto.)
 
@@ -515,9 +522,7 @@ bs_carousel(id = "projetos-carousel",
   bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-projetos-3.png"))
 
 cat('\n\n')
-cat(
-  "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)"
-)
+cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
 ```
 
 <br>
@@ -537,7 +542,7 @@ financiadores <-
   financiadores.raw %>% select("Ano", "Agência", "Programa", "Total", "Proponente")
 
 # drop rows with empty cells
-financiadores <- financiadores[complete.cases(financiadores), ]
+financiadores <- financiadores[complete.cases(financiadores),]
 
 # generate cross-table
 N.editais.agencia.ano <-
@@ -846,12 +851,12 @@ try(eventos <-
 artigos <- rbind(artigos[, 1:11], resumos[, 1:11],  eventos[, 1:11])
 
 # Data cleaning
-artigos <- artigos[complete.cases(artigos$DOI),]
+artigos <- artigos[complete.cases(artigos$DOI), ]
 artigos$WebQualis[artigos$WebQualis == "Sem WebQualis"] <- "NA"
 
 # remove os aceitos
 artigos <-
-  artigos[artigos$Publicado.em != "Aceito", ]
+  artigos[artigos$Publicado.em != "Aceito",]
 
 # Qualis
 qualis.PPG <- c()
@@ -875,7 +880,7 @@ for (i in 1:dim(artigos)[1]) {
 table.1 <- table(artigos$Publicado.em)
 
 table.2 <- t(table(artigos$Publicado.em, artigos$WebQualis))
-table.2 <- table.2[order(rownames(table.2)),]
+table.2 <- table.2[order(rownames(table.2)), ]
 rownames(table.2)[rownames(table.2) == "NA"] <- "Sem qualis"
 # table.2 <- apply(table.2, 2, rev)
 
@@ -888,7 +893,7 @@ table.3.median <-
     na.rm = TRUE
   )
 table.3.median <- t(as.matrix(table.3.median[, -2]))
-table.3.median <- as.numeric(table.3.median[-1,])
+table.3.median <- as.numeric(table.3.median[-1, ])
 names(table.3.median) <- names(table.1)
 
 table.4 <-
@@ -1133,7 +1138,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[1:4, ]) / sum(table.2) * 100,
+        sum(table.2[1:4,]) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1142,7 +1147,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[5:8, ]) / sum(table.2) * 100,
+        sum(table.2[5:8,]) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1151,7 +1156,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[9:10, ]) / sum(table.2) * 100,
+        sum(table.2[9:10,]) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1218,10 +1223,10 @@ discentes.raw <-
 # separating egressos (master and doctoral) and current canditates
 discentes <-
   discentes.raw[discentes.raw$`Status SAGA` == "Matriculado" |
-                  discentes.raw$`Status SAGA` == "Pré-inscrito",]
-egressos <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
-mestres <- egressos[egressos$Curso == "Mestrado",]
-doutores <- egressos[egressos$Curso == "Doutorado",]
+                  discentes.raw$`Status SAGA` == "Pré-inscrito", ]
+egressos <- discentes.raw[discentes.raw$`Ano Titulação` != "*", ]
+mestres <- egressos[egressos$Curso == "Mestrado", ]
+doutores <- egressos[egressos$Curso == "Doutorado", ]
 
 # identifying available courses
 cursos <- levels(as.factor(c(discentes$Curso, egressos$Curso)))
@@ -1331,17 +1336,21 @@ p1 <- ggplot() +
   theme_minimal() +
   theme(
     legend.position = 'bottom',
-    legend.title = element_text(colour = "white"),
-    legend.text = element_text(colour = "white")
+    legend.title = element_text( color = "white"),
+    legend.text = element_text( color = "white")
   ) +
   theme(
     plot.margin = unit(c(0, 0, 0, 0), "cm"),
-    panel.background = element_rect(fill = '#2C3E50', colour = '#2C3E50'),
-    plot.background = element_rect(fill = '#2C3E50', colour = '#2C3E50'),
-    panel.grid.major = element_line(colour = "transparent"),
+    panel.background = element_rect(fill = '#2C3E50',  color = '#2C3E50'),
+    plot.background = element_rect(fill = '#2C3E50',  color = '#2C3E50'),
+    panel.grid.major = element_line( color = "transparent"),
     axis.text.x = element_blank(),
     axis.text.y = element_blank(),
-    plot.title = element_text(size = 20, color = "white", face = "bold")
+    plot.title = element_text(
+      size = 20,
+      color = "white",
+      face = "bold"
+    )
   ) +
   ggtitle("Distribuição regional de discentes")
 
@@ -1359,12 +1368,12 @@ p2 <- ggplot(data, aes(x = "", y = N, fill = Regiões)) +
   theme(
     legend.position = 'bottom',
     legend.title = element_blank(),
-    legend.text = element_text(colour = "white")
+    legend.text = element_text( color = "white")
   ) +
   theme(
     plot.margin = unit(c(0, 0, 0, 0), "cm"),
-    panel.background = element_rect(fill = '#2C3E50', colour = '#2C3E50'),
-    plot.background = element_rect(fill = '#2C3E50', colour = '#2C3E50')
+    panel.background = element_rect(fill = '#2C3E50',  color = '#2C3E50'),
+    plot.background = element_rect(fill = '#2C3E50',  color = '#2C3E50')
   )
 
 data <- as.data.frame(table(discentes$Curso))
@@ -1378,12 +1387,12 @@ p3 <- ggplot(data, aes(x = "", y = N, fill = Cursos)) +
   theme(
     legend.position = 'bottom',
     legend.title = element_blank(),
-    legend.text = element_text(colour = "white")
+    legend.text = element_text( color = "white")
   ) +
   theme(
     plot.margin = unit(c(0, 0, 0, 0), "cm"),
-    panel.background = element_rect(fill = '#2C3E50', colour = '#2C3E50'),
-    plot.background = element_rect(fill = '#2C3E50', colour = '#2C3E50')
+    panel.background = element_rect(fill = '#2C3E50',  color = '#2C3E50'),
+    plot.background = element_rect(fill = '#2C3E50',  color = '#2C3E50')
   )
 
 g <-
@@ -1416,17 +1425,21 @@ p1 <- ggplot() +
   theme_minimal() +
   theme(
     legend.position = 'bottom',
-    legend.title = element_text(colour = "white"),
-    legend.text = element_text(colour = "white")
+    legend.title = element_text( color = "white"),
+    legend.text = element_text( color = "white")
   ) +
   theme(
     plot.margin = unit(c(0, 0, 0, 0), "cm"),
-    panel.background = element_rect(fill = '#2C3E50', colour = '#2C3E50'),
-    plot.background = element_rect(fill = '#2C3E50', colour = '#2C3E50'),
-    panel.grid.major = element_line(colour = "transparent"),
+    panel.background = element_rect(fill = '#2C3E50',  color = '#2C3E50'),
+    plot.background = element_rect(fill = '#2C3E50',  color = '#2C3E50'),
+    panel.grid.major = element_line( color = "transparent"),
     axis.text.x = element_blank(),
     axis.text.y = element_blank(),
-    plot.title = element_text(size = 20, color = "white", face = "bold")
+    plot.title = element_text(
+      size = 20,
+      color = "white",
+      face = "bold"
+    )
   ) +
   ggtitle("Distribuição regional de egressos")
 
@@ -1444,12 +1457,12 @@ p2 <- ggplot(data, aes(x = "", y = N, fill = Regiões)) +
   theme(
     legend.position = 'bottom',
     legend.title = element_blank(),
-    legend.text = element_text(colour = "white")
+    legend.text = element_text( color = "white")
   ) +
   theme(
     plot.margin = unit(c(0, 0, 0, 0), "cm"),
-    panel.background = element_rect(fill = '#2C3E50', colour = '#2C3E50'),
-    plot.background = element_rect(fill = '#2C3E50', colour = '#2C3E50')
+    panel.background = element_rect(fill = '#2C3E50',  color = '#2C3E50'),
+    plot.background = element_rect(fill = '#2C3E50',  color = '#2C3E50')
   )
 
 data <- as.data.frame(table(egressos$Curso))
@@ -1463,12 +1476,12 @@ p3 <- ggplot(data, aes(x = "", y = N, fill = Cursos)) +
   theme(
     legend.position = 'bottom',
     legend.title = element_blank(),
-    legend.text = element_text(colour = "white")
+    legend.text = element_text( color = "white")
   ) +
   theme(
     plot.margin = unit(c(0, 0, 0, 0), "cm"),
-    panel.background = element_rect(fill = '#2C3E50', colour = '#2C3E50'),
-    plot.background = element_rect(fill = '#2C3E50', colour = '#2C3E50')
+    panel.background = element_rect(fill = '#2C3E50',  color = '#2C3E50'),
+    plot.background = element_rect(fill = '#2C3E50',  color = '#2C3E50')
   )
 
 g <-
@@ -1490,13 +1503,13 @@ summ.table.pessoal <-
   cbind(
     sum(table.1),
     formatC(
-      sum(table.1[2, ], na.rm = TRUE),
+      sum(table.1[2,], na.rm = TRUE),
       format = "d",
       digits = 0,
       big.mark = "."
     ),
     formatC(
-      sum(table.1[1, ], na.rm = TRUE),
+      sum(table.1[1,], na.rm = TRUE),
       format = "d",
       digits = 0,
       big.mark = "."
@@ -1655,7 +1668,7 @@ dir.create(dir.path, recursive = TRUE)
 # IES participantes externos
 sheet <- "Participante Externo"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-sucupira.raw <- sucupira.raw[!duplicated(sucupira.raw), ]
+sucupira.raw <- sucupira.raw[!duplicated(sucupira.raw),]
 IES <- sucupira.raw$`Instituição de Origem`
 IES <- IES[!is.na(IES)]
 países <- na.omit(sucupira.raw$`País da Instituição de Origem`)
@@ -1853,9 +1866,7 @@ bs_carousel(id = "rede-carousel",
   bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-rede-5.png"))
 
 cat('\n\n')
-cat(
-  "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)"
-)
+cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
 ```
 
 <br>
@@ -1870,11 +1881,9 @@ cat(
 <br>
 
 ```{r session-info}
-sessioninfo::session_info()%>%
-  details::details(
-    summary = 'Current session info',
-    open = FALSE
-  )
+sessioninfo::session_info() %>%
+  details::details(summary = 'Current session info',
+                   open = FALSE)
 ```
 
 <br>

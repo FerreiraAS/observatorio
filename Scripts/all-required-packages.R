@@ -12,6 +12,7 @@ packs.cran <-
     "BBmisc",
     "bsplus",
     "cowplot",
+    "data.tree",
     "details",
     "devtools",
     # plyr first, then dplyr
@@ -19,6 +20,7 @@ packs.cran <-
     "dplyr",
     "DT",
     "fontawesome",
+    "ggraph",
     "ggplot2",
     "ggpubr",
     "grid",
