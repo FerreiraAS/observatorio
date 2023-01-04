@@ -21,9 +21,11 @@ dir.create(file.path(getwd(), "Sucupira"), showWarnings = FALSE)
 ```
 
 ```{r try-sucupira}
-sheet <- "Docentes"
-source("Scripts/read-xlsx-sucupira.R")
-has.sucupira <- length(sucupira.list) != 0
+files.to.read <-
+  list.dirs(file.path(getwd(), "Sucupira"),
+            full.names = TRUE,
+            recursive = FALSE)
+has.sucupira <- length(files.to.read) != 0
 ```
 
 ```{r try-ppg-files}
