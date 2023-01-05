@@ -2317,13 +2317,28 @@ cat("  \n")
 
 <br>
 
-### **2024-2021** {.tabset}
+### **Docentes**
 
-#### **Disciplinas**
-
-```{r turmas-disciplinas-2024, eval = has.sucupira}
+```{r turmas-docentes-2024, eval = has.sucupira}
 # load custom function
 source("Scripts/get-initials.R", local = knitr::knit_global())
+
+# disciplinas
+sheet <- "Disciplinas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# bind all sheets
+periodos <-
+  names(sucupira.list)[na.omit(match(c(2021:2024), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+disciplinas.raw <-
+  do.call(rbind.data.frame, sucupira.list[periodos])
+disciplinas.raw <-
+  disciplinas.raw[is.na(disciplinas.raw$`Data de fim`),]
 
 # turmas
 sheet <- "Turmas"
@@ -2339,32 +2354,71 @@ periodos <-
 periodo <- as.character(seq(min(periodos), max(periodos)))
 turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
 
-if (dim(turmas.raw)[1] != 0) {
-  # build a cross table DISCIPLINA vs. ANO
-  turmas.raw$`Período/Ano` <-
-    paste(
-      sub(".*/", "", turmas.raw$`Período/Ano`),
-      sub("/.*", "", turmas.raw$`Período/Ano`),
-      sep = "/"
+if (dim(disciplinas.raw)[1] != 0) {
+  # select level
+  course.level <- "Mestrado"
+  disciplinas.msc <-
+    disciplinas.raw[str_detect(disciplinas.raw$`Nível do Curso`, course.level), ]
+  
+  disciplinas.msc <-
+    disciplinas.raw[course.level,]
+  table.msc <-
+    cbind(
+      disciplinas.msc$`Nome da Disciplina`,
+      disciplinas.msc$`Indicadora de disciplina obrigatória`,
+      disciplinas.msc$`Quantidade de créditos`,
+      disciplinas.msc$`Carga Horária`
     )
+  colnames(table.msc) <- c("Disciplina", "Obrigatória", "CR", "CH")
+  
+  course.level <- "Doutorado"
+  disciplinas.dsc <-
+    disciplinas.raw[str_detect(disciplinas.raw$`Nível do Curso`, course.level), ]
+  disciplinas.dsc <-
+    disciplinas.raw[course.level,]
+  table.dsc <-
+    cbind(
+      disciplinas.dsc$`Nome da Disciplina`,
+      disciplinas.dsc$`Indicadora de disciplina obrigatória`,
+      disciplinas.dsc$`Quantidade de créditos`,
+      disciplinas.dsc$`Carga Horária`
+    )
+  colnames(table.dsc) <- c("Disciplina", "Obrigatória", "CR", "CH")
+  
+  table <-
+    merge(
+      table.msc,
+      table.dsc,
+      by = "Disciplina",
+      all.x = TRUE,
+      all.y = TRUE
+    )
+  colnames(table) <-
+    c(
+      "Disciplina",
+      "Obrigatória (MA)",
+      "CR (MA)",
+      "CH (MA)",
+      "Obrigatória (DA)",
+      "CR (DA)",
+      "CH (DA)"
+    )
+  
+  # build a cross table DISCIPLINA vs. DOCENTE
   cross.table.turmas <-
     as.matrix(table(
       initials(turmas.raw$`Nome da Disciplina`),
-      turmas.raw$`Período/Ano`
+      initials(turmas.raw$`Nome do responsável`)
     ))
-  Oferecida <- colSums(cross.table.turmas)
-  Oferecida[Oferecida > 0] <- "✅"
-  Oferecida[Oferecida == 0] <- ""
-  turmas.oferecidas <- rbind(Oferecida, cross.table.turmas)
-  turmas.oferecidas[turmas.oferecidas > 0] <- "✔"
-  turmas.oferecidas[turmas.oferecidas == 0] <- ""
-  if (length(colnames(turmas.oferecidas)) > 1) {
-    turmas.oferecidas <-
-      turmas.oferecidas[, order(colnames(turmas.oferecidas), decreasing = TRUE)]
-  }
+  Responsável <- colSums(cross.table.turmas)
+  Responsável[Responsável > 0] <- "✅"
+  Responsável[Responsável == 0] <- ""
+  turmas.docentes <- rbind(Responsável, cross.table.turmas)
+  turmas.docentes[turmas.docentes > 0] <- "✔"
+  turmas.docentes[turmas.docentes == 0] <- ""
   print(
-    kable(turmas.oferecidas, align = c("l", rep(
-      "c",  max(0, ncol(turmas.oferecidas) - 2)
+    kable(turmas.docentes, align = c("l", rep(
+      "c", ncol(turmas.docentes) - 2
     ), "r")) %>% kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
@@ -2420,14 +2474,14 @@ if (dim(turmas.raw)[1] != 0) {
 
 <br>
 
-#### **Docentes**
+### **2024-2021**
 
-```{r turmas-docentes-2024, eval = has.sucupira}
+```{r turmas-2024, eval = has.sucupira}
 # load custom function
 source("Scripts/get-initials.R", local = knitr::knit_global())
 
-# disciplinas
-sheet <- "Disciplinas"
+# turmas
+sheet <- "Turmas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
@@ -2438,93 +2492,34 @@ names(sucupira.list) <- as.character(anos)
 periodos <-
   names(sucupira.list)[na.omit(match(c(2021:2024), names(sucupira.list)))]
 periodo <- as.character(seq(min(periodos), max(periodos)))
-disciplinas.raw <-
-  do.call(rbind.data.frame, sucupira.list[periodos])
-disciplinas.raw <-
-  disciplinas.raw[is.na(disciplinas.raw$`Data de fim`),]
+turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
 
-# turmas
-sheet <- "Turmas"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# most recent Sucupira year
-most.recent <-
-  as.character(ifelse(!is.null(sucupira.list[[format(Sys.Date(), "%Y")]]), format(Sys.Date(), "%Y"), max(as.numeric(
-    names(sucupira.list)
-  ))))
-
-# read separate sheets
-disciplinas.raw <- sucupira.list[[most.recent]]
-disciplinas.raw <-
-  disciplinas.raw[is.na(disciplinas.raw$`Data de fim`),]
-
-if (dim(disciplinas.raw)[1] != 0) {
-  disciplinas.msc <-
-    disciplinas.raw[which(`dim<-`(
-      grepl('Mestrado', disciplinas.raw$`Nível do Curso`),
-      dim(disciplinas.raw$`Nível do Curso`)
-    ), arr.ind = TRUE), ]
-  table.msc <-
-    cbind(
-      disciplinas.msc$`Nome da Disciplina`,
-      disciplinas.msc$`Indicadora de disciplina obrigatória`,
-      disciplinas.msc$`Quantidade de créditos`,
-      disciplinas.msc$`Carga Horária`
+if (dim(turmas.raw)[1] != 0) {
+  # build a cross table DISCIPLINA vs. ANO
+  turmas.raw$`Período/Ano` <-
+    paste(
+      sub(".*/", "", turmas.raw$`Período/Ano`),
+      sub("/.*", "", turmas.raw$`Período/Ano`),
+      sep = "/"
     )
-  colnames(table.msc) <- c("Disciplina", "Obrigatória", "CR", "CH")
-  
-  disciplinas.dsc <-
-    disciplinas.raw[which(`dim<-`(
-      grepl('Doutorado', disciplinas.raw$`Nível do Curso`),
-      dim(disciplinas.raw$`Nível do Curso`)
-    ), arr.ind = TRUE), ]
-  table.dsc <-
-    cbind(
-      disciplinas.dsc$`Nome da Disciplina`,
-      disciplinas.dsc$`Indicadora de disciplina obrigatória`,
-      disciplinas.dsc$`Quantidade de créditos`,
-      disciplinas.dsc$`Carga Horária`
-    )
-  colnames(table.dsc) <- c("Disciplina", "Obrigatória", "CR", "CH")
-  
-  table <-
-    merge(
-      table.msc,
-      table.dsc,
-      by = "Disciplina",
-      all.x = TRUE,
-      all.y = TRUE
-    )
-  colnames(table) <-
-    c(
-      "Disciplina",
-      "Obrigatória (MA)",
-      "CR (MA)",
-      "CH (MA)",
-      "Obrigatória (DA)",
-      "CR (DA)",
-      "CH (DA)"
-    )
-  
-  # build a cross table DISCIPLINA vs. DOCENTE
   cross.table.turmas <-
     as.matrix(table(
       initials(turmas.raw$`Nome da Disciplina`),
-      initials(turmas.raw$`Nome do responsável`)
+      turmas.raw$`Período/Ano`
     ))
-  Responsável <- colSums(cross.table.turmas)
-  Responsável[Responsável > 0] <- "✅"
-  Responsável[Responsável == 0] <- ""
-  turmas.docentes <- rbind(Responsável, cross.table.turmas)
-  turmas.docentes[turmas.docentes > 0] <- "✔"
-  turmas.docentes[turmas.docentes == 0] <- ""
+  Oferecida <- colSums(cross.table.turmas)
+  Oferecida[Oferecida > 0] <- "✅"
+  Oferecida[Oferecida == 0] <- ""
+  turmas.oferecidas <- rbind(Oferecida, cross.table.turmas)
+  turmas.oferecidas[turmas.oferecidas > 0] <- "✔"
+  turmas.oferecidas[turmas.oferecidas == 0] <- ""
+  if (length(colnames(turmas.oferecidas)) > 1) {
+    turmas.oferecidas <-
+      turmas.oferecidas[, order(colnames(turmas.oferecidas), decreasing = TRUE)]
+  }
   print(
-    kable(turmas.docentes, align = c("l", rep(
-      "c", ncol(turmas.docentes) - 2
+    kable(turmas.oferecidas, align = c("l", rep(
+      "c",  max(0, ncol(turmas.oferecidas) - 2)
     ), "r")) %>% kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
