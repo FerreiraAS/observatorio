@@ -3,6 +3,9 @@ title: "OBSERVATÓRIO"
 output:
   html_document:
     toc: false
+    css:
+      - CSS/index.css
+      - CSS/main-color.css
 ---
 
 <!--install and/or load all R packages-->
@@ -24,51 +27,6 @@ source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ---
 title: "OBSERVATÓRIO `r ifelse(has.dados.cadastrais, sigla.PPG, "")`"
 ---
-
-<!--script for hover effect on table-->
-```{css}
-.table-hover > tbody > tr:hover { 
-  background-color: #18BC9C;
-  }
-```
-
-<!--custom CSS scripts for THIS PAGE ONLY-->
-
-<!--script for background color-->
-```{css}
-body {
-  background-color: #2C3E50 !important;
-  color: white;
-  }
-```
-
-<!--script for centering titles-->
-```{css}
-h1.title {
-  text-align: center;
-  font-weight: bold;
-}
-h1 {
-  text-align: center;
-  font-weight: bold;
-}
-h2 {
-  text-align: center;
-  font-weight: bold;
-}
-h3 {
-  text-align: center;
-  font-weight: bold;
-}
-```
-
-<!--script for removing background shading of carousel controls-->
-```{css}
-.carousel-control.left, .carousel-control.right {
-   background-image:none !important;
-   filter:none !important;
-   }
-```
 
 <br>
 

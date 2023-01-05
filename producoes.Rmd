@@ -4,9 +4,11 @@ output:
   html_document:
     toc: true
     css:
-      - /CSS/logo-above-toc.css
-      - /CSS/narrow-margins.css
-      - /CSS/responsive.css
+      - CSS/logo-above-toc.css
+      - CSS/narrow-margins.css
+      - CSS/responsive.css
+      - CSS/generic.css
+      - CSS/main-color.css
 ---
 
 <!--install and/or load all R packages-->

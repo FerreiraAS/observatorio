@@ -1,0 +1,60 @@
+<!--script for color-->
+div {
+  background-color: white !important;
+  color: #40826D;
+}
+
+navbar navbar-expand-lg navbar-dark bg-primary {
+  background-color: #40826D !important;
+  color: white;
+}
+navbar navbar-default navbar-fixed-top {
+  background-color: #40826D !important;
+  color: white;
+}
+#navbar {
+  background: #40826D !important;
+  background-color: #40826D !important;
+  color: white !important;
+}
+.navbar-default{
+  background-color: #40826D !important;
+  color: white !important;
+}
+
+#navbar > ul:nth-child(1) > li.active > a {
+  background-color: darkgrey !important;
+  color: white !important;
+}
+#navbar > ul:nth-child(1) > li.dropdown.open > a {
+  background-color: darkgrey !important;
+  color: white !important;
+}
+#navbar > ul:nth-child(1) > li.dropdown.open > ul > li:nth-child(1) > a {
+  background-color: #40826D !important;
+  color: white !important;
+}
+#navbar > ul:nth-child(1) > li:nth-child(1) > az
+<!--script for TOC color-->
+#TOC {
+    background: transparent;
+}
+h1, #TOC ul>li {
+  color: #40826D !important;
+}
+h2, #TOC ul>li {
+  color: #40826D !important;
+}
+h3, #TOC ul>li {
+  color: #40826D !important;
+}
+
+#TOC .active {
+  background: #40826D !important;
+  color: white !important;
+}
+
+<!--script for hover effect on table-->
+.table-hover > tbody > tr:hover { 
+  background-color: lightgrey;
+  }

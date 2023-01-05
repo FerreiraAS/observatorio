@@ -213,6 +213,9 @@ output:
       - CSS/responsive.css
       - CSS/narrow-margins.css
       - CSS/logo-above-toc.css
+      - CSS/index.css
+      - CSS/generic.css
+      - CSS/main-color.css
     toc: true
     toc_depth: 3
     toc_float: true

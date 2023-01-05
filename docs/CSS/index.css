@@ -1,0 +1,82 @@
+<!--script for color-->
+div {
+  background-color: #40826D !important;
+  color: white;
+}
+
+navbar navbar-expand-lg navbar-dark bg-primary {
+  background-color: #40826D !important;
+  color: white;
+}
+navbar navbar-default navbar-fixed-top {
+  background-color: #40826D !important;
+  color: white;
+}
+#navbar {
+  background: #40826D !important;
+  background-color: #40826D !important;
+  color: white !important;
+}
+.navbar-default{
+  background-color: #40826D !important;
+  color: white !important;
+}
+
+#navbar > ul:nth-child(1) > li.active > a {
+  background-color: darkgrey !important;
+  color: white !important;
+}
+#navbar > ul:nth-child(1) > li.dropdown.open > a {
+  background-color: darkgrey !important;
+  color: white !important;
+}
+#navbar > ul:nth-child(1) > li.dropdown.open > ul > li:nth-child(1) > a {
+  background-color: #40826D !important;
+  color: white !important;
+}
+
+body {
+  background-color: #40826D !important;
+  color: white;
+}
+
+h1 {
+  background-color: #40826D !important;
+  color: white;
+}
+h2 {
+  background-color: #40826D !important;
+  color: white;
+}
+h3 {
+  background-color: #40826D !important;
+  color: white;
+}
+p {
+  background-color: #40826D !important;
+  color: white;
+}
+
+<!--script for centering titles-->
+h1.title {
+  text-align: center;
+  font-weight: bold;
+}
+h1 {
+  text-align: center;
+  font-weight: bold;
+}
+h2 {
+  text-align: center;
+  font-weight: bold;
+}
+h3 {
+  text-align: center;
+  font-weight: bold;
+}
+
+<!--script for removing background shading of carousel controls-->
+.carousel-control.left, .carousel-control.right {
+   background-image: none !important;
+   filter: none !important;
+   }
