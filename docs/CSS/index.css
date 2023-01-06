@@ -1,24 +1,24 @@
 <!--script for color-->
 div {
-  background-color: #40826D !important;
+  background-color: black !important;
   color: white;
 }
 
 navbar navbar-expand-lg navbar-dark bg-primary {
-  background-color: #40826D !important;
+  background-color: black !important;
   color: white;
 }
 navbar navbar-default navbar-fixed-top {
-  background-color: #40826D !important;
+  background-color: black !important;
   color: white;
 }
 #navbar {
-  background: #40826D !important;
-  background-color: #40826D !important;
+  background: black !important;
+  background-color: black !important;
   color: white !important;
 }
 .navbar-default{
-  background-color: #40826D !important;
+  background-color: black !important;
   color: white !important;
 }
 
@@ -31,29 +31,29 @@ navbar navbar-default navbar-fixed-top {
   color: white !important;
 }
 #navbar > ul:nth-child(1) > li.dropdown.open > ul > li:nth-child(1) > a {
-  background-color: #40826D !important;
+  background-color: black !important;
   color: white !important;
 }
 
 body {
-  background-color: #40826D !important;
+  background-color: black !important;
   color: white;
 }
 
 h1 {
-  background-color: #40826D !important;
+  background-color: black !important;
   color: white;
 }
 h2 {
-  background-color: #40826D !important;
+  background-color: black !important;
   color: white;
 }
 h3 {
-  background-color: #40826D !important;
+  background-color: black !important;
   color: white;
 }
 p {
-  background-color: #40826D !important;
+  background-color: black !important;
   color: white;
 }
 

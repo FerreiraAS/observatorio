@@ -1,24 +1,24 @@
 <!--script for color-->
 div {
   background-color: white !important;
-  color: #40826D;
+  color: black;
 }
 
 navbar navbar-expand-lg navbar-dark bg-primary {
-  background-color: #40826D !important;
+  background-color: black !important;
   color: white;
 }
 navbar navbar-default navbar-fixed-top {
-  background-color: #40826D !important;
+  background-color: black !important;
   color: white;
 }
 #navbar {
-  background: #40826D !important;
-  background-color: #40826D !important;
+  background: black !important;
+  background-color: black !important;
   color: white !important;
 }
 .navbar-default{
-  background-color: #40826D !important;
+  background-color: black !important;
   color: white !important;
 }
 
@@ -31,7 +31,7 @@ navbar navbar-default navbar-fixed-top {
   color: white !important;
 }
 #navbar > ul:nth-child(1) > li.dropdown.open > ul > li:nth-child(1) > a {
-  background-color: #40826D !important;
+  background-color: black !important;
   color: white !important;
 }
 #navbar > ul:nth-child(1) > li:nth-child(1) > az
@@ -40,17 +40,17 @@ navbar navbar-default navbar-fixed-top {
     background: transparent;
 }
 h1, #TOC ul>li {
-  color: #40826D !important;
+  color: black !important;
 }
 h2, #TOC ul>li {
-  color: #40826D !important;
+  color: black !important;
 }
 h3, #TOC ul>li {
-  color: #40826D !important;
+  color: black !important;
 }
 
 #TOC .active {
-  background: #40826D !important;
+  background: black !important;
   color: white !important;
 }
 
