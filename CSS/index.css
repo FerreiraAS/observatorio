@@ -34,6 +34,17 @@ navbar navbar-default navbar-fixed-top {
   background-color: black !important;
   color: white !important;
 }
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+  background-color: black !important;
+  color: white !important;
+  text-decoration: none;
+}
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
+  background-color: black !important;
+  color: white !important;
+  text-decoration: none;
+  outline: 0;
+}
 
 body {
   background-color: black !important;
