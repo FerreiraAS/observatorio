@@ -169,24 +169,13 @@ navbar:
           href: [autoavaliacao.html#impacto]
         - text: "Resultados"
           href: [autoavaliacao.html#resultados]
-    - text: "Downloads"
-      href: [downloads.html]
-  right:
-    - text: ""
-      icon: "fa-link"
+    - text: "Área"
       menu:
-      - text: "Área 21"
-        href: [https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/avaliacao/sobre-a-avaliacao/areas-avaliacao/sobre-as-areas-de-avaliacao/colegio-de-ciencias-da-vida/ciencias-da-saude/educacao-fisica]
-      - text: "Forum da Área 21"
-        href: [https://www.fef.unicamp.br/fef/posgraduacao/forumpg21]
-      - text: "Chamadas públicas"
-        menu:
-        - text: "FAPERJ"
-          href: [https://www.faperj.br/?id=28.5.7]
-        - text: "CAPES"
-          href: [https://www.gov.br/capes/pt-br/assuntos/editais-capes]
-        - text: "CNPq"
-          href: [https://www.gov.br/cnpq/pt-br]
+      - text: "Áreas"
+        href: [https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/avaliacao/sobre-a-avaliacao/areas-avaliacao/sobre-as-areas-de-avaliacao/sobre-as-areas-de-avaliacao]
+    - text: ""
+      icon: "fa-download"
+      href: [downloads.html]
     - text: ""
       icon: "fa-envelope"
       href: [mailto:arthur_sf@icloud.com]
@@ -196,6 +185,7 @@ navbar:
     - text: ""
       icon: "fa-facebook"
       href: [https://pt-br.facebook.com/arthur.sa.ferreira]
+  right:
     - text: ""
       icon: "fa-github"
       href: [https://github.com/FerreiraAS/observatorio]
