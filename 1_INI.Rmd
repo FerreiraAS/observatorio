@@ -157,7 +157,7 @@ has.docentes.posdocs <-
 
 ```{r try-donwloads}
 has.downloads <-
-  !is.error(try(read_excel("PPG/Donwloads.xlsx", sheet = 1),
+  !is.error(try(read_excel("PPG/Downloads.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
