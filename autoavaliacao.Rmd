@@ -57,7 +57,7 @@ abas <- excel_sheets("PPG/Avaliação.xlsx")
 for (i in 1:length(abas)) {
   cat(paste0('### **', abas[i], '**'))
   periodo.raw <-
-    read_excel("PPG/Apresentação.xlsx",
+    read_excel("PPG/Avaliação.xlsx",
                sheet = abas[i],
                col_types = c("text"))
   
