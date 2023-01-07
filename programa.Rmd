@@ -130,44 +130,6 @@ cat(paste0(
 
 <br>
 
-```{r apresentacao-periodos, eval = has.apresentacao.abas}
-# initialize all sheets
-abas <- excel_sheets("PPG/Apresentação.xlsx")
-
-# remove specific abas
-abas <- abas[-match("Sucupira", abas)]
-
-# display each sheet in a tab
-for (i in 1:length(abas)) {
-  cat(paste0('### **', abas[i], '**'))
-  periodo.raw <-
-    read_excel("PPG/Apresentação.xlsx",
-               sheet = abas[i],
-               col_types = c("text"))
-  
-  # replace the link by a tag
-  for (i in 1:dim(periodo.raw)[1]) {
-    periodo.raw[i, 3] <-
-      paste("[↗️](", periodo.raw[i, 3], '){target="_blank"}', sep = "")
-  }
-  
-  # print table
-  print(
-    kable(periodo.raw, align = c("l", rep(
-      "c", ncol(periodo.raw) - 2
-    ), "r")) %>% kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
-  
-  # print end of tab rows
-  cat('<a style=/"float:right/" href=/"#top/"><b>Início &nbsp;</b>⬆️</a>')
-  cat('<br>')
-}
-```
-
 ## **Breve histórico** {.tabset #breve-historico}
 
 <!--script for generating HORIZONTAL LINE-->

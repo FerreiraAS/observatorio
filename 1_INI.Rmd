@@ -51,17 +51,15 @@ has.apresentacao <-
                 silent = TRUE))
 ```
 
-```{r try-apresentacao-abas}
-# initialize all sheets
-abas <- try(excel_sheets("PPG/Apresentação1.xlsx"), silent = TRUE)
-# remove specific abas
-abas <- abas[-match("Sucupira", abas)]
-has.apresentacao.abas <- length(abas) != 0 & !is.na(abas)
-```
-
 ```{r try-autoavaliacoes}
 has.autoavaliacoes <-
   !is.error(try(read_excel("PPG/Autoavaliações.xlsx", sheet = 1),
+                silent = TRUE))
+```
+
+```{r try-avaliacao}
+has.avaliacao <-
+  !is.error(try(read_excel("PPG/Avaliação.xlsx", sheet = 1),
                 silent = TRUE))
 ```
 

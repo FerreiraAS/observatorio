@@ -21,7 +21,7 @@ navbar:
   left:
     - text: ""
       icon: "fa-home"
-      href: index.html
+      href: [index.html]
     - text: "Programa"
       href: [programa.html]
       menu:
@@ -104,7 +104,7 @@ navbar:
         - text: "Métricas"
           href: [producoes.html#metricas]
     - text: "Destaques"
-      href: destaques.html
+      href: [destaques.html]
       menu:
         - text: "Destaques"
           href: [destaques.html]
@@ -147,10 +147,12 @@ navbar:
         - text: "Fotos"
           href: [galeria.html#fotos]
     - text: "Autoavaliação"
-      href: autoavaliacao.html
+      href: [autoavaliacao.html]
       menu:
         - text: "Autoavaliação"
           href: [autoavaliacao.html]
+        - text: "Avaliação CAPES"
+          href: [autoavaliacao.html#avalicao-capes]
         - text: "Planejamento estratégico"
           href: [autoavaliacao.html#planejamento]
         - text: "Metodologia"
