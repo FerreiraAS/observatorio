@@ -151,26 +151,30 @@ navbar:
       menu:
         - text: "Autoavaliação"
           href: [autoavaliacao.html]
-        - text: "Avaliação CAPES"
-          href: [autoavaliacao.html#avalicao-capes]
         - text: "Planejamento estratégico"
           href: [autoavaliacao.html#planejamento]
         - text: "Metodologia"
           href: [autoavaliacao.html#metodologia]
-        - text: "Fichas de avaliação"
-          href: [autoavaliacao.html#ficha]
-        - text: "Fontes de dados"
-          href: [autoavaliacao.html#dados]
-        - text: "Autoavaliação"
-          href: [autoavaliacao.html#autoavaliacao]
-        - text: "1. Programa"
-          href: [autoavaliacao.html#programa]
-        - text: "2. Formação"
-          href: [autoavaliacao.html#formacao]
-        - text: "3. Impacto na sociedade"
-          href: [autoavaliacao.html#impacto]
         - text: "Resultados"
           href: [autoavaliacao.html#resultados]
+          menu:
+            - text: "Nota"
+              href: [autoavaliacao.html#nota]
+            - text: "Documentos"
+              href: [autoavaliacao.html#documentos]
+            - text: "Qualidade das disciplinas"
+              href: [autoavaliacao.html#qualidade-disciplinas]
+            - text: "Pesquisa do egresso"
+              href: [autoavaliacao.html#pesquisa-egresso]
+        - text: "Ficha de avaliação"
+          href: [autoavaliacao.html#ficha-avaliacao]
+          menu:
+            - text: "1. Programa"
+              href: [autoavaliacao.html#programa]
+            - text: "2. Formação"
+              href: [autoavaliacao.html#formacao]
+            - text: "3. Impacto na sociedade"
+              href: [autoavaliacao.html#impacto]
     - text: "Área"
       menu:
       - text: "Áreas"

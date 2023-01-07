@@ -44,46 +44,6 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 </p>
 
 
-## **Avaliação CAPES** {#avaliacao-capes}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
-
-```{r apresentacao-periodos, eval = has.avaliacao}
-# initialize all sheets
-abas <- excel_sheets("PPG/Avaliação.xlsx")
-
-# display each sheet in a tab
-for (i in 1:length(abas)) {
-  cat(paste0('### **', abas[i], '**'))
-  periodo.raw <-
-    read_excel("PPG/Avaliação.xlsx",
-               sheet = abas[i],
-               col_types = c("text"))
-  
-  # replace the link by a tag
-  for (i in 1:dim(periodo.raw)[1]) {
-    periodo.raw[i, 3] <-
-      paste("[↗️](", periodo.raw[i, 3], '){target="_blank"}', sep = "")
-  }
-  
-  # print table
-  print(
-    kable(periodo.raw, align = c("l", rep(
-      "c", ncol(periodo.raw) - 2
-    ), "r")) %>% kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
-  
-  # print end of tab rows
-  cat('<a style=/"float:right/" href=/"#top/"><b>Início &nbsp;</b>⬆️</a>')
-  cat('<br>')
-}
-```
-
 ## **Planejamento estratégico** {#planejamento .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -110,7 +70,7 @@ for (i in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
-### **Grupos de trabalho** {.tabset #grupos-trabalho}
+### **Grupos de trabalho** {#grupos-trabalho .tabset}
 
 #### **2024-2021** {.tabset}
 
@@ -202,118 +162,118 @@ for (i in 1:length(abas)) {
 
 <br>
 
-## **Fichas de avaliação** {#ficha .tabset}
+## **Resultados** {#resultados}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
-### **2020-2017**
+### **Nota** {#nota}
 
-<iframe src="https://drive.google.com/file/d/13WnDGV8SNLWL9tUnYHVnomGDtTqNHVKe/preview" style="width:100%; height:500px; border:0;"></iframe>
+```{r auto-notas, eval = has.notas}
+# read separate sheets
+notas <- read_excel("PPG/Notas.xlsx", sheet = "Notas")
 
-*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/avaliacao/sobre-a-avaliacao/areas-avaliacao/sobre-as-areas-de-avaliacao/colegio-de-ciencias-da-vida/ciencias-da-saude/educacao-fisica)
+cat(
+  paste(
+    '<iframe src="',
+    notas[1],
+    '" style="width:100%; height:600px; border:0;"></iframe>',
+    sep = ""
+  )
+)
+
+cat('\n\n')
+
+cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/public/consultas/avaliacao/viewPreenchimentoFicha.xhtml?idFicha=6566&popup=true)")
+```
+
+### **Documentos CAPES** {#documentos .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+```{r apresentacao-periodos, eval = has.avaliacao}
+# initialize all sheets
+abas <- excel_sheets("PPG/Avaliação.xlsx")
+
+# display each sheet in a tab
+for (i in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('#### **', abas[i], '**'))
+  cat('\n\n<!-- -->\n\n')
+  periodo.raw <-
+    read_excel("PPG/Avaliação.xlsx",
+               sheet = abas[i],
+               col_types = c("text"))
+  
+  # replace the link by a tag
+  for (i in 1:dim(periodo.raw)[1]) {
+    periodo.raw[i, 3] <-
+      paste("[↗️](", periodo.raw[i, 3], '){target="_blank"}', sep = "")
+  }
+  
+  # print table
+  print(
+    kable(periodo.raw, align = c("l", rep(
+      "c", ncol(periodo.raw) - 2
+    ), "r")) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+  
+  # print end of tab rows
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+
+cat('\n\n')
+
+cat("*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br")
+```
+
+<br>
+
+### **Qualidade das disciplinas** {#qualidade-disciplinas .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+#### **2024-2021**
+
+<iframe src="https://drive.google.com/file/d/1ilDduzPYnLHOlnhH-TUPL4cVPcq43Kqw/preview" style="width:100%; height:500px; border:0;"></iframe>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
-## **Fontes de dados** {#dados}
+#### **2020-2017**
+
+<iframe src="https://drive.google.com/file/d/1ix-9zIVULXlJMvntkXWl38iDEdvziDyK/preview" style="width:100%; height:500px; border:0;"></iframe>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Pesquisa do egresso** {#pesquisa-egresso .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+#### **Completa**
+
+<iframe src="https://drive.google.com/file/d/1k3PppnhBXToQItVOiMzSGAeGvwOYOXFN/preview" style="width:100%; height:500px; border:0;"></iframe>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Ficha de avaliação** {#ficha-avaliacao}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
 <!--script for generating STACKED HORIZONTAL BAR CHART-->
-
-```{css}
-.row {
-  display: flex;
-  align-items: stretch;
-  margin: 0 0;
-}
-
-.row .label {
-  flex: 0 0 auto;
-}
-
-.row .bar-container {
-  flex: 1;
-  display: flex;
-  align-items: stretch;
-  justify-content: flex-start;
-}
-
-.row .bar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.val-a { background: #18BC9C }
-.val-b { background: #F39C12 }
-```
-
-```{r barchart-data, eval = has.sucupira & has.PPG.files}
-# get amount of data from Sucupira XLSX files
-source("Scripts/get-sucupira-sheets-names.R",
-       local = knitr::knit_global())
-sheets <- sucupira.sheets
-
-data.sucupira <- 0
-for (i in 1:length(sheets)) {
-  sheet <- sheets[i]
-  source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-  data.sucupira <- sum(data.sucupira,!is.na(sucupira.raw))
-}
-
-# get amount of data from PPG XLSX files
-source("Scripts/get-ppg-xlsx-data.R", local = knitr::knit_global())
-
-data.ppg <- 0
-for (i in 1:length(files.to.read)) {
-  abas <- excel_sheets(files.to.read[i])
-  for (j in 1:length(abas)) {
-    sheet <- sheets[j]
-    try(ppg.file <- read_excel(files.to.read[i], sheet = abas[j]), silent = TRUE)
-    data.ppg <- sum(data.ppg,!is.na(ppg.file))
-  }
-}
-
-# total data
-total <- data.sucupira + data.ppg
-
-# print stacked horizontal bar chart
-cat('<div class="row">')
-cat('<div class="bar-container">')
-cat(
-  paste0(
-    '<div class="bar val-a" style="color:white; font-weight:bold; flex-basis:',
-    data.sucupira / total * 100,
-    '%">Plataforma Sucupira</div>'
-  )
-)
-cat(
-  paste0(
-    '<div class="bar val-b" style="color:white; font-weight:bold; flex-basis:',
-    data.ppg / total * 100,
-    '%">Institucionais</div>'
-  )
-)
-cat('</div>')
-cat('</div>')
-```
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-## **Autoavaliação** {#autoavaliacao}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
-
-<br>
 
 ## **1. Programa** {#programa .tabset}
 
@@ -815,71 +775,6 @@ cat(
 #### **Internacionalização e Inserção**
 
 *Em construção*
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-## **Resultados** {#resultados}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
-
-### **Notas do Programa** {#notas}
-
-```{r auto-notas, eval = has.notas}
-# read separate sheets
-notas <- read_excel("PPG/Notas.xlsx", sheet = "Notas")
-
-cat(
-  paste(
-    '<iframe src="',
-    notas[1],
-    '" style="width:100%; height:600px; border:0;"></iframe>',
-    sep = ""
-  )
-)
-
-cat('\n\n')
-
-cat("*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br)")
-```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/public/consultas/avaliacao/viewPreenchimentoFicha.xhtml?idFicha=6566&popup=true)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Qualidade das disciplinas** {.tabset #qualidade-disciplinas}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
-
-#### **2024-2021**
-
-<iframe src="https://drive.google.com/file/d/1ilDduzPYnLHOlnhH-TUPL4cVPcq43Kqw/preview" style="width:100%; height:500px; border:0;"></iframe>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **2020-2017**
-
-<iframe src="https://drive.google.com/file/d/1ix-9zIVULXlJMvntkXWl38iDEdvziDyK/preview" style="width:100%; height:500px; border:0;"></iframe>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Pesquisa do egresso** {.tabset #pesquisa-egresso}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
-
-#### **Completa**
-
-<iframe src="https://drive.google.com/file/d/1k3PppnhBXToQItVOiMzSGAeGvwOYOXFN/preview" style="width:100%; height:500px; border:0;"></iframe>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 

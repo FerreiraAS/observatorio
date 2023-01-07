@@ -481,34 +481,41 @@ $(document).ready(function () {
       <a href="autoavaliacao.html">Autoavaliação</a>
     </li>
     <li>
-      <a href="autoavaliacao.html#avalicao-capes">Avaliação CAPES</a>
-    </li>
-    <li>
       <a href="autoavaliacao.html#planejamento">Planejamento estratégico</a>
     </li>
     <li>
       <a href="autoavaliacao.html#metodologia">Metodologia</a>
     </li>
-    <li>
-      <a href="autoavaliacao.html#ficha">Fichas de avaliação</a>
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resultados</a>
+      <ul class="dropdown-menu" role="menu">
+        <li>
+          <a href="autoavaliacao.html#nota">Nota</a>
+        </li>
+        <li>
+          <a href="autoavaliacao.html#documentos">Documentos</a>
+        </li>
+        <li>
+          <a href="autoavaliacao.html#qualidade-disciplinas">Qualidade das disciplinas</a>
+        </li>
+        <li>
+          <a href="autoavaliacao.html#pesquisa-egresso">Pesquisa do egresso</a>
+        </li>
+      </ul>
     </li>
-    <li>
-      <a href="autoavaliacao.html#dados">Fontes de dados</a>
-    </li>
-    <li>
-      <a href="autoavaliacao.html#autoavaliacao">Autoavaliação</a>
-    </li>
-    <li>
-      <a href="autoavaliacao.html#programa">1. Programa</a>
-    </li>
-    <li>
-      <a href="autoavaliacao.html#formacao">2. Formação</a>
-    </li>
-    <li>
-      <a href="autoavaliacao.html#impacto">3. Impacto na sociedade</a>
-    </li>
-    <li>
-      <a href="autoavaliacao.html#resultados">Resultados</a>
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Ficha de avaliação</a>
+      <ul class="dropdown-menu" role="menu">
+        <li>
+          <a href="autoavaliacao.html#programa">1. Programa</a>
+        </li>
+        <li>
+          <a href="autoavaliacao.html#formacao">2. Formação</a>
+        </li>
+        <li>
+          <a href="autoavaliacao.html#impacto">3. Impacto na sociedade</a>
+        </li>
+      </ul>
     </li>
   </ul>
 </li>
@@ -616,6 +623,36 @@ impactos, tornando-os acessíveis à sociedade.
 <p><br></p>
 <p><br></p>
 <p><br></p>
+<p><br></p>
+<p><br></p>
+<!--script for generating STACKED HORIZONTAL BAR CHART-->
+<style type="text/css">
+.row {
+  display: flex;
+  align-items: stretch;
+  margin: 0 0;
+}
+
+.row .label {
+  flex: 0 0 auto;
+}
+
+.row .bar-container {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.row .bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.val-a { background: #18BC9C }
+.val-b { background: #F39C12 }
+</style>
 <p><br></p>
 <p><br></p>
 <div>
