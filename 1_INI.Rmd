@@ -125,6 +125,13 @@ has.dados.cadastrais <-
   )
 ```
 
+```{r try-colegiado}
+has.colegiado <-
+  !is.error(try(read_excel("PPG/Colegiado.xlsx", sheet = 1),
+                silent = TRUE)
+  )
+```
+
 ```{r try-destaques}
 has.destaques <-
   !is.error(try(read_excel("PPG/Destaques.xlsx", sheet = 1),
@@ -146,9 +153,9 @@ has.discentes <-
   )
 ```
 
-```{r try-docentes-posdocs}
-has.docentes.posdocs <-
-  !is.error(try(read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = 1),
+```{r try-coordenacao}
+has.coordenacao <-
+  !is.error(try(read_excel("PPG/Coordenação.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```

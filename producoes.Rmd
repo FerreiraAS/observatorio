@@ -753,156 +753,43 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 ### **Desenvolvimento de aplicativos** {.tabset}
 
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+```{r softwares, eval = has.softwares}
+# initialize all sheets
+abas <- excel_sheets("PPG/Softwares.xlsx")
 
-#### **SuiteEBG**
-
-```{r softwares-ebg, eval = has.softwares}
-# read separate sheets
-softwares.raw <- read_excel("PPG/Softwares.xlsx", sheet = "SuiteEBG", col_types = c("text"))
-
-# replace the link by a tag
-for(i in 1:dim(softwares.raw)[1]){
-  softwares.raw[i,3] <- paste("[↗️](", softwares.raw[i,3], '){target="_blank"}', sep = "")
+# display each sheet in a tab
+for (i in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('#### **', abas[i], '**'))
+  cat('\n\n<!-- -->\n\n')
+  software.raw <-
+    read_excel("PPG/Softwares.xlsx",
+               sheet = abas[i],
+               col_types = c("text"))
+  
+  # replace the link by a tag
+  for (i in 1:dim(software.raw)[1]) {
+    software.raw[i, 3] <-
+      paste("[↗️](", software.raw[i, 3], '){target="_blank"}', sep = "")
+  }
+  
+  # print table
+  print(
+    kable(software.raw, align = c("l", rep(
+      "c", ncol(software.raw) - 2
+    ), "r")) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+  
+  # print end of tab rows
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 
-# print table
-print(kable(softwares.raw, align = c("l", rep("c", ncol(softwares.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
-
+cat('\n\n')
 ```
-
-<style>
-th, td {
-  padding: 10px;
-}
-</style>
-<table class="center">
-  <tr>
-    <td>
-      [<img align="center" src="Softwares/SuiteEBG.png">](https://drive.google.com/drive/folders/1UGyANs87k2S_8utHrkzPzxsUP_ZM-VoH?usp=sharing){target="_blank"}
-    </td>
-  </tr>
-</table>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **SuiteMYO**
-
-```{r softwares-myo, eval = has.softwares}
-# read separate sheets
-softwares.raw <- read_excel("PPG/Softwares.xlsx", sheet = "SuiteMYO", col_types = c("text"))
-
-# replace the link by a tag
-for(i in 1:dim(softwares.raw)[1]){
-  softwares.raw[i,3] <- paste("[↗️](", softwares.raw[i,3], '){target="_blank"}', sep = "")
-}
-
-# print table
-print(kable(softwares.raw, align = c("l", rep("c", ncol(softwares.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
-
-```
-
-<style>
-th, td {
-  padding: 10px;
-}
-</style>
-<table class="center">
-  <tr>
-    <td>
-      [<img align="center" src="Softwares/SuiteMYO.png">](https://drive.google.com/drive/folders/1UGyANs87k2S_8utHrkzPzxsUP_ZM-VoH?usp=sharing){target="_blank"}
-    </td>
-  </tr>
-</table>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **SuiteTCM**
-
-```{r softwares-tcm, eval = has.softwares}
-# read separate sheets
-softwares.raw <- read_excel("PPG/Softwares.xlsx", sheet = "SuiteTCM", col_types = c("text"))
-
-# replace the link by a tag
-for(i in 1:dim(softwares.raw)[1]){
-  softwares.raw[i,3] <- paste("[↗️](", softwares.raw[i,3], '){target="_blank"}', sep = "")
-}
-
-# print table
-print(kable(softwares.raw, align = c("l", rep("c", ncol(softwares.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
-```
-
-<style>
-th, td {
-  padding: 10px;
-}
-</style>
-<table class="center">
-  <tr>
-    <td>
-      [<img align="center" src="Softwares/SuiteTCM.png">](https://drive.google.com/drive/folders/1UGyANs87k2S_8utHrkzPzxsUP_ZM-VoH?usp=sharing){target="_blank"}
-    </td>
-  </tr>
-</table>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **wiiVIEW**
-
-```{r softwares-wbb, eval = has.softwares}
-# read separate sheets
-softwares.raw <- read_excel("PPG/Softwares.xlsx", sheet = "wiiVIEW", col_types = c("text"))
-
-# replace the link by a tag
-for(i in 1:dim(softwares.raw)[1]){
-  softwares.raw[i,3] <- paste("[↗️](", softwares.raw[i,3], '){target="_blank"}', sep = "")
-}
-
-# print table
-print(kable(softwares.raw, align = c("l", rep("c", ncol(softwares.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
-```
-
-<style>
-th, td {
-  padding: 10px;
-}
-</style>
-<table class="center">
-  <tr>
-    <td>
-      [<img align="center" src="Softwares/wiiVIEW.png">](https://drive.google.com/drive/folders/1UGyANs87k2S_8utHrkzPzxsUP_ZM-VoH?usp=sharing){target="_blank"}
-    </td>
-  </tr>
-</table>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **PainMAP**
-
-<br>
-
-*Em construção*
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **Fitaro**
-
-<br>
-
-<iframe src="https://fitaro.com.br" style="width:100%; height:600px; border:0;"></iframe>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 

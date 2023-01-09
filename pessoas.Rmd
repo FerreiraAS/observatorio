@@ -72,9 +72,9 @@ source("Scripts/social-media-sharing.R")
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
-```{r docentes-atual-perfil, eval = has.docentes.posdocs}
+```{r docentes-atual-perfil, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = "DATA.colegiado")
+  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2024 &
   docentes.raw$Descredenciamento == "Atual"
@@ -120,9 +120,9 @@ for (i in 1:dim(docentes)[1]) {
 
 ### **2024-2021**
 
-```{r coordenadores-2024, eval = has.docentes.posdocs}
+```{r coordenadores-2024, eval = has.coordenacao}
 docentes.raw <-
-  read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = "DATA.coordenadores")
+  read_excel("PPG/Coordenação.xlsx", sheet = "Coordenação")
 id1 <-
   docentes.raw$Credenciamento <= 2024 &
   docentes.raw$Descredenciamento == "Atual"
@@ -246,9 +246,9 @@ print(
 
 ### **2020-2017**
 
-```{r coordenadores-2020, eval = has.docentes.posdocs}
+```{r coordenadores-2020, eval = has.coordenacao}
 docentes.raw <-
-  read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = "DATA.coordenadores")
+  read_excel("PPG/Coordenação.xlsx", sheet = "Coordenação")
 id1 <-
   docentes.raw$Credenciamento <= 2020 &
   docentes.raw$Descredenciamento == "Atual"
@@ -370,9 +370,9 @@ print(
 
 ### **2016-2013**
 
-```{r coordenadores-2016, eval = has.docentes.posdocs}
+```{r coordenadores-2016, eval = has.coordenacao}
 docentes.raw <-
-  read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = "DATA.coordenadores")
+  read_excel("PPG/Coordenação.xlsx", sheet = "Coordenação")
 id1 <-
   docentes.raw$Credenciamento <= 2016 &
   docentes.raw$Descredenciamento == "Atual"
@@ -494,9 +494,9 @@ print(
 
 ### **2010-2012**
 
-```{r coordenadores-2012, eval = has.docentes.posdocs}
+```{r coordenadores-2012, eval = has.coordenacao}
 docentes.raw <-
-  read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = "DATA.coordenadores")
+  read_excel("PPG/Coordenação.xlsx", sheet = "Coordenação")
 id1 <-
   docentes.raw$Credenciamento <= 2012 &
   docentes.raw$Descredenciamento == "Atual"
@@ -712,9 +712,9 @@ for(i in 1:dim(perfil.data)[2]){
 
 #### **Figura**
 
-```{r docentes-2024-grafico, eval = has.docentes.posdocs}
+```{r docentes-2024-grafico, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = "DATA.colegiado")
+  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2024 &
   docentes.raw$Descredenciamento == "Atual"
@@ -907,9 +907,9 @@ title("Descrição do Corpo Docente", outer = TRUE)
 
 #### **Tabela**
 
-```{r docentes-2024-tabela, eval = has.docentes.posdocs}
+```{r docentes-2024-tabela, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = "DATA.colegiado")
+  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2024 &
   docentes.raw$Descredenciamento == "Atual"
@@ -1060,9 +1060,9 @@ print(
 
 #### **Figura**
 
-```{r docentes-2020-grafico, eval = has.docentes.posdocs}
+```{r docentes-2020-grafico, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = "DATA.colegiado")
+  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2020 &
   docentes.raw$Descredenciamento == "Atual"
@@ -1255,9 +1255,9 @@ title("Descrição do Corpo Docente", outer = TRUE)
 
 #### **Tabela**
 
-```{r docentes-2020-tabela, eval = has.docentes.posdocs}
+```{r docentes-2020-tabela, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = "DATA.colegiado")
+  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2020 &
   docentes.raw$Descredenciamento == "Atual"
@@ -1408,9 +1408,9 @@ print(
 
 #### **Figura**
 
-```{r docentes-2016-grafico, eval = has.docentes.posdocs}
+```{r docentes-2016-grafico, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = "DATA.colegiado")
+  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2016 &
   docentes.raw$Descredenciamento == "Atual"
@@ -1603,9 +1603,9 @@ title("Descrição do Corpo Docente", outer = TRUE)
 
 #### **Tabela**
 
-```{r docentes-2016-tabela, eval = has.docentes.posdocs}
+```{r docentes-2016-tabela, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = "DATA.colegiado")
+  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2016 &
   docentes.raw$Descredenciamento == "Atual"
@@ -1756,9 +1756,9 @@ print(
 
 #### **Figura**
 
-```{r docentes-2012-grafico, eval = has.docentes.posdocs}
+```{r docentes-2012-grafico, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = "DATA.colegiado")
+  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2012 &
   docentes.raw$Descredenciamento == "Atual"
@@ -1951,9 +1951,9 @@ title("Descrição do Corpo Docente", outer = TRUE)
 
 #### **Tabela**
 
-```{r docentes-2012-tabela, eval = has.docentes.posdocs}
+```{r docentes-2012-tabela, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = "DATA.colegiado")
+  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2012 &
   docentes.raw$Descredenciamento == "Atual"
@@ -2115,9 +2115,9 @@ print(
 
 ### **2024-2021**
 
-```{r pos-doc-2024, eval = has.docentes.posdocs}
+```{r pos-doc-2024, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = "DATA.colegiado")
+  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2024 &
   docentes.raw$Descredenciamento == "Atual"
@@ -2285,9 +2285,9 @@ if (length(new.ids) != 0) {
 
 ### **2020-2017**
 
-```{r pos-doc-2020, eval = has.docentes.posdocs}
+```{r pos-doc-2020, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = "DATA.colegiado")
+  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2020 &
   docentes.raw$Descredenciamento == "Atual"
@@ -2455,9 +2455,9 @@ if (length(new.ids) != 0) {
 
 ### **2016-2013**
 
-```{r pos-doc-2016, eval = has.docentes.posdocs}
+```{r pos-doc-2016, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = "DATA.colegiado")
+  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2016 &
   docentes.raw$Descredenciamento == "Atual"
@@ -2625,8 +2625,8 @@ if (length(new.ids) != 0) {
 
 ### **2010-2012**
 
-```{r pos-doc-2012, eval = has.docentes.posdocs}
-docentes.raw <- read_excel("PPG/Docentes e Pós-Docs.xlsx", sheet = "DATA.colegiado")
+```{r pos-doc-2012, eval = has.colegiado}
+docentes.raw <- read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <- docentes.raw$Credenciamento <= 2012 & docentes.raw$Descredenciamento == "Atual"
 id2 <- docentes.raw$Credenciamento <= 2012 & docentes.raw$Descredenciamento >= 2010
 docentes <- docentes.raw[id1 | id2, ]
@@ -3416,11 +3416,20 @@ if (dim(mestres)[1] != 0) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
-### **Descrição**
+### **Membros**
 
-O PPGCR possui 4 grupos de pesquisa cadastrados no Diretório de Grupos de Pesquisa do Conselho Nacional de Pesquisa (DGP-CNPq). Os grupos de pesquisa são organizados por especialidades, sendo assim transversais às LP, permitindo que docentes e alunos de diferentes LP possam interagir transdisciplinarmente nas Ciências da Reabilitação.
+```{r grupos-de-pesquisa-membros, eval = has.grupos.pesquisa}
+membros.raw <- read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "Membros")
+
+# print tables
+print(kable(membros.raw, align = c("l", rep("c", ncol(membros.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
+
+### **Grupos ativos** {.tabset}
 
 ```{r grupos-de-pesquisa-ativos, eval = has.grupos.pesquisa}
 grupos.raw <- read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.ativos")
@@ -3433,71 +3442,27 @@ print(kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r")) %>% k
 
 <br>
 
-### **Membros**
+### **Grupos inativos** {.tabset}
 
-```{r grupos-de-pesquisa-membros, eval = has.grupos.pesquisa}
-membros.raw <- read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "DGP")
+```{r grupos-de-pesquisa-inativos, eval = has.grupos.pesquisa}
+grupos.raw <- read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.inativos")
 
 # print tables
-print(kable(membros.raw, align = c("l", rep("c", ncol(membros.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+print(kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
 ```
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
-### **Grupos ativos** {.tabset}
+### **Grupos de pesquisa externos** {.tabset #grupos-externos}
 
-#### **Neuromusculoesquelética**
+```{r grupos-de-pesquisa-externos, eval = has.grupos.pesquisa}
+grupos.raw <- read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.externos")
 
-<iframe src="http://dgp.cnpq.br/dgp/espelhogrupo/529898" style="width:100%; height:600px; border:0;"></iframe>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **Esporte e Esporte Adaptado**
-
-<iframe src="http://dgp.cnpq.br/dgp/espelhogrupo/216803" style="width:100%; height:600px; border:0;"></iframe>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **Cardiorrespiratória e Terapia Intensiva**
-
-<iframe src="http://dgp.cnpq.br/dgp/espelhogrupo/503897" style="width:100%; height:600px; border:0;"></iframe>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **Inovação e Tecnologia Biomédica**
-
-<iframe src="http://dgp.cnpq.br/dgp/espelhogrupo/532778" style="width:100%; height:600px; border:0;"></iframe>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Grupos inativos** {.tabset}
-
-#### **Fisioterapia**
-
-<iframe src="http://dgp.cnpq.br/dgp/espelhogrupo/6275564297217717" style="width:100%; height:600px; border:0;"></iframe>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-## **Grupos de pesquisa externos** {.tabset #grupos-externos}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
-
-### **Pesquisa em Dor**
-
-<iframe src="http://pesquisaemdor.com.br" style="width:100%; height:600px; border:0;"></iframe>
+# print tables
+print(kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+```
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
