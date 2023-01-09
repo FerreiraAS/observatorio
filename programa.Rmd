@@ -2927,16 +2927,6 @@ for (i in 1:dim(labs)[1]) {
 
 <br>
 
-### **Planta**
-
-```{r laboratorios-planta, eval = has.laboratorios}
-knitr::include_graphics(file.path(getwd(), "PPG", "Labs", "Planta.png"))
-```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
 ## **Convênios institucionais** {#convenios}
 
 <!--script for generating HORIZONTAL LINE-->
