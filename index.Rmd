@@ -806,7 +806,33 @@ try(eventos <-
       )))
 
 # bind papers and letters/abstracts and events (all with DOI)
-artigos <- rbind(artigos[, 1:11], resumos[, 1:11],  eventos[, 1:11])
+artigos <-
+  rbind(
+    select(
+      artigos,
+      "Publicado.em",
+      "DOI",
+      "WebQualis",
+      "ISSN",
+      "Revista..digite.ou.selecione.na.lista."
+    ),
+    select(
+      resumos,
+      "Publicado.em",
+      "DOI",
+      "WebQualis",
+      "ISSN",
+      "Revista..digite.ou.selecione.na.lista."
+    ),
+    select(
+      eventos,
+      "Publicado.em",
+      "DOI",
+      "WebQualis",
+      "ISSN",
+      "Revista..digite.ou.selecione.na.lista."
+    )
+  )
 
 # Data cleaning
 artigos <- artigos[complete.cases(artigos$DOI), ]
