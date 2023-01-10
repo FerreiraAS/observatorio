@@ -480,7 +480,7 @@ for (j in 1:length(tabs)) {
 
 <br>
 
-#### **Revisores**
+#### **Revisores** {.tabset}
 
 <br>
 
@@ -506,13 +506,16 @@ orcids <-
 for (id in 1:length(orcids)) {
   reviewer.name <- sucupira.unique$`Nome Docente`[id]
   my_orcid <- orcids[id]
+  
+  cat('\n\n<!-- -->\n\n')
+  cat('##### **', reviewer.name, '**', sep = "")
+  cat('\n\n<!-- -->\n\n')
   source("Scripts/reviewer-board.R", local = knitr::knit_global())
+  cat(
+    "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"
+  )
 }
 ```
-
-<br>
-
-*Fontes:* [**ORCID**](https://orcid.org)
 
 <br>
 
