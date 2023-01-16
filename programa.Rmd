@@ -124,7 +124,7 @@ abas <- excel_sheets("PPG/Histórico.xlsx")
 # display each sheet in a tab
 for (i in 1:length(abas)) {
   cat('\n\n<!-- -->\n\n')
-  cat(paste0('#### **', abas[i], '**'))
+  cat(paste0('### **', abas[i], '**'))
   cat('\n\n<!-- -->\n\n')
   historico.raw <-
     read_excel("PPG/Histórico.xlsx",
