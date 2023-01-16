@@ -50,19 +50,6 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
-### **Descrição**
-
-```{r descricao, eval = has.descricao}
-texto <- read.delim("PPG/Descrição.txt",
-                    header = FALSE,
-                    stringsAsFactor = FALSE)$V1
-cat(paste(texto, sep = "\n\n", collapse = NULL))
-```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
 ### **Dados cadastrais**
 
 ```{r dados-cadastrais, eval = has.dados.cadastrais}
@@ -104,11 +91,9 @@ print(
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **Sucupira**
 
@@ -122,83 +107,56 @@ cat(
 )
 
 cat('\n\n')
-cat(paste0(
-  '\"*Fontes:* [**Plataforma Sucupira**](', read_excel("PPG/Apresentação.xlsx", sheet = "Sucupira")[1,1], ')\"'))
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ## **Breve histórico** {.tabset #breve-historico}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
-### **2020-2017**
+```{r programa-historico, eval = has.historico}
+# initialize all sheets
+abas <- excel_sheets("PPG/Histórico.xlsx")
 
-No atual quadriênio, 2017-2020, o PPGCR-UNISUAM amplia seu compromisso com formação de recursos humanos qualificada, de produção intelectual internacional e captação de financiamentos para pesquisa. Em síntese do período 2017-2020, o corpo docente passa por um processo de renovação e completa 2020 com 12 docentes permanentes credenciados, além de 4 pesquisadores que passaram pelo Estágio Pós-doutoral (1 com bolsa PNPD-CAPES e 2 pesquisadores estrangeiros). Um total de 87 Mestres e 8 Doutores foram titulados com tempo médio de titulação de 28 e 49 meses, respectivamente. A produção de artigos alcançou 160 artigos em periódicos nacionais e internacionais indexados no PubMed. Adicionalmente, 25 projetos foram contemplados em editais da FAPERJ, CAPES e CNPq – merecendo destaque 3 editais de “Jovem Cientista do Nosso Estado”, 2 editais de “Universidades Sediadas no RJ” e 1 bolsa de Pesquisador do CNPq – somando aproximadamente R$2.000.000,00 em recursos captados no quadriênio (cerca de R$4.170.000,00 desde a formação do Grupo de Pesquisa). Em continuidade à política de fixação de docentes para o PPGCR-UNISUAM, o bolsista no quadriênio foi contratado para compor o quadro de docentes permanentes do Programa. Estes resultados no quadriênio vigente e contextualizados com os demais indicadores reiteram o compromisso do grupo de pesquisadores em desenvolver a Ciência no Estado e no País.
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **2016-2013**
-
-No quadriênio de 2013-2016, o PPGCR-UNISUAM manteve seu compromisso com a qualidade na formação de recursos humanos, produção intelectual e captação de financiamentos. Em síntese desse quadriênio, o corpo docente foi estabilizado em 13 docentes permanentes (mais 1 colaborador), 66 mestres foram titulados em tempo médio de 26 meses e 121 artigos foram indexados no PubMed. Adicionalmente, 33 projetos foram contemplados em editais da FAPERJ e CNPq – merecendo destaque 13 editais de Auxílio à Pesquisa, 2 editais temáticos de “Apoio ao Desenvolvimento de Inovações no Esporte”, 2 editais de “Jovem Cientista do Nosso Estado” e 1 bolsa de Pós-Doutorado no Exterior – somando aproximadamente R$1.800.000,00 em recursos e bolsas PROSUP captados no período (cerca de R$2.100.000,00 no total). Estes resultados, contextualizados com os demais indicadores do PPGCR-UNISUAM para a Área 21 nesse período, resultaram na manutenção no [conceito 4](https://www.gov.br/capes/pt-br/assuntos/noticias/divulgado-o-resultado-da-1-etapa-da-avaliacao-quadrienal-2017), mostrando a consistência do desenvolvimento do PPGCR-UNISUAM em uma Área ainda em expansão .
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **2012-2010**
-
-No triênio de 2010-2012, o PPGCR-UNISUAM obteve um crescimento quantitativo e qualitativo, tanto na formação de recursos humanos (docentes em nível superior) quanto no desenvolvimento científico e produção intelectual, assim como na captação de recursos para financiamento de PP. Em síntese desse triênio, o corpo docente foi expandido para 14 docentes permanentes (mais 2 colaboradores), 18 mestres foram titulados em tempo médio de 23 meses e 19 artigos foram indexados no PubMed. Adicionalmente, 10 projetos foram contemplados em editais da FAPERJ e CAPES – 4 editais de Auxílio à Pesquisa, 3 editais de Apoio ao Pesquisador Recém-Contratado, 2 editais de Apoios a Eventos e 1 edital de “Jovem Cientista do Nosso Estado” – somando aproximadamente R$120.000,00 em captação de recursos no período (R$315.000,00 no total). Estes resultados, contextualizados com os demais indicadores do PPGCR-UNISUAM para a Área 21, culminaram no conceito 4 já em sua primeira avaliação trienal, conforme [Portaria n° 656, publicada no D.O.U. de 23/5/2017, Seção 1, Págs. 14](http://pesquisa.in.gov.br/imprensa/jsp/visualiza/index.jsp?data=23/05/2017&jornal=1&pagina=14&totalArquivos=184).
-
-<br>
-
-O comprometimento institucional no fortalecimento das políticas de pesquisa é novamente reforçado no PDI 2012-2016, no qual são definidas ações de estímulo à pesquisa por meio de capacitação e fixação de docentes titulados na IES. Em 2013, ainda somente com o curso de Mestrado autorizado, o PPGCR-UNISUAM foi contemplado com 1 bolsa de Estágio Pós-Doutoral, acompanhando a implantação do Programa Nacional de Pós-Doutorado (PNPD) da CAPES, de acordo com a [Portaria Nº 086 de 3/7/2013](https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/bolsas/bolsas-no-pais/pnpd-capes). A política da IES foi então dedicada à utilização da bolsa para captação e fixação de docentes para o PPGCR-UNISUAM. Devido ao excelente desempenho dos pesquisadores durante o Estágio Pós-Doutoral, todos os 2 pesquisadores bolsistas no período 2013-2016 foram contratados para compor o quadro de docentes permanentes do Programa. O amadurecimento da experiência do corpo docente na orientação dos mestrandos e a continuada elevação da produção acadêmica do grupo viabilizaram o envio da Proposta de Curso Novo de Doutorado Acadêmico em Ciências da Reabilitação. A proposta de curso, submetida em 2014, foi também aprovada após primeira avaliação. O curso de Doutorado Acadêmico do PPGCR-UNISUAM foi então instalado em 2015, logo após a recomendação CAPES, conforme [Portaria n° 919, publicada no D.O.U. de 18/8/2016, Seção 1, Pág. 13](http://pesquisa.in.gov.br/imprensa/jsp/visualiza/index.jsp?data=19/08/2016&jornal=1&pagina=13&totalArquivos=256).
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Pré-2010**
-
-A valorização da pesquisa científica no meio acadêmico e a busca constante pela excelência na formação docente são ambas características da UNISUAM, evidenciadas a partir do Plano de Desenvolvimento Institucional (PDI) 2003-2007 quando, com recursos próprios, criou o Programa Institucional de Bolsas de Iniciação Científica (PIBIC). A partir deste PDI, a UNISUAM passa a atribuir carga horária remunerada para que seus docentes exerçam atividades de pesquisa científica. A partir do PDI 2003-2007, a UNISUAM iniciou a contratação de docentes titulados (doutores) com o objetivo de instituir a Pós-Graduação Stricto Sensu na área de Ciências da Reabilitação. A atuação conjunta do grupo de pesquisa da UNISUAM iniciou-se com o estudo dos documentos da Área 21, seguida da definição criteriosa tanto da AC quanto das respectivas LP, de modo a nortear os PP e a respectiva produção intelectual. Este processo culminou na certificação do [Grupo de Pesquisa em Fisioterapia](http://dgp.cnpq.br/dgp/espelhogrupo/6275564297217717) da UNISUAM no DGP-CNPq em 2005 , substituído a partir de 2017 por novos grupos.
-
-<br>
-
-No período de 2005 a 2009, em consonância com o PDI 2008-2012, o grupo de pesquisa foi progressivamente ampliado e fortalecido; participavam do grupo 10 docentes, capazes de captar recursos para seus projetos via editais e de publicar seus resultados em periódicos científicos. Ao todo, foram contemplados 4 projetos em editais de agências regionais de fomento à pesquisa (Fundação de Amparo à Pesquisa do Estado do Rio de Janeiro – FAPERJ), sendo 3 editais de Auxílio à Pesquisa e 1 edital temático em “Apoio à Construção da Cidadania da Pessoa com Deficiência”, somando aproximadamente R$170.000,00. A produção científica da UNISUAM foi impulsionada, mostrando em 2009 ainda como Grupo de Pesquisa, já com 3 artigos publicados indexados somente no PubMed. A participação dos alunos da graduação com bolsas do PIBIC foi decisiva para o desenvolvimento das pesquisas nessa etapa. Visando promover e aprimorar os aspectos éticos da pesquisa, os docentes do Grupo de Pesquisa em Fisioterapia organizaram o [Comitê de Ética em Pesquisa (CEP)](https://www.unisuam.edu.br/pesquisa-extensao-e-inova/pesquisa-e-inovacao) da IES, que foi aprovado pelo Comissão Nacional de Ética em Pesquisa (CONEP) pela Carta nº. 341 CONEP/CNS/MS de 10/04/2006. Desde sua criação, os docentes do Grupo de Pesquisa fazem parte deste comitê nas funções de coordenação, coordenação adjunta e/ou de membros efetivos.
-
-<br>
-
-A sequência desses fatos, somada ao total apoio institucional e ao desenvolvimento técnico-científico do grupo, resultou na elaboração da Proposta de Curso Novo de Mestrado Acadêmico em Ciências da Reabilitação. A proposta de curso, submetida em meados de 2009, foi aprovada após primeira avaliação. O Curso de Mestrado Acadêmico do Programa de Pós-Graduação em Ciências da Reabilitação da UNISUAM (PPGCR-UNISUAM) foi então instalado em 2010, logo após a recomendação da Coordenação de Aperfeiçoamento de Pessoal de Nível Superior (CAPES), com conceito 3, conforme [Portaria n° 1045, publicada no D.O.U. de 19/8/2010, Seção 1, Pág. 10](http://pesquisa.in.gov.br/imprensa/jsp/visualiza/index.jsp?data=19/08/2010&jornal=1&pagina=10&totalArquivos=136). O pioneirismo da UNISUAM na Pós-Graduação em Ciências da Reabilitação revitaliza então o mesmo ideal de 1979 com a absorção do curso de graduação em Fisioterapia no RJ.
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
+# display each sheet in a tab
+for (i in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('#### **', abas[i], '**'))
+  cat('\n\n<!-- -->\n\n')
+  periodo.raw <-
+    read_excel("PPG/Histórico.xlsx",
+               sheet = abas[i],
+               col_types = c("text"))
+  
+  # replace the link by a tag
+  for (i in 1:dim(periodo.raw)[1]) {
+    periodo.raw[i, 3] <-
+      paste("[↗️](", periodo.raw[i, 3], '){target="_blank"}', sep = "")
+  }
+  
+  # print table
+  print(
+    kable(periodo.raw, align = c("l", rep(
+      "c", ncol(periodo.raw) - 2
+    ), "r")) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+  
+  # print end of tab rows
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+```
 
 ## **Área de concentração** {.tabset #area-concentracao}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
-
-### **Descrição**
-
-O PPGCR-UNISUAM organiza sua ÁREA DE CONCENTRAÇÃO (AC), LINHAS DE PESQUISA (LP) e PROJETOS DE PESQUISA (PP) de acordo com o princípio geral de que a reabilitação está centrada no binômio avaliação-intervenção, em todas as fases do processo saúde-doença, em diversas populações sob o modelo biopsicossocial. Atendem-se assim às demandas por investigação em níveis de atenção primária (prevenção e promoção da saúde), secundária (diagnóstico precoce e intervenção imediata) e terciária (reabilitação) nas diversas especialidades da Fisioterapia em particular área e da saúde em geral.
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **Atual**
 
@@ -219,13 +177,12 @@ print(
     position = "center"
   )
 )
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **Inativas**
 
@@ -252,26 +209,17 @@ if (dim(areas.inativas)[1] != 0) {
 } else {
   cat("*Sem dados para exibir*")
 }
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ## **Linhas de pesquisa** {.tabset #linha-pesquisa}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
-
-### **Descrição**
-
-A partir desta AC são derivadas as 3 LP vigentes: ABORDAGEM TERAPÊUTICA EM REABILITAÇÃO, AVALIAÇÃO FUNCIONAL EM REABILITAÇÃO e REABILITAÇÃO NO ESPORTE E NO ESPORTE ADAPTADO. Mediante a expansão do corpo docente e Laboratorios, com consequente aumento da diversidade dos PP, uma LP (AVALIAÇÃO FUNCIONAL E ATIVIDADE FÍSICA) foi encerrada e outra (AVALIAÇÃO E INTERVENÇÃO NO ESPORTE ADAPTADO) foi renomeada e redefinida em sua descrição. A atual organização das LP reforça a interdisciplinaridade e transdisciplinaridade dos PP do PPGCR-UNISUAM, caracterizado por aliar áreas específicas do conhecimento de seus docentes e discentes para responder às questões que uma única área ou especialidade não responderia adequadamente. As LP e suas respectivas descrições são revisadas continuamente, sendo a última atualização em 2017, a partir das sugestões do parecer da Comissão de Avaliação Quadrienal 2017.
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **Atual**
 
@@ -293,13 +241,12 @@ print(
     position = "center"
   )
 )
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **Inativas**
 
@@ -326,26 +273,17 @@ if (dim(linhas.inativas)[1] != 0) {
 } else {
   cat("*Sem dados para exibir*")
 }
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ## **Projetos de pesquisa** {.tabset #projeto-pesquisa}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
-
-### **Descrição**
-
-Os docentes vinculados ao PPGCR são orientados a coordenar até 2 PP institucionais (“guarda-chuva”) por LP, sendo cada PP vinculado a uma LP diferente. Adicionalmente, os docentes são estimulados a colaborar nos projetos das diferentes LP, de modo que a transdisciplinaridade gere aspectos inovadores para as Ciências da Reabilitação. Desse modo, PP anteriores a 2017 têm sido concluídos e substituídos por novos projetos institucionais, promovendo assim uma melhor distribuição dos PP e respectivas produções entre as LP. Considerando-se a interação de fatores tais como as áreas de formação e atuação dos docentes, a temática dos PP, e sua aderência aos grupos de pesquisa, evidencia-se certa assimetria na distribuição dos PP entre as LP ativas.
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **2024-2021** {.tabset}
 
@@ -415,13 +353,12 @@ if(dim(projetos.posdoc)[1] != 0){
 plot(0, type = 'n', axes = FALSE)
 legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 0.7)
 title("Projetos de Pesquisa", outer = TRUE)
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 #### **Tabela**
 
@@ -490,13 +427,12 @@ cat("  \n")
 # plot(0, type = 'n', axes = FALSE)
 # legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 1)
 # title("Projetos de Pesquisa", outer = TRUE)
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 #### **Lista**
 
@@ -529,13 +465,12 @@ colnames(table.projetos) <- c("Nome do Membro Responsável", "Nome do Projeto de
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.projetos, title = "Projetos de Pesquisa 2021-2024")
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **2020-2017** {.tabset}
 
@@ -605,13 +540,12 @@ if(dim(projetos.posdoc)[1] != 0){
 plot(0, type = 'n', axes = FALSE)
 legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 0.7)
 title("Projetos de Pesquisa", outer = TRUE)
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 #### **Tabela**
 
@@ -680,13 +614,12 @@ cat("  \n")
 # plot(0, type = 'n', axes = FALSE)
 # legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 1)
 # title("Projetos de Pesquisa", outer = TRUE)
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 #### **Lista**
 
@@ -719,13 +652,12 @@ colnames(table.projetos) <- c("Nome do Membro Responsável", "Nome do Projeto de
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.projetos, title = "Projetos de Pesquisa 2020-2017")
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **2016-2013** {.tabset}
 
@@ -795,13 +727,12 @@ if(dim(projetos.posdoc)[1] != 0){
 plot(0, type = 'n', axes = FALSE)
 legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 0.7)
 title("Projetos de Pesquisa", outer = TRUE)
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 #### **Tabela**
 
@@ -870,13 +801,12 @@ cat("  \n")
 # plot(0, type = 'n', axes = FALSE)
 # legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 1)
 # title("Projetos de Pesquisa", outer = TRUE)
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 #### **Lista**
 
@@ -909,13 +839,12 @@ colnames(table.projetos) <- c("Nome do Membro Responsável", "Nome do Projeto de
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.projetos, title = "Projetos de Pesquisa 2013-2016")
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **2012-2010** {.tabset}
 
@@ -984,13 +913,12 @@ if(dim(projetos.posdoc)[1] != 0){
 plot(0, type = 'n', axes = FALSE)
 legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 0.7)
 title("Projetos de Pesquisa", outer = TRUE)
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 #### **Tabela**
 
@@ -1058,13 +986,12 @@ cat("  \n")
 # plot(0, type = 'n', axes = FALSE)
 # legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 1)
 # title("Projetos de Pesquisa", outer = TRUE)
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 #### **Lista**
 
@@ -1097,13 +1024,12 @@ colnames(table.projetos) <- c("Nome do Membro Responsável", "Nome do Projeto de
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.projetos, title = "Projetos de Pesquisa 2010-2012")
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ## **Agendas de pesquisa** {.tabset #agenda-pesquisa}
 
@@ -1214,13 +1140,10 @@ cat('\n\n')
 cat(
   "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
 )
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **2020-2017**
 
@@ -1281,13 +1204,9 @@ cat('\n\n')
 cat(
   "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
 )
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **2016-2013**
 
@@ -1348,13 +1267,9 @@ cat('\n\n')
 cat(
   "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
 )
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **2012-2010**
 
@@ -1415,13 +1330,9 @@ cat('\n\n')
 cat(
   "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
 )
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **Pré-2010**
 
@@ -1481,13 +1392,9 @@ cat('\n\n')
 cat(
   "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
 )
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ## **Bolsas de estudo** {.tabset #bolsas}
 
@@ -1544,11 +1451,9 @@ turmas <- turmas[order(turmas$Publicação, decreasing = TRUE), ]
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(turmas, title = "Portarias Bolsas CAPES")
+
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **Agradecimento**
 
@@ -1579,13 +1484,12 @@ cursos.raw <- read_excel("PPG/Dados Cadastrais.xlsx", sheet = "Cursos", col_type
 
 # print tables
 print(kable(cursos.raw, align = c("l", rep("c", ncol(cursos.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **Objetivos**
 
@@ -1607,13 +1511,12 @@ creditos.raw <- read_excel("PPG/Dados Cadastrais.xlsx", sheet = "Créditos", col
 
 # print tables
 print(kable(creditos.raw, align = c("l", rep("c", ncol(creditos.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **Calculadora de créditos** {#calculadora-creditos}
 
@@ -1927,22 +1830,6 @@ if (length(disciplinas.msc) != 0) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
-### **Descrição**
-
-A estrutura curricular do Programa de Pós-graduação em Ciências das Reabilitação foi elaborada visando a efetivação do perfil do egresso dos cursos de Mestrado e Doutorado Acadêmicos. As disciplinas da estrutura curricular estão organizadas simultaneamente em Eixos, Área de Concentração/Linhas de Pesquisa e Caráter.
-
-<br>
-
-O Eixo Básico compreende as disciplinas consideradas fundamentais para o pensamento científico e a formulação de problemas de pesquisa. O Eixo Científico inclui disciplinas que oferecem recursos para elaboração de projetos de pesquisa e divulgação dos seus resultados, seja na forma de manuscritos e/ou apresentações de trabalhos. O Eixo Pedagógico agrega as disciplinas que enfatizam as habilidade e competências para atuação no nível superior (ensino  e pesquisa) em níveis de graduação e pós-graduação. O Eixo Inovador compreende as disciplinas com foco na utilização e desenvolvimento de recursos tecnológicos em reabilitação bem como a discussão de tópicos inovadores em pesquisa. Considerando que esses três Eixos apresentam caráter independente do tema da pesquisa, as suas disciplinas são consideradas como Transversais. Nestes eixos, o Caráter Obrigatório ou Eletivo das disciplinas é determinando considerando-se as diferenças entre os perfis do egresso dos cursos de Mestrado e Doutorado.
-
-<br>
-
-O Eixo Técnico agrupa as disciplinas de caráter especialista, com ementas voltadas para temas de pesquisa mais específicos. Assim, as disciplinas deste Eixo são subdivididas de acordo com a única Área de Concentração do Programa e suas Linhas de Pesquisa: Avaliação Funcional em Reabilitação; Abordagem Terapêutica em Reabilitação; e Reabilitação no Esporte e no Esporte Adaptado. Pelo mesmo argumento, são todas de Caráter Eletivo.
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
 ### **Síntese**
 
 ```{r estrutura-academica-atual-grafico, eval = has.sucupira}
@@ -2066,13 +1953,12 @@ if(!is.null(table)) {
 } else {
   cat("*Sem dados para exibir*")
 }
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **Ementas**
 
@@ -2090,11 +1976,9 @@ cat(
   '/preview" style=\"width:100%; height:500px; border:0;\"></iframe>',
   sep = ""
 )
+
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **Disciplinas**
 
@@ -2139,13 +2023,12 @@ colnames(table) <- c("Disciplina", "Obrigatória (MA)", "CR (MA)", "CH (MA)", "O
 
 # print tables
 print(kable(table, align = c("l", rep("c", ncol(table)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **Bibliografia**
 
@@ -2209,13 +2092,12 @@ colnames(table) <- c("Disciplina", "Obrigatória (MA)", "CR (MA)", "CH (MA)", "F
 
 # print tables
 print(kable(unique(table), row.names = FALSE, align = c("l", rep("c", ncol(table)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ## **Turmas** {.tabset #turmas}
 
@@ -2270,16 +2152,11 @@ legend(
   box.lty = 0
 )
 
-# line break
-cat("  \n")
-cat("  \n")
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **Docentes**
 
@@ -2430,13 +2307,12 @@ if (dim(disciplinas.raw)[1] != 0) {
     collapse = "; "
   ))
 }
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **2024-2021**
 
@@ -2531,13 +2407,12 @@ if (dim(turmas.raw)[1] != 0) {
     collapse = "; "
   ))
 }
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **2020-2017**
 
@@ -2612,13 +2487,12 @@ if (dim(turmas.raw)[1] != 0) {
     collapse = "; "
   ))
 }
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **2016-2013**
 
@@ -2693,13 +2567,12 @@ if (dim(turmas.raw)[1] != 0) {
     collapse = "; "
   ))
 }
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ### **2012-2010**
 
@@ -2774,13 +2647,12 @@ if (dim(turmas.raw)[1] != 0) {
     collapse = "; "
   ))
 }
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ## **Calendários** {#calendarios}
 

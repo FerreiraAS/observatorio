@@ -139,13 +139,6 @@ has.destaques <-
   )
 ```
 
-```{r try-descricao}
-has.descricao <-
-  !is.error(try(read.delim("PPG/Descrição.txt"),
-                silent = TRUE)
-  )
-```
-
 ```{r try-discentes}
 has.discentes <-
   !is.error(try(read_excel("PPG/Discentes.xlsx", sheet = 1),
@@ -177,6 +170,13 @@ has.financiadores <-
 ```{r try-grupos-pesquisa}
 has.grupos.pesquisa <-
   !is.error(try(read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-historico}
+has.historico <-
+  !is.error(try(read_excel("PPG/Histórico.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
