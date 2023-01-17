@@ -134,7 +134,7 @@ for (i in 1:length(abas)) {
   # print table
   print(
     kable(historico.raw, align = c("l", rep(
-      "c", ncol(periodo.raw) - 2
+      "c", ncol(historico.raw) - 2
     ), "r")) %>% kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
@@ -2798,172 +2798,35 @@ for (i in 1:dim(labs)[1]) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
-<br>
+```{r programa-convenios, eval = has.convenios}
+# initialize all sheets
+abas <- excel_sheets("PPG/Convênios.xlsx")
 
-### **CEFAN - Centro de Educação Física Almirante Adalberto Nunes da Marinha do Brasil**
-
-<br>
-
-```{r documentos-convenios-cefan, eval = has.convenios}
-# read separate sheets
-vigentes.raw <-
-  read_excel("PPG/Convênios.xlsx",
-             sheet = "CEFAN",
-             col_types = c("text"))
-
-# replace the link by a tag
-for (i in 1:dim(vigentes.raw)[1]) {
-  vigentes.raw[i, 3] <-
-    paste("[↗️](", vigentes.raw[i, 3], '){target="_blank"}', sep = "")
-}
-
-# print table
-print(
-  kable(vigentes.raw, align = c("l", rep(
-    "c", ncol(vigentes.raw) - 2
-  ), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
+# display each sheet in a tab
+for (i in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('### **', abas[i], '**'))
+  cat('\n\n<!-- -->\n\n')
+  convenios.raw <-
+    read_excel("PPG/Convênios.xlsx",
+               sheet = abas[i],
+               col_types = c("text"))
+  
+  # print table
+  print(
+    kable(convenios.raw, align = c("l", rep(
+      "c", ncol(convenios.raw) - 2
+    ), "r")) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
   )
-)
-```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **APB - Academia Paralímpica Brasileira**
-
-<br>
-
-```{r documentos-convenios-apb, eval = has.convenios}
-# read separate sheets
-vigentes.raw <-
-  read_excel("PPG/Convênios.xlsx",
-             sheet = "APB",
-             col_types = c("text"))
-
-# replace the link by a tag
-for (i in 1:dim(vigentes.raw)[1]) {
-  vigentes.raw[i, 3] <-
-    paste("[↗️](", vigentes.raw[i, 3], '){target="_blank"}', sep = "")
+  
+  # print end of tab rows
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
-
-# print table
-print(
-  kable(vigentes.raw, align = c("l", rep(
-    "c", ncol(vigentes.raw) - 2
-  ), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **UFRJ - Universidade Federal do Rio de Janeiro**
-
-<br>
-
-```{r documentos-convenios-ufrj, eval = has.convenios}
-# read separate sheets
-vigentes.raw <-
-  read_excel("PPG/Convênios.xlsx",
-             sheet = "UFRJ",
-             col_types = c("text"))
-
-# replace the link by a tag
-for (i in 1:dim(vigentes.raw)[1]) {
-  vigentes.raw[i, 3] <-
-    paste("[↗️](", vigentes.raw[i, 3], '){target="_blank"}', sep = "")
-}
-
-# print table
-print(
-  kable(vigentes.raw, align = c("l", rep(
-    "c", ncol(vigentes.raw) - 2
-  ), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
-```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **UFMG - Universidade Federal de Minas Gerais**
-
-<br>
-
-```{r documentos-convenios-ufmg, eval = has.convenios}
-# read separate sheets
-vigentes.raw <-
-  read_excel("PPG/Convênios.xlsx",
-             sheet = "UFMG",
-             col_types = c("text"))
-
-# replace the link by a tag
-for (i in 1:dim(vigentes.raw)[1]) {
-  vigentes.raw[i, 3] <-
-    paste("[↗️](", vigentes.raw[i, 3], '){target="_blank"}', sep = "")
-}
-
-# print table
-print(
-  kable(vigentes.raw, align = c("l", rep(
-    "c", ncol(vigentes.raw) - 2
-  ), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
-```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **PUC-RJ Pontifícia Universidade Católica, Rio de Janeiro**
-
-<br>
-
-```{r documentos-convenios-puc-rj, eval = has.convenios}
-# read separate sheets
-vigentes.raw <-
-  read_excel("PPG/Convênios.xlsx",
-             sheet = "PUC-RJ",
-             col_types = c("text"))
-
-# replace the link by a tag
-for (i in 1:dim(vigentes.raw)[1]) {
-  vigentes.raw[i, 3] <-
-    paste("[↗️](", vigentes.raw[i, 3], '){target="_blank"}', sep = "")
-}
-
-# print table
-print(
-  kable(vigentes.raw, align = c("l", rep(
-    "c", ncol(vigentes.raw) - 2
-  ), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
-```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 ## **Cooperação entre instituições** {#cooperacao}
 
