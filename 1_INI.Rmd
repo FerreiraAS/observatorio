@@ -45,6 +45,12 @@ source(file.path("Scripts", "webqualis.R"), local = knitr::knit_global())
 ```
 
 <!--check available files in PPG folder-->
+```{r try-agendas-pesquisa}
+has.agendas.pesquisa <-
+  !is.error(try(read_excel("PPG/Agendas de Pesquisa.xlsx", sheet = 1),
+                silent = TRUE))
+```
+
 ```{r try-apresentacao}
 has.apresentacao <-
   !is.error(try(read_excel("PPG/Apresentação.xlsx", sheet = 1),

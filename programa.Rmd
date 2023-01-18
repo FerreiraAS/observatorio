@@ -95,6 +95,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 ### **Sucupira**
 
 ```{r apresentacao, eval = has.apresentacao}
@@ -111,6 +113,8 @@ cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
+
+<br>
 
 ## **Breve histórico** {.tabset #breve-historico}
 
@@ -133,9 +137,7 @@ for (i in 1:length(abas)) {
   
   # print table
   print(
-    kable(historico.raw, align = c("l", rep(
-      "c", ncol(historico.raw) - 2
-    ), "r")) %>% kable_styling(
+    kable(historico.raw, align = "c") %>% kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
@@ -146,6 +148,8 @@ for (i in 1:length(abas)) {
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
+
+<br>
 
 ## **Área de concentração** {.tabset #area-concentracao}
 
@@ -177,6 +181,8 @@ cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
+
+<br>
 
 ### **Inativas**
 
@@ -210,6 +216,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 ## **Linhas de pesquisa** {.tabset #linha-pesquisa}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -242,6 +250,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 ### **Inativas**
 
 ```{r linhas-de-pesquisa-inativas, eval = has.dados.cadastrais}
@@ -273,6 +283,8 @@ cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
+
+<br>
 
 ## **Projetos de pesquisa** {.tabset #projeto-pesquisa}
 
@@ -354,6 +366,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 #### **Tabela**
 
 ```{r projetos-de-pesquisa-2024-tabela, eval = has.sucupira}
@@ -428,6 +442,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 #### **Lista**
 
 <br>
@@ -465,6 +481,8 @@ cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
+
+<br>
 
 ### **2020-2017** {.tabset}
 
@@ -541,6 +559,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 #### **Tabela**
 
 ```{r projetos-de-pesquisa-2020-tabela, eval = has.sucupira}
@@ -615,6 +635,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 #### **Lista**
 
 <br>
@@ -652,6 +674,8 @@ cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
+
+<br>
 
 ### **2016-2013** {.tabset}
 
@@ -728,6 +752,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 #### **Tabela**
 
 ```{r projetos-de-pesquisa-2016-tabela, eval = has.sucupira}
@@ -802,6 +828,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 #### **Lista**
 
 <br>
@@ -839,6 +867,8 @@ cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
+
+<br>
 
 ### **2012-2010** {.tabset}
 
@@ -914,6 +944,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 #### **Tabela**
 
 ```{r projetos-de-pesquisa-concluidos-2012-tabela, eval = has.sucupira}
@@ -987,6 +1019,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 #### **Lista**
 
 <br>
@@ -1025,48 +1059,40 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
-## **Agendas de pesquisa** {.tabset #agenda-pesquisa}
+<br>
+
+## **Agendas de pesquisa** {.tabset #agendas-pesquisa}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
-### **AEPSES/RJ**
+```{r agendas-pesquisa, eval = has.agendas.pesquisa}
+# initialize all sheets
+abas <- excel_sheets("PPG/Agendas de Pesquisa.xlsx")
 
-<iframe src="https://www.saude.rj.gov.br/comum/code/MostrarArquivo.php?C=NTIyNjQ%2C" style="width:100%; height:500px; border:0;"></iframe>
-
-*Fontes:* [**Secretaria de Estado de Saúde - RJ**](https://www.saude.rj.gov.br/comum/code/MostrarArquivo.php?C=NTIyNjQ%2C)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **MS/BR**
-
-<iframe src="https://bvsms.saude.gov.br/bvs/publicacoes/agenda_prioridades_pesquisa_ms.pdf" style="width:100%; height:500px; border:0;"></iframe>
-
-*Fontes:* [**Ministério da Saúde**](https://bvsms.saude.gov.br/bvs/publicacoes/agenda_prioridades_pesquisa_ms.pdf)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **MCTI/BR**
-
-<iframe src="https://www.in.gov.br/en/web/dou/-/portaria-mcti-n-5.109-de-16-de-agosto-de-2021-338589059" style="width:100%; height:500px; border:0;"></iframe>
-
-*Fontes:* [**Ministério da Ciência, Tecnologia e Inovação**](https://www.in.gov.br/en/web/dou/-/portaria-mcti-n-5.109-de-16-de-agosto-de-2021-338589059)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **ONU**
-
-<iframe src="https://sustainabledevelopment.un.org/content/documents/21252030%20Agenda%20for%20Sustainable%20Development%20web.pdf" style="width:100%; height:500px; border:0;"></iframe>
-
-*Fontes:* [**Organização das Nações Unidas**](https://sustainabledevelopment.un.org/content/documents/21252030%20Agenda%20for%20Sustainable%20Development%20web.pdf)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+# display each sheet in a tab
+for (i in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('### **', abas[i], '**'))
+  cat('\n\n<!-- -->\n\n')
+  agendas <-
+    read_excel("PPG/Agendas de Pesquisa.xlsx",
+               sheet = abas[i],
+               col_types = c("text"))
+  
+  cat(
+    paste(
+      '<iframe src="',
+      agendas[1],
+      '" style="width:100%; height:600px; border:0;"></iframe>',
+      sep = ""
+    )
+  )
+  
+  # print end of tab rows
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+```
 
 <br>
 
@@ -1138,6 +1164,7 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
 
 ### **2020-2017**
 
@@ -1202,6 +1229,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 ### **2016-2013**
 
 ```{r historico-financiadores-2016, eval = has.financiadores}
@@ -1264,6 +1293,8 @@ cat(
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
+
+<br>
 
 ### **2012-2010**
 
@@ -1328,6 +1359,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 ### **Pré-2010**
 
 ```{r historico-financiadores-2010, eval = has.financiadores}
@@ -1390,6 +1423,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 ## **Bolsas de estudo** {.tabset #bolsas}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -1449,6 +1484,8 @@ create_dt(turmas, title = "Portarias Bolsas CAPES")
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 ### **Agradecimento**
 
 <br>
@@ -1485,6 +1522,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 ### **Objetivos**
 
 O curso de Mestrado Acadêmico em Ciências da Reabilitação objetiva a qualificação do pós-graduando para docência em nível superior e pesquisa por meio do aprimoramento do conhecimento acadêmico e profissional. O curso proporciona ao aluno bases técnico-científicas para a pesquisa e o ensino, tornando-o apto a exercer as atividades da docente de nível universitário e inseri-lo em atividades de pesquisa.
@@ -1511,6 +1550,8 @@ cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
+
+<br>
 
 ### **Calculadora de créditos** {#calculadora-creditos}
 
@@ -1594,11 +1635,12 @@ if (length(disciplinas.dsc) != 0) {
   }
   cat('</table></form>')
 }
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -1663,11 +1705,12 @@ if (length(disciplinas.dsc) != 0) {
   }
   cat('</table></form>')
 }
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -1742,11 +1785,12 @@ if (length(disciplinas.msc) != 0) {
   }
   cat('</table></form>')
 }
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -1811,11 +1855,12 @@ if (length(disciplinas.msc) != 0) {
   }
   cat('</table></form>')
 }
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -1954,6 +1999,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 ### **Ementas**
 
 ```{r ementas, eval = has.bibliografia}
@@ -1973,6 +2020,8 @@ cat(
 
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
+
+<br>
 
 ### **Disciplinas**
 
@@ -2024,6 +2073,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 ### **Bibliografia**
 
 ```{r bibliografia, eval = has.bibliografia}
@@ -2032,9 +2083,9 @@ bibliografia.raw <- read_excel("PPG/Bibliografia.xlsx", sheet = "Bibliografia", 
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(bibliografia.raw, title = "Bibliografia")
-```
 
-<br>
+cat('<br>')
+```
 
 ```{r bibliografia-ano, eval = has.bibliografia}
 # read separate sheets
@@ -2048,9 +2099,10 @@ par(oma=c(2, 0.1, 2, 0.1), mar = c(5, 4, 2, 2))
 # generate plot of conceitos per year
 hist(bib.ano, xlab = "Ano de publicação", ylab = "Referências (N)", col = brewer.pal(n = 3, name = "Set3")[1], main = NULL)
 title("Referências bibliográficas, por ano de publicação", outer = TRUE)
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
@@ -2092,6 +2144,8 @@ cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
+
+<br>
 
 ## **Turmas** {.tabset #turmas}
 
@@ -2151,6 +2205,8 @@ cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
+
+<br>
 
 ### **Docentes**
 
@@ -2308,6 +2364,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 ### **2024-2021**
 
 ```{r turmas-2024, eval = has.sucupira}
@@ -2408,6 +2466,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 ### **2020-2017**
 
 ```{r turmas-2020, eval = has.sucupira}
@@ -2487,6 +2547,8 @@ cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
+
+<br>
 
 ### **2016-2013**
 
@@ -2568,6 +2630,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 ### **2012-2010**
 
 ```{r turmas-2012, eval = has.sucupira}
@@ -2648,6 +2712,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 ## **Calendários** {#calendarios}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -2674,11 +2740,10 @@ turmas <- turmas[order(turmas$Publicação, decreasing = TRUE), ]
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(turmas, title = "Calendários")
+
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -2703,11 +2768,10 @@ turmas <- turmas[order(turmas$Publicação, decreasing = TRUE), ]
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(turmas, title = "Calendários")
+
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -2732,9 +2796,10 @@ print(
     position = "center"
   )
 )
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
@@ -2793,7 +2858,7 @@ for (i in 1:dim(labs)[1]) {
 
 <br>
 
-## **Convênios institucionais** {#convenios}
+## **Convênios institucionais** {.tabset #convenios}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
@@ -2812,10 +2877,16 @@ for (i in 1:length(abas)) {
                sheet = abas[i],
                col_types = c("text"))
   
+  # replace the link by a tag
+  for (i in 1:dim(convenios.raw)[1]) {
+    convenios.raw[i, 3] <-
+      paste("[↗️](", convenios.raw[i, 3], '){target="_blank"}', sep = "")
+  }
+  
   # print table
   print(
-    kable(convenios.raw, align = c("l", rep(
-      "c", ncol(convenios.raw) - 2
+    kable(vigentes.raw, align = c("l", rep(
+      "c", ncol(vigentes.raw) - 2
     ), "r")) %>% kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
@@ -2827,6 +2898,8 @@ for (i in 1:length(abas)) {
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
+
+<br>
 
 ## **Cooperação entre instituições** {#cooperacao}
 
@@ -2863,9 +2936,10 @@ print(
     position = "center"
   )
 )
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
@@ -2897,9 +2971,10 @@ print(
     position = "center"
   )
 )
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
@@ -2933,9 +3008,10 @@ print(
     position = "center"
   )
 )
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
@@ -2992,3 +3068,5 @@ for (j in 1:length(tabs)) {
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
+
+<br>
