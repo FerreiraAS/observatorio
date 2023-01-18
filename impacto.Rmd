@@ -330,21 +330,21 @@ if (dim(bolsistas.tcc)[1] != 0) {
 
 ```{r cep-vigentes, eval = has.cep}
 # read separate sheets
-vigentes.raw <-
+cep.vigentes.raw <-
   read_excel("PPG/CEP.xlsx",
              sheet = "Vigentes",
              col_types = c("text"))
 
 # replace the link by a tag
-for (i in 1:dim(vigentes.raw)[1]) {
-  vigentes.raw[i, 3] <-
-    paste("[↗️](", vigentes.raw[i, 3], '){target="_blank"}', sep = "")
+for (i in 1:dim(cep.vigentes.raw)[1]) {
+  cep.vigentes.raw[i, 3] <-
+    paste("[↗️](", cep.vigentes.raw[i, 3], '){target="_blank"}', sep = "")
 }
 
 # print table
 print(
-  kable(vigentes.raw, align = c("l", rep(
-    "c", ncol(vigentes.raw) - 2
+  kable(cep.vigentes.raw, align = c("l", rep(
+    "c", ncol(cep.vigentes.raw) - 2
   ), "r")) %>% kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
@@ -361,21 +361,21 @@ print(
 
 ```{r cep-revogados, eval = has.cep}
 # read separate sheets
-revogados.raw <-
+cep.revogados.raw <-
   read_excel("PPG/CEP.xlsx",
              sheet = "Revogados",
              col_types = c("text"))
 
 # replace the link by a tag
-for (i in 1:dim(revogados.raw)[1]) {
-  revogados.raw[i, 3] <-
-    paste("[↗️](", revogados.raw[i, 3], '){target="_blank"}', sep = "")
+for (i in 1:dim(cep.revogados.raw)[1]) {
+  cep.revogados.raw[i, 3] <-
+    paste("[↗️](", cep.revogados.raw[i, 3], '){target="_blank"}', sep = "")
 }
 
 # print table
 print(
-  kable(revogados.raw, align = c("l", rep(
-    "c", ncol(revogados.raw) - 2
+  kable(cep.revogados.raw, align = c("l", rep(
+    "c", ncol(cep.revogados.raw) - 2
   ), "r")) %>% kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
