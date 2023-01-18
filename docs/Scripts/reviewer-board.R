@@ -35,29 +35,6 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
     c(paste("Periódicos (", dim(peer.review)[1], ")", sep = ""), "SJR")
   rownames(peer.review) <- c()
   
-  # print table (reviewer name)
-  print(
-    kable(
-      paste0("**", reviewer.name, "** <br><br>"),
-      align = "l",
-      format = "html",
-      escape = FALSE,
-      col.names = NULL
-    ) %>%
-      kable_styling(
-        bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-        full_width = T,
-        position = "center"
-      ) %>%
-      row_spec(
-        1,
-        background = "#2C3E50",
-        bold = TRUE,
-        color = "white"
-      ),
-    row.names = FALSE,
-    col.names = FALSE
-  )
   # print table (reviewed journals)
   print(
     kable(
@@ -77,8 +54,7 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
         bold = TRUE,
         color = "white"
       ),
-    row.names = FALSE,
-    col.names = FALSE
+    row.names = NULL
   )
   cat('<br>')
 }
