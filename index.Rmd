@@ -913,7 +913,7 @@ title(main = "Qualidade da produção (Qualis)",
 legend(
   "topleft",
   legend = rownames(table.2),
-  fill = mycolors,
+  fill = rev(mycolors),
   text.col = "white",
   box.lwd = 0,
   bty = "n",
