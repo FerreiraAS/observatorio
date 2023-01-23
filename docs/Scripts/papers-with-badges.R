@@ -121,13 +121,17 @@ table.with.badges <-
         # add CiteScore
         if (show.CiteScore == TRUE) {
           citescore_id <-
-            as.character(citescore$sourcerecord_id[grep(gsub("-", "", doi_unique$issn[ix]), citescore$issn)])
+            as.character(citescore$sourcerecord_id[grep(gsub("-", "", doi_unique$issn[ix]), citescore$print_issn)])
+          if (is_empty(citescore_id)) {
+            citescore_id <-
+              as.character(citescore$sourcerecord_id[grep(gsub("-", "", doi_unique$issn[ix]), citescore$e_issn)])
+          }
           citescore_value <-
-            citescore$x2021_cite_score[grep(gsub("-", "", doi_unique$issn[ix]), citescore$issn)]
+            citescore$x2021_cite_score[match(citescore_id, citescore$sourcerecord_id)]
           citescore_year <-
-            citescore$last_coverage[grep(gsub("-", "", doi_unique$issn[ix]), citescore$issn)]
+            as.numeric(citescore$last_coverage[match(citescore_id, citescore$sourcerecord_id)]) - 1
           citescore_p <-
-            round(citescore$percentile[grep(gsub("-", "", doi_unique$issn[ix]), citescore$issn)] * 100, 0)
+            round(citescore$percentile[match(citescore_id, citescore$sourcerecord_id)] * 100, 0)
           cat(
             "<a href=\"https://www.scopus.com/sourceid/",
             citescore_id,
@@ -225,11 +229,11 @@ table.with.badges <-
           tryCatch(
             expr = {
               my_doi_oa <-
-                roadoi::oadoi_fetch(dois = doi_unique$doi[ix], email = "cienciasdareabilitacao@souunisuam.com.br")
+                roadoi::oadoi_fetch(dois = my_dois_works$doi[ix], email = "cienciasdareabilitacao@souunisuam.com.br")
               if (my_doi_oa$is_oa) {
                 cat(
                   "<a style=\"display: inline-block; float: left; margin:0.0em 0.2em 0.0em 0.0em; padding:0.0em 0.2em 0.0em 0.0em;\" href=\"",
-                  doi_unique$url[ix],
+                  my_dois_works$url[ix],
                   "\" target=\"_blank\">",
                   "<img height=\"18px;\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/256px-Open_Access_logo_PLoS_white.svg.png\">",
                   "</a>",
@@ -312,14 +316,28 @@ table.with.badges <-
         
         # add CiteScore
         if (show.CiteScore == TRUE) {
-          citescore_id <-
-            as.character(citescore$sourcerecord_id[grep(gsub("-", "", my_dois_works$issn[ix]), citescore$issn)])
+          if (is.na(my_dois_works$issn[ix])) {
+            citescore_id <- character(0)
+          } else {
+            if (str_length(my_dois_works$issn[ix]) == 9) {
+              citescore_id <-
+                as.character(citescore$sourcerecord_id[grep(gsub("-", "", my_dois_works$issn[ix]), citescore$print_issn)])
+            }
+            if (str_length(my_dois_works$issn[ix]) == 19) {
+              citescore_id <-
+                as.character(citescore$sourcerecord_id[grep(gsub("-", "", substr(my_dois_works$issn[ix], 1, 9)), citescore$print_issn)])
+              if (is_empty(citescore_id)) {
+                citescore_id <-
+                  as.character(citescore$sourcerecord_id[grep(gsub("-", "", substr(my_dois_works$issn[ix], 11, 19)), citescore$print_issn)])
+              }
+            }
+          }
           citescore_value <-
-            citescore$x2021_cite_score[grep(gsub("-", "", my_dois_works$issn[ix]), citescore$issn)]
+            citescore$x2021_cite_score[match(citescore_id, citescore$sourcerecord_id)]
           citescore_year <-
-            citescore$last_coverage[grep(gsub("-", "", my_dois_works$issn[ix]), citescore$issn)]
+            as.numeric(citescore$last_coverage[match(citescore_id, citescore$sourcerecord_id)]) - 1
           citescore_p <-
-            round(citescore$percentile[grep(gsub("-", "", my_dois_works$issn[ix]), citescore$issn)] * 100, 0)
+            round(citescore$percentile[match(citescore_id, citescore$sourcerecord_id)] * 100, 0)
           cat(
             "<a href=\"https://www.scopus.com/sourceid/",
             citescore_id,
