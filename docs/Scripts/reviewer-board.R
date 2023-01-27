@@ -17,7 +17,7 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
   for (i in 1:length(issn)) {
     SJR.i <-
       scimago[grep(gsub("-", "", substr(issn[i], 1, 9)), scimago$Issn), 6]
-    SJR <- c(SJR, ifelse(length(SJR.i) != 0, SJR.i, "-"))
+    SJR <- c(SJR, ifelse(length(SJR.i) != 0, SJR.i, ""))
   }
   
   # list journals
