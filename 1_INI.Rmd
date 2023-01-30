@@ -224,37 +224,39 @@ has.premios <-
 
 ```{r try-producao}
 has.artigos.completos <-
-  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.completos"), silent = TRUE)
-  )
+  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.completos"),
+                silent = TRUE))
 
 has.artigos.resumos <-
-  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.resumos"), silent = TRUE)
-  )
+  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.resumos"), silent = TRUE))
 
 has.preprints <-
-  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.preprints"), silent = TRUE)
-  )
+  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.preprints"),
+                silent = TRUE))
 
 has.capitulos <-
-  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.livros"), silent = TRUE)
-  )
+  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.livros"), silent = TRUE))
 
 has.eventos <-
-  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.eventos"), silent = TRUE)
-  )
+  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.eventos"), silent = TRUE))
 
 has.producao <-
-  any(has.artigos.completos, has.artigos.resumos, has.preprints, has.eventos)
+  any(has.artigos.completos,
+      has.artigos.resumos,
+      has.preprints,
+      has.eventos)
 ```
 
 ```{r try-repositorios}
 has.repositorios.sede <-
   !is.error(try(read_excel("PPG/Repositórios.xlsx", sheet =  "Sede"),
-                silent = TRUE))
+                silent = TRUE)
+  )
 
 has.repositorios.cooperacao <-
   !is.error(try(read_excel("PPG/Repositórios.xlsx", sheet = "Cooperação"),
-                silent = TRUE))
+                silent = TRUE)
+  )
 ```
 
 ```{r try-softwares}

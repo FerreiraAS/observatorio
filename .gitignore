@@ -1,4 +1,14 @@
+# ignore system files
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
+.Rdata
+.httr-oauth
+.DS_Store
+
+# ignore Sucupira files
+Sucupira/
+
+# ignore PPG files
+PPG/

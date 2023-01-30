@@ -11,11 +11,6 @@ include:
   - header.html
   - google-translate.html
   - footer.html
-  - CSS
-  - Metrics
-  - PPG
-  - Scripts
-  - Sucupira
 search: true
 navbar:
   left:
