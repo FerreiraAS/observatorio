@@ -1477,7 +1477,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <br>
 
 <object data="https://www.gov.br/capes/pt-br/centrais-de-conteudo/22102018ModeloTermoCompromissoPROSUP.pdf" type="application/pdf" style="width:100%; height:600px; border:0;">
-        <div>No online PDF viewer installed</div>
+<div>No online PDF viewer installed</div>
 </object>
 
 <br>
@@ -1571,7 +1571,7 @@ colnames(dados.do.programa.raw) <-
 #### **Doutorado** {.tabset}
 
 <center>
-  **TOTAL REQUERIDO: ```{r eval = has.dados.cadastrais} dados.do.programa.raw[1,3]``` CR**
+  **TOTAL REQUERIDO: `r ifelse(has.dados.cadastrais, dados.do.programa.raw[1,3], "")` CR**
   <br>
   Créditos OBRIGATÓRIOS marcados: <strong id=msgOBRDSC></strong>
   <br>
@@ -1721,7 +1721,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 #### **Mestrado** {.tabset}
 
 <center>
-  **TOTAL REQUERIDO: ```{r eval = has.dados.cadastrais} dados.do.programa.raw[1,2]``` CR**
+  **TOTAL REQUERIDO: `r ifelse(has.dados.cadastrais, dados.do.programa.raw[1,2], "")` CR**
   <br>
   Créditos OBRIGATÓRIOS marcados: <strong id=msgOBRMSC></strong>
   <br>
@@ -2979,8 +2979,6 @@ print(
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<br>
 
 ### **Concluídos** {.tabset}
 
