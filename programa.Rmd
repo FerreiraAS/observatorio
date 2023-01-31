@@ -446,8 +446,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Lista**
 
-<br>
-
 ```{r projetos-de-pesquisa-2024-lista, eval = has.sucupira}
 # projetos - membros
 sheet <- "Projetos - Membros"
@@ -638,8 +636,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <br>
 
 #### **Lista**
-
-<br>
 
 ```{r projetos-de-pesquisa-2020-lista, eval = has.sucupira}
 # projetos - membros
@@ -832,8 +828,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Lista**
 
-<br>
-
 ```{r projetos-de-pesquisa-2016-lista, eval = has.sucupira}
 # projetos - membros
 sheet <- "Projetos - Membros"
@@ -1022,8 +1016,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <br>
 
 #### **Lista**
-
-<br>
 
 ```{r projetos-de-pesquisa-2012-lista, eval = has.sucupira}
 # projetos - membros
@@ -1513,12 +1505,14 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **Níveis**
 
-```{r cursos, eval = has.dados.cadastrais}
+```{r cursos-niveis, eval = has.dados.cadastrais}
 # read separate sheets
 cursos.raw <- read_excel("PPG/Dados Cadastrais.xlsx", sheet = "Cursos", col_types = c("text"))
 
+cursos <- select(cursos.raw, c("Código", "Curso", "Nível"))
+
 # print tables
-print(kable(cursos.raw, align = c("l", rep("c", ncol(cursos.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+print(kable(cursos, align = c("l", rep("c", ncol(cursos)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -1530,13 +1524,20 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **Objetivos**
 
-O curso de Mestrado Acadêmico em Ciências da Reabilitação objetiva a qualificação do pós-graduando para docência em nível superior e pesquisa por meio do aprimoramento do conhecimento acadêmico e profissional. O curso proporciona ao aluno bases técnico-científicas para a pesquisa e o ensino, tornando-o apto a exercer as atividades da docente de nível universitário e inseri-lo em atividades de pesquisa.
+```{r cursos-objetivos, eval = has.dados.cadastrais}
+# read separate sheets
+cursos.raw <- read_excel("PPG/Dados Cadastrais.xlsx", sheet = "Cursos", col_types = c("text"))
 
-<br>
+cursos <- select(cursos.raw, c("Nível", "Objetivos"))
 
-O curso de Doutorado Acadêmico em Ciências da Reabilitação objetiva a formação de pesquisadores independentes com capacidade de produzir evidências científicas em Ciências da Reabilitação, bem como atuar na docência superior. O curso visa a intensificação do aprendizado e a consolidação do conhecimento científico, visando formar pesquisadores independentes com capacidade de desenvolver projetos de pesquisa e orientar discentes nos diferentes níveis de formação acadêmica.
+# print tables
+print(kable(cursos, align = c("l", rep("c", ncol(cursos)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
@@ -2805,8 +2806,6 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
-<br>
-
 ```{r laboratorios-equipamentos, eval = has.laboratorios}
 # read data
 labs <-
@@ -2905,114 +2904,39 @@ for (i in 1:length(abas)) {
 cat('<br>')
 ```
 
+<br>
+
 ## **Cooperação entre instituições** {#cooperacao}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
-### **Em andamento** {.tabset}
+```{r programa-cooperacao, eval = has.cooperacoes}
+# initialize all sheets
+abas <- excel_sheets("PPG/Cooperações.xlsx")
 
-#### **2019-2023 DINTER**
-
-```{r dinter-andamento, eval = has.cooperacoes}
-# read separate sheets
-interinstitucional.raw <-
-  read_excel("PPG/Cooperações.xlsx",
-             sheet = "Dinter2019",
-             col_types = c("text"))
-
-# replace the link by a tag
-for (i in 1:dim(interinstitucional.raw)[1]) {
-  interinstitucional.raw[i, 3] <-
-    paste("[↗️](",
-          interinstitucional.raw[i, 3],
-          '){target="_blank"}',
-          sep = "")
-}
-
-# print table
-print(
-  kable(interinstitucional.raw, align = c("l", rep(
-    "c", ncol(interinstitucional.raw) - 2
-  ), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
+# display each sheet in a tab
+for (i in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('### **', abas[i], '**'))
+  cat('\n\n<!-- -->\n\n')
+  historico.raw <-
+    read_excel("PPG/Cooperações.xlsx",
+               sheet = abas[i],
+               col_types = c("text"))
+  
+  # print table
+  print(
+    kable(historico.raw, align = "l", col.names = NULL) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
   )
-)
-
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
-#### **2021-2023 PCI**
-
-```{r minter-andamento, eval = has.cooperacoes}
-# read separate sheets
-interinstitucional.raw <-
-  read_excel("PPG/Cooperações.xlsx",
-             sheet = "PCI2021",
-             col_types = c("text"))
-
-# replace the link by a tag
-for (i in 1:dim(interinstitucional.raw)[1]) {
-  interinstitucional.raw[i, 3] <-
-    paste("[↗️](",
-          interinstitucional.raw[i, 3],
-          '){target="_blank"}',
-          sep = "")
+  
+  # print end of tab rows
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
-
-# print table
-print(
-  kable(interinstitucional.raw, align = c("l", rep(
-    "c", ncol(interinstitucional.raw) - 2
-  ), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
-
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-### **Concluídos** {.tabset}
-
-#### **2019-2021 MINTER**
-
-```{r minter-concluido, eval = has.cooperacoes}
-# read separate sheets
-interinstitucional.raw <-
-  read_excel("PPG/Cooperações.xlsx",
-             sheet = "Minter2019",
-             col_types = c("text"))
-
-# replace the link by a tag
-for (i in 1:dim(interinstitucional.raw)[1]) {
-  interinstitucional.raw[i, 3] <-
-    paste("[↗️](",
-          interinstitucional.raw[i, 3],
-          '){target="_blank"}',
-          sep = "")
-}
-
-# print table
-print(
-  kable(interinstitucional.raw, align = c("l", rep(
-    "c", ncol(interinstitucional.raw) - 2
-  ), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
-
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
 <br>
