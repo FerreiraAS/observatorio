@@ -110,6 +110,13 @@ has.cep <-
   )
 ```
 
+```{r try-colegiado}
+has.colegiado <-
+  !is.error(try(read_excel("PPG/Colegiado.xlsx", sheet = 1),
+                silent = TRUE)
+  )
+```
+
 ```{r try-convenios}
 has.convenios <-
   !is.error(try(read_excel("PPG/Convênios.xlsx", sheet = 1),
@@ -124,16 +131,16 @@ has.cooperacoes <-
   )
 ```
 
-```{r try-dados-cadastrais}
-has.dados.cadastrais <-
-  !is.error(try(read_excel("PPG/Dados Cadastrais.xlsx", sheet = 1),
+```{r try-coordenacao}
+has.coordenacao <-
+  !is.error(try(read_excel("PPG/Coordenação.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-colegiado}
-has.colegiado <-
-  !is.error(try(read_excel("PPG/Colegiado.xlsx", sheet = 1),
+```{r try-dados-cadastrais}
+has.dados.cadastrais <-
+  !is.error(try(read_excel("PPG/Dados Cadastrais.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
@@ -152,16 +159,16 @@ has.discentes <-
   )
 ```
 
-```{r try-coordenacao}
-has.coordenacao <-
-  !is.error(try(read_excel("PPG/Coordenação.xlsx", sheet = 1),
+```{r try-donwloads}
+has.downloads <-
+  !is.error(try(read_excel("PPG/Downloads.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-donwloads}
-has.downloads <-
-  !is.error(try(read_excel("PPG/Downloads.xlsx", sheet = 1),
+```{r try-editais}
+has.editais <-
+  !is.error(try(read_excel("PPG/Editais.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
@@ -190,13 +197,6 @@ has.historico <-
 ```{r try-internacionalizacao}
 has.internacionalizacao <-
   !is.error(try(read_excel("PPG/Internacionalização.xlsx", sheet = 1),
-                silent = TRUE)
-  )
-```
-
-```{r try-inventario}
-has.inventario <-
-  !is.error(try(read_excel("PPG/Inventário.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```

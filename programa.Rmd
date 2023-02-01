@@ -2719,7 +2719,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Calendários** {#calendarios}
+## **Calendários** {.tabset #calendarios}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
@@ -2744,7 +2744,7 @@ turmas <- turmas[order(turmas$Publicação, decreasing = TRUE), ]
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(turmas, title = "Calendários")
+create_dt(turmas, title = "Calendários - Sede")
 
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
@@ -2756,7 +2756,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ```{r calendarios-cooperacao, eval = has.calendarios}
 # read separate sheets
-turmas.raw <- read_excel("PPG/Calendários.xlsx", sheet = "Cooperação", col_types = c("text"))
+turmas.raw <- read_excel("PPG/Calendários.xlsx", sheet = "Cooperação Interinstitucional", col_types = c("text"))
 
 Abrir <- matrix(NA, nrow = dim(turmas.raw)[1])
 colnames(Abrir) <- "Abrir"
@@ -2772,7 +2772,68 @@ turmas <- turmas[order(turmas$Publicação, decreasing = TRUE), ]
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(turmas, title = "Calendários")
+create_dt(turmas, title = "Calendários - Cooperação Interinstitucional")
+
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
+## **Editais de processo seletivo** {.tabset #editais}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Sede**
+
+```{r editais-sede, eval = has.calendarios}
+# read separate sheets
+editais.raw <- read_excel("PPG/Editais.xlsx", sheet = "Sede", col_types = c("text"))
+
+Abrir <- matrix(NA, nrow = dim(editais.raw)[1])
+colnames(Abrir) <- "Abrir"
+# add hyperlinks
+for(i in 1:dim(editais.raw)[1]){
+  if(!is.na(editais.raw[i,3])){
+    Abrir[i] <- paste0('<a href="', editais.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>", sep = "")
+  }
+}
+
+editais <- cbind(editais.raw[,-3], Abrir)
+editais <- editais[order(editais$Publicação, decreasing = TRUE), ]
+
+# print table
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(editais, title = "Editais - Sede")
+
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
+### **Cooperação Interinstitucional**
+
+```{r editais-cooperacao, eval = has.calendarios}
+# read separate sheets
+editais.raw <- read_excel("PPG/Editais.xlsx", sheet = "Cooperação Interinstitucional", col_types = c("text"))
+
+Abrir <- matrix(NA, nrow = dim(editais.raw)[1])
+colnames(Abrir) <- "Abrir"
+# add hyperlinks
+for(i in 1:dim(editais.raw)[1]){
+  if(!is.na(editais.raw[i,3])){
+    Abrir[i] <- paste0('<a href="', editais.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>", sep = "")
+  }
+}
+
+editais <- cbind(editais.raw[,-3], Abrir)
+editais <- editais[order(editais$Publicação, decreasing = TRUE), ]
+
+# print table
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(editais, title = "Editais - Cooperação Interinstitucional")
 
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
@@ -2906,7 +2967,7 @@ cat('<br>')
 
 <br>
 
-## **Cooperação entre instituições** {#cooperacao}
+## **Cooperação entre instituições** {.tabset #cooperacao}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
