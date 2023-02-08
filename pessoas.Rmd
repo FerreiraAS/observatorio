@@ -2965,7 +2965,7 @@ if (dim(discentes)[1] != 0) {
 }
 ```
 
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+<br>
 
 <table width="100%" border="0">
   <tr>
@@ -2974,10 +2974,6 @@ if (dim(discentes)[1] != 0) {
     <td style="text-align:center" bgcolor="#ffcccb">Prazos ultrapassados</td>
   </tr>
 </table>
-
-<br>
-
-<br>
 
 ```{r discentes-dsc-prazos-sintese, eval = has.sucupira}
 discentes$'Ano de matrícula' <-
@@ -3004,6 +3000,8 @@ if (dim(discentes)[1] != 0) {
 ```
 
 <br>
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
@@ -3080,7 +3078,7 @@ if (dim(discentes)[1] != 0) {
 }
 ```
 
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+<br>
 
 <table width="100%" border="0">
   <tr>
@@ -3089,10 +3087,6 @@ if (dim(discentes)[1] != 0) {
     <td style="text-align:center" bgcolor="#ffcccb">Prazos ultrapassados</td>
   </tr>
 </table>
-
-<br>
-
-<br>
 
 ```{r discentes-msc-prazos-sintese, eval = has.sucupira}
 discentes$'Ano de matrícula' <-
@@ -3117,6 +3111,14 @@ if (dim(discentes)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 ```
+
+<br>
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
 
 ## **Egressos** {.tabset #egressos}
 
