@@ -52,7 +52,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 ### **Dados cadastrais**
 
-```{r dados-cadastrais, eval = has.dados.cadastrais}
+```{r dados-cadastrais-programa, eval = has.dados.cadastrais}
 # read separate sheets
 dados.do.programa.raw <-
   read_excel("PPG/Dados Cadastrais.xlsx",
@@ -61,23 +61,9 @@ dados.do.programa.raw <-
 colnames(dados.do.programa.raw) <-
   seq(1:dim(dados.do.programa.raw)[2])
 
-endereco.raw <-
-  read_excel("PPG/Dados Cadastrais.xlsx",
-             sheet = "Endereço",
-             col_types = c("text"))
-colnames(endereco.raw) <- seq(1:dim(endereco.raw)[2])
-
-# resolve long URLs
-for (i in 1:dim(endereco.raw)[1]) {
-  if (length(grep("https://", endereco.raw[i, 2])) != 0) {
-    endereco.raw[i, 2] <-
-      paste('[↗️](', endereco.raw[i, 2], '){target="_blank"}', sep = "")
-  }
-}
-
 # print tables
 table <-
-  unname(as.data.frame(rbind(dados.do.programa.raw, endereco.raw)))
+  unname(as.data.frame(dados.do.programa.raw, endereco.raw))
 
 print(
   kable(table, align = c("l", rep("c", ncol(
