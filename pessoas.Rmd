@@ -62,7 +62,7 @@ colnames(endereco.raw) <- seq(1:dim(endereco.raw)[2])
 for (i in 1:dim(endereco.raw)[1]) {
   if (length(grep("https://", endereco.raw[i, 2])) != 0) {
     endereco.raw[i, 2] <-
-      paste('[↗️](', endereco.raw[i, 2], '){target="_blank"}', sep = "")
+      paste( endereco.raw[i, 2], ' [↗️](', endereco.raw[i, 2], '){target="_blank"}', sep = "")
   }
 }
 
