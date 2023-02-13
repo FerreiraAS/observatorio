@@ -468,17 +468,40 @@ for (j in 1:length(tabs)) {
 
 <br>
 
-*Em construção*
+```{r corpo-editorial, eval = has.sucupira}
+# docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-<br>
+# keep active professors and remove duplicated data
+sucupira <-
+  sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`), ]
+sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupira$ORCID),]
 
-*Fontes:* [**ORCID**](https://orcid.org)
+orcids <-
+  gsub("(.{14})(.*)$",
+       "\\1-\\2",
+       gsub(
+         "(.{9})(.*)$",
+         "\\1-\\2",
+         gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
+       ))
 
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
+for (id in 1:length(orcids)) {
+  editor.name <- sucupira.unique$`Nome Docente`[id]
+  my_orcid <- orcids[id]
+  
+  cat('\n\n<!-- -->\n\n')
+  cat('##### **', editor.name, '**', sep = "")
+  cat('\n\n<!-- -->\n\n')
+  source("Scripts/invited-positions.R", local = knitr::knit_global())
+  cat(
+    "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"
+  )
+  cat('\n\n<!-- -->\n\n')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+```
 
 #### **Revisores** {.tabset}
 
