@@ -434,33 +434,44 @@ for (j in 1:length(tabs)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
-### **Associações e entidades** {.tabset}
-
-#### **ABRAPG-Ft**
-
-<iframe src="https://abrapg-ft.org.br/portal/" style="width:100%; height:600px; border:0;"></iframe>
+### **Associações** {.tabset}
 
 <br>
 
-*Fontes:* [**ABRAPG-FT**](https://abrapg-ft.org.br/portal/)
+```{r associacoes, eval = has.sucupira}
+# docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-<br>
+# keep active professors and remove duplicated data
+sucupira <-
+  sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`), ]
+sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupira$ORCID),]
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+orcids <-
+  gsub("(.{14})(.*)$",
+       "\\1-\\2",
+       gsub(
+         "(.{9})(.*)$",
+         "\\1-\\2",
+         gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
+       ))
 
-#### **Comitê Gestor do Forum 21**
-
-<br>
-
-<iframe src="https://iframely.net/678B7BG" style="width:100%; border:0;"></iframe>
-
-<br>
-
-*Fontes:* [**UNICAMP**](https://www.fef.unicamp.br/fef/posgraduacao/forumpg21)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+for (id in 1:length(orcids)) {
+  assoc.name <- sucupira.unique$`Nome Docente`[id]
+  my_orcid <- orcids[id]
+  
+  cat('\n\n<!-- -->\n\n')
+  cat('##### **', assoc.name, '**', sep = "")
+  cat('\n\n<!-- -->\n\n')
+  source("Scripts/memberships-services.R", local = knitr::knit_global())
+  cat(
+    "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"
+  )
+  cat('\n\n<!-- -->\n\n')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+```
 
 ### **Periódicos** {.tabset}
 
@@ -534,45 +545,6 @@ for (id in 1:length(orcids)) {
   cat('##### **', reviewer.name, '**', sep = "")
   cat('\n\n<!-- -->\n\n')
   source("Scripts/reviewer-board.R", local = knitr::knit_global())
-  cat(
-    "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"
-  )
-  cat('\n\n<!-- -->\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-}
-```
-
-#### **Associações** {.tabset}
-
-<br>
-
-```{r associacoes, eval = has.sucupira}
-# docentes
-sheet <- "Docentes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# keep active professors and remove duplicated data
-sucupira <-
-  sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`), ]
-sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupira$ORCID),]
-
-orcids <-
-  gsub("(.{14})(.*)$",
-       "\\1-\\2",
-       gsub(
-         "(.{9})(.*)$",
-         "\\1-\\2",
-         gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
-       ))
-
-for (id in 1:length(orcids)) {
-  assoc.name <- sucupira.unique$`Nome Docente`[id]
-  my_orcid <- orcids[id]
-  
-  cat('\n\n<!-- -->\n\n')
-  cat('##### **', assoc.name, '**', sep = "")
-  cat('\n\n<!-- -->\n\n')
-  source("Scripts/memberships-services.R", local = knitr::knit_global())
   cat(
     "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"
   )
