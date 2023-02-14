@@ -1,0 +1,91 @@
+member <- c()
+
+# get invited positions data
+res <- orcid_memberships(my_orcid)
+
+if (is.null(res[[1]]$`affiliation-group`$summaries)) {
+  # do nothing
+} else {
+  memberships <- res[[1]]$`affiliation-group`$summaries
+  n.pos <- length(memberships)
+  
+  member <- as.data.frame(matrix(NA, ncol = 2, nrow = n.pos))
+  for (i in 1:n.pos) {
+    # periódico
+    member[i, 1] <-
+      memberships[[i]][['membership-summary.organization.name']]
+    member[i, 2] <-
+      memberships[[i]][['membership-summary.role-title']]
+  }
+  colnames(member) <- c("Afiliação", "Atuação")
+  
+  # print table (reviewed journals)
+  print(
+    kable(
+      member,
+      align = "l",
+      format = "html",
+      escape = FALSE
+    ) %>%
+      kable_styling(
+        bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+        full_width = T,
+        position = "center"
+      ) %>%
+      row_spec(
+        0,
+        background = "#2C3E50",
+        bold = TRUE,
+        color = "white"
+      ),
+    row.names = NULL
+  )
+  cat('<br>')
+}
+
+# ################################
+
+services <- c()
+
+# get invited positions data
+res <- orcid_services(my_orcid)
+
+if (is.null(res[[1]]$`affiliation-group`$summaries)) {
+  # do nothing
+} else {
+  services.res <- res[[1]]$`affiliation-group`$summaries
+  n.pos <- length(services.res)
+  
+  services <- as.data.frame(matrix(NA, ncol = 2, nrow = n.pos))
+  for (i in 1:n.pos) {
+    # periódico
+    services[i, 1] <-
+      services.res[[i]][['service-summary.organization.name']]
+    services[i, 2] <-
+      services.res[[i]][['service-summary.role-title']]
+  }
+  colnames(services) <- c("Afiliação", "Atuação")
+  
+  # print table (reviewed journals)
+  print(
+    kable(
+      services,
+      align = "l",
+      format = "html",
+      escape = FALSE
+    ) %>%
+      kable_styling(
+        bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+        full_width = T,
+        position = "center"
+      ) %>%
+      row_spec(
+        0,
+        background = "#2C3E50",
+        bold = TRUE,
+        color = "white"
+      ),
+    row.names = NULL
+  )
+  cat('<br>')
+}
