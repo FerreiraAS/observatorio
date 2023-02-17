@@ -3528,7 +3528,7 @@ if (dim(bolsistas)[1] != 0) {
   ids <- order(bolsistas$'Matrícula', decreasing = TRUE)
   table <- bolsistas[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Bolsistas - Doutorado")
+  create_dt(table, title = "Bolsistas - Mestrado")
 } else {
   cat("*Sem dados para exibir*")
 }
