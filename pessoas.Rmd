@@ -3434,6 +3434,111 @@ if (dim(mestres)[1] != 0) {
 
 <br>
 
+## **Bolsistas** {.tabset #bolsistas}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+### **Doutorado**
+
+```{r bolsistas-dsc, eval = has.sucupira}
+# select level
+course.level <- "TESE"
+
+# discentes
+sheet <- "TCC - Financiadores"
+source("Scripts/read-xlsx-sucupira.R")
+
+# get only last data available
+bolsistas <- sucupira.raw
+
+# filter students
+bolsistas <- bolsistas[str_detect(bolsistas$`Tipo de Trabalho de Conclusão`, course.level), ]
+
+# filter funding
+funding <- "PROSUP / Cursos Novos"
+bolsistas <- bolsistas[str_detect(bolsistas$`Nome do Programa de Fomento`, funding), ]
+
+# get years
+bolsistas$'Matrícula' <- substr(as.Date(bolsistas$`Data início da orientação`, format = "%d/%m/%Y"), 1, 4)
+
+bolsistas$'Titulação' <- substr(as.Date(bolsistas$`Data da Defesa`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+bolsistas$`Nome do Autor` <- toTitleCase(tolower(bolsistas$`Nome do Autor`))
+bolsistas$`Nome do Orientador` <- toTitleCase(tolower(bolsistas$`Nome do Orientador`))
+
+bolsistas <- select(bolsistas, c("Nome do Autor", "Nome do Orientador", "Matrícula", "Titulação"))
+
+# remove duplicates and NA rows if any
+bolsistas <- unique(bolsistas)
+bolsistas <- bolsistas[complete.cases(bolsistas), ]
+  
+if (dim(bolsistas)[1] != 0) {
+  ids <- order(bolsistas$'Matrícula', decreasing = TRUE)
+  table <- bolsistas[ids,]
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table, title = "Bolsistas - Doutorado")
+} else {
+  cat("*Sem dados para exibir*")
+}
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+### **Mestrado**
+
+```{r bolsistas-msc, eval = has.sucupira}
+# select level
+course.level <- "DISSERTAÇÃO"
+
+# discentes
+sheet <- "TCC - Financiadores"
+source("Scripts/read-xlsx-sucupira.R")
+
+# get only last data available
+bolsistas <- sucupira.raw
+
+# filter students
+bolsistas <- bolsistas[str_detect(bolsistas$`Tipo de Trabalho de Conclusão`, course.level), ]
+
+# filter funding
+funding <- "PROSUP / Cursos Novos"
+bolsistas <- bolsistas[str_detect(bolsistas$`Nome do Programa de Fomento`, funding), ]
+
+# get years
+bolsistas$'Matrícula' <- substr(as.Date(bolsistas$`Data início da orientação`, format = "%d/%m/%Y"), 1, 4)
+
+bolsistas$'Titulação' <- substr(as.Date(bolsistas$`Data da Defesa`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+bolsistas$`Nome do Autor` <- toTitleCase(tolower(bolsistas$`Nome do Autor`))
+bolsistas$`Nome do Orientador` <- toTitleCase(tolower(bolsistas$`Nome do Orientador`))
+
+bolsistas <- select(bolsistas, c("Nome do Autor", "Nome do Orientador", "Matrícula", "Titulação"))
+
+# remove duplicates and NA rows if any
+bolsistas <- unique(bolsistas)
+bolsistas <- bolsistas[complete.cases(bolsistas), ]
+  
+if (dim(bolsistas)[1] != 0) {
+  ids <- order(bolsistas$'Matrícula', decreasing = TRUE)
+  table <- bolsistas[ids,]
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table, title = "Bolsistas - Doutorado")
+} else {
+  cat("*Sem dados para exibir*")
+}
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
 ## **Grupos de pesquisa** {.tabset #grupos-pesquisa}
 
 <!--script for generating HORIZONTAL LINE-->
