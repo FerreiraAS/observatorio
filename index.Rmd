@@ -808,45 +808,47 @@ try(eventos <-
 # bind papers and letters/abstracts and events (all with DOI)
 artigos <-
   rbind(
-    select(
-      artigos,
-      "Publicado.em",
-      "DOI",
-      "WebQualis",
-      "ISSN",
-      "Revista..digite.ou.selecione.na.lista."
-    ),
-    select(
-      resumos,
-      "Publicado.em",
-      "DOI",
-      "WebQualis",
-      "ISSN",
-      "Revista..digite.ou.selecione.na.lista."
-    ),
-    select(
-      eventos,
-      "Publicado.em",
-      "DOI",
-      "WebQualis",
-      "ISSN",
-      "Revista..digite.ou.selecione.na.lista."
-    )
+    select(artigos,
+           "Publicado.em",
+           "DOI",
+           "ISSN"),
+    select(resumos,
+           "Publicado.em",
+           "DOI",
+           "ISSN"),
+    select(eventos,
+           "Publicado.em",
+           "DOI",
+           "ISSN")
   )
 
-# Data cleaning
-artigos <- artigos[complete.cases(artigos$DOI), ]
-artigos$WebQualis[artigos$WebQualis == "Sem WebQualis"] <- "NA"
+# remove os artigos sem DOI
+artigos <- artigos[complete.cases(artigos$DOI),]
 
-# remove os aceitos
+# remove os aceitos, se existentes
 artigos <-
-  artigos[artigos$Publicado.em != "Aceito",]
+  artigos[artigos$Publicado.em != "Aceito", ]
+
+# adding Webqualis column data
+artigos$WebQualis <-
+  rep("Sem Qualis", times  = length(dim(artigos)[1]))
+for (i in 1:dim(artigos)[1]) {
+  try(artigos$WebQualis[i] <-
+        qualis$Estrato[match(artigos$ISSN[i], qualis$ISSN)])
+}
+# adding Journal Name column data
+artigos$Título <-
+  rep("Sem Qualis", times  = length(dim(artigos)[1]))
+for (i in 1:dim(artigos)[1]) {
+  try(artigos$Título[i] <-
+        qualis$Título[match(artigos$ISSN[i], qualis$ISSN)])
+}
 
 # Qualis
 qualis.PPG <- c()
 for (i in 1:length(estratos)) {
   qualis.PPG[i] <-
-    sum(artigos$WebQualis == estratos[i]) / length(artigos$WebQualis) * 100
+    sum(artigos$WebQualis == estratos[i], na.rm = TRUE) / length(artigos$WebQualis) * 100
 }
 names(qualis.PPG) <- estratos
 
@@ -864,24 +866,22 @@ for (i in 1:dim(artigos)[1]) {
 table.1 <- table(artigos$Publicado.em)
 
 table.2 <- t(table(artigos$Publicado.em, artigos$WebQualis))
-table.2 <- table.2[order(rownames(table.2)), ]
-rownames(table.2)[rownames(table.2) == "NA"] <- "Sem qualis"
-# table.2 <- apply(table.2, 2, rev)
+table.2 <- table.2[order(rownames(table.2)),]
 
 table.3 <- data.frame(artigos$Publicado.em, SJR)
 table.3.median <-
   aggregate(
     table.3,
-    by = list(artigos$Publicado.em),
+    by = list(table.3$artigos.Publicado.em),
     FUN = median,
     na.rm = TRUE
   )
 table.3.median <- t(as.matrix(table.3.median[, -2]))
-table.3.median <- as.numeric(table.3.median[-1, ])
+table.3.median <- as.numeric(table.3.median[-1,])
 names(table.3.median) <- names(table.1)
 
 table.4 <-
-  data.frame(artigos$Revista..digite.ou.selecione.na.lista., SJR)
+  data.frame(artigos$Título, SJR)
 
 # plot area setup
 layout.m <- c(1)
@@ -945,7 +945,6 @@ title(main = "Qualidade da produção (SJR)",
       cex.main = 1.7)
 
 # plot 5 (top-10 journals)
-
 journals.SJR <- unique(table.4)
 
 # plot area setup
@@ -957,12 +956,10 @@ par(mar = c(1.5, 15, 1, 1))
 
 top <- min(dim(na.omit(unique(journals.SJR)))[1], 10)
 data.journals <-
-  na.omit(
-    data.frame(
-      name = journals.SJR$artigos.Revista..digite.ou.selecione.na.lista.[order(journals.SJR$SJR, decreasing = TRUE)][1:top],
-      value = as.numeric(sort(journals.SJR$SJR, decreasing = TRUE)[1:top])
-    )
-  )
+  na.omit(data.frame(name = journals.SJR$artigos.Título[order(journals.SJR$SJR, decreasing = TRUE)][1:top],
+                     value = as.numeric(
+                       sort(journals.SJR$SJR, decreasing = TRUE)[1:top]
+                     )))
 
 # break vector names in 2 lines
 text.2.break <- data.journals$name
@@ -1122,7 +1119,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[1:4,]) / sum(table.2) * 100,
+        sum(table.2[1:4, ]) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1131,7 +1128,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[5:8,]) / sum(table.2) * 100,
+        sum(table.2[5:8, ]) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1140,7 +1137,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[9:10,]) / sum(table.2) * 100,
+        sum(table.2[9, ]) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
