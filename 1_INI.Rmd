@@ -222,6 +222,13 @@ has.premios <-
   )
 ```
 
+```{r try-premio-capes}
+has.premio.capes <-
+  !is.error(try(read_excel("PPG/Prêmio CAPES de Tese.xlsx", sheet = 1),
+                silent = TRUE)
+  )
+```
+
 ```{r try-producao}
 has.artigos.completos <-
   !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.completos"),

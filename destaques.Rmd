@@ -429,6 +429,53 @@ for (j in 1:length(tabs)) {
 
 <br>
 
+## **Prêmio CAPES de Tese** {#premio-capes}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+```{r premio-capes, eval = has.premio.capes}
+# read separate sheets
+file.path <- "PPG/Prêmio CAPES de Tese.xlsx"
+tabs <- excel_sheets(file.path)
+topics <- c()
+premios.list <- vector(mode = "list", length = length(tabs))
+
+# iterate across sheets
+for (j in 1:length(tabs)) {
+  premios <-
+    read_excel(file.path,
+               sheet = tabs[j],
+               col_types = c("text"))
+
+  # store data to print table
+  premios.list[[j]] <- premios
+  
+  # store data to plot wordcloud
+  topics <- rbind(topics, premios[i, 1])
+}
+
+# iterate across sheets
+for (j in 1:length(tabs)) {
+  cat('\n\n<!-- -->\n\n')
+  cat("### **", tabs[j], "**", "\n", sep = "")
+  cat('\n\n<!-- -->\n\n')
+  print(
+    kable(premios.list[[j]], align = c("l", rep(
+      "c", ncol(premios) - 2
+    ), "r")) %>% kable_styling(
+      bootstrap_options = c("hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+  cat('\n\n<!-- -->\n\n')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+```
+
+<br>
+
 ## **Representatividade** {#representatividade}
 
 <!--script for generating HORIZONTAL LINE-->
