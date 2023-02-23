@@ -23,12 +23,12 @@ navbar navbar-default navbar-fixed-top {
 }
 
 #navbar > ul:nth-child(1) > li.active > a {
-  background-color: darkgrey !important;
-  color: white !important;
+  background-color: white !important;
+  color: black !important;
 }
 #navbar > ul:nth-child(1) > li.dropdown.open > a {
-  background-color: darkgrey !important;
-  color: white !important;
+  background-color: white !important;
+  color: black !important;
 }
 #navbar > ul:nth-child(1) > li.dropdown.open > ul > li:nth-child(1) > a {
   background-color: black !important;
@@ -67,5 +67,5 @@ h3, #TOC ul>li {
 
 <!--script for hover effect on table-->
 .table-hover > tbody > tr:hover { 
-  background-color: lightgrey;
+  background-color: darkgrey;
   }
