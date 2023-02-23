@@ -99,32 +99,35 @@ bolsistas <-
 bolsistas <- unique(bolsistas)
 bolsistas <- bolsistas[complete.cases(bolsistas),]
 
-# create list of years with scholarships
-anos <-
-  seq(
-    min(bolsistas$Matrícula, bolsistas$Titulação),
-    max(bolsistas$Matrícula, bolsistas$Titulação)
-  )
-cotas <- rep_len(list(numeric(1)), length = length(anos))
-names(cotas) <- anos
-
-for (i in 1:dim(bolsistas)[1]) {
-  bolsas <- seq(bolsistas$Matrícula[i], bolsistas$Titulação[i])
-  for (j in 1:length(bolsas)) {
-    cotas[[as.character(bolsas[j])]] <-
-      cotas[[as.character(bolsas[j])]] + 1
+if (dim(bolsistas)[1] != 0) {
+  # create list of years with scholarships
+  anos <-
+    seq(
+      min(bolsistas$Matrícula, bolsistas$Titulação),
+      max(bolsistas$Matrícula, bolsistas$Titulação)
+    )
+  cotas <- rep_len(list(numeric(1)), length = length(anos))
+  names(cotas) <- anos
+  
+  for (i in 1:dim(bolsistas)[1]) {
+    bolsas <- seq(bolsistas$Matrícula[i], bolsistas$Titulação[i])
+    for (j in 1:length(bolsas)) {
+      cotas[[as.character(bolsas[j])]] <-
+        cotas[[as.character(bolsas[j])]] + 1
+    }
   }
+  cotas <- t(data.frame(cotas))
+  cotas <- cbind(anos, cotas)
+  rownames(cotas) <- anos
+  colnames(cotas) <- c("Ano", "Bolsistas")
+  cotas <- data.frame(cotas)
 }
-cotas <- t(data.frame(cotas))
-cotas <- cbind(anos, cotas)
-rownames(cotas) <- anos
-colnames(cotas) <- c("Ano", "Bolsistas")
-cotas <- data.frame(cotas)
 
+cat('\n\n')
 cat('##### **Tabela**')
 cat('\n\n')
 
-if (dim(cotas)[1] != 0) {
+if (dim(bolsistas)[1] != 0) {
   ids <- order(cotas$'Ano', decreasing = TRUE)
   table <- cotas[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -135,12 +138,10 @@ if (dim(cotas)[1] != 0) {
 
 cat('\n\n')
 cat(
-  '*OBS:* Dados de financiamento extraídos a partir dos trabalhos de conclusão de curso.'
+  '^1^ Dados de financiamento extraídos a partir dos financiadores dos trabalhos de conclusão de curso. Bolsistas ativos não estão incluídos.'
 )
 cat('\n\n')
-cat(
-  '*Fontes:* [**Transparência CAPES**](http://transparencia.capes.gov.br/transparencia/xhtml/index.faces), [**SCBA**](https://scba.capes.gov.br)'
-)
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 
@@ -148,7 +149,7 @@ cat('\n\n')
 cat('##### **Gráfico**')
 cat('\n\n')
 
-if (dim(cotas)[1] != 0) {
+if (dim(bolsistas)[1] != 0) {
   # plot 1 (total de bolsistas, por ano)
   # generate plot of total per year
   par(
@@ -182,12 +183,10 @@ if (dim(cotas)[1] != 0) {
 
 cat('\n\n')
 cat(
-  '*OBS:* Dados de financiamento extraídos a partir dos trabalhos de conclusão de curso.'
+  '^1^ Dados de financiamento extraídos a partir dos financiadores dos trabalhos de conclusão de curso. Bolsistas ativos não estão incluídos.'
 )
 cat('\n\n')
-cat(
-  '*Fontes:* [**Transparência CAPES**](http://transparencia.capes.gov.br/transparencia/xhtml/index.faces), [**SCBA**](https://scba.capes.gov.br)'
-)
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
@@ -228,7 +227,7 @@ bolsistas <- select(bolsistas, c("Nome do Autor", "Nome do Orientador", "Matríc
 # remove duplicates and NA rows if any
 bolsistas <- unique(bolsistas)
 bolsistas <- bolsistas[complete.cases(bolsistas), ]
-  
+
 if (dim(bolsistas)[1] != 0) {
   ids <- order(bolsistas$'Matrícula', decreasing = TRUE)
   table <- bolsistas[ids,]
