@@ -14,7 +14,6 @@ include:
 exclude:
   - cache
   - Metrics
-  - PPG
   - Scripts
   - Sucupira
 search: true

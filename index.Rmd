@@ -42,7 +42,7 @@ has.logo.ies <- file.exists("PPG/Images/logo-IES.png")
 
 <br>
 
-<p style="font-size:1.5em"> O **Observatório `r ifelse(has.dados.cadastrais, toupper(sigla.PPG), "")`** é uma iniciativa do **Programa de Pós-graduação em `r ifelse(has.dados.cadastrais, nome.PPG, "")`** do [`r ifelse(has.dados.cadastrais, toTitleCase(as.character(nome.IES)), "")`](`r ifelse(has.sucupira, site.PPG, "")`) que envolve o registro, o acompanhamento e a análise agregada e estruturada de dados para divulgação transparente de suas atividades, planejamentos, ações e impactos, tornando-os acessíveis à sociedade.</p>
+<p style="font-size:1.5em"> O **Observatório `r ifelse(has.dados.cadastrais, toupper(sigla.PPG), "")`** é uma iniciativa `r ifelse(has.dados.cadastrais, paste0("do **Programa de Pós-graduação em ", nome.PPG, " do "), "")` [`r ifelse(has.dados.cadastrais, toTitleCase(as.character(nome.IES)), "")`](`r ifelse(has.sucupira, paste0(site.PPG, "**"), "")`) que envolve o registro, o acompanhamento e a análise agregada e estruturada de dados para divulgação transparente de suas atividades, planejamentos, ações e impactos, tornando-os acessíveis à sociedade</p>
 
 </center>
 
@@ -67,13 +67,13 @@ projetos.id <- unique(sucupira.raw$`Identificador do Projeto`)
 sucupira <- c()
 for (i in 1:length(projetos.id)) {
   matches <-
-    sucupira.raw[sucupira.raw$`Identificador do Projeto` == projetos.id[i],]
+    sucupira.raw[sucupira.raw$`Identificador do Projeto` == projetos.id[i], ]
   if (dim(matches)[1] == 1) {
     sucupira <- bind_rows(sucupira, matches)
   } else {
     keep <-
       matches[matches$Situação == "CONCLUÍDO" |
-                !is.na(matches$`Data de Fim da Linha`),]
+                !is.na(matches$`Data de Fim da Linha`), ]
     sucupira <- bind_rows(sucupira, keep)
   }
 }
@@ -109,7 +109,7 @@ alluv.data$sucupira.raw..Data.de.Fim.da.Linha.[is.na(alluv.data$sucupira.raw..Da
 # remove data without AC or LP
 alluv.data <-
   alluv.data[!is.na(alluv.data$sucupira.raw..Área.de.Concentração.) &
-               !is.na(alluv.data$sucupira.raw..Linha.de.Pesquisa.),]
+               !is.na(alluv.data$sucupira.raw..Linha.de.Pesquisa.), ]
 
 # ordering by dates
 alluv.data <-
@@ -118,7 +118,7 @@ alluv.data <-
     alluv.data$sucupira.raw..Data.de.Fim.da.Linha.,
     alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa.,
     decreasing = FALSE
-  ), ]
+  ),]
 
 # summary data for plot table
 current.AC <-
@@ -148,7 +148,7 @@ if (length(old.LP) != 0) {
     alluv.data[!(
       alluv.data$sucupira.raw..Linha.de.Pesquisa. == old.LP &
         alluv.data$sucupira.raw..Data.de.Fim.da.Linha. == format(Sys.Date(), format = "%Y")
-    ), ]
+    ),]
 }
 
 summ.AC.LP <-
@@ -162,7 +162,7 @@ summ.AC.LP <-
   )
 
 # drop freq = 0 values
-summ.AC.LP <- summ.AC.LP[summ.AC.LP$Freq != 0,]
+summ.AC.LP <- summ.AC.LP[summ.AC.LP$Freq != 0, ]
 
 colnames(summ.AC.LP) <- c("AC", "LP", "Inicio", "Fim", "Freq")
 
@@ -209,7 +209,7 @@ colnames(summ.LP.PP) <- c("source", "target", "value")
 summ.LP.PP$value[summ.LP.PP$value != 0] <- 1
 
 # remove zeroed-value data
-summ.AC.LP <- summ.AC.LP[summ.AC.LP$value != 0, ]
+summ.AC.LP <- summ.AC.LP[summ.AC.LP$value != 0,]
 
 # A connection data frame is a list of flows with intensity for each flow
 links <- summ.AC.LP
@@ -224,13 +224,21 @@ edges <-
     alluv.data$sucupira.raw..Área.de.Concentração.,
     alluv.data$sucupira.raw..Linha.de.Pesquisa.
   )
-edges1 <- aggregate(alluv.data$sucupira.raw..Linha.de.Pesquisa., by = list(alluv.data$sucupira.raw..Área.de.Concentração., alluv.data$sucupira.raw..Linha.de.Pesquisa.), FUN=length)
+edges1 <-
+  aggregate(
+    alluv.data$sucupira.raw..Linha.de.Pesquisa.,
+    by = list(
+      alluv.data$sucupira.raw..Área.de.Concentração.,
+      alluv.data$sucupira.raw..Linha.de.Pesquisa.
+    ),
+    FUN = length
+  )
 
 # Usually we associate another dataset that give information about each node of the dataset:
 vertices <- NULL
 
 # Then we have to make a 'graph' object using the igraph library:
-mygraph <- graph_from_data_frame( edges1[,1:2], vertices=vertices )
+mygraph <- graph_from_data_frame(edges1[, 1:2], vertices = vertices)
 
 # plot 1
 par(
@@ -251,8 +259,8 @@ ggraph(mygraph, layout = 'circlepack', weight = c(0, edges1[, 3])) +
   theme_void() +
   theme(
     panel.border = element_blank(),
-    panel.background = element_rect(fill = '#2C3E50', color='#2C3E50'),
-    plot.background = element_rect(fill = '#2C3E50', color='#2C3E50'),
+    panel.background = element_rect(fill = '#2C3E50', color = '#2C3E50'),
+    plot.background = element_rect(fill = '#2C3E50', color = '#2C3E50'),
     legend.background = element_rect(fill = "#2C3E50",  color = "#2C3E50"),
     legend.box.background = element_rect(fill = "#2C3E50",  color = "#2C3E50"),
     legend.position = "top",
@@ -292,6 +300,9 @@ bs_carousel(id = "coerencia-carousel",
 
 cat('\n\n')
 cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
+cat('^[Regiões correspondem à quantidade de linhas de pesquisa.]')
+cat('\n')
+cat('^[Áreas internas correspondem à quantidade de projetos na respctiva linha de pesquisa.]')
 ```
 
 <br>
