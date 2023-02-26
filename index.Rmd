@@ -42,7 +42,7 @@ has.logo.ies <- file.exists("PPG/Images/logo-IES.png")
 
 <br>
 
-<p style="font-size:1.5em"> O **Observatório `r ifelse(has.dados.cadastrais, toupper(sigla.PPG), "")`** é uma iniciativa `r ifelse(has.dados.cadastrais, paste0("do **Programa de Pós-graduação em ", nome.PPG, " do "), "")` [`r ifelse(has.dados.cadastrais, toTitleCase(as.character(nome.IES)), "")`](`r ifelse(has.sucupira, paste0(site.PPG, "**"), "")`) que envolve o registro, o acompanhamento e a análise agregada e estruturada de dados para divulgação transparente de suas atividades, planejamentos, ações e impactos, tornando-os acessíveis à sociedade</p>
+<p style="font-size:1.5em"> O **Observatório `r ifelse(has.dados.cadastrais, toupper(sigla.PPG), "")`** é uma iniciativa `r ifelse(has.dados.cadastrais, paste0("do **Programa de Pós-graduação em ", nome.PPG, "** do "), "")` [`r ifelse(has.dados.cadastrais, toTitleCase(as.character(nome.IES)), "")`](`r ifelse(has.sucupira, site.PPG, "")`) que envolve o registro, o acompanhamento e a análise agregada e estruturada de dados para divulgação transparente de suas atividades, planejamentos, ações e impactos, tornando-os acessíveis à sociedade</p>
 
 </center>
 
