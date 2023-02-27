@@ -67,13 +67,13 @@ projetos.id <- unique(sucupira.raw$`Identificador do Projeto`)
 sucupira <- c()
 for (i in 1:length(projetos.id)) {
   matches <-
-    sucupira.raw[sucupira.raw$`Identificador do Projeto` == projetos.id[i], ]
+    sucupira.raw[sucupira.raw$`Identificador do Projeto` == projetos.id[i],]
   if (dim(matches)[1] == 1) {
     sucupira <- bind_rows(sucupira, matches)
   } else {
     keep <-
       matches[matches$Situação == "CONCLUÍDO" |
-                !is.na(matches$`Data de Fim da Linha`), ]
+                !is.na(matches$`Data de Fim da Linha`),]
     sucupira <- bind_rows(sucupira, keep)
   }
 }
@@ -109,7 +109,7 @@ alluv.data$sucupira.raw..Data.de.Fim.da.Linha.[is.na(alluv.data$sucupira.raw..Da
 # remove data without AC or LP
 alluv.data <-
   alluv.data[!is.na(alluv.data$sucupira.raw..Área.de.Concentração.) &
-               !is.na(alluv.data$sucupira.raw..Linha.de.Pesquisa.), ]
+               !is.na(alluv.data$sucupira.raw..Linha.de.Pesquisa.),]
 
 # ordering by dates
 alluv.data <-
@@ -118,7 +118,7 @@ alluv.data <-
     alluv.data$sucupira.raw..Data.de.Fim.da.Linha.,
     alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa.,
     decreasing = FALSE
-  ),]
+  ), ]
 
 # summary data for plot table
 current.AC <-
@@ -135,20 +135,16 @@ current.LP <-
   unique(alluv.data$sucupira.raw..Linha.de.Pesquisa.)
 current.LP <- current.LP[!current.LP %in% c(old.LP, NA)]
 
-# get all history
-areas <-
-  sort(c(current.AC, old.AC))
-
-linhas <-
-  sort(c(current.LP, old.LP))
-
 # remove data from inactive LP
 if (length(old.LP) != 0) {
   alluv.data <-
     alluv.data[!(
-      alluv.data$sucupira.raw..Linha.de.Pesquisa. == old.LP &
-        alluv.data$sucupira.raw..Data.de.Fim.da.Linha. == format(Sys.Date(), format = "%Y")
-    ),]
+      alluv.data$sucupira.raw..Linha.de.Pesquisa. == old.LP
+    ), ]
+  # alluv.data <-
+  #   alluv.data[!(
+  #     alluv.data$sucupira.raw..Data.de.Fim.da.Linha. == format(Sys.Date(), format = "%Y")
+  #   ), ]
 }
 
 summ.AC.LP <-
@@ -162,7 +158,7 @@ summ.AC.LP <-
   )
 
 # drop freq = 0 values
-summ.AC.LP <- summ.AC.LP[summ.AC.LP$Freq != 0, ]
+summ.AC.LP <- summ.AC.LP[summ.AC.LP$Freq != 0,]
 
 colnames(summ.AC.LP) <- c("AC", "LP", "Inicio", "Fim", "Freq")
 
@@ -209,7 +205,7 @@ colnames(summ.LP.PP) <- c("source", "target", "value")
 summ.LP.PP$value[summ.LP.PP$value != 0] <- 1
 
 # remove zeroed-value data
-summ.AC.LP <- summ.AC.LP[summ.AC.LP$value != 0,]
+summ.AC.LP <- summ.AC.LP[summ.AC.LP$value != 0, ]
 
 # A connection data frame is a list of flows with intensity for each flow
 links <- summ.AC.LP
@@ -219,11 +215,6 @@ nodes <- data.frame(name = c(as.character(links$source),
                              as.character(links$target)) %>% unique())
 
 # We need a data frame giving a hierarchical structure. Let's consider the flare dataset:
-edges <-
-  cbind(
-    alluv.data$sucupira.raw..Área.de.Concentração.,
-    alluv.data$sucupira.raw..Linha.de.Pesquisa.
-  )
 edges1 <-
   aggregate(
     alluv.data$sucupira.raw..Linha.de.Pesquisa.,
@@ -271,22 +262,28 @@ ggraph(mygraph, layout = 'circlepack', weight = c(0, edges1[, 3])) +
 # plot 2
 
 # plot area setup
-layout.m <- matrix(c(1, 2, 3, 4), ncol = 2, byrow = FALSE)
+# layout.m <- matrix(c(1, 2, 3, 4), ncol = 2, byrow = FALSE)
+layout.m <- matrix(c(1, 2), ncol = 1, byrow = FALSE)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 
 summ.coerencia.1 <- c(length(unique(current.AC)),
                       length(unique(current.LP)))
 names(summ.coerencia.1) <-
-  c("Áreas de Concentração \n (ativas)",
-    "Linhas de Pesquisa \n (ativas)")
+  c("Áreas de Concentração",
+    "Linhas de Pesquisa")
 
-summ.coerencia.2 <- c(length(unique(old.AC)),
-                      length(unique(old.LP)))
-names(summ.coerencia.2) <-
-  c("Áreas de Concentração \n (inativas)",
-    "Linhas de Pesquisa \n (inativas)")
+# names(summ.coerencia.1) <-
+#   c("Áreas de Concentração \n (ativas)",
+#     "Linhas de Pesquisa \n (ativas)")
 
-summ.data <- c(summ.coerencia.1, summ.coerencia.2)
+# summ.coerencia.2 <- c(length(unique(old.AC)),
+#                       length(unique(old.LP)))
+# names(summ.coerencia.2) <-
+#   c("Áreas de Concentração \n (inativas)",
+#     "Linhas de Pesquisa \n (inativas)")
+#
+# summ.data <- c(summ.coerencia.1, summ.coerencia.2)
+summ.data <- c(summ.coerencia.1)
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
