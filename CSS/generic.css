@@ -1,24 +1,39 @@
-<!--script for color-->
+/* script for color */
 div {
-  background-color: white !important;
+  background-color: white;
   color: black;
 }
 
 navbar navbar-expand-lg navbar-dark bg-primary {
   background-color: black !important;
-  color: white;
+  background: black !important;
+  color: white !important;
 }
+
 navbar navbar-default navbar-fixed-top {
   background-color: black !important;
-  color: white;
+  background: black !important;
+  color: white !important;
 }
+
 #navbar {
   background: black !important;
   background-color: black !important;
   color: white !important;
 }
-.navbar-default{
+.navbar-default {
   background-color: black !important;
+  background: black !important;
+  color: white !important;
+}
+.navbar-brand {
+  background-color: black !important;
+  background: black !important;
+  color: white !important;
+}
+.navbar-right {
+  background-color: black !important;
+  background: black !important;
   color: white !important;
 }
 
@@ -46,9 +61,14 @@ navbar navbar-default navbar-fixed-top {
   outline: 0;
 }
 
-<!--script for TOC color-->
+body {
+  background-color: white !important;
+  color: black;
+}
+
+/* script for TOC color */
 #TOC {
-    background: transparent;
+  background: transparent;
 }
 h1, #TOC ul>li {
   color: black !important;
@@ -65,7 +85,7 @@ h3, #TOC ul>li {
   color: white !important;
 }
 
-<!--script for hover effect on table-->
+/*  script for hover effect on table */
 .table-hover > tbody > tr:hover { 
-  background-color: darkgrey;
-  }
+  background-color: var(--mybackgroundcolor);
+}
