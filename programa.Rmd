@@ -381,7 +381,17 @@ colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
 table.doc <- rbind(table.doc, colSums(table.doc))
 rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
 # print tables
-print(kable(table.doc, align = c("c", rep("c", ncol(table.doc)-2), "r"), caption = "Docentes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+print(
+  kable(
+    table.doc,
+    align = c("c", rep("c", ncol(table.doc) - 2), "r"),
+    caption = "Docentes"
+  ) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  ) %>% scroll_box(width = "100%")
+)
 
 # line break
 cat("  \n")
@@ -582,7 +592,17 @@ colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
 table.doc <- rbind(table.doc, colSums(table.doc))
 rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
 # print tables
-print(kable(table.doc, align = c("c", rep("c", ncol(table.doc)-2), "r"), caption = "Docentes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+print(
+  kable(
+    table.doc,
+    align = c("c", rep("c", ncol(table.doc) - 2), "r"),
+    caption = "Docentes"
+  ) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  ) %>% scroll_box(width = "100%")
+)
 
 # line break
 cat("  \n")
@@ -811,8 +831,18 @@ if(dim(projetos.posdoc)[1] != 0){
   table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
   rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
   # print tables
-  print(kable(table.posdoc, align = c("c", rep("c", ncol(table.posdoc)-2), "r"), caption = "Pós-Doutorandos") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
-
+  print(
+    kable(
+      table.posdoc,
+      align = c("c", rep("c", ncol(table.posdoc) - 2), "r"),
+      caption = "Pós-Doutorandos"
+    ) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    ) %>% scroll_box(width = "100%")
+  )
+  
 }
 
 # line break
@@ -983,7 +1013,17 @@ colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
 table.doc <- rbind(table.doc, colSums(table.doc))
 rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
 # print tables
-print(kable(table.doc, align = c("c", rep("c", ncol(table.doc)-2), "r"), caption = "Docentes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+print(
+  kable(
+    table.doc,
+    align = c("c", rep("c", ncol(table.doc) - 2), "r"),
+    caption = "Docentes"
+  ) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  ) %>% scroll_box(width = "100%")
+)
 
 # line break
 cat("  \n")
@@ -2796,7 +2836,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-### **Cooperação Interinstitucional**
+### **Cooperação interinstitucional**
 
 ```{r calendarios-cooperacao, eval = has.calendarios}
 # read separate sheets
@@ -3011,7 +3051,7 @@ cat('<br>')
 
 <br>
 
-## **Cooperação Interinstitucional** {.tabset #cooperacao}
+## **Cooperação interinstitucional** {.tabset #cooperacao}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
