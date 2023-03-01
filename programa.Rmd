@@ -399,8 +399,18 @@ if(dim(projetos.posdoc)[1] != 0){
   table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
   rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
   # print tables
-  print(kable(table.posdoc, align = c("c", rep("c", ncol(table.posdoc)-2), "r"), caption = "Pós-Doutorandos") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
-
+  print(
+    kable(
+      table.posdoc,
+      align = c("c", rep("c", ncol(table.posdoc) - 2), "r"),
+      caption = "Pós-Doutorandos"
+    ) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    ) %>% scroll_box(width = "100%")
+  )
+  
 }
 
 # line break
@@ -590,8 +600,18 @@ if(dim(projetos.posdoc)[1] != 0){
   table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
   rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
   # print tables
-  print(kable(table.posdoc, align = c("c", rep("c", ncol(table.posdoc)-2), "r"), caption = "Pós-Doutorandos") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
-
+  print(
+    kable(
+      table.posdoc,
+      align = c("c", rep("c", ncol(table.posdoc) - 2), "r"),
+      caption = "Pós-Doutorandos"
+    ) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    ) %>% scroll_box(width = "100%")
+  )
+  
 }
 
 # line break
@@ -763,7 +783,17 @@ colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
 table.doc <- rbind(table.doc, colSums(table.doc))
 rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
 # print tables
-print(kable(table.doc, align = c("c", rep("c", ncol(table.doc)-2), "r"), caption = "Docentes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+print(
+  kable(
+    table.doc,
+    align = c("c", rep("c", ncol(table.doc) - 2), "r"),
+    caption = "Docentes"
+  ) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  ) %>% scroll_box(width = "100%")
+)
 
 # line break
 cat("  \n")
@@ -970,8 +1000,18 @@ if(dim(projetos.posdoc)[1] != 0){
   table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
   rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
   # print tables
-  print(kable(table.posdoc, align = c("c", rep("c", ncol(table.posdoc)-2), "r"), caption = "Pós-Doutorandos") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
-
+  print(
+    kable(
+      table.posdoc,
+      align = c("c", rep("c", ncol(table.posdoc) - 2), "r"),
+      caption = "Pós-Doutorandos"
+    ) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    ) %>% scroll_box(width = "100%")
+  )
+  
 }
 
 # line break
@@ -2136,7 +2176,17 @@ table <- merge(table.msc, table.dsc, by="Disciplina", all.x = TRUE, all.y = TRUE
 colnames(table) <- c("Disciplina", "Obrigatória (MA)", "CR (MA)", "CH (MA)", "Fim", "Obrigatória (DA)", "CR (DA)", "CH (DA)", "Fim")
 
 # print tables
-print(kable(unique(table), row.names = FALSE, align = c("l", rep("c", ncol(table)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+print(
+  kable(
+    unique(table),
+    row.names = FALSE,
+    align = c("l", rep("c", ncol(table) - 2), "r")
+  ) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  ) %>% scroll_box(width = "100%")
+)
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -2967,47 +3017,45 @@ cat('<br>')
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
 ```{r programa-cooperacao, eval = has.cooperacoes}
-# initialize all sheets
-abas <- excel_sheets("PPG/Cooperações.xlsx")
+# read separate sheets
+file.path <- "PPG/Cooperações.xlsx"
+tabs <- excel_sheets(file.path)
+topics <- c()
+cooperacao.list <- vector(mode = "list", length = length(tabs))
 
-# display each sheet in a tab
-for (i in 1:length(abas)) {
-  cat('\n\n<!-- -->\n\n')
-  cat(paste0('### **', abas[i], '**'))
-  cat('\n\n<!-- -->\n\n')
-  historico.raw <-
-    read_excel("PPG/Cooperações.xlsx",
-               sheet = abas[i],
-               col_types = c("text"))
-
-  Abrir <- matrix(NA, nrow = dim(turmas.raw)[1])
-  colnames(Abrir) <- "Abrir"
-  # add hyperlinks
-  for (i in 1:dim(historico.raw)[1]) {
-    if (!is.na(historico.raw[i, 3])) {
-      Abrir[i] <-
-        paste0('<a href="',
-               historico.raw[i, 3],
-               '" target="_blank"',
-               '>',
-               "↗️" ,
-               "</a>",
-               sep = "")
-    }
+# iterate across sheets
+for (j in 1:length(tabs)) {
+  cooperacao <-
+    read_excel(file.path,
+               sheet = tabs[j],
+               col_types = c("text", "text", "text"))
+  # replace the link by a tag
+  for (i in 1:dim(cooperacao)[1]) {
+    cooperacao[i, 1] <-
+      paste("**", cooperacao[i, 1], "**", sep = "")
+    cooperacao[i, 3] <-
+      paste("[↗️](", cooperacao[i, 3], '){target="_blank"}', sep = "")
   }
   
-  historico <- cbind(historico.raw[, -3], Abrir)
-  historico <- historico[order(historico$Publicação, decreasing = TRUE),]
-  # print table
+  # store data to print table
+  cooperacao.list[[j]] <- cooperacao
+}
+
+# iterate across sheets
+for (j in 1:length(tabs)) {
+  cat('\n\n<!-- -->\n\n')
+  cat("### **", tabs[j], "**", "\n", sep = "")
+  cat('\n\n<!-- -->\n\n')
   print(
-    kable(historico, align = "l", col.names = NULL) %>% kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    kable(cooperacao.list[[j]], align = c("l", rep(
+      "c", ncol(premios) - 2
+    ), "r")) %>% kable_styling(
+      bootstrap_options = c("hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
     )
   )
-  
-  # print end of tab rows
+  cat('\n\n<!-- -->\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
