@@ -87,5 +87,5 @@ h3, #TOC ul>li {
 
 /*  script for hover effect on table */
 .table-hover > tbody > tr:hover { 
-  background-color: var(--mybackgroundcolor);
+  background-color: lightgray;
 }
