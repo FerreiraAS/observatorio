@@ -343,7 +343,7 @@ bs_carousel(id = "temas-carouse",
 
 cat('\n\n')
 cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
-cat('^[Termos nas nuvens correspondem àqueles encontrados nos títulos dos projetos de pesquisa, traeblho de conclusã de curso e produç˜ão intelectual, respectivamente.]')
+cat('^[Termos nas nuvens correspondem àqueles encontrados nos títulos dos projetos de pesquisa, trabalho de conclusão de curso e produç˜ão intelectual, respectivamente.]')
 ```
 
 <br>
@@ -890,7 +890,7 @@ table.3.median <- t(as.matrix(table.3.median[, -2]))
 table.3.median <- as.numeric(table.3.median[-1, ])
 names(table.3.median) <- names(table.1)
 
-table.4 <- data.frame(artigos$Publicado.em, SJR)
+table.4 <- data.frame(artigos$Publicado.em, c.score)
 table.4.median <-
   aggregate(
     table.4,
