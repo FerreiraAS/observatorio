@@ -67,13 +67,13 @@ projetos.id <- unique(sucupira.raw$`Identificador do Projeto`)
 sucupira <- c()
 for (i in 1:length(projetos.id)) {
   matches <-
-    sucupira.raw[sucupira.raw$`Identificador do Projeto` == projetos.id[i],]
+    sucupira.raw[sucupira.raw$`Identificador do Projeto` == projetos.id[i], ]
   if (dim(matches)[1] == 1) {
     sucupira <- bind_rows(sucupira, matches)
   } else {
     keep <-
       matches[matches$Situação == "CONCLUÍDO" |
-                !is.na(matches$`Data de Fim da Linha`),]
+                !is.na(matches$`Data de Fim da Linha`), ]
     sucupira <- bind_rows(sucupira, keep)
   }
 }
@@ -109,7 +109,7 @@ alluv.data$sucupira.raw..Data.de.Fim.da.Linha.[is.na(alluv.data$sucupira.raw..Da
 # remove data without AC or LP
 alluv.data <-
   alluv.data[!is.na(alluv.data$sucupira.raw..Área.de.Concentração.) &
-               !is.na(alluv.data$sucupira.raw..Linha.de.Pesquisa.),]
+               !is.na(alluv.data$sucupira.raw..Linha.de.Pesquisa.), ]
 
 # ordering by dates
 alluv.data <-
@@ -118,7 +118,7 @@ alluv.data <-
     alluv.data$sucupira.raw..Data.de.Fim.da.Linha.,
     alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa.,
     decreasing = FALSE
-  ), ]
+  ),]
 
 # summary data for plot table
 current.AC <-
@@ -138,9 +138,7 @@ current.LP <- current.LP[!current.LP %in% c(old.LP, NA)]
 # remove data from inactive LP
 if (length(old.LP) != 0) {
   alluv.data <-
-    alluv.data[!(
-      alluv.data$sucupira.raw..Linha.de.Pesquisa. == old.LP
-    ), ]
+    alluv.data[!(alluv.data$sucupira.raw..Linha.de.Pesquisa. == old.LP),]
   # alluv.data <-
   #   alluv.data[!(
   #     alluv.data$sucupira.raw..Data.de.Fim.da.Linha. == format(Sys.Date(), format = "%Y")
@@ -158,7 +156,7 @@ summ.AC.LP <-
   )
 
 # drop freq = 0 values
-summ.AC.LP <- summ.AC.LP[summ.AC.LP$Freq != 0,]
+summ.AC.LP <- summ.AC.LP[summ.AC.LP$Freq != 0, ]
 
 colnames(summ.AC.LP) <- c("AC", "LP", "Inicio", "Fim", "Freq")
 
@@ -205,7 +203,7 @@ colnames(summ.LP.PP) <- c("source", "target", "value")
 summ.LP.PP$value[summ.LP.PP$value != 0] <- 1
 
 # remove zeroed-value data
-summ.AC.LP <- summ.AC.LP[summ.AC.LP$value != 0, ]
+summ.AC.LP <- summ.AC.LP[summ.AC.LP$value != 0,]
 
 # A connection data frame is a list of flows with intensity for each flow
 links <- summ.AC.LP
@@ -299,7 +297,8 @@ cat('\n\n')
 cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
 cat('^[Regiões correspondem à quantidade de linhas de pesquisa.]')
 cat('\n')
-cat('^[Áreas internas correspondem à quantidade de projetos na respectiva linha de pesquisa.]')
+cat('^[Áreas internas correspondem à quantidade de projetos na respectiva linha de pesquisa.]'
+)
 ```
 
 <br>
@@ -344,6 +343,7 @@ bs_carousel(id = "temas-carouse",
 
 cat('\n\n')
 cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
+cat('^[Termos nas nuvens correspondem àqueles encontrados nos títulos dos projetos de pesquisa, traeblho de conclusã de curso e produç˜ão intelectual, respectivamente.]')
 ```
 
 <br>
@@ -375,7 +375,7 @@ for (i in 1:length(anos)) {
   projetos <- sucupira.list[[i]]
   projetos <-
     projetos[projetos$`Membro Responsável` == "Sim" &
-               projetos$Situação == "EM ANDAMENTO", ]
+               projetos$Situação == "EM ANDAMENTO",]
   for (j in 1:length(linhas)) {
     andamento.ano[j, i] <-
       sum(projetos$`Linha de Pesquisa` == linhas[j], na.rm = TRUE)
@@ -384,7 +384,7 @@ for (i in 1:length(anos)) {
   projetos <- sucupira.list[[i]]
   projetos <-
     projetos[projetos$`Membro Responsável` == "Sim" &
-               projetos$Situação == "CONCLUÍDO", ]
+               projetos$Situação == "CONCLUÍDO",]
   for (j in 1:length(linhas)) {
     concluido.ano[j, i] <-
       sum(projetos$`Linha de Pesquisa` == linhas[j], na.rm = TRUE)
@@ -397,7 +397,7 @@ projetos.ano <-
 membros <-
   data.frame(sucupira.raw$`Nome do Membro do Projeto`,
              sucupira.raw$`Categoria do Membro do Projeto`)
-membros <- membros[!duplicated(membros),]
+membros <- membros[!duplicated(membros), ]
 categorias <-
   table(membros$sucupira.raw..Categoria.do.Membro.do.Projeto.)
 
@@ -489,6 +489,7 @@ bs_carousel(id = "projetos-carousel",
 
 cat('\n\n')
 cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
+cat('^[Quantidades referem-se ao número de projetos de pesquisa ativos no ano.]')
 ```
 
 <br>
@@ -496,8 +497,6 @@ cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/
 <br>
 
 ```{r sintese-financiadores, include = FALSE, eval = has.financiadores}
-# this chunk requires additional data that may be available
-
 options("scipen" = 100)
 
 financiadores.raw <-
@@ -508,7 +507,7 @@ financiadores <-
   financiadores.raw %>% select("Ano", "Agência", "Programa", "Total", "Proponente")
 
 # drop rows with empty cells
-financiadores <- financiadores[complete.cases(financiadores),]
+financiadores <- financiadores[complete.cases(financiadores), ]
 
 # generate cross-table
 N.editais.agencia.ano <-
@@ -739,15 +738,10 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 
 summ.data <- summ.table.financiadores
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
-
-cat('\n\n')
-cat(
-  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **PPG**"
-)
 ```
 
 ```{r sintese-financiadores-carousel, eval = has.financiadores}
-# this chunk requires additional data that may be available
+# carousel
 bs_carousel(id = "financiadores-carousel",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
@@ -787,8 +781,6 @@ cat(
 <br>
 
 ```{r sintese-producao, include = FALSE, eval = has.producao}
-# this chunk requires additional data that may be available
-
 # read data
 try(artigos <-
       data.frame(read_excel(
@@ -831,11 +823,11 @@ artigos <-
   )
 
 # remove os artigos sem DOI
-artigos <- artigos[complete.cases(artigos$DOI),]
+artigos <- artigos[complete.cases(artigos$DOI), ]
 
 # remove os aceitos, se existentes
 artigos <-
-  artigos[artigos$Publicado.em != "Aceito", ]
+  artigos[artigos$Publicado.em != "Aceito",]
 
 # adding Webqualis column data
 artigos$WebQualis <-
@@ -870,11 +862,21 @@ for (i in 1:dim(artigos)[1]) {
                     all(is.na(SJR.i)), NA, SJR.i))
 }
 
+# CiteScore
+c.score <- c()
+for (i in 1:dim(artigos)[1]) {
+  c.score.i <-
+    as.numeric(citescore[grep(gsub("-", "", artigos$ISSN[i]), citescore$issn), 6])
+  c.score <-
+    c(c.score, ifelse(identical(c.score.i, numeric(0)) |
+                    all(is.na(c.score.i)), NA, c.score.i))
+}
+
 # generate cross tables of artigos per year
 table.1 <- table(artigos$Publicado.em)
 
 table.2 <- t(table(artigos$Publicado.em, artigos$WebQualis))
-table.2 <- table.2[order(rownames(table.2)),]
+table.2 <- table.2[order(rownames(table.2)), ]
 
 table.3 <- data.frame(artigos$Publicado.em, SJR)
 table.3.median <-
@@ -885,10 +887,22 @@ table.3.median <-
     na.rm = TRUE
   )
 table.3.median <- t(as.matrix(table.3.median[, -2]))
-table.3.median <- as.numeric(table.3.median[-1,])
+table.3.median <- as.numeric(table.3.median[-1, ])
 names(table.3.median) <- names(table.1)
 
-table.4 <-
+table.4 <- data.frame(artigos$Publicado.em, SJR)
+table.4.median <-
+  aggregate(
+    table.4,
+    by = list(table.4$artigos.Publicado.em),
+    FUN = median,
+    na.rm = TRUE
+  )
+table.4.median <- t(as.matrix(table.4.median[, -2]))
+table.4.median <- as.numeric(table.4.median[-1, ])
+names(table.4.median) <- names(table.1)
+
+table.5 <-
   data.frame(artigos$Título, SJR)
 
 # plot area setup
@@ -952,8 +966,16 @@ title(main = "Qualidade da produção (SJR)",
       outer = TRUE,
       cex.main = 1.7)
 
-# plot 5 (top-10 journals)
-journals.SJR <- unique(table.4)
+# plot 5 (violin plot of CiteScore por ano)
+vioplot(as.numeric(table.4[, 2]) ~ as.numeric(table.4[, 1]),
+        xlab = NA,
+        ylab = "CiteScore")
+title(main = "Qualidade da produção (CiteScore)",
+      outer = TRUE,
+      cex.main = 1.7)
+
+# plot 6 (top-10 journals)
+journals.SJR <- unique(table.5)
 
 # plot area setup
 layout.m <- c(1)
@@ -995,7 +1017,7 @@ title(
 )
 options(digits = 2)
 
-# plot 6 (barplot of QUALIS e SJR)
+# plot 7 (barplot of QUALIS e SJR)
 
 # plot area setup
 layout.m <- matrix(c(1, 2),
@@ -1083,7 +1105,7 @@ vioplot(
   add = TRUE
 )
 
-# plot 7 (summary table in plot)
+# plot 8 (summary table in plot)
 
 # calculate summary statistics for producao
 summ.table.producao <-
@@ -1127,7 +1149,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[1:4, ]) / sum(table.2) * 100,
+        sum(table.2[1:4,]) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1136,7 +1158,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[5:8, ]) / sum(table.2) * 100,
+        sum(table.2[5:8,]) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1145,7 +1167,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[9, ]) / sum(table.2) * 100,
+        sum(table.2[9,]) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1179,8 +1201,6 @@ source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-producao-carousel, eval = has.producao}
-# this chunk requires additional data that may be available
-
 # carousel
 bs_carousel(id = "producao-carousel",
             use_indicators = FALSE,
@@ -1191,11 +1211,12 @@ bs_carousel(id = "producao-carousel",
   bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-4.png")) %>%
   bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-5.png")) %>%
   bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-6.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-7.png"))
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-7.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-8.png"))
 
 cat('\n\n')
 cat(
-  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **PPG**"
+  "*Fontes:* [**WebQualis**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf), [**SJR**](https://www.scimagojr.com), [**Scopus**](https://www.scopus.com/home.uri), **PPG**"
 )
 ```
 
@@ -1204,8 +1225,6 @@ cat(
 <br>
 
 ```{r sintese-pessoal, include = FALSE, eval = has.discentes}
-# this chunk requires additional data that may be available
-
 discentes.raw <-
   read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
 
@@ -1325,14 +1344,14 @@ p1 <- ggplot() +
   theme_minimal() +
   theme(
     legend.position = 'bottom',
-    legend.title = element_text( color = "white"),
-    legend.text = element_text( color = "white")
+    legend.title = element_text(color = "white"),
+    legend.text = element_text(color = "white")
   ) +
   theme(
     plot.margin = unit(c(0, 0, 0, 0), "cm"),
     panel.background = element_rect(fill = '#2C3E50',  color = '#2C3E50'),
     plot.background = element_rect(fill = '#2C3E50',  color = '#2C3E50'),
-    panel.grid.major = element_line( color = "transparent"),
+    panel.grid.major = element_line(color = "transparent"),
     axis.text.x = element_blank(),
     axis.text.y = element_blank(),
     plot.title = element_text(
@@ -1357,7 +1376,7 @@ p2 <- ggplot(data, aes(x = "", y = N, fill = Regiões)) +
   theme(
     legend.position = 'bottom',
     legend.title = element_blank(),
-    legend.text = element_text( color = "white")
+    legend.text = element_text(color = "white")
   ) +
   theme(
     plot.margin = unit(c(0, 0, 0, 0), "cm"),
@@ -1376,7 +1395,7 @@ p3 <- ggplot(data, aes(x = "", y = N, fill = Cursos)) +
   theme(
     legend.position = 'bottom',
     legend.title = element_blank(),
-    legend.text = element_text( color = "white")
+    legend.text = element_text(color = "white")
   ) +
   theme(
     plot.margin = unit(c(0, 0, 0, 0), "cm"),
@@ -1414,14 +1433,14 @@ p1 <- ggplot() +
   theme_minimal() +
   theme(
     legend.position = 'bottom',
-    legend.title = element_text( color = "white"),
-    legend.text = element_text( color = "white")
+    legend.title = element_text(color = "white"),
+    legend.text = element_text(color = "white")
   ) +
   theme(
     plot.margin = unit(c(0, 0, 0, 0), "cm"),
     panel.background = element_rect(fill = '#2C3E50',  color = '#2C3E50'),
     plot.background = element_rect(fill = '#2C3E50',  color = '#2C3E50'),
-    panel.grid.major = element_line( color = "transparent"),
+    panel.grid.major = element_line(color = "transparent"),
     axis.text.x = element_blank(),
     axis.text.y = element_blank(),
     plot.title = element_text(
@@ -1446,7 +1465,7 @@ p2 <- ggplot(data, aes(x = "", y = N, fill = Regiões)) +
   theme(
     legend.position = 'bottom',
     legend.title = element_blank(),
-    legend.text = element_text( color = "white")
+    legend.text = element_text(color = "white")
   ) +
   theme(
     plot.margin = unit(c(0, 0, 0, 0), "cm"),
@@ -1465,7 +1484,7 @@ p3 <- ggplot(data, aes(x = "", y = N, fill = Cursos)) +
   theme(
     legend.position = 'bottom',
     legend.title = element_blank(),
-    legend.text = element_text( color = "white")
+    legend.text = element_text(color = "white")
   ) +
   theme(
     plot.margin = unit(c(0, 0, 0, 0), "cm"),
@@ -1561,7 +1580,7 @@ bs_carousel(id = "pessoal-carousel",
 
 cat('\n\n')
 cat(
-  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **PPG**"
+  "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), **PPG**"
 )
 ```
 
@@ -1902,7 +1921,7 @@ data.sucupira <- 0
 for (i in 1:length(sheets)) {
   sheet <- sheets[i]
   source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-  data.sucupira <- sum(data.sucupira,!is.na(sucupira.raw))
+  data.sucupira <- sum(data.sucupira, !is.na(sucupira.raw))
 }
 
 # get amount of data from PPG XLSX files
@@ -1913,8 +1932,10 @@ for (i in 1:length(files.to.read)) {
   abas <- excel_sheets(files.to.read[i])
   for (j in 1:length(abas)) {
     sheet <- sheets[j]
-    try(ppg.file <- read_excel(files.to.read[i], sheet = abas[j]), silent = TRUE)
-    data.ppg <- sum(data.ppg,!is.na(ppg.file))
+    try(ppg.file <-
+          read_excel(files.to.read[i], sheet = abas[j]),
+        silent = TRUE)
+    data.ppg <- sum(data.ppg, !is.na(ppg.file))
   }
 }
 
