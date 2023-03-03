@@ -866,7 +866,7 @@ for (i in 1:dim(artigos)[1]) {
 c.score <- c()
 for (i in 1:dim(artigos)[1]) {
   c.score.i <-
-    as.numeric(citescore[grep(gsub("-", "", artigos$ISSN[i]), citescore$issn), 6])
+    as.numeric(citescore$x2021_cite_score[grep(gsub("-", "", artigos$ISSN[i]), citescore$issn)])
   c.score <-
     c(c.score, ifelse(identical(c.score.i, numeric(0)) |
                     all(is.na(c.score.i)), NA, c.score.i))
@@ -943,20 +943,20 @@ legend(
   cex = 1,
 )
 
-# plot 3 (percentual de produção bilbiográfica, por estrato, por ano)
-barplot(
-  scale(
-    as.matrix(table.2),
-    center = FALSE,
-    scale = colSums(as.matrix(table.2))
-  ) * 100,
-  ylab = "%",
-  col = rev(mycolors),
-  ylim = c(0, 100)
-)
-title(main = "Qualidade da produção (Qualis)",
-      outer = TRUE,
-      cex.main = 1.7)
+# # plot 3 (percentual de produção bilbiográfica, por estrato, por ano)
+# barplot(
+#   scale(
+#     as.matrix(table.2),
+#     center = FALSE,
+#     scale = colSums(as.matrix(table.2))
+#   ) * 100,
+#   ylab = "%",
+#   col = rev(mycolors),
+#   ylim = c(0, 100)
+# )
+# title(main = "Qualidade da produção (Qualis)",
+#       outer = TRUE,
+#       cex.main = 1.7)
 
 # plot 4 (violin plot of SJR por ano)
 vioplot(as.numeric(table.3[, 2]) ~ as.numeric(table.3[, 1]),
@@ -1020,8 +1020,8 @@ options(digits = 2)
 # plot 7 (barplot of QUALIS e SJR)
 
 # plot area setup
-layout.m <- matrix(c(1, 2),
-                   ncol = 2,
+layout.m <- matrix(c(1, 2, 3),
+                   ncol = 3,
                    byrow = TRUE)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 
@@ -1057,7 +1057,7 @@ axis(1, at = round(c(
 )), labels = round(c(
   max(qualis.base, qualis.PPG), 0, max(qualis.base, qualis.PPG)
 )))
-title(main = "Distribuição de estratos Qualis e SJR",
+title(main = "Distribuição Bases vs. Programa (Qualis, SJR, CiteScore)",
       outer = TRUE,
       cex.main = 1.7)
 legend(
@@ -1098,6 +1098,40 @@ vioplot(
     as.numeric(SJR.base), as.numeric(SJR.PPG)
   ), max(
     as.numeric(SJR.base), as.numeric(SJR.PPG)
+  )),
+  ylab = "SJR",
+  xaxt = 'n',
+  ann = FALSE,
+  add = TRUE
+)
+
+# hist CiteScore base e PPG
+CITESCORE.base <- na.omit(citescore$x2021_cite_score)
+CITESCORE.PPG <- na.omit(c.score)
+
+vioplot(
+  as.numeric(CITESCORE.base),
+  col = mycolors[1],
+  xlab = NA,
+  side = "left",
+  ylim = c(min(
+    as.numeric(CITESCORE.base), as.numeric(CITESCORE.PPG)
+  ), max(
+    as.numeric(CITESCORE.base), as.numeric(CITESCORE.PPG)
+  )),
+  ylab = "SJR",
+  xaxt = 'n',
+  ann = FALSE
+)
+vioplot(
+  as.numeric(CITESCORE.PPG),
+  col = mycolors[2],
+  xlab = NA,
+  side = "right",
+  ylim = c(min(
+    as.numeric(CITESCORE.base), as.numeric(CITESCORE.PPG)
+  ), max(
+    as.numeric(CITESCORE.base), as.numeric(CITESCORE.PPG)
   )),
   ylab = "SJR",
   xaxt = 'n',
@@ -1211,8 +1245,7 @@ bs_carousel(id = "producao-carousel",
   bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-4.png")) %>%
   bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-5.png")) %>%
   bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-6.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-7.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-8.png"))
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-7.png"))
 
 cat('\n\n')
 cat(
