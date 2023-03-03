@@ -70,6 +70,116 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
+### **Coleta e dados do Programa** {#coleta-dados-ppg}
+
+<!--script for generating STACKED HORIZONTAL BAR CHART-->
+
+```{css}
+.row {
+  display: flex;
+  align-items: stretch;
+  margin: 0 0;
+}
+
+.row .label {
+  flex: 0 0 auto;
+}
+
+.row .bar-container {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.row .bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.val-a { background: #18BC9C }
+.val-b { background: #F39C12 }
+```
+
+```{r barchart-data, eval = has.sucupira & has.PPG.files}
+# get amount of data from Sucupira XLSX files
+source("Scripts/get-sucupira-sheets-names.R",
+       local = knitr::knit_global())
+sheets <- sucupira.sheets
+
+data.sucupira <- 0
+for (i in 1:length(sheets)) {
+  sheet <- sheets[i]
+  source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+  data.sucupira <- sum(data.sucupira, !is.na(sucupira.raw))
+}
+
+# get amount of data from PPG XLSX files
+source("Scripts/get-ppg-xlsx-data.R", local = knitr::knit_global())
+
+data.ppg <- 0
+for (i in 1:length(files.to.read)) {
+  abas <- excel_sheets(files.to.read[i])
+  for (j in 1:length(abas)) {
+    sheet <- sheets[j]
+    try(ppg.file <-
+          read_excel(files.to.read[i], sheet = abas[j]),
+        silent = TRUE)
+    data.ppg <- sum(data.ppg, !is.na(ppg.file))
+  }
+}
+
+# total data
+total <- data.sucupira + data.ppg
+
+# print stacked horizontal bar chart
+cat('<div class="row">')
+cat('<div class="bar-container">')
+cat(
+  paste0(
+    '<div class="bar val-a" style="color:white; font-weight:bold; flex-basis:',
+    data.sucupira / total * 100,
+    '%">Plataforma Sucupira</div>'
+  )
+)
+cat(
+  paste0(
+    '<div class="bar val-b" style="color:white; font-weight:bold; flex-basis:',
+    data.ppg / total * 100,
+    '%">Institucionais</div>'
+  )
+)
+cat('</div>')
+cat('</div>')
+```
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Formulários** {#formularios .tabset}
+
+#### **Qualidade das disciplinas**
+
+<p align="center">
+[<img align="center" src="PPG/Images/pesquisadasdisciplinas.png">](https://forms.gle/vp5yDpqrgb695M7y9){target="_blank"}
+</p>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### **Pesquisa do Egresso**
+
+<p align="center">
+[<img align="center" src="PPG/Images/pesquisadoegresso.png">](https://forms.gle/a4P8MeKmfYmKadf76){target="_blank"}
+</p>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
 ### **Grupos de trabalho** {#grupos-trabalho .tabset}
 
 #### **2024-2021** {.tabset}
@@ -135,28 +245,6 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 ##### **GT-04**
 
 <iframe src="https://drive.google.com/file/d/1pd3TJKh-1xGKWMwcRB45-9P9rfaBA9jA/preview" style="width:100%; height:500px; border:0;"></iframe>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Formulários** {.tabset}
-
-#### **Qualidade das disciplinas**
-
-<p align="center">
-[<img align="center" src="PPG/Images/pesquisadasdisciplinas.png">](https://forms.gle/vp5yDpqrgb695M7y9){target="_blank"}
-</p>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **Pesquisa do Egresso**
-
-<p align="center">
-[<img align="center" src="PPG/Images/pesquisadoegresso.png">](https://forms.gle/a4P8MeKmfYmKadf76){target="_blank"}
-</p>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 

@@ -492,8 +492,19 @@ $(document).ready(function () {
     <li>
       <a href="autoavaliacao.html#planejamento">Planejamento estratégico</a>
     </li>
-    <li>
-      <a href="autoavaliacao.html#metodologia">Metodologia</a>
+    <li class="dropdown-submenu">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Metodologia</a>
+      <ul class="dropdown-menu" role="menu">
+        <li>
+          <a href="autoavaliacao.html#coleta-dados-ppg">Coleta e dados do Programa</a>
+        </li>
+        <li>
+          <a href="autoavaliacao.html#formularios">Formulários</a>
+        </li>
+        <li>
+          <a href="autoavaliacao.html#grupos-trabalho">Grupos de trabalho</a>
+        </li>
+      </ul>
     </li>
     <li class="dropdown-submenu">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resultados</a>
@@ -633,36 +644,6 @@ ações e impactos, tornando-os acessíveis à sociedade
 <p><br></p>
 <p><br></p>
 <p><br></p>
-<!--script for generating STACKED HORIZONTAL BAR CHART-->
-<style type="text/css">
-.row {
-  display: flex;
-  align-items: stretch;
-  margin: 0 0;
-}
-
-.row .label {
-  flex: 0 0 auto;
-}
-
-.row .bar-container {
-  flex: 1;
-  display: flex;
-  align-items: stretch;
-  justify-content: flex-start;
-}
-
-.row .bar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.val-a { background: #18BC9C }
-.val-b { background: #F39C12 }
-</style>
-<p><br></p>
-<p><br></p>
 <div>
 <center>
 <img width="10%" height="10%" src="https://raw.githubusercontent.com/rstudio/hex-stickers/main/thumbs/RStudio.png">
@@ -672,6 +653,7 @@ href="https://www.rstudio.com"><strong>R version 4.2.2
 href="https://rmarkdown.rstudio.com"><strong>R markdown</strong></a>
 </center>
 </div>
+<p><br></p>
 <p><br></p>
 <p><br></p>
 <details closed>
@@ -711,7 +693,7 @@ href="https://rmarkdown.rstudio.com"><strong>R markdown</strong></a>
  checkmate           2.1.0     2022-04-21 [1] CRAN (R 4.2.0)
  chromote            0.1.1     2022-09-07 [1] CRAN (R 4.2.1)
  class               7.3-21    2023-01-23 [1] CRAN (R 4.2.2)
- classInt            0.4-8     2022-09-29 [1] CRAN (R 4.2.0)
+ classInt            0.4-9     2023-02-28 [1] CRAN (R 4.2.0)
  cli                 3.6.0     2023-01-09 [1] CRAN (R 4.2.2)
  clipr               0.8.0     2022-02-22 [1] CRAN (R 4.2.0)
  colorspace          2.1-0     2023-01-23 [1] CRAN (R 4.2.2)

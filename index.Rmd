@@ -1914,94 +1914,10 @@ cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/
 
 <br>
 
-<!--script for generating STACKED HORIZONTAL BAR CHART-->
-
-```{css}
-.row {
-  display: flex;
-  align-items: stretch;
-  margin: 0 0;
-}
-
-.row .label {
-  flex: 0 0 auto;
-}
-
-.row .bar-container {
-  flex: 1;
-  display: flex;
-  align-items: stretch;
-  justify-content: flex-start;
-}
-
-.row .bar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.val-a { background: #18BC9C }
-.val-b { background: #F39C12 }
-```
-
-```{r barchart-data, eval = has.sucupira & has.PPG.files}
-# get amount of data from Sucupira XLSX files
-source("Scripts/get-sucupira-sheets-names.R",
-       local = knitr::knit_global())
-sheets <- sucupira.sheets
-
-data.sucupira <- 0
-for (i in 1:length(sheets)) {
-  sheet <- sheets[i]
-  source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-  data.sucupira <- sum(data.sucupira, !is.na(sucupira.raw))
-}
-
-# get amount of data from PPG XLSX files
-source("Scripts/get-ppg-xlsx-data.R", local = knitr::knit_global())
-
-data.ppg <- 0
-for (i in 1:length(files.to.read)) {
-  abas <- excel_sheets(files.to.read[i])
-  for (j in 1:length(abas)) {
-    sheet <- sheets[j]
-    try(ppg.file <-
-          read_excel(files.to.read[i], sheet = abas[j]),
-        silent = TRUE)
-    data.ppg <- sum(data.ppg, !is.na(ppg.file))
-  }
-}
-
-# total data
-total <- data.sucupira + data.ppg
-
-# print stacked horizontal bar chart
-cat('<div class="row">')
-cat('<div class="bar-container">')
-cat(
-  paste0(
-    '<div class="bar val-a" style="color:white; font-weight:bold; flex-basis:',
-    data.sucupira / total * 100,
-    '%">Plataforma Sucupira</div>'
-  )
-)
-cat(
-  paste0(
-    '<div class="bar val-b" style="color:white; font-weight:bold; flex-basis:',
-    data.ppg / total * 100,
-    '%">Institucionais</div>'
-  )
-)
-cat('</div>')
-cat('</div>')
-```
-
-<br>
-
-<br>
-
 <div><center><img width="10%" height="10%" src="https://raw.githubusercontent.com/rstudio/hex-stickers/main/thumbs/RStudio.png"> Esta página foi desenvolvida em [**`r R.version$version.string`**](https://www.rstudio.com) usando [**R markdown**](https://rmarkdown.rstudio.com)
 </center></div>
+
+<br>
 
 <br>
 

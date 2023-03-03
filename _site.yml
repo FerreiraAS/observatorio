@@ -161,6 +161,13 @@ navbar:
           href: [autoavaliacao.html#planejamento]
         - text: "Metodologia"
           href: [autoavaliacao.html#metodologia]
+          menu:
+            - text: "Coleta e dados do Programa"
+              href: [autoavaliacao.html#coleta-dados-ppg]
+            - text: "Formulários"
+              href: [autoavaliacao.html#formularios]
+            - text: "Grupos de trabalho"
+              href: [autoavaliacao.html#grupos-trabalho]
         - text: "Resultados"
           href: [autoavaliacao.html#resultados]
           menu:
