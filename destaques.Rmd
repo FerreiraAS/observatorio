@@ -180,6 +180,8 @@ for (j in 1:length(tabs)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
+<br>
+
 ### **Atenção e visibilidade^1,2,3^ (Top-20)** {.tabset}
 
 ```{r destaque-visibilidade, eval = has.producao}
@@ -378,6 +380,8 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
+<br>
+
 ```{r premios, eval = has.premios}
 # read separate sheets
 file.path <- "PPG/Prêmios.xlsx"
@@ -434,6 +438,8 @@ for (j in 1:length(tabs)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
+<br>
+
 ```{r premio-capes, eval = has.premio.capes}
 # read separate sheets
 file.path <- "PPG/Prêmio CAPES de Tese.xlsx"
@@ -481,6 +487,8 @@ for (j in 1:length(tabs)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
+<br>
+
 ### **Associações** {.tabset}
 
 <br>
@@ -519,6 +527,8 @@ for (id in 1:length(orcids)) {
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
+
+<br>
 
 ### **Periódicos** {.tabset}
 
@@ -561,6 +571,8 @@ for (id in 1:length(orcids)) {
 }
 ```
 
+<br>
+
 #### **Revisores** {.tabset}
 
 <br>
@@ -599,6 +611,8 @@ for (id in 1:length(orcids)) {
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
+
+<br>
 
 ## **Divulgação** {#divulgacao}
 

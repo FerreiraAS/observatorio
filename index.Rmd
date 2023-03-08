@@ -1251,6 +1251,7 @@ cat('\n\n')
 cat(
   "*Fontes:* [**WebQualis**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf), [**SJR**](https://www.scimagojr.com), [**Scopus**](https://www.scopus.com/home.uri), **PPG**"
 )
+cat('^[Produções com DOI apenas; a produção pode estar subsestimada pois produtos sem DOI não estão apresentados.]')
 ```
 
 <br>

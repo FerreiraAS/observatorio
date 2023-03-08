@@ -59,6 +59,8 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
+<br>
+
 ### **Formação discente** {.tabset}
 
 #### **Cotas de bolsas** {.tabset}
@@ -392,6 +394,8 @@ if (dim(bolsistas.tcc)[1] != 0) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
+<br>
+
 ### **Periódicos institucionais**
 
 <iframe src="https://revistas.unisuam.edu.br" style="width:100%; height:600px; border:0;"></iframe>
@@ -505,6 +509,8 @@ print(
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
+<br>
+
 ### **Organização de eventos** {.tabset}
 
 <br>
@@ -572,6 +578,8 @@ print(
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
+<br>
+
 *Em construção!*
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
@@ -582,6 +590,8 @@ print(
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+<br>
 
 ```{r pandemia-termos}
 pandemia <-

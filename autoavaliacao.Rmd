@@ -70,6 +70,8 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
+<br>
+
 ### **Coleta e dados do Programa** {#coleta-dados-ppg}
 
 <!--script for generating STACKED HORIZONTAL BAR CHART-->
@@ -101,6 +103,8 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 .val-a { background: #18BC9C }
 .val-b { background: #F39C12 }
 ```
+
+<br>
 
 ```{r barchart-data, eval = has.sucupira & has.PPG.files}
 # get amount of data from Sucupira XLSX files
@@ -153,6 +157,8 @@ cat(
 cat('</div>')
 cat('</div>')
 ```
+
+<br>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
@@ -254,6 +260,8 @@ cat('</div>')
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+<br>
 
 ### **Nota** {#nota}
 
@@ -361,7 +369,7 @@ cat("*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br")
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
-<!--script for generating STACKED HORIZONTAL BAR CHART-->
+<br>
 
 ## **1. Programa** {#programa .tabset}
 

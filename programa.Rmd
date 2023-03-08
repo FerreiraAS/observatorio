@@ -107,6 +107,8 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
+<br>
+
 ```{r programa-historico, eval = has.historico}
 # initialize all sheets
 abas <- excel_sheets("PPG/Histórico.xlsx")
@@ -1123,6 +1125,8 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+<br>
 
 ```{r agendas-pesquisa, eval = has.agendas.pesquisa}
 # initialize all sheets
@@ -3011,6 +3015,8 @@ for (i in 1:dim(labs)[1]) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
+<br>
+
 ```{r programa-convenios, eval = has.convenios}
 # initialize all sheets
 abas <- excel_sheets("PPG/Convênios.xlsx")
@@ -3055,6 +3061,8 @@ cat('<br>')
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+<br>
 
 ```{r programa-cooperacao, eval = has.cooperacoes}
 # read separate sheets

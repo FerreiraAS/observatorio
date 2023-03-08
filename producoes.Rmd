@@ -52,10 +52,14 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating multiple PLUMX badges-->
 <script type="text/javascript" src="//cdn.plu.mx/widget-all.js"></script>
 
+<br>
+
 ## **Trabalhos de conclusão** {#TCC}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+<br>
 
 ### **Teses**
 
@@ -163,6 +167,8 @@ colnames(table.tcc) <-
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+<br>
 
 ### **Institucional** {.tabset}
 
@@ -275,6 +281,8 @@ cat('\n\n')
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+<br>
 
 ### **Artigos completos em periódicos** {.tabset}
 
@@ -671,6 +679,8 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+<br>
 
 ### **Trabalhos em anais de eventos** {.tabset}
 

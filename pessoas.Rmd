@@ -50,6 +50,8 @@ source("Scripts/social-media-sharing.R")
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
+<br>
+
 ```{r dados-cadastrais-endereco, eval = has.dados.cadastrais}
 # read separate sheets
 endereco.raw <-
@@ -92,6 +94,8 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+<br>
 
 ```{r docentes-atual-perfil, eval = has.colegiado}
 docentes.raw <-
@@ -2713,10 +2717,12 @@ if(length(new.ids) != 0) {
 
 <br>
 
-## **Discentes** {#discentes}
+## **Discentes** {.tabset #discentes}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+<br>
 
 ### **Inscritos** {.tabset #inscritos}
 
@@ -2890,9 +2896,6 @@ if (dim(discentes)[1] != 0) {
 <br>
 
 ### **Datas e prazos** {.tabset #datas-prazos}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
 #### **Doutorado**
 
