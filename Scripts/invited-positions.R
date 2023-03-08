@@ -34,7 +34,7 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
       ) %>%
       row_spec(
         0,
-        background = "#2C3E50",
+        background = main.color,
         bold = TRUE,
         color = "white"
       ),

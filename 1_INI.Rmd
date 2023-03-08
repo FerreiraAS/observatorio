@@ -14,6 +14,12 @@ knitr::opts_chunk$set(
 source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
+```{r main-color}
+# read CSS color for this page
+css <- read_css("CSS/main-color.css")
+main.color <- css$`:root`$`--mybackgroundcolor`
+```
+
 <!--create (if non existent) all required folders-->
 ```{r folders}
 dir.create(file.path(getwd(), "PPG"), showWarnings = FALSE)

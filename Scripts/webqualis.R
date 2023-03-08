@@ -11,7 +11,7 @@ qualis <-
              sheet = 1,
              col_types = c("text"))
 
-qualis <- select(qualis, "ISSN", "Título", "Estrato")
+qualis <- dplyr::select(qualis, "ISSN", "Título", "Estrato")
 
 # estratos Qualis
 estratos <- sort(unique(qualis$Estrato))

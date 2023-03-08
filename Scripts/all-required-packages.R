@@ -42,6 +42,7 @@ packs.cran <-
     "readtext",
     "readxl",
     "readr",
+    "remote",
     "rmarkdown",
     "Rmisc",
     "roadoi",
@@ -66,9 +67,13 @@ for (i in 1:length(packs.cran)) {
 
 # other packages work better if installed from github
 packs.git <-
-  c("geobr",
+  c("cssparser",
+    "geobr",
     "packup",
     "rcrossref")
+
+if (!require("cssparser", character.only = TRUE, quietly = TRUE))
+  remotes::install_github('coolbutuseless/cssparser')
 
 if (!require("geobr", character.only = TRUE, quietly = TRUE))
   devtools::install_github("ipeaGIT/geobr", subdir = "r-package")

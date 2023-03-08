@@ -50,7 +50,7 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
       ) %>%
       row_spec(
         0,
-        background = "#2C3E50",
+        background = main.color,
         bold = TRUE,
         color = "white"
       ),
