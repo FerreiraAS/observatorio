@@ -94,7 +94,7 @@ bolsistas$`Nome do Orientador` <-
   toTitleCase(tolower(bolsistas$`Nome do Orientador`))
 
 bolsistas <-
-  select(bolsistas,
+  dplyr::select(bolsistas,
          c("Nome do Autor", "Nome do Orientador", "Matrícula", "Titulação"))
 
 # remove duplicates and NA rows if any
@@ -198,7 +198,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ##### **Doutorado**
 
 ```{r bolsistas-dsc, eval = has.sucupira}
-# select level
+# dplyr::select level
 course.level <- "TESE"
 
 # discentes
@@ -224,7 +224,7 @@ bolsistas$'Titulação' <- substr(as.Date(bolsistas$`Data da Defesa`, format = "
 bolsistas$`Nome do Autor` <- toTitleCase(tolower(bolsistas$`Nome do Autor`))
 bolsistas$`Nome do Orientador` <- toTitleCase(tolower(bolsistas$`Nome do Orientador`))
 
-bolsistas <- select(bolsistas, c("Nome do Autor", "Nome do Orientador", "Matrícula", "Titulação"))
+bolsistas <- dplyr::select(bolsistas, c("Nome do Autor", "Nome do Orientador", "Matrícula", "Titulação"))
 
 # remove duplicates and NA rows if any
 bolsistas <- unique(bolsistas)
@@ -248,7 +248,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ##### **Mestrado**
 
 ```{r bolsistas-msc, eval = has.sucupira}
-# select level
+# dplyr::select level
 course.level <- "DISSERTAÇÃO"
 
 # discentes
@@ -274,7 +274,7 @@ bolsistas$'Titulação' <- substr(as.Date(bolsistas$`Data da Defesa`, format = "
 bolsistas$`Nome do Autor` <- toTitleCase(tolower(bolsistas$`Nome do Autor`))
 bolsistas$`Nome do Orientador` <- toTitleCase(tolower(bolsistas$`Nome do Orientador`))
 
-bolsistas <- select(bolsistas, c("Nome do Autor", "Nome do Orientador", "Matrícula", "Titulação"))
+bolsistas <- dplyr::select(bolsistas, c("Nome do Autor", "Nome do Orientador", "Matrícula", "Titulação"))
 
 # remove duplicates and NA rows if any
 bolsistas <- unique(bolsistas)
@@ -320,7 +320,7 @@ bolsistas.tcc$`Nome do Trabalho de Conclusão` <- toTitleCase(tolower(bolsistas.
 bolsistas.tcc <- bolsistas.tcc[bolsistas.tcc$`Tipo de Trabalho de Conclusão` == "TESE", ]
 
 # drop columns
-bolsistas.tcc <- bolsistas.tcc %>% select("Ano de Defesa", "Linha de Pesquisa", "Nome do Autor", "Nome do Trabalho de Conclusão", "Nome do Financiador")
+bolsistas.tcc <- bolsistas.tcc %>% dplyr::select("Ano de Defesa", "Linha de Pesquisa", "Nome do Autor", "Nome do Trabalho de Conclusão", "Nome do Financiador")
 
 # drop NA values in "Quantidade de Meses"
 bolsistas.tcc <- bolsistas.tcc[complete.cases(bolsistas.tcc), ]
@@ -366,7 +366,7 @@ bolsistas.tcc$`Nome do Trabalho de Conclusão` <- toTitleCase(tolower(bolsistas.
 bolsistas.tcc <- bolsistas.tcc[bolsistas.tcc$`Tipo de Trabalho de Conclusão` == "DISSERTAÇÃO", ]
 
 # drop columns
-bolsistas.tcc <- bolsistas.tcc %>% select("Ano de Defesa", "Linha de Pesquisa", "Nome do Autor", "Nome do Trabalho de Conclusão", "Nome do Financiador")
+bolsistas.tcc <- bolsistas.tcc %>% dplyr::select("Ano de Defesa", "Linha de Pesquisa", "Nome do Autor", "Nome do Trabalho de Conclusão", "Nome do Financiador")
 
 # drop NA values in "Quantidade de Meses"
 bolsistas.tcc <- bolsistas.tcc[complete.cases(bolsistas.tcc), ]
@@ -652,7 +652,7 @@ pandemia <-
 ```
 
 ```{r pandemia-filtro, eval = has.producao}
-# selecting those with COVID in the title
+# dplyr::selecting those with COVID in the title
 doi_unique_artigos_impacto <-
   doi_unique_artigos[grep(paste(tolower(pandemia), collapse = "|"), tolower(doi_unique_artigos$title)),]
 my_dois_works_artigos_impacto <-
@@ -660,7 +660,7 @@ my_dois_works_artigos_impacto <-
 references_artigos_impacto <-
   references_artigos[grep(paste(tolower(pandemia), collapse = "|"), tolower(references_artigos[,2])),]
 
-# selecting those with COVID in the title
+# dplyr::selecting those with COVID in the title
 doi_unique_resumos_impacto <-
   doi_unique_resumos[grep(paste(tolower(pandemia), collapse = "|"), tolower(doi_unique_resumos$title)),]
 my_dois_works_resumos_impacto <-
@@ -668,7 +668,7 @@ my_dois_works_resumos_impacto <-
 references_resumos_impacto <-
   references_resumos[grep(paste(tolower(pandemia), collapse = "|"), tolower(references_resumos)[,2]),]
 
-# selecting those with COVID in the title
+# dplyr::selecting those with COVID in the title
 doi_unique_eventos_impacto <-
   doi_unique_eventos[grep(paste(tolower(pandemia), collapse = "|"), tolower(doi_unique_eventos$title)),]
 my_dois_works_eventos_impacto <-
@@ -694,13 +694,13 @@ projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 projetos.all <-
   unique(projetos.all[projetos.all$`Membro Responsável` == "Sim",])
 
-# selecting those with COVID in the title
+# dplyr::selecting those with COVID in the title
 projetos <-
   projetos.all[grep(paste(tolower(pandemia), collapse = "|"),
                     tolower(projetos.all$`Nome do Projeto de Pesquisa`)),]
 
 if (dim(projetos)[1] != 0) {
-  # select data DOCENTES
+  # dplyr::select data DOCENTES
   table.projetos <-
     cbind(
       projetos$`Nome do Membro do Projeto`,
@@ -747,19 +747,19 @@ has.file <-
 
 if (has.file) {
   financiadores.sub <-
-    financiadores.raw %>% select("Ano",
+    financiadores.raw %>% dplyr::select("Ano",
                                  "Agência",
                                  "Edital",
                                  "Processo No.",
                                  "Título do projeto",
                                  "Programa")
-  fonte.sub <- financiadores.raw %>% select("Fonte")
+  fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
   
   financiadores <-
     financiadores.sub[complete.cases(financiadores.sub), ]
   fonte <- fonte.sub[complete.cases(financiadores.sub), ]
   
-  # selecting those with COVID in the title
+  # dplyr::selecting those with COVID in the title
   financiadores <-
     financiadores[grep(paste(tolower(pandemia), collapse = "|"),
                        tolower(financiadores$`Título do projeto`)), ]
@@ -831,13 +831,13 @@ periodos <- names(sucupira.list)
 periodo <- as.character(seq(min(periodos), max(periodos)))
 tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
-# selecting those with COVID in the title
+# dplyr::selecting those with COVID in the title
 tccs <-
   tcc.all[grep(paste(tolower(pandemia), collapse = "|"),
                tolower(tcc.all$`Nome do Trabalho de Conclusão`)),]
 
 if (dim(tccs)[1] != 0) {
-  # select data
+  # dplyr::select data
   table.tcc <-
     cbind(
       format((as.Date(
@@ -1134,7 +1134,7 @@ for (j in 1:length(tabs)) {
                sheet = tabs[j],
                col_types = c("text", "text", "text"))
   
-  # selecting those with COVID in the title
+  # dplyr::selecting those with COVID in the title
   premios <-
     premios[grep(paste(tolower(pandemia), collapse = "|"), tolower(premios$Documento)), ]
   

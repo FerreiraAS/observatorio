@@ -1171,13 +1171,13 @@ financiadores.raw <-
   read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
 financiadores.sub <-
-  financiadores.raw %>% select("Ano",
+  financiadores.raw %>% dplyr::select("Ano",
                                "Agência",
                                "Edital",
                                "Processo No.",
                                "Título do projeto",
                                "Programa")
-fonte.sub <- financiadores.raw %>% select("Fonte")
+fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
 
 financiadores <-
   financiadores.sub[complete.cases(financiadores.sub), ]
@@ -1236,13 +1236,13 @@ financiadores.raw <-
   read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
 financiadores.sub <-
-  financiadores.raw %>% select("Ano",
+  financiadores.raw %>% dplyr::select("Ano",
                                "Agência",
                                "Edital",
                                "Processo No.",
                                "Título do projeto",
                                "Programa")
-fonte.sub <- financiadores.raw %>% select("Fonte")
+fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
 
 financiadores <-
   financiadores.sub[complete.cases(financiadores.sub),]
@@ -1301,13 +1301,13 @@ financiadores.raw <-
   read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
 financiadores.sub <-
-  financiadores.raw %>% select("Ano",
+  financiadores.raw %>% dplyr::select("Ano",
                                "Agência",
                                "Edital",
                                "Processo No.",
                                "Título do projeto",
                                "Programa")
-fonte.sub <- financiadores.raw %>% select("Fonte")
+fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
 
 financiadores <-
   financiadores.sub[complete.cases(financiadores.sub),]
@@ -1366,13 +1366,13 @@ financiadores.raw <-
   read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
 financiadores.sub <-
-  financiadores.raw %>% select("Ano",
+  financiadores.raw %>% dplyr::select("Ano",
                                "Agência",
                                "Edital",
                                "Processo No.",
                                "Título do projeto",
                                "Programa")
-fonte.sub <- financiadores.raw %>% select("Fonte")
+fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
 
 financiadores <-
   financiadores.sub[complete.cases(financiadores.sub),]
@@ -1431,13 +1431,13 @@ financiadores.raw <-
   read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
 financiadores.sub <-
-  financiadores.raw %>% select("Ano",
+  financiadores.raw %>% dplyr::select("Ano",
                                "Agência",
                                "Edital",
                                "Processo No.",
                                "Título do projeto",
                                "Programa")
-fonte.sub <- financiadores.raw %>% select("Fonte")
+fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
 
 financiadores <-
   financiadores.sub[complete.cases(financiadores.sub),]
@@ -1579,7 +1579,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 # read separate sheets
 cursos.raw <- read_excel("PPG/Dados Cadastrais.xlsx", sheet = "Cursos", col_types = c("text"))
 
-cursos <- select(cursos.raw, c("Código", "Curso", "Nível"))
+cursos <- dplyr::select(cursos.raw, c("Código", "Curso", "Nível"))
 
 # print tables
 print(kable(cursos, align = c("l", rep("c", ncol(cursos)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
@@ -1598,7 +1598,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 # read separate sheets
 cursos.raw <- read_excel("PPG/Dados Cadastrais.xlsx", sheet = "Cursos", col_types = c("text"))
 
-cursos <- select(cursos.raw, c("Nível", "Objetivos"))
+cursos <- dplyr::select(cursos.raw, c("Nível", "Objetivos"))
 
 # print tables
 print(kable(cursos, align = c("l", rep("c", ncol(cursos)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))

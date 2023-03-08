@@ -502,9 +502,9 @@ options("scipen" = 100)
 financiadores.raw <-
   read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
-# select variables to display
+# dplyr::select variables to display
 financiadores <-
-  financiadores.raw %>% select("Ano", "Agência", "Programa", "Total", "Proponente")
+  financiadores.raw %>% dplyr::select("Ano", "Agência", "Programa", "Total", "Proponente")
 
 # drop rows with empty cells
 financiadores <- financiadores[complete.cases(financiadores), ]
@@ -808,15 +808,15 @@ try(eventos <-
 # bind papers and letters/abstracts and events (all with DOI)
 artigos <-
   rbind(
-    select(artigos,
+    dplyr::select(artigos,
            "Publicado.em",
            "DOI",
            "ISSN"),
-    select(resumos,
+    dplyr::select(resumos,
            "Publicado.em",
            "DOI",
            "ISSN"),
-    select(eventos,
+    dplyr::select(eventos,
            "Publicado.em",
            "DOI",
            "ISSN")

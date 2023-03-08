@@ -2729,7 +2729,7 @@ if(length(new.ids) != 0) {
 #### **Doutorado**
 
 ```{r discentes-dsc, eval = has.sucupira}
-# select level
+# dplyr::select level
 course.level <- "Doutorado"
 
 # discentes
@@ -2746,10 +2746,10 @@ discentes <- sucupira.list[[length(anos)]]
 # filter students
 discentes <- discentes[str_detect(discentes$`Nível Discente`, course.level), ]
 
-# select active students
+# dplyr::select active students
 discentes <- discentes[discentes$`Situação Discente` == "MATRICULADO", ]
 
-# select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
+# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
 discentes <- discentes[discentes$`Orientador Principal?` == "Sim", ]
 
 # get years
@@ -2760,7 +2760,7 @@ discentes$`Nome Discente` <- toTitleCase(tolower(discentes$`Nome Discente`))
 discentes$`Nome do Orientador` <- toTitleCase(tolower(discentes$`Nome do Orientador`))
 
 # drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-discentes <- discentes %>% select("Ano de Matrícula", "Nome Discente", "Nome do Orientador")
+discentes <- discentes %>% dplyr::select("Ano de Matrícula", "Nome Discente", "Nome do Orientador")
 
 # remove duplicates
 discentes <- unique(discentes)
@@ -2786,7 +2786,7 @@ if (dim(discentes)[1] != 0) {
 #### **Mestrado**
 
 ```{r discentes-msc, eval = has.sucupira}
-# select level
+# dplyr::select level
 course.level <- "Mestrado"
 
 # discentes
@@ -2803,10 +2803,10 @@ discentes <- sucupira.list[[length(anos)]]
 # filter students
 discentes <- discentes[str_detect(discentes$`Nível Discente`, course.level), ]
 
-# select active students
+# dplyr::select active students
 discentes <- discentes[discentes$`Situação Discente` == "MATRICULADO", ]
 
-# select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
+# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
 discentes <- discentes[discentes$`Orientador Principal?` == "Sim", ]
 
 # get years
@@ -2817,7 +2817,7 @@ discentes$`Nome Discente` <- toTitleCase(tolower(discentes$`Nome Discente`))
 discentes$`Nome do Orientador` <- toTitleCase(tolower(discentes$`Nome do Orientador`))
 
 # drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-discentes <- discentes %>% select("Ano de Matrícula", "Nome Discente", "Nome do Orientador")
+discentes <- discentes %>% dplyr::select("Ano de Matrícula", "Nome Discente", "Nome do Orientador")
 
 # remove duplicates
 discentes <- unique(discentes)
@@ -2843,7 +2843,7 @@ if (dim(discentes)[1] != 0) {
 #### **Iniciação científica**
 
 ```{r discentes-ic, eval = has.sucupira}
-# select level
+# dplyr::select level
 course.level <- "Bacharelado"
 
 # discentes
@@ -2858,10 +2858,10 @@ names(sucupira.list) <- as.character(anos)
 # filter students
 discentes <- discentes[str_detect(discentes$`Nível Discente`, course.level), ]
 
-# select active students
+# dplyr::select active students
 discentes <- discentes[discentes$`Situação Discente` == "MATRICULADO", ]
 
-# select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
+# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
 # discentes <- discentes[discentes$`Orientador Principal?` == "Sim", ]
 
 # remove duplicates
@@ -2875,7 +2875,7 @@ discentes$`Nome Discente` <- toTitleCase(tolower(discentes$`Nome Discente`))
 # discentes$`Nome do Orientador` <- toTitleCase(tolower(discentes$`Nome do Orientador`))
 
 # drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-discentes <- discentes %>% select("Ano de Matrícula", "Nome Discente")
+discentes <- discentes %>% dplyr::select("Ano de Matrícula", "Nome Discente")
 
 if (dim(discentes)[1] != 0) {
   ids <- order(discentes$'Ano de Matrícula', decreasing = TRUE)
@@ -2900,7 +2900,7 @@ if (dim(discentes)[1] != 0) {
 #### **Doutorado**
 
 ```{r discentes-dsc-prazos, eval = has.sucupira}
-# select level
+# dplyr::select level
 course.level <- "Doutorado"
 
 # discentes
@@ -2917,11 +2917,11 @@ discentes <- sucupira.list[[length(anos)]]
 # filter students
 discentes <- discentes[str_detect(discentes$`Nível Discente`, course.level), ]
 
-# select active students
+# dplyr::select active students
 discentes <-
   discentes[discentes$`Situação Discente` == "MATRICULADO",]
 
-# select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
+# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
 discentes <- discentes[discentes$`Orientador Principal?` == "Sim",]
 
 # format names
@@ -2929,7 +2929,7 @@ discentes$`Nome Discente` <-
   toTitleCase(tolower(discentes$`Nome Discente`))
 
 # drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-discentes <- discentes %>% select("Nome Discente", "Data Matrícula")
+discentes <- discentes %>% dplyr::select("Nome Discente", "Data Matrícula")
 
 # calculate hard deadlines
 discentes$'Tempo em curso' <-
@@ -3013,7 +3013,7 @@ if (dim(discentes)[1] != 0) {
 #### **Mestrado**
 
 ```{r discentes-msc-prazos, eval = has.sucupira}
-# select level
+# dplyr::select level
 course.level <- "Mestrado"
 
 # discentes
@@ -3030,11 +3030,11 @@ discentes <- sucupira.list[[length(anos)]]
 # filter students
 discentes <- discentes[str_detect(discentes$`Nível Discente`, course.level), ]
 
-# select active students
+# dplyr::select active students
 discentes <-
   discentes[discentes$`Situação Discente` == "MATRICULADO",]
 
-# select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
+# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
 discentes <- discentes[discentes$`Orientador Principal?` == "Sim",]
 
 # format names
@@ -3042,7 +3042,7 @@ discentes$`Nome Discente` <-
   toTitleCase(tolower(discentes$`Nome Discente`))
 
 # drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-discentes <- discentes %>% select("Nome Discente", "Data Matrícula")
+discentes <- discentes %>% dplyr::select("Nome Discente", "Data Matrícula")
 
 # calculate hard deadlines
 discentes$'Tempo em curso' <-
@@ -3186,9 +3186,9 @@ discentes <-
                   discentes.raw$`Ano Titulação` <= 2024,]
 
 discentes <-
-  discentes %>% select("Ano Titulação", "Curso", "Nome", "Orientador")
+  discentes %>% dplyr::select("Ano Titulação", "Curso", "Nome", "Orientador")
 doutores <-
-  discentes[discentes$Curso == "Doutorado",] %>% select("Ano Titulação", "Nome", "Orientador")
+  discentes[discentes$Curso == "Doutorado",] %>% dplyr::select("Ano Titulação", "Nome", "Orientador")
 if (dim(doutores)[1] != 0) {
   doutores$Orientador <-
     gsub("([A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9] - )",
@@ -3218,9 +3218,9 @@ discentes <-
                   discentes.raw$`Ano Titulação` <= 2024,]
 
 discentes <-
-  discentes %>% select("Ano Titulação", "Curso", "Nome", "Orientador")
+  discentes %>% dplyr::select("Ano Titulação", "Curso", "Nome", "Orientador")
 mestres <-
-  discentes[discentes$Curso == "Mestrado",] %>% select("Ano Titulação", "Nome", "Orientador")
+  discentes[discentes$Curso == "Mestrado",] %>% dplyr::select("Ano Titulação", "Nome", "Orientador")
 if (dim(mestres)[1] != 0) {
   mestres$Orientador <-
     gsub("([A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9] - )",
@@ -3252,9 +3252,9 @@ discentes <-
                   discentes.raw$`Ano Titulação` <= 2020,]
 
 discentes <-
-  discentes %>% select("Ano Titulação", "Curso", "Nome", "Orientador")
+  discentes %>% dplyr::select("Ano Titulação", "Curso", "Nome", "Orientador")
 doutores <-
-  discentes[discentes$Curso == "Doutorado",] %>% select("Ano Titulação", "Nome", "Orientador")
+  discentes[discentes$Curso == "Doutorado",] %>% dplyr::select("Ano Titulação", "Nome", "Orientador")
 if (dim(doutores)[1] != 0) {
   doutores$Orientador <-
     gsub("([A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9] - )",
@@ -3284,9 +3284,9 @@ discentes <-
                   discentes.raw$`Ano Titulação` <= 2020,]
 
 discentes <-
-  discentes %>% select("Ano Titulação", "Curso", "Nome", "Orientador")
+  discentes %>% dplyr::select("Ano Titulação", "Curso", "Nome", "Orientador")
 mestres <-
-  discentes[discentes$Curso == "Mestrado",] %>% select("Ano Titulação", "Nome", "Orientador")
+  discentes[discentes$Curso == "Mestrado",] %>% dplyr::select("Ano Titulação", "Nome", "Orientador")
 if (dim(mestres)[1] != 0) {
   mestres$Orientador <-
     gsub("([A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9] - )",
@@ -3318,9 +3318,9 @@ discentes <-
                   discentes.raw$`Ano Titulação` <= 2016,]
 
 discentes <-
-  discentes %>% select("Ano Titulação", "Curso", "Nome", "Orientador")
+  discentes %>% dplyr::select("Ano Titulação", "Curso", "Nome", "Orientador")
 doutores <-
-  discentes[discentes$Curso == "Doutorado",] %>% select("Ano Titulação", "Nome", "Orientador")
+  discentes[discentes$Curso == "Doutorado",] %>% dplyr::select("Ano Titulação", "Nome", "Orientador")
 if (dim(doutores)[1] != 0) {
   doutores$Orientador <-
     gsub("([A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9] - )",
@@ -3350,9 +3350,9 @@ discentes <-
                   discentes.raw$`Ano Titulação` <= 2016,]
 
 discentes <-
-  discentes %>% select("Ano Titulação", "Curso", "Nome", "Orientador")
+  discentes %>% dplyr::select("Ano Titulação", "Curso", "Nome", "Orientador")
 mestres <-
-  discentes[discentes$Curso == "Mestrado",] %>% select("Ano Titulação", "Nome", "Orientador")
+  discentes[discentes$Curso == "Mestrado",] %>% dplyr::select("Ano Titulação", "Nome", "Orientador")
 if (dim(mestres)[1] != 0) {
   mestres$Orientador <-
     gsub("([A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9] - )",
@@ -3384,9 +3384,9 @@ discentes <-
                   discentes.raw$`Ano Titulação` <= 2012,]
 
 discentes <-
-  discentes %>% select("Ano Titulação", "Curso", "Nome", "Orientador")
+  discentes %>% dplyr::select("Ano Titulação", "Curso", "Nome", "Orientador")
 doutores <-
-  discentes[discentes$Curso == "Doutorado",] %>% select("Ano Titulação", "Nome", "Orientador")
+  discentes[discentes$Curso == "Doutorado",] %>% dplyr::select("Ano Titulação", "Nome", "Orientador")
 if (dim(doutores)[1] != 0) {
   doutores$Orientador <-
     gsub("([A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9] - )",
@@ -3416,9 +3416,9 @@ discentes <-
                   discentes.raw$`Ano Titulação` <= 2012,]
 
 discentes <-
-  discentes %>% select("Ano Titulação", "Curso", "Nome", "Orientador")
+  discentes %>% dplyr::select("Ano Titulação", "Curso", "Nome", "Orientador")
 mestres <-
-  discentes[discentes$Curso == "Mestrado",] %>% select("Ano Titulação", "Nome", "Orientador")
+  discentes[discentes$Curso == "Mestrado",] %>% dplyr::select("Ano Titulação", "Nome", "Orientador")
 if (dim(mestres)[1] != 0) {
   mestres$Orientador <-
     gsub("([A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9] - )",
@@ -3445,7 +3445,7 @@ if (dim(mestres)[1] != 0) {
 ### **Doutorado**
 
 ```{r bolsistas-dsc, eval = has.sucupira}
-# select level
+# dplyr::select level
 course.level <- "TESE"
 
 # discentes
@@ -3471,7 +3471,7 @@ bolsistas$'Titulação' <- substr(as.Date(bolsistas$`Data da Defesa`, format = "
 bolsistas$`Nome do Autor` <- toTitleCase(tolower(bolsistas$`Nome do Autor`))
 bolsistas$`Nome do Orientador` <- toTitleCase(tolower(bolsistas$`Nome do Orientador`))
 
-bolsistas <- select(bolsistas, c("Nome do Autor", "Nome do Orientador", "Matrícula", "Titulação"))
+bolsistas <- dplyr::select(bolsistas, c("Nome do Autor", "Nome do Orientador", "Matrícula", "Titulação"))
 
 # remove duplicates and NA rows if any
 bolsistas <- unique(bolsistas)
@@ -3495,7 +3495,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ### **Mestrado**
 
 ```{r bolsistas-msc, eval = has.sucupira}
-# select level
+# dplyr::select level
 course.level <- "DISSERTAÇÃO"
 
 # discentes
@@ -3521,7 +3521,7 @@ bolsistas$'Titulação' <- substr(as.Date(bolsistas$`Data da Defesa`, format = "
 bolsistas$`Nome do Autor` <- toTitleCase(tolower(bolsistas$`Nome do Autor`))
 bolsistas$`Nome do Orientador` <- toTitleCase(tolower(bolsistas$`Nome do Orientador`))
 
-bolsistas <- select(bolsistas, c("Nome do Autor", "Nome do Orientador", "Matrícula", "Titulação"))
+bolsistas <- dplyr::select(bolsistas, c("Nome do Autor", "Nome do Orientador", "Matrícula", "Titulação"))
 
 # remove duplicates and NA rows if any
 bolsistas <- unique(bolsistas)
@@ -3623,7 +3623,7 @@ externos <- externos[externos$`País` == "Brasil", ]
 externos <- unique(externos)
 
 # drop columns
-externos <- externos %>% select("Nome do Participante", "Tipos de Participação", "Instituição de Origem", "País")
+externos <- externos %>% dplyr::select("Nome do Participante", "Tipos de Participação", "Instituição de Origem", "País")
 
 # complete cases only
 externos <- externos[complete.cases(externos), ]
@@ -3670,7 +3670,7 @@ externos <- externos[externos$`País` != "Brasil", ]
 externos <- unique(externos)
 
 # drop columns
-externos <- externos %>% select("Nome do Participante", "Tipos de Participação", "Instituição de Origem", "País")
+externos <- externos %>% dplyr::select("Nome do Participante", "Tipos de Participação", "Instituição de Origem", "País")
 
 # complete cases only
 externos <- externos[complete.cases(externos), ]
@@ -3711,7 +3711,7 @@ source("Scripts/years-sucupira.R")
 names(sucupira.list) <- as.character(anos)
 
 # drop columns and remove duplicated entries
-externos <- externos %>% select("Instituição de Origem", "País")
+externos <- externos %>% dplyr::select("Instituição de Origem", "País")
 externos <- unique(externos)
 
 # complete cases only

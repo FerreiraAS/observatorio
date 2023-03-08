@@ -458,9 +458,9 @@ financiadores.raw <-
 
 options(scipen = 10)
 
-# select variables to display, by AGENCIA & PROGRAMA
+# dplyr::select variables to display, by AGENCIA & PROGRAMA
 financiadores <-
-  financiadores.raw %>% select("Agência", "Programa")
+  financiadores.raw %>% dplyr::select("Agência", "Programa")
 
 # drop rows with empty cells
 financiadores <-
@@ -508,9 +508,9 @@ options(scipen = 10)
 financiadores.raw <-
   read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
-# select variables to display, by AGENCIA & ANO
+# dplyr::select variables to display, by AGENCIA & ANO
 financiadores <-
-  financiadores.raw %>% select("Ano", "Agência", "Total")
+  financiadores.raw %>% dplyr::select("Ano", "Agência", "Total")
 
 # drop rows with empty cells
 financiadores <- financiadores[complete.cases(financiadores),]
@@ -562,9 +562,9 @@ options(scipen = 10)
 financiadores.raw <-
   read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
-# select variables to display, by AGENCIA & ANO
+# dplyr::select variables to display, by AGENCIA & ANO
 financiadores <-
-  financiadores.raw %>% select("Proponente", "Agência", "Total")
+  financiadores.raw %>% dplyr::select("Proponente", "Agência", "Total")
 
 # drop rows with empty cells
 financiadores <- financiadores[complete.cases(financiadores),]
@@ -616,9 +616,9 @@ options(scipen = 10)
 financiadores.raw <-
   read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
-# select variables to display, by AGENCIA & ANO
+# dplyr::select variables to display, by AGENCIA & ANO
 financiadores <-
-  financiadores.raw %>% select("Proponente", "Ano", "Total")
+  financiadores.raw %>% dplyr::select("Proponente", "Ano", "Total")
 
 # drop rows with empty cells
 financiadores <- financiadores[complete.cases(financiadores),]
