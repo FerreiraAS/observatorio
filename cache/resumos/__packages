@@ -40,6 +40,10 @@ RColorBrewer
 readtext
 readxl
 readr
+Rcpp
+sp
+raster
+remote
 rmarkdown
 lattice
 Rmisc
@@ -62,6 +66,7 @@ zoo
 vioplot
 webshot2
 wordcloud2
+cssparser
 geobr
 packup
 rcrossref

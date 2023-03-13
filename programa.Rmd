@@ -132,6 +132,9 @@ for (i in 1:length(abas)) {
     )
   )
   
+  cat('\n\n')
+  cat('*Fonte:* **PPG**')
+
   # print end of tab rows
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
@@ -2269,12 +2272,7 @@ cross.table.turmas <-
 # generate plot of total per year
 par(
   oma = c(2, 0.1, 2, 0.1),
-  mar = c(5, 4, 2, 2),
-  bg = '#2C3E50',
-  col.lab = "white",
-  col.axis = "white",
-  fg = "white",
-  col.main = "white"
+  mar = c(5, 4, 2, 2)
 )
 # generate plot of turmas per year
 barplot(
