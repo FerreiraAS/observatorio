@@ -1495,79 +1495,48 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
-### **Portarias IES**
+<br>
 
 ```{r bolsas, eval = has.bolsas}
-# read separate sheets
-turmas.raw <- read_excel("PPG/Bolsas.xlsx", sheet = "PortariaBolsas", col_types = c("text"))
+# initialize all sheets
+abas <- excel_sheets("PPG/Bolsas.xlsx")
 
-Abrir <- matrix(NA, nrow = dim(turmas.raw)[1])
-colnames(Abrir) <- "Abrir"
-# add hyperlinks
-for(i in 1:dim(turmas.raw)[1]){
-  if(!is.na(turmas.raw[i,3])){
-    Abrir[i] <- paste0('<a href="', turmas.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>", sep = "")
+# display each sheet in a tab
+for (i in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('### **', abas[i], '**'))
+  cat('\n\n<!-- -->\n\n')
+  bolsas.raw <-
+    read_excel("PPG/Bolsas.xlsx",
+               sheet = abas[i],
+               col_types = c("text"))
+  
+  # replace the link by a tag
+  for (i in 1:dim(bolsas.raw)[1]) {
+    bolsas.raw[i, 3] <-
+      paste("[↗️](", bolsas.raw[i, 3], '){target="_blank"}', sep = "")
   }
+  
+  # print table
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(bolsas.raw, title = "Bolsas de estudo")
+
+
+  # print(
+  #   kable(bolsas.raw, align = c("l", rep(
+  #     "c", ncol(bolsas.raw) - 2
+  #   ), "r")) %>% kable_styling(
+  #     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+  #     full_width = T,
+  #     position = "center"
+  #   )
+  # )
+  
+  # print end of tab rows
+  cat('\n\n')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
-
-turmas <- cbind(turmas.raw[,-3], Abrir)
-turmas <- turmas[order(turmas$Publicação, decreasing = TRUE), ]
-
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(turmas, title = "Portarias Bolsas CAPES")
-
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<br>
-
-### **Portaria PROSUP**
-
-<br>
-
-<iframe src="http://cad.capes.gov.br/ato-administrativo-detalhar?idAtoAdmElastic=572#anchor" style="width:100%; height:600px; border:0;"></iframe>
-
-<br>
-
-*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/bolsas/bolsas-no-pais/programa-de-suporte-a-pos-graduacao-de-instituicoes-de-ensino-particulares-prosup)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Termo de Compromisso PROSUP**
-
-<br>
-
-<object data="https://www.gov.br/capes/pt-br/centrais-de-conteudo/22102018ModeloTermoCompromissoPROSUP.pdf" type="application/pdf" style="width:100%; height:600px; border:0;">
-<div>No online PDF viewer installed</div>
-</object>
-
-<br>
-
-*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br/acesso-a-informacao/acoes-e-programas/bolsas/bolsas-no-pais/programa-de-suporte-a-pos-graduacao-de-instituicoes-de-ensino-particulares-prosup)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Agradecimento CAPES**
-
-<br>
-
-<iframe src="https://www.in.gov.br/materia/-/asset_publisher/Kujrw0TZC2Mb/content/id/39729251/do1-2018-09-05-portaria-n-206-de-4-de-setembro-de-2018-39729135" style="width:100%; height:600px; border:0;"></iframe>
-
-<br>
-
-*Fontes:* [**Diário Oficial da União**](https://www.in.gov.br/materia/-/asset_publisher/Kujrw0TZC2Mb/content/id/39729251/do1-2018-09-05-portaria-n-206-de-4-de-setembro-de-2018-39729135)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
