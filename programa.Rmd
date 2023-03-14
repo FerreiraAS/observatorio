@@ -1517,21 +1517,16 @@ for (i in 1:length(abas)) {
       paste("[↗️](", bolsas.raw[i, 3], '){target="_blank"}', sep = "")
   }
   
-  # print table
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(bolsas.raw, title = "Bolsas de estudo")
+  print(
+    kable(bolsas.raw, align = c("l", rep(
+      "c", ncol(bolsas.raw) - 2
+    ), "r")) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
 
-
-  # print(
-  #   kable(bolsas.raw, align = c("l", rep(
-  #     "c", ncol(bolsas.raw) - 2
-  #   ), "r")) %>% kable_styling(
-  #     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-  #     full_width = T,
-  #     position = "center"
-  #   )
-  # )
-  
   # print end of tab rows
   cat('\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
