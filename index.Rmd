@@ -427,7 +427,7 @@ names(summ.table.projetos) <-
   c("Projetos concluídos",
     "Projetos em andamento",
     names(categorias),
-    "Total")
+    "Total de membros")
 
 # plot area setup
 layout.m <- c(1)
@@ -1183,7 +1183,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[1:4,]) / sum(table.2) * 100,
+        sum(table.2[-c(1:8),]) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1201,7 +1201,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[9,]) / sum(table.2) * 100,
+        sum(table.2[1:4,]) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1219,9 +1219,9 @@ names(summ.table.producao) <-
     "Menor",
     "Mediana SJR",
     "Maior",
-    "A1-A4",
+    "Outros",
     "B1-B4",
-    "Outros"
+    "A1-A4"
   )
 
 # plot area setup
