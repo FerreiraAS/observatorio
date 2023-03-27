@@ -539,7 +539,7 @@ for (id in 1:length(orcids)) {
 
 <br>
 
-```{r corpo-editorial, eval = has.sucupira}
+```{r corpo-editorial, , cache = TRUE, cache.path = "cache/corpo-editorial/", eval = has.sucupira}
 # docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -580,7 +580,7 @@ for (id in 1:length(orcids)) {
 
 <br>
 
-```{r revisores, eval = has.sucupira}
+```{r revisores, cache = TRUE, cache.path = "cache/revisores/",, eval = has.sucupira}
 # docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
