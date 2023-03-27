@@ -1,3 +1,16 @@
+---
+title: Início
+output:
+  html_document:
+    toc: true
+    css:
+      - CSS/logo-above-toc.css
+      - CSS/narrow-margins.css
+      - CSS/responsive.css
+      - CSS/generic.css
+      - CSS/main-color.css
+---
+
 <!--install and/or load all R packages-->
 ```{r setup, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%", results = "hide"}
 knitr::opts_chunk$set(
@@ -165,7 +178,7 @@ has.discentes <-
   )
 ```
 
-```{r try-donwloads}
+```{r try-downloads}
 has.downloads <-
   !is.error(try(read_excel("PPG/Downloads.xlsx", sheet = 1),
                 silent = TRUE)
@@ -239,24 +252,71 @@ has.premio.capes <-
 has.artigos.completos <-
   !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.completos"),
                 silent = TRUE))
+if(!has.artigos.completos){
+  doi_unique_artigos = data.frame()
+  my_dois_works_artigos = data.frame()
+  references_artigos = data.frame()
+  doi_unique_artigos_impacto = data.frame()
+  my_dois_works_artigos_impacto = data.frame()
+  }
 
 has.artigos.resumos <-
   !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.resumos"), silent = TRUE))
+if(!has.artigos.resumos){
+  doi_unique_resumos = data.frame()
+  my_dois_works_resumos = data.frame()
+  references_resumos = data.frame()
+  doi_unique_resumos_impacto = data.frame()
+  my_dois_works_resumos_impacto = data.frame()
+  }
 
 has.preprints <-
   !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.preprints"),
                 silent = TRUE))
+if(!has.preprints){
+  doi_unique_preprints = data.frame()
+  my_dois_works_preprints = data.frame()
+  references_preprints = data.frame()
+  doi_unique_preprints_impacto = data.frame()
+  my_dois_works_preprints_impacto = data.frame()
+  }
+
+has.livros <-
+  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.livros"), silent = TRUE))
+if(!has.livros){
+  doi_unique_livros = data.frame()
+  my_dois_works_livros = data.frame()
+  references_livros = data.frame()
+  doi_unique_livros_impacto = data.frame()
+  my_dois_works_livros_impacto = data.frame()
+  }
 
 has.capitulos <-
-  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.livros"), silent = TRUE))
+  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.capitulos"), silent = TRUE))
+if(!has.capitulos){
+  doi_unique_capitulos = data.frame()
+  my_dois_works_capitulos = data.frame()
+  references_capitulos = data.frame()
+  doi_unique_capitulos_impacto = data.frame()
+  my_dois_works_capitulos_impacto = data.frame()
+  }
 
 has.eventos <-
   !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.eventos"), silent = TRUE))
+if(!has.eventos){
+  doi_unique_eventos = data.frame()
+  my_dois_works_eventos = data.frame()
+  references_eventos = data.frame()
+  doi_unique_eventos_impacto = data.frame()
+  my_dois_works_eventos_impacto = data.frame()
+  }
 
 has.producao <-
   any(has.artigos.completos,
       has.artigos.resumos,
       has.preprints,
+      has.livros,
+      has.capitulos,
       has.eventos)
 ```
 
@@ -436,7 +496,7 @@ references_preprints <- formatted_citations
 ```
 
 <!--get data-->
-```{r metrics-livros-capitulos, cache = TRUE, cache.path = "cache/livros_capitulos/", eval = has.capitulos}
+```{r metrics-livros, cache = TRUE, cache.path = "cache/livros/", eval = has.livros}
 # read data
 sheet.ix <- "PI.livros"
 data.sheet <-
@@ -458,9 +518,9 @@ source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
 source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
 
 # store to use downstream
-dois_livros_capitulos <- dois
-doi_unique_livros_capitulos <- doi_unique
-my_dois_works_livros_capitulos <- my_dois_works
+dois_livros <- dois
+doi_unique_livros <- doi_unique
+my_dois_works_livros <- my_dois_works
 
 # obtain formatted references
 formatted_citations <-
@@ -475,7 +535,50 @@ formatted_citations <-
   cbind(seq(1, length(formatted_citations)), formatted_citations)
 colnames(formatted_citations) <- c("ID", "Reference")
 
-references_livros_capitulos <- formatted_citations
+references_livros <- formatted_citations
+```
+
+<!--get data-->
+```{r metrics-capitulos, cache = TRUE, cache.path = "cache/capitulos/", eval = has.capitulos}
+# read data
+sheet.ix <- "PI.capitulos"
+data.sheet <-
+  data.frame(read_excel(
+    "PPG/Produção.xlsx",
+    sheet = sheet.ix,
+    col_types = c("text")
+  ))
+
+# Data cleaning
+dois <-
+  as.data.frame(na.omit(data.sheet[, match("DOI", colnames(data.sheet))]))
+colnames(dois) <- "DOI"
+
+# cria metadados para rastreio pelo Altmetric
+source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
+
+# get metrics from Altmetric and CrossRef
+source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
+
+# store to use downstream
+dois_capitulos <- dois
+doi_unique_capitulos <- doi_unique
+my_dois_works_capitulos <- my_dois_works
+
+# obtain formatted references
+formatted_citations <-
+  rcrossref::cr_cn(
+    c(doi_unique$doi, my_dois_works$doi),
+    format = "text",
+    raw = TRUE,
+    style = "american-medical-association"
+  )
+formatted_citations <- substring(formatted_citations, 3)
+formatted_citations <-
+  cbind(seq(1, length(formatted_citations)), formatted_citations)
+colnames(formatted_citations) <- c("ID", "Reference")
+
+references_capitulos <- formatted_citations
 ```
 
 <!--get data-->

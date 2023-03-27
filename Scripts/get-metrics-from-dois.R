@@ -16,10 +16,19 @@ if (is_empty(dois)) {
     my_dois_works <-
       rcrossref::cr_works(dois = unlist(no_altmetric_dois_list)) %>%
       pluck("data")
-    # sort columns by title
     if (length(my_dois_works) != 0) {
+      # sort columns by title
       my_dois_works <-
-        my_dois_works[order(as.vector(my_dois_works$title)), ]
+        my_dois_works[order(as.vector(my_dois_works$title)),]
+      # replace is_oa from Crossref
+      for (i in 1:length(my_dois_works$doi)) {
+        my_doi_oa <-
+          roadoi::oadoi_fetch(dois = my_dois_works$doi[i], email = "cienciasdareabilitacao@souunisuam.com.br")
+        my_dois_works$is_oa[i] <-
+          ifelse(length(my_doi_oa$is_oa) != 0,
+                 as.character(my_doi_oa$is_oa),
+                 "false")
+      }
     }
   }
   # add issued (created) year of publication

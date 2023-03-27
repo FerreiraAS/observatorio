@@ -190,19 +190,22 @@ doi_unique <-
   bind_rows(doi_unique_artigos,
             doi_unique_resumos,
             doi_unique_preprints,
-            doi_unique_livros_capitulos,
+            doi_unique_livros,
+            doi_unique_capitulos,
             doi_unique_eventos)
 my_dois_works <-
   bind_rows(my_dois_works_artigos,
             my_dois_works_resumos,
             my_dois_works_preprints,
-            my_dois_works_livros_capitulos,
+            my_dois_works_livros,
+            my_dois_works_capitulos,
             my_dois_works_eventos)
 references <-
   rbind(references_artigos,
             references_resumos,
             references_preprints,
-            references_livros_capitulos,
+            references_livros,
+            references_capitulos,
             references_eventos)
 
 # sort columns by Altmetric then year
@@ -258,16 +261,16 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       show.CiteScore = TRUE,
       show.SJR = TRUE,
       show.Qualis = TRUE,
-    doi_unique = tryCatch(
+      doi_unique = tryCatch(
       doi_unique,
       error = function(e) {
-        return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+        doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
       }
     ),
     my_dois_works = tryCatch(
       my_dois_works,
       error = function(e) {
-        return(my_dois_works <- list())
+        my_dois_works <- list()
       }
     ),
       citescore = citescore,
@@ -359,13 +362,13 @@ if (max(dim(doi_unique)[1], 0) == 0 &
     doi_unique = tryCatch(
       doi_unique,
       error = function(e) {
-        return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+        doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
       }
     ),
     my_dois_works = tryCatch(
       my_dois_works,
       error = function(e) {
-        return(my_dois_works <- list())
+        my_dois_works <- list()
       }
     ),
       citescore = citescore,

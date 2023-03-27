@@ -613,8 +613,11 @@ pandemia <-
     "COVID",
     "COVID19",
     "COVID2019",
+    "doenca do coronavirus 2019",
     "doença do coronavirus 2019",
+    "doenca do novo coronavirus 2019",
     "doença do novo coronavirus 2019",
+    "doenca do novo coronavirus",
     "doença do novo coronavirus",
     "long COVID",
     "nCoV",
@@ -625,11 +628,13 @@ pandemia <-
     "pós -COVID",
     "pós COVID",
     "pós-COVID",
+    "pós-COVID-19",
     "post - COVID",
     "post- COVID",
     "post -COVID",
     "post COVID",
     "post-COVID",
+    "post-COVID-19",
     "postCOVID",
     "SARS coronavirus 2",
     "SARS Coronavirus 2",
@@ -647,34 +652,100 @@ pandemia <-
     "Severe Acute Respiratory Syndrome Coronavirus 2",
     "síndrome respiratória aguda grave",
     "pandemic",
+    "pandemics",
     "pandemia"
   )
 ```
 
-```{r pandemia-filtro, eval = has.producao}
+```{r pandemia-filtro-completos, eval = has.artigos.completos}
 # dplyr::selecting those with COVID in the title
-doi_unique_artigos_impacto <-
-  doi_unique_artigos[grep(paste(tolower(pandemia), collapse = "|"), tolower(doi_unique_artigos$title)),]
-my_dois_works_artigos_impacto <-
-  my_dois_works_artigos[grep(paste(tolower(pandemia), collapse = "|"), tolower(my_dois_works_artigos$title)),]
-references_artigos_impacto <-
-  references_artigos[grep(paste(tolower(pandemia), collapse = "|"), tolower(references_artigos[,2])),]
+try(doi_unique_artigos_impacto <-
+      doi_unique_artigos[grep(paste(tolower(pandemia), collapse = "|"),
+                              tolower(doi_unique_artigos$title)), ], silent = TRUE)
+try(my_dois_works_artigos_impacto <-
+      my_dois_works_artigos[grep(paste(tolower(pandemia), collapse = "|"),
+                                 tolower(my_dois_works_artigos$title)), ],
+    silent = TRUE)
+try(references_artigos_impacto <-
+      references_artigos[grep(paste(tolower(pandemia), collapse = "|"), tolower(references_artigos[, 2])), ], silent = TRUE
+)
+```
 
+```{r pandemia-filtro-resumos, eval = has.artigos.resumos}
 # dplyr::selecting those with COVID in the title
-doi_unique_resumos_impacto <-
-  doi_unique_resumos[grep(paste(tolower(pandemia), collapse = "|"), tolower(doi_unique_resumos$title)),]
-my_dois_works_resumos_impacto <-
-  my_dois_works_resumos[grep(paste(tolower(pandemia), collapse = "|"), tolower(my_dois_works_resumos$title)),]
-references_resumos_impacto <-
-  references_resumos[grep(paste(tolower(pandemia), collapse = "|"), tolower(references_resumos)[,2]),]
+try(doi_unique_resumos_impacto <-
+      doi_unique_resumos[grep(paste(tolower(pandemia), collapse = "|"),
+                              tolower(doi_unique_resumos$title)),], silent = TRUE)
+try(my_dois_works_resumos_impacto <-
+      my_dois_works_resumos[grep(paste(tolower(pandemia), collapse = "|"),
+                                 tolower(my_dois_works_resumos$title)),],
+    silent = TRUE)
+try(references_resumos_impacto <-
+      references_resumos[grep(paste(tolower(pandemia), collapse = "|"), tolower(references_resumos)[, 2]),]
+    , silent = TRUE
+)
+```
 
+```{r pandemia-filtro-preprints, eval = has.preprints}
 # dplyr::selecting those with COVID in the title
-doi_unique_eventos_impacto <-
-  doi_unique_eventos[grep(paste(tolower(pandemia), collapse = "|"), tolower(doi_unique_eventos$title)),]
-my_dois_works_eventos_impacto <-
-  my_dois_works_eventos[grep(paste(tolower(pandemia), collapse = "|"), tolower(my_dois_works_eventos$title)),]
-references_eventos_impacto <-
-  references_eventos[grep(paste(tolower(pandemia), collapse = "|"), tolower(references_eventos)[,2]),]
+try(doi_unique_preprints_impacto <-
+      doi_unique_preprints[grep(paste(tolower(pandemia), collapse = "|"),
+                                tolower(doi_unique_preprints$title)),],
+    silent = TRUE)
+try(my_dois_works_preprints_impacto <-
+      my_dois_works_preprints[grep(paste(tolower(pandemia), collapse = "|"),
+                                   tolower(my_dois_works_preprints$title)),],
+    silent = TRUE)
+try(references_preprints_impacto <-
+      references_preprints[grep(paste(tolower(pandemia), collapse = "|"),
+                                tolower(references_preprints)[, 2]),],
+    silent = TRUE
+)
+```
+
+```{r pandemia-filtro-livros, eval = has.livros}
+# dplyr::selecting those with COVID in the title
+try(doi_unique_livros_impacto <-
+      doi_unique_livros[grep(paste(tolower(pandemia), collapse = "|"),
+                             tolower(doi_unique_livros$title)), ], silent = TRUE)
+try(my_dois_works_livros_impacto <-
+      my_dois_works_livros[grep(paste(tolower(pandemia), collapse = "|"),
+                                tolower(my_dois_works_livros$title)), ],
+    silent = TRUE)
+try(references_livros_impacto <-
+      references_livros[grep(paste(tolower(pandemia), collapse = "|"), tolower(references_livros)[, 2]), ], silent = TRUE
+)
+```
+
+```{r pandemia-filtro-capitulos, eval = has.capitulos}
+# dplyr::selecting those with COVID in the title
+try(doi_unique_capitulos_impacto <-
+      doi_unique_capitulos[grep(paste(tolower(pandemia), collapse = "|"),
+                                tolower(doi_unique_capitulos$title)), ],
+    silent = TRUE)
+try(my_dois_works_capitulos_impacto <-
+      my_dois_works_capitulos[grep(paste(tolower(pandemia), collapse = "|"),
+                                   tolower(my_dois_works_capitulos$title)), ],
+    silent = TRUE)
+try(references_capitulos_impacto <-
+      references_capitulos[grep(paste(tolower(pandemia), collapse = "|"),
+                                tolower(references_capitulos)[, 2]), ],
+    silent = TRUE
+)
+```
+
+```{r pandemia-filtro-eventos, eval = has.eventos}
+# dplyr::selecting those with COVID in the title
+try(doi_unique_eventos_impacto <-
+      doi_unique_eventos[grep(paste(tolower(pandemia), collapse = "|"),
+                              tolower(doi_unique_eventos$title)), ], silent = TRUE)
+try(my_dois_works_eventos_impacto <-
+      my_dois_works_eventos[grep(paste(tolower(pandemia), collapse = "|"),
+                                 tolower(my_dois_works_eventos$title)), ],
+    silent = TRUE)
+try(references_eventos_impacto <-
+      references_eventos[grep(paste(tolower(pandemia), collapse = "|"), tolower(references_eventos)[, 2]), ], silent = TRUE
+)
 ```
 
 ### **Projetos de pesquisa**
@@ -738,76 +809,63 @@ if (dim(projetos)[1] != 0) {
 ### **Financiadores**
 
 ```{r pandemia-financiadores, eval = has.financiadores}
-# this chunk requires additional data that may  be available
-has.file <-
-  !is.error(try(financiadores.raw <-
-                  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores"),
-                silent = TRUE)
-  )
+financiadores.sub <-
+  financiadores.raw %>% dplyr::select("Ano",
+                                      "Agência",
+                                      "Edital",
+                                      "Processo No.",
+                                      "Título do projeto",
+                                      "Programa")
+fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
 
-if (has.file) {
-  financiadores.sub <-
-    financiadores.raw %>% dplyr::select("Ano",
-                                 "Agência",
-                                 "Edital",
-                                 "Processo No.",
-                                 "Título do projeto",
-                                 "Programa")
-  fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
-  
-  financiadores <-
-    financiadores.sub[complete.cases(financiadores.sub), ]
-  fonte <- fonte.sub[complete.cases(financiadores.sub), ]
-  
-  # dplyr::selecting those with COVID in the title
-  financiadores <-
-    financiadores[grep(paste(tolower(pandemia), collapse = "|"),
-                       tolower(financiadores$`Título do projeto`)), ]
-  fonte <-
-    fonte[grep(paste(tolower(pandemia), collapse = "|"),
-               tolower(financiadores$`Título do projeto`)), ]
-  
-  if (dim(financiadores)[1] != 0)
+financiadores <-
+  financiadores.sub[complete.cases(financiadores.sub),]
+fonte <- fonte.sub[complete.cases(financiadores.sub),]
+
+# dplyr::selecting those with COVID in the title
+financiadores <-
+  financiadores[grep(paste(tolower(pandemia), collapse = "|"),
+                     tolower(financiadores$`Título do projeto`)),]
+fonte <-
+  fonte[grep(paste(tolower(pandemia), collapse = "|"),
+             tolower(financiadores$`Título do projeto`)),]
+
+if (dim(financiadores)[1] != 0)
+{
+  Abrir <- matrix(NA, nrow = dim(financiadores)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(fonte)[1])
   {
-    Abrir <- matrix(NA, nrow = dim(financiadores)[1])
-    colnames(Abrir) <- "Abrir"
-    # add hyperlinks
-    for (i in 1:dim(fonte)[1])
+    if (!is.na(fonte[i, 1]))
     {
-      if (!is.na(fonte[i, 1]))
-      {
-        Abrir[i] <-
-          paste0('<a href="',
-                 fonte[i, 1],
-                 '" target="_blank"',
-                 '>',
-                 '↗️' ,
-                 '</a>')
-      }
+      Abrir[i] <-
+        paste0('<a href="',
+               fonte[i, 1],
+               '" target="_blank"',
+               '>',
+               '↗️' ,
+               '</a>')
     }
-    
-    financiadores <- cbind(financiadores, Abrir)
-    financiadores <-
-      financiadores[order(financiadores$Ano, decreasing = TRUE),]
-  } else {
-    cat('\n\n')
-    cat('*Sem dados para exibir*')
-    cat('\n\n')
   }
-  cat('\n\n')
+  
+  financiadores <- cbind(financiadores, Abrir)
+  financiadores <-
+    financiadores[order(financiadores$Ano, decreasing = TRUE), ]
 } else {
-  cat('\n')
+  cat('\n\n')
   cat('*Sem dados para exibir*')
-  cat('\n')
+  cat('\n\n')
 }
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-try(create_dt(financiadores, title = "Ações durante a Pandemia - Financiadores"), silent = TRUE)
+cat('\n\n')
 
-if (has.file){
-  cat(
-    "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
-  )
-}
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+try(create_dt(financiadores, title = "Ações durante a Pandemia - Financiadores"),
+    silent = TRUE)
+
+cat(
+  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
+)
 ```
 
 <br>
@@ -882,9 +940,9 @@ if (dim(tccs)[1] != 0) {
 
 ```{r pandemia-artigos-completos, eval = has.artigos.completos}
 # bind sources
-doi_unique <- doi_unique_artigos_impacto
-my_dois_works <- my_dois_works_artigos_impacto
-references <- references_artigos_impacto
+try(doi_unique <- doi_unique_artigos_impacto, silent = TRUE)
+try(my_dois_works <- my_dois_works_artigos_impacto, silent = TRUE)
+try(references <- references_artigos_impacto, silent = TRUE)
 
 # available years of publication
 years <-
@@ -938,13 +996,13 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       doi_unique = tryCatch(
         doi_unique[doi_unique$published_on == years[year], ],
         error = function(e) {
-          return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
         }
       ),
       my_dois_works = tryCatch(
         my_dois_works[my_dois_works$published_on == years[year], ],
         error = function(e) {
-          return(my_dois_works <- list())
+          my_dois_works <- list()
         }
       ),
       citescore = citescore,
@@ -961,9 +1019,9 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 ```{r pandemia-artigos-resumos, eval = has.artigos.resumos}
 # bind sources
-doi_unique <- doi_unique_resumos_impacto
-my_dois_works <- my_dois_works_resumos_impacto
-references <- references_resumos_impacto
+try(doi_unique <- doi_unique_resumos_impacto, silent = TRUE)
+try(my_dois_works <- my_dois_works_resumos_impacto, silent = TRUE)
+try(references <- references_resumos_impacto, silent = TRUE)
 
 # available years of publication
 years <-
@@ -1017,13 +1075,250 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       doi_unique = tryCatch(
         doi_unique[doi_unique$published_on == years[year], ],
         error = function(e) {
-          return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
         }
       ),
       my_dois_works = tryCatch(
         my_dois_works[my_dois_works$published_on == years[year], ],
         error = function(e) {
-          return(my_dois_works <- list())
+          my_dois_works <- list()
+        }
+      ),
+      citescore = citescore,
+      scimago = scimago,
+      qualis = qualis
+    )
+  }
+}
+```
+
+<br>
+
+### **Preprints** {.tabset}
+
+```{r pandemia-preprints, eval = has.preprints}
+# bind sources
+try(doi_unique <- doi_unique_preprints_impacto, silent = TRUE)
+try(my_dois_works <- my_dois_works_preprints_impacto, silent = TRUE)
+try(references <- references_preprints_impacto, silent = TRUE)
+
+# available years of publication
+years <-
+  na.omit(sort(unique(
+    c(doi_unique$published_on, my_dois_works$published_on)
+  ), decreasing = TRUE))
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+} else {
+  # print export buttons
+  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
+  print_buttons_dt(references, title = "Ações durante a Pandemia - Preprints")
+}
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+  cat('*Sem produção para exibir*')
+  cat('\n')
+} else {
+  # section header
+  cat('\n\n<!-- -->\n\n')
+  cat(
+    paste(
+      "*Produtos (n = ",
+      max(dim(doi_unique)[1], 0) + max(dim(my_dois_works)[1], 0),
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+      sep = ""
+    )
+  )
+  cat('<br>')
+  
+  for (year in 1:length(years)) {
+    # print tab header
+    cat('\n\n<!-- -->\n\n')
+    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    
+    # print table of papers with/without badges
+    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
+    table.with.badges(
+      show.Altmetric = TRUE,
+      show.Dimensions = TRUE,
+      show.PlumX = TRUE,
+      show.CiteScore = FALSE,
+      show.SJR = FALSE,
+      show.Qualis = FALSE,
+      doi_unique = tryCatch(
+        doi_unique[doi_unique$published_on == years[year], ],
+        error = function(e) {
+          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
+        }
+      ),
+      my_dois_works = tryCatch(
+        my_dois_works[my_dois_works$published_on == years[year], ],
+        error = function(e) {
+          my_dois_works <- list()
+        }
+      ),
+      citescore = citescore,
+      scimago = scimago,
+      qualis = qualis
+    )
+  }
+}
+```
+
+<br>
+
+### **Livros** {.tabset}
+
+```{r pandemia-Livros, eval = has.livros}
+# bind sources
+try(doi_unique <- doi_unique_livros_impacto, silent = TRUE)
+try(my_dois_works <- my_dois_works_livros_impacto, silent = TRUE)
+try(references <- references_livros_impacto, silent = TRUE)
+
+# available years of publication
+years <-
+  na.omit(sort(unique(
+    c(doi_unique$published_on, my_dois_works$published_on)
+  ), decreasing = TRUE))
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+} else {
+  # print export buttons
+  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
+  print_buttons_dt(references, title = "Ações durante a Pandemia - Livros")
+}
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+  cat('*Sem produção para exibir*')
+  cat('\n')
+} else {
+  # section header
+  cat('\n\n<!-- -->\n\n')
+  cat(
+    paste(
+      "*Produtos (n = ",
+      max(dim(doi_unique)[1], 0) + max(dim(my_dois_works)[1], 0),
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+      sep = ""
+    )
+  )
+  cat('<br>')
+  
+  for (year in 1:length(years)) {
+    # print tab header
+    cat('\n\n<!-- -->\n\n')
+    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    
+    # print table of papers with/without badges
+    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
+    table.with.badges(
+      show.Altmetric = TRUE,
+      show.Dimensions = TRUE,
+      show.PlumX = TRUE,
+      show.CiteScore = FALSE,
+      show.SJR = FALSE,
+      show.Qualis = FALSE,
+      doi_unique = tryCatch(
+        doi_unique[doi_unique$published_on == years[year], ],
+        error = function(e) {
+          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
+        }
+      ),
+      my_dois_works = tryCatch(
+        my_dois_works[my_dois_works$published_on == years[year], ],
+        error = function(e) {
+          my_dois_works <- list()
+        }
+      ),
+      citescore = citescore,
+      scimago = scimago,
+      qualis = qualis
+    )
+  }
+}
+```
+
+<br>
+
+### **Capítulos** {.tabset}
+
+```{r pandemia-capitulos, eval = has.capitulos}
+# bind sources
+try(doi_unique <- doi_unique_capitulos_impacto, silent = TRUE)
+try(my_dois_works <- my_dois_works_capitulos_impacto, silent = TRUE)
+try(references <- references_capitulos_impacto, silent = TRUE)
+
+# available years of publication
+years <-
+  na.omit(sort(unique(
+    c(doi_unique$published_on, my_dois_works$published_on)
+  ), decreasing = TRUE))
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+} else {
+  # print export buttons
+  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
+  print_buttons_dt(references, title = "Ações durante a Pandemia - Capítulos")
+}
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+  cat('*Sem produção para exibir*')
+  cat('\n')
+} else {
+  # section header
+  cat('\n\n<!-- -->\n\n')
+  cat(
+    paste(
+      "*Produtos (n = ",
+      max(dim(doi_unique)[1], 0) + max(dim(my_dois_works)[1], 0),
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+      sep = ""
+    )
+  )
+  cat('<br>')
+  
+  for (year in 1:length(years)) {
+    # print tab header
+    cat('\n\n<!-- -->\n\n')
+    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    
+    # print table of papers with/without badges
+    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
+    table.with.badges(
+      show.Altmetric = TRUE,
+      show.Dimensions = TRUE,
+      show.PlumX = TRUE,
+      show.CiteScore = FALSE,
+      show.SJR = FALSE,
+      show.Qualis = FALSE,
+      doi_unique = tryCatch(
+        doi_unique[doi_unique$published_on == years[year], ],
+        error = function(e) {
+          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
+        }
+      ),
+      my_dois_works = tryCatch(
+        my_dois_works[my_dois_works$published_on == years[year], ],
+        error = function(e) {
+          my_dois_works <- list()
         }
       ),
       citescore = citescore,
@@ -1040,9 +1335,9 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 ```{r pandemia-resumos-eventos, eval = has.eventos}
 # bind sources
-doi_unique <- doi_unique_eventos_impacto
-my_dois_works <- my_dois_works_eventos_impacto
-references <- references_eventos_impacto
+try(doi_unique <- doi_unique_eventos_impacto, silent = TRUE)
+try(my_dois_works <- my_dois_works_eventos_impacto, silent = TRUE)
+try(references <- references_eventos_impacto, silent = TRUE)
 
 # available years of publication
 years <-
@@ -1096,13 +1391,13 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       doi_unique = tryCatch(
         doi_unique[doi_unique$published_on == years[year], ],
         error = function(e) {
-          return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
         }
       ),
       my_dois_works = tryCatch(
         my_dois_works[my_dois_works$published_on == years[year], ],
         error = function(e) {
-          return(my_dois_works <- list())
+          my_dois_works <- list()
         }
       ),
       citescore = citescore,
@@ -1119,7 +1414,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
-
+  
 ```{r pandemia-premios, eval = has.premios}
 # read separate sheets
 file.path <- "PPG/Prêmios.xlsx"

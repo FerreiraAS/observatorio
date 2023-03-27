@@ -1183,7 +1183,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[-c(1:8),]) / sum(table.2) * 100,
+        (sum(table.2) - sum(table.2[1:8,])) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."

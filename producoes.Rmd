@@ -344,13 +344,13 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       doi_unique = tryCatch(
         doi_unique[doi_unique$published_on == years[year], ],
         error = function(e) {
-          return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
         }
       ),
       my_dois_works = tryCatch(
         my_dois_works[my_dois_works$published_on == years[year], ],
         error = function(e) {
-          return(my_dois_works <- list())
+          my_dois_works <- list()
         }
       ),
       citescore = citescore,
@@ -423,13 +423,13 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       doi_unique = tryCatch(
         doi_unique[doi_unique$published_on == years[year], ],
         error = function(e) {
-          return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
         }
       ),
       my_dois_works = tryCatch(
         my_dois_works[my_dois_works$published_on == years[year], ],
         error = function(e) {
-          return(my_dois_works <- list())
+          my_dois_works <- list()
         }
       ),
       citescore = citescore,
@@ -502,13 +502,13 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       doi_unique = tryCatch(
         doi_unique[doi_unique$published_on == years[year], ],
         error = function(e) {
-          return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
         }
       ),
       my_dois_works = tryCatch(
         my_dois_works[my_dois_works$published_on == years[year], ],
         error = function(e) {
-          return(my_dois_works <- list())
+          my_dois_works <- list()
         }
       ),
       citescore = citescore,
@@ -521,13 +521,13 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 <br>
 
-### **Livros e capítulos**  {.tabset}
+### **Livros**  {.tabset}
 
-```{r livros-capitulos, eval = has.capitulos}
+```{r livros, eval = has.livros}
 # bind sources
-doi_unique <- doi_unique_livros_capitulos
-my_dois_works <- my_dois_works_livros_capitulos
-references <- references_livros_capitulos
+doi_unique <- doi_unique_livros
+my_dois_works <- my_dois_works_livros
+references <- references_livros
 
 # available years of publication
 years <-
@@ -542,7 +542,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 } else {
   # print export buttons
   source("Scripts/print-only-buttons.R", local = knitr::knit_global())
-  print_buttons_dt(references, title = "Livros e capítulos")
+  print_buttons_dt(references, title = "Livros")
 }
 
 # Verifica se há DOIs
@@ -581,13 +581,13 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       doi_unique = tryCatch(
         doi_unique[doi_unique$published_on == years[year], ],
         error = function(e) {
-          return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
         }
       ),
       my_dois_works = tryCatch(
         my_dois_works[my_dois_works$published_on == years[year], ],
         error = function(e) {
-          return(my_dois_works <- list())
+          my_dois_works <- list()
         }
       ),
       citescore = citescore,
@@ -600,9 +600,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 <br>
 
-#### **Online**  {.tabset}
-
-##### **Medidas de Desempenho Físico e Funcional de Pessoas Idosas**
+#### **Medidas de Desempenho Físico e Funcional de Pessoas Idosas**
 
 <iframe src="https://www.medbookeditora.com.br/product-page/medidas-de-desempenho-f%C3%ADsico-e-funcional-de-idosos" style="width:100%; height:600px; border:0;"></iframe>
 
@@ -614,7 +612,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 <br>
 
-##### **Ciência Aplicada ao Exercício Físico e ao Esporte**
+#### **Ciência Aplicada ao Exercício Físico e ao Esporte**
 
 <iframe src="https://www.editoraappris.com.br/produto/6220-cincia-aplicada-ao-exerccio-fsico-e-ao-esporte" style="width:100%; height:600px; border:0;"></iframe>
 
@@ -626,7 +624,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 <br>
 
-##### **Deficiência e inclusão pelo esporte no contexto militar**
+#### **Deficiência e inclusão pelo esporte no contexto militar**
 
 <iframe src="https://www.editoracrv.com.br/produtos/detalhes/36691-crv" style="width:100%; height:600px; border:0;"></iframe>
 
@@ -638,7 +636,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 <br>
 
-##### **O Gol de Rodas**
+#### **O Gol de Rodas**
 
 <iframe src="https://ogolderodas.com.br" style="width:100%; height:600px; border:0;"></iframe>
 
@@ -650,7 +648,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 <br>
 
-##### **Uma Jornada para Entender a Dor**
+#### **Uma Jornada para Entender a Dor**
 
 <iframe src="http://pesquisaemdor.com.br" style="width:100%; height:600px; border:0;"></iframe>
 
@@ -662,16 +660,94 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 <br>
 
-##### **Livros do Museu do Esporte**
+#### **Livros do Museu do Esporte**
 
 <iframe src="https://www.emuseudoesporte.com.br/br/home" style="width:100%; height:600px; border:0;"></iframe>
-
 
 *Fontes:* [**eMuseu do Esporte**]https://www.emuseudoesporte.com.br/br/home)
 
 <br>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Capítulos**  {.tabset}
+
+```{r livros-capitulos, eval = has.capitulos}
+# bind sources
+doi_unique <- doi_unique_capitulos
+my_dois_works <- my_dois_works_capitulos
+references <- references_capitulos
+
+# available years of publication
+years <-
+  na.omit(sort(unique(
+    c(doi_unique$published_on, my_dois_works$published_on)
+  ), decreasing = TRUE))
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+} else {
+  # print export buttons
+  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
+  print_buttons_dt(references, title = "Capítulos")
+}
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+  cat('*Sem produção para exibir*')
+  cat('\n')
+} else {
+  # section header
+  cat('\n\n<!-- -->\n\n')
+  cat(
+    paste(
+      "*Produtos (n = ",
+      max(dim(doi_unique)[1], 0) + max(dim(my_dois_works)[1], 0),
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+      sep = ""
+    )
+  )
+  cat('<br>')
+  
+  for (year in 1:length(years)) {
+    # print tab header
+    cat('\n\n<!-- -->\n\n')
+    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    
+    # print table of papers with/without badges
+    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
+    table.with.badges(
+      show.Altmetric = TRUE,
+      show.Dimensions = TRUE,
+      show.PlumX = TRUE,
+      show.CiteScore = FALSE,
+      show.SJR = FALSE,
+      show.Qualis = FALSE,
+      doi_unique = tryCatch(
+        doi_unique[doi_unique$published_on == years[year], ],
+        error = function(e) {
+          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
+        }
+      ),
+      my_dois_works = tryCatch(
+        my_dois_works[my_dois_works$published_on == years[year], ],
+        error = function(e) {
+          my_dois_works <- list()
+        }
+      ),
+      citescore = citescore,
+      scimago = scimago,
+      qualis = qualis
+    )
+  }
+}
+```
 
 <br>
 
@@ -742,13 +818,13 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       doi_unique = tryCatch(
         doi_unique[doi_unique$published_on == years[year], ],
         error = function(e) {
-          return(doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0)))
+          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
         }
       ),
       my_dois_works = tryCatch(
         my_dois_works[my_dois_works$published_on == years[year], ],
         error = function(e) {
-          return(my_dois_works <- list())
+          my_dois_works <- list()
         }
       ),
       citescore = citescore,
