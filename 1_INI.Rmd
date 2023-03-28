@@ -213,6 +213,13 @@ has.historico <-
   )
 ```
 
+```{r try-infraestrutura}
+has.infraestrutura <-
+  !is.error(try(read_excel("PPG/Infraestrutura.xlsx", sheet = 1),
+                silent = TRUE)
+  )
+```
+
 ```{r try-internacionalizacao}
 has.internacionalizacao <-
   !is.error(try(read_excel("PPG/Internacionalização.xlsx", sheet = 1),
