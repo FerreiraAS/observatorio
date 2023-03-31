@@ -38,6 +38,7 @@ packs.cran <-
     "magrittr",
     "networkD3",
     "parallelly",
+    "png",
     "RColorBrewer",
     "readtext",
     "readxl",

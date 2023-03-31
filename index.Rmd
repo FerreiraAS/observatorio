@@ -1258,6 +1258,120 @@ cat('^[Produções com DOI apenas; a produção pode estar subsestimada pois pro
 
 <br>
 
+```{r sintese-visibilidade, include = FALSE, eval = has.producao}
+# bind sources
+doi_unique <-
+  bind_rows(doi_unique_artigos,
+            doi_unique_resumos,
+            doi_unique_preprints,
+            doi_unique_livros,
+            doi_unique_capitulos,
+            doi_unique_eventos)
+table.6 <- 
+  table.6 <- data.frame(doi_unique$published_on, doi_unique$score)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+# plot 1 (violin plot of Altmetric por ano)
+vioplot(as.numeric(table.6[, 2]) ~ as.numeric(table.6[, 1]),
+        xlab = NA,
+        ylab = "Altmetric")
+title(main = "Atenção e visibilidade (Altmetric)",
+      outer = TRUE,
+      cex.main = 1.7)
+# add Altmetric logo and summary
+par(new = TRUE)
+my_image <- readPNG("Metrics/Altmetric/cropped-altmetric-symbol.png")
+img <- as.raster(my_image)
+lm <- par("usr")
+r <- (lm[2] - lm[1]) / (lm[4] - lm[3])
+h <- (lm[4] - lm[3]) / 5
+w <- ((lm[2] - lm[1]) / 5)
+x1 <- lm[1]
+x2 <- lm[1] + w
+y1 <- lm[4] - h
+y2 <- lm[4]
+rasterImage(
+  img,
+  xleft = x1,
+  xright = x2,
+  ybottom = y1,
+  ytop = y2
+)
+text(
+  x = (x1 + x2) / 2,
+  y = (y1 + y2) / 2,
+  labels = as.character(sum(table.6[, 2])),
+  adj = 0.5
+)
+
+# plot 2 (summary table in plot)
+
+# calculate summary statistics for visibilidade
+summ.table.visibilidade <-
+  cbind(
+    sum(table.6[, 2]),
+    formatC(
+      min(table.6[, 2], na.rm = TRUE),
+      format = "d",
+      digits = 0,
+      big.mark = "."
+    ),
+    formatC(
+      median(table.6[, 2], na.rm = TRUE),
+      format = "d",
+      digits = 0,
+      big.mark = "."
+    ),
+    formatC(
+      max(table.6[, 2], na.rm = TRUE),
+      format = "d",
+      digits = 0,
+      big.mark = "."
+    )
+  )
+
+names(summ.table.visibilidade) <-
+  c(
+    "Altmetric total",
+    "Mínimo",
+    "Mediana anual",
+    "Máximo"
+  )
+
+# plot area setup
+layout.m <- matrix(c(1, 1, 1, 2, 3, 4),
+                   ncol = 3,
+                   byrow = TRUE)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+summ.data <- summ.table.visibilidade
+source("Scripts/plot-summaries.R", local = knitr::knit_global())
+```
+
+```{r sintese-visibilidade-carousel, eval = has.producao}
+# carousel
+bs_carousel(id = "visibilidade-carousel",
+            use_indicators = FALSE,
+            use_controls = TRUE) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-1.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-2.png"))
+
+cat('\n\n')
+cat(
+  "[**Altmetric**](https://www.altmetric.com), **PPG**"
+)
+cat('^[Produções com DOI apenas; a produção pode estar subsestimada pois produtos sem DOI não estão apresentados.]')
+cat('\n')
+cat('^[O Altmetric score no donut representa a soma total do Altmetric score de cada produção.]')
+```
+
+<br>
+
+<br>
+
 ```{r sintese-pessoal, include = FALSE, eval = has.discentes}
 discentes.raw <-
   read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
