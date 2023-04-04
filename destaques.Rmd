@@ -518,7 +518,7 @@ orcids <-
 for (id in 1:length(orcids)) {
   assoc.name <- sucupira.unique$`Nome Docente`[id]
   my_orcid <- orcids[id]
-  
+
   cat('\n\n<!-- -->\n\n')
   cat('#### **', assoc.name, '**', sep = "")
   cat('\n\n<!-- -->\n\n')
@@ -561,7 +561,7 @@ orcids <-
 for (id in 1:length(orcids)) {
   editor.name <- sucupira.unique$`Nome Docente`[id]
   my_orcid <- orcids[id]
-  
+
   cat('\n\n<!-- -->\n\n')
   cat('##### **', editor.name, '**', sep = "")
   cat('\n\n<!-- -->\n\n')
@@ -602,7 +602,7 @@ orcids <-
 for (id in 1:length(orcids)) {
   reviewer.name <- sucupira.unique$`Nome Docente`[id]
   my_orcid <- orcids[id]
-  
+
   cat('\n\n<!-- -->\n\n')
   cat('##### **', reviewer.name, '**', sep = "")
   cat('\n\n<!-- -->\n\n')
