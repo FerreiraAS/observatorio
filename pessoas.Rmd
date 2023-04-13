@@ -112,7 +112,7 @@ docentes.raw <-
   docentes.raw[!is.na(docentes.raw$`Data de Desligamento`),]
 
 # remove duplicates between docs and postdocs
-docentes <- docentes.raw[!duplicated(docentes$`Nome docente`),]
+docentes <- docentes.raw[!duplicated(docentes.raw$`Nome docente`),]
 
 ids <- seq(1:dim(docentes)[1])
 docentes <- docentes[order(docentes$`Nome docente`), ]
