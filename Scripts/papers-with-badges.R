@@ -403,7 +403,7 @@ table.with.badges <-
         # add QUALIS
         if (show.Qualis == TRUE) {
           WebQualis <-
-            qualis$ESTRATO[match(my_dois_works$issn[ix], qualis$ISSN)]
+            qualis$Estrato[match(my_dois_works$issn[ix], qualis$ISSN)]
           cat(
             "<a style=\"border-radius:10%; border-style: solid; margin:0.1em 0.3em 0.1em 0.3em; padding:0.4em 0.3em 0.4em 0.3em; text-decoration:none; text-align: center; display:inline-block; float:left; color:black;\"> Qualis <br>",
             paste0(ifelse(
