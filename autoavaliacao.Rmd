@@ -527,7 +527,8 @@ table.2 <-
     type = list(all_continuous() ~ "continuous"),
     statistic = list(all_continuous() ~ c("R$ {sum}")),
     missing = "no",
-    digits = "Total" ~ 2
+    digits = "Total" ~ 2,
+    sort = all_categorical() ~ "frequency"
   ) %>%
   add_overall(last = TRUE,
               col_label = "Total") %>%
@@ -581,7 +582,8 @@ table.2 <-
     type = list(all_continuous() ~ "continuous"),
     statistic = list(all_continuous() ~ c("R$ {sum}")),
     missing = "no",
-    digits = "Total" ~ 2
+    digits = "Total" ~ 2,
+    sort = all_categorical() ~ "frequency"
   ) %>%
   add_overall(last = TRUE,
               col_label = "Total") %>%
@@ -635,11 +637,67 @@ table.2 <-
     type = list(all_continuous() ~ "continuous"),
     statistic = list(all_continuous() ~ c("R$ {sum}")),
     missing = "no",
-    digits = "Total" ~ 2
+    digits = "Total" ~ 2,
+    sort = all_categorical() ~ "frequency"
   ) %>%
   add_overall(last = TRUE,
               col_label = "Total") %>%
   modify_header(label = "**Ano**") %>%
+  modify_footnote(update = everything() ~ NA) %>%
+  bold_labels()
+# print table
+print(table.2)
+
+cat('\n\n')
+
+cat(
+  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
+)
+```
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+##### **Docente-Programa**
+
+```{r auto-financiadores-docente-programa, eval = has.financiadores}
+# this chunk requires additional data that may not be available
+financiadores.raw <-
+  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+options(scipen = 10)
+
+financiadores.raw <-
+  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+# dplyr::select variables to display, by AGENCIA & ANO
+financiadores <-
+  financiadores.raw %>% dplyr::select("Proponente", "Programa", "Total")
+
+# drop rows with empty cells
+financiadores <- financiadores[complete.cases(financiadores),]
+
+financiadores <-
+  financiadores[order(financiadores$Proponente, decreasing = TRUE),]
+financiadores$Proponente <- as.factor(financiadores$Proponente)
+
+# generate table (total per year, per docente)
+table.2 <-
+  tbl_summary(
+    financiadores,
+    by = "Programa",
+    type = list(all_continuous() ~ "continuous"),
+    statistic = list(all_continuous() ~ c("R$ {sum}")),
+    missing = "no",
+    digits = "Total" ~ 2,
+    sort = all_categorical() ~ "frequency"
+  ) %>%
+  add_overall(last = TRUE,
+              col_label = "Total") %>%
+  modify_header(label = "**Programa**") %>%
   modify_footnote(update = everything() ~ NA) %>%
   bold_labels()
 # print table
