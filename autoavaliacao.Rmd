@@ -824,9 +824,159 @@ cat(
 
 #### **Atividades de ensino nas disciplinas do PPG**
 
-*Em construção*
+```{r turmas-docentes-2024, eval = has.sucupira}
+# load custom function
+source("Scripts/get-initials.R", local = knitr::knit_global())
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+# disciplinas
+sheet <- "Disciplinas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# bind all sheets
+periodos <-
+  names(sucupira.list)[na.omit(match(c(2021:2024), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+disciplinas.raw <-
+  do.call(rbind.data.frame, sucupira.list[periodos])
+disciplinas.raw <-
+  disciplinas.raw[is.na(disciplinas.raw$`Data de fim`),]
+
+# turmas
+sheet <- "Turmas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# bind all sheets
+periodos <-
+  names(sucupira.list)[na.omit(match(c(2021:2024), names(sucupira.list)))]
+periodo <- as.character(seq(min(periodos), max(periodos)))
+turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
+
+if (dim(disciplinas.raw)[1] != 0) {
+  # select level
+  course.level <- "Mestrado"
+  disciplinas.msc <-
+    disciplinas.raw[str_detect(disciplinas.raw$`Nível do Curso`, course.level), ]
+  
+  disciplinas.msc <-
+    disciplinas.raw[course.level,]
+  table.msc <-
+    cbind(
+      disciplinas.msc$`Nome da Disciplina`,
+      disciplinas.msc$`Indicadora de disciplina obrigatória`,
+      disciplinas.msc$`Quantidade de créditos`,
+      disciplinas.msc$`Carga Horária`
+    )
+  colnames(table.msc) <- c("Disciplina", "Obrigatória", "CR", "CH")
+  
+  course.level <- "Doutorado"
+  disciplinas.dsc <-
+    disciplinas.raw[str_detect(disciplinas.raw$`Nível do Curso`, course.level), ]
+  disciplinas.dsc <-
+    disciplinas.raw[course.level,]
+  table.dsc <-
+    cbind(
+      disciplinas.dsc$`Nome da Disciplina`,
+      disciplinas.dsc$`Indicadora de disciplina obrigatória`,
+      disciplinas.dsc$`Quantidade de créditos`,
+      disciplinas.dsc$`Carga Horária`
+    )
+  colnames(table.dsc) <- c("Disciplina", "Obrigatória", "CR", "CH")
+  
+  table <-
+    merge(
+      table.msc,
+      table.dsc,
+      by = "Disciplina",
+      all.x = TRUE,
+      all.y = TRUE
+    )
+  colnames(table) <-
+    c(
+      "Disciplina",
+      "Obrigatória (MA)",
+      "CR (MA)",
+      "CH (MA)",
+      "Obrigatória (DA)",
+      "CR (DA)",
+      "CH (DA)"
+    )
+  
+  # build a cross table DISCIPLINA vs. DOCENTE
+  cross.table.turmas <-
+    as.matrix(table(
+      initials(turmas.raw$`Nome da Disciplina`),
+      initials(turmas.raw$`Nome do responsável`)
+    ))
+  Responsável <- colSums(cross.table.turmas)
+  Responsável[Responsável > 0] <- "✅"
+  Responsável[Responsável == 0] <- ""
+  turmas.docentes <- rbind(Responsável, cross.table.turmas)
+  turmas.docentes[turmas.docentes > 0] <- "✔"
+  turmas.docentes[turmas.docentes == 0] <- ""
+  print(
+    kable(turmas.docentes, align = c("l", rep(
+      "c", ncol(turmas.docentes) - 2
+    ), "r")) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    ) %>% scroll_box(width = "100%")
+  )
+  
+  # line break
+  cat("  \n")
+  cat("  \n")
+  
+  legenda.turma <-
+    unique(cbind(
+      initials(turmas.raw$`Nome da Disciplina`),
+      turmas.raw$`Nome da Disciplina`
+    ))
+  legenda.turma <- legenda.turma[order(legenda.turma[, 1]),]
+  cat(paste(
+    "*",
+    legenda.turma[, 1],
+    ": ",
+    lapply(legenda.turma[, 2], str_to_title),
+    "*",
+    sep = "",
+    collapse = "; "
+  ))
+  
+  # line break
+  cat("  \n")
+  cat("  \n")
+  
+  legenda.doc <-
+    unique(cbind(
+      initials(turmas.raw$`Nome do responsável`),
+      turmas.raw$`Nome do responsável`
+    ))
+  legenda.doc <- legenda.doc[order(legenda.doc[, 1]),]
+  cat(paste(
+    "*",
+    legenda.doc[, 1],
+    ": ",
+    lapply(legenda.doc[, 2], str_to_title),
+    "*",
+    sep = "",
+    collapse = "; "
+  ))
+}
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 

@@ -63,137 +63,58 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 ### **Formação discente** {.tabset}
 
-#### **Cotas de bolsas** {.tabset}
+#### **Turmas oferecidas**
 
-```{r cotas, eval = has.sucupira}
-# discentes
-sheet <- "TCC - Financiadores"
-source("Scripts/read-xlsx-sucupira.R")
+```{r turmas-tabela, eval = has.sucupira}
+# turmas
+sheet <- "Turmas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-# get only last data available
-bolsistas <- sucupira.raw
+turmas.raw <- sucupira.raw
 
-# filter funding
-funding <- "PROSUP / Cursos Novos"
-bolsistas <-
-  bolsistas[str_detect(bolsistas$`Nome do Programa de Fomento`, funding),]
-
-# get years
-bolsistas$'Matrícula' <-
-  substr(as.Date(bolsistas$`Data início da orientação`, format = "%d/%m/%Y"),
-         1,
-         4)
-
-bolsistas$'Titulação' <-
-  substr(as.Date(bolsistas$`Data da Defesa`, format = "%d/%m/%Y"), 1, 4)
-
-# format names
-bolsistas$`Nome do Autor` <-
-  toTitleCase(tolower(bolsistas$`Nome do Autor`))
-bolsistas$`Nome do Orientador` <-
-  toTitleCase(tolower(bolsistas$`Nome do Orientador`))
-
-bolsistas <-
-  dplyr::select(bolsistas,
-         c("Nome do Autor", "Nome do Orientador", "Matrícula", "Titulação"))
-
-# remove duplicates and NA rows if any
-bolsistas <- unique(bolsistas)
-bolsistas <- bolsistas[complete.cases(bolsistas),]
-
-if (dim(bolsistas)[1] != 0) {
-  # create list of years with scholarships
-  anos <-
-    seq(
-      min(bolsistas$Matrícula, bolsistas$Titulação),
-      max(bolsistas$Matrícula, bolsistas$Titulação)
-    )
-  cotas <- rep_len(list(numeric(1)), length = length(anos))
-  names(cotas) <- anos
-  
-  for (i in 1:dim(bolsistas)[1]) {
-    bolsas <- seq(bolsistas$Matrícula[i], bolsistas$Titulação[i])
-    for (j in 1:length(bolsas)) {
-      cotas[[as.character(bolsas[j])]] <-
-        cotas[[as.character(bolsas[j])]] + 1
-    }
-  }
-  cotas <- t(data.frame(cotas))
-  cotas <- cbind(anos, cotas)
-  rownames(cotas) <- anos
-  colnames(cotas) <- c("Ano", "Bolsistas")
-  cotas <- data.frame(cotas)
-}
-
-cat('\n\n')
-cat('##### **Tabela**')
-cat('\n\n')
-
-if (dim(bolsistas)[1] != 0) {
-  ids <- order(cotas$'Ano', decreasing = TRUE)
-  table <- cotas[ids,]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Bolsistas - Cotas")
-} else {
-  cat("*Sem dados para exibir*")
-}
-
-cat('\n\n')
-cat(
-  '^1^ Dados de financiamento extraídos a partir dos financiadores dos trabalhos de conclusão de curso. Bolsistas ativos não estão incluídos.'
-)
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-
-cat('\n\n')
-cat('##### **Gráfico**')
-cat('\n\n')
-
-if (dim(bolsistas)[1] != 0) {
-  # plot 1 (total de bolsistas, por ano)
-  # generate plot of total per year
-  par(
-    oma = c(2, 0.1, 2, 0.1),
-    mar = c(5, 4, 2, 2),
-    bg = '#2C3E50',
-    col.lab = "white",
-    col.axis = "white",
-    fg = "white",
-    col.main = "white"
+# build a cross table DISCIPLINA vs. ANO
+turmas.raw <-
+  turmas.raw[turmas.raw$`Indicador de responsável principal` == "Sim", ]
+turmas.raw$`Período/Ano` <-
+  paste(
+    sub(".*/", "", turmas.raw$`Período/Ano`),
+    sub("/.*", "", turmas.raw$`Período/Ano`),
+    sep = "/"
   )
-  # Define the number of colors you want
-  nb.cols <- 1
-  mycolors <- colorRampPalette(brewer.pal(9, "Set3"))(nb.cols)
-  
-  # generate plot of turmas per year
-  barplot(
-    height = cotas$Bolsistas,
-    names = cotas$Ano,
-    names.arg = cotas$Ano,
-    las = 2,
-    ylab = "N",
-    main = "Bolsistas",
-    col = rep(mycolors[1], length(cotas$Bolsistas)),
-    beside = TRUE,
-    bty = "n"
-  )
-} else {
-  cat("*Sem dados para exibir*")
-}
+cross.table.turmas <-
+  as.matrix(table(turmas.raw$`Nível do curso`, turmas.raw$`Período/Ano`))
 
-cat('\n\n')
-cat(
-  '^1^ Dados de financiamento extraídos a partir dos financiadores dos trabalhos de conclusão de curso. Bolsistas ativos não estão incluídos.'
+# generate plot of total per year
+par(
+  oma = c(2, 0.1, 2, 0.1),
+  mar = c(5, 4, 2, 2)
 )
+# generate plot of turmas per year
+barplot(
+  cross.table.turmas,
+  las = 2,
+  ylab = "Turmas",
+  main = "Quantidade de turmas",
+  col = c("darkblue", "lightblue"),
+  beside = TRUE,
+  bty = "n"
+)
+legend(
+  "topleft",
+  legend = levels(as.factor(turmas.raw$`Nível do curso`)),
+  fill = c("darkblue", "lightblue"),
+  box.lty = 0
+)
+
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
-#### **Bolsistas** {.tabset}
+<br>
+
+#### **Bolsistas titulados** {.tabset}
 
 ##### **Doutorado**
 
@@ -289,6 +210,128 @@ if (dim(bolsistas)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+#### **Cotas de bolsas** {.tabset}
+
+```{r cotas, eval = has.sucupira}
+# discentes
+sheet <- "TCC - Financiadores"
+source("Scripts/read-xlsx-sucupira.R")
+
+# get only last data available
+bolsistas <- sucupira.raw
+
+# filter funding
+funding <- "PROSUP / Cursos Novos"
+bolsistas <-
+  bolsistas[str_detect(bolsistas$`Nome do Programa de Fomento`, funding),]
+
+# get years
+bolsistas$'Matrícula' <-
+  substr(as.Date(bolsistas$`Data início da orientação`, format = "%d/%m/%Y"),
+         1,
+         4)
+
+bolsistas$'Titulação' <-
+  substr(as.Date(bolsistas$`Data da Defesa`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+bolsistas$`Nome do Autor` <-
+  toTitleCase(tolower(bolsistas$`Nome do Autor`))
+bolsistas$`Nome do Orientador` <-
+  toTitleCase(tolower(bolsistas$`Nome do Orientador`))
+
+bolsistas <-
+  dplyr::select(bolsistas,
+         c("Nome do Autor", "Nome do Orientador", "Matrícula", "Titulação"))
+
+# remove duplicates and NA rows if any
+bolsistas <- unique(bolsistas)
+bolsistas <- bolsistas[complete.cases(bolsistas),]
+
+if (dim(bolsistas)[1] != 0) {
+  # create list of years with scholarships
+  anos <-
+    seq(
+      min(bolsistas$Matrícula, bolsistas$Titulação),
+      max(bolsistas$Matrícula, bolsistas$Titulação)
+    )
+  cotas <- rep_len(list(numeric(1)), length = length(anos))
+  names(cotas) <- anos
+  
+  for (i in 1:dim(bolsistas)[1]) {
+    bolsas <- seq(bolsistas$Matrícula[i], bolsistas$Titulação[i])
+    for (j in 1:length(bolsas)) {
+      cotas[[as.character(bolsas[j])]] <-
+        cotas[[as.character(bolsas[j])]] + 1
+    }
+  }
+  cotas <- t(data.frame(cotas))
+  cotas <- cbind(anos, cotas)
+  rownames(cotas) <- anos
+  colnames(cotas) <- c("Ano", "Bolsistas")
+  cotas <- data.frame(cotas)
+}
+
+cat('\n\n')
+cat('##### **Tabela**')
+cat('\n\n')
+
+if (dim(bolsistas)[1] != 0) {
+  ids <- order(cotas$'Ano', decreasing = TRUE)
+  table <- cotas[ids,]
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table, title = "Bolsistas - Cotas")
+} else {
+  cat("*Sem dados para exibir*")
+}
+
+cat('\n\n')
+cat(
+  '^1^ Dados de financiamento extraídos a partir dos financiadores dos trabalhos de conclusão de curso. Bolsistas ativos não estão incluídos.'
+)
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+
+cat('\n\n')
+cat('##### **Gráfico**')
+cat('\n\n')
+
+if (dim(bolsistas)[1] != 0) {
+  # plot 1 (total de bolsistas, por ano)
+  # Define the number of colors you want
+  nb.cols <- 1
+  mycolors <- colorRampPalette(brewer.pal(9, "Set3"))(nb.cols)
+  
+  # generate plot of turmas per year
+  par(oma = c(2, 0.1, 2, 0.1),
+      mar = c(5, 4, 2, 2))
+  barplot(
+    height = cotas$Bolsistas,
+    names = cotas$Ano,
+    names.arg = cotas$Ano,
+    las = 2,
+    ylab = "N",
+    main = "Bolsistas",
+    col = rep(mycolors[1], length(cotas$Bolsistas)),
+    beside = TRUE,
+    bty = "n"
+  )
+} else {
+  cat("*Sem dados para exibir*")
+}
+
+cat('\n\n')
+cat(
+  '^1^ Dados de financiamento extraídos a partir dos financiadores dos trabalhos de conclusão de curso. Bolsistas ativos não estão incluídos.'
+)
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
 cat('\n\n')
