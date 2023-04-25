@@ -124,6 +124,17 @@ table.with.badges <-
             citescore_id <-
               as.character(citescore$sourcerecord_id[grep(gsub("-", "", doi_unique$issn[ix]), citescore$e_issn)])
           }
+          if (is_empty(citescore_id)) {
+            citescore_id <-
+              as.character(citescore$sourcerecord_id[grep(
+                tolower(gsub(
+                  "&", "and", doi_unique$journal[ix]
+                )),
+                tolower(
+                  citescore$source_title_medline_sourced_journals_are_indicated_in_green
+                )
+              )])
+          }
           citescore_value <-
             citescore$x2021_cite_score[match(citescore_id, citescore$sourcerecord_id)]
           citescore_year <-
@@ -353,6 +364,17 @@ table.with.badges <-
                   )), citescore$print_issn)])
               }
             }
+          }
+          if (is_empty(citescore_id)) {
+            citescore_id <-
+              as.character(citescore$sourcerecord_id[grep(
+                tolower(gsub(
+                  "&", "and", my_dois_works$container.title[ix]
+                )),
+                tolower(
+                  citescore$source_title_medline_sourced_journals_are_indicated_in_green
+                )
+              )])
           }
           citescore_value <-
             citescore$x2021_cite_score[match(citescore_id, citescore$sourcerecord_id)]
