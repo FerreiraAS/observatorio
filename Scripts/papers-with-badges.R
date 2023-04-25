@@ -78,7 +78,7 @@ table.with.badges <-
         ))
         
         # add journal's title
-        cat(paste0("*", doi_unique$journal[ix], "*", "<br>"))
+        cat(paste0("*", toTitleCase(doi_unique$journal[ix]), "*", "<br>"))
         
         # initialize the DIV element for the badges
         cat("<div style=\"vertical-align: middle; display: inline-block;\">")
@@ -201,8 +201,10 @@ table.with.badges <-
           if (is.na(WebQualis)) {
             # try journal name
             WebQualis <-
-              qualis[match(tolower(doi_unique$journal[ix]),
-                           tolower(qualis$Título)), 3]
+              qualis[match(tolower(gsub(
+                "&", "and", doi_unique$journal[ix]
+              )),
+              tolower(qualis$Título)), 3]
           }
           if (is.na(WebQualis)) {
             # try other ISSN
@@ -290,7 +292,12 @@ table.with.badges <-
                    )))
         
         # add jornal's title
-        cat(paste0("*", my_dois_works$container.title[ix], "*", "<br>"))
+        cat(paste0(
+          "*",
+          toTitleCase(my_dois_works$container.title[ix]),
+          "*",
+          "<br>"
+        ))
         
         # initialize the DIV element for the badges
         cat("<div style=\"vertical-align: middle; display: inline-block;\">")
@@ -429,7 +436,7 @@ table.with.badges <-
             WebQualis.2 <-
               qualis$Estrato[match(issn.2, qualis$ISSN)]
             WebQualis <-
-              unique(na.omit(c(WebQualis.1, WebQualis.2)))
+              unique(na.omit(c(WebQualis.1, WebQualis.2)))[1]
             if (is_empty(WebQualis)) {
               WebQualis <- NA
             }
