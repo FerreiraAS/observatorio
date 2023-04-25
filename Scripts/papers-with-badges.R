@@ -195,8 +195,24 @@ table.with.badges <-
         
         # add QUALIS
         if (show.Qualis == TRUE) {
+          # try first ISSN
           WebQualis <-
             qualis[match(doi_unique$issn[ix], qualis$ISSN), 3]
+          if (is.na(WebQualis)) {
+            # try journal name
+            WebQualis <-
+              qualis[match(tolower(doi_unique$journal[ix]),
+                           tolower(qualis$Título)), 3]
+          }
+          if (is.na(WebQualis)) {
+            # try other ISSN
+            new.issn <-
+              trimws(gsub(",", "", gsub(
+                doi_unique$issn[ix], "", scimago$Issn[grep(gsub("-", "", doi_unique$issn[ix]), scimago$Issn)]
+              )))
+            issn.2 <- gsub('^(.{4})(.*)$', '\\1-\\2', new.issn)
+            WebQualis <- qualis[match(new.issn, qualis$ISSN), 3]
+          }
           cat(
             "<a style=\"border-radius:10%; border-style: solid; margin:0.1em 0.3em 0.1em 0.3em; padding:0.4em 0.3em 0.4em 0.3em; text-decoration:none; text-align: center; display:inline-block; float:left; color:black;\"> Qualis <br>",
             paste0(ifelse(
@@ -375,7 +391,6 @@ table.with.badges <-
             "</span></div></div><div style=\"font-size:12px;text-align:right;\"></div></div></div></a>",
             sep = ""
           )
-          
         }
         
         # add SJR
@@ -402,8 +417,29 @@ table.with.badges <-
         
         # add QUALIS
         if (show.Qualis == TRUE) {
-          WebQualis <-
-            qualis$Estrato[match(my_dois_works$issn[ix], qualis$ISSN)]
+          if (is.na(my_dois_works$issn[ix])) {
+            WebQualis <- NA
+          }
+          else {
+            # try first and second ISSN
+            issn.1 <- strsplit(my_dois_works$issn[ix], ",")[[1]][1]
+            issn.2 <- strsplit(my_dois_works$issn[ix], ",")[[1]][2]
+            WebQualis.1 <-
+              qualis$Estrato[match(issn.1, qualis$ISSN)]
+            WebQualis.2 <-
+              qualis$Estrato[match(issn.2, qualis$ISSN)]
+            WebQualis <-
+              unique(na.omit(c(WebQualis.1, WebQualis.2)))
+            if (is_empty(WebQualis)) {
+              WebQualis <- NA
+            }
+          }
+          if (is.na(WebQualis)) {
+            # try journal name
+            WebQualis <-
+              qualis[match(tolower(my_dois_works$container.title[ix]),
+                           tolower(qualis$Título)), 3]
+          }
           cat(
             "<a style=\"border-radius:10%; border-style: solid; margin:0.1em 0.3em 0.1em 0.3em; padding:0.4em 0.3em 0.4em 0.3em; text-decoration:none; text-align: center; display:inline-block; float:left; color:black;\"> Qualis <br>",
             paste0(ifelse(

@@ -4,6 +4,9 @@
 # 2. library(packup)
 # 3. packup()
 
+# set default directory
+options(repos = structure(c(CRAN = "http://cran.r-project.org")))
+
 # most packages work fine if installed from CRAN
 packs.cran <-
   c(
@@ -20,9 +23,9 @@ packs.cran <-
     "dplyr",
     "DT",
     "fontawesome",
-    "ggraph",
     "ggplot2",
     "ggpubr",
+    "ggraph",
     "grid",
     "gridExtra",
     "gtsummary",
@@ -39,11 +42,13 @@ packs.cran <-
     "networkD3",
     "parallelly",
     "png",
+    "raster",
     "RColorBrewer",
     "readtext",
-    "readxl",
     "readr",
+    "readxl",
     "remote",
+    "remotes",
     "rmarkdown",
     "Rmisc",
     "roadoi",
@@ -52,6 +57,7 @@ packs.cran <-
     "sf",
     "stringr",
     "tau",
+    "terra",
     "tidyverse",
     "tm",
     "tools",
@@ -63,7 +69,7 @@ packs.cran <-
 
 for (i in 1:length(packs.cran)) {
   if (!require(packs.cran[i], character.only = TRUE, quietly = TRUE))
-    install.packages(packs.cran[i], character.only = TRUE)
+    install.packages(packs.cran[i], character.only = TRUE,)
 }
 
 # other packages work better if installed from github
@@ -71,7 +77,8 @@ packs.git <-
   c("cssparser",
     "geobr",
     "packup",
-    "rcrossref")
+    "rcrossref",
+    "sf")
 
 if (!require("cssparser", character.only = TRUE, quietly = TRUE))
   remotes::install_github('coolbutuseless/cssparser')
@@ -84,6 +91,9 @@ if (!require("packup", character.only = TRUE, quietly = TRUE))
 
 if (!require("rcrossref", character.only = TRUE, quietly = TRUE))
   devtools::install_github("ropensci/rcrossref")
+
+if (!require("sf", character.only = TRUE, quietly = TRUE))
+  remotes::install_github("r-spatial/sf")
 
 # load all libraries
 packs <- c(packs.cran, packs.git)
