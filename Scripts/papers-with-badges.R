@@ -283,13 +283,11 @@ table.with.badges <-
         )
         
         # add authors' names
-        cat(
-          paste(
-            my_dois_works$author[[ix]]$given,
-            my_dois_works$author[[ix]]$family,
-            collapse = ", "
-          )
-        )
+        names <- ""
+        try(names <-
+              apply(cbind(my_dois_works$author[[ix]]$given, my_dois_works$author[[ix]]$family), 1,
+                    function(x) paste(x[!is.na(x)], collapse = " ")), silent = TRUE)
+        cat(paste(names[names != ""], collapse = ", "))
         
         # add year
         cat(paste0("<br>",
