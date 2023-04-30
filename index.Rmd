@@ -1307,7 +1307,48 @@ text(
   adj = 0.5
 )
 
-# plot 2 (summary table in plot)
+# generate cross tables of IS_OA artigos per year
+table.3 <-
+  t(table(
+    c(doi_unique$published_on, my_dois_works$published_on),
+    c(doi_unique$is_oa, my_dois_works$is_oa)
+  ))
+table.3 <- table.3[order(rownames(table.3)), ]
+rownames(table.3) <- c("Open acess", "Paywall")
+
+# Define the number of colors you want
+nb.cols <- length(rownames(table.3))
+mycolors <- colorRampPalette(brewer.pal(9, "Blues"))(nb.cols)
+
+# plot 2 (IS_OA in plot)
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+barplot(
+  scale(
+    as.matrix(table.3),
+    center = FALSE,
+    scale = colSums(as.matrix(table.3))
+  ) * 100,
+  ylab = "%",
+  col = mycolors,
+  ylim = c(0, 100)
+)
+title(main = "Produção em periódicos de acesso aberto",
+      outer = TRUE,
+      cex.main = 1.7)
+legend(
+  "topleft",
+  legend = rownames(table.3),
+  fill = rev(mycolors),
+  text.col = "white",
+  box.lwd = 0,
+  bty = "n",
+  horiz = FALSE,
+  cex = 1,
+)
+
+# plot 3 (summary table in plot)
 
 # calculate summary statistics for visibilidade
 summ.table.visibilidade <-
@@ -1357,11 +1398,12 @@ bs_carousel(id = "visibilidade-carousel",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
   bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-1.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-2.png"))
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-2.png")) %>%
+  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-3.png"))
 
 cat('\n\n')
 cat(
-  "[**Altmetric**](https://www.altmetric.com), **PPG**"
+  "[**Altmetric**](https://www.altmetric.com), [**CrossRef**](https://www.crossref.org), **PPG**"
 )
 cat('^[Produções com DOI apenas; a produção pode estar subsestimada pois produtos sem DOI não estão apresentados.]')
 cat('\n')
