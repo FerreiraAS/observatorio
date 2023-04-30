@@ -129,18 +129,18 @@ navbar:
     - text: "Impactos"
       href: [impactos.html]
       menu:
-        - text: "Impacto"
-          href: [impacto.html]
+        - text: "Impactos"
+          href: [impactos.html]
         - text: "Educacional"
-          href: [impacto.html#impacto-educacional]
+          href: [impactos.html#impacto-educacional]
         - text: "Científico"
-          href: [impacto.html#impacto-cientifico]
+          href: [impactos.html#impacto-cientifico]
         - text: "Sociocultural"
-          href: [impacto.html#impacto-sociocultural]
+          href: [impactos.html#impacto-sociocultural]
         - text: "Tecnológico/Econômico"
-          href: [impacto.html#impacto-tecnologico]
+          href: [impactos.html#impacto-tecnologico]
         - text: "Ações durante a pandemia"
-          href: [impacto.html#acoes-pandemia]
+          href: [impactos.html#acoes-pandemia]
     - text: "Galeria"
       href: [galeria.html]
       menu:
