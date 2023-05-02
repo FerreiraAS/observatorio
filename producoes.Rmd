@@ -879,6 +879,95 @@ cat('\n\n')
 
 <br>
 
+## **Retratações** {#retratacoes}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+<br>
+
+```{r retratacoes, eval = has.producao}
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+# bind sources
+doi_unique <- dois_unique_retracted
+my_dois_works <- my_dois_works_retracted
+
+# available years of publication
+years <-
+  na.omit(sort(unique(
+    c(doi_unique$published_on, my_dois_works$published_on)
+  ), decreasing = TRUE))
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+} else {
+  # print export buttons
+  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
+  print_buttons_dt(references, title = "Retratações")
+}
+
+# Verifica se há DOIs
+if (max(dim(doi_unique)[1], 0) == 0 &
+    max(dim(my_dois_works)[1], 0) == 0) {
+  cat('\n')
+  cat('*Sem retratações para exibir*')
+  cat('\n')
+} else {
+  # section header
+  cat('\n\n<!-- -->\n\n')
+  cat(
+    paste(
+      "*Produtos (n = ",
+      max(dim(doi_unique)[1], 0) + max(dim(my_dois_works)[1], 0),
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+      sep = ""
+    )
+  )
+  cat('<br>')
+  
+  for (year in 1:length(years)) {
+    # print tab header
+    cat('\n\n<!-- -->\n\n')
+    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    
+    # print table of papers with/without badges
+    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
+    table.with.badges(
+      show.Altmetric = TRUE,
+      show.Dimensions = TRUE,
+      show.PlumX = TRUE,
+      show.CiteScore = TRUE,
+      show.SJR = TRUE,
+      show.Qualis = TRUE,
+      doi_unique = tryCatch(
+        doi_unique[doi_unique$published_on == years[year], ],
+        error = function(e) {
+          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
+        }
+      ),
+      my_dois_works = tryCatch(
+        my_dois_works[my_dois_works$published_on == years[year], ],
+        error = function(e) {
+          my_dois_works <- list()
+        }
+      ),
+      citescore = citescore,
+      scimago = scimago,
+      qualis = qualis
+    )
+  }
+}
+
+# print end of tab rows
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('\n\n')
+```
+
+<br>
+
 ## **Registros de protocolos** {#registros .tabset}
 
 <!--script for generating HORIZONTAL LINE-->

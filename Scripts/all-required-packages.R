@@ -40,6 +40,7 @@ packs.cran <-
     "lubridate",
     "magrittr",
     "networkD3",
+    "pacman",
     "parallelly",
     "png",
     "raster",
@@ -69,7 +70,7 @@ packs.cran <-
 
 for (i in 1:length(packs.cran)) {
   if (!require(packs.cran[i], character.only = TRUE, quietly = TRUE))
-    install.packages(packs.cran[i], character.only = TRUE,)
+    install.packages(packs.cran[i], character.only = TRUE, )
 }
 
 # other packages work better if installed from github
@@ -78,7 +79,9 @@ packs.git <-
     "geobr",
     "packup",
     "rcrossref",
-    "sf")
+    "retractcheck",
+    "sf",
+    "textreadr")
 
 if (!require("cssparser", character.only = TRUE, quietly = TRUE))
   remotes::install_github('coolbutuseless/cssparser')
@@ -92,8 +95,17 @@ if (!require("packup", character.only = TRUE, quietly = TRUE))
 if (!require("rcrossref", character.only = TRUE, quietly = TRUE))
   devtools::install_github("ropensci/rcrossref")
 
+if (!require("retractcheck",
+             character.only = TRUE,
+             quietly = TRUE))
+  remotes::install_github("libscie/retractcheck")
+
 if (!require("sf", character.only = TRUE, quietly = TRUE))
   remotes::install_github("r-spatial/sf")
+
+if (!require("pacman"))
+  install.packages("pacman")
+pacman::p_load_gh("trinker/textreadr")
 
 # load all libraries
 packs <- c(packs.cran, packs.git)

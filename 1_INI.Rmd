@@ -630,3 +630,42 @@ colnames(formatted_citations) <- c("ID", "Reference")
 
 references_eventos <- formatted_citations
 ```
+
+```{r try-retratacoes, cache = TRUE, cache.path = "cache/retratacoes/", eval = has.producao}
+# bind sources
+doi_unique <- 
+  bind_rows(
+    doi_unique_artigos,
+    doi_unique_resumos,
+    doi_unique_preprints,
+    doi_unique_livros,
+    doi_unique_capitulos,
+    doi_unique_eventos
+  )
+
+my_dois_works <-
+  bind_rows(
+    my_dois_works_artigos,
+    my_dois_works_resumos,
+    my_dois_works_preprints,
+    my_dois_works_livros,
+    my_dois_works_capitulos,
+    my_dois_works_eventos
+  )
+
+dois_unique_retracted <- c()
+for (i in 1:dim(doi_unique)[1]) {
+  if (!check_doi(doi = as.character(doi_unique$doi[i]))) {
+    dois_unique_retracted <-
+      rbind(dois_unique_retracted, doi_unique[i, ])
+  }
+}
+
+my_dois_works_retracted <- c()
+for (i in 1:dim(my_dois_works)[1]) {
+  if (!check_doi(doi = as.character(my_dois_works$doi[i]))) {
+    my_dois_works_retracted <-
+      rbind(my_dois_works_retracted, my_dois_works[i, ])
+  }
+}
+```

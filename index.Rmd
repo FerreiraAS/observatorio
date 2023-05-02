@@ -866,10 +866,14 @@ for (i in 1:dim(artigos)[1]) {
 c.score <- c()
 for (i in 1:dim(artigos)[1]) {
   c.score.i <-
-    as.numeric(citescore$x2021_cite_score[grep(gsub("-", "", artigos$ISSN[i]), citescore$issn)])
+    as.numeric(citescore$x2021_cite_score[grep(gsub("-", "", artigos$ISSN[i]), citescore$print_issn)])
+  if (is_empty(c.score.i)) {
+    as.numeric(citescore$x2021_cite_score[grep(gsub("-", "", artigos$ISSN[i]), citescore$e_issn)])
+  }
+
   c.score <-
     c(c.score, ifelse(identical(c.score.i, numeric(0)) |
-                    all(is.na(c.score.i)), NA, c.score.i))
+                        all(is.na(c.score.i)), NA, c.score.i))
 }
 
 # generate cross tables of artigos per year
@@ -1319,10 +1323,12 @@ table.2 <-
   ))
 table.2 <- table.2[order(rownames(table.2)), ]
 rownames(table.2) <- c("Open acess", "Paywall")
+# swap lines
+table.2 <- table.2[seq_len(nrow(table.2)) + c(1,-1),]
 
 # Define the number of colors you want
 nb.cols <- length(rownames(table.2))
-mycolors <- colorRampPalette(brewer.pal(9, "Blues"))(nb.cols)
+mycolors <- colorRampPalette(brewer.pal(9, "Set3"))(nb.cols)
 
 # plot 2 (IS_OA in plot)
 layout.m <- c(1)
