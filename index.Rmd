@@ -1447,6 +1447,8 @@ cat(
 cat('^[Produções com DOI apenas; a produção pode estar subsestimada pois produtos sem DOI não estão apresentados.]')
 cat('\n')
 cat('^[O Altmetric score no donut representa a soma total do Altmetric score de cada produção.]')
+cat('\n')
+cat('^[Dados sobre retratação são obtidos de PubMed API e CrossRef API.]')
 ```
 
 <br>
