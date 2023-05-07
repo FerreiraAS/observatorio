@@ -35,6 +35,7 @@ lemon
 lubridate
 magrittr
 networkD3
+pacman
 parallelly
 png
 sp
@@ -73,3 +74,5 @@ cssparser
 geobr
 packup
 rcrossref
+retractcheck
+textreadr
