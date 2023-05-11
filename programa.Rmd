@@ -284,9 +284,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2024-2021** {.tabset}
 
-#### **Figura**
-
-```{r projetos-de-pesquisa-2024-grafico, eval = has.sucupira}
+```{r 2024-2021, eval = has.sucupira}
 # projetos - membros
 sheet <- "Projetos - Membros"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -296,6 +294,13 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 periodos <- names(sucupira.list)[na.omit(match(c(2021:2024), names(sucupira.list)))]
+
+has.avaliacao <- length(periodos) != 0
+```
+
+#### **Figura**
+
+```{r projetos-de-pesquisa-2024-grafico, eval = has.avaliacao}
 periodo <- as.character(seq(min(periodos), max(periodos)))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
@@ -310,8 +315,6 @@ colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
 # add column totals
 table.doc <- rbind(table.doc, colSums(table.doc))
 rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
-# print tables
-# print(kable(table.doc, align = c("l", rep("c", ncol(table.doc)-2), "r"), caption = "Docentes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
 
 # line break
 cat("  \n")
@@ -328,8 +331,6 @@ if(length(projetos.posdoc)[1] != 0){
   # add column totals
   table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
   rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
-  # print tables
-  # print(kable(table.posdoc, align = c("l", rep("c", ncol(table.posdoc)-2), "r"), caption = "Pós-Doutorandos") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
 }
 
 # line break
@@ -361,16 +362,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Tabela**
 
-```{r projetos-de-pesquisa-2024-tabela, eval = has.sucupira}
-# projetos - membros
-sheet <- "Projetos - Membros"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-periodos <- names(sucupira.list)[na.omit(match(c(2021:2024), names(sucupira.list)))]
+```{r projetos-de-pesquisa-2024-tabela, eval = has.avaliacao}
 periodo <- as.character(seq(min(periodos), max(periodos)))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
@@ -431,21 +423,6 @@ if(dim(projetos.posdoc)[1] != 0){
 # line break
 cat("  \n")
 cat("  \n")
-  
-# proporção de projetos por linha de pesquisa
-# layout(matrix(c(1,2,3,3), nrow = 2, ncol = 2, byrow = TRUE), heights = c(0.7,0.3))
-# par(oma=c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
-# levels <- unique(c(colnames(table.doc), colnames(table.posdoc)))
-# levels <- levels[which(levels != "N")]
-# pie(head(colSums(table.doc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Docentes")
-# if(dim(projetos.posdoc)[1] != 0){
-#   pie(head(colSums(table.posdoc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Pós-Doutorandos")
-# } else {
-#   plot(0, type = 'n', axes = FALSE)
-# }
-# plot(0, type = 'n', axes = FALSE)
-# legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 1)
-# title("Projetos de Pesquisa", outer = TRUE)
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -457,17 +434,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Lista**
 
-```{r projetos-de-pesquisa-2024-lista, eval = has.sucupira}
-# projetos - membros
-sheet <- "Projetos - Membros"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-periodos <-
-  names(sucupira.list)[na.omit(match(c(2021:2024), names(sucupira.list)))]
+```{r projetos-de-pesquisa-2024-lista, eval = has.avaliacao}
 periodo <- as.character(seq(min(periodos), max(periodos)))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 projetos <-
@@ -513,9 +480,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2020-2017** {.tabset}
 
-#### **Figura**
-
-```{r projetos-de-pesquisa-2020-grafico, eval = has.sucupira}
+```{r 2020-2017, eval = has.sucupira}
 # projetos - membros
 sheet <- "Projetos - Membros"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -525,9 +490,16 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 periodos <- names(sucupira.list)[na.omit(match(c(2017:2020), names(sucupira.list)))]
+
+has.avaliacao <- length(periodos) != 0
+```
+
+#### **Figura**
+
+```{r projetos-de-pesquisa-2020-grafico, eval = has.avaliacao}
 periodo <- as.character(seq(min(periodos), max(periodos)))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
-projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "CONCLUÍDO", ]
+projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
 projetos <- unique(projetos)
 
 # select data DOCENTES
@@ -539,8 +511,6 @@ colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
 # add column totals
 table.doc <- rbind(table.doc, colSums(table.doc))
 rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
-# print tables
-# print(kable(table.doc, align = c("l", rep("c", ncol(table.doc)-2), "r"), caption = "Docentes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
 
 # line break
 cat("  \n")
@@ -549,7 +519,7 @@ cat("  \n")
 # select data POS-DOC
 table.posdoc <- NULL
 projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
-if(dim(projetos.posdoc)[1] != 0){
+if(length(projetos.posdoc)[1] != 0){
   table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
   # add row totals
   table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
@@ -557,8 +527,6 @@ if(dim(projetos.posdoc)[1] != 0){
   # add column totals
   table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
   rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
-  # print tables
-  # print(kable(table.posdoc, align = c("l", rep("c", ncol(table.posdoc)-2), "r"), caption = "Pós-Doutorandos") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
 }
 
 # line break
@@ -590,19 +558,10 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Tabela**
 
-```{r projetos-de-pesquisa-2020-tabela, eval = has.sucupira}
-# projetos - membros
-sheet <- "Projetos - Membros"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-periodos <- names(sucupira.list)[na.omit(match(c(2017:2020), names(sucupira.list)))]
+```{r projetos-de-pesquisa-2020-tabela, eval = has.avaliacao}
 periodo <- as.character(seq(min(periodos), max(periodos)))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
-projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "CONCLUÍDO", ]
+projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
 projetos <- unique(projetos)
 
 # select data DOCENTES
@@ -660,21 +619,6 @@ if(dim(projetos.posdoc)[1] != 0){
 # line break
 cat("  \n")
 cat("  \n")
-  
-# proporção de projetos por linha de pesquisa
-# layout(matrix(c(1,2,3,3), nrow = 2, ncol = 2, byrow = TRUE), heights = c(0.7,0.3))
-# par(oma=c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
-# levels <- unique(c(colnames(table.doc), colnames(table.posdoc)))
-# levels <- levels[which(levels != "N")]
-# pie(head(colSums(table.doc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Docentes")
-# if(dim(projetos.posdoc)[1] != 0){
-#   pie(head(colSums(table.posdoc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Pós-Doutorandos")
-# } else {
-#   plot(0, type = 'n', axes = FALSE)
-# }
-# plot(0, type = 'n', axes = FALSE)
-# legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 1)
-# title("Projetos de Pesquisa", outer = TRUE)
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -686,17 +630,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Lista**
 
-```{r projetos-de-pesquisa-2020-lista, eval = has.sucupira}
-# projetos - membros
-sheet <- "Projetos - Membros"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-periodos <-
-  names(sucupira.list)[na.omit(match(c(2017:2020), names(sucupira.list)))]
+```{r projetos-de-pesquisa-2020-lista, eval = has.avaliacao}
 periodo <- as.character(seq(min(periodos), max(periodos)))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 projetos <-
@@ -730,7 +664,7 @@ colnames(table.projetos) <-
   )
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.projetos, title = "Projetos de Pesquisa 2017-2020")
+create_dt(table.projetos, title = "Projetos de Pesquisa 2021-2024")
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -742,9 +676,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2016-2013** {.tabset}
 
-#### **Figura**
-
-```{r projetos-de-pesquisa-2016-grafico, eval = has.sucupira}
+```{r 2016-2013, eval = has.sucupira}
 # projetos - membros
 sheet <- "Projetos - Membros"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -754,9 +686,16 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 periodos <- names(sucupira.list)[na.omit(match(c(2013:2016), names(sucupira.list)))]
+
+has.avaliacao <- length(periodos) != 0
+```
+
+#### **Figura**
+
+```{r projetos-de-pesquisa-2016-grafico, eval = has.avaliacao}
 periodo <- as.character(seq(min(periodos), max(periodos)))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
-projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "CONCLUÍDO", ]
+projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
 projetos <- unique(projetos)
 
 # select data DOCENTES
@@ -768,8 +707,6 @@ colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
 # add column totals
 table.doc <- rbind(table.doc, colSums(table.doc))
 rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
-# print tables
-# print(kable(table.doc, align = c("l", rep("c", ncol(table.doc)-2), "r"), caption = "Docentes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
 
 # line break
 cat("  \n")
@@ -778,7 +715,7 @@ cat("  \n")
 # select data POS-DOC
 table.posdoc <- NULL
 projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
-if(dim(projetos.posdoc)[1] != 0){
+if(length(projetos.posdoc)[1] != 0){
   table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
   # add row totals
   table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
@@ -786,8 +723,6 @@ if(dim(projetos.posdoc)[1] != 0){
   # add column totals
   table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
   rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
-  # print tables
-  # print(kable(table.posdoc, align = c("l", rep("c", ncol(table.posdoc)-2), "r"), caption = "Pós-Doutorandos") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
 }
 
 # line break
@@ -819,19 +754,10 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Tabela**
 
-```{r projetos-de-pesquisa-2016-tabela, eval = has.sucupira}
-# projetos - membros
-sheet <- "Projetos - Membros"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-periodos <- names(sucupira.list)[na.omit(match(c(2013:2016), names(sucupira.list)))]
+```{r projetos-de-pesquisa-2016-tabela, eval = has.avaliacao}
 periodo <- as.character(seq(min(periodos), max(periodos)))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
-projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "CONCLUÍDO", ]
+projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
 projetos <- unique(projetos)
 
 # select data DOCENTES
@@ -889,21 +815,6 @@ if(dim(projetos.posdoc)[1] != 0){
 # line break
 cat("  \n")
 cat("  \n")
-  
-# proporção de projetos por linha de pesquisa
-# layout(matrix(c(1,2,3,3), nrow = 2, ncol = 2, byrow = TRUE), heights = c(0.7,0.3))
-# par(oma=c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
-# levels <- unique(c(colnames(table.doc), colnames(table.posdoc)))
-# levels <- levels[which(levels != "N")]
-# pie(head(colSums(table.doc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Docentes")
-# if(dim(projetos.posdoc)[1] != 0){
-#   pie(head(colSums(table.posdoc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Pós-Doutorandos")
-# } else {
-#   plot(0, type = 'n', axes = FALSE)
-# }
-# plot(0, type = 'n', axes = FALSE)
-# legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 1)
-# title("Projetos de Pesquisa", outer = TRUE)
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -915,17 +826,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Lista**
 
-```{r projetos-de-pesquisa-2016-lista, eval = has.sucupira}
-# projetos - membros
-sheet <- "Projetos - Membros"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-periodos <-
-  names(sucupira.list)[na.omit(match(c(2013:2016), names(sucupira.list)))]
+```{r projetos-de-pesquisa-2016-lista, eval = has.avaliacao}
 periodo <- as.character(seq(min(periodos), max(periodos)))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 projetos <-
@@ -959,7 +860,7 @@ colnames(table.projetos) <-
   )
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.projetos, title = "Projetos de Pesquisa 2013-2016")
+create_dt(table.projetos, title = "Projetos de Pesquisa 2021-2024")
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -971,9 +872,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2012-2010** {.tabset}
 
-#### **Figura**
-
-```{r projetos-de-pesquisa-concluidos-2012-grafico, eval = has.sucupira}
+```{r 2012-2010, eval = has.sucupira}
 # projetos - membros
 sheet <- "Projetos - Membros"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -983,9 +882,16 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 periodos <- names(sucupira.list)[na.omit(match(c(2010:2012), names(sucupira.list)))]
+
+has.avaliacao <- length(periodos) != 0
+```
+
+#### **Figura**
+
+```{r projetos-de-pesquisa-2012-grafico, eval = has.avaliacao}
 periodo <- as.character(seq(min(periodos), max(periodos)))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
-projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "CONCLUÍDO", ]
+projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
 projetos <- unique(projetos)
 
 # select data DOCENTES
@@ -997,16 +903,15 @@ colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
 # add column totals
 table.doc <- rbind(table.doc, colSums(table.doc))
 rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
-# print tables
-# print(kable(table.doc, align = c("l", rep("c", ncol(table.doc)-2), "r"), caption = "Docentes") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
 
 # line break
 cat("  \n")
 cat("  \n")
 
 # select data POS-DOC
+table.posdoc <- NULL
 projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
-if(dim(projetos.posdoc)[1] != 0){
+if(length(projetos.posdoc)[1] != 0){
   table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
   # add row totals
   table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
@@ -1014,8 +919,6 @@ if(dim(projetos.posdoc)[1] != 0){
   # add column totals
   table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
   rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
-  # print tables
-  # print(kable(table.posdoc, align = c("l", rep("c", ncol(table.posdoc)-2), "r"), caption = "Pós-Doutorandos") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
 }
 
 # line break
@@ -1047,19 +950,10 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Tabela**
 
-```{r projetos-de-pesquisa-concluidos-2012-tabela, eval = has.sucupira}
-# projetos - membros
-sheet <- "Projetos - Membros"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-periodos <- names(sucupira.list)[na.omit(match(c(2010:2012), names(sucupira.list)))]
+```{r projetos-de-pesquisa-2012-tabela, eval = has.avaliacao}
 periodo <- as.character(seq(min(periodos), max(periodos)))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
-projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "CONCLUÍDO", ]
+projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
 projetos <- unique(projetos)
 
 # select data DOCENTES
@@ -1089,6 +983,7 @@ cat("  \n")
 cat("  \n")
 
 # select data POS-DOC
+table.posdoc <- NULL
 projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
 if(dim(projetos.posdoc)[1] != 0){
   table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
@@ -1116,21 +1011,6 @@ if(dim(projetos.posdoc)[1] != 0){
 # line break
 cat("  \n")
 cat("  \n")
-  
-# proporção de projetos por linha de pesquisa
-# layout(matrix(c(1,2,3,3), nrow = 2, ncol = 2, byrow = TRUE), heights = c(0.7,0.3))
-# par(oma=c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
-# levels <- unique(c(colnames(table.doc), colnames(table.posdoc)))
-# levels <- levels[which(levels != "N")]
-# pie(head(colSums(table.doc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Docentes")
-# if(dim(projetos.posdoc)[1] != 0){
-#   pie(head(colSums(table.posdoc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Pós-Doutorandos")
-# } else {
-#   plot(0, type = 'n', axes = FALSE)
-# }
-# plot(0, type = 'n', axes = FALSE)
-# legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 1)
-# title("Projetos de Pesquisa", outer = TRUE)
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -1142,17 +1022,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Lista**
 
-```{r projetos-de-pesquisa-2012-lista, eval = has.sucupira}
-# projetos - membros
-sheet <- "Projetos - Membros"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-periodos <-
-  names(sucupira.list)[na.omit(match(c(2010:2012), names(sucupira.list)))]
+```{r projetos-de-pesquisa-2012-lista, eval = has.avaliacao}
 periodo <- as.character(seq(min(periodos), max(periodos)))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 projetos <-
@@ -1186,7 +1056,7 @@ colnames(table.projetos) <-
   )
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.projetos, title = "Projetos de Pesquisa 2010-2012")
+create_dt(table.projetos, title = "Projetos de Pesquisa 2021-2024")
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -2286,10 +2156,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2024-2021**
 
-```{r turmas-2024, eval = has.sucupira}
-# load custom function
-source("Scripts/get-initials.R", local = knitr::knit_global())
-
+```{r turmas-2024-2021, eval = has.sucupira}
 # turmas
 sheet <- "Turmas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -2301,6 +2168,14 @@ names(sucupira.list) <- as.character(anos)
 # bind all sheets
 periodos <-
   names(sucupira.list)[na.omit(match(c(2021:2024), names(sucupira.list)))]
+
+has.avaliacao <- length(periodos) != 0
+```
+
+```{r turmas-2024, eval = has.avaliacao}
+# load custom function
+source("Scripts/get-initials.R", local = knitr::knit_global())
+
 periodo <- as.character(seq(min(periodos), max(periodos)))
 turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
 
@@ -2368,10 +2243,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2020-2017**
 
-```{r turmas-2020, eval = has.sucupira}
-# load custom function
-source("Scripts/get-initials.R", local = knitr::knit_global())
-
+```{r turmas-2020-2017, eval = has.sucupira}
 # turmas
 sheet <- "Turmas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -2383,6 +2255,14 @@ names(sucupira.list) <- as.character(anos)
 # bind all sheets
 periodos <-
   names(sucupira.list)[na.omit(match(c(2017:2020), names(sucupira.list)))]
+
+has.avaliacao <- length(periodos) != 0
+```
+
+```{r turmas-2020, eval = has.avaliacao}
+# load custom function
+source("Scripts/get-initials.R", local = knitr::knit_global())
+
 periodo <- as.character(seq(min(periodos), max(periodos)))
 turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
 
@@ -2411,7 +2291,7 @@ if (dim(turmas.raw)[1] != 0) {
   }
   print(
     kable(turmas.oferecidas, align = c("l", rep(
-      "c", ncol(turmas.oferecidas) - 2
+      "c",  max(0, ncol(turmas.oferecidas) - 2)
     ), "r")) %>% kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
@@ -2450,10 +2330,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2016-2013**
 
-```{r turmas-2016, eval = has.sucupira}
-# load custom function
-source("Scripts/get-initials.R", local = knitr::knit_global())
-
+```{r turmas-2016-2013, eval = has.sucupira}
 # turmas
 sheet <- "Turmas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -2465,6 +2342,14 @@ names(sucupira.list) <- as.character(anos)
 # bind all sheets
 periodos <-
   names(sucupira.list)[na.omit(match(c(2013:2016), names(sucupira.list)))]
+
+has.avaliacao <- length(periodos) != 0
+```
+
+```{r turmas-2016, eval = has.avaliacao}
+# load custom function
+source("Scripts/get-initials.R", local = knitr::knit_global())
+
 periodo <- as.character(seq(min(periodos), max(periodos)))
 turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
 
@@ -2493,7 +2378,7 @@ if (dim(turmas.raw)[1] != 0) {
   }
   print(
     kable(turmas.oferecidas, align = c("l", rep(
-      "c", ncol(turmas.oferecidas) - 2
+      "c",  max(0, ncol(turmas.oferecidas) - 2)
     ), "r")) %>% kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
@@ -2532,10 +2417,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2012-2010**
 
-```{r turmas-2012, eval = has.sucupira}
-# load custom function
-source("Scripts/get-initials.R", local = knitr::knit_global())
-
+```{r turmas-2012-2010, eval = has.sucupira}
 # turmas
 sheet <- "Turmas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -2547,6 +2429,14 @@ names(sucupira.list) <- as.character(anos)
 # bind all sheets
 periodos <-
   names(sucupira.list)[na.omit(match(c(2010:2012), names(sucupira.list)))]
+
+has.avaliacao <- length(periodos) != 0
+```
+
+```{r turmas-2012, eval = has.avaliacao}
+# load custom function
+source("Scripts/get-initials.R", local = knitr::knit_global())
+
 periodo <- as.character(seq(min(periodos), max(periodos)))
 turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
 
@@ -2575,7 +2465,7 @@ if (dim(turmas.raw)[1] != 0) {
   }
   print(
     kable(turmas.oferecidas, align = c("l", rep(
-      "c", ncol(turmas.oferecidas) - 2
+      "c",  max(0, ncol(turmas.oferecidas) - 2)
     ), "r")) %>% kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,

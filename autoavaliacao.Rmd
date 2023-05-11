@@ -72,98 +72,6 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-### **Coleta e dados do Programa** {#coleta-dados-ppg}
-
-<!--script for generating STACKED HORIZONTAL BAR CHART-->
-
-```{css}
-.row {
-  display: flex;
-  align-items: stretch;
-  margin: 0 0;
-}
-
-.row .label {
-  flex: 0 0 auto;
-}
-
-.row .bar-container {
-  flex: 1;
-  display: flex;
-  align-items: stretch;
-  justify-content: flex-start;
-}
-
-.row .bar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.val-a { background: #18BC9C }
-.val-b { background: #F39C12 }
-```
-
-<br>
-
-```{r barchart-data, eval = has.sucupira & has.PPG.files}
-# get amount of data from Sucupira XLSX files
-source("Scripts/get-sucupira-sheets-names.R",
-       local = knitr::knit_global())
-sheets <- sucupira.sheets
-
-data.sucupira <- 0
-for (i in 1:length(sheets)) {
-  sheet <- sheets[i]
-  source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-  data.sucupira <- sum(data.sucupira, !is.na(sucupira.raw))
-}
-
-# get amount of data from PPG XLSX files
-source("Scripts/get-ppg-xlsx-data.R", local = knitr::knit_global())
-
-data.ppg <- 0
-for (i in 1:length(files.to.read)) {
-  abas <- excel_sheets(files.to.read[i])
-  for (j in 1:length(abas)) {
-    sheet <- sheets[j]
-    try(ppg.file <-
-          read_excel(files.to.read[i], sheet = abas[j]),
-        silent = TRUE)
-    data.ppg <- sum(data.ppg, !is.na(ppg.file))
-  }
-}
-
-# total data
-total <- data.sucupira + data.ppg
-
-# print stacked horizontal bar chart
-cat('<div class="row">')
-cat('<div class="bar-container">')
-cat(
-  paste0(
-    '<div class="bar val-a" style="color:white; font-weight:bold; flex-basis:',
-    data.sucupira / total * 100,
-    '%">Plataforma Sucupira</div>'
-  )
-)
-cat(
-  paste0(
-    '<div class="bar val-b" style="color:white; font-weight:bold; flex-basis:',
-    data.ppg / total * 100,
-    '%">Institucionais</div>'
-  )
-)
-cat('</div>')
-cat('</div>')
-```
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
 ### **Formulários** {#formularios .tabset}
 
 #### **Qualidade das disciplinas**
@@ -263,6 +171,164 @@ cat('</div>')
 
 <br>
 
+### **Síntese dos dados** {.tabset #sintese-dados}
+
+#### **Dados completos**
+
+<!--script for generating STACKED HORIZONTAL BAR CHART-->
+
+```{css}
+.row {
+  display: flex;
+  align-items: stretch;
+  margin: 0 0;
+}
+
+.row .label {
+  flex: 0 0 auto;
+}
+
+.row .bar-container {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.row .bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.val-a { background: #18BC9C }
+.val-b { background: #F39C12 }
+```
+
+<br>
+
+```{r barchart-data, eval = any(has.sucupira, has.PPG.files)}
+data.sucupira <- 0
+if (has.sucupira) {
+  # get amount of data from Sucupira XLSX files
+  source("Scripts/get-sucupira-sheets-names.R",
+         local = knitr::knit_global())
+  sheets <- sucupira.sheets
+  
+  for (i in 1:length(sheets)) {
+    sheet <- sheets[i]
+    source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+    data.sucupira <- sum(data.sucupira, !is.na(sucupira.raw))
+  }
+}
+
+data.ppg <- 0
+if (has.PPG.files) {
+  # get amount of data from PPG XLSX files
+  source("Scripts/get-ppg-xlsx-data.R", local = knitr::knit_global())
+  if (length(files.to.read) != 0) {
+    for (i in 1:length(files.to.read)) {
+      abas <- excel_sheets(files.to.read[i])
+      for (j in 1:length(abas)) {
+        sheet <- sheets[j]
+        try(ppg.file <-
+              read_excel(files.to.read[i], sheet = abas[j]),
+            silent = TRUE)
+        data.ppg <- sum(data.ppg, !is.na(ppg.file))
+      }
+    }
+  }
+}
+
+# total data
+total <- data.sucupira + data.ppg
+
+# print stacked horizontal bar chart
+cat('<div class="row">')
+cat('<div class="bar-container">')
+cat(
+  paste0(
+    '<div class="bar val-a" style="color:white; font-weight:bold; flex-basis:',
+    data.sucupira / total * 100,
+    '%">Plataforma Sucupira</div>'
+  )
+)
+cat(
+  paste0(
+    '<div class="bar val-b" style="color:white; font-weight:bold; flex-basis:',
+    data.ppg / total * 100,
+    '%">Institucionais</div>'
+  )
+)
+cat('</div>')
+cat('</div>')
+
+cat('<br>')
+cat('\n\n')
+cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
+
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+#### **Dados perdidos**
+
+```{r missing-data-sucupira, eval = has.sucupira}
+# initialize data
+missing.data <- c()
+
+# get amount of data from Sucupira XLSX files
+source("Scripts/get-sucupira-sheets-names.R",
+       local = knitr::knit_global())
+
+# get all years available
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+
+for (ii in 1:length(sucupira.sheets)) {
+  sheet <- sucupira.sheets[ii]
+  source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+  
+  # loop for every available year
+  for (jj in 1:length(anos)) {
+    # check index of missing data
+    indexes <-
+      which(is.na(sucupira.list[[jj]]) == TRUE, arr.ind = TRUE)
+    if (dim(indexes)[1] != 0) {
+      for (kk in 1:dim(indexes)[1]) {
+        # get metadata about the missing data
+        missing.data <-
+          rbind(missing.data,
+                cbind(anos[jj],
+                      sucupira.sheets[ii],
+                      colnames(sucupira.list[[jj]])[indexes[kk, 2]]
+                      )
+                )
+      }
+    }
+  }
+}
+
+if (dim(missing.data)[1] != 0) {
+  missing.data <- as.data.frame(missing.data)
+  colnames(missing.data) <-
+    c("Aba", "Ano", "Coluna")
+  
+  missing.data <- unique(missing.data)
+
+  ids <- order(as.numeric(missing.data$'Ano'), decreasing = TRUE)
+  table <- missing.data[ids, ]
+  
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table, title = "Dados perdidos na Sucupira")
+
+} else {
+  cat("*Sem dados para exibir*")
+}
+cat('\n\n')
+cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
+
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
 ### **Nota** {#nota}
 
 ```{r auto-notas, eval = has.notas}
@@ -281,6 +347,8 @@ cat(
 cat('\n\n')
 
 cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/public/consultas/avaliacao/viewPreenchimentoFicha.xhtml?idFicha=6566&popup=true)")
+
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
 ### **Documentos CAPES** {#documentos .tabset}

@@ -13,6 +13,9 @@ output:
 
 <!--install and/or load all R packages-->
 ```{r setup, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%", results = "hide"}
+# restart all variables
+rm(list = ls(all = TRUE))
+
 knitr::opts_chunk$set(
   echo = FALSE,
   warning = FALSE,
