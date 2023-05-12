@@ -187,8 +187,8 @@ for (i in 1:length(doi_reshaped_data$doi)) {
     roadoi::oadoi_fetch(dois = doi_reshaped_data$doi[i], email = "cienciasdareabilitacao@souunisuam.com.br")
   doi_reshaped_data$is_oa[i] <-
     ifelse(length(my_doi_oa$is_oa) != 0,
-           as.character(my_doi_oa$is_oa),
-           "false")
+           toupper(as.character(my_doi_oa$is_oa)),
+           "FALSE")
 }
 
 # collect DOIs without Altmetric data

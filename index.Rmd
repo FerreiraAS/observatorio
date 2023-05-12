@@ -870,7 +870,6 @@ for (i in 1:dim(artigos)[1]) {
   if (is_empty(c.score.i)) {
     as.numeric(citescore$x2021_cite_score[grep(gsub("-", "", artigos$ISSN[i]), citescore$e_issn)])
   }
-
   c.score <-
     c(c.score, ifelse(identical(c.score.i, numeric(0)) |
                         all(is.na(c.score.i)), NA, c.score.i))
@@ -1319,10 +1318,10 @@ text(
 table.2 <-
   t(table(
     c(doi_unique$published_on, my_dois_works$published_on),
-    c(doi_unique$is_oa, my_dois_works$is_oa)
+    as.logical(c(doi_unique$is_oa, my_dois_works$is_oa))
   ))
 table.2 <- table.2[order(rownames(table.2)), ]
-rownames(table.2) <- c("Open acess", "Paywall")
+rownames(table.2) <- c("Open access", "Paywall")
 # swap lines
 table.2 <- table.2[seq_len(nrow(table.2)) + c(1,-1),]
 

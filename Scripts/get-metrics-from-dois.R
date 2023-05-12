@@ -37,8 +37,8 @@ if (sjmisc::is_empty(dois)) {
           roadoi::oadoi_fetch(dois = my_dois_works$doi[i], email = "cienciasdareabilitacao@souunisuam.com.br")
         my_dois_works$is_oa[i] <-
           ifelse(length(my_doi_oa$is_oa) != 0,
-                 as.character(my_doi_oa$is_oa),
-                 "false")
+                 toupper(as.character(my_doi_oa$is_oa)),
+                 "FALSE")
       }
       # add citation counts
       my_dois_works$citations <- rep(0, dim(my_dois_works)[1])
