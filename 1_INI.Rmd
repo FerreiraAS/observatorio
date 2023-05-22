@@ -258,7 +258,48 @@ has.premio.capes <-
   )
 ```
 
-```{r try-producao}
+```{r try-producao-sucupira, eval = has.sucupira}
+# produções
+sheet <- "Produções - Detalhes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# Data selection
+produtos <- sucupira.raw %>% dplyr::select(c("Subtipo de Produção", "Item de Detalhamento", "Valor do Item de Detalhamento"))
+
+# Data cleaning
+tipo <- "ARTIGO EM PERIÓDICO"
+natureza <- "Completo"
+titles <-
+  produtos$"Nome da Produção"[produtos$"Item de Detalhamento" == natureza]
+produtos.completos <- produtos[produtos$"Nome da Produção" == titles,]
+doi_artigos_completos_sucupira <- 
+  as.data.frame(produtos.completos$"Valor do Item de Detalhamento"[
+    (produtos.completos$"Subtipo de Produção" == tipo)
+    &
+    (produtos.completos$"Item de Detalhamento" == "Número do DOI")
+    ])
+doi_artigos_completos_sucupira <- na.omit(doi_artigos_completos_sucupira)
+colnames(doi_artigos_completos_sucupira) <- "DOI"
+
+# Data cleaning
+tipo <- "ARTIGO EM PERIÓDICO"
+natureza <- "Resumo"
+titles <-
+  produtos$"Nome da Produção"[produtos$"Item de Detalhamento" == natureza]
+produtos.resumos <- produtos[produtos$"Nome da Produção" == titles,]
+
+# Data cleaning
+doi_artigos_resumos_sucupira <- 
+  as.data.frame(produtos.resumos$"Valor do Item de Detalhamento"[
+    (produtos.resumos$"Subtipo de Produção" == tipo)
+    &
+    (produtos.resumos$"Item de Detalhamento" == "Número do DOI")
+    ])
+doi_artigos_resumos_sucupira <- na.omit(doi_artigos_resumos_sucupira)
+colnames(doi_artigos_resumos_sucupira) <- "DOI"
+```
+
+```{r try-producao-ppg}
 has.artigos.completos <-
   !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.completos"),
                 silent = TRUE))
@@ -392,6 +433,11 @@ dois <-
   as.data.frame(na.omit(data.sheet[, match("DOI", colnames(data.sheet))]))
 colnames(dois) <- "DOI"
 
+# bind PPG and SUCUPIRA DOIs
+dois <- as.data.frame(na.omit(bind_rows(dois, doi_artigos_completos_sucupira)))
+dois <- as.data.frame(dois$DOI[!duplicated(dois$DOI)])
+colnames(dois) <- "DOI"
+
 # cria metadados para rastreio pelo Altmetric
 source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
 
@@ -433,6 +479,11 @@ data.sheet <-
 # Data cleaning
 dois <-
   as.data.frame(na.omit(data.sheet[, match("DOI", colnames(data.sheet))]))
+colnames(dois) <- "DOI"
+
+# bind PPG and SUCUPIRA DOIs
+dois <- as.data.frame(na.omit(bind_rows(dois, doi_artigos_resumos_sucupira)))
+dois <- as.data.frame(dois$DOI[!duplicated(dois$DOI)])
 colnames(dois) <- "DOI"
 
 # cria metadados para rastreio pelo Altmetric
