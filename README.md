@@ -54,9 +54,11 @@ Para cada ano de atividade do Programa, repita os seguintes passos:
 7. Mova o arquivo "conferencia_programa.xlsx" para a pasta do ano corrspondente
 8. Delete o arquivo original "conferencia_programa.xls"
 
+```bash
 ├── Sucupira
 │   └── 2012
 │       ├── conferencia_de_programa.xlsx
+```
 
 ### Informações complementares
 
