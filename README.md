@@ -9,6 +9,7 @@ Sumário
    * [Recursos computacionais](#recursos)
    * [Pré-requisitos](#pre-requisitos)
    * [Infomações complementares](#complementos)
+   * [Fontes externas](#fontes-externas)
    * [Instalação](#instalacao)
    * [Como usar](#como-usar)
    * [Atualizações](#atualizacao)
@@ -53,41 +54,69 @@ Para cada ano de atividade do Programa, repita os seguintes passos:
 7. Mova o arquivo "conferencia_programa.xlsx" para a pasta do ano corrspondente
 8. Delete o arquivo original "conferencia_programa.xls"
 
+├── Sucupira
+│   └── 2012
+│       ├── conferencia_de_programa.xlsx
+
 ### Informações complementares
 
 O **Obsevatório** pode exibir informações complementares, não disponíveis na Plataforma Sucupira, desde que organizadas em planilhas XLSX. As seguintes planilhas podem ser complementadas:
 
-- [x] Agendas de Pesquisa
-- [x] Apresentação
-- [x] Autoavaliações
-- [x] Avaliação
-- [x] Bibliografia
-- [x] Blog_externos
-- [x] Blog_IES
-- [x] Bolsas
-- [x] Calendários
-- [x] CEP
-- [x] Colegiado
-- [x] Convênios
-- [x] Cooperações
-- [x] Coordenação
-- [x] Dados Cadastrais
-- [x] Destaques
-- [x] Discentes
-- [x] Downloads
-- [x] Editais
-- [x] Financiadores
-- [x] Grupos de Pesquisa
-- [x] Histórico
-- [x] Infraestrutura
-- [x] Internacionalização
-- [x] Laboratórios
-- [x] Notas
-- [x] Prêmio CAPES de Tese
-- [x] Prêmios
-- [x] Produção
-- [x] Repositórios
-- [x] Softwares
+├── PPG
+│   └── Agendas de Pesquisa.xlsx
+│   └── Apresentação.xlsx
+│   └── Autoavaliações.xlsx
+│   └── Avaliação.xlsx
+│   └── Bibliografia.xlsx
+│   └── Blog_externos.xlsx
+│   └── Blog_IES.xlsx
+│   └── Bolsas.xlsx
+│   └── Calendários.xlsx
+│   └── CEP.xlsx
+│   └── Colegiado.xlsx
+│   └── Convênios.xlsx
+│   └── Cooperações.xlsx
+│   └── Coordenação.xlsx
+│   └── Dados Cadastrais.xlsx
+│   └── Destaques.xlsx
+│   └── Discentes.xlsx
+│   └── Downloads.xlsx
+│   └── Editais.xlsx
+│   └── Financiadores.xlsx
+│   └── Grupos de Pesquisa.xlsx
+│   └── Histórico.xlsx
+│   └── Infraestrutura.xlsx
+│   └── Internacionalização.xlsx
+│   └── Laboratórios.xlsx
+│   └── Notas.xlsx
+│   └── Prêmio CAPES de Tese.xlsx
+│   └── Prêmios.xlsx
+│   └── Produção.xlsx
+│   └── Repositórios.xlsx
+│   └── Softwares.xlsx
+
+### Fontes externas
+
+Logotipos das principais agências de fomento estào disponíveis:
+
+├── PPG
+│   └── Agencias
+│       ├── logo-capes.png
+│       ├── logo-cnpq.png
+│       ├── logo-faperj.png
+│       └── logo-ods.png
+
+Dara análise das métricas, as seguintes fontes são utilizadas:
+
+├── Metrics
+│   ├── Altmetric
+│   │   └── cropped-altmetric-symbol.png
+│   ├── CiteScore
+│   │   └── extlistMarch2023.xlsx
+│   ├── Qualis
+│   │   └── classificações_publicadas_todas_as_areas_avaliacao1672761192111.xlsx
+│   └── SJR
+│       └── scimagojr 2022.csv
 
 ### Instalação
 
