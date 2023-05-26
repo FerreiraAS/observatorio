@@ -13,6 +13,7 @@ Sumário
    * [Instalação](#instalacao)
    * [Como usar](#como-usar)
    * [Atualizações](#atualizacao)
+   * [Observatórios publicados](#observatorios)
 <!--te-->
 
 ## Conteúdo do **Obsevatório**
@@ -195,3 +196,9 @@ Antes de começar, você vai precisar instalar em sua máquina os seguintes prog
 ### Atualizações
 
 *Em construção*
+
+### Observatórios publicados
+
+[![Programa de Pós-graduação em Ciências da Reabilitação | UNISUAM](https://ppgcr-unisuam.github.io/observatoriocr)
+
+[![Programa de Pós-graduação em Desenvolvimento Local | UNISUAM](https://ppgdl-unisuam.github.io/observatoriodl)
