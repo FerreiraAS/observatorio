@@ -5,7 +5,7 @@
 Sumário
 =================
 <!--ts-->
-   * [Conteúdo do Observatório](#conteudo)
+   * [Conteúdo do Observatório](#conteúdo-do-Observatório)
    * [Recursos computacionais](#recursos)
    * [Pré-requisitos](#pre-requisitos)
    * [Infomações complementares](#complementos)
@@ -16,7 +16,7 @@ Sumário
    * [Observatórios publicados](#observatorios)
 <!--te-->
 
-## Conteúdo do **Obsevatório** {#conteudo}
+## Conteúdo do Obsevatório
 
 - [x] Programa
 - [x] Pessoas
