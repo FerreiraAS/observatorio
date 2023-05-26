@@ -58,89 +58,85 @@ Para cada ano de atividade do Programa, repita os seguintes passos:
 ├── Sucupira
 │   └── 2012
 │       ├── conferencia_de_programa.xlsx
+│   └── 2013
+│       ├── conferencia_de_programa.xlsx
+│   └── 2014
+│       ├── conferencia_de_programa.xlsx
+│   └── 2015
+│       ├── conferencia_de_programa.xlsx
+│   └── 2016
+│       ├── conferencia_de_programa.xlsx
+│   └── 2017
+│       ├── conferencia_de_programa.xlsx
+│   └── 2018
+│       ├── conferencia_de_programa.xlsx
+│   └── 2019
+│       ├── conferencia_de_programa.xlsx
+│   └── 2020
+│       ├── conferencia_de_programa.xlsx
+│   └── 2021
+│       ├── conferencia_de_programa.xlsx
+│   └── 2022
+│       ├── conferencia_de_programa.xlsx
+│   └── 2023
+│       ├── conferencia_de_programa.xlsx
 ```
 
 ### Informações complementares
 
 O **Obsevatório** pode exibir informações complementares, não disponíveis na Plataforma Sucupira, desde que organizadas em planilhas XLSX. As seguintes planilhas podem ser complementadas:
 
+```bash
 ├── PPG
-
 │   └── Agendas de Pesquisa.xlsx
-
 │   └── Apresentação.xlsx
-
 │   └── Autoavaliações.xlsx
-
 │   └── Avaliação.xlsx
-
 │   └── Bibliografia.xlsx
-
 │   └── Blog_externos.xlsx
-
 │   └── Blog_IES.xlsx
-
 │   └── Bolsas.xlsx
-
 │   └── Calendários.xlsx
-
 │   └── CEP.xlsx
-
 │   └── Colegiado.xlsx
-
 │   └── Convênios.xlsx
-
 │   └── Cooperações.xlsx
-
 │   └── Coordenação.xlsx
-
 │   └── Dados Cadastrais.xlsx
-
 │   └── Destaques.xlsx
-
 │   └── Discentes.xlsx
-
 │   └── Downloads.xlsx
-
 │   └── Editais.xlsx
-
 │   └── Financiadores.xlsx
-
 │   └── Grupos de Pesquisa.xlsx
-
 │   └── Histórico.xlsx
-
 │   └── Infraestrutura.xlsx
-
 │   └── Internacionalização.xlsx
-
 │   └── Laboratórios.xlsx
-
 │   └── Notas.xlsx
-
 │   └── Prêmio CAPES de Tese.xlsx
-
 │   └── Prêmios.xlsx
-
 │   └── Produção.xlsx
-
 │   └── Repositórios.xlsx
-
 │   └── Softwares.xlsx
+```
 
 ### Fontes externas
 
 Logotipos das principais agências de fomento estào disponíveis:
 
+```bash
 ├── PPG
 │   └── Agencias
 │       ├── logo-capes.png
 │       ├── logo-cnpq.png
 │       ├── logo-faperj.png
 │       └── logo-ods.png
+```
 
 Dara análise das métricas, as seguintes fontes são utilizadas:
 
+```bash
 ├── Metrics
 │   ├── Altmetric
 │   │   └── cropped-altmetric-symbol.png
@@ -150,6 +146,7 @@ Dara análise das métricas, as seguintes fontes são utilizadas:
 │   │   └── classificações_publicadas_todas_as_areas_avaliacao1672761192111.xlsx
 │   └── SJR
 │       └── scimagojr 2022.csv
+```
 
 ### Instalação
 
