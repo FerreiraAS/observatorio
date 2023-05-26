@@ -54,31 +54,11 @@ Para cada ano de atividade do Programa, repita os seguintes passos:
 7. Mova o arquivo "conferencia_programa.xlsx" para a pasta do ano corrspondente
 8. Delete o arquivo original "conferencia_programa.xls"
 
+```bash
 ├── Sucupira
-    │── 2012  
-        ├── conferencia_de_programa.xlsx  
-    │── 2013  
-        ├── conferencia_de_programa.xlsx  
-    │── 2014  
-        ├── conferencia_de_programa.xlsx  
-    │── 2015  
-        ├── conferencia_de_programa.xlsx  
-    │── 2016  
-        ├── conferencia_de_programa.xlsx  
-    │── 2017  
-        ├── conferencia_de_programa.xlsx  
-    │── 2018  
-        ├── conferencia_de_programa.xlsx  
-    │── 2019  
-        ├── conferencia_de_programa.xlsx  
-    │── 2020  
-        ├── conferencia_de_programa.xlsx  
-    │── 2021  
-        ├── conferencia_de_programa.xlsx  
-    │── 2022  
-        ├── conferencia_de_programa.xlsx  
-    │── 2023  
-        ├── conferencia_de_programa.xlsx  
+│   └── 2012
+│       ├── conferencia_de_programa.xlsx
+```
 
 ### Informações complementares
 
