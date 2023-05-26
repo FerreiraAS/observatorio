@@ -5,7 +5,7 @@
 Sumário
 =================
 <!--ts-->
-   * [Conteudo do Observatório](#conteudo-do-observatorio)
+   * [Conteudo do Observatorio](#conteudo-do-observatorio)
    * [Recursos computacionais](#recursos)
    * [Pré-requisitos](#pre-requisitos)
    * [Infomações complementares](#complementos)
