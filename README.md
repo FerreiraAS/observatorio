@@ -1,11 +1,11 @@
 # Observatório
 
-## O **Observatório** é uma iniciativa que envolve o registro, o acompanhamento e a análise agregada e estruturada de dados de Programas de Pós-graduaçào Stricto Sensu do Brasil para divulgação transparente de suas atividades, planejamentos, ações e impactos, tornando-os acessíveis à sociedade
+## O **Observatório** é uma iniciativa que envolve o registro, o acompanhamento e a análise agregada e estruturada de dados de Programas de Pós-graduação Stricto Sensu do Brasil para divulgação transparente de suas atividades, planejamentos, ações e impactos, tornando-os acessíveis à sociedade
 
 Sumário
 =================
 <!--ts-->
-   * [Conteúdo](#conteudo)
+   * [Conteúdo do Observatório](#conteudo)
    * [Recursos computacionais](#recursos)
    * [Pré-requisitos](#pre-requisitos)
    * [Infomações complementares](#complementos)
@@ -16,7 +16,7 @@ Sumário
    * [Observatórios publicados](#observatorios)
 <!--te-->
 
-## Conteúdo do **Obsevatório**
+## [Conteúdo do **Obsevatório**](#conteudo)
 
 - [x] Programa
 - [x] Pessoas
@@ -186,8 +186,6 @@ Antes de começar, você vai precisar instalar em sua máquina os seguintes prog
 
 - [R project](https://www.r-project.org)
 - [Rstudio desktop](https://posit.co/download/rstudio-desktop/)
-
-*Em construção*
 
 ## Como usar
 
