@@ -62,6 +62,7 @@ Para cada ano de atividade do Programa, repita os seguintes passos:
 
 O **Obsevatório** pode exibir informações complementares, não disponíveis na Plataforma Sucupira, desde que organizadas em planilhas XLSX. As seguintes planilhas podem ser complementadas:
 
+.
 ├── PPG
 │   └── Agendas de Pesquisa.xlsx
 │   └── Apresentação.xlsx
