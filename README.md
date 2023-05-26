@@ -74,7 +74,7 @@ Para cada ano de atividade do Programa, repita os seguintes passos:
 4. Na nova aba aberta, aparecerá a mensagem "Por favor, aguarde enquanto o relatório está sendo gerado". Após a compilação dos dados, clique em "Clique aqui para realizar o download"
 5. Feche a nova aba e retorne à página principal da Plataforma Sucupira
 6. Abra o arquivo "conferencia_programa.xls" e salve em formato XLSX (ex.: "conferencia_programa.xlsx")
-7. Mova o arquivo "conferencia_programa.xlsx" para a pasta do ano corrspondente
+7. Mova o arquivo "conferencia_programa.xlsx" para a pasta do ano correspondente
 8. Delete o arquivo original "conferencia_programa.xls"
 
 Ao completar esta etapa, a estrutura dos diretórios e arquivos será esta:
@@ -82,29 +82,29 @@ Ao completar esta etapa, a estrutura dos diretórios e arquivos será esta:
 ```bash
 ├── Sucupira
 │   └── 2012
-│       ├── conferencia_de_programa.xlsx
+│       ├── conferencia_programa.xlsx
 │   └── 2013
-│       ├── conferencia_de_programa.xlsx
+│       ├── conferencia_programa.xlsx
 │   └── 2014
-│       ├── conferencia_de_programa.xlsx
+│       ├── conferencia_programa.xlsx
 │   └── 2015
-│       ├── conferencia_de_programa.xlsx
+│       ├── conferencia_programa.xlsx
 │   └── 2016
-│       ├── conferencia_de_programa.xlsx
+│       ├── conferencia_programa.xlsx
 │   └── 2017
-│       ├── conferencia_de_programa.xlsx
+│       ├── conferencia_programa.xlsx
 │   └── 2018
-│       ├── conferencia_de_programa.xlsx
+│       ├── conferencia_programa.xlsx
 │   └── 2019
-│       ├── conferencia_de_programa.xlsx
+│       ├── conferencia_programa.xlsx
 │   └── 2020
-│       ├── conferencia_de_programa.xlsx
+│       ├── conferencia_programa.xlsx
 │   └── 2021
-│       ├── conferencia_de_programa.xlsx
+│       ├── conferencia_programa.xlsx
 │   └── 2022
-│       ├── conferencia_de_programa.xlsx
+│       ├── conferencia_programa.xlsx
 │   └── 2023
-│       ├── conferencia_de_programa.xlsx
+│       ├── conferencia_programa.xlsx
 ```
 
 ### Informações complementares
