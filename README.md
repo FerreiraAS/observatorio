@@ -5,11 +5,12 @@
 Sumário
 =================
 <!--ts-->
-   * [Instalação](#instalacao)
-   * [Como usar](#como-usar)
-      * [Pré-requisitos](#pre-requisitos)
    * [Conteúdo](#conteudo)
    * [Recursos computacionais](#recursos)
+   * [Pré-requisitos](#pre-requisitos)
+   * [Instalação](#instalacao)
+   * [Como usar](#como-usar)
+   * [Atualizações](#atualizacao)
 <!--te-->
 
 ## Conteúdo
@@ -25,7 +26,7 @@ Sumário
 
 ### Recursos computacionais
 
-As seguintes ferramentas foram usadas na construção do projeto. Antes de começar, você vai precisar instalar em sua máquina as seguintes ferramentas:
+Os seguintes programas foram usados na construção deste projeto:
 
 - [R project](https://www.r-project.org)
 - [Rstudio desktop](https://posit.co/download/rstudio-desktop/)
@@ -50,3 +51,20 @@ Para cada ano de atividade do Programa, repita os seguintes passos:
 6. Abra o arquivo "conferencia_programa.xls" e salve em formato XLSX (ex.: "conferencia_programa.xlsx")
 7. Mova o arquivo "conferencia_programa.xlsx" para a pasta do ano corrspondente
 8. Delete o arquivo original "conferencia_programa.xls"
+
+### Instalação
+
+Antes de começar, você vai precisar instalar em sua máquina os seguintes programas:
+
+- [R project](https://www.r-project.org)
+- [Rstudio desktop](https://posit.co/download/rstudio-desktop/)
+
+*Em construção*
+
+### Como usar
+
+*Em construção*
+
+### Atualizações
+
+*Em construção*
