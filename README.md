@@ -63,67 +63,36 @@ Para cada ano de atividade do Programa, repita os seguintes passos:
 O **Obsevatório** pode exibir informações complementares, não disponíveis na Plataforma Sucupira, desde que organizadas em planilhas XLSX. As seguintes planilhas podem ser complementadas:
 
 ├── PPG
-
 │   └── Agendas de Pesquisa.xlsx
-
 │   └── Apresentação.xlsx
-
 │   └── Autoavaliações.xlsx
-
 │   └── Avaliação.xlsx
-
 │   └── Bibliografia.xlsx
-
 │   └── Blog_externos.xlsx
-
 │   └── Blog_IES.xlsx
-
 │   └── Bolsas.xlsx
-
 │   └── Calendários.xlsx
-
 │   └── CEP.xlsx
-
 │   └── Colegiado.xlsx
-
 │   └── Convênios.xlsx
-
 │   └── Cooperações.xlsx
-
 │   └── Coordenação.xlsx
-
 │   └── Dados Cadastrais.xlsx
-
 │   └── Destaques.xlsx
-
 │   └── Discentes.xlsx
-
 │   └── Downloads.xlsx
-
 │   └── Editais.xlsx
-
 │   └── Financiadores.xlsx
-
 │   └── Grupos de Pesquisa.xlsx
-
 │   └── Histórico.xlsx
-
 │   └── Infraestrutura.xlsx
-
 │   └── Internacionalização.xlsx
-
 │   └── Laboratórios.xlsx
-
 │   └── Notas.xlsx
-
 │   └── Prêmio CAPES de Tese.xlsx
-
 │   └── Prêmios.xlsx
-
 │   └── Produção.xlsx
-
 │   └── Repositórios.xlsx
-
 │   └── Softwares.xlsx
 
 ### Fontes externas
