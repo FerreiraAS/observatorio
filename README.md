@@ -7,9 +7,10 @@ Sumário
 <!--ts-->
    * [Conteudo do Observatorio](#Conteudo-do-Observatorio)
    * [Recursos computacionais](#Recursos-computacionais)
-   * [Pre-requisitos](#Pre-requisitos)
-   * [Infomacoes complementares](#Infomacoes-complementares)
-   * [Fontes externas](#fontes-externas)
+   * [Fontes de dados](#Fontes-de-dados)
+      * [Plataforma Sucupira](#Plataforma-Sucupira)
+      * [Programa](#Programa)
+      * [Fontes externas](#fontes-externas)
    * [Instalacao](#instalacao)
    * [Como usar](#Como-usar)
    * [Atualizações](#Atualizacoes)
@@ -34,11 +35,11 @@ Os seguintes programas foram usados na construção do **Obsevatório**:
 - [R project](https://www.r-project.org)
 - [Rstudio desktop](https://posit.co/download/rstudio-desktop/)
 
-## Pre-requisitos
+## Fontes de dados
+
+### Plataforma Sucupira
 
 O **Obsevatório** utiliza arquivos exportados pela [Plataforma Sucupira](https://sucupira.capes.gov.br/sucupira/). Para gerar os arquivos, siga as seguintes etapas:
-
-### 1a ETAPA
 
 1. Crie uma pasta de nome "Sucupira" no seu computador
 2. Na pasta "Sucupira", crie uma pasta para cada ano que o Programa possui dados disponíveis na Plataforma Sucupira (2012 em diante). O nome da pasta será o ano correspondente aos dados (ex.: "2023")
@@ -60,8 +61,6 @@ Ao completar esta etapa, a estrutura dos diretórios será esta:
 │   └── 2022
 │   └── 2023
 ```
-
-### 2a ETAPA
 
 1. Acesse a [Plataforma Sucupira](https://sucupira.capes.gov.br/sucupira/)
 2. Clique no ícone "ACESSO RESTRITO" e faça login
@@ -108,7 +107,7 @@ Ao completar esta etapa, a estrutura dos diretórios e arquivos será esta:
 │       ├── conferencia_programa.xlsx
 ```
 
-## Infomacoes complementares
+### Programa
 
 O **Obsevatório** pode exibir informações complementares, não disponíveis na Plataforma Sucupira, desde que organizadas em planilhas XLSX. As seguintes planilhas podem ser complementadas:
 
@@ -147,7 +146,7 @@ O **Obsevatório** pode exibir informações complementares, não disponíveis n
 │   └── Softwares.xlsx
 ```
 
-## Fontes externas
+### Fontes externas
 
 Logotipos das principais agências de fomento estào disponíveis:
 
