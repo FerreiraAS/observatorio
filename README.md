@@ -199,6 +199,7 @@ Antes de começar, você vai precisar instalar em sua máquina os seguintes prog
 
 ## Observatórios publicados
 
-- [**Observatório CR**](https://ppgcr-unisuam.github.io/observatoriocr) | Programa de Pós-graduação em Ciências da Reabilitação | UNISUAM]
+### **UNISUAM**
+- [**Observatório CR**](https://ppgcr-unisuam.github.io/observatoriocr) | Programa de Pós-graduação em Ciências da Reabilitação
 
-- [**Observatório DL**](https://ppgdl-unisuam.github.io/observatoriodl) | Programa de Pós-graduação em Desenvolvimento Local | UNISUAM]
+- [**Observatório DL**](https://ppgdl-unisuam.github.io/observatoriodl) | Programa de Pós-graduação em Desenvolvimento Local
