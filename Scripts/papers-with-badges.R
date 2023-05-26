@@ -499,7 +499,7 @@ table.with.badges <-
     cat('^4^ [**CiteScore**](https://www.scopus.com/sources)',
         sep = "")
     cat(', ', sep = "")
-    cat('^5^ [**SCImago**](https://www.scimagojr.com)', sep = "")
+    cat('^5^ [**SJR**](https://www.scimagojr.com)', sep = "")
     cat(', ', sep = "")
     cat(
       '^6^ [**WebQualis**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)',

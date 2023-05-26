@@ -161,7 +161,7 @@ Logotipos das principais agências de fomento estào disponíveis:
 │   └── Agencias
 │       ├── logo-capes.png
 │       ├── logo-cnpq.png
-│       ├── logo-faperj.png
+│       ├── logo-fap.png
 │       └── logo-ods.png
 ```
 
@@ -170,10 +170,11 @@ Logotipos das principais agências de fomento estào disponíveis:
 Para análise das métricas, as seguintes fontes são utilizadas:
 
 - [**Altmetric**](https://www.altmetric.com)
-- [**Scopus**](https://www.scopus.com/home.uri)
-- [**WebQualis**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)
-- [**SJR**](https://www.scimagojr.com)
-- [**CrossRef**](https://www.crossref.org)
+- [**Dimensions**](https://www.dimensions.ai)
+- [**PlumX**](https://plu.mx)
+- CiteScore da [**Scopus**](https://www.scopus.com/sources)
+- Webqualis da [**CAPES**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)
+- SJR da [**SCImago**](https://www.scimagojr.com)
 
 ```bash
 ├── Metrics
