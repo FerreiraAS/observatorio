@@ -150,6 +150,11 @@ O **Obsevatório** pode exibir informações complementares, não disponíveis n
 
 Logotipos das principais agências de fomento estào disponíveis:
 
+- [**CAPES**](https://www.gov.br/capes/pt-br/centrais-de-conteudo/logomarca)
+- [**CNPq**](http://memoria.cnpq.br/marca-cnpq)
+- [**FAPERJ**](https://www.faperj.br/?id=26.5.2)
+- [**ODS**](http://www4.planalto.gov.br/ods/publicacoes/manual-de-identidade-visual-ods-pnud.pdf/view)
+
 ```bash
 ├── PPG
 │   └── Agencias
@@ -188,11 +193,17 @@ Antes de começar, você vai precisar instalar em sua máquina os seguintes prog
 
 ## Como usar
 
-*Em construção*
+### 1.Criando uma conta no GitHub
+
+### 2. Copiando o repositório
+
+### 3. Criando novo projeto
+
+### 4. Compilando o Observatório
+
+### 5. Publicando o Observatório no Github
 
 ## Atualizacoes
-
-*Em construção*
 
 ## Observatorios publicados
 
