@@ -2,7 +2,7 @@
 
 ## O **Observatório** é uma iniciativa que envolve o registro, o acompanhamento e a análise agregada e estruturada de dados de Programas de Pós-graduação Stricto Sensu do Brasil para divulgação transparente de suas atividades, planejamentos, ações e impactos, tornando-os acessíveis à sociedade
 
-Sumário
+**Sumário**
 =================
 <!--ts-->
    * [Conteudo do Observatorio](#Conteudo-do-Observatorio)
@@ -10,14 +10,15 @@ Sumário
    * [Fontes de dados](#Fontes-de-dados)
       * [Plataforma Sucupira](#Plataforma-Sucupira)
       * [Programa](#Programa)
-      * [Fontes externas](#fontes-externas)
+      * [Agencias](#Agencias)
+      * [Metricas](#Metricas)
    * [Instalacao](#instalacao)
    * [Como usar](#Como-usar)
    * [Atualizações](#Atualizacoes)
    * [Observatorios publicados](#Observatorios-publicados)
 <!--te-->
 
-## Conteudo do Observatorio
+## **Conteudo do Observatorio**
 
 - [x] Programa
 - [x] Pessoas
@@ -28,16 +29,16 @@ Sumário
 - [x] Autoavaliação
 - [x] Área
 
-## Recursos computacionais
+## **Recursos computacionais**
 
 Os seguintes programas foram usados na construção do **Obsevatório**:
 
 - [R project](https://www.r-project.org)
 - [Rstudio desktop](https://posit.co/download/rstudio-desktop/)
 
-## Fontes de dados
+## **Fontes de dados**
 
-### Plataforma Sucupira
+### **Plataforma Sucupira**
 
 O **Obsevatório** utiliza arquivos exportados pela [Plataforma Sucupira](https://sucupira.capes.gov.br/sucupira/). Para gerar os arquivos, siga as seguintes etapas:
 
@@ -107,7 +108,7 @@ Ao completar esta etapa, a estrutura dos diretórios e arquivos será esta:
 │       ├── conferencia_programa.xlsx
 ```
 
-### Programa
+### **Programa**
 
 O **Obsevatório** pode exibir informações complementares, não disponíveis na Plataforma Sucupira, desde que organizadas em planilhas XLSX. As seguintes planilhas podem ser complementadas:
 
@@ -146,7 +147,7 @@ O **Obsevatório** pode exibir informações complementares, não disponíveis n
 │   └── Softwares.xlsx
 ```
 
-### Fontes externas
+### **Agencias**
 
 Logotipos das principais agências de fomento estào disponíveis:
 
@@ -163,6 +164,8 @@ Logotipos das principais agências de fomento estào disponíveis:
 │       ├── logo-faperj.png
 │       └── logo-ods.png
 ```
+
+### **Metricas**
 
 Para análise das métricas, as seguintes fontes são utilizadas:
 
@@ -184,30 +187,30 @@ Para análise das métricas, as seguintes fontes são utilizadas:
 │       └── scimagojr 2022.csv
 ```
 
-## Instalacao
+## **Instalacao**
 
 Antes de começar, você vai precisar instalar em sua máquina os seguintes programas:
 
 - [R project](https://www.r-project.org)
 - [Rstudio desktop](https://posit.co/download/rstudio-desktop/)
 
-## Como usar
+## **Como usar**
 
-### 1.Criando uma conta no GitHub
+### **1. Criando uma conta no GitHub**
 
-### 2. Copiando o repositório
+### **2. Copiando o repositório do GitHub**
 
-### 3. Criando novo projeto
+### **3. Criando novo projeto no RStudio**
 
-### 4. Compilando o Observatório
+### **4. Compilando o Observatório no RStudio**
 
-### 5. Publicando o Observatório no Github
+### **5. Publicando o Observatório no Github**
 
-## Atualizacoes
+## **Atualizacoes**
 
-## Observatorios publicados
+## **Observatorios publicados**
 
-### **UNISUAM**
+### **Centro Universitário Augusto Motta | UNISUAM**
 - [**Observatório CR**](https://ppgcr-unisuam.github.io/observatoriocr) | Programa de Pós-graduação em Ciências da Reabilitação
 
 - [**Observatório DL**](https://ppgdl-unisuam.github.io/observatoriodl) | Programa de Pós-graduação em Desenvolvimento Local
