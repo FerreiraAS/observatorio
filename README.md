@@ -83,29 +83,29 @@ Ao completar esta etapa, a estrutura dos diretórios e arquivos será esta:
 ```bash
 ├── Sucupira
 │   └── 2012
-│       ├── conferencia_programa.xlsx
+│       └── conferencia_programa.xlsx
 │   └── 2013
-│       ├── conferencia_programa.xlsx
+│       └── conferencia_programa.xlsx
 │   └── 2014
-│       ├── conferencia_programa.xlsx
+│       └── conferencia_programa.xlsx
 │   └── 2015
-│       ├── conferencia_programa.xlsx
+│       └── conferencia_programa.xlsx
 │   └── 2016
-│       ├── conferencia_programa.xlsx
+│       └── conferencia_programa.xlsx
 │   └── 2017
-│       ├── conferencia_programa.xlsx
+│       └── conferencia_programa.xlsx
 │   └── 2018
-│       ├── conferencia_programa.xlsx
+│       └── conferencia_programa.xlsx
 │   └── 2019
-│       ├── conferencia_programa.xlsx
+│       └── conferencia_programa.xlsx
 │   └── 2020
-│       ├── conferencia_programa.xlsx
+│       └── conferencia_programa.xlsx
 │   └── 2021
-│       ├── conferencia_programa.xlsx
+│       └── conferencia_programa.xlsx
 │   └── 2022
-│       ├── conferencia_programa.xlsx
+│       └── conferencia_programa.xlsx
 │   └── 2023
-│       ├── conferencia_programa.xlsx
+│       └── conferencia_programa.xlsx
 ```
 
 ### **Programa**
