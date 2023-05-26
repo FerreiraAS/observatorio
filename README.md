@@ -55,12 +55,12 @@ Para cada ano de atividade do Programa, repita os seguintes passos:
 8. Delete o arquivo original "conferencia_programa.xls"
 
 .
-├── Sucupira
-│   ├── 2012
-│       ├── conferencia_de_programa.xlsx
-│   ├── 2013
-│       ├── conferencia_de_programa.xlsx
-│   ├── 2014
+├── Sucupira  
+│   ├── 2012  
+│       ├── conferencia_de_programa.xlsx  
+│   ├── 2013  
+│       ├── conferencia_de_programa.xlsx  
+│   ├── 2014 
 │       ├── conferencia_de_programa.xlsx
 │   ├── 2015
 │       ├── conferencia_de_programa.xlsx
