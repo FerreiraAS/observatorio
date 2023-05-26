@@ -37,12 +37,35 @@ Os seguintes programas foram usados na construção do **Obsevatório**:
 
 O **Obsevatório** utiliza arquivos exportados pela [Plataforma Sucupira](https://sucupira.capes.gov.br/sucupira/). Para gerar os arquivos, siga as seguintes etapas:
 
+#### 1a ETAPA
+
 1. Crie uma pasta de nome "Sucupira" no seu computador
 2. Na pasta "Sucupira", crie uma pasta para cada ano que o Programa possui dados disponíveis na Plataforma Sucupira (2012 em diante). O nome da pasta será o ano correspondente aos dados (ex.: "2023")
-3. Acesse a [Plataforma Sucupira](https://sucupira.capes.gov.br/sucupira/)
-4. Clique no ícone "ACESSO RESTRITO" e faça login
-5. Clique no ícone "Coordenador de PPG" para acesse o conteúdo
-6. No menu "Relatórios", clique no ícone "Conferência de Programa"
+
+Ao completar esta etapa, a estrutura dos diretórios será esta:
+
+```bash
+├── Sucupira
+│   └── 2012
+│   └── 2013
+│   └── 2014
+│   └── 2015
+│   └── 2016
+│   └── 2017
+│   └── 2018
+│   └── 2019
+│   └── 2020
+│   └── 2021
+│   └── 2022
+│   └── 2023
+```
+
+#### 2a ETAPA
+
+1. Acesse a [Plataforma Sucupira](https://sucupira.capes.gov.br/sucupira/)
+2. Clique no ícone "ACESSO RESTRITO" e faça login
+3. Clique no ícone "Coordenador de PPG" para acesse o conteúdo
+4. No menu "Relatórios", clique no ícone "Conferência de Programa"
 
 Para cada ano de atividade do Programa, repita os seguintes passos:
 1. No item "Categoria", mantenha a opção padrão "-- SELECIONE --"
@@ -53,6 +76,8 @@ Para cada ano de atividade do Programa, repita os seguintes passos:
 6. Abra o arquivo "conferencia_programa.xls" e salve em formato XLSX (ex.: "conferencia_programa.xlsx")
 7. Mova o arquivo "conferencia_programa.xlsx" para a pasta do ano corrspondente
 8. Delete o arquivo original "conferencia_programa.xls"
+
+Ao completar esta etapa, a estrutura dos diretórios e arquivos será esta:
 
 ```bash
 ├── Sucupira
