@@ -5,18 +5,18 @@
 Sumário
 =================
 <!--ts-->
-   * [Conteudo do Observatorio](#conteudo-do-observatorio)
-   * [Recursos computacionais](#recursos)
-   * [Pré-requisitos](#pre-requisitos)
-   * [Infomações complementares](#complementos)
+   * [Conteudo do Observatorio](#Conteudo-do-Observatorio)
+   * [Recursos computacionais](#Recursos-computacionais)
+   * [Pre-requisitos](#Pre-requisitos)
+   * [Infomacoes complementares](#Infomacoes-complementares)
    * [Fontes externas](#fontes-externas)
-   * [Instalação](#instalacao)
-   * [Como usar](#como-usar)
-   * [Atualizações](#atualizacao)
-   * [Observatórios publicados](#observatorios)
+   * [Instalacao](#instalacao)
+   * [Como usar](#Como-usar)
+   * [Atualizações](#Atualizacoes)
+   * [Observatorios publicados](#Observatorios-publicados)
 <!--te-->
 
-## Conteudo do Obsevatorio
+## Conteudo do Observatorio
 
 - [x] Programa
 - [x] Pessoas
@@ -34,7 +34,7 @@ Os seguintes programas foram usados na construção do **Obsevatório**:
 - [R project](https://www.r-project.org)
 - [Rstudio desktop](https://posit.co/download/rstudio-desktop/)
 
-## Pré-requisitos
+## Pre-requisitos
 
 O **Obsevatório** utiliza arquivos exportados pela [Plataforma Sucupira](https://sucupira.capes.gov.br/sucupira/). Para gerar os arquivos, siga as seguintes etapas:
 
@@ -108,7 +108,7 @@ Ao completar esta etapa, a estrutura dos diretórios e arquivos será esta:
 │       ├── conferencia_programa.xlsx
 ```
 
-## Informações complementares
+## Infomacoes complementares
 
 O **Obsevatório** pode exibir informações complementares, não disponíveis na Plataforma Sucupira, desde que organizadas em planilhas XLSX. As seguintes planilhas podem ser complementadas:
 
@@ -180,7 +180,7 @@ Para análise das métricas, as seguintes fontes são utilizadas:
 │       └── scimagojr 2022.csv
 ```
 
-## Instalação
+## Instalacao
 
 Antes de começar, você vai precisar instalar em sua máquina os seguintes programas:
 
@@ -191,11 +191,11 @@ Antes de começar, você vai precisar instalar em sua máquina os seguintes prog
 
 *Em construção*
 
-## Atualizações
+## Atualizacoes
 
 *Em construção*
 
-## Observatórios publicados
+## Observatorios publicados
 
 ### **UNISUAM**
 - [**Observatório CR**](https://ppgcr-unisuam.github.io/observatoriocr) | Programa de Pós-graduação em Ciências da Reabilitação
