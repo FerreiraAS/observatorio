@@ -136,11 +136,11 @@ Logotipos das principais agências de fomento estào disponíveis:
 
 Para análise das métricas, as seguintes fontes são utilizadas:
 
-[**Altmetric**](https://www.altmetric.com)
-[**Scopus**](https://www.scopus.com/home.uri)
-[**WebQualis**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)
-[**SJR**](https://www.scimagojr.com)
-[**CrossRef**](https://www.crossref.org)
+- [**Altmetric**](https://www.altmetric.com)
+- [**Scopus**](https://www.scopus.com/home.uri)
+- [**WebQualis**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)
+- [**SJR**](https://www.scimagojr.com)
+- [**CrossRef**](https://www.crossref.org)
 
 ```bash
 ├── Metrics
