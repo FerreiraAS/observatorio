@@ -2663,43 +2663,124 @@ if (length(new.ids) != 0) {
 ### **2010-2012**
 
 ```{r pos-doc-2012, eval = has.colegiado}
-docentes.raw <- read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
-id1 <- docentes.raw$Credenciamento <= 2012 & docentes.raw$Descredenciamento == "Atual"
-id2 <- docentes.raw$Credenciamento <= 2012 & docentes.raw$Descredenciamento >= 2010
-docentes <- docentes.raw[id1 | id2, ]
+docentes.raw <-
+  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
+id1 <-
+  docentes.raw$Credenciamento <= 2012 &
+  docentes.raw$Descredenciamento == "Atual"
+id2 <-
+  docentes.raw$Credenciamento <= 2012 &
+  docentes.raw$Descredenciamento >= 2010
+docentes <- docentes.raw[id1 | id2,]
 
 ids <- seq(1:dim(docentes)[1])
 new.ids <- ids[grep("Pós-Doc", docentes$Categoria)]
-if(length(new.ids) == 0) {cat("*Sem dados para exibir*")}
-if(length(new.ids) != 0) {
-  docentes <- docentes[new.ids, ]
-  docentes <- docentes[order(docentes$Nome), ]
+if (length(new.ids) == 0) {
+  print("*Sem dados para exibir*")
+}
+if (length(new.ids) != 0) {
+  docentes <- docentes[new.ids,]
+  docentes <- docentes[order(docentes$Nome),]
   
-  table.2 <- matrix(NA, nrow=0, ncol = 7)
-  for(i in 1:dim(docentes)[1]){
+  table.2 <- matrix(NA, nrow = 0, ncol = 7)
+  for (i in 1:dim(docentes)[1]) {
     table <- cbind(
       docentes$Bandeira[i],
-      paste("[**", docentes$Nome[i], "**](mailto:", docentes$"E-mail"[i], ')', sep = ""),
-      paste(docentes$Categoria[i], " (", docentes$Credenciamento[i], "-", docentes$Descredenciamento[i], ")", sep = ""),
-      ifelse(!is.na(docentes$Lattes[i]),
-             paste("[", gsub("http://lattes.cnpq.br/", "", docentes$Lattes[i]), "](", docentes$Lattes[i], '){target="_blank"}', sep = ""),
-             docentes$Lattes[i]),
-      ifelse(!is.na(docentes$ORCID[i]),
-             paste("[", gsub("https://orcid.org/", "", docentes$ORCID[i]), "](", docentes$ORCID[i], '){target="_blank"}', sep = ""),
-             docentes$ORCID[i]),
-      ifelse(!is.na(docentes$Scopus[i]),
-             paste("[", gsub("https://www.scopus.com/authid/detail.uri\\?authorId=", "", docentes$Scopus[i]), "](", docentes$Scopus[i], '){target="_blank"}', sep = ""),
-             docentes$Scopus[i]),
-      ifelse(!is.na(docentes$ResearcherID[i]),
-             paste("[", gsub("https://publons.com/researcher/", "", docentes$ResearcherID[i]), "](", docentes$ResearcherID[i], '){target="_blank"}', sep = ""),
-             docentes$ResearcherID[i])
+      paste(
+        "[**",
+        docentes$Nome[i],
+        "**](mailto:",
+        docentes$"E-mail"[i],
+        ')',
+        sep = ""
+      ),
+      paste(
+        docentes$Categoria[i],
+        " (",
+        docentes$Credenciamento[i],
+        "-",
+        docentes$Descredenciamento[i],
+        ")",
+        sep = ""
+      ),
+      ifelse(
+        !is.na(docentes$Lattes[i]),
+        paste(
+          "[",
+          gsub("http://lattes.cnpq.br/", "", docentes$Lattes[i]),
+          "](",
+          docentes$Lattes[i],
+          '){target="_blank"}',
+          sep = ""
+        ),
+        docentes$Lattes[i]
+      ),
+      ifelse(
+        !is.na(docentes$ORCID[i]),
+        paste(
+          "[",
+          gsub("https://orcid.org/", "", docentes$ORCID[i]),
+          "](",
+          docentes$ORCID[i],
+          '){target="_blank"}',
+          sep = ""
+        ),
+        docentes$ORCID[i]
+      ),
+      ifelse(
+        !is.na(docentes$Scopus[i]),
+        paste(
+          "[",
+          gsub(
+            "https://www.scopus.com/authid/detail.uri\\?authorId=",
+            "",
+            docentes$Scopus[i]
+          ),
+          "](",
+          docentes$Scopus[i],
+          '){target="_blank"}',
+          sep = ""
+        ),
+        docentes$Scopus[i]
+      ),
+      ifelse(
+        !is.na(docentes$ResearcherID[i]),
+        paste(
+          "[",
+          gsub(
+            "https://publons.com/researcher/",
+            "",
+            docentes$ResearcherID[i]
+          ),
+          "](",
+          docentes$ResearcherID[i],
+          '){target="_blank"}',
+          sep = ""
+        ),
+        docentes$ResearcherID[i]
+      )
     )
     table.2 <- rbind(table.2, table)
   }
-  colnames(table.2) <- c("País", "Nome", "Credenciamento", "Lattes ID", "ORCID", "Scopus ID", "ResearcherID")
+  colnames(table.2) <-
+    c("País",
+      "Nome",
+      "Credenciamento",
+      "Lattes ID",
+      "ORCID",
+      "Scopus ID",
+      "ResearcherID")
   
   # print tables
-  print(kable(table.2, align = c("l", rep("c", ncol(table.2)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+  print(
+    kable(table.2, align = c("l", rep(
+      "c", ncol(table.2) - 2
+    ), "r")) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
   
   # line break
   cat("  \n")
@@ -2707,19 +2788,39 @@ if(length(new.ids) != 0) {
   
   # generate plot of docentes per information
   layout(matrix(seq(1:4), ncol = 2, byrow = TRUE))
-  par(oma=c(2, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
+  par(oma = c(2, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
   
   total.categoria <- table(docentes$Categoria)
-  pie(total.categoria, labels = names(total.categoria), init.angle = 90, main = names(docentes$Categoria))
+  pie(
+    total.categoria,
+    labels = names(total.categoria),
+    init.angle = 90,
+    main = names(docentes$Categoria)
+  )
   
   total.regime <- table(docentes$`Regime de trabalho`)
-  pie(total.regime, labels = names(total.regime), init.angle = 90, main = names(docentes$`Regime de trabalho`))
+  pie(
+    total.regime,
+    labels = names(total.regime),
+    init.angle = 90,
+    main = names(docentes$`Regime de trabalho`)
+  )
   
   total.dedicação <- table(docentes$Dedicação)
-  pie(total.dedicação, labels = names(total.dedicação), init.angle = 90, main = names(docentes$Dedicação))
+  pie(
+    total.dedicação,
+    labels = names(total.dedicação),
+    init.angle = 90,
+    main = names(docentes$Dedicação)
+  )
   
   total.graduação <- table(docentes$Graduação)
-  pie(total.graduação, labels = names(total.graduação), init.angle = 90, main = names(docentes$Graduação))
+  pie(
+    total.graduação,
+    labels = names(total.graduação),
+    init.angle = 90,
+    main = names(docentes$Graduação)
+  )
   
   title("Descrição do Corpo Docente", outer = TRUE)
 }
@@ -3137,16 +3238,17 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ### **Síntese** {.tabset}
 
 ```{r egressos-periodo, eval = has.discentes}
-discentes.raw <- read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
-discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*", ]
-mestres <- discentes[discentes$Curso == "Mestrado", ]
-doutores <- discentes[discentes$Curso == "Doutorado", ]
+discentes.raw <-
+  read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
+discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
+mestres <- discentes[discentes$Curso == "Mestrado",]
+doutores <- discentes[discentes$Curso == "Doutorado",]
 
-states <- read_state(year=2019, showProgress = FALSE)
+states <- read_state(year = 2019, showProgress = FALSE)
 states$discentes <- rep(NA, dim(states)[1])
 UF <- as.data.frame(table(discentes$UF))
-for (i in 1:length(UF$Var1)){
-    states$discentes[states$abbrev_state == UF$Var1[i]] <- UF$Freq[i]
+for (i in 1:length(UF$Var1)) {
+  states$discentes[states$abbrev_state == UF$Var1[i]] <- UF$Freq[i]
 }
 
 # plot Brazil states per period
@@ -3154,22 +3256,43 @@ periodos <- rbind(cbind(2010, 2012), c(2013, 2016), c(2017, 2020))
 colnames(periodos) <- c("Início", "Fim")
 rownames(periodos) <- c("Trienal", "Quadrienal", "Quadrienal")
 
-par(oma=c(0, 0, 0, 0), mar = c(5.1, 4.1, 4.1, 2.1), bg = '#2C3E50', col.lab = "white", col.axis = "white", fg = "white", col.main = "white")
+par(
+  oma = c(0, 0, 0, 0),
+  mar = c(5.1, 4.1, 4.1, 2.1),
+  bg = '#2C3E50',
+  col.lab = "white",
+  col.axis = "white",
+  fg = "white",
+  col.main = "white"
+)
 layout(matrix(seq(1:dim(periodos)[1]), ncol = dim(periodos)[1], byrow = TRUE))
 maps <- list()
-for(j in 1:dim(periodos)[1]){
-  discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*", ]
-  discentes <- discentes[discentes$`Ano Titulação` >= periodos[j,1] & discentes$`Ano Titulação` <= periodos[j,2], ]
+for (j in 1:dim(periodos)[1]) {
+  discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
+  discentes <-
+    discentes[discentes$`Ano Titulação` >= periodos[j, 1] &
+                discentes$`Ano Titulação` <= periodos[j, 2],]
   states$discentes <- rep(NA, dim(states)[1])
   UF <- as.data.frame(table(discentes$UF))
-  for (i in 1:length(UF$Var1)){
+  for (i in 1:length(UF$Var1)) {
     states$discentes[states$abbrev_state == UF$Var1[i]] <- UF$Freq[i]
   }
   maps[[j]] <- ggplot() +
-    geom_sf(data=states, aes(fill=discentes), color= NA, size=.15) +
-    labs(subtitle=paste(periodos[j,1], "-", periodos[j,2], sep = ""), size=12) +
-    scale_fill_distiller(palette = "Spectral", name="Egressos, n", limits = c(min(0, UF$Freq), max(UF$Freq)), na.value = "grey") +
-    guides(fill=FALSE) + 
+    geom_sf(
+      data = states,
+      aes(fill = discentes),
+      color = NA,
+      size = .15
+    ) +
+    labs(subtitle = paste(periodos[j, 1], "-", periodos[j, 2], sep = ""),
+         size = 12) +
+    scale_fill_distiller(
+      palette = "Spectral",
+      name = "Egressos, n",
+      limits = c(min(0, UF$Freq), max(UF$Freq)),
+      na.value = "grey"
+    ) +
+    guides(fill = FALSE) +
     theme_minimal()
 }
 multiplot(plotlist = maps, cols = dim(periodos)[1])

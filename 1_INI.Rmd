@@ -420,11 +420,10 @@ sigla.IES <- unique(sucupira.raw$`IES Sigla`)
 <!--get data-->
 ```{r metrics-artigos, cache = TRUE, cache.path = "cache/artigos/", eval = has.artigos.completos}
 # read data
-sheet.ix <- "PI.completos"
 data.sheet <-
   data.frame(read_excel(
     "PPG/Produção.xlsx",
-    sheet = sheet.ix,
+    sheet = "PI.completos",
     col_types = c("text")
   ))
 
@@ -468,11 +467,10 @@ references_artigos <- formatted_citations
 <!--get data-->
 ```{r metrics-resumos, cache = TRUE, cache.path = "cache/resumos/", eval = has.artigos.resumos}
 # read data
-sheet.ix <- "PI.resumos"
 data.sheet <-
   data.frame(read_excel(
     "PPG/Produção.xlsx",
-    sheet = sheet.ix,
+    sheet = "PI.resumos",
     col_types = c("text")
   ))
 
@@ -516,11 +514,10 @@ references_resumos <- formatted_citations
 <!--get data-->
 ```{r metrics-preprints, cache = TRUE, cache.path = "cache/preprints/", eval = has.preprints}
 # read data
-sheet.ix <- "PI.preprints"
 data.sheet <-
   data.frame(read_excel(
     "PPG/Produção.xlsx",
-    sheet = sheet.ix,
+    sheet = "PI.preprints",
     col_types = c("text")
   ))
 
@@ -559,11 +556,10 @@ references_preprints <- formatted_citations
 <!--get data-->
 ```{r metrics-livros, cache = TRUE, cache.path = "cache/livros/", eval = has.livros}
 # read data
-sheet.ix <- "PI.livros"
 data.sheet <-
   data.frame(read_excel(
     "PPG/Produção.xlsx",
-    sheet = sheet.ix,
+    sheet = "PI.livros",
     col_types = c("text")
   ))
 
@@ -602,11 +598,10 @@ references_livros <- formatted_citations
 <!--get data-->
 ```{r metrics-capitulos, cache = TRUE, cache.path = "cache/capitulos/", eval = has.capitulos}
 # read data
-sheet.ix <- "PI.capitulos"
 data.sheet <-
   data.frame(read_excel(
     "PPG/Produção.xlsx",
-    sheet = sheet.ix,
+    sheet = "PI.capitulos",
     col_types = c("text")
   ))
 
@@ -645,11 +640,10 @@ references_capitulos <- formatted_citations
 <!--get data-->
 ```{r metrics-eventos, cache = TRUE, cache.path = "cache/eventos/", eval = has.eventos}
 # read data
-sheet.ix <- "PI.eventos"
 data.sheet <-
   data.frame(read_excel(
     "PPG/Produção.xlsx",
-    sheet = sheet.ix,
+    sheet = "PI.eventos",
     col_types = c("text")
   ))
 

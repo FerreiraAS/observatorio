@@ -784,7 +784,7 @@ cat(
 # read data
 try(artigos <-
       data.frame(read_excel(
-        paste0("PPG/Produção.xlsx"),
+        "PPG/Produção.xlsx",
         sheet = "PI.completos",
         col_types = c("text")
       )))
@@ -792,7 +792,7 @@ try(artigos <-
 # read data
 try(resumos <-
       data.frame(read_excel(
-        paste0("PPG/Produção.xlsx"),
+        "PPG/Produção.xlsx",
         sheet = "PI.resumos",
         col_types = c("text")
       )))
@@ -800,7 +800,7 @@ try(resumos <-
 # read data
 try(eventos <-
       data.frame(read_excel(
-        paste0("PPG/Produção.xlsx"),
+        "PPG/Produção.xlsx",
         sheet = "PI.eventos",
         col_types = c("text")
       )))

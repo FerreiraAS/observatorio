@@ -1374,7 +1374,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 <br>
 
-### **Trabalhos em anais de eventos** {.tabset}
+### **Trabalhos em anais** {.tabset}
 
 ```{r pandemia-resumos-eventos, eval = has.eventos}
 # bind sources
