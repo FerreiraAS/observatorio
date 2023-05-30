@@ -16,6 +16,7 @@
    * [Como usar](#Como-usar)
    * [Atualizações](#Atualizacoes)
    * [Observatorios publicados](#Observatorios-publicados)
+   * [Licenca](#licenca)
 <!--te-->
 
 ## **Conteudo do Observatorio**
@@ -197,15 +198,30 @@ Antes de começar, você vai precisar instalar em sua máquina os seguintes prog
 
 ## **Como usar**
 
-### **1. Criando uma conta no GitHub**
+### [**1. Fazer o registro em uma conta conta do GitHub**](https://docs.github.com/pt/get-started/signing-up-for-github/signing-up-for-a-new-github-account)
 
-### **2. Copiando o repositório do GitHub**
+*O GitHub oferece contas pessoais de indivíduos e organizações para que equipes de pessoas trabalhem juntas.*
 
-### **3. Criando novo projeto no RStudio**
 
-### **4. Compilando o Observatório no RStudio**
+### [**2. Verificar endereço de e-mail**](https://docs.github.com/pt/get-started/signing-up-for-github/verifying-your-email-address)
 
-### **5. Publicando o Observatório no Github**
+*A verificação do endereço de e-mail principal garante segurança reforçada, permite que a equipe do GitHub auxilie melhor caso você esqueça sua senha e fornece acesso a mais recursos no GitHub.*
+
+
+### [**3. Criar um repositório**](https://docs.github.com/pt/get-started/quickstart/create-a-repo)
+
+*Para colocar seu projeto no GitHub, você precisará criar um repositório no qual ele residirá.*
+
+
+### [**4. Clonar um repositório**](https://docs.github.com/pt/repositories/creating-and-managing-repositories/cloning-a-repository)
+
+*Ao criar um repositório no GitHub.com, ele existirá como um repositório remoto. É possível clonar o repositório para criar uma cópia local no seu computador e sincronizar entre os dois locais.*
+
+
+### [**Tutorial**](https://resources.github.com/github-and-rstudio/)
+
+*This tutorial teaches you to create R Markdown documents with RStudio and publish them via GitHub, using GitHub Pages.*
+
 
 ## **Atualizacoes**
 
@@ -215,3 +231,7 @@ Antes de começar, você vai precisar instalar em sua máquina os seguintes prog
 - [**Observatório CR**](https://ppgcr-unisuam.github.io/observatoriocr) | Programa de Pós-graduação em Ciências da Reabilitação
 
 - [**Observatório DL**](https://ppgdl-unisuam.github.io/observatoriodl) | Programa de Pós-graduação em Desenvolvimento Local
+
+## **Licenca**
+
+<p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/FerreiraAS/observatorio">Observatório</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/FerreiraAS">Arthur de Sá Ferreira</a> is licensed under <a href="http://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-NC 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1"></a></p>
