@@ -198,7 +198,7 @@ Antes de começar, você vai precisar instalar em sua máquina os seguintes prog
 
 ## **Como usar**
 
-### [**1. Fazer o registro em uma conta conta do GitHub**](https://docs.github.com/pt/get-started/signing-up-for-github/signing-up-for-a-new-github-account)
+### [**1. Fazer o registro em uma conta do GitHub**](https://docs.github.com/pt/get-started/signing-up-for-github/signing-up-for-a-new-github-account)
 
 *O GitHub oferece contas pessoais de indivíduos e organizações para que equipes de pessoas trabalhem juntas.*
 
