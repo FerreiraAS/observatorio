@@ -301,15 +301,20 @@ has.avaliacao <- length(periodos) != 0
 
 #### **Figura**
 
-```{r projetos-de-pesquisa-2024-grafico, eval = and(has.sucupira, has.avaliacao)}
-periodo <- as.character(seq(min(periodos):max(periodos)))
-projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
-projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
+```{r projetos-de-pesquisa-2024-figura, eval = all(has.sucupira, has.avaliacao)}
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
+projetos <-
+  projetos.all[projetos.all$`Membro Responsável` == "Sim" &
+                 projetos.all$Situação == "EM ANDAMENTO",]
 projetos <- unique(projetos)
 
 # select data DOCENTES
-projetos.doc <- projetos[projetos$`Categoria do Membro do Projeto` =="Docente", ]
-table.doc <- table(projetos.doc$`Nome do Membro do Projeto`, projetos.doc$`Linha de Pesquisa`)
+projetos.doc <-
+  projetos[projetos$`Categoria do Membro do Projeto` == "Docente",]
+table.doc <-
+  table(projetos.doc$`Nome do Membro do Projeto`,
+        projetos.doc$`Linha de Pesquisa`)
 # add row totals
 table.doc <- cbind(table.doc, rowSums(table.doc))
 colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
@@ -323,9 +328,12 @@ cat("  \n")
 
 # select data POS-DOC
 table.posdoc <- NULL
-projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
-if(length(projetos.posdoc)[1] != 0){
-  table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
+projetos.posdoc <-
+  projetos[projetos$`Categoria do Membro do Projeto` == "Pós-Doc",]
+if (length(projetos.posdoc)[1] != 0) {
+  table.posdoc <-
+    table(projetos.posdoc$`Nome do Membro do Projeto`,
+          projetos.posdoc$`Linha de Pesquisa`)
   # add row totals
   table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
   colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
@@ -337,20 +345,48 @@ if(length(projetos.posdoc)[1] != 0){
 # line break
 cat("  \n")
 cat("  \n")
-  
+
 # proporção de projetos por linha de pesquisa
-layout(matrix(c(1,2,3,3), nrow = 2, ncol = 2, byrow = TRUE), heights = c(0.7,0.3))
-par(oma=c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
+layout(matrix(
+  c(1, 2, 3, 3),
+  nrow = 2,
+  ncol = 2,
+  byrow = TRUE
+), heights = c(0.7, 0.3))
+par(oma = c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
 levels <- unique(c(colnames(table.doc), colnames(table.posdoc)))
 levels <- levels[which(levels != "N")]
-pie(head(colSums(table.doc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Docentes")
-if(dim(projetos.posdoc)[1] != 0){
-  pie(head(colSums(table.posdoc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Pós-Doutorandos")
+if (dim(projetos.doc)[1] != 0) {
+  pie(
+    head(colSums(table.doc), -1),
+    labels = NA,
+    col = brewer.pal(n = length(levels), name = "Set3"),
+    init.angle = 90,
+    main = "Docentes"
+  )
+} else {
+  plot(0, type = 'n', axes = FALSE)
+}
+if (dim(projetos.posdoc)[1] != 0) {
+  pie(
+    head(colSums(table.posdoc), -1),
+    labels = NA,
+    col = brewer.pal(n = length(levels), name = "Set3"),
+    init.angle = 90,
+    main = "Pós-Doutorandos"
+  )
 } else {
   plot(0, type = 'n', axes = FALSE)
 }
 plot(0, type = 'n', axes = FALSE)
-legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 0.7)
+legend(
+  "top",
+  inset = 0,
+  legend = levels,
+  fill = brewer.pal(n = length(levels), name = "Set3"),
+  box.lwd = 0,
+  cex = 0.7
+)
 title("Projetos de Pesquisa", outer = TRUE)
 
 cat('\n\n')
@@ -363,15 +399,20 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Tabela**
 
-```{r projetos-de-pesquisa-2024-tabela, eval = and(has.sucupira, has.avaliacao)}
-periodo <- as.character(seq(min(periodos):max(periodos)))
-projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
-projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
+```{r projetos-de-pesquisa-2024-tabela, eval = all(has.sucupira, has.avaliacao)}
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
+projetos <-
+  projetos.all[projetos.all$`Membro Responsável` == "Sim" &
+                 projetos.all$Situação == "EM ANDAMENTO",]
 projetos <- unique(projetos)
 
 # select data DOCENTES
-projetos.doc <- projetos[projetos$`Categoria do Membro do Projeto` =="Docente", ]
-table.doc <- table(projetos.doc$`Nome do Membro do Projeto`, projetos.doc$`Linha de Pesquisa`)
+projetos.doc <-
+  projetos[projetos$`Categoria do Membro do Projeto` == "Docente",]
+table.doc <-
+  table(projetos.doc$`Nome do Membro do Projeto`,
+        projetos.doc$`Linha de Pesquisa`)
 # add row totals
 table.doc <- cbind(table.doc, rowSums(table.doc))
 colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
@@ -397,9 +438,12 @@ cat("  \n")
 
 # select data POS-DOC
 table.posdoc <- NULL
-projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
-if(dim(projetos.posdoc)[1] != 0){
-  table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
+projetos.posdoc <-
+  projetos[projetos$`Categoria do Membro do Projeto` == "Pós-Doc",]
+if (dim(projetos.posdoc)[1] != 0) {
+  table.posdoc <-
+    table(projetos.posdoc$`Nome do Membro do Projeto`,
+          projetos.posdoc$`Linha de Pesquisa`)
   # add row totals
   table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
   colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
@@ -435,12 +479,12 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Lista**
 
-```{r projetos-de-pesquisa-2024-lista, eval = and(has.sucupira, has.avaliacao)}
-periodo <- as.character(seq(min(periodos):max(periodos)))
-projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+```{r projetos-de-pesquisa-2024-lista, eval = all(has.sucupira, has.avaliacao)}
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 projetos <-
   projetos.all[projetos.all$`Membro Responsável` == "Sim" &
-                 projetos.all$Situação == "EM ANDAMENTO", ]
+                 projetos.all$Situação == "EM ANDAMENTO",]
 projetos <- unique(projetos)
 
 table.projetos <-
@@ -450,7 +494,7 @@ table.projetos <-
     projetos$`Nome do Projeto de Pesquisa`,
     projetos$`Nome do Membro do Projeto`
   )
-table.projetos <- table.projetos[order(table.projetos[, 1]), ]
+table.projetos <- table.projetos[order(table.projetos[, 1]),]
 labels <- colnames(table.projetos)
 # print tables
 table.projetos[, 1] <-
@@ -461,12 +505,10 @@ table.projetos[, 3] <-
   as.vector(unlist(lapply(table.projetos[, 3], FUN = str_to_title)))
 
 colnames(table.projetos) <-
-  c(
-    "Área de Concentração",
+  c("Área de Concentração",
     "Linha de Pesquisa",
     "Projeto de Pesquisa",
-    "Membro Responsável"
-  )
+    "Membro Responsável")
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.projetos, title = "Projetos de Pesquisa 2021-2024")
@@ -498,15 +540,20 @@ has.avaliacao <- length(periodos) != 0
 
 #### **Figura**
 
-```{r projetos-de-pesquisa-2020-grafico, eval = and(has.sucupira, has.avaliacao)}
-periodo <- as.character(seq(min(periodos):max(periodos)))
-projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
-projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
+```{r projetos-de-pesquisa-2020-figura, eval = all(has.sucupira, has.avaliacao)}
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
+projetos <-
+  projetos.all[projetos.all$`Membro Responsável` == "Sim" &
+                 projetos.all$Situação == "EM ANDAMENTO",]
 projetos <- unique(projetos)
 
 # select data DOCENTES
-projetos.doc <- projetos[projetos$`Categoria do Membro do Projeto` =="Docente", ]
-table.doc <- table(projetos.doc$`Nome do Membro do Projeto`, projetos.doc$`Linha de Pesquisa`)
+projetos.doc <-
+  projetos[projetos$`Categoria do Membro do Projeto` == "Docente",]
+table.doc <-
+  table(projetos.doc$`Nome do Membro do Projeto`,
+        projetos.doc$`Linha de Pesquisa`)
 # add row totals
 table.doc <- cbind(table.doc, rowSums(table.doc))
 colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
@@ -520,9 +567,12 @@ cat("  \n")
 
 # select data POS-DOC
 table.posdoc <- NULL
-projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
-if(length(projetos.posdoc)[1] != 0){
-  table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
+projetos.posdoc <-
+  projetos[projetos$`Categoria do Membro do Projeto` == "Pós-Doc",]
+if (length(projetos.posdoc)[1] != 0) {
+  table.posdoc <-
+    table(projetos.posdoc$`Nome do Membro do Projeto`,
+          projetos.posdoc$`Linha de Pesquisa`)
   # add row totals
   table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
   colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
@@ -534,20 +584,48 @@ if(length(projetos.posdoc)[1] != 0){
 # line break
 cat("  \n")
 cat("  \n")
-  
+
 # proporção de projetos por linha de pesquisa
-layout(matrix(c(1,2,3,3), nrow = 2, ncol = 2, byrow = TRUE), heights = c(0.7,0.3))
-par(oma=c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
+layout(matrix(
+  c(1, 2, 3, 3),
+  nrow = 2,
+  ncol = 2,
+  byrow = TRUE
+), heights = c(0.7, 0.3))
+par(oma = c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
 levels <- unique(c(colnames(table.doc), colnames(table.posdoc)))
 levels <- levels[which(levels != "N")]
-pie(head(colSums(table.doc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Docentes")
-if(dim(projetos.posdoc)[1] != 0){
-  pie(head(colSums(table.posdoc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Pós-Doutorandos")
+if (dim(projetos.doc)[1] != 0) {
+  pie(
+    head(colSums(table.doc), -1),
+    labels = NA,
+    col = brewer.pal(n = length(levels), name = "Set3"),
+    init.angle = 90,
+    main = "Docentes"
+  )
+} else {
+  plot(0, type = 'n', axes = FALSE)
+}
+if (dim(projetos.posdoc)[1] != 0) {
+  pie(
+    head(colSums(table.posdoc), -1),
+    labels = NA,
+    col = brewer.pal(n = length(levels), name = "Set3"),
+    init.angle = 90,
+    main = "Pós-Doutorandos"
+  )
 } else {
   plot(0, type = 'n', axes = FALSE)
 }
 plot(0, type = 'n', axes = FALSE)
-legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 0.7)
+legend(
+  "top",
+  inset = 0,
+  legend = levels,
+  fill = brewer.pal(n = length(levels), name = "Set3"),
+  box.lwd = 0,
+  cex = 0.7
+)
 title("Projetos de Pesquisa", outer = TRUE)
 
 cat('\n\n')
@@ -560,15 +638,20 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Tabela**
 
-```{r projetos-de-pesquisa-2020-tabela, eval = and(has.sucupira, has.avaliacao)}
-periodo <- as.character(seq(min(periodos):max(periodos)))
-projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
-projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
+```{r projetos-de-pesquisa-2020-tabela, eval = all(has.sucupira, has.avaliacao)}
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
+projetos <-
+  projetos.all[projetos.all$`Membro Responsável` == "Sim" &
+                 projetos.all$Situação == "EM ANDAMENTO",]
 projetos <- unique(projetos)
 
 # select data DOCENTES
-projetos.doc <- projetos[projetos$`Categoria do Membro do Projeto` =="Docente", ]
-table.doc <- table(projetos.doc$`Nome do Membro do Projeto`, projetos.doc$`Linha de Pesquisa`)
+projetos.doc <-
+  projetos[projetos$`Categoria do Membro do Projeto` == "Docente",]
+table.doc <-
+  table(projetos.doc$`Nome do Membro do Projeto`,
+        projetos.doc$`Linha de Pesquisa`)
 # add row totals
 table.doc <- cbind(table.doc, rowSums(table.doc))
 colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
@@ -594,9 +677,12 @@ cat("  \n")
 
 # select data POS-DOC
 table.posdoc <- NULL
-projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
-if(dim(projetos.posdoc)[1] != 0){
-  table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
+projetos.posdoc <-
+  projetos[projetos$`Categoria do Membro do Projeto` == "Pós-Doc",]
+if (dim(projetos.posdoc)[1] != 0) {
+  table.posdoc <-
+    table(projetos.posdoc$`Nome do Membro do Projeto`,
+          projetos.posdoc$`Linha de Pesquisa`)
   # add row totals
   table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
   colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
@@ -632,12 +718,12 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Lista**
 
-```{r projetos-de-pesquisa-2020-lista, eval = and(has.sucupira, has.avaliacao)}
-periodo <- as.character(seq(min(periodos):max(periodos)))
-projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+```{r projetos-de-pesquisa-2020-lista, eval = all(has.sucupira, has.avaliacao)}
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 projetos <-
   projetos.all[projetos.all$`Membro Responsável` == "Sim" &
-                 projetos.all$Situação == "EM ANDAMENTO", ]
+                 projetos.all$Situação == "EM ANDAMENTO",]
 projetos <- unique(projetos)
 
 table.projetos <-
@@ -647,7 +733,7 @@ table.projetos <-
     projetos$`Nome do Projeto de Pesquisa`,
     projetos$`Nome do Membro do Projeto`
   )
-table.projetos <- table.projetos[order(table.projetos[, 1]), ]
+table.projetos <- table.projetos[order(table.projetos[, 1]),]
 labels <- colnames(table.projetos)
 # print tables
 table.projetos[, 1] <-
@@ -658,12 +744,10 @@ table.projetos[, 3] <-
   as.vector(unlist(lapply(table.projetos[, 3], FUN = str_to_title)))
 
 colnames(table.projetos) <-
-  c(
-    "Área de Concentração",
+  c("Área de Concentração",
     "Linha de Pesquisa",
     "Projeto de Pesquisa",
-    "Membro Responsável"
-  )
+    "Membro Responsável")
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.projetos, title = "Projetos de Pesquisa 2021-2024")
@@ -695,15 +779,20 @@ has.avaliacao <- length(periodos) != 0
 
 #### **Figura**
 
-```{r projetos-de-pesquisa-2016-grafico, eval = and(has.sucupira, has.avaliacao)}
-periodo <- as.character(seq(min(periodos):max(periodos)))
-projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
-projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
+```{r projetos-de-pesquisa-2016-figura, eval = all(has.sucupira, has.avaliacao)}
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
+projetos <-
+  projetos.all[projetos.all$`Membro Responsável` == "Sim" &
+                 projetos.all$Situação == "EM ANDAMENTO",]
 projetos <- unique(projetos)
 
 # select data DOCENTES
-projetos.doc <- projetos[projetos$`Categoria do Membro do Projeto` =="Docente", ]
-table.doc <- table(projetos.doc$`Nome do Membro do Projeto`, projetos.doc$`Linha de Pesquisa`)
+projetos.doc <-
+  projetos[projetos$`Categoria do Membro do Projeto` == "Docente",]
+table.doc <-
+  table(projetos.doc$`Nome do Membro do Projeto`,
+        projetos.doc$`Linha de Pesquisa`)
 # add row totals
 table.doc <- cbind(table.doc, rowSums(table.doc))
 colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
@@ -717,9 +806,12 @@ cat("  \n")
 
 # select data POS-DOC
 table.posdoc <- NULL
-projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
-if(length(projetos.posdoc)[1] != 0){
-  table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
+projetos.posdoc <-
+  projetos[projetos$`Categoria do Membro do Projeto` == "Pós-Doc",]
+if (length(projetos.posdoc)[1] != 0) {
+  table.posdoc <-
+    table(projetos.posdoc$`Nome do Membro do Projeto`,
+          projetos.posdoc$`Linha de Pesquisa`)
   # add row totals
   table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
   colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
@@ -731,20 +823,48 @@ if(length(projetos.posdoc)[1] != 0){
 # line break
 cat("  \n")
 cat("  \n")
-  
+
 # proporção de projetos por linha de pesquisa
-layout(matrix(c(1,2,3,3), nrow = 2, ncol = 2, byrow = TRUE), heights = c(0.7,0.3))
-par(oma=c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
+layout(matrix(
+  c(1, 2, 3, 3),
+  nrow = 2,
+  ncol = 2,
+  byrow = TRUE
+), heights = c(0.7, 0.3))
+par(oma = c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
 levels <- unique(c(colnames(table.doc), colnames(table.posdoc)))
 levels <- levels[which(levels != "N")]
-pie(head(colSums(table.doc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Docentes")
-if(dim(projetos.posdoc)[1] != 0){
-  pie(head(colSums(table.posdoc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Pós-Doutorandos")
+if (dim(projetos.doc)[1] != 0) {
+  pie(
+    head(colSums(table.doc), -1),
+    labels = NA,
+    col = brewer.pal(n = length(levels), name = "Set3"),
+    init.angle = 90,
+    main = "Docentes"
+  )
+} else {
+  plot(0, type = 'n', axes = FALSE)
+}
+if (dim(projetos.posdoc)[1] != 0) {
+  pie(
+    head(colSums(table.posdoc), -1),
+    labels = NA,
+    col = brewer.pal(n = length(levels), name = "Set3"),
+    init.angle = 90,
+    main = "Pós-Doutorandos"
+  )
 } else {
   plot(0, type = 'n', axes = FALSE)
 }
 plot(0, type = 'n', axes = FALSE)
-legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 0.7)
+legend(
+  "top",
+  inset = 0,
+  legend = levels,
+  fill = brewer.pal(n = length(levels), name = "Set3"),
+  box.lwd = 0,
+  cex = 0.7
+)
 title("Projetos de Pesquisa", outer = TRUE)
 
 cat('\n\n')
@@ -757,15 +877,20 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Tabela**
 
-```{r projetos-de-pesquisa-2016-tabela, eval = and(has.sucupira, has.avaliacao)}
-periodo <- as.character(seq(min(periodos):max(periodos)))
-projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
-projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
+```{r projetos-de-pesquisa-2016-tabela, eval = all(has.sucupira, has.avaliacao)}
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
+projetos <-
+  projetos.all[projetos.all$`Membro Responsável` == "Sim" &
+                 projetos.all$Situação == "EM ANDAMENTO",]
 projetos <- unique(projetos)
 
 # select data DOCENTES
-projetos.doc <- projetos[projetos$`Categoria do Membro do Projeto` =="Docente", ]
-table.doc <- table(projetos.doc$`Nome do Membro do Projeto`, projetos.doc$`Linha de Pesquisa`)
+projetos.doc <-
+  projetos[projetos$`Categoria do Membro do Projeto` == "Docente",]
+table.doc <-
+  table(projetos.doc$`Nome do Membro do Projeto`,
+        projetos.doc$`Linha de Pesquisa`)
 # add row totals
 table.doc <- cbind(table.doc, rowSums(table.doc))
 colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
@@ -791,9 +916,12 @@ cat("  \n")
 
 # select data POS-DOC
 table.posdoc <- NULL
-projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
-if(dim(projetos.posdoc)[1] != 0){
-  table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
+projetos.posdoc <-
+  projetos[projetos$`Categoria do Membro do Projeto` == "Pós-Doc",]
+if (dim(projetos.posdoc)[1] != 0) {
+  table.posdoc <-
+    table(projetos.posdoc$`Nome do Membro do Projeto`,
+          projetos.posdoc$`Linha de Pesquisa`)
   # add row totals
   table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
   colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
@@ -829,12 +957,12 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Lista**
 
-```{r projetos-de-pesquisa-2016-lista, eval = and(has.sucupira, has.avaliacao)}
-periodo <- as.character(seq(min(periodos):max(periodos)))
-projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+```{r projetos-de-pesquisa-2016-lista, eval = all(has.sucupira, has.avaliacao)}
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 projetos <-
   projetos.all[projetos.all$`Membro Responsável` == "Sim" &
-                 projetos.all$Situação == "EM ANDAMENTO", ]
+                 projetos.all$Situação == "EM ANDAMENTO",]
 projetos <- unique(projetos)
 
 table.projetos <-
@@ -844,7 +972,7 @@ table.projetos <-
     projetos$`Nome do Projeto de Pesquisa`,
     projetos$`Nome do Membro do Projeto`
   )
-table.projetos <- table.projetos[order(table.projetos[, 1]), ]
+table.projetos <- table.projetos[order(table.projetos[, 1]),]
 labels <- colnames(table.projetos)
 # print tables
 table.projetos[, 1] <-
@@ -855,12 +983,10 @@ table.projetos[, 3] <-
   as.vector(unlist(lapply(table.projetos[, 3], FUN = str_to_title)))
 
 colnames(table.projetos) <-
-  c(
-    "Área de Concentração",
+  c("Área de Concentração",
     "Linha de Pesquisa",
     "Projeto de Pesquisa",
-    "Membro Responsável"
-  )
+    "Membro Responsável")
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.projetos, title = "Projetos de Pesquisa 2021-2024")
@@ -892,15 +1018,20 @@ has.avaliacao <- length(periodos) != 0
 
 #### **Figura**
 
-```{r projetos-de-pesquisa-2012-grafico, eval = and(has.sucupira, has.avaliacao)}
-periodo <- as.character(seq(min(periodos):max(periodos)))
-projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
-projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
+```{r projetos-de-pesquisa-2012-figura, eval = all(has.sucupira, has.avaliacao)}
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
+projetos <-
+  projetos.all[projetos.all$`Membro Responsável` == "Sim" &
+                 projetos.all$Situação == "EM ANDAMENTO",]
 projetos <- unique(projetos)
 
 # select data DOCENTES
-projetos.doc <- projetos[projetos$`Categoria do Membro do Projeto` =="Docente", ]
-table.doc <- table(projetos.doc$`Nome do Membro do Projeto`, projetos.doc$`Linha de Pesquisa`)
+projetos.doc <-
+  projetos[projetos$`Categoria do Membro do Projeto` == "Docente",]
+table.doc <-
+  table(projetos.doc$`Nome do Membro do Projeto`,
+        projetos.doc$`Linha de Pesquisa`)
 # add row totals
 table.doc <- cbind(table.doc, rowSums(table.doc))
 colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
@@ -914,9 +1045,12 @@ cat("  \n")
 
 # select data POS-DOC
 table.posdoc <- NULL
-projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
-if(length(projetos.posdoc)[1] != 0){
-  table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
+projetos.posdoc <-
+  projetos[projetos$`Categoria do Membro do Projeto` == "Pós-Doc",]
+if (length(projetos.posdoc)[1] != 0) {
+  table.posdoc <-
+    table(projetos.posdoc$`Nome do Membro do Projeto`,
+          projetos.posdoc$`Linha de Pesquisa`)
   # add row totals
   table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
   colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
@@ -928,20 +1062,48 @@ if(length(projetos.posdoc)[1] != 0){
 # line break
 cat("  \n")
 cat("  \n")
-  
+
 # proporção de projetos por linha de pesquisa
-layout(matrix(c(1,2,3,3), nrow = 2, ncol = 2, byrow = TRUE), heights = c(0.7,0.3))
-par(oma=c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
+layout(matrix(
+  c(1, 2, 3, 3),
+  nrow = 2,
+  ncol = 2,
+  byrow = TRUE
+), heights = c(0.7, 0.3))
+par(oma = c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
 levels <- unique(c(colnames(table.doc), colnames(table.posdoc)))
 levels <- levels[which(levels != "N")]
-pie(head(colSums(table.doc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Docentes")
-if(dim(projetos.posdoc)[1] != 0){
-  pie(head(colSums(table.posdoc), -1), labels = NA, col = brewer.pal(n = length(levels), name = "Set3"), init.angle = 90, main = "Pós-Doutorandos")
+if (dim(projetos.doc)[1] != 0) {
+  pie(
+    head(colSums(table.doc), -1),
+    labels = NA,
+    col = brewer.pal(n = length(levels), name = "Set3"),
+    init.angle = 90,
+    main = "Docentes"
+  )
+} else {
+  plot(0, type = 'n', axes = FALSE)
+}
+if (dim(projetos.posdoc)[1] != 0) {
+  pie(
+    head(colSums(table.posdoc), -1),
+    labels = NA,
+    col = brewer.pal(n = length(levels), name = "Set3"),
+    init.angle = 90,
+    main = "Pós-Doutorandos"
+  )
 } else {
   plot(0, type = 'n', axes = FALSE)
 }
 plot(0, type = 'n', axes = FALSE)
-legend("top", inset = 0, legend = levels, fill = brewer.pal(n = length(levels), name = "Set3"), box.lwd = 0, cex = 0.7)
+legend(
+  "top",
+  inset = 0,
+  legend = levels,
+  fill = brewer.pal(n = length(levels), name = "Set3"),
+  box.lwd = 0,
+  cex = 0.7
+)
 title("Projetos de Pesquisa", outer = TRUE)
 
 cat('\n\n')
@@ -954,15 +1116,20 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Tabela**
 
-```{r projetos-de-pesquisa-2012-tabela, eval = and(has.sucupira, has.avaliacao)}
-periodo <- as.character(seq(min(periodos):max(periodos)))
-projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
-projetos <- projetos.all[projetos.all$`Membro Responsável`=="Sim" & projetos.all$Situação == "EM ANDAMENTO", ]
+```{r projetos-de-pesquisa-2012-tabela, eval = all(has.sucupira, has.avaliacao)}
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
+projetos <-
+  projetos.all[projetos.all$`Membro Responsável` == "Sim" &
+                 projetos.all$Situação == "EM ANDAMENTO",]
 projetos <- unique(projetos)
 
 # select data DOCENTES
-projetos.doc <- projetos[projetos$`Categoria do Membro do Projeto` =="Docente", ]
-table.doc <- table(projetos.doc$`Nome do Membro do Projeto`, projetos.doc$`Linha de Pesquisa`)
+projetos.doc <-
+  projetos[projetos$`Categoria do Membro do Projeto` == "Docente",]
+table.doc <-
+  table(projetos.doc$`Nome do Membro do Projeto`,
+        projetos.doc$`Linha de Pesquisa`)
 # add row totals
 table.doc <- cbind(table.doc, rowSums(table.doc))
 colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
@@ -988,9 +1155,12 @@ cat("  \n")
 
 # select data POS-DOC
 table.posdoc <- NULL
-projetos.posdoc <- projetos[projetos$`Categoria do Membro do Projeto` =="Pós-Doc", ]
-if(dim(projetos.posdoc)[1] != 0){
-  table.posdoc <- table(projetos.posdoc$`Nome do Membro do Projeto`, projetos.posdoc$`Linha de Pesquisa`)
+projetos.posdoc <-
+  projetos[projetos$`Categoria do Membro do Projeto` == "Pós-Doc",]
+if (dim(projetos.posdoc)[1] != 0) {
+  table.posdoc <-
+    table(projetos.posdoc$`Nome do Membro do Projeto`,
+          projetos.posdoc$`Linha de Pesquisa`)
   # add row totals
   table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
   colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
@@ -1026,12 +1196,12 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Lista**
 
-```{r projetos-de-pesquisa-2012-lista, eval = and(has.sucupira, has.avaliacao)}
-periodo <- as.character(seq(min(periodos):max(periodos)))
-projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+```{r projetos-de-pesquisa-2012-lista, eval = all(has.sucupira, has.avaliacao)}
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
+projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 projetos <-
   projetos.all[projetos.all$`Membro Responsável` == "Sim" &
-                 projetos.all$Situação == "EM ANDAMENTO", ]
+                 projetos.all$Situação == "EM ANDAMENTO",]
 projetos <- unique(projetos)
 
 table.projetos <-
@@ -1041,7 +1211,7 @@ table.projetos <-
     projetos$`Nome do Projeto de Pesquisa`,
     projetos$`Nome do Membro do Projeto`
   )
-table.projetos <- table.projetos[order(table.projetos[, 1]), ]
+table.projetos <- table.projetos[order(table.projetos[, 1]),]
 labels <- colnames(table.projetos)
 # print tables
 table.projetos[, 1] <-
@@ -1052,12 +1222,10 @@ table.projetos[, 3] <-
   as.vector(unlist(lapply(table.projetos[, 3], FUN = str_to_title)))
 
 colnames(table.projetos) <-
-  c(
-    "Área de Concentração",
+  c("Área de Concentração",
     "Linha de Pesquisa",
     "Projeto de Pesquisa",
-    "Membro Responsável"
-  )
+    "Membro Responsável")
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.projetos, title = "Projetos de Pesquisa 2021-2024")
@@ -2176,12 +2344,12 @@ periodos <-
 has.avaliacao <- length(periodos) != 0
 ```
 
-```{r turmas-2024, eval = and(has.sucupira, has.avaliacao)}
+```{r turmas-2024, eval = all(has.sucupira, has.avaliacao)}
 # load custom function
 source("Scripts/get-initials.R", local = knitr::knit_global())
 
-periodo <- as.character(seq(min(periodos):max(periodos)))
-turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
+turmas.raw <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 
 if (dim(turmas.raw)[1] != 0) {
   # build a cross table DISCIPLINA vs. ANO
@@ -2263,12 +2431,12 @@ periodos <-
 has.avaliacao <- length(periodos) != 0
 ```
 
-```{r turmas-2020, eval = and(has.sucupira, has.avaliacao)}
+```{r turmas-2020, eval = all(has.sucupira, has.avaliacao)}
 # load custom function
 source("Scripts/get-initials.R", local = knitr::knit_global())
 
-periodo <- as.character(seq(min(periodos):max(periodos)))
-turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
+turmas.raw <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 
 if (dim(turmas.raw)[1] != 0) {
   # build a cross table DISCIPLINA vs. ANO
@@ -2350,12 +2518,12 @@ periodos <-
 has.avaliacao <- length(periodos) != 0
 ```
 
-```{r turmas-2016, eval = and(has.sucupira, has.avaliacao)}
+```{r turmas-2016, eval = all(has.sucupira, has.avaliacao)}
 # load custom function
 source("Scripts/get-initials.R", local = knitr::knit_global())
 
-periodo <- as.character(seq(min(periodos):max(periodos)))
-turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
+turmas.raw <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 
 if (dim(turmas.raw)[1] != 0) {
   # build a cross table DISCIPLINA vs. ANO
@@ -2437,12 +2605,12 @@ periodos <-
 has.avaliacao <- length(periodos) != 0
 ```
 
-```{r turmas-2012, eval = and(has.sucupira, has.avaliacao)}
+```{r turmas-2012, eval = all(has.sucupira, has.avaliacao)}
 # load custom function
 source("Scripts/get-initials.R", local = knitr::knit_global())
 
-periodo <- as.character(seq(min(periodos):max(periodos)))
-turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
+turmas.raw <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 
 if (dim(turmas.raw)[1] != 0) {
   # build a cross table DISCIPLINA vs. ANO
