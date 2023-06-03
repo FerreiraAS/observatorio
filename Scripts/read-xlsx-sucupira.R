@@ -26,7 +26,7 @@ sucupira.list <- list()
 if (length(files.to.read) != 0) {
   for (file in 1:length(files.to.read)) {
     sucupira <-
-      as.data.frame(read_excel(files.to.read[file], sheet = sheet)) %>%
+      as.data.frame(readxl::read_excel(files.to.read[file], sheet = sheet)) %>%
       dplyr::mutate(across(everything(), as.character))
     
     # search for "|" (meaning there are changes within a given year)

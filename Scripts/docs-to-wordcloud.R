@@ -10,11 +10,11 @@ docs <- docs %>%
   tm_map(removePunctuation) %>%
   tm_map(stripWhitespace)
 docs <- tm_map(docs, content_transformer(tolower))
-tryCatch(
-  docs <- tm_map(docs, removeWords, stopwords("portuguese"))
+try(
+  docs <- tm_map(docs, removeWords, tm::stopwords("portuguese"), silent = TRUE)
 )
-tryCatch(
-  docs <- tm_map(docs, removeWords, stopwords("english"))
+try(
+  docs <- tm_map(docs, removeWords, tm::stopwords("english"), silent = TRUE)
 )
 
 # create a document-term matrix

@@ -1,5 +1,5 @@
 ---
-title: "OBSERVATÓRIO"
+title: OBSERVATÓRIO
 output:
   html_document:
     toc: false
@@ -25,24 +25,38 @@ source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
 ---
-title: "OBSERVATÓRIO `r ifelse(has.dados.cadastrais, sigla.PPG, "")`"
+title: "OBSERVATÓRIO `r ifelse(and(has.dados.cadastrais, has.sucupira), sigla.PPG, "")`"
 ---
 
 <br>
 
 <br>
 
-```{r landingpage-logo}
-has.logo.ies <- file.exists("PPG/Images/logo-IES.png")
-```
-
 <center>
 
-`r if(has.logo.ies){cat('<img src=\"PPG/Images/logo-IES.png\" align=\"center\"/>')}`
+```{r logo-ies}
+if(file.exists("PPG/Images/logo-IES.png")) {
+  cat('<img src=\"PPG/Images/logo-IES.png\" align=\"center\"/>')
+}
+```
 
 <br>
 
-<p style="font-size:1.5em"> O **Observatório `r ifelse(has.dados.cadastrais, toupper(sigla.PPG), "")`** é uma iniciativa `r ifelse(has.dados.cadastrais, paste0("do **Programa de Pós-graduação em ", nome.PPG, "** do "), "")` [`r ifelse(has.dados.cadastrais, toTitleCase(as.character(nome.IES)), "")`](`r try(ifelse(has.sucupira, site.PPG, ""), silent = TRUE)`) que envolve o registro, o acompanhamento e a análise agregada e estruturada de dados para divulgação transparente de suas atividades, planejamentos, ações e impactos, tornando-os acessíveis à sociedade</p>
+<p style="font-size:1.5em">
+```{r intro, results = "asis"}
+if(and(has.dados.cadastrais, has.sucupira)){
+cat(
+  'O **Observatório ', toupper(as.character(sigla.PPG)),
+  '** é uma iniciativa do **Programa de Pós-graduação em ', as.character(nome.PPG), '** - [', toTitleCase(as.character(nome.IES)), '](', as.character(site.PPG),')',
+  'que envolve o registro, o acompanhamento e a análise agregada e estruturada de dados para divulgação transparente de suas atividades, planejamentos, ações e impactos, tornando-os acessíveis à sociedade',
+   sep = "")
+} else {
+cat(
+  'O **Observatório** é uma iniciativa que envolve o registro, o acompanhamento e a análise agregada e estruturada de dados para divulgação transparente de suas atividades, planejamentos, ações e impactos, tornando-os acessíveis à sociedade',
+   sep = "")
+}
+```
+</p>
 
 </center>
 
@@ -500,7 +514,7 @@ cat('^[Quantidades referem-se ao número de projetos de pesquisa ativos no ano.]
 options("scipen" = 100)
 
 financiadores.raw <-
-  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
 # dplyr::select variables to display
 financiadores <-
@@ -610,7 +624,7 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 # plot area setup
 par(mar = c(1.5, 15, 1, 1))
 
-top <- min(length(na.omit(unique(editais))), 10)
+top <- min(length(do::unique_no.NA(editais)), 10)
 data.editais <-
   na.omit(data.frame(name = names(sort(
     table(editais), decreasing = TRUE
@@ -650,7 +664,7 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 # plot area setup
 par(mar = c(1.5, 15, 1, 1))
 
-top <- min(length(na.omit(unique(agencias))), 10)
+top <- min(length(do::unique_no.NA(agencias)), 10)
 data.agencias <-
   na.omit(data.frame(name = names(sort(
     table(agencias), decreasing = TRUE
@@ -781,111 +795,35 @@ cat(
 <br>
 
 ```{r sintese-producao, include = FALSE, eval = has.producao}
-# read data
-try(artigos <-
-      data.frame(read_excel(
-        "PPG/Produção.xlsx",
-        sheet = "PI.completos",
-        col_types = c("text")
-      )))
-
-# read data
-try(resumos <-
-      data.frame(read_excel(
-        "PPG/Produção.xlsx",
-        sheet = "PI.resumos",
-        col_types = c("text")
-      )))
-
-# read data
-try(eventos <-
-      data.frame(read_excel(
-        "PPG/Produção.xlsx",
-        sheet = "PI.eventos",
-        col_types = c("text")
-      )))
-
-# bind papers and letters/abstracts and events (all with DOI)
-artigos <-
-  rbind(
-    dplyr::select(artigos,
-           "Publicado.em",
-           "DOI",
-           "ISSN"),
-    dplyr::select(resumos,
-           "Publicado.em",
-           "DOI",
-           "ISSN"),
-    dplyr::select(eventos,
-           "Publicado.em",
-           "DOI",
-           "ISSN")
-  )
-
-# remove os artigos sem DOI
-artigos <- artigos[complete.cases(artigos$DOI), ]
-
-# remove os aceitos, se existentes
-artigos <-
-  artigos[artigos$Publicado.em != "Aceito",]
-
-# adding Webqualis column data
-artigos$WebQualis <-
-  rep("Sem Qualis", times  = length(dim(artigos)[1]))
-for (i in 1:dim(artigos)[1]) {
-  try(artigos$WebQualis[i] <-
-        qualis$Estrato[match(artigos$ISSN[i], qualis$ISSN)])
-}
-# adding Journal Name column data
-artigos$Título <-
-  rep("Sem Qualis", times  = length(dim(artigos)[1]))
-for (i in 1:dim(artigos)[1]) {
-  try(artigos$Título[i] <-
-        qualis$Título[match(artigos$ISSN[i], qualis$ISSN)])
-}
-
 # Qualis
 qualis.PPG <- c()
 for (i in 1:length(estratos)) {
   qualis.PPG[i] <-
-    sum(artigos$WebQualis == estratos[i], na.rm = TRUE) / length(artigos$WebQualis) * 100
+    sum(doi_all$WebQualis == estratos[i], na.rm = TRUE) / length(doi_all$WebQualis) * 100
 }
 names(qualis.PPG) <- estratos
 
-# SJR
-SJR <- c()
-for (i in 1:dim(artigos)[1]) {
-  SJR.i <-
-    as.numeric(scimago[grep(gsub("-", "", artigos$ISSN[i]), scimago$Issn), 6])
-  SJR <-
-    c(SJR, ifelse(identical(SJR.i, numeric(0)) |
-                    all(is.na(SJR.i)), NA, SJR.i))
-}
-
-# CiteScore
-c.score <- c()
-for (i in 1:dim(artigos)[1]) {
-  c.score.i <-
-    as.numeric(citescore$x2021_cite_score[grep(gsub("-", "", artigos$ISSN[i]), citescore$print_issn)])
-  if (is_empty(c.score.i)) {
-    as.numeric(citescore$x2021_cite_score[grep(gsub("-", "", artigos$ISSN[i]), citescore$e_issn)])
-  }
-  c.score <-
-    c(c.score, ifelse(identical(c.score.i, numeric(0)) |
-                        all(is.na(c.score.i)), NA, c.score.i))
-}
+qualis.PPG.up <- names(qualis.PPG[1])
+qualis.PPG.lr <- names(qualis.PPG[length(qualis.PPG)])
 
 # generate cross tables of artigos per year
-table.1 <- table(artigos$Publicado.em)
+table.1 <- table(doi_all$published_on)
 
-table.2 <- t(table(artigos$Publicado.em, artigos$WebQualis))
-table.2 <- table.2[order(rownames(table.2)), ]
+table.2 <-
+  matrix(0, ncol = length(unique(doi_all$published_on)), nrow = length(estratos))
+colnames(table.2) <- sort(unique(doi_all$published_on))
+rownames(table.2) <- estratos
 
-table.3 <- data.frame(artigos$Publicado.em, SJR)
+for (i in 1:length(doi_all$WebQualis)) {
+    table.2[match(doi_all$WebQualis[i], rownames(table.2)), match(doi_all$published_on[i], colnames(table.2))] <-
+      table.2[match(doi_all$WebQualis[i], rownames(table.2)), match(doi_all$published_on[i], colnames(table.2))] + 1
+}
+
+table.3 <- data.frame(doi_all$published_on, doi_all$SJR)
 table.3.median <-
   aggregate(
     table.3,
-    by = list(table.3$artigos.Publicado.em),
+    by = list(table.3$doi_all.published_on),
     FUN = median,
     na.rm = TRUE
   )
@@ -893,11 +831,11 @@ table.3.median <- t(as.matrix(table.3.median[, -2]))
 table.3.median <- as.numeric(table.3.median[-1, ])
 names(table.3.median) <- names(table.1)
 
-table.4 <- data.frame(artigos$Publicado.em, c.score)
+table.4 <- data.frame(doi_all$published_on, doi_all$CiteScore)
 table.4.median <-
   aggregate(
     table.4,
-    by = list(table.4$artigos.Publicado.em),
+    by = list(table.4$doi_all.published_on),
     FUN = median,
     na.rm = TRUE
   )
@@ -906,7 +844,7 @@ table.4.median <- as.numeric(table.4.median[-1, ])
 names(table.4.median) <- names(table.1)
 
 table.5 <-
-  data.frame(artigos$Título, SJR)
+  data.frame(doi_all$journal, doi_all$SJR)
 
 # plot area setup
 layout.m <- c(1)
@@ -987,12 +925,13 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 # plot area setup
 par(mar = c(1.5, 15, 1, 1))
 
-top <- min(dim(na.omit(unique(journals.SJR)))[1], 10)
+top <- min((as.numeric(journals.SJR$SJR)), 10)
 data.journals <-
-  na.omit(data.frame(name = journals.SJR$artigos.Título[order(journals.SJR$SJR, decreasing = TRUE)][1:top],
-                     value = as.numeric(
-                       sort(journals.SJR$SJR, decreasing = TRUE)[1:top]
-                     )))
+  data.frame(
+    name = journals.SJR$doi_all.journal[order(as.numeric(journals.SJR$doi_all.SJR), decreasing = TRUE)][1:top],
+    value = as.numeric(sort(as.numeric(journals.SJR$doi_all.SJR), decreasing = TRUE
+             )[1:top])
+    )
 
 # break vector names in 2 lines
 text.2.break <- data.journals$name
@@ -1075,8 +1014,8 @@ legend(
 )
 
 # hist SJR base e PPG
-SJR.base <- na.omit(scimago$SJR)
-SJR.PPG <- na.omit(SJR)
+SJR.base <- scimago$SJR[!is.na(scimago$SJR)]
+SJR.PPG <- doi_all$SJR[!is.na(doi_all$SJR)]
 
 vioplot(
   as.numeric(SJR.base),
@@ -1109,8 +1048,8 @@ vioplot(
 )
 
 # hist CiteScore base e PPG
-CITESCORE.base <- na.omit(citescore$x2021_cite_score)
-CITESCORE.PPG <- na.omit(c.score)
+CITESCORE.base <- citescore$x2021_cite_score[!is.na(citescore$x2021_cite_score)]
+CITESCORE.PPG <- doi_all$CiteScore[!is.na(doi_all$CiteScore)]
 
 vioplot(
   as.numeric(CITESCORE.base),
@@ -1167,19 +1106,19 @@ summ.table.producao <-
       big.mark = "."
     ),
     formatC(
-      min(SJR, na.rm = TRUE),
+      min(doi_all$SJR, na.rm = TRUE),
       format = "f",
       digits = 3,
       big.mark = "."
     ),
     formatC(
-      median(SJR, na.rm = TRUE),
+      median(doi_all$SJR, na.rm = TRUE),
       format = "f",
       digits = 3,
       big.mark = "."
     ),
     formatC(
-      max(SJR, na.rm = TRUE),
+      max(doi_all$SJR, na.rm = TRUE),
       format = "f",
       digits = 3,
       big.mark = "."
@@ -1265,17 +1204,8 @@ cat('^[Produções com DOI apenas; a produção pode estar subsestimada pois pro
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
-# bind sources
-doi_unique <-
-  bind_rows(doi_unique_artigos,
-            doi_unique_resumos,
-            doi_unique_preprints,
-            doi_unique_livros,
-            doi_unique_capitulos,
-            doi_unique_eventos)
-
 table.1 <- 
-  table.1 <- data.frame(doi_unique$published_on, doi_unique$score)
+  table.1 <- data.frame(doi_all$published_on, doi_all$altmetric_score)
 
 # plot area setup
 layout.m <- c(1)
@@ -1317,8 +1247,8 @@ text(
 # generate cross tables of IS_OA artigos per year
 table.2 <-
   t(table(
-    c(doi_unique$published_on, my_dois_works$published_on),
-    as.logical(c(doi_unique$is_oa, my_dois_works$is_oa))
+    doi_all$published_on,
+    as.logical(doi_all$is_oa)
   ))
 table.2 <- table.2[order(rownames(table.2)), ]
 rownames(table.2) <- c("Open access", "Paywall")
@@ -1357,14 +1287,14 @@ legend(
   cex = 1,
 )
 
-if(sum(c(doi_unique$citations, my_dois_works$citations)) == 0){
+if(sum(doi_all$citations) == 0){
   table.3 <- as.matrix(rep(0, length(max(anos) - min(anos) + 1)))
 } else {
   # generate cross tables of citations per year
   table.3 <-
     t(table(
-      c(doi_unique$published_on, my_dois_works$published_on),
-      c(doi_unique$citations, my_dois_works$citations)
+      doi_all$published_on,
+      doi_all$citations
     ))
   table.3 <- table.3[order(rownames(table.3)),]
   table.3 <- colSums(table.3)
@@ -1456,7 +1386,7 @@ cat('^[Dados sobre retratação são obtidos de PubMed API e CrossRef API.]')
 
 ```{r sintese-pessoal, include = FALSE, eval = has.discentes}
 discentes.raw <-
-  read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
+  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
 
 # separating egressos (master and doctoral) and current canditates
 discentes <-
@@ -1953,7 +1883,7 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 # plot area setup
 par(mar = c(1.5, 15, 1, 1))
 
-top <- min(length(na.omit(unique(IES.nac))), 10)
+top <- min(length(do::unique_no.NA(IES.nac)), 10)
 data.nac <-
   na.omit(data.frame(name = names(sort(
     table(IES.nac), decreasing = TRUE
@@ -1991,7 +1921,7 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 # plot area setup
 par(mar = c(1.5, 15, 1, 1))
 
-top <- min(length(na.omit(unique(IES.inter))), 10)
+top <- min(length(do::unique_no.NA(IES.inter)), 10)
 data.inter <-
   na.omit(data.frame(name = names(sort(
     table(IES.inter), decreasing = TRUE
@@ -2029,7 +1959,7 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 # plot area setup
 par(mar = c(1.5, 15, 1, 1))
 
-top <- min(length(na.omit(unique(mundo))), 10)
+top <- min(length(do::unique_no.NA(mundo)), 10)
 data.pais <-
   na.omit(data.frame(name = names(sort(
     table(mundo), decreasing = TRUE

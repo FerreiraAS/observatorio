@@ -1,7 +1,7 @@
 # Getting Altmetrics Data Using API and R
 # by Arthur de Sá Ferreira
 
-# zources:
+# sources:
 # https://api.altmetric.com
 # https://docs.google.com/spreadsheets/d/1ndVY8Q2LOaZO_P_HDmSQulagjeUrS250mAL2N5V8GvY/edit#gid=0
 
@@ -17,6 +17,7 @@ columns_to_grab <-
     "issns1",
     "issns2",
     "published_on",
+    "last_updated",
     "cited_by_fbwalls_count",
     "cited_by_feeds_count",
     "cited_by_gplus_count",
@@ -41,7 +42,7 @@ doi_reshaped_data <-
     dimnames = list(c(), columns_to_grab)
   ))
 
-no_altmetric_dois_list <- list()
+no_altmetric_dois_list <- c()
 
 # loop for all DOI in the list
 for (input in 1:length(dois_list)) {
@@ -143,9 +144,11 @@ if (!is.null(doi_reshaped_data$published_on)) {
 }
 doi_reshaped_data$published_on <- as.character(year_publ)
 
-# convert score to integer (rouded up)
+# convert Altmetric score to integer (rouded up)
 doi_reshaped_data$score <-
   ceiling(as.numeric(doi_reshaped_data$score))
+# rename column
+data.table::setnames(doi_reshaped_data,'score','altmetric_score')
 
 # replace empty "count_" values by 0
 doi_reshaped_data$cited_by_fbwalls_count[doi_reshaped_data$cited_by_fbwalls_count == ""] <-
@@ -167,6 +170,8 @@ doi_reshaped_data$cited_by_videos_count[doi_reshaped_data$cited_by_videos_count 
 doi_reshaped_data$cited_by_accounts_count[doi_reshaped_data$cited_by_accounts_count == ""] <-
   0
 doi_reshaped_data$cited_by_patents_count[doi_reshaped_data$cited_by_patents_count == ""] <-
+  0
+doi_reshaped_data$cited_by_patents_count[doi_reshaped_data$mendeley == ""] <-
   0
 
 # split and remove NA rows

@@ -7,6 +7,9 @@
 # set default directory
 options(repos = structure(c(CRAN = "http://cran.r-project.org")))
 
+# set timeout to donwload packages, in seconds
+options(timeout = 360)
+
 # most packages work fine if installed from CRAN
 packs.cran <-
   c(
@@ -18,6 +21,7 @@ packs.cran <-
     "data.tree",
     "details",
     "devtools",
+    "do",
     # plyr first, then dplyr
     "plyr",
     "dplyr",

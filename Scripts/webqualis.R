@@ -7,7 +7,7 @@ files.to.read <- list.files(
 )
 
 qualis <-
-  data.frame(read_excel(files.to.read),
+  data.frame(readxl::read_excel(files.to.read),
              sheet = 1,
              col_types = c("text"))
 

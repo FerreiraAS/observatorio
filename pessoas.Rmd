@@ -55,7 +55,7 @@ source("Scripts/social-media-sharing.R")
 ```{r dados-cadastrais-endereco, eval = has.dados.cadastrais}
 # read separate sheets
 endereco.raw <-
-  read_excel("PPG/Dados Cadastrais.xlsx",
+  readxl::read_excel("PPG/Dados Cadastrais.xlsx",
              sheet = "Endereço",
              col_types = c("text"))
 colnames(endereco.raw) <- seq(1:dim(endereco.raw)[2])
@@ -161,7 +161,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ```{r coordenadores-2024, eval = has.coordenacao}
 docentes.raw <-
-  read_excel("PPG/Coordenação.xlsx", sheet = "Coordenação")
+  readxl::read_excel("PPG/Coordenação.xlsx", sheet = "Coordenação")
 id1 <-
   docentes.raw$Credenciamento <= 2024 &
   docentes.raw$Descredenciamento == "Atual"
@@ -285,7 +285,7 @@ print(
 
 ```{r coordenadores-2020, eval = has.coordenacao}
 docentes.raw <-
-  read_excel("PPG/Coordenação.xlsx", sheet = "Coordenação")
+  readxl::read_excel("PPG/Coordenação.xlsx", sheet = "Coordenação")
 id1 <-
   docentes.raw$Credenciamento <= 2020 &
   docentes.raw$Descredenciamento == "Atual"
@@ -409,7 +409,7 @@ print(
 
 ```{r coordenadores-2016, eval = has.coordenacao}
 docentes.raw <-
-  read_excel("PPG/Coordenação.xlsx", sheet = "Coordenação")
+  readxl::read_excel("PPG/Coordenação.xlsx", sheet = "Coordenação")
 id1 <-
   docentes.raw$Credenciamento <= 2016 &
   docentes.raw$Descredenciamento == "Atual"
@@ -533,7 +533,7 @@ print(
 
 ```{r coordenadores-2012, eval = has.coordenacao}
 docentes.raw <-
-  read_excel("PPG/Coordenação.xlsx", sheet = "Coordenação")
+  readxl::read_excel("PPG/Coordenação.xlsx", sheet = "Coordenação")
 id1 <-
   docentes.raw$Credenciamento <= 2012 &
   docentes.raw$Descredenciamento == "Atual"
@@ -751,7 +751,7 @@ for(i in 1:dim(perfil.data)[2]){
 
 ```{r docentes-2024-grafico, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
+  readxl::read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2024 &
   docentes.raw$Descredenciamento == "Atual"
@@ -1099,7 +1099,7 @@ print(
 
 ```{r docentes-2020-grafico, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
+  readxl::read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2020 &
   docentes.raw$Descredenciamento == "Atual"
@@ -1294,7 +1294,7 @@ title("Descrição do Corpo Docente", outer = TRUE)
 
 ```{r docentes-2020-tabela, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
+  readxl::read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2020 &
   docentes.raw$Descredenciamento == "Atual"
@@ -1447,7 +1447,7 @@ print(
 
 ```{r docentes-2016-grafico, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
+  readxl::read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2016 &
   docentes.raw$Descredenciamento == "Atual"
@@ -1642,7 +1642,7 @@ title("Descrição do Corpo Docente", outer = TRUE)
 
 ```{r docentes-2016-tabela, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
+  readxl::read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2016 &
   docentes.raw$Descredenciamento == "Atual"
@@ -1795,7 +1795,7 @@ print(
 
 ```{r docentes-2012-grafico, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
+  readxl::read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2012 &
   docentes.raw$Descredenciamento == "Atual"
@@ -1990,7 +1990,7 @@ title("Descrição do Corpo Docente", outer = TRUE)
 
 ```{r docentes-2012-tabela, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
+  readxl::read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2012 &
   docentes.raw$Descredenciamento == "Atual"
@@ -2154,7 +2154,7 @@ print(
 
 ```{r pos-doc-2024, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
+  readxl::read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2024 &
   docentes.raw$Descredenciamento == "Atual"
@@ -2324,7 +2324,7 @@ if (length(new.ids) != 0) {
 
 ```{r pos-doc-2020, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
+  readxl::read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2020 &
   docentes.raw$Descredenciamento == "Atual"
@@ -2494,7 +2494,7 @@ if (length(new.ids) != 0) {
 
 ```{r pos-doc-2016, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
+  readxl::read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2016 &
   docentes.raw$Descredenciamento == "Atual"
@@ -2664,7 +2664,7 @@ if (length(new.ids) != 0) {
 
 ```{r pos-doc-2012, eval = has.colegiado}
 docentes.raw <-
-  read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
+  readxl::read_excel("PPG/Colegiado.xlsx", sheet = "Colegiado")
 id1 <-
   docentes.raw$Credenciamento <= 2012 &
   docentes.raw$Descredenciamento == "Atual"
@@ -3239,7 +3239,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ```{r egressos-periodo, eval = has.discentes}
 discentes.raw <-
-  read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
+  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
 discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
 mestres <- discentes[discentes$Curso == "Mestrado",]
 doutores <- discentes[discentes$Curso == "Doutorado",]
@@ -3308,7 +3308,7 @@ multiplot(plotlist = maps, cols = dim(periodos)[1])
 
 ```{r historico-egressos-dsc-2024, eval = has.discentes}
 discentes.raw <-
-  read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
+  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
 discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
 discentes <-
   discentes.raw[discentes.raw$`Ano Titulação` >= 2021 &
@@ -3340,7 +3340,7 @@ if (dim(doutores)[1] != 0) {
 
 ```{r historico-egressos-msc-2024, eval = has.discentes}
 discentes.raw <-
-  read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
+  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
 discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
 discentes <-
   discentes.raw[discentes.raw$`Ano Titulação` >= 2021 &
@@ -3374,7 +3374,7 @@ if (dim(mestres)[1] != 0) {
 
 ```{r historico-egressos-dsc-2020, eval = has.discentes}
 discentes.raw <-
-  read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
+  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
 discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
 discentes <-
   discentes.raw[discentes.raw$`Ano Titulação` >= 2017 &
@@ -3406,7 +3406,7 @@ if (dim(doutores)[1] != 0) {
 
 ```{r historico-egressos-msc-2020, eval = has.discentes}
 discentes.raw <-
-  read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
+  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
 discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
 discentes <-
   discentes.raw[discentes.raw$`Ano Titulação` >= 2017 &
@@ -3440,7 +3440,7 @@ if (dim(mestres)[1] != 0) {
 
 ```{r historico-egressos-dsc-2016, eval = has.discentes}
 discentes.raw <-
-  read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
+  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
 discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
 discentes <-
   discentes.raw[discentes.raw$`Ano Titulação` >= 2013 &
@@ -3472,7 +3472,7 @@ if (dim(doutores)[1] != 0) {
 
 ```{r historico-egressos-msc-2016, eval = has.discentes}
 discentes.raw <-
-  read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
+  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
 discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
 discentes <-
   discentes.raw[discentes.raw$`Ano Titulação` >= 2013 &
@@ -3506,7 +3506,7 @@ if (dim(mestres)[1] != 0) {
 
 ```{r historico-egressos-dsc-2012, eval = has.discentes}
 discentes.raw <-
-  read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
+  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
 discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
 discentes <-
   discentes.raw[discentes.raw$`Ano Titulação` >= 2010 &
@@ -3538,7 +3538,7 @@ if (dim(doutores)[1] != 0) {
 
 ```{r historico-egressos-msc-2012, eval = has.discentes}
 discentes.raw <-
-  read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
+  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
 discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
 discentes <-
   discentes.raw[discentes.raw$`Ano Titulação` >= 2010 &
@@ -3687,7 +3687,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ### **Membros**
 
 ```{r grupos-de-pesquisa-membros, eval = has.grupos.pesquisa}
-membros.raw <- read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "Membros")
+membros.raw <- readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "Membros")
 
 # print tables
 print(kable(membros.raw, align = c("l", rep("c", ncol(membros.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
@@ -3700,7 +3700,7 @@ print(kable(membros.raw, align = c("l", rep("c", ncol(membros.raw)-2), "r")) %>%
 ### **Grupos ativos** {.tabset}
 
 ```{r grupos-de-pesquisa-ativos, eval = has.grupos.pesquisa}
-grupos.raw <- read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.ativos")
+grupos.raw <- readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.ativos")
 
 # print tables
 print(kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
@@ -3713,7 +3713,7 @@ print(kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r")) %>% k
 ### **Grupos inativos** {.tabset}
 
 ```{r grupos-de-pesquisa-inativos, eval = has.grupos.pesquisa}
-grupos.raw <- read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.inativos")
+grupos.raw <- readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.inativos")
 
 # print tables
 print(kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
@@ -3726,7 +3726,7 @@ print(kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r")) %>% k
 ### **Grupos de pesquisa externos** {.tabset #grupos-externos}
 
 ```{r grupos-de-pesquisa-externos, eval = has.grupos.pesquisa}
-grupos.raw <- read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.externos")
+grupos.raw <- readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.externos")
 
 # print tables
 print(kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))

@@ -30,19 +30,34 @@ knitr::opts_chunk$set(
 source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
-```{r main-color}
+```{r main-color, results = "hide"}
 # read CSS color for this page
-css <- read_css("CSS/main-color.css")
+css <- cssparser::read_css("CSS/main-color.css")
 main.color <- css$`:root`$`--mybackgroundcolor`
 ```
 
 <!--create (if non existent) all required folders-->
-```{r folders}
+```{r folders, results = "hide"}
 dir.create(file.path(getwd(), "PPG"), showWarnings = FALSE)
 dir.create(file.path(getwd(), "Sucupira"), showWarnings = FALSE)
 ```
 
-```{r try-sucupira}
+<!--read METRIC files-->
+```{r metrics, results = "hide"}
+source(file.path("Scripts", "citescore.R"), local = knitr::knit_global())
+source(file.path("Scripts", "sjr.R"), local = knitr::knit_global())
+source(file.path("Scripts", "webqualis.R"), local = knitr::knit_global())
+
+source(file.path("Scripts", "get_citescore.R"),
+       local = knitr::knit_global())
+source(file.path("Scripts", "get_sjr.R"), local = knitr::knit_global())
+source(file.path("Scripts", "get_webqualis.R"),
+       local = knitr::knit_global())
+# get metrics from Scopus, SCIMago and CAPES
+source(file.path("Scripts", "get-metrics-from-sources.R"), local = knitr::knit_global())
+```
+
+```{r try-sucupira, results = "hide"}
 files.to.read <-
   list.dirs(file.path(getwd(), "Sucupira"),
             full.names = TRUE,
@@ -50,7 +65,7 @@ files.to.read <-
 has.sucupira <- length(files.to.read) != 0
 ```
 
-```{r try-ppg-files}
+```{r try-ppg-files, results = "hide"}
 # list all PPG files
 files.to.read <-
   list.dirs(file.path(getwd(), "PPG"),
@@ -59,206 +74,199 @@ files.to.read <-
 has.PPG.files <- length(files.to.read) != 0
 ```
 
-<!--read METRIC files-->
-```{r metrics}
-source(file.path("Scripts", "sjr.R"), local = knitr::knit_global())
-source(file.path("Scripts", "citescore.R"), local = knitr::knit_global())
-source(file.path("Scripts", "webqualis.R"), local = knitr::knit_global())
-```
-
 <!--check available files in PPG folder-->
-```{r try-agendas-pesquisa}
+```{r try-agendas-pesquisa, results = "hide"}
 has.agendas.pesquisa <-
-  !is.error(try(read_excel("PPG/Agendas de Pesquisa.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Agendas de Pesquisa.xlsx", sheet = 1),
                 silent = TRUE))
 ```
 
-```{r try-apresentacao}
+```{r try-apresentacao, results = "hide"}
 has.apresentacao <-
-  !is.error(try(read_excel("PPG/Apresentação.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Apresentação.xlsx", sheet = 1),
                 silent = TRUE))
 ```
 
-```{r try-autoavaliacoes}
+```{r try-autoavaliacoes, results = "hide"}
 has.autoavaliacoes <-
-  !is.error(try(read_excel("PPG/Autoavaliações.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Autoavaliações.xlsx", sheet = 1),
                 silent = TRUE))
 ```
 
-```{r try-avaliacao}
+```{r try-avaliacao, results = "hide"}
 has.avaliacao <-
-  !is.error(try(read_excel("PPG/Avaliação.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Avaliação.xlsx", sheet = 1),
                 silent = TRUE))
 ```
 
-```{r try-bibliografia}
+```{r try-bibliografia, results = "hide"}
 has.bibliografia <-
-  !is.error(try(read_excel("PPG/Bibliografia.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Bibliografia.xlsx", sheet = 1),
                 silent = TRUE))
 ```
 
-```{r try-blog-externos}
+```{r try-blog-externos, results = "hide"}
 has.blog.externos <-
-  !is.error(try(read_excel("PPG/Blog_externos.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Blog_externos.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-blog-ies}
+```{r try-blog-ies, results = "hide"}
 has.blog.ies <-
-  !is.error(try(read_excel("PPG/Blog_IES.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Blog_IES.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-bolsas}
+```{r try-bolsas, results = "hide"}
 has.bolsas <-
-  !is.error(try(read_excel("PPG/Bolsas.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Bolsas.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-calendarios}
+```{r try-calendarios, results = "hide"}
 has.calendarios <-
-  !is.error(try(read_excel("PPG/Calendários.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Calendários.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-cep}
+```{r try-cep, results = "hide"}
 has.cep <-
-  !is.error(try(read_excel("PPG/CEP.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/CEP.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-colegiado}
+```{r try-colegiado, results = "hide"}
 has.colegiado <-
-  !is.error(try(read_excel("PPG/Colegiado.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Colegiado.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-convenios}
+```{r try-convenios, results = "hide"}
 has.convenios <-
-  !is.error(try(read_excel("PPG/Convênios.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Convênios.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-cooperacoes}
+```{r try-cooperacoes, results = "hide"}
 has.cooperacoes <-
-  !is.error(try(read_excel("PPG/Cooperações.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Cooperações.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-coordenacao}
+```{r try-coordenacao, results = "hide"}
 has.coordenacao <-
-  !is.error(try(read_excel("PPG/Coordenação.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Coordenação.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-dados-cadastrais}
+```{r try-dados-cadastrais, results = "hide"}
 has.dados.cadastrais <-
-  !is.error(try(read_excel("PPG/Dados Cadastrais.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Dados Cadastrais.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-destaques}
+```{r try-destaques, results = "hide"}
 has.destaques <-
-  !is.error(try(read_excel("PPG/Destaques.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Destaques.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-discentes}
+```{r try-discentes, results = "hide"}
 has.discentes <-
-  !is.error(try(read_excel("PPG/Discentes.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Discentes.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-downloads}
+```{r try-downloads, results = "hide"}
 has.downloads <-
-  !is.error(try(read_excel("PPG/Downloads.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Downloads.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-editais}
+```{r try-editais, results = "hide"}
 has.editais <-
-  !is.error(try(read_excel("PPG/Editais.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Editais.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-financiadores}
+```{r try-financiadores, results = "hide"}
 has.financiadores <-
-  !is.error(try(read_excel("PPG/Financiadores.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Financiadores.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-grupos-pesquisa}
+```{r try-grupos-pesquisa, results = "hide"}
 has.grupos.pesquisa <-
-  !is.error(try(read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-historico}
+```{r try-historico, results = "hide"}
 has.historico <-
-  !is.error(try(read_excel("PPG/Histórico.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Histórico.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-infraestrutura}
+```{r try-infraestrutura, results = "hide"}
 has.infraestrutura <-
-  !is.error(try(read_excel("PPG/Infraestrutura.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Infraestrutura.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-internacionalizacao}
+```{r try-internacionalizacao, results = "hide"}
 has.internacionalizacao <-
-  !is.error(try(read_excel("PPG/Internacionalização.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Internacionalização.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-laboratorios}
+```{r try-laboratorios, results = "hide"}
 has.laboratorios <-
-  !is.error(try(read_excel("PPG/Laboratórios.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Laboratórios.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-notas}
+```{r try-notas, results = "hide"}
 has.notas <-
-  !is.error(try(read_excel("PPG/Notas.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Notas.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-premios}
+```{r try-premios, results = "hide"}
 has.premios <-
-  !is.error(try(read_excel("PPG/Prêmios.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Prêmios.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-premio-capes}
+```{r try-premio-capes, results = "hide"}
 has.premio.capes <-
-  !is.error(try(read_excel("PPG/Prêmio CAPES de Tese.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Prêmio CAPES de Tese.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r try-producao-sucupira, eval = has.sucupira}
+```{r producao-sucupira, results = "hide", eval = has.sucupira}
 # produções
 sheet <- "Produções - Detalhes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -273,7 +281,7 @@ titles <-
   produtos$"Nome da Produção"[produtos$"Item de Detalhamento" == natureza]
 produtos.completos <- produtos[produtos$"Nome da Produção" == titles,]
 doi_artigos_completos_sucupira <- 
-  as.data.frame(produtos.completos$"Valor do Item de Detalhamento"[
+  data.frame(produtos.completos$"Valor do Item de Detalhamento"[
     (produtos.completos$"Subtipo de Produção" == tipo)
     &
     (produtos.completos$"Item de Detalhamento" == "Número do DOI")
@@ -290,7 +298,7 @@ produtos.resumos <- produtos[produtos$"Nome da Produção" == titles,]
 
 # Data cleaning
 doi_artigos_resumos_sucupira <- 
-  as.data.frame(produtos.resumos$"Valor do Item de Detalhamento"[
+  data.frame(produtos.resumos$"Valor do Item de Detalhamento"[
     (produtos.resumos$"Subtipo de Produção" == tipo)
     &
     (produtos.resumos$"Item de Detalhamento" == "Número do DOI")
@@ -299,67 +307,67 @@ doi_artigos_resumos_sucupira <- na.omit(doi_artigos_resumos_sucupira)
 colnames(doi_artigos_resumos_sucupira) <- "DOI"
 ```
 
-```{r try-producao-ppg}
+```{r try-producao-ppg, results = "hide"}
 has.artigos.completos <-
-  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.completos"),
+  !is.error(try(readxl::read_excel("PPG/Produção.xlsx", sheet = "PI.completos"),
                 silent = TRUE))
 if(!has.artigos.completos){
   doi_unique_artigos = data.frame()
-  my_dois_works_artigos = data.frame()
+  my_doi_works_artigos = data.frame()
   references_artigos = data.frame()
   doi_unique_artigos_impacto = data.frame()
-  my_dois_works_artigos_impacto = data.frame()
+  my_doi_works_artigos_impacto = data.frame()
   }
 
 has.artigos.resumos <-
-  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.resumos"), silent = TRUE))
+  !is.error(try(readxl::read_excel("PPG/Produção.xlsx", sheet = "PI.resumos"), silent = TRUE))
 if(!has.artigos.resumos){
   doi_unique_resumos = data.frame()
-  my_dois_works_resumos = data.frame()
+  my_doi_works_resumos = data.frame()
   references_resumos = data.frame()
   doi_unique_resumos_impacto = data.frame()
-  my_dois_works_resumos_impacto = data.frame()
+  my_doi_works_resumos_impacto = data.frame()
   }
 
 has.preprints <-
-  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.preprints"),
+  !is.error(try(readxl::read_excel("PPG/Produção.xlsx", sheet = "PI.preprints"),
                 silent = TRUE))
 if(!has.preprints){
   doi_unique_preprints = data.frame()
-  my_dois_works_preprints = data.frame()
+  my_doi_works_preprints = data.frame()
   references_preprints = data.frame()
   doi_unique_preprints_impacto = data.frame()
-  my_dois_works_preprints_impacto = data.frame()
+  my_doi_works_preprints_impacto = data.frame()
   }
 
 has.livros <-
-  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.livros"), silent = TRUE))
+  !is.error(try(readxl::read_excel("PPG/Produção.xlsx", sheet = "PI.livros"), silent = TRUE))
 if(!has.livros){
   doi_unique_livros = data.frame()
-  my_dois_works_livros = data.frame()
+  my_doi_works_livros = data.frame()
   references_livros = data.frame()
   doi_unique_livros_impacto = data.frame()
-  my_dois_works_livros_impacto = data.frame()
+  my_doi_works_livros_impacto = data.frame()
   }
 
 has.capitulos <-
-  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.capitulos"), silent = TRUE))
+  !is.error(try(readxl::read_excel("PPG/Produção.xlsx", sheet = "PI.capitulos"), silent = TRUE))
 if(!has.capitulos){
   doi_unique_capitulos = data.frame()
-  my_dois_works_capitulos = data.frame()
+  my_doi_works_capitulos = data.frame()
   references_capitulos = data.frame()
   doi_unique_capitulos_impacto = data.frame()
-  my_dois_works_capitulos_impacto = data.frame()
+  my_doi_works_capitulos_impacto = data.frame()
   }
 
 has.eventos <-
-  !is.error(try(read_excel("PPG/Produção.xlsx", sheet = "PI.eventos"), silent = TRUE))
+  !is.error(try(readxl::read_excel("PPG/Produção.xlsx", sheet = "PI.eventos"), silent = TRUE))
 if(!has.eventos){
   doi_unique_eventos = data.frame()
-  my_dois_works_eventos = data.frame()
+  my_doi_works_eventos = data.frame()
   references_eventos = data.frame()
   doi_unique_eventos_impacto = data.frame()
-  my_dois_works_eventos_impacto = data.frame()
+  my_doi_works_eventos_impacto = data.frame()
   }
 
 has.producao <-
@@ -371,42 +379,42 @@ has.producao <-
       has.eventos)
 ```
 
-```{r try-repositorios}
+```{r try-repositorios, results = "hide"}
 has.repositorios.sede <-
-  !is.error(try(read_excel("PPG/Repositórios.xlsx", sheet =  "Sede"),
+  !is.error(try(readxl::read_excel("PPG/Repositórios.xlsx", sheet =  "Sede"),
                 silent = TRUE)
   )
 
 has.repositorios.cooperacao <-
-  !is.error(try(read_excel("PPG/Repositórios.xlsx", sheet = "Cooperação"),
+  !is.error(try(readxl::read_excel("PPG/Repositórios.xlsx", sheet = "Cooperação"),
                 silent = TRUE)
   )
 ```
 
-```{r try-softwares}
+```{r try-softwares, results = "hide"}
 has.softwares <-
-  !is.error(try(read_excel("PPG/Softwares.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Softwares.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
 
-```{r ppg-data, eval = has.dados.cadastrais}
+```{r ppg-data, results = "hide", eval = and(has.dados.cadastrais, has.sucupira)}
 # get initials from the PPG data
 nome.PPG <-
-  read_excel("PPG/Dados Cadastrais.xlsx",
+  readxl::read_excel("PPG/Dados Cadastrais.xlsx",
              sheet = "Dados do programa",
              col_types = c("text"))[2, 2]
 
-nome.PPG.split <- str_split_1(as.character(nome.PPG)[[1]], " ")
+nome.PPG.split <- stringr::str_split_1(as.character(nome.PPG)[[1]], " ")
 match.stopwords <-
-  match(str_split_1(as.character(nome.PPG)[[1]], " "), stopwords("portuguese"))
+  match(stringr::str_split_1(as.character(nome.PPG)[[1]], " "), tm::stopwords("portuguese"))
 nome.PPG.no.stopwords <-
   paste(nome.PPG.split[is.na(match.stopwords)], collapse = " ")
 source("Scripts/get-initials.R")
 sigla.PPG <- initials(nome.PPG.no.stopwords)
 
 site.PPG <-
-  read_excel("PPG/Dados Cadastrais.xlsx",
+  readxl::read_excel("PPG/Dados Cadastrais.xlsx",
              sheet = "Endereço",
              col_types = c("text"))[7, 2]
 
@@ -418,24 +426,27 @@ sigla.IES <- unique(sucupira.raw$`IES Sigla`)
 ```
 
 <!--get data-->
-```{r metrics-artigos, cache = TRUE, cache.path = "cache/artigos/", eval = has.artigos.completos}
+```{r metrics-artigos, results = "hide", cache = TRUE, cache.path = "cache/artigos/", eval = has.artigos.completos}
 # read data
 data.sheet <-
-  data.frame(read_excel(
+  data.frame(readxl::read_excel(
     "PPG/Produção.xlsx",
     sheet = "PI.completos",
     col_types = c("text")
   ))
 
-# Data cleaning
+# select DOI column
 dois <-
-  as.data.frame(na.omit(data.sheet[, match("DOI", colnames(data.sheet))]))
-colnames(dois) <- "DOI"
+  data.frame(DOI = data.sheet[, match("DOI", colnames(data.sheet))])
 
 # bind PPG and SUCUPIRA DOIs
-dois <- as.data.frame(na.omit(bind_rows(dois, doi_artigos_completos_sucupira)))
-dois <- as.data.frame(dois$DOI[!duplicated(dois$DOI)])
-colnames(dois) <- "DOI"
+if (!is.null(get0("doi_artigos_completos_sucupira"))) {
+  dois <- data.frame(DOI = c(doi_artigos_completos_sucupira$DOI, dois$DOI))
+}
+
+# Data cleaning
+dois <-data.frame(DOI = dois$DOI[!duplicated(dois)])
+dois <- data.frame(DOI = do::unique_no.NA(dois$DOI))
 
 # cria metadados para rastreio pelo Altmetric
 source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
@@ -445,13 +456,13 @@ source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
 
 # store to use downstream
 dois_artigos <- dois
-doi_unique_artigos <- doi_unique
-my_dois_works_artigos <- my_dois_works
+doi_unique_artigos <- get_metrics(df = doi_unique, citescore, scimago, qualis)
+my_doi_works_artigos <- get_metrics(df = my_doi_works, citescore, scimago, qualis)
 
 # obtain formatted references
 formatted_citations <-
   rcrossref::cr_cn(
-    c(doi_unique$doi, my_dois_works$doi),
+    c(doi_unique$doi, my_doi_works$doi),
     format = "text",
     raw = TRUE,
     style = "american-medical-association"
@@ -465,24 +476,27 @@ references_artigos <- formatted_citations
 ```
 
 <!--get data-->
-```{r metrics-resumos, cache = TRUE, cache.path = "cache/resumos/", eval = has.artigos.resumos}
+```{r metrics-resumos, results = "hide", cache = TRUE, cache.path = "cache/resumos/", eval = has.artigos.resumos}
 # read data
 data.sheet <-
-  data.frame(read_excel(
+  data.frame(readxl::read_excel(
     "PPG/Produção.xlsx",
     sheet = "PI.resumos",
     col_types = c("text")
   ))
 
-# Data cleaning
+# select DOI column
 dois <-
-  as.data.frame(na.omit(data.sheet[, match("DOI", colnames(data.sheet))]))
-colnames(dois) <- "DOI"
+  data.frame(DOI = data.sheet[, match("DOI", colnames(data.sheet))])
 
 # bind PPG and SUCUPIRA DOIs
-dois <- as.data.frame(na.omit(bind_rows(dois, doi_artigos_resumos_sucupira)))
-dois <- as.data.frame(dois$DOI[!duplicated(dois$DOI)])
-colnames(dois) <- "DOI"
+if (!is.null(get0("doi_artigos_resumos_sucupira"))) {
+  dois <- data.frame(DOI = c(doi_artigos_resumos_sucupira$DOI, dois$DOI))
+}
+
+# Data cleaning
+dois <-data.frame(DOI = dois$DOI[!duplicated(dois)])
+dois <- data.frame(DOI = do::unique_no.NA(dois$DOI))
 
 # cria metadados para rastreio pelo Altmetric
 source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
@@ -492,13 +506,13 @@ source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
 
 # store to use downstream
 dois_resumos <- dois
-doi_unique_resumos <- doi_unique
-my_dois_works_resumos <- my_dois_works
+doi_unique_resumos <- get_metrics(df = doi_unique, citescore, scimago, qualis)
+my_doi_works_resumos <- get_metrics(df = my_doi_works, citescore, scimago, qualis)
 
 # obtain formatted references
 formatted_citations <-
   rcrossref::cr_cn(
-    c(doi_unique$doi, my_dois_works$doi),
+    c(doi_unique$doi, my_doi_works$doi),
     format = "text",
     raw = TRUE,
     style = "american-medical-association"
@@ -512,19 +526,22 @@ references_resumos <- formatted_citations
 ```
 
 <!--get data-->
-```{r metrics-preprints, cache = TRUE, cache.path = "cache/preprints/", eval = has.preprints}
+```{r metrics-preprints, results = "hide", cache = TRUE, cache.path = "cache/preprints/", eval = has.preprints}
 # read data
 data.sheet <-
-  data.frame(read_excel(
+  data.frame(readxl::read_excel(
     "PPG/Produção.xlsx",
     sheet = "PI.preprints",
     col_types = c("text")
   ))
 
-# Data cleaning
+# select DOI column
 dois <-
-  as.data.frame(na.omit(data.sheet[, match("DOI", colnames(data.sheet))]))
-colnames(dois) <- "DOI"
+  data.frame(DOI = data.sheet[, match("DOI", colnames(data.sheet))])
+
+# Data cleaning
+dois <-data.frame(DOI = dois$DOI[!duplicated(dois)])
+dois <- data.frame(DOI = do::unique_no.NA(dois$DOI))
 
 # cria metadados para rastreio pelo Altmetric
 source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
@@ -534,13 +551,13 @@ source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
 
 # store to use downstream
 dois_preprints <- dois
-doi_unique_preprints <- doi_unique
-my_dois_works_preprints <- my_dois_works
+doi_unique_preprints <- get_metrics(df = doi_unique, citescore, scimago, qualis)
+my_doi_works_preprints <- get_metrics(df = my_doi_works, citescore, scimago, qualis)
 
 # obtain formatted references
 formatted_citations <-
   rcrossref::cr_cn(
-    c(doi_unique$doi, my_dois_works$doi),
+    c(doi_unique$doi, my_doi_works$doi),
     format = "text",
     raw = TRUE,
     style = "american-medical-association"
@@ -554,19 +571,22 @@ references_preprints <- formatted_citations
 ```
 
 <!--get data-->
-```{r metrics-livros, cache = TRUE, cache.path = "cache/livros/", eval = has.livros}
+```{r metrics-livros, results = "hide", cache = TRUE, cache.path = "cache/livros/", eval = has.livros}
 # read data
 data.sheet <-
-  data.frame(read_excel(
+  data.frame(readxl::read_excel(
     "PPG/Produção.xlsx",
     sheet = "PI.livros",
     col_types = c("text")
   ))
 
-# Data cleaning
+# select DOI column
 dois <-
-  as.data.frame(na.omit(data.sheet[, match("DOI", colnames(data.sheet))]))
-colnames(dois) <- "DOI"
+  data.frame(DOI = data.sheet[, match("DOI", colnames(data.sheet))])
+
+# Data cleaning
+dois <-data.frame(DOI = dois$DOI[!duplicated(dois)])
+dois <- data.frame(DOI = do::unique_no.NA(dois$DOI))
 
 # cria metadados para rastreio pelo Altmetric
 source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
@@ -576,13 +596,13 @@ source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
 
 # store to use downstream
 dois_livros <- dois
-doi_unique_livros <- doi_unique
-my_dois_works_livros <- my_dois_works
+doi_unique_livros <- get_metrics(df = doi_unique, citescore, scimago, qualis)
+my_doi_works_livros <- get_metrics(df = my_doi_works, citescore, scimago, qualis)
 
 # obtain formatted references
 formatted_citations <-
   rcrossref::cr_cn(
-    c(doi_unique$doi, my_dois_works$doi),
+    c(doi_unique$doi, my_doi_works$doi),
     format = "text",
     raw = TRUE,
     style = "american-medical-association"
@@ -596,19 +616,22 @@ references_livros <- formatted_citations
 ```
 
 <!--get data-->
-```{r metrics-capitulos, cache = TRUE, cache.path = "cache/capitulos/", eval = has.capitulos}
+```{r metrics-capitulos, results = "hide", cache = TRUE, cache.path = "cache/capitulos/", eval = has.capitulos}
 # read data
 data.sheet <-
-  data.frame(read_excel(
+  data.frame(readxl::read_excel(
     "PPG/Produção.xlsx",
     sheet = "PI.capitulos",
     col_types = c("text")
   ))
 
-# Data cleaning
+# select DOI column
 dois <-
-  as.data.frame(na.omit(data.sheet[, match("DOI", colnames(data.sheet))]))
-colnames(dois) <- "DOI"
+  data.frame(DOI = data.sheet[, match("DOI", colnames(data.sheet))])
+
+# Data cleaning
+dois <-data.frame(DOI = dois$DOI[!duplicated(dois)])
+dois <- data.frame(DOI = do::unique_no.NA(dois$DOI))
 
 # cria metadados para rastreio pelo Altmetric
 source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
@@ -618,13 +641,13 @@ source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
 
 # store to use downstream
 dois_capitulos <- dois
-doi_unique_capitulos <- doi_unique
-my_dois_works_capitulos <- my_dois_works
+doi_unique_capitulos <- get_metrics(df = doi_unique, citescore, scimago, qualis)
+my_doi_works_capitulos <- get_metrics(df = my_doi_works, citescore, scimago, qualis)
 
 # obtain formatted references
 formatted_citations <-
   rcrossref::cr_cn(
-    c(doi_unique$doi, my_dois_works$doi),
+    c(doi_unique$doi, my_doi_works$doi),
     format = "text",
     raw = TRUE,
     style = "american-medical-association"
@@ -638,19 +661,22 @@ references_capitulos <- formatted_citations
 ```
 
 <!--get data-->
-```{r metrics-eventos, cache = TRUE, cache.path = "cache/eventos/", eval = has.eventos}
+```{r metrics-eventos, results = "hide", cache = TRUE, cache.path = "cache/eventos/", eval = has.eventos}
 # read data
 data.sheet <-
-  data.frame(read_excel(
+  data.frame(readxl::read_excel(
     "PPG/Produção.xlsx",
     sheet = "PI.eventos",
     col_types = c("text")
   ))
 
-# Data cleaning
+# select DOI column
 dois <-
-  as.data.frame(na.omit(data.sheet[, match("DOI", colnames(data.sheet))]))
-colnames(dois) <- "DOI"
+  data.frame(DOI = data.sheet[, match("DOI", colnames(data.sheet))])
+
+# Data cleaning
+dois <-data.frame(DOI = dois$DOI[!duplicated(dois)])
+dois <- data.frame(DOI = do::unique_no.NA(dois$DOI))
 
 # cria metadados para rastreio pelo Altmetric
 source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
@@ -660,13 +686,13 @@ source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
 
 # store to use downstream
 dois_eventos <- dois
-doi_unique_eventos <- doi_unique
-my_dois_works_eventos <- my_dois_works
+doi_unique_eventos <- get_metrics(df = doi_unique, citescore, scimago, qualis)
+my_doi_works_eventos <- get_metrics(df = my_doi_works, citescore, scimago, qualis)
 
 # obtain formatted references
 formatted_citations <-
   rcrossref::cr_cn(
-    c(doi_unique$doi, my_dois_works$doi),
+    c(doi_unique$doi, my_doi_works$doi),
     format = "text",
     raw = TRUE,
     style = "american-medical-association"
@@ -679,41 +705,108 @@ colnames(formatted_citations) <- c("ID", "Reference")
 references_eventos <- formatted_citations
 ```
 
-```{r try-retratacoes, cache = TRUE, cache.path = "cache/retratacoes/", eval = has.producao}
+```{r bind-all, results = "hide", cache = TRUE, cache.path = "cache/bind-all/", eval = has.producao}
 # bind sources
-doi_unique <- 
-  bind_rows(
+doi_unique_all <-
+  dplyr::bind_rows(
     doi_unique_artigos,
     doi_unique_resumos,
     doi_unique_preprints,
     doi_unique_livros,
     doi_unique_capitulos,
     doi_unique_eventos
-  )
+  ) %>%
+  as.data.frame()
 
-my_dois_works <-
-  bind_rows(
-    my_dois_works_artigos,
-    my_dois_works_resumos,
-    my_dois_works_preprints,
-    my_dois_works_livros,
-    my_dois_works_capitulos,
-    my_dois_works_eventos
-  )
+# bind sources
+my_doi_works_all <-
+  dplyr::bind_rows(
+    my_doi_works_artigos,
+    my_doi_works_resumos,
+    my_doi_works_preprints,
+    my_doi_works_livros,
+    my_doi_works_capitulos,
+    my_doi_works_eventos
+  ) %>%
+  as.data.frame()
 
+# bind common data
+doi_all <-
+  dplyr::bind_rows(doi_unique_all,
+                   my_doi_works_all) %>%
+  as.data.frame()
+
+references_all <-
+  rbind(
+    references_artigos,
+    references_resumos,
+    references_preprints,
+    references_livros,
+    references_capitulos,
+    references_eventos
+  ) %>%
+  as.data.frame()
+```
+
+```{r retratacoes, results = "hide", cache = TRUE, cache.path = "cache/retratacoes/", eval = has.producao}
+# bind sources
 dois_unique_retracted <- c()
-for (i in 1:dim(doi_unique)[1]) {
-  if (!check_doi(doi = as.character(doi_unique$doi[i]))) {
+for (i in 1:dim(doi_unique_all)[1]) {
+  if (!retractcheck::check_doi(doi = as.character(doi_unique_all$doi[i]))) {
     dois_unique_retracted <-
-      rbind(dois_unique_retracted, doi_unique[i, ])
+      rbind(dois_unique_retracted, doi_unique_all[i,])
   }
 }
 
-my_dois_works_retracted <- c()
-for (i in 1:dim(my_dois_works)[1]) {
-  if (!check_doi(doi = as.character(my_dois_works$doi[i]))) {
-    my_dois_works_retracted <-
-      rbind(my_dois_works_retracted, my_dois_works[i, ])
+my_doi_works_retracted <- c()
+# my_doi_works_retracted <- c()
+for (i in 1:dim(my_doi_works_all)[1]) {
+  if (!retractcheck::check_doi(doi = as.character(my_doi_works_all$doi[i]))) {
+    my_doi_works_retracted <-
+      rbind(my_doi_works_retracted, my_doi_works_all[i,])
   }
 }
+```
+
+```{r has, results = "hide", cache = TRUE, cache.path = "cache/has/", eval = has.producao}
+has.agendas.pesquisa
+has.apresentacao
+has.artigos.completos
+has.artigos.resumos
+has.autoavaliacoes
+has.avaliacao
+has.bibliografia
+has.blog.externos
+has.blog.ies
+has.bolsas
+has.calendarios
+has.capitulos
+has.cep
+has.colegiado
+has.convenios
+has.cooperacoes
+has.coordenacao
+has.dados.cadastrais
+has.destaques
+has.discentes
+has.downloads
+has.editais
+has.eventos
+has.financiadores
+has.grupos.pesquisa
+has.historico
+has.infraestrutura
+has.internacionalizacao
+has.laboratorios
+has.livros
+has.notas
+has.PPG.files
+has.premio.capes
+has.premios
+has.preprints
+has.producao
+has.repositorios.cooperacao
+has.repositorios.sede
+has.softwares
+has.sucupira
 ```

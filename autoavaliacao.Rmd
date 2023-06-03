@@ -28,7 +28,7 @@ source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
 <!--script for inserting LOGO ABOVE THE TOC-->
-```{js}
+```{js table-of-contents}
 $(document).ready(function() {
   $('#TOC').parent().prepend('<div id=\"nav_logo\"><img src="PPG/Images/logo-programa.png"></div>');
   });
@@ -177,7 +177,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <!--script for generating STACKED HORIZONTAL BAR CHART-->
 
-```{css}
+```{css barchart-css}
 .row {
   display: flex;
   align-items: stretch;
@@ -228,11 +228,11 @@ if (has.PPG.files) {
   source("Scripts/get-ppg-xlsx-data.R", local = knitr::knit_global())
   if (length(files.to.read) != 0) {
     for (i in 1:length(files.to.read)) {
-      abas <- excel_sheets(files.to.read[i])
-      for (j in 1:length(abas)) {
+      sheets <- excel_sheets(files.to.read[i])
+      for (j in 1:length(sheets)) {
         sheet <- sheets[j]
         try(ppg.file <-
-              read_excel(files.to.read[i], sheet = abas[j]),
+              readxl::read_excel(files.to.read[i], sheet = sheets[j]),
             silent = TRUE)
         data.ppg <- sum(data.ppg, !is.na(ppg.file))
       }
@@ -333,7 +333,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ```{r auto-notas, eval = has.notas}
 # read separate sheets
-notas <- read_excel("PPG/Notas.xlsx", sheet = "Notas")
+notas <- readxl::read_excel("PPG/Notas.xlsx", sheet = "Notas")
 
 cat(
   paste(
@@ -366,7 +366,7 @@ for (i in 1:length(abas)) {
   cat(paste0('#### **', abas[i], '**'))
   cat('\n\n<!-- -->\n\n')
   periodo.raw <-
-    read_excel("PPG/Avaliação.xlsx",
+    readxl::read_excel("PPG/Avaliação.xlsx",
                sheet = abas[i],
                col_types = c("text"))
   
@@ -522,7 +522,7 @@ cat("*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br")
 ```{r auto-financiadores-agencia-programa, eval = has.financiadores}
 # this chunk requires additional data that may not be available
 financiadores.raw <-
-  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
 options(scipen = 10)
 
@@ -569,12 +569,12 @@ cat(
 ```{r auto-financiadores-agencia-ano, eval = has.financiadores}
 # this chunk requires additional data that may not be available
 financiadores.raw <-
-  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
 options(scipen = 10)
 
 financiadores.raw <-
-  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
 # dplyr::select variables to display, by AGENCIA & ANO
 financiadores <-
@@ -624,12 +624,12 @@ cat(
 ```{r auto-financiadores-agencia-docentes, eval = has.financiadores}
 # this chunk requires additional data that may not be available
 financiadores.raw <-
-  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
 options(scipen = 10)
 
 financiadores.raw <-
-  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
 # dplyr::select variables to display, by AGENCIA & ANO
 financiadores <-
@@ -679,12 +679,12 @@ cat(
 ```{r auto-financiadores-docente-ano, eval = has.financiadores}
 # this chunk requires additional data that may not be available
 financiadores.raw <-
-  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
 options(scipen = 10)
 
 financiadores.raw <-
-  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
 # dplyr::select variables to display, by AGENCIA & ANO
 financiadores <-
@@ -734,12 +734,12 @@ cat(
 ```{r auto-financiadores-docente-programa, eval = has.financiadores}
 # this chunk requires additional data that may not be available
 financiadores.raw <-
-  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
 options(scipen = 10)
 
 financiadores.raw <-
-  read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
 # dplyr::select variables to display, by AGENCIA & ANO
 financiadores <-

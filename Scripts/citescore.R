@@ -8,7 +8,7 @@ files.to.read <- list.files(
 
 # read CiteScore csv file (download from https://www.scimagojr.com)
 citescore <-
-  read_excel(files.to.read, sheet = 1)
+  readxl::read_excel(files.to.read, sheet = 1)
 citescore <- janitor::clean_names(citescore)
 
 # get columns

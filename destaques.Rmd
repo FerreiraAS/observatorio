@@ -28,7 +28,7 @@ source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
 <!--script for inserting LOGO ABOVE THE TOC-->
-```{js}
+```{js table-of-contents}
 $(document).ready(function() {
   $('#TOC').parent().prepend('<div id=\"nav_logo\"><img src="PPG/Images/logo-programa.png"></div>');
   });
@@ -69,7 +69,7 @@ premios.list <- vector(mode = "list", length = length(tabs))
 # iterate across sheets
 for (j in 1:length(tabs)) {
   premios <-
-    read_excel(file.path,
+    readxl::read_excel(file.path,
                sheet = tabs[j],
                col_types = c("text", "text", "text"))
   # replace the link by a tag
@@ -182,47 +182,31 @@ for (j in 1:length(tabs)) {
 
 <br>
 
-### **Atenção e visibilidade^1,2,3^ (Top-20)** {.tabset}
+### **Atenção e visibilidade (Top-20 Altmetric)** {.tabset}
 
 ```{r destaque-visibilidade, eval = has.producao}
-# bind sources
-doi_unique <-
-  bind_rows(doi_unique_artigos,
-            doi_unique_resumos,
-            doi_unique_preprints,
-            doi_unique_livros,
-            doi_unique_capitulos,
-            doi_unique_eventos)
-my_dois_works <-
-  bind_rows(my_dois_works_artigos,
-            my_dois_works_resumos,
-            my_dois_works_preprints,
-            my_dois_works_livros,
-            my_dois_works_capitulos,
-            my_dois_works_eventos)
-references <-
-  rbind(references_artigos,
-            references_resumos,
-            references_preprints,
-            references_livros,
-            references_capitulos,
-            references_eventos)
+# sources
+doi_unique <- doi_unique_all
+my_doi_works <- data.frame() # do not have Altmetric score anyway
+references <- references_all
 
 # sort columns by Altmetric then year
 ordering <-
-  order(-as.numeric(doi_unique$score),-as.numeric(doi_unique$published_on))
+  order(
+    -as.numeric(doi_unique$altmetric_score),
+    -as.numeric(doi_unique$published_on)
+    )
 doi_unique <- doi_unique[ordering, ]
 references <- references[ordering, ]
 
 # TOP (removing papers with no Altmetric)
 top <- min(dim(doi_unique)[1], 20)
 doi_unique <- doi_unique[1:top, ]
-my_dois_works <- list()
 references <- references[1:top, ]
 
 # Verifica se há DOIs
 if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_dois_works)[1], 0) == 0) {
+    max(dim(my_doi_works)[1], 0) == 0) {
   cat('\n')
 } else {
   # print export buttons
@@ -232,7 +216,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 # Verifica se há DOIs
 if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_dois_works)[1], 0) == 0) {
+    max(dim(my_doi_works)[1], 0) == 0) {
   cat('\n')
   cat('*Sem produção para exibir*')
   cat('\n')
@@ -242,7 +226,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
   cat(
     paste(
       "*Produtos (n = ",
-      max(dim(doi_unique)[1], 0) + max(dim(my_dois_works)[1], 0),
+      max(dim(doi_unique)[1], 0) + max(dim(my_doi_works)[1], 0),
     ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
       sep = ""
     )
@@ -267,10 +251,10 @@ if (max(dim(doi_unique)[1], 0) == 0 &
         doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
       }
     ),
-    my_dois_works = tryCatch(
-      my_dois_works,
+    my_doi_works = tryCatch(
+      my_doi_works,
       error = function(e) {
-        my_dois_works <- list()
+        my_doi_works <- list()
       }
     ),
       citescore = citescore,
@@ -280,57 +264,39 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 }
 ```
 
-### **Prestígio do periódico^4,5^ (Top-20)**
+### **Prestígio do periódico (Top-20 CiteScore)**
 
 ```{r destaque-prestigio, eval = has.producao}
-# bind sources
-doi_unique <-
-  bind_rows(doi_unique_artigos,
-            doi_unique_resumos,
-            doi_unique_eventos)
-my_dois_works <-
-  bind_rows(my_dois_works_artigos,
-            my_dois_works_resumos,
-            my_dois_works_eventos)
-references <-
-  rbind(references_artigos,
-            references_resumos,
-            references_eventos)
+doi_all_sorted <- doi_all[!is.na(doi_all$CiteScore), ]
 
-# TOP (removing papers with no SJR)
-SJRs <- c()
-for (k in 1:length(doi_unique$doi)) {
-  SJR.k <-
-    scimago[grep(gsub("-", "", doi_unique$issn[k]), scimago$Issn), 6]
-  SJRs <- rbind(SJRs, ifelse(length(SJR.k) == 1, SJR.k, NA))
-}
+ordering <- order(-as.numeric(doi_all_sorted$CiteScore),
+                  -as.numeric(doi_all_sorted$published_on))
 
-doi_unique$SJRs <- SJRs
+doi_all_sorted <- doi_all_sorted[ordering, ]
+references_all <- references_all[ordering, ]
 
-# sort columns by Altmetric then year
-ordering <- order(-as.numeric(doi_unique$SJRs),
-                   -as.numeric(doi_unique$published_on))
-doi_unique <- doi_unique[ordering,]
-references <- references[ordering,]
+# TOP CiteScore
+top <- min(dim(doi_all_sorted)[1], 20)
+doi_all_sorted <- doi_all_sorted[1:top, ]
+references <- references_all[1:top, ]
 
-top <- min(dim(doi_unique)[1], 20)
-doi_unique <- doi_unique[1:top,]
-my_dois_works <- list()
-references <- references[1:top,]
+# split into papers with/without Altmetric
+doi_unique <- doi_all_sorted[!is.na(doi_all_sorted$altmetric_score),]
+my_doi_works <- doi_all_sorted[is.na(doi_all_sorted$altmetric_score),]
 
 # Verifica se há DOIs
 if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_dois_works)[1], 0) == 0) {
+    max(dim(my_doi_works)[1], 0) == 0) {
   cat('\n')
 } else {
   # print export buttons
   source("Scripts/print-only-buttons.R", local = knitr::knit_global())
-  print_buttons_dt(references, title = "Produção de destaque - Prestígio do periódico")
+  print_buttons_dt(references, title = "Produção de destaque - Prestígio do peridódico")
 }
 
 # Verifica se há DOIs
 if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_dois_works)[1], 0) == 0) {
+    max(dim(my_doi_works)[1], 0) == 0) {
   cat('\n')
   cat('*Sem produção para exibir*')
   cat('\n')
@@ -340,7 +306,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
   cat(
     paste(
       "*Produtos (n = ",
-      max(dim(doi_unique)[1], 0) + max(dim(my_dois_works)[1], 0),
+      max(dim(doi_unique)[1], 0) + max(dim(my_doi_works)[1], 0),
     ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
       sep = ""
     )
@@ -359,16 +325,16 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       show.CiteScore = TRUE,
       show.SJR = TRUE,
       show.Qualis = TRUE,
-    doi_unique = tryCatch(
+      doi_unique = tryCatch(
       doi_unique,
       error = function(e) {
         doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
       }
     ),
-    my_dois_works = tryCatch(
-      my_dois_works,
+    my_doi_works = tryCatch(
+      my_doi_works,
       error = function(e) {
-        my_dois_works <- list()
+        my_doi_works <- list()
       }
     ),
       citescore = citescore,
@@ -395,7 +361,7 @@ premios.list <- vector(mode = "list", length = length(tabs))
 # iterate across sheets
 for (j in 1:length(tabs)) {
   premios <-
-    read_excel(file.path,
+    readxl::read_excel(file.path,
                sheet = tabs[j],
                col_types = c("text", "text", "text"))
   # replace the link by a tag
@@ -453,7 +419,7 @@ premios.list <- vector(mode = "list", length = length(tabs))
 # iterate across sheets
 for (j in 1:length(tabs)) {
   premios <-
-    read_excel(file.path,
+    readxl::read_excel(file.path,
                sheet = tabs[j],
                col_types = c("text"))
 
@@ -638,7 +604,7 @@ news.list <- vector(mode = "list", length = length(tabs))
 # iterate across sheets
 for (j in 1:length(tabs)) {
   news <-
-    read_excel(file.path,
+    readxl::read_excel(file.path,
                sheet = tabs[j],
                col_types = c("text", "text", "text"))
   # replace the link by a tag
@@ -693,7 +659,7 @@ news.list <- vector(mode = "list", length = length(tabs))
 # iterate across sheets
 for (j in 1:length(tabs)) {
   news <-
-    read_excel(file.path,
+    readxl::read_excel(file.path,
                sheet = tabs[j],
                col_types = c("text", "text", "text"))
   # replace the link by a tag
