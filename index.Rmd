@@ -1883,7 +1883,7 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 # plot area setup
 par(mar = c(1.5, 15, 1, 1))
 
-top <- min(length(do::unique_no.NA(IES.nac)), 10)
+top <- min(length(IES.nac), 10)
 data.nac <-
   na.omit(data.frame(name = names(sort(
     table(IES.nac), decreasing = TRUE
@@ -1921,7 +1921,7 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 # plot area setup
 par(mar = c(1.5, 15, 1, 1))
 
-top <- min(length(do::unique_no.NA(IES.inter)), 10)
+top <- min(length(IES.inter), 10)
 data.inter <-
   na.omit(data.frame(name = names(sort(
     table(IES.inter), decreasing = TRUE
@@ -1959,7 +1959,7 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 # plot area setup
 par(mar = c(1.5, 15, 1, 1))
 
-top <- min(length(do::unique_no.NA(mundo)), 10)
+top <- min(length(mundo), 10)
 data.pais <-
   na.omit(data.frame(name = names(sort(
     table(mundo), decreasing = TRUE
