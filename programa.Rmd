@@ -488,7 +488,7 @@ projetos <-
 projetos <- unique(projetos)
 
 table.projetos <-
-  cbind(
+  data.frame(
     projetos$`Área de Concentração`,
     projetos$`Linha de Pesquisa`,
     projetos$`Nome do Projeto de Pesquisa`,
@@ -727,7 +727,7 @@ projetos <-
 projetos <- unique(projetos)
 
 table.projetos <-
-  cbind(
+  data.frame(
     projetos$`Área de Concentração`,
     projetos$`Linha de Pesquisa`,
     projetos$`Nome do Projeto de Pesquisa`,
@@ -966,7 +966,7 @@ projetos <-
 projetos <- unique(projetos)
 
 table.projetos <-
-  cbind(
+  data.frame(
     projetos$`Área de Concentração`,
     projetos$`Linha de Pesquisa`,
     projetos$`Nome do Projeto de Pesquisa`,
@@ -1205,7 +1205,7 @@ projetos <-
 projetos <- unique(projetos)
 
 table.projetos <-
-  cbind(
+  data.frame(
     projetos$`Área de Concentração`,
     projetos$`Linha de Pesquisa`,
     projetos$`Nome do Projeto de Pesquisa`,
@@ -1760,9 +1760,9 @@ disciplinas.raw <-
 disciplinas.dsc <-
   disciplinas.raw[which(`dim<-`(grepl('Doutorado', disciplinas.raw$`Nível do Curso`), dim(disciplinas.raw$`Nível do Curso`)), arr.ind = TRUE),]
 
-if (length(disciplinas.dsc) != 0) {
+if (dim(disciplinas.dsc)[1] != 0) {
   table.dsc <-
-    cbind(
+    data.frame(
       disciplinas.dsc$`Nome da Disciplina`,
       disciplinas.dsc$`Indicadora de disciplina obrigatória`,
       disciplinas.dsc$`Quantidade de créditos`,
@@ -1830,9 +1830,9 @@ disciplinas.raw <-
 disciplinas.dsc <-
   disciplinas.raw[which(`dim<-`(grepl('Doutorado', disciplinas.raw$`Nível do Curso`), dim(disciplinas.raw$`Nível do Curso`)), arr.ind = TRUE),]
 
-if (length(disciplinas.dsc) != 0) {
+if (dim(disciplinas.dsc)[1] != 0) {
   table.dsc <-
-    cbind(
+    data.frame(
       disciplinas.dsc$`Nome da Disciplina`,
       disciplinas.dsc$`Indicadora de disciplina obrigatória`,
       disciplinas.dsc$`Quantidade de créditos`,
@@ -1910,9 +1910,9 @@ disciplinas.raw <-
 disciplinas.msc <-
   disciplinas.raw[which(`dim<-`(grepl('Mestrado', disciplinas.raw$`Nível do Curso`), dim(disciplinas.raw$`Nível do Curso`)), arr.ind = TRUE),]
 
-if (length(disciplinas.msc) != 0) {
+if (dim(disciplinas.msc)[1] != 0) {
   table.msc <-
-    cbind(
+    data.frame(
       disciplinas.msc$`Nome da Disciplina`,
       disciplinas.msc$`Indicadora de disciplina obrigatória`,
       disciplinas.msc$`Quantidade de créditos`,
@@ -1980,9 +1980,9 @@ disciplinas.raw <-
 disciplinas.msc <-
   disciplinas.raw[which(`dim<-`(grepl('Mestrado', disciplinas.raw$`Nível do Curso`), dim(disciplinas.raw$`Nível do Curso`)), arr.ind = TRUE),]
 
-if (length(disciplinas.msc) != 0) {
+if (dim(disciplinas.msc)[1] != 0) {
   table.msc <-
-    cbind(
+    data.frame(
       disciplinas.msc$`Nome da Disciplina`,
       disciplinas.msc$`Indicadora de disciplina obrigatória`,
       disciplinas.msc$`Quantidade de créditos`,
@@ -2031,7 +2031,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 # load custom function
 source("Scripts/get-initials.R", local = knitr::knit_global())
 
-# projetos
+# disciplinas
 sheet <- "Disciplinas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
@@ -2040,22 +2040,24 @@ names(sucupira.list) <- as.character(anos)
 
 # most recent Sucupira year
 most.recent <-
-  as.character(ifelse(!is.null(sucupira.list[[format(Sys.Date(), "%Y")]]), format(Sys.Date(), "%Y"), max(as.numeric(
-    names(sucupira.list)
-  ))))
+  as.character(ifelse(
+    !is.null(sucupira.list[[format(Sys.Date(), "%Y")]]),
+    format(Sys.Date(), "%Y"),
+    max(as.numeric(names(sucupira.list)))
+  ))
 
 # read separate sheets
 disciplinas.raw <- sucupira.list[[most.recent]]
 disciplinas.raw <-
-  disciplinas.raw[is.na(disciplinas.raw$`Data de fim`),]
+  disciplinas.raw[is.na(disciplinas.raw$`Data de fim`), ]
 
 # select level
 course.level <- "Mestrado"
 disciplinas.msc <-
-  disciplinas.raw[str_detect(disciplinas.raw$`Nível do Curso`, course.level),]
+  disciplinas.raw[str_detect(disciplinas.raw$`Nível do Curso`, course.level), ]
 
 table.msc <-
-  cbind(
+  data.frame(
     disciplinas.msc$`Nome da Disciplina`,
     disciplinas.msc$`Indicadora de disciplina obrigatória`,
     disciplinas.msc$`Quantidade de créditos`,
@@ -2068,9 +2070,9 @@ try(colnames(table.msc) <-
 # select level
 course.level <- "Doutorado"
 disciplinas.dsc <-
-  disciplinas.raw[str_detect(disciplinas.raw$`Nível do Curso`, course.level),]
+  disciplinas.raw[str_detect(disciplinas.raw$`Nível do Curso`, course.level), ]
 table.dsc <-
-  cbind(
+  data.frame(
     disciplinas.dsc$`Nome da Disciplina`,
     disciplinas.dsc$`Indicadora de disciplina obrigatória`,
     disciplinas.dsc$`Quantidade de créditos`,
@@ -2078,8 +2080,7 @@ table.dsc <-
   )
 try(colnames(table.dsc) <-
       c("Disciplina", "Obrigatória", "CR", "CH"),
-    silent = TRUE
-)
+    silent = TRUE)
 
 table <-
   merge(table.msc,
@@ -2106,7 +2107,7 @@ try(colnames(table) <-
 # cat("  \n")
 # cat("  \n")
 
-if(!is.null(table)) {
+if (!is.null(table)) {
   layout(matrix(
     c(1, 2, 3, 3),
     nrow = 2,
@@ -2115,24 +2116,28 @@ if(!is.null(table)) {
   ), heights = c(0.7, 0.3))
   par(oma = c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
   # generate plot of total per course
-  pie(
-    table(table.msc[, which(colnames(table.msc) == "Obrigatória")]),
-    labels = NA,
-    col = brewer.pal(n = min(unique(
-      colnames(table.msc)
-    ), 3), name = "Set3"),
-    init.angle = 90,
-    main = "Mestrado"
-  )
-  pie(
-    table(table.dsc[, which(colnames(table.dsc) == "Obrigatória")]),
-    labels = NA,
-    col = brewer.pal(n = min(unique(
-      colnames(table.dsc)
-    ), 3), name = "Set3"),
-    init.angle = 90,
-    main = "Doutorado"
-  )
+  if (dim(table.msc)[1] != 0) {
+    pie(
+      table(table.msc[, which(colnames(table.msc) == "Obrigatória")]),
+      labels = NA,
+      col = brewer.pal(n = min(unique(
+        colnames(table.msc)
+      ), 3), name = "Set3"),
+      init.angle = 90,
+      main = "Mestrado"
+    )
+  }
+  if (dim(table.dsc)[1] != 0) {
+    pie(
+      table(table.dsc[, which(colnames(table.dsc) == "Obrigatória")]),
+      labels = NA,
+      col = brewer.pal(n = min(unique(
+        colnames(table.dsc)
+      ), 3), name = "Set3"),
+      init.angle = 90,
+      main = "Doutorado"
+    )
+  }
   plot(0, type = 'n', axes = FALSE)
   obrigatoria <-
     unique(disciplinas.raw$`Indicadora de disciplina obrigatória`)
@@ -2194,31 +2199,59 @@ names(sucupira.list) <- as.character(anos)
 
 # most recent Sucupira year
 most.recent <-
-  as.character(ifelse(!is.null(sucupira.list[[format(Sys.Date(), "%Y")]]), format(Sys.Date(), "%Y"), max(as.numeric(
-    names(sucupira.list)
-  ))))
+  as.character(ifelse(
+    !is.null(sucupira.list[[format(Sys.Date(), "%Y")]]),
+    format(Sys.Date(), "%Y"),
+    max(as.numeric(names(sucupira.list)))
+  ))
 
 # read separate sheets
 disciplinas.raw <- sucupira.list[[most.recent]]
 disciplinas.raw <-
-  disciplinas.raw[is.na(disciplinas.raw$`Data de fim`),]
+  disciplinas.raw[is.na(disciplinas.raw$`Data de fim`), ]
 
 # select level
 course.level <- "Mestrado"
 disciplinas.msc <-
-  disciplinas.raw[str_detect(disciplinas.raw$`Nível do Curso`, course.level), ]
-table.msc <- cbind(disciplinas.msc$`Nome da Disciplina`, disciplinas.msc$`Indicadora de disciplina obrigatória`, disciplinas.msc$`Quantidade de créditos`, disciplinas.msc$`Carga Horária`)
+  disciplinas.raw[str_detect(disciplinas.raw$`Nível do Curso`, course.level),]
+table.msc <-
+  data.frame(
+    disciplinas.msc$`Nome da Disciplina`,
+    disciplinas.msc$`Indicadora de disciplina obrigatória`,
+    disciplinas.msc$`Quantidade de créditos`,
+    disciplinas.msc$`Carga Horária`
+  )
 colnames(table.msc) <- c("Disciplina", "Obrigatória", "CR", "CH")
 
 # select level
 course.level <- "Doutorado"
 disciplinas.dsc <-
-  disciplinas.raw[str_detect(disciplinas.raw$`Nível do Curso`, course.level), ]
-table.dsc <- cbind(disciplinas.dsc$`Nome da Disciplina`, disciplinas.dsc$`Indicadora de disciplina obrigatória`, disciplinas.dsc$`Quantidade de créditos`, disciplinas.dsc$`Carga Horária`)
+  disciplinas.raw[str_detect(disciplinas.raw$`Nível do Curso`, course.level),]
+table.dsc <-
+  data.frame(
+    disciplinas.dsc$`Nome da Disciplina`,
+    disciplinas.dsc$`Indicadora de disciplina obrigatória`,
+    disciplinas.dsc$`Quantidade de créditos`,
+    disciplinas.dsc$`Carga Horária`
+  )
 colnames(table.dsc) <- c("Disciplina", "Obrigatória", "CR", "CH")
 
-table <- merge(table.msc, table.dsc, by="Disciplina", all.x = TRUE, all.y = TRUE)
-colnames(table) <- c("Disciplina", "Obrigatória (MA)", "CR (MA)", "CH (MA)", "Obrigatória (DA)", "CR (DA)", "CH (DA)")
+table <-
+  merge(table.msc,
+        table.dsc,
+        by = "Disciplina",
+        all.x = TRUE,
+        all.y = TRUE)
+colnames(table) <-
+  c(
+    "Disciplina",
+    "Obrigatória (MA)",
+    "CR (MA)",
+    "CH (MA)",
+    "Obrigatória (DA)",
+    "CR (DA)",
+    "CH (DA)"
+  )
 
 # print tables
 print(

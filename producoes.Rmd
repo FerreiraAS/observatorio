@@ -73,7 +73,7 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 periodos <- names(sucupira.list)
-periodo <- as.character(seq(min(periodos), max(periodos)))
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
 tccs <- tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "TESE", ]
@@ -124,7 +124,7 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 periodos <- names(sucupira.list)
-periodo <- as.character(seq(min(periodos), max(periodos)))
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
 tccs <- tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "DISSERTAÇÃO", ]

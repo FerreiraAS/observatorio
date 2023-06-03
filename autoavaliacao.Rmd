@@ -907,7 +907,7 @@ names(sucupira.list) <- as.character(anos)
 # bind all sheets
 periodos <-
   names(sucupira.list)[na.omit(match(c(2021:2024), names(sucupira.list)))]
-periodo <- as.character(seq(min(periodos), max(periodos)))
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 disciplinas.raw <-
   do.call(rbind.data.frame, sucupira.list[periodos])
 disciplinas.raw <-
@@ -924,7 +924,7 @@ names(sucupira.list) <- as.character(anos)
 # bind all sheets
 periodos <-
   names(sucupira.list)[na.omit(match(c(2021:2024), names(sucupira.list)))]
-periodo <- as.character(seq(min(periodos), max(periodos)))
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
 
 if (dim(disciplinas.raw)[1] != 0) {

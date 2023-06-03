@@ -272,7 +272,7 @@ if (dim(bolsistas)[1] != 0) {
     }
   }
   cotas <- t(data.frame(cotas))
-  cotas <- cbind(anos, cotas)
+  cotas <- data.frame(anos, cotas)
   rownames(cotas) <- anos
   colnames(cotas) <- c("Ano", "Bolsistas")
   cotas <- data.frame(cotas)
@@ -803,7 +803,7 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 periodos <- names(sucupira.list)
-periodo <- as.character(seq(min(periodos), max(periodos)))
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 projetos.all <-
   unique(projetos.all[projetos.all$`Membro Responsável` == "Sim",])
@@ -816,7 +816,7 @@ projetos <-
 if (dim(projetos)[1] != 0) {
   # dplyr::select data DOCENTES
   table.projetos <-
-    cbind(
+    data.frame(
       projetos$`Nome do Membro do Projeto`,
       projetos$`Nome do Projeto de Pesquisa`,
       projetos$`Linha de Pesquisa`
@@ -893,7 +893,7 @@ if (dim(financiadores)[1] != 0)
     }
   }
   
-  financiadores <- cbind(financiadores, Abrir)
+  financiadores <- data.frame(financiadores, Abrir)
   financiadores <-
     financiadores[order(financiadores$Ano, decreasing = TRUE), ]
 } else {
@@ -929,7 +929,7 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 periodos <- names(sucupira.list)
-periodo <- as.character(seq(min(periodos), max(periodos)))
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
 # dplyr::selecting those with COVID in the title
@@ -940,7 +940,7 @@ tccs <-
 if (dim(tccs)[1] != 0) {
   # dplyr::select data
   table.tcc <-
-    cbind(
+    data.frame(
       format((as.Date(
         gsub("/", "-", tccs$'Data da Defesa'), "%d-%d-%Y"
       )), "%Y"),
