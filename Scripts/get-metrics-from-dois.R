@@ -109,4 +109,6 @@ if (sjmisc::is_empty(dois)) {
       )
     }
   }
+  # paper
+  beepr::beep("coin")
 }

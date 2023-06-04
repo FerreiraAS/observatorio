@@ -16,6 +16,7 @@ packs.cran <-
     "alluvial",
     "anytime",
     "BBmisc",
+    "beepr",
     "bsplus",
     "cowplot",
     "data.tree",
