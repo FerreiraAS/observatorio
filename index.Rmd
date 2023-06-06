@@ -25,7 +25,7 @@ source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
 ---
-title: "OBSERVATÓRIO `r ifelse(and(has.dados.cadastrais, has.sucupira), sigla.PPG, "")`"
+title: "OBSERVATÓRIO `r ifelse(and(has.dados.cadastrais, has.sucupira.files), sigla.PPG, "")`"
 ---
 
 <br>
@@ -44,10 +44,10 @@ if(file.exists("PPG/Images/logo-IES.png")) {
 
 <p style="font-size:1.5em">
 ```{r intro, results = "asis"}
-if(and(has.dados.cadastrais, has.sucupira)){
+if(and(has.dados.cadastrais, has.sucupira.files)){
 cat(
   'O **Observatório ', toupper(as.character(sigla.PPG)),
-  '** é uma iniciativa do **Programa de Pós-graduação em ', as.character(nome.PPG), '** - [', toTitleCase(as.character(nome.IES)), '](', as.character(site.PPG),')',
+  '** é uma iniciativa do **Programa de Pós-graduação em ', as.character(nome.PPG), '** - [', toTitleCase(as.character(nome.IES)), '](', as.character(site.PPG),') ',
   'que envolve o registro, o acompanhamento e a análise agregada e estruturada de dados para divulgação transparente de suas atividades, planejamentos, ações e impactos, tornando-os acessíveis à sociedade',
    sep = "")
 } else {
@@ -64,7 +64,7 @@ cat(
 
 <br>
 
-```{r sintese-coerencia, include = FALSE, eval = has.sucupira}
+```{r sintese-coerencia, include = FALSE, eval = has.sucupira.files}
 # projetos
 sheet <- "Linhas de Pesquisa - Projetos"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -299,7 +299,7 @@ summ.data <- c(summ.coerencia.1)
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-coerencia-carousel, eval = has.sucupira}
+```{r sintese-coerencia-carousel, eval = has.sucupira.files}
 # carousel
 bs_carousel(id = "coerencia-carousel",
             use_indicators = FALSE,
@@ -319,7 +319,7 @@ cat('^[Áreas internas correspondem à quantidade de projetos na respectiva linh
 
 <br>
 
-```{r sintese-temas, include = FALSE, eval = has.sucupira}
+```{r sintese-temas, include = FALSE, eval = has.sucupira.files}
 # file path to save the wordclouds
 dir.path <- file.path(getwd(), "index_files", "figure-html")
 dir.create(dir.path, recursive = TRUE)
@@ -346,7 +346,7 @@ cloud.title <- "Temas de Produção"
 source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
 ```
 
-```{r sintese-temas-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", out.width = "100%", eval = has.sucupira}
+```{r sintese-temas-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", out.width = "100%", eval = has.sucupira.files}
 # carousel of wordclouds
 bs_carousel(id = "temas-carouse",
             use_indicators = FALSE,
@@ -364,7 +364,7 @@ cat('^[Termos nas nuvens correspondem àqueles encontrados nos títulos dos proj
 
 <br>
 
-```{r sintese-projetos, include = FALSE, eval = has.sucupira}
+```{r sintese-projetos, include = FALSE, eval = has.sucupira.files}
 # projetos - membros
 sheet <- "Projetos - Membros"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -492,7 +492,7 @@ summ.data <- summ.table.projetos
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-projetos-carousel, eval = has.sucupira}
+```{r sintese-projetos-carousel, eval = has.sucupira.files}
 # carousel
 bs_carousel(id = "projetos-carousel",
             use_indicators = FALSE,
@@ -794,7 +794,7 @@ cat(
 
 <br>
 
-```{r sintese-producao, include = FALSE, eval = has.producao}
+```{r sintese-producao, include = FALSE, eval = any(has.producao.ppg, has.producao.sucupira)}
 # Qualis
 qualis.PPG <- c()
 for (i in 1:length(estratos)) {
@@ -1176,7 +1176,7 @@ summ.data <- summ.table.producao
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-producao-carousel, eval = has.producao}
+```{r sintese-producao-carousel, eval = any(has.producao.ppg, has.producao.sucupira)}
 # carousel
 bs_carousel(id = "producao-carousel",
             use_indicators = FALSE,
@@ -1200,7 +1200,7 @@ cat('^[Produções com DOI apenas; a produção pode estar subsestimada pois pro
 
 <br>
 
-```{r sintese-visibilidade, include = FALSE, eval = has.producao}
+```{r sintese-visibilidade, include = FALSE, eval = any(has.producao.ppg, has.producao.sucupira)}
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
@@ -1359,7 +1359,7 @@ summ.data <- summ.table.visibilidade
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-visibilidade-carousel, eval = has.producao}
+```{r sintese-visibilidade-carousel, eval = any(has.producao.ppg, has.producao.sucupira)}
 # carousel
 bs_carousel(id = "visibilidade-carousel",
             use_indicators = FALSE,
@@ -1748,7 +1748,7 @@ cat(
 
 <br>
 
-```{r sintese-rede, include = FALSE, eval = has.sucupira}
+```{r sintese-rede, include = FALSE, eval = has.sucupira.files}
 # projetos
 sheet <- "Projetos - Membros"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -2021,7 +2021,7 @@ summ.data <- summ.table.ies
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-rede-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", out.width = "100%", eval = has.sucupira}
+```{r sintese-rede-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", out.width = "100%", eval = has.sucupira.files}
 # carousel
 bs_carousel(id = "rede-carousel",
             use_indicators = FALSE,

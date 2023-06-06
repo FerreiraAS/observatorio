@@ -97,7 +97,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-```{r docentes-atual-perfil, eval = has.sucupira}
+```{r docentes-atual-perfil, eval = has.sucupira.files}
 # projetos - membros
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -660,7 +660,7 @@ print(
 
 ### **Síntese** {.tabset}
 
-```{r auto-corpo-docente, eval = has.sucupira}
+```{r auto-corpo-docente, eval = has.sucupira.files}
 # docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R")
@@ -2839,7 +2839,7 @@ if (length(new.ids) != 0) {
 
 #### **Doutorado**
 
-```{r discentes-dsc, eval = has.sucupira}
+```{r discentes-dsc, eval = has.sucupira.files}
 # dplyr::select level
 course.level <- "Doutorado"
 
@@ -2896,7 +2896,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Mestrado**
 
-```{r discentes-msc, eval = has.sucupira}
+```{r discentes-msc, eval = has.sucupira.files}
 # dplyr::select level
 course.level <- "Mestrado"
 
@@ -2952,7 +2952,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Iniciação científica**
 
-```{r discentes-ic, eval = has.sucupira}
+```{r discentes-ic, eval = has.sucupira.files}
 # dplyr::select level
 course.level <- "Bacharelado"
 
@@ -3008,7 +3008,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Doutorado**
 
-```{r discentes-dsc-prazos, eval = has.sucupira}
+```{r discentes-dsc-prazos, eval = has.sucupira.files}
 # dplyr::select level
 course.level <- "Doutorado"
 
@@ -3087,7 +3087,7 @@ if (dim(discentes)[1] != 0) {
   </tr>
 </table>
 
-```{r discentes-dsc-prazos-sintese, eval = has.sucupira}
+```{r discentes-dsc-prazos-sintese, eval = has.sucupira.files}
 discentes$'Ano de matrícula' <-
   format(as.Date(discentes$'Data Matrícula', format = "%d/%m/%Y"), format = "%Y")
 
@@ -3120,7 +3120,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Mestrado**
 
-```{r discentes-msc-prazos, eval = has.sucupira}
+```{r discentes-msc-prazos, eval = has.sucupira.files}
 # dplyr::select level
 course.level <- "Mestrado"
 
@@ -3199,7 +3199,7 @@ if (dim(discentes)[1] != 0) {
   </tr>
 </table>
 
-```{r discentes-msc-prazos-sintese, eval = has.sucupira}
+```{r discentes-msc-prazos-sintese, eval = has.sucupira.files}
 discentes$'Ano de matrícula' <-
   format(as.Date(discentes$'Data Matrícula', format = "%d/%m/%Y"), format = "%Y")
 
@@ -3573,7 +3573,7 @@ if (dim(mestres)[1] != 0) {
 
 ### **Doutorado**
 
-```{r bolsistas-dsc, eval = has.sucupira}
+```{r bolsistas-dsc, eval = has.sucupira.files}
 # dplyr::select level
 course.level <- "TESE"
 
@@ -3627,7 +3627,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **Mestrado**
 
-```{r bolsistas-msc, eval = has.sucupira}
+```{r bolsistas-msc, eval = has.sucupira.files}
 # dplyr::select level
 course.level <- "DISSERTAÇÃO"
 
@@ -3743,7 +3743,7 @@ print(kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r")) %>% k
 
 ### **Nacionais**
 
-```{r externos-nacionais, eval = has.sucupira}
+```{r externos-nacionais, eval = has.sucupira.files}
 # participantes externos
 sheet <- "Participante Externo"
 source("Scripts/read-xlsx-sucupira.R")
@@ -3790,7 +3790,7 @@ if (dim(externos)[1] != 0) {
 
 ### **Internacionais**
 
-```{r externos-internacionais, eval = has.sucupira}
+```{r externos-internacionais, eval = has.sucupira.files}
 # participantes externos
 sheet <- "Participante Externo"
 source("Scripts/read-xlsx-sucupira.R")
@@ -3837,7 +3837,7 @@ if (dim(externos)[1] != 0) {
 
 ### **Instituições e países**
 
-```{r externos-ies-paises, eval = has.sucupira}
+```{r externos-ies-paises, eval = has.sucupira.files}
 # participantes externos
 sheet <- "Participante Externo"
 source("Scripts/read-xlsx-sucupira.R")

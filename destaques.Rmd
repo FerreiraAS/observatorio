@@ -184,29 +184,29 @@ for (j in 1:length(tabs)) {
 
 ### **Atenção e visibilidade (Top-20 Altmetric)** {.tabset}
 
-```{r destaque-visibilidade, eval = has.producao}
+```{r destaque-visibilidade, eval = any(has.producao.sucupira, has.producao.ppg)}
 # sources
-doi_unique <- doi_unique_all
-my_doi_works <- data.frame() # do not have Altmetric score anyway
+doi_with_altmetric <- doi_with_altmetric_all
+doi_without_altmetric <- data.frame() # do not have Altmetric score anyway
 references <- references_all
 
 # sort columns by Altmetric then year
 ordering <-
   order(
-    -as.numeric(doi_unique$altmetric_score),
-    -as.numeric(doi_unique$published_on)
+    -as.numeric(doi_with_altmetric$altmetric_score),
+    -as.numeric(doi_with_altmetric$published_on)
     )
-doi_unique <- doi_unique[ordering, ]
+doi_with_altmetric <- doi_with_altmetric[ordering, ]
 references <- references[ordering, ]
 
 # TOP (removing papers with no Altmetric)
-top <- min(dim(doi_unique)[1], 20)
-doi_unique <- doi_unique[1:top, ]
+top <- min(dim(doi_with_altmetric)[1], 20)
+doi_with_altmetric <- doi_with_altmetric[1:top, ]
 references <- references[1:top, ]
 
 # Verifica se há DOIs
-if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_doi_works)[1], 0) == 0) {
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
 } else {
   # print export buttons
@@ -215,8 +215,8 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 }
 
 # Verifica se há DOIs
-if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_doi_works)[1], 0) == 0) {
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
   cat('*Sem produção para exibir*')
   cat('\n')
@@ -226,7 +226,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
   cat(
     paste(
       "*Produtos (n = ",
-      max(dim(doi_unique)[1], 0) + max(dim(my_doi_works)[1], 0),
+      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
     ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
       sep = ""
     )
@@ -245,16 +245,16 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       show.CiteScore = TRUE,
       show.SJR = TRUE,
       show.Qualis = TRUE,
-      doi_unique = tryCatch(
-      doi_unique,
+      doi_with_altmetric = tryCatch(
+      doi_with_altmetric,
       error = function(e) {
-        doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
+        doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
       }
     ),
-    my_doi_works = tryCatch(
-      my_doi_works,
+    doi_without_altmetric = tryCatch(
+      doi_without_altmetric,
       error = function(e) {
-        my_doi_works <- list()
+        doi_without_altmetric <- list()
       }
     ),
       citescore = citescore,
@@ -266,7 +266,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 ### **Prestígio do periódico (Top-20 CiteScore)**
 
-```{r destaque-prestigio, eval = has.producao}
+```{r destaque-prestigio, eval = any(has.producao.sucupira, has.producao.ppg)}
 doi_all_sorted <- doi_all[!is.na(doi_all$CiteScore), ]
 
 ordering <- order(-as.numeric(doi_all_sorted$CiteScore),
@@ -281,12 +281,12 @@ doi_all_sorted <- doi_all_sorted[1:top, ]
 references <- references_all[1:top, ]
 
 # split into papers with/without Altmetric
-doi_unique <- doi_all_sorted[!is.na(doi_all_sorted$altmetric_score),]
-my_doi_works <- doi_all_sorted[is.na(doi_all_sorted$altmetric_score),]
+doi_with_altmetric <- doi_all_sorted[!is.na(doi_all_sorted$altmetric_score),]
+doi_without_altmetric <- doi_all_sorted[is.na(doi_all_sorted$altmetric_score),]
 
 # Verifica se há DOIs
-if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_doi_works)[1], 0) == 0) {
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
 } else {
   # print export buttons
@@ -295,8 +295,8 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 }
 
 # Verifica se há DOIs
-if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_doi_works)[1], 0) == 0) {
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
   cat('*Sem produção para exibir*')
   cat('\n')
@@ -306,7 +306,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
   cat(
     paste(
       "*Produtos (n = ",
-      max(dim(doi_unique)[1], 0) + max(dim(my_doi_works)[1], 0),
+      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
     ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
       sep = ""
     )
@@ -325,16 +325,16 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       show.CiteScore = TRUE,
       show.SJR = TRUE,
       show.Qualis = TRUE,
-      doi_unique = tryCatch(
-      doi_unique,
+      doi_with_altmetric = tryCatch(
+      doi_with_altmetric,
       error = function(e) {
-        doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
+        doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
       }
     ),
-    my_doi_works = tryCatch(
-      my_doi_works,
+    doi_without_altmetric = tryCatch(
+      doi_without_altmetric,
       error = function(e) {
-        my_doi_works <- list()
+        doi_without_altmetric <- list()
       }
     ),
       citescore = citescore,
@@ -462,7 +462,7 @@ for (j in 1:length(tabs)) {
 
 <br>
 
-```{r associacoes, cache = TRUE, cache.path = "cache/associacoes/", eval = has.sucupira}
+```{r associacoes, cache = TRUE, cache.path = "cache/associacoes/", eval = has.sucupira.files}
 # docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -505,7 +505,7 @@ for (id in 1:length(orcids)) {
 
 <br>
 
-```{r corpo-editorial, cache = TRUE, cache.path = "cache/corpo-editorial/", eval = has.sucupira}
+```{r corpo-editorial, cache = TRUE, cache.path = "cache/corpo-editorial/", eval = has.sucupira.files}
 # docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -546,7 +546,7 @@ for (id in 1:length(orcids)) {
 
 <br>
 
-```{r revisores, cache = TRUE, cache.path = "cache/revisores/", eval = has.sucupira}
+```{r revisores, cache = TRUE, cache.path = "cache/revisores/", eval = has.sucupira.files}
 # docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())

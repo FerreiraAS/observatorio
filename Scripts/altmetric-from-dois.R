@@ -34,7 +34,7 @@ columns_to_grab <-
   )
 
 # initialize dataframe
-doi_reshaped_data <-
+doi_with_altmetric <-
   data.frame(matrix(
     vector(),
     nrow = 0,
@@ -42,15 +42,13 @@ doi_reshaped_data <-
     dimnames = list(c(), columns_to_grab)
   ))
 
-no_altmetric_dois_list <- c()
-
 # loop for all DOI in the list
-for (input in 1:length(dois_list)) {
+for (input in 1:dim(dois_df)[1]) {
   tryCatch(
     expr = {
       # open Altmetric url
       url <- paste0("https://api.altmetric.com/v1/doi/",
-                    dois_list[[input]],
+                    dois_df$DOI[input],
                     collapse = "")
       raw_data <- read.csv(url,
                            sep = ",",
@@ -94,28 +92,31 @@ for (input in 1:length(dois_list)) {
           rbind(split_data.2, c("authors", author.names))
         
         # bind rows data
-        doi_reshaped_data[input, columns_to_grab] <-
+        doi_with_altmetric[input, columns_to_grab] <-
           t(split_data.2)[2, ]
-        doi_reshaped_data$author.names[input] <- author.names
+        doi_with_altmetric$author.names[input] <- author.names
         
         # merge at least one ISSN to each journal to search for in the CSV provided by SCImago
-        issns <- matrix(NA, nrow = dim(doi_reshaped_data)[1])
+        issns <- matrix(NA, nrow = dim(doi_with_altmetric)[1])
         # initialize with latest ISSN vector if available
-        if (length(doi_reshaped_data$issns) != 0) {
-          issns <- doi_reshaped_data$issns
+        if (length(doi_with_altmetric$issns) != 0) {
+          issns <- doi_with_altmetric$issns
         }
         # try replacing with first issn (print)
-        if (length(doi_reshaped_data$issns1) != 0) {
-          issns[is.na(issns)] <- doi_reshaped_data$issns1[is.na(issns)]
+        if (length(doi_with_altmetric$issns1) != 0) {
+          issns[is.na(issns)] <- doi_with_altmetric$issns1[is.na(issns)]
         }
         # try replacing with second issn (online)
-        if (length(doi_reshaped_data$issns2) != 0) {
-          issns[is.na(issns)] <- doi_reshaped_data$issns2[is.na(issns)]
+        if (length(doi_with_altmetric$issns2) != 0) {
+          issns[is.na(issns)] <- doi_with_altmetric$issns2[is.na(issns)]
         }
-        doi_reshaped_data$issn <- issns
+        doi_with_altmetric$issn <- issns
         
         # clean up the environment
         rm(raw_data)
+        
+        # beep
+        beepr::beep("coin")
       }
     },
     error = function(e) {
@@ -131,74 +132,91 @@ for (input in 1:length(dois_list)) {
 
 # The Unix epoch is 00:00:00 UTC on 1 January 1970 (an arbitrary date)
 # https://en.wikipedia.org/wiki/Unix_time
-if (!is.null(doi_reshaped_data$published_on)) {
+if (!is.null(doi_with_altmetric$published_on)) {
   year_publ <-
     format(as.Date(as.POSIXct(
-      as.numeric(doi_reshaped_data$published_on), origin = "1970-01-01"
+      as.numeric(doi_with_altmetric$published_on), origin = "1970-01-01"
     )), format = "%Y")
 } else {
   year_publ <-
     format(as.Date(as.POSIXct(
-      as.numeric(doi_reshaped_data$last_updated), origin = "1970-01-01"
+      as.numeric(doi_with_altmetric$last_updated), origin = "1970-01-01"
     )), format = "%Y")
 }
-doi_reshaped_data$published_on <- as.character(year_publ)
+doi_with_altmetric$published_on <- as.character(year_publ)
 
 # convert Altmetric score to integer (rouded up)
-doi_reshaped_data$score <-
-  ceiling(as.numeric(doi_reshaped_data$score))
+doi_with_altmetric$score <-
+  ceiling(as.numeric(doi_with_altmetric$score))
 # rename column
-data.table::setnames(doi_reshaped_data,'score','altmetric_score')
+data.table::setnames(doi_with_altmetric, 'score', 'altmetric_score')
 
 # replace empty "count_" values by 0
-doi_reshaped_data$cited_by_fbwalls_count[doi_reshaped_data$cited_by_fbwalls_count == ""] <-
+doi_with_altmetric$cited_by_fbwalls_count[doi_with_altmetric$cited_by_fbwalls_count == ""] <-
   0
-doi_reshaped_data$cited_by_feeds_count[doi_reshaped_data$cited_by_feeds_count == ""] <-
+doi_with_altmetric$cited_by_feeds_count[doi_with_altmetric$cited_by_feeds_count == ""] <-
   0
-doi_reshaped_data$cited_by_gplus_count[doi_reshaped_data$cited_by_gplus_count == ""] <-
+doi_with_altmetric$cited_by_gplus_count[doi_with_altmetric$cited_by_gplus_count == ""] <-
   0
-doi_reshaped_data$cited_by_msm_count[doi_reshaped_data$cited_by_msm_count == ""] <-
+doi_with_altmetric$cited_by_msm_count[doi_with_altmetric$cited_by_msm_count == ""] <-
   0
-doi_reshaped_data$cited_by_posts_count[doi_reshaped_data$cited_by_posts_count == ""] <-
+doi_with_altmetric$cited_by_posts_count[doi_with_altmetric$cited_by_posts_count == ""] <-
   0
-doi_reshaped_data$cited_by_rdts_count[doi_reshaped_data$cited_by_rdts_count == ""] <-
+doi_with_altmetric$cited_by_rdts_count[doi_with_altmetric$cited_by_rdts_count == ""] <-
   0
-doi_reshaped_data$cited_by_tweeters_count[doi_reshaped_data$cited_by_tweeters_count == ""] <-
+doi_with_altmetric$cited_by_tweeters_count[doi_with_altmetric$cited_by_tweeters_count == ""] <-
   0
-doi_reshaped_data$cited_by_videos_count[doi_reshaped_data$cited_by_videos_count == ""] <-
+doi_with_altmetric$cited_by_videos_count[doi_with_altmetric$cited_by_videos_count == ""] <-
   0
-doi_reshaped_data$cited_by_accounts_count[doi_reshaped_data$cited_by_accounts_count == ""] <-
+doi_with_altmetric$cited_by_accounts_count[doi_with_altmetric$cited_by_accounts_count == ""] <-
   0
-doi_reshaped_data$cited_by_patents_count[doi_reshaped_data$cited_by_patents_count == ""] <-
+doi_with_altmetric$cited_by_patents_count[doi_with_altmetric$cited_by_patents_count == ""] <-
   0
-doi_reshaped_data$cited_by_patents_count[doi_reshaped_data$mendeley == ""] <-
+doi_with_altmetric$cited_by_patents_count[doi_with_altmetric$mendeley == ""] <-
   0
 
 # split and remove NA rows
-doi_reshaped_data <-
-  doi_reshaped_data[complete.cases(doi_reshaped_data), ]
+doi_with_altmetric <-
+  doi_with_altmetric[complete.cases(doi_with_altmetric), ]
 
 # remove duplicate entries
-doi_reshaped_data <-
-  doi_reshaped_data[!duplicated(doi_reshaped_data$doi), ]
+doi_with_altmetric <-
+  doi_with_altmetric[!duplicated(doi_with_altmetric$doi), ]
 
 # sort columns by title
-doi_reshaped_data <-
-  doi_reshaped_data[order(doi_reshaped_data$title), ]
+doi_with_altmetric <-
+  doi_with_altmetric[order(doi_with_altmetric$title), ]
 
 # replace is_oa from Crossref
-for (i in 1:length(doi_reshaped_data$doi)) {
+for (i in 1:length(doi_with_altmetric$doi)) {
   my_doi_oa <-
-    roadoi::oadoi_fetch(dois = doi_reshaped_data$doi[i], email = "cienciasdareabilitacao@souunisuam.com.br")
-  doi_reshaped_data$is_oa[i] <-
-    ifelse(length(my_doi_oa$is_oa) != 0,
+    roadoi::oadoi_fetch(dois = doi_with_altmetric$doi[i], email = "cienciasdareabilitacao@souunisuam.com.br")
+  doi_with_altmetric$is_oa[i] <-
+    ifelse(length(my_doi_oa) != 0,
            toupper(as.character(my_doi_oa$is_oa)),
            "FALSE")
 }
 
+# add citation counts
+doi_with_altmetric$citations <- rep(0, dim(doi_with_altmetric)[1])
+for (i in 1:dim(doi_with_altmetric)[1]) {
+  try({
+    citations <-
+      rcrossref::cr_citation_count(doi = as.character(doi_with_altmetric$doi[i]), key = "cienciasdareabilitacao@souunisuam.com.br")
+    doi_with_altmetric$citations[i] <- citations$count
+  },
+  silent = TRUE)
+  # search for alternative source of journal name
+  try(if (sjmisc::is_empty(doi_with_altmetric$journal[i])) {
+    doi_with_altmetric$journal[i] <-
+      scimago[grep(gsub("-", "", doi_with_altmetric$issn), scimago$Issn), 3][1]
+  }, silent = TRUE)
+}
+
 # collect DOIs without Altmetric data
-no_altmetric_dois_list <-
-  dois_list[is.na(match(
-    lapply(dois_list, tolower),
-    lapply(doi_reshaped_data$doi, tolower)
-  ))]
+doi_without_altmetric <- c()
+doi_without_altmetric <-
+  data.frame(DOI = setdiff(
+    tolower(dois_df$DOI),
+    tolower(doi_with_altmetric$doi)
+  ))

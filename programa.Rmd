@@ -284,7 +284,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2024-2021** {.tabset}
 
-```{r 2024-2021, eval = has.sucupira}
+```{r 2024-2021, eval = has.sucupira.files}
 # projetos - membros
 sheet <- "Projetos - Membros"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -301,7 +301,7 @@ has.avaliacao <- length(periodos) != 0
 
 #### **Figura**
 
-```{r projetos-de-pesquisa-2024-figura, eval = all(has.sucupira, has.avaliacao)}
+```{r projetos-de-pesquisa-2024-figura, eval = all(has.sucupira.files, has.avaliacao)}
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 projetos <-
@@ -399,7 +399,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Tabela**
 
-```{r projetos-de-pesquisa-2024-tabela, eval = all(has.sucupira, has.avaliacao)}
+```{r projetos-de-pesquisa-2024-tabela, eval = all(has.sucupira.files, has.avaliacao)}
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 projetos <-
@@ -479,7 +479,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Lista**
 
-```{r projetos-de-pesquisa-2024-lista, eval = all(has.sucupira, has.avaliacao)}
+```{r projetos-de-pesquisa-2024-lista, eval = all(has.sucupira.files, has.avaliacao)}
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 projetos <-
@@ -523,7 +523,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2020-2017** {.tabset}
 
-```{r 2020-2017, eval = has.sucupira}
+```{r 2020-2017, eval = has.sucupira.files}
 # projetos - membros
 sheet <- "Projetos - Membros"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -540,7 +540,7 @@ has.avaliacao <- length(periodos) != 0
 
 #### **Figura**
 
-```{r projetos-de-pesquisa-2020-figura, eval = all(has.sucupira, has.avaliacao)}
+```{r projetos-de-pesquisa-2020-figura, eval = all(has.sucupira.files, has.avaliacao)}
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 projetos <-
@@ -638,7 +638,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Tabela**
 
-```{r projetos-de-pesquisa-2020-tabela, eval = all(has.sucupira, has.avaliacao)}
+```{r projetos-de-pesquisa-2020-tabela, eval = all(has.sucupira.files, has.avaliacao)}
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 projetos <-
@@ -718,7 +718,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Lista**
 
-```{r projetos-de-pesquisa-2020-lista, eval = all(has.sucupira, has.avaliacao)}
+```{r projetos-de-pesquisa-2020-lista, eval = all(has.sucupira.files, has.avaliacao)}
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 projetos <-
@@ -762,7 +762,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2016-2013** {.tabset}
 
-```{r 2016-2013, eval = has.sucupira}
+```{r 2016-2013, eval = has.sucupira.files}
 # projetos - membros
 sheet <- "Projetos - Membros"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -779,7 +779,7 @@ has.avaliacao <- length(periodos) != 0
 
 #### **Figura**
 
-```{r projetos-de-pesquisa-2016-figura, eval = all(has.sucupira, has.avaliacao)}
+```{r projetos-de-pesquisa-2016-figura, eval = all(has.sucupira.files, has.avaliacao)}
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 projetos <-
@@ -877,7 +877,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Tabela**
 
-```{r projetos-de-pesquisa-2016-tabela, eval = all(has.sucupira, has.avaliacao)}
+```{r projetos-de-pesquisa-2016-tabela, eval = all(has.sucupira.files, has.avaliacao)}
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 projetos <-
@@ -957,7 +957,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Lista**
 
-```{r projetos-de-pesquisa-2016-lista, eval = all(has.sucupira, has.avaliacao)}
+```{r projetos-de-pesquisa-2016-lista, eval = all(has.sucupira.files, has.avaliacao)}
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 projetos <-
@@ -1001,7 +1001,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2012-2010** {.tabset}
 
-```{r 2012-2010, eval = has.sucupira}
+```{r 2012-2010, eval = has.sucupira.files}
 # projetos - membros
 sheet <- "Projetos - Membros"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -1018,7 +1018,7 @@ has.avaliacao <- length(periodos) != 0
 
 #### **Figura**
 
-```{r projetos-de-pesquisa-2012-figura, eval = all(has.sucupira, has.avaliacao)}
+```{r projetos-de-pesquisa-2012-figura, eval = all(has.sucupira.files, has.avaliacao)}
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 projetos <-
@@ -1116,7 +1116,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Tabela**
 
-```{r projetos-de-pesquisa-2012-tabela, eval = all(has.sucupira, has.avaliacao)}
+```{r projetos-de-pesquisa-2012-tabela, eval = all(has.sucupira.files, has.avaliacao)}
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 projetos <-
@@ -1196,7 +1196,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Lista**
 
-```{r projetos-de-pesquisa-2012-lista, eval = all(has.sucupira, has.avaliacao)}
+```{r projetos-de-pesquisa-2012-lista, eval = all(has.sucupira.files, has.avaliacao)}
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 projetos.all <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
 projetos <-
@@ -1745,7 +1745,7 @@ for(var i=0; i < document.formOBRDSC.ckb.length; i++){
 }
 ```
 
-```{r calculadora-doutorado-obrigatorias, eval = has.sucupira}
+```{r calculadora-doutorado-obrigatorias, eval = has.sucupira.files}
 # disciplinas
 sheet <- "Disciplinas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -1821,7 +1821,7 @@ for(var i=0; i < document.formELEDSC.ckb.length; i++){
 }
 ```
 
-```{r calculadora-doutorado-eletivas, eval = has.sucupira}
+```{r calculadora-doutorado-eletivas, eval = has.sucupira.files}
 # disciplinas
 sheet <- "Disciplinas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -1907,7 +1907,7 @@ for(var i=0; i < document.formOBRMSC.ckb.length; i++){
 }
 ```
 
-```{r calculadora-mestrado-obrigatorias, eval = has.sucupira}
+```{r calculadora-mestrado-obrigatorias, eval = has.sucupira.files}
 # disciplinas
 sheet <- "Disciplinas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -1983,7 +1983,7 @@ for(var i=0; i < document.formELEMSC.ckb.length; i++){
 }
 ```
 
-```{r calculadora-mestrado-eletivas, eval = has.sucupira}
+```{r calculadora-mestrado-eletivas, eval = has.sucupira.files}
 # projetos
 sheet <- "Disciplinas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -2051,7 +2051,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **Síntese**
 
-```{r estrutura-academica-atual-grafico, eval = has.sucupira}
+```{r estrutura-academica-atual-grafico, eval = has.sucupira.files}
 # load custom function
 source("Scripts/get-initials.R", local = knitr::knit_global())
 
@@ -2210,7 +2210,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **Disciplinas**
 
-```{r estrutura-academica-atual-tabela, eval = has.sucupira}
+```{r estrutura-academica-atual-tabela, eval = has.sucupira.files}
 # load custom function
 source("Scripts/get-initials.R", local = knitr::knit_global())
 
@@ -2329,7 +2329,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **Inativas**
 
-```{r estrutura-academica-inativa, eval = has.sucupira}
+```{r estrutura-academica-inativa, eval = has.sucupira.files}
 # load custom function
 source("Scripts/get-initials.R", local = knitr::knit_global())
 
@@ -2385,7 +2385,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2024-2021**
 
-```{r turmas-2024-2021, eval = has.sucupira}
+```{r turmas-2024-2021, eval = has.sucupira.files}
 # turmas
 sheet <- "Turmas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -2401,7 +2401,7 @@ periodos <-
 has.avaliacao <- length(periodos) != 0
 ```
 
-```{r turmas-2024, eval = all(has.sucupira, has.avaliacao)}
+```{r turmas-2024, eval = all(has.sucupira.files, has.avaliacao)}
 # load custom function
 source("Scripts/get-initials.R", local = knitr::knit_global())
 
@@ -2472,7 +2472,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2020-2017**
 
-```{r turmas-2020-2017, eval = has.sucupira}
+```{r turmas-2020-2017, eval = has.sucupira.files}
 # turmas
 sheet <- "Turmas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -2488,7 +2488,7 @@ periodos <-
 has.avaliacao <- length(periodos) != 0
 ```
 
-```{r turmas-2020, eval = all(has.sucupira, has.avaliacao)}
+```{r turmas-2020, eval = all(has.sucupira.files, has.avaliacao)}
 # load custom function
 source("Scripts/get-initials.R", local = knitr::knit_global())
 
@@ -2559,7 +2559,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2016-2013**
 
-```{r turmas-2016-2013, eval = has.sucupira}
+```{r turmas-2016-2013, eval = has.sucupira.files}
 # turmas
 sheet <- "Turmas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -2575,7 +2575,7 @@ periodos <-
 has.avaliacao <- length(periodos) != 0
 ```
 
-```{r turmas-2016, eval = all(has.sucupira, has.avaliacao)}
+```{r turmas-2016, eval = all(has.sucupira.files, has.avaliacao)}
 # load custom function
 source("Scripts/get-initials.R", local = knitr::knit_global())
 
@@ -2646,7 +2646,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2012-2010**
 
-```{r turmas-2012-2010, eval = has.sucupira}
+```{r turmas-2012-2010, eval = has.sucupira.files}
 # turmas
 sheet <- "Turmas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -2662,7 +2662,7 @@ periodos <-
 has.avaliacao <- length(periodos) != 0
 ```
 
-```{r turmas-2012, eval = all(has.sucupira, has.avaliacao)}
+```{r turmas-2012, eval = all(has.sucupira.files, has.avaliacao)}
 # load custom function
 source("Scripts/get-initials.R", local = knitr::knit_global())
 

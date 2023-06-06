@@ -15,18 +15,18 @@ get_metrics <- function(df, citescore, scimago, qualis) {
     # get CiteScore
     try(df$CiteScore[ix] <-
           get_citescore(citescore = citescore,
-                        doi_unique = df[ix,])$citescore_value,
+                        doi_with_altmetric = df[ix,])$citescore_value,
         silent = TRUE)
     # get SJR
     try(df$SJR[ix] <-
           get_sjr(scimago = scimago,
-                    doi_unique = df[ix,])$SJR_value,
+                    doi_with_altmetric = df[ix,])$SJR_value,
     silent = TRUE)
     # get WebQualis
     try(df$WebQualis[ix] <-
           get_webqualis(qualis = qualis,
                         scimago = scimago,
-                        doi_unique = df[ix,])$WebQualis_value,
+                        doi_with_altmetric = df[ix,])$WebQualis_value,
         silent = TRUE)
   }
   return(df = df)

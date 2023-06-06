@@ -63,7 +63,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 ### **Teses**
 
-```{r tcc-dsc, eval = has.sucupira}
+```{r tcc-dsc, eval = has.sucupira.files}
 # tcc
 sheet <- "TCC"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -114,7 +114,7 @@ colnames(table.tcc) <-
 
 ### **Dissertações**
 
-```{r tcc-msc, eval = has.sucupira}
+```{r tcc-msc, eval = has.sucupira.files}
 # tcc
 sheet <- "TCC"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -286,21 +286,21 @@ cat('\n\n')
 
 ### **Artigos completos em periódicos** {.tabset}
 
-```{r artigos-completos, eval = has.artigos.completos}
+```{r artigos-completos, eval = any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
 # bind sources
-doi_unique <- doi_unique_artigos
-my_doi_works <- my_doi_works_artigos
+doi_with_altmetric <- doi_with_altmetric_artigos
+doi_without_altmetric <- doi_without_altmetric_artigos
 references <- references_artigos
 
 # available years of publication
 years <-
   na.omit(sort(unique(
-    c(doi_unique$published_on, my_doi_works$published_on)
+    c(doi_with_altmetric$published_on, doi_without_altmetric$published_on)
   ), decreasing = TRUE))
 
 # Verifica se há DOIs
-if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_doi_works)[1], 0) == 0) {
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
 } else {
   # print export buttons
@@ -309,8 +309,8 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 }
 
 # Verifica se há DOIs
-if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_doi_works)[1], 0) == 0) {
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
   cat('*Sem produção para exibir*')
   cat('\n')
@@ -320,7 +320,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
   cat(
     paste(
       "*Produtos (n = ",
-      max(dim(doi_unique)[1], 0) + max(dim(my_doi_works)[1], 0),
+      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
     ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
       sep = ""
     )
@@ -341,16 +341,16 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       show.CiteScore = TRUE,
       show.SJR = TRUE,
       show.Qualis = TRUE,
-      doi_unique = tryCatch(
-        doi_unique[doi_unique$published_on == years[year], ],
+      doi_with_altmetric = tryCatch(
+        doi_with_altmetric[doi_with_altmetric$published_on == years[year], ],
         error = function(e) {
-          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
+          doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
         }
       ),
-      my_doi_works = tryCatch(
-        my_doi_works[my_doi_works$published_on == years[year], ],
+      doi_without_altmetric = tryCatch(
+        doi_without_altmetric[doi_without_altmetric$published_on == years[year], ],
         error = function(e) {
-          my_doi_works <- list()
+          doi_without_altmetric <- list()
         }
       ),
       citescore = citescore,
@@ -365,21 +365,21 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 ### **Artigos resumos em periódicos** {.tabset}
 
-```{r artigos-resumos, eval = has.artigos.resumos}
+```{r artigos-resumos, eval = any(has.artigos.resumos.ppg, has.artigos.resumos.sucupira)}
 # bind sources
-doi_unique <- doi_unique_resumos
-my_doi_works <- my_doi_works_resumos
+doi_with_altmetric <- doi_with_altmetric_resumos
+doi_without_altmetric <- doi_without_altmetric_resumos
 references <- references_resumos
 
 # available years of publication
 years <-
   na.omit(sort(unique(
-    c(doi_unique$published_on, my_doi_works$published_on)
+    c(doi_with_altmetric$published_on, doi_without_altmetric$published_on)
   ), decreasing = TRUE))
 
 # Verifica se há DOIs
-if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_doi_works)[1], 0) == 0) {
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
 } else {
   # print export buttons
@@ -388,8 +388,8 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 }
 
 # Verifica se há DOIs
-if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_doi_works)[1], 0) == 0) {
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
   cat('*Sem produção para exibir*')
   cat('\n')
@@ -399,7 +399,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
   cat(
     paste(
       "*Produtos (n = ",
-      max(dim(doi_unique)[1], 0) + max(dim(my_doi_works)[1], 0),
+      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
     ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
       sep = ""
     )
@@ -420,16 +420,16 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       show.CiteScore = TRUE,
       show.SJR = TRUE,
       show.Qualis = TRUE,
-      doi_unique = tryCatch(
-        doi_unique[doi_unique$published_on == years[year], ],
+      doi_with_altmetric = tryCatch(
+        doi_with_altmetric[doi_with_altmetric$published_on == years[year], ],
         error = function(e) {
-          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
+          doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
         }
       ),
-      my_doi_works = tryCatch(
-        my_doi_works[my_doi_works$published_on == years[year], ],
+      doi_without_altmetric = tryCatch(
+        doi_without_altmetric[doi_without_altmetric$published_on == years[year], ],
         error = function(e) {
-          my_doi_works <- list()
+          doi_without_altmetric <- list()
         }
       ),
       citescore = citescore,
@@ -444,21 +444,21 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 ### **Preprints** {.tabset}
 
-```{r preprints, eval = has.preprints}
+```{r preprints, eval = has.preprints.ppg}
 # bind sources
-doi_unique <- doi_unique_preprints
-my_doi_works <- my_doi_works_preprints
+doi_with_altmetric <- doi_with_altmetric_preprints
+doi_without_altmetric <- doi_without_altmetric_preprints
 references <- references_preprints
 
 # available years of publication
 years <-
   na.omit(sort(unique(
-    c(doi_unique$published_on, my_doi_works$published_on)
+    c(doi_with_altmetric$published_on, doi_without_altmetric$published_on)
   ), decreasing = TRUE))
 
 # Verifica se há DOIs
-if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_doi_works)[1], 0) == 0) {
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
 } else {
   # print export buttons
@@ -467,8 +467,8 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 }
 
 # Verifica se há DOIs
-if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_doi_works)[1], 0) == 0) {
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
   cat('*Sem produção para exibir*')
   cat('\n')
@@ -478,7 +478,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
   cat(
     paste(
       "*Produtos (n = ",
-      max(dim(doi_unique)[1], 0) + max(dim(my_doi_works)[1], 0),
+      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
     ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
       sep = ""
     )
@@ -499,16 +499,16 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       show.CiteScore = FALSE,
       show.SJR = FALSE,
       show.Qualis = FALSE,
-      doi_unique = tryCatch(
-        doi_unique[doi_unique$published_on == years[year], ],
+      doi_with_altmetric = tryCatch(
+        doi_with_altmetric[doi_with_altmetric$published_on == years[year], ],
         error = function(e) {
-          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
+          doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
         }
       ),
-      my_doi_works = tryCatch(
-        my_doi_works[my_doi_works$published_on == years[year], ],
+      doi_without_altmetric = tryCatch(
+        doi_without_altmetric[doi_without_altmetric$published_on == years[year], ],
         error = function(e) {
-          my_doi_works <- list()
+          doi_without_altmetric <- list()
         }
       ),
       citescore = citescore,
@@ -523,21 +523,21 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 ### **Livros**  {.tabset}
 
-```{r livros, eval = has.livros}
+```{r livros, eval = has.livros.ppg}
 # bind sources
-doi_unique <- doi_unique_livros
-my_doi_works <- my_doi_works_livros
+doi_with_altmetric <- doi_with_altmetric_livros
+doi_without_altmetric <- doi_without_altmetric_livros
 references <- references_livros
 
 # available years of publication
 years <-
   na.omit(sort(unique(
-    c(doi_unique$published_on, my_doi_works$published_on)
+    c(doi_with_altmetric$published_on, doi_without_altmetric$published_on)
   ), decreasing = TRUE))
 
 # Verifica se há DOIs
-if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_doi_works)[1], 0) == 0) {
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
 } else {
   # print export buttons
@@ -546,8 +546,8 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 }
 
 # Verifica se há DOIs
-if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_doi_works)[1], 0) == 0) {
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
   cat('*Sem produção para exibir*')
   cat('\n')
@@ -557,7 +557,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
   cat(
     paste(
       "*Produtos (n = ",
-      max(dim(doi_unique)[1], 0) + max(dim(my_doi_works)[1], 0),
+      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
     ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
       sep = ""
     )
@@ -578,16 +578,16 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       show.CiteScore = FALSE,
       show.SJR = FALSE,
       show.Qualis = FALSE,
-      doi_unique = tryCatch(
-        doi_unique[doi_unique$published_on == years[year], ],
+      doi_with_altmetric = tryCatch(
+        doi_with_altmetric[doi_with_altmetric$published_on == years[year], ],
         error = function(e) {
-          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
+          doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
         }
       ),
-      my_doi_works = tryCatch(
-        my_doi_works[my_doi_works$published_on == years[year], ],
+      doi_without_altmetric = tryCatch(
+        doi_without_altmetric[doi_without_altmetric$published_on == years[year], ],
         error = function(e) {
-          my_doi_works <- list()
+          doi_without_altmetric <- list()
         }
       ),
       citescore = citescore,
@@ -602,21 +602,21 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 ### **Capítulos**  {.tabset}
 
-```{r livros-capitulos, eval = has.capitulos}
+```{r livros-capitulos, eval = has.capitulos.ppg}
 # bind sources
-doi_unique <- doi_unique_capitulos
-my_doi_works <- my_doi_works_capitulos
+doi_with_altmetric <- doi_with_altmetric_capitulos
+doi_without_altmetric <- doi_without_altmetric_capitulos
 references <- references_capitulos
 
 # available years of publication
 years <-
   na.omit(sort(unique(
-    c(doi_unique$published_on, my_doi_works$published_on)
+    c(doi_with_altmetric$published_on, doi_without_altmetric$published_on)
   ), decreasing = TRUE))
 
 # Verifica se há DOIs
-if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_doi_works)[1], 0) == 0) {
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
 } else {
   # print export buttons
@@ -625,8 +625,8 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 }
 
 # Verifica se há DOIs
-if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_doi_works)[1], 0) == 0) {
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
   cat('*Sem produção para exibir*')
   cat('\n')
@@ -636,7 +636,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
   cat(
     paste(
       "*Produtos (n = ",
-      max(dim(doi_unique)[1], 0) + max(dim(my_doi_works)[1], 0),
+      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
     ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
       sep = ""
     )
@@ -657,16 +657,16 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       show.CiteScore = FALSE,
       show.SJR = FALSE,
       show.Qualis = FALSE,
-      doi_unique = tryCatch(
-        doi_unique[doi_unique$published_on == years[year], ],
+      doi_with_altmetric = tryCatch(
+        doi_with_altmetric[doi_with_altmetric$published_on == years[year], ],
         error = function(e) {
-          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
+          doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
         }
       ),
-      my_doi_works = tryCatch(
-        my_doi_works[my_doi_works$published_on == years[year], ],
+      doi_without_altmetric = tryCatch(
+        doi_without_altmetric[doi_without_altmetric$published_on == years[year], ],
         error = function(e) {
-          my_doi_works <- list()
+          doi_without_altmetric <- list()
         }
       ),
       citescore = citescore,
@@ -681,21 +681,21 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 
 ### **Trabalhos em anais** {.tabset}
 
-```{r resumos-eventos, eval = has.eventos}
+```{r resumos-eventos, eval = has.eventos.ppg}
 # bind sources
-doi_unique <- doi_unique_eventos
-my_doi_works <- my_doi_works_eventos
+doi_with_altmetric <- doi_with_altmetric_eventos
+doi_without_altmetric <- doi_without_altmetric_eventos
 references <- references_eventos
 
 # available years of publication
 years <-
   na.omit(sort(unique(
-    c(doi_unique$published_on, my_doi_works$published_on)
+    c(doi_with_altmetric$published_on, doi_without_altmetric$published_on)
   ), decreasing = TRUE))
 
 # Verifica se há DOIs
-if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_doi_works)[1], 0) == 0) {
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
 } else {
   # print export buttons
@@ -704,8 +704,8 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 }
 
 # Verifica se há DOIs
-if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_doi_works)[1], 0) == 0) {
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
   cat('*Sem produção para exibir*')
   cat('\n')
@@ -715,7 +715,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
   cat(
     paste(
       "*Produtos (n = ",
-      max(dim(doi_unique)[1], 0) + max(dim(my_doi_works)[1], 0),
+      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
     ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
       sep = ""
     )
@@ -736,16 +736,16 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       show.CiteScore = TRUE,
       show.SJR = TRUE,
       show.Qualis = TRUE,
-      doi_unique = tryCatch(
-        doi_unique[doi_unique$published_on == years[year], ],
+      doi_with_altmetric = tryCatch(
+        doi_with_altmetric[doi_with_altmetric$published_on == years[year], ],
         error = function(e) {
-          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
+          doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
         }
       ),
-      my_doi_works = tryCatch(
-        my_doi_works[my_doi_works$published_on == years[year], ],
+      doi_without_altmetric = tryCatch(
+        doi_without_altmetric[doi_without_altmetric$published_on == years[year], ],
         error = function(e) {
-          my_doi_works <- list()
+          doi_without_altmetric <- list()
         }
       ),
       citescore = citescore,
@@ -814,22 +814,22 @@ cat('\n\n')
 
 <br>
 
-```{r retratacoes, eval = has.producao}
+```{r retratacoes, eval = has.producao.ppg}
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 # bind sources
-doi_unique <- dois_unique_retracted
-my_doi_works <- my_doi_works_retracted
+doi_with_altmetric <- dois_unique_retracted
+doi_without_altmetric <- doi_without_altmetric_retracted
 
 # available years of publication
 years <-
   na.omit(sort(unique(
-    c(doi_unique$published_on, my_doi_works$published_on)
+    c(doi_with_altmetric$published_on, doi_without_altmetric$published_on)
   ), decreasing = TRUE))
 
 # Verifica se há DOIs
-if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_doi_works)[1], 0) == 0) {
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
 } else {
   # print export buttons
@@ -838,8 +838,8 @@ if (max(dim(doi_unique)[1], 0) == 0 &
 }
 
 # Verifica se há DOIs
-if (max(dim(doi_unique)[1], 0) == 0 &
-    max(dim(my_doi_works)[1], 0) == 0) {
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
   cat('*Sem retratações para exibir*')
   cat('\n')
@@ -849,7 +849,7 @@ if (max(dim(doi_unique)[1], 0) == 0 &
   cat(
     paste(
       "*Produtos (n = ",
-      max(dim(doi_unique)[1], 0) + max(dim(my_doi_works)[1], 0),
+      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
     ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
       sep = ""
     )
@@ -870,16 +870,16 @@ if (max(dim(doi_unique)[1], 0) == 0 &
       show.CiteScore = TRUE,
       show.SJR = TRUE,
       show.Qualis = TRUE,
-      doi_unique = tryCatch(
-        doi_unique[doi_unique$published_on == years[year], ],
+      doi_with_altmetric = tryCatch(
+        doi_with_altmetric[doi_with_altmetric$published_on == years[year], ],
         error = function(e) {
-          doi_unique <- as.data.frame(matrix(nrow = 0, ncol = 0))
+          doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
         }
       ),
-      my_doi_works = tryCatch(
-        my_doi_works[my_doi_works$published_on == years[year], ],
+      doi_without_altmetric = tryCatch(
+        doi_without_altmetric[doi_without_altmetric$published_on == years[year], ],
         error = function(e) {
-          my_doi_works <- list()
+          doi_without_altmetric <- list()
         }
       ),
       citescore = citescore,

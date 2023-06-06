@@ -1,26 +1,26 @@
 get_citescore <-
   function(citescore,
-           doi_unique = NULL,
-           my_doi_works = NULL) {
+           doi_with_altmetric = NULL,
+           doi_without_altmetric = NULL) {
     # initialize values
     citescore_id <- NA
     citescore_value <- NA
     citescore_year <- NA
     citescore_p <- NA
     
-    # get CiteScore for "doi_unique" data
-    if (!is.null(doi_unique)) {
+    # get CiteScore for "doi_with_altmetric" data
+    if (!is.null(doi_with_altmetric)) {
       citescore_id <-
-        as.character(citescore$sourcerecord_id[grep(gsub("-", "", doi_unique$issn), citescore$print_issn)])
+        as.character(citescore$sourcerecord_id[grep(gsub("-", "", doi_with_altmetric$issn), citescore$print_issn)])
       if (sjmisc::is_empty(citescore_id)) {
         citescore_id <-
-          as.character(citescore$sourcerecord_id[grep(gsub("-", "", doi_unique$issn), citescore$e_issn)])
+          as.character(citescore$sourcerecord_id[grep(gsub("-", "", doi_with_altmetric$issn), citescore$e_issn)])
       }
       if (sjmisc::is_empty(citescore_id)) {
         citescore_id <-
           as.character(citescore$sourcerecord_id[grep(
             tolower(gsub(
-              "& | &amp;", "and", doi_unique$journal
+              "& | &amp;", "and", doi_with_altmetric$journal
             )),
             tolower(
               citescore$source_title_medline_sourced_journals_are_indicated_in_green
@@ -28,27 +28,27 @@ get_citescore <-
           )])
       }
     }
-    # get CiteScore for "my_doi_works" data
-    if (!is.null(my_doi_works)) {
-      if (sjmisc::is_empty(my_doi_works$issn) |
-          length(my_doi_works$issn) == 0) {
+    # get CiteScore for "doi_without_altmetric" data
+    if (!is.null(doi_without_altmetric)) {
+      if (sjmisc::is_empty(doi_without_altmetric$issn) |
+          length(doi_without_altmetric$issn) == 0) {
         citescore_id <- character(0)
         citescore_value <- "-1"
         citescore_year <- character(0)
         citescore_p <- character(0)
       } else {
-        if (stringr::str_length(my_doi_works$issn) == 9) {
+        if (stringr::str_length(doi_without_altmetric$issn) == 9) {
           citescore_id <-
-            as.character(citescore$sourcerecord_id[grep(gsub("-", "", my_doi_works$issn),
+            as.character(citescore$sourcerecord_id[grep(gsub("-", "", doi_without_altmetric$issn),
                                                         citescore$print_issn)])
         }
-        if (stringr::str_length(my_doi_works$issn) == 19) {
+        if (stringr::str_length(doi_without_altmetric$issn) == 19) {
           citescore_id <-
-            as.character(citescore$sourcerecord_id[grep(gsub("-", "", substr(my_doi_works$issn, 1, 9)), citescore$print_issn, fixed =
+            as.character(citescore$sourcerecord_id[grep(gsub("-", "", substr(doi_without_altmetric$issn, 1, 9)), citescore$print_issn, fixed =
                                                           TRUE)])
           if (sjmisc::is_empty(citescore_id)) {
             citescore_id <-
-              as.character(citescore$sourcerecord_id[grep(gsub("-", "", substr(my_doi_works$issn, 11, 19), fixed =
+              as.character(citescore$sourcerecord_id[grep(gsub("-", "", substr(doi_without_altmetric$issn, 11, 19), fixed =
                                                                  TRUE),
                                                           citescore$print_issn,
                                                           fixed = TRUE)])
@@ -58,7 +58,7 @@ get_citescore <-
           citescore_id <-
             as.character(citescore$sourcerecord_id[grep(
               tolower(
-                gsub("& | &amp;", "and", my_doi_works$journal, fixed = TRUE)
+                gsub("& | &amp;", "and", doi_without_altmetric$journal, fixed = TRUE)
               ),
               tolower(
                 citescore$source_title_medline_sourced_journals_are_indicated_in_green

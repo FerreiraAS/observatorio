@@ -5,8 +5,8 @@ table.with.badges <-
            show.CiteScore = NULL,
            show.SJR = NULL,
            show.Qualis = NULL,
-           doi_unique,
-           my_doi_works,
+           doi_with_altmetric,
+           doi_without_altmetric,
            citescore,
            scimago,
            qualis) {
@@ -27,14 +27,14 @@ table.with.badges <-
     # start table
     cat(
       "<table class=\"tb\" style=\"width:100%; font-size: 16px !important;\">\n    <tr>\n      <th>Produtos (n = ",
-      max(dim(doi_unique)[1], 0) + max(dim(my_doi_works)[1], 0),
+      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
       ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^) </th>\n    </tr>",
       sep = ""
     )
     
     # print table with DOI and Altmetric
-    if (max(dim(doi_unique)[1], 0) != 0) {
-      for (ix in 1:dim(doi_unique)[1]) {
+    if (max(dim(doi_with_altmetric)[1], 0) != 0) {
+      for (ix in 1:dim(doi_with_altmetric)[1]) {
         # add bibliography info
         cat("<tr><td valign=top;>")
         cat("<br>")
@@ -42,10 +42,10 @@ table.with.badges <-
           # add OPEN ACESS badge
           tryCatch(
             expr = {
-              if (as.logical(doi_unique$is_oa[ix])) {
+              if (as.logical(doi_with_altmetric$is_oa[ix])) {
                 cat(
                   "<a style=\"display: inline-block; float: left; margin:0.0em 0.2em 0.0em 0.0em; padding:0.0em 0.2em 0.0em 0.0em;\" href=\"",
-                  doi_unique$url[ix],
+                  doi_with_altmetric$url[ix],
                   "\" target=\"_blank\">",
                   "<img height=\"18px;\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/256px-Open_Access_logo_PLoS_white.svg.png\">",
                   "</a>",
@@ -61,25 +61,25 @@ table.with.badges <-
           # add title with link
           paste0(
             "[**",
-            doi_unique$title[ix],
+            doi_with_altmetric$title[ix],
             "**](",
-            doi_unique$url[ix],
+            doi_with_altmetric$url[ix],
             "){target=\"_blank\"}",
             "<br>"
           )
         )
         
         # add authors' names
-        cat(doi_unique$author.names[ix])
+        cat(doi_with_altmetric$author.names[ix])
         
         # add year
         cat(paste0(
           "<br>",
-          paste0(doi_unique$published_on[ix], "&nbsp; - &nbsp;")
+          paste0(doi_with_altmetric$published_on[ix], "&nbsp; - &nbsp;")
         ))
         
         # add journal's title
-        cat(paste0("*", toTitleCase(doi_unique$journal[ix]), "*", "<br>"))
+        cat(paste0("*", toTitleCase(doi_with_altmetric$journal[ix]), "*", "<br>"))
         
         # initialize the DIV element for the badges
         cat("<div style=\"vertical-align: middle; display: inline-block;\">")
@@ -91,7 +91,7 @@ table.with.badges <-
         if (show.Altmetric == TRUE) {
           cat(
             "<a style=\"display: inline-block; float: left; margin:0.1em 0.3em 0.1em 0.3em;\" class=\"altmetric-embed\" data-badge-type=\"donut\" data-badge-popover=\"right\" data-doi=\"",
-            doi_unique$doi[ix],
+            doi_with_altmetric$doi[ix],
             "\"></a>",
             sep = ""
           )
@@ -101,7 +101,7 @@ table.with.badges <-
         if (show.Dimensions == TRUE) {
           cat(
             "<a style=\"display: inline-block; float: left; margin:0.1em 0.3em 0.1em 0.3em;\" data-legend=\"hover-right\" class=\"__dimensions_badge_embed__\" data-doi=\"",
-            doi_unique$doi[ix],
+            doi_with_altmetric$doi[ix],
             "\" data-style=\"small_circle\"></a>",
             sep = ""
           )
@@ -111,7 +111,7 @@ table.with.badges <-
         if (show.PlumX == TRUE) {
           cat(
             "<a style=\"display: inline-block; float: left; margin:0.1em 0.3em 0.1em 0.3em; padding:0.5em 0.3em 0.5em 0.3em;\" class=\"plumx-plum-print-popup\" href=\"https://plu.mx/plum/a/?doi=",
-            doi_unique$doi[ix],
+            doi_with_altmetric$doi[ix],
             "\" data-popup=\"right\" data-size=\"medium\" data-site=\"plum\"></a>",
             sep = ""
           )
@@ -120,7 +120,7 @@ table.with.badges <-
         # add CiteScore
         if (show.CiteScore == TRUE) {
           citescore.out <-
-            get_citescore(citescore = citescore, doi_unique = doi_unique[ix,])
+            get_citescore(citescore = citescore, doi_with_altmetric = doi_with_altmetric[ix,])
           cat(
             "<a href=\"https://www.scopus.com/sourceid/",
             citescore.out$citescore_id,
@@ -163,7 +163,7 @@ table.with.badges <-
         
         # add SJR
         if (show.SJR == TRUE) {
-          sjr.out <- get_sjr(scimago = scimago, doi_unique = doi_unique[ix,])
+          sjr.out <- get_sjr(scimago = scimago, doi_with_altmetric = doi_with_altmetric[ix,])
           cat(
             "<a style=\"display: inline-block; float: left; margin:0.1em 0.3em 0.1em 0.3em;\" href=\"https://www.scimagojr.com/journalsearch.php?q=",
             paste0(ifelse(
@@ -186,10 +186,10 @@ table.with.badges <-
             "<a style=\"border-radius:10%; border-style: solid; margin:0.1em 0.3em 0.1em 0.3em; padding:0.4em 0.3em 0.4em 0.3em; text-decoration:none; text-align: center; display:inline-block; float:left; color:black;\"> Qualis <br>",
             paste0(
               ifelse(
-                identical(doi_unique$WebQualis[ix], numeric(0)) |
-                  all(is.na(doi_unique$WebQualis[ix])),
+                identical(doi_with_altmetric$WebQualis[ix], numeric(0)) |
+                  all(is.na(doi_with_altmetric$WebQualis[ix])),
                 "?",
-                doi_unique$WebQualis[ix]
+                doi_with_altmetric$WebQualis[ix]
               ),
               "</a>"
             ),
@@ -204,8 +204,8 @@ table.with.badges <-
     }
     
     # print table with DOI but no Altmetric (== NA; donut ?)
-    if (max(dim(my_doi_works)[1], 0) != 0) {
-      for (ix in 1:dim(my_doi_works)[1]) {
+    if (max(dim(doi_without_altmetric)[1], 0) != 0) {
+      for (ix in 1:dim(doi_without_altmetric)[1]) {
         # add bibliography info
         cat("<tr><td valign=top;>")
         cat("<br>")
@@ -213,10 +213,10 @@ table.with.badges <-
           # add OPEN ACESS badge
           tryCatch(
             expr = {
-              if (as.logical(my_doi_works$is_oa[ix])) {
+              if (as.logical(doi_without_altmetric$is_oa[ix])) {
                 cat(
                   "<a style=\"display: inline-block; float: left; margin:0.0em 0.2em 0.0em 0.0em; padding:0.0em 0.2em 0.0em 0.0em;\" href=\"",
-                  my_doi_works$url[ix],
+                  doi_without_altmetric$url[ix],
                   "\" target=\"_blank\">",
                   "<img height=\"18px;\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Open_Access_logo_PLoS_white.svg/256px-Open_Access_logo_PLoS_white.svg.png\">",
                   "</a>",
@@ -232,31 +232,31 @@ table.with.badges <-
           # add title with link
           paste0(
             "[**",
-            my_doi_works$title[ix],
+            doi_without_altmetric$title[ix],
             "**](https://doi.org/",
-            my_doi_works$doi[ix],
+            doi_without_altmetric$doi[ix],
             "){target=\"_blank\"}",
             "<br>"
           )
         )
         
         # add authors' names
-        my_doi_works$author.names[ix]
+        doi_without_altmetric$author.names[ix]
         
         # add year
         cat(paste0("<br>",
                    paste0(
                      ifelse(
-                       !is.na(my_doi_works$issued[ix]),
-                       substr(my_doi_works$issued[ix], 1, 4),
-                       substr(my_doi_works$created[ix], 1, 4)
+                       !is.na(doi_without_altmetric$issued[ix]),
+                       substr(doi_without_altmetric$issued[ix], 1, 4),
+                       substr(doi_without_altmetric$created[ix], 1, 4)
                      ),
                      "&nbsp; - &nbsp;"
                    )))
         
         # add jornal's title
         cat(paste0("*",
-                   toTitleCase(my_doi_works$journal[ix]),
+                   toTitleCase(doi_without_altmetric$journal[ix]),
                    "*",
                    "<br>"))
         
@@ -278,7 +278,7 @@ table.with.badges <-
         if (show.Dimensions == TRUE) {
           cat(
             "<a style=\"display: inline-block; float: left; margin:0.1em 0.3em 0.1em 0.3em;\" data-legend=\"hover-right\" class=\"__dimensions_badge_embed__\" data-doi=\"",
-            my_doi_works$doi[ix],
+            doi_without_altmetric$doi[ix],
             "\" data-style=\"small_circle\"></a>",
             sep = ""
           )
@@ -288,7 +288,7 @@ table.with.badges <-
         if (show.PlumX == TRUE) {
           cat(
             "<a style=\"display: inline-block; float: left; margin:0.1em 0.3em 0.1em 0.3em; padding:0.4em 0.3em 0.4em 0.3em;\" class=\"plumx-plum-print-popup\" href=\"https://plu.mx/plum/a/?doi=",
-            my_doi_works$doi[ix],
+            doi_without_altmetric$doi[ix],
             "\" data-popup=\"right\" data-size=\"medium\" data-site=\"plum\"></a>",
             sep = ""
           )
@@ -297,7 +297,7 @@ table.with.badges <-
         # add CiteScore
         if (show.CiteScore == TRUE) {
           citescore.out <-
-            get_citescore(citescore = citescore, my_doi_works = my_doi_works[ix, ])
+            get_citescore(citescore = citescore, doi_without_altmetric = doi_without_altmetric[ix, ])
           cat(
             "<a href=\"https://www.scopus.com/sourceid/",
             citescore.out$citescore_id,
@@ -341,7 +341,7 @@ table.with.badges <-
         # add SJR
         if (show.SJR == TRUE) {
           sjr.out <-
-            get_sjr(scimago = scimago, my_doi_works = my_doi_works[ix, ])
+            get_sjr(scimago = scimago, doi_without_altmetric = doi_without_altmetric[ix, ])
           cat(
             "<a style=\"display: inline-block; float: left; margin:0.1em 0.3em 0.1em 0.3em;\" href=\"https://www.scimagojr.com/journalsearch.php?q=",
             paste0(ifelse(
@@ -364,10 +364,10 @@ table.with.badges <-
             "<a style=\"border-radius:10%; border-style: solid; margin:0.1em 0.3em 0.1em 0.3em; padding:0.4em 0.3em 0.4em 0.3em; text-decoration:none; text-align: center; display:inline-block; float:left; color:black;\"> Qualis <br>",
             paste0(
               ifelse(
-                identical(my_doi_works$WebQualis[ix], numeric(0)) |
-                  all(is.na(my_doi_works$WebQualis[ix])),
+                identical(doi_without_altmetric$WebQualis[ix], numeric(0)) |
+                  all(is.na(doi_without_altmetric$WebQualis[ix])),
                 "?",
-                my_doi_works$WebQualis[ix]
+                doi_without_altmetric$WebQualis[ix]
               ),
               "</a>"
             ),

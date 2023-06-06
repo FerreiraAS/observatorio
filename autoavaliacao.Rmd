@@ -207,9 +207,9 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-```{r barchart-data, eval = any(has.sucupira, has.PPG.files)}
+```{r barchart-data, eval = any(has.sucupira.files, has.ppg.files)}
 data.sucupira <- 0
-if (has.sucupira) {
+if (has.sucupira.files) {
   # get amount of data from Sucupira XLSX files
   source("Scripts/get-sucupira-sheets-names.R",
          local = knitr::knit_global())
@@ -223,7 +223,7 @@ if (has.sucupira) {
 }
 
 data.ppg <- 0
-if (has.PPG.files) {
+if (has.ppg.files) {
   # get amount of data from PPG XLSX files
   source("Scripts/get-ppg-xlsx-data.R", local = knitr::knit_global())
   if (length(files.to.read) != 0) {
@@ -272,7 +272,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Dados perdidos**
 
-```{r missing-data-sucupira, eval = has.sucupira}
+```{r missing-data-sucupira, eval = has.sucupira.files}
 # initialize data
 missing.data <- c()
 
@@ -892,7 +892,7 @@ cat(
 
 #### **Atividades de ensino nas disciplinas do PPG**
 
-```{r turmas-docentes-2024, eval = has.sucupira}
+```{r turmas-docentes-2024, eval = has.sucupira.files}
 # load custom function
 source("Scripts/get-initials.R", local = knitr::knit_global())
 

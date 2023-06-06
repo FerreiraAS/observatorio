@@ -1,39 +1,39 @@
 get_webqualis <-
   function(qualis,
            scimago,
-           doi_unique = NULL,
-           my_doi_works = NULL) {
+           doi_with_altmetric = NULL,
+           doi_without_altmetric = NULL) {
     # initialize values
     WebQualis_value <- NA
     
-    # get WebQualis for "doi_unique" data
-    if (!is.null(doi_unique)) {
+    # get WebQualis for "doi_with_altmetric" data
+    if (!is.null(doi_with_altmetric)) {
       # try first ISSN
       WebQualis_value <-
-        qualis[match(doi_unique$issn, qualis$ISSN), 3]
+        qualis[match(doi_with_altmetric$issn, qualis$ISSN), 3]
       if (is.na(WebQualis_value)) {
         # try journal name
         WebQualis_value <-
-          qualis[match(tolower(gsub("&", "and", doi_unique$journal)),
+          qualis[match(tolower(gsub("&", "and", doi_with_altmetric$journal)),
                        tolower(qualis$Título)), 3]
       }
       if (is.na(WebQualis_value)) {
         # try other ISSN
         new.issn <-
-          trimws(gsub(",", "", gsub(doi_unique$issn, "", scimago$Issn[grep(gsub("-", "", doi_unique$issn), scimago$Issn)])))
+          trimws(gsub(",", "", gsub(doi_with_altmetric$issn, "", scimago$Issn[grep(gsub("-", "", doi_with_altmetric$issn), scimago$Issn)])))
         issn.2 <- gsub('^(.{4})(.*)$', '\\1-\\2', new.issn)
         WebQualis_value <- qualis[match(new.issn, qualis$ISSN), 3]
       }
     }
-    # get WebQualis for "my_doi_works" data
-    if (!is.null(my_doi_works)) {
-      if (is.na(my_doi_works$issn)) {
+    # get WebQualis for "doi_without_altmetric" data
+    if (!is.null(doi_without_altmetric)) {
+      if (is.na(doi_without_altmetric$issn)) {
         WebQualis_value <- NA
       }
       else {
         # try first and second ISSN
-        issn.1 <- strsplit(my_doi_works$issn, ",")[[1]][1]
-        issn.2 <- strsplit(my_doi_works$issn, ",")[[1]][2]
+        issn.1 <- strsplit(doi_without_altmetric$issn, ",")[[1]][1]
+        issn.2 <- strsplit(doi_without_altmetric$issn, ",")[[1]][2]
         WebQualis.1 <-
           qualis$Estrato[match(issn.1, qualis$ISSN)]
         WebQualis.2 <-
@@ -47,7 +47,7 @@ get_webqualis <-
       if (is.na(WebQualis_value)) {
         # try journal name
         WebQualis_value <-
-          qualis[match(tolower(my_doi_works$journal),
+          qualis[match(tolower(doi_without_altmetric$journal),
                        tolower(qualis$Título)), 3]
       }
     }
