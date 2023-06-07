@@ -308,7 +308,7 @@ if (dim(bolsistas)[1] != 0) {
   # plot 1 (total de bolsistas, por ano)
   # Define the number of colors you want
   nb.cols <- 1
-  mycolors <- colorRampPalette(brewer.pal(9, "Set3"))(nb.cols)
+  mycolors <- colorRampPalette(RColorBrewer::brewer.pal(9, "Set3"))(nb.cols)
   
   # generate plot of turmas per year
   par(oma = c(2, 0.1, 2, 0.1),

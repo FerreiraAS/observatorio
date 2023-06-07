@@ -818,7 +818,7 @@ cat('\n\n')
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 # bind sources
-doi_with_altmetric <- dois_unique_retracted
+doi_with_altmetric <- doi_with_altmetric_retracted
 doi_without_altmetric <- doi_without_altmetric_retracted
 
 # available years of publication

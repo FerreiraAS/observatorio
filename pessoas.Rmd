@@ -871,14 +871,14 @@ total.categoria <- table(docentes$Categoria)
 pie(
   total.categoria,
   labels = NA,
-  col = brewer.pal(n = length(names(total.categoria)), name = "Set3"),
+  col = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
   init.angle = 90,
   main = names(docentes$Categoria)
 )
 legend(
   "topleft",
   legend = names(total.categoria),
-  fill = brewer.pal(n = length(names(total.categoria)), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
   box.lwd = 0,
   cex = 1,
   bg = NA
@@ -888,14 +888,14 @@ total.regime <- table(docentes$`Regime de trabalho`)
 pie(
   total.regime,
   labels = NA,
-  col = brewer.pal(n = length(names(total.regime)), name = "Set3"),
+  col = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
   init.angle = 90,
   main = names(docentes$`Regime de trabalho`)
 )
 legend(
   "topleft",
   legend = names(total.regime),
-  fill = brewer.pal(n = length(names(total.regime)), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
   box.lwd = 0,
   cex = 1,
   bg = NA
@@ -905,14 +905,14 @@ total.dedicação <- table(docentes$Dedicação)
 pie(
   total.dedicação,
   labels = NA,
-  col = brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
+  col = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
   init.angle = 90,
   main = names(docentes$Dedicação)
 )
 legend(
   "topleft",
   legend = names(total.dedicação),
-  fill = brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
   box.lwd = 0,
   cex = 1,
   bg = NA
@@ -922,14 +922,14 @@ total.graduação <- table(docentes$Graduação)
 pie(
   total.graduação,
   labels = NA,
-  col = brewer.pal(n = length(names(total.graduação)), name = "Set3"),
+  col = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"),
   init.angle = 90,
   main = names(docentes$Graduação)
 )
 legend(
   "topleft",
   legend = names(total.graduação),
-  fill = brewer.pal(n = length(names(total.graduação)), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"),
   box.lwd = 0,
   cex = 1,
   bg = NA
@@ -1071,20 +1071,20 @@ print(
 # par(oma=c(2, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
 #
 # total.categoria <- table(docentes$Categoria)
-# pie(total.categoria, labels = NA, col = brewer.pal(n = length(names(total.categoria)), name = "Set3"), init.angle = 90, main = names(docentes$Categoria))
-# legend("topleft", legend = names(total.categoria), fill = brewer.pal(n = length(names(total.categoria)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
+# pie(total.categoria, labels = NA, col = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"), init.angle = 90, main = names(docentes$Categoria))
+# legend("topleft", legend = names(total.categoria), fill = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
 #
 # total.regime <- table(docentes$`Regime de trabalho`)
-# pie(total.regime, labels = NA, col = brewer.pal(n = length(names(total.regime)), name = "Set3"), init.angle = 90, main = names(docentes$`Regime de trabalho`))
-# legend("topleft", legend = names(total.regime), fill = brewer.pal(n = length(names(total.regime)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
+# pie(total.regime, labels = NA, col = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"), init.angle = 90, main = names(docentes$`Regime de trabalho`))
+# legend("topleft", legend = names(total.regime), fill = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
 #
 # total.dedicação <- table(docentes$Dedicação)
-# pie(total.dedicação, labels = NA, col = brewer.pal(n = length(names(total.dedicação)), name = "Set3"), init.angle = 90, main = names(docentes$Dedicação))
-# legend("topleft", legend = names(total.dedicação), fill = brewer.pal(n = length(names(total.dedicação)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
+# pie(total.dedicação, labels = NA, col = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"), init.angle = 90, main = names(docentes$Dedicação))
+# legend("topleft", legend = names(total.dedicação), fill = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
 #
 # total.graduação <- table(docentes$Graduação)
-# pie(total.graduação, labels = NA, col = brewer.pal(n = length(names(total.graduação)), name = "Set3"), init.angle = 90, main = names(docentes$Graduação))
-# legend("topleft", legend = names(total.graduação), fill = brewer.pal(n = length(names(total.graduação)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
+# pie(total.graduação, labels = NA, col = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"), init.angle = 90, main = names(docentes$Graduação))
+# legend("topleft", legend = names(total.graduação), fill = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
 #
 # title("Descrição do Corpo Docente", outer = TRUE)
 ```
@@ -1219,14 +1219,14 @@ total.categoria <- table(docentes$Categoria)
 pie(
   total.categoria,
   labels = NA,
-  col = brewer.pal(n = length(names(total.categoria)), name = "Set3"),
+  col = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
   init.angle = 90,
   main = names(docentes$Categoria)
 )
 legend(
   "topleft",
   legend = names(total.categoria),
-  fill = brewer.pal(n = length(names(total.categoria)), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
   box.lwd = 0,
   cex = 1,
   bg = NA
@@ -1236,14 +1236,14 @@ total.regime <- table(docentes$`Regime de trabalho`)
 pie(
   total.regime,
   labels = NA,
-  col = brewer.pal(n = length(names(total.regime)), name = "Set3"),
+  col = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
   init.angle = 90,
   main = names(docentes$`Regime de trabalho`)
 )
 legend(
   "topleft",
   legend = names(total.regime),
-  fill = brewer.pal(n = length(names(total.regime)), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
   box.lwd = 0,
   cex = 1,
   bg = NA
@@ -1253,14 +1253,14 @@ total.dedicação <- table(docentes$Dedicação)
 pie(
   total.dedicação,
   labels = NA,
-  col = brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
+  col = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
   init.angle = 90,
   main = names(docentes$Dedicação)
 )
 legend(
   "topleft",
   legend = names(total.dedicação),
-  fill = brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
   box.lwd = 0,
   cex = 1,
   bg = NA
@@ -1270,14 +1270,14 @@ total.graduação <- table(docentes$Graduação)
 pie(
   total.graduação,
   labels = NA,
-  col = brewer.pal(n = length(names(total.graduação)), name = "Set3"),
+  col = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"),
   init.angle = 90,
   main = names(docentes$Graduação)
 )
 legend(
   "topleft",
   legend = names(total.graduação),
-  fill = brewer.pal(n = length(names(total.graduação)), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"),
   box.lwd = 0,
   cex = 1,
   bg = NA
@@ -1419,20 +1419,20 @@ print(
 # par(oma=c(2, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
 #
 # total.categoria <- table(docentes$Categoria)
-# pie(total.categoria, labels = NA, col = brewer.pal(n = length(names(total.categoria)), name = "Set3"), init.angle = 90, main = names(docentes$Categoria))
-# legend("topleft", legend = names(total.categoria), fill = brewer.pal(n = length(names(total.categoria)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
+# pie(total.categoria, labels = NA, col = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"), init.angle = 90, main = names(docentes$Categoria))
+# legend("topleft", legend = names(total.categoria), fill = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
 #
 # total.regime <- table(docentes$`Regime de trabalho`)
-# pie(total.regime, labels = NA, col = brewer.pal(n = length(names(total.regime)), name = "Set3"), init.angle = 90, main = names(docentes$`Regime de trabalho`))
-# legend("topleft", legend = names(total.regime), fill = brewer.pal(n = length(names(total.regime)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
+# pie(total.regime, labels = NA, col = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"), init.angle = 90, main = names(docentes$`Regime de trabalho`))
+# legend("topleft", legend = names(total.regime), fill = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
 #
 # total.dedicação <- table(docentes$Dedicação)
-# pie(total.dedicação, labels = NA, col = brewer.pal(n = length(names(total.dedicação)), name = "Set3"), init.angle = 90, main = names(docentes$Dedicação))
-# legend("topleft", legend = names(total.dedicação), fill = brewer.pal(n = length(names(total.dedicação)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
+# pie(total.dedicação, labels = NA, col = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"), init.angle = 90, main = names(docentes$Dedicação))
+# legend("topleft", legend = names(total.dedicação), fill = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
 #
 # total.graduação <- table(docentes$Graduação)
-# pie(total.graduação, labels = NA, col = brewer.pal(n = length(names(total.graduação)), name = "Set3"), init.angle = 90, main = names(docentes$Graduação))
-# legend("topleft", legend = names(total.graduação), fill = brewer.pal(n = length(names(total.graduação)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
+# pie(total.graduação, labels = NA, col = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"), init.angle = 90, main = names(docentes$Graduação))
+# legend("topleft", legend = names(total.graduação), fill = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
 #
 # title("Descrição do Corpo Docente", outer = TRUE)
 ```
@@ -1567,14 +1567,14 @@ total.categoria <- table(docentes$Categoria)
 pie(
   total.categoria,
   labels = NA,
-  col = brewer.pal(n = length(names(total.categoria)), name = "Set3"),
+  col = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
   init.angle = 90,
   main = names(docentes$Categoria)
 )
 legend(
   "topleft",
   legend = names(total.categoria),
-  fill = brewer.pal(n = length(names(total.categoria)), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
   box.lwd = 0,
   cex = 1,
   bg = NA
@@ -1584,14 +1584,14 @@ total.regime <- table(docentes$`Regime de trabalho`)
 pie(
   total.regime,
   labels = NA,
-  col = brewer.pal(n = length(names(total.regime)), name = "Set3"),
+  col = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
   init.angle = 90,
   main = names(docentes$`Regime de trabalho`)
 )
 legend(
   "topleft",
   legend = names(total.regime),
-  fill = brewer.pal(n = length(names(total.regime)), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
   box.lwd = 0,
   cex = 1,
   bg = NA
@@ -1601,14 +1601,14 @@ total.dedicação <- table(docentes$Dedicação)
 pie(
   total.dedicação,
   labels = NA,
-  col = brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
+  col = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
   init.angle = 90,
   main = names(docentes$Dedicação)
 )
 legend(
   "topleft",
   legend = names(total.dedicação),
-  fill = brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
   box.lwd = 0,
   cex = 1,
   bg = NA
@@ -1618,14 +1618,14 @@ total.graduação <- table(docentes$Graduação)
 pie(
   total.graduação,
   labels = NA,
-  col = brewer.pal(n = length(names(total.graduação)), name = "Set3"),
+  col = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"),
   init.angle = 90,
   main = names(docentes$Graduação)
 )
 legend(
   "topleft",
   legend = names(total.graduação),
-  fill = brewer.pal(n = length(names(total.graduação)), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"),
   box.lwd = 0,
   cex = 1,
   bg = NA
@@ -1767,20 +1767,20 @@ print(
 # par(oma=c(2, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
 #
 # total.categoria <- table(docentes$Categoria)
-# pie(total.categoria, labels = NA, col = brewer.pal(n = length(names(total.categoria)), name = "Set3"), init.angle = 90, main = names(docentes$Categoria))
-# legend("topleft", legend = names(total.categoria), fill = brewer.pal(n = length(names(total.categoria)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
+# pie(total.categoria, labels = NA, col = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"), init.angle = 90, main = names(docentes$Categoria))
+# legend("topleft", legend = names(total.categoria), fill = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
 #
 # total.regime <- table(docentes$`Regime de trabalho`)
-# pie(total.regime, labels = NA, col = brewer.pal(n = length(names(total.regime)), name = "Set3"), init.angle = 90, main = names(docentes$`Regime de trabalho`))
-# legend("topleft", legend = names(total.regime), fill = brewer.pal(n = length(names(total.regime)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
+# pie(total.regime, labels = NA, col = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"), init.angle = 90, main = names(docentes$`Regime de trabalho`))
+# legend("topleft", legend = names(total.regime), fill = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
 #
 # total.dedicação <- table(docentes$Dedicação)
-# pie(total.dedicação, labels = NA, col = brewer.pal(n = length(names(total.dedicação)), name = "Set3"), init.angle = 90, main = names(docentes$Dedicação))
-# legend("topleft", legend = names(total.dedicação), fill = brewer.pal(n = length(names(total.dedicação)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
+# pie(total.dedicação, labels = NA, col = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"), init.angle = 90, main = names(docentes$Dedicação))
+# legend("topleft", legend = names(total.dedicação), fill = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
 #
 # total.graduação <- table(docentes$Graduação)
-# pie(total.graduação, labels = NA, col = brewer.pal(n = length(names(total.graduação)), name = "Set3"), init.angle = 90, main = names(docentes$Graduação))
-# legend("topleft", legend = names(total.graduação), fill = brewer.pal(n = length(names(total.graduação)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
+# pie(total.graduação, labels = NA, col = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"), init.angle = 90, main = names(docentes$Graduação))
+# legend("topleft", legend = names(total.graduação), fill = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
 #
 # title("Descrição do Corpo Docente", outer = TRUE)
 ```
@@ -1915,14 +1915,14 @@ total.categoria <- table(docentes$Categoria)
 pie(
   total.categoria,
   labels = NA,
-  col = brewer.pal(n = length(names(total.categoria)), name = "Set3"),
+  col = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
   init.angle = 90,
   main = names(docentes$Categoria)
 )
 legend(
   "topleft",
   legend = names(total.categoria),
-  fill = brewer.pal(n = length(names(total.categoria)), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
   box.lwd = 0,
   cex = 1,
   bg = NA
@@ -1932,14 +1932,14 @@ total.regime <- table(docentes$`Regime de trabalho`)
 pie(
   total.regime,
   labels = NA,
-  col = brewer.pal(n = length(names(total.regime)), name = "Set3"),
+  col = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
   init.angle = 90,
   main = names(docentes$`Regime de trabalho`)
 )
 legend(
   "topleft",
   legend = names(total.regime),
-  fill = brewer.pal(n = length(names(total.regime)), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
   box.lwd = 0,
   cex = 1,
   bg = NA
@@ -1949,14 +1949,14 @@ total.dedicação <- table(docentes$Dedicação)
 pie(
   total.dedicação,
   labels = NA,
-  col = brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
+  col = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
   init.angle = 90,
   main = names(docentes$Dedicação)
 )
 legend(
   "topleft",
   legend = names(total.dedicação),
-  fill = brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
   box.lwd = 0,
   cex = 1,
   bg = NA
@@ -1966,14 +1966,14 @@ total.graduação <- table(docentes$Graduação)
 pie(
   total.graduação,
   labels = NA,
-  col = brewer.pal(n = length(names(total.graduação)), name = "Set3"),
+  col = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"),
   init.angle = 90,
   main = names(docentes$Graduação)
 )
 legend(
   "topleft",
   legend = names(total.graduação),
-  fill = brewer.pal(n = length(names(total.graduação)), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"),
   box.lwd = 0,
   cex = 1,
   bg = NA
@@ -2115,20 +2115,20 @@ print(
 # par(oma=c(2, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
 #
 # total.categoria <- table(docentes$Categoria)
-# pie(total.categoria, labels = NA, col = brewer.pal(n = length(names(total.categoria)), name = "Set3"), init.angle = 90, main = names(docentes$Categoria))
-# legend("topleft", legend = names(total.categoria), fill = brewer.pal(n = length(names(total.categoria)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
+# pie(total.categoria, labels = NA, col = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"), init.angle = 90, main = names(docentes$Categoria))
+# legend("topleft", legend = names(total.categoria), fill = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
 #
 # total.regime <- table(docentes$`Regime de trabalho`)
-# pie(total.regime, labels = NA, col = brewer.pal(n = length(names(total.regime)), name = "Set3"), init.angle = 90, main = names(docentes$`Regime de trabalho`))
-# legend("topleft", legend = names(total.regime), fill = brewer.pal(n = length(names(total.regime)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
+# pie(total.regime, labels = NA, col = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"), init.angle = 90, main = names(docentes$`Regime de trabalho`))
+# legend("topleft", legend = names(total.regime), fill = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
 #
 # total.dedicação <- table(docentes$Dedicação)
-# pie(total.dedicação, labels = NA, col = brewer.pal(n = length(names(total.dedicação)), name = "Set3"), init.angle = 90, main = names(docentes$Dedicação))
-# legend("topleft", legend = names(total.dedicação), fill = brewer.pal(n = length(names(total.dedicação)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
+# pie(total.dedicação, labels = NA, col = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"), init.angle = 90, main = names(docentes$Dedicação))
+# legend("topleft", legend = names(total.dedicação), fill = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
 #
 # total.graduação <- table(docentes$Graduação)
-# pie(total.graduação, labels = NA, col = brewer.pal(n = length(names(total.graduação)), name = "Set3"), init.angle = 90, main = names(docentes$Graduação))
-# legend("topleft", legend = names(total.graduação), fill = brewer.pal(n = length(names(total.graduação)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
+# pie(total.graduação, labels = NA, col = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"), init.angle = 90, main = names(docentes$Graduação))
+# legend("topleft", legend = names(total.graduação), fill = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"), box.lwd = 0, cex = 1, bg = NA)
 #
 # title("Descrição do Corpo Docente", outer = TRUE)
 ```

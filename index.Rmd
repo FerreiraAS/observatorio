@@ -226,7 +226,7 @@ links <- summ.AC.LP
 nodes <- data.frame(name = c(as.character(links$source),
                              as.character(links$target)) %>% unique())
 
-# We need a data frame giving a hierarchical structure. Let's consider the flare dataset:
+# We need a data frame giving a hierarchical structure. Let's consider the flare dataset
 edges1 <-
   aggregate(
     alluv.data$sucupira.raw..Linha.de.Pesquisa.,
@@ -237,7 +237,7 @@ edges1 <-
     FUN = length
   )
 
-# Usually we associate another dataset that give information about each node of the dataset:
+# Usually we associate another dataset that give information about each node of the dataset
 vertices <- NULL
 
 # Then we have to make a 'graph' object using the igraph library:
@@ -257,7 +257,7 @@ par(
 # Make the plot
 ggraph(mygraph, layout = 'circlepack', weight = c(0, edges1[, 3])) +
   geom_node_circle(aes(fill = as.factor(depth))) +
-  scale_colour_brewer(brewer.pal(n = 9, name = "Set3")) +
+  scale_colour_brewer(RColorBrewer::brewer.pal(n = 9, name = "Set3")) +
   scale_fill_discrete(labels = c("Áreas de concentração", "Linhas de pesquisa")) +
   theme_void() +
   theme(
@@ -301,11 +301,11 @@ source("Scripts/plot-summaries.R", local = knitr::knit_global())
 
 ```{r sintese-coerencia-carousel, eval = has.sucupira.files}
 # carousel
-bs_carousel(id = "coerencia-carousel",
+bsplus::bs_carousel(id = "coerencia-carousel",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-1.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-2.png"))
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-1.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-2.png"))
 
 cat('\n\n')
 cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
@@ -348,12 +348,12 @@ source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
 
 ```{r sintese-temas-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", out.width = "100%", eval = has.sucupira.files}
 # carousel of wordclouds
-bs_carousel(id = "temas-carouse",
+bsplus::bs_carousel(id = "temas-carouse",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/Projetos.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/TCC.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/Produções.png"))
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/Projetos.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/TCC.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/Produções.png"))
 
 cat('\n\n')
 cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
@@ -450,14 +450,14 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 # plot 1 (total de projetos por linha, por ano)
 barplot(projetos.ano,
         ylab = "N",
-        col = brewer.pal(n = length(linhas), name = "Set3"))
+        col = RColorBrewer::brewer.pal(n = length(linhas), name = "Set3"))
 title(main = "Projetos por Linha de Pesquisa",
       outer = TRUE,
       cex.main = 1.7)
 legend(
   "topright",
   legend = linhas,
-  fill = brewer.pal(n = length(linhas), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(linhas), name = "Set3"),
   text.col = "white",
   box.lwd = 0,
   bty = "n",
@@ -473,7 +473,7 @@ barplot(
     scale = colSums(as.matrix(projetos.ano))
   ) * 100,
   ylab = "%",
-  col = brewer.pal(n = length(linhas), name = "Set3"),
+  col = RColorBrewer::brewer.pal(n = length(linhas), name = "Set3"),
   ylim = c(0, 100)
 )
 title(main = "Projetos por Linha de Pesquisa",
@@ -494,12 +494,12 @@ source("Scripts/plot-summaries.R", local = knitr::knit_global())
 
 ```{r sintese-projetos-carousel, eval = has.sucupira.files}
 # carousel
-bs_carousel(id = "projetos-carousel",
+bsplus::bs_carousel(id = "projetos-carousel",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-projetos-1.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-projetos-2.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-projetos-3.png"))
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-projetos-1.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-projetos-2.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-projetos-3.png"))
 
 cat('\n\n')
 cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
@@ -540,14 +540,14 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 # plot 1 (financiadores per agency by year (absolute frequency)
 barplot(N.editais.agencia.ano,
         ylab = "N",
-        col = brewer.pal(n = length(agencias), name = "Set3"))
+        col = RColorBrewer::brewer.pal(n = length(agencias), name = "Set3"))
 title(main = "Editais financiados por agência",
       outer = TRUE,
       cex.main = 1.7)
 legend(
   "topleft",
   legend = agencias,
-  fill = brewer.pal(n = length(agencias), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(agencias), name = "Set3"),
   text.col = "white",
   box.lwd = 0,
   bty = "n",
@@ -581,14 +581,14 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 
 barplot(T.editais.agencia.ano,
         ylab = "R$",
-        col = brewer.pal(n = length(agencias), name = "Set3"))
+        col = RColorBrewer::brewer.pal(n = length(agencias), name = "Set3"))
 title(main = "Valores financiados por agência",
       outer = TRUE,
       cex.main = 1.7)
 legend(
   "topleft",
   legend = agencias,
-  fill = brewer.pal(n = length(agencias), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(agencias), name = "Set3"),
   text.col = "white",
   box.lwd = 0,
   bty = "n",
@@ -608,7 +608,7 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 
 barplot(professores.ano,
         ylab = "N",
-        col = rep(brewer.pal(n = 9, name = "Set3")[1], length(professores.ano)))
+        col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(professores.ano)))
 title(main = "Docentes com financiamento",
       outer = TRUE,
       cex.main = 1.7)
@@ -642,7 +642,7 @@ barplot(
   height = rev(data.editais$value),
   names = rev(data.editais$name),
   xlab = "N",
-  col = rep(brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
+  col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
   horiz = T,
   las = 1,
   cex.names = 0.7
@@ -682,7 +682,7 @@ barplot(
   height = rev(data.agencias$value),
   names = rev(data.agencias$name),
   xlab = "N",
-  col = rep(brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
+  col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
   horiz = T,
   las = 1,
   cex.names = 0.7
@@ -756,32 +756,32 @@ source("Scripts/plot-summaries.R", local = knitr::knit_global())
 
 ```{r sintese-financiadores-carousel, eval = has.financiadores}
 # carousel
-bs_carousel(id = "financiadores-carousel",
+bsplus::bs_carousel(id = "financiadores-carousel",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
-  bs_append(
+  bsplus::bs_append(
     id = "financiadores-carousel",
-    content = bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-1.png")
+    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-1.png")
   ) %>%
-  bs_append(
+  bsplus::bs_append(
     id = "financiadores-carousel",
-    content = bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-2.png")
+    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-2.png")
   ) %>%
-  bs_append(
+  bsplus::bs_append(
     id = "financiadores-carousel",
-    content = bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-3.png")
+    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-3.png")
   ) %>%
-  bs_append(
+  bsplus::bs_append(
     id = "financiadores-carousel",
-    content = bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-4.png")
+    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-4.png")
   ) %>%
-  bs_append(
+  bsplus::bs_append(
     id = "financiadores-carousel",
-    content = bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-5.png")
+    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-5.png")
   ) %>%
-  bs_append(
+  bsplus::bs_append(
     id = "financiadores-carousel",
-    content = bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-6.png")
+    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-6.png")
   )
 
 cat('\n\n')
@@ -852,7 +852,7 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 
 # Define the number of colors you want
 nb.cols <- length(rownames(table.2))
-mycolors <- colorRampPalette(brewer.pal(9, "Set3"))(nb.cols)
+mycolors <- colorRampPalette(RColorBrewer::brewer.pal(9, "Set3"))(nb.cols)
 
 # plot 1 (total de produção bilbiográfica, por ano)
 barplot(table.1,
@@ -864,7 +864,7 @@ title(main = "Produção Bibliográfica",
 
 # Define the number of colors you want
 nb.cols <- length(rownames(table.2))
-mycolors <- colorRampPalette(brewer.pal(9, "Blues"))(nb.cols)
+mycolors <- colorRampPalette(RColorBrewer::brewer.pal(9, "Blues"))(nb.cols)
 
 # plot 2 (total de produção bilbiográfica, por estrato, por ano)
 barplot(table.2,
@@ -900,7 +900,7 @@ legend(
 #       cex.main = 1.7)
 
 # plot 4 (violin plot of SJR por ano)
-vioplot(as.numeric(table.3[, 2]) ~ as.numeric(table.3[, 1]),
+vioplot::vioplot(as.numeric(table.3[, 2]) ~ as.numeric(table.3[, 1]),
         xlab = NA,
         ylab = "SJR")
 title(main = "Qualidade da produção (SJR)",
@@ -908,7 +908,7 @@ title(main = "Qualidade da produção (SJR)",
       cex.main = 1.7)
 
 # plot 5 (violin plot of CiteScore por ano)
-vioplot(as.numeric(table.4[, 2]) ~ as.numeric(table.4[, 1]),
+vioplot::vioplot(as.numeric(table.4[, 2]) ~ as.numeric(table.4[, 1]),
         xlab = NA,
         ylab = "CiteScore")
 title(main = "Qualidade da produção (CiteScore)",
@@ -940,7 +940,7 @@ data.journals$name <- broken_text
 
 # Define the number of colors you want
 nb.cols <- length(rownames(table.2))
-mycolors <- colorRampPalette(brewer.pal(9, "Set3"))(nb.cols)
+mycolors <- colorRampPalette(RColorBrewer::brewer.pal(9, "Set3"))(nb.cols)
 
 options(digits = 10)
 barplot(
@@ -1017,7 +1017,7 @@ legend(
 SJR.base <- scimago$SJR[!is.na(scimago$SJR)]
 SJR.PPG <- doi_all$SJR[!is.na(doi_all$SJR)]
 
-vioplot(
+vioplot::vioplot(
   as.numeric(SJR.base),
   col = mycolors[1],
   xlab = NA,
@@ -1031,7 +1031,7 @@ vioplot(
   xaxt = 'n',
   ann = FALSE
 )
-vioplot(
+vioplot::vioplot(
   as.numeric(SJR.PPG),
   col = mycolors[2],
   xlab = NA,
@@ -1051,7 +1051,7 @@ vioplot(
 CITESCORE.base <- citescore$x2021_cite_score[!is.na(citescore$x2021_cite_score)]
 CITESCORE.PPG <- doi_all$CiteScore[!is.na(doi_all$CiteScore)]
 
-vioplot(
+vioplot::vioplot(
   as.numeric(CITESCORE.base),
   col = mycolors[1],
   xlab = NA,
@@ -1065,7 +1065,7 @@ vioplot(
   xaxt = 'n',
   ann = FALSE
 )
-vioplot(
+vioplot::vioplot(
   as.numeric(CITESCORE.PPG),
   col = mycolors[2],
   xlab = NA,
@@ -1178,16 +1178,16 @@ source("Scripts/plot-summaries.R", local = knitr::knit_global())
 
 ```{r sintese-producao-carousel, eval = any(has.producao.ppg, has.producao.sucupira)}
 # carousel
-bs_carousel(id = "producao-carousel",
+bsplus::bs_carousel(id = "producao-carousel",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-1.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-2.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-3.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-4.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-5.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-6.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-producao-7.png"))
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-1.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-2.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-3.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-4.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-5.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-6.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-7.png"))
 
 cat('\n\n')
 cat(
@@ -1212,7 +1212,7 @@ layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 
 # plot 1 (violin plot of Altmetric por ano)
-vioplot(as.numeric(table.1[, 2]) ~ as.numeric(table.1[, 1]),
+vioplot::vioplot(as.numeric(table.1[, 2]) ~ as.numeric(table.1[, 1]),
         xlab = NA,
         ylab = "Altmetric")
 title(main = "Atenção e visibilidade (Altmetric)",
@@ -1240,7 +1240,7 @@ rasterImage(
 text(
   x = (x1 + x2) / 2,
   y = (y1 + y2) / 2,
-  labels = as.character(sum(table.1[, 2])),
+  labels = as.character(sum(na.omit(as.numeric(table.1[, 2])))),
   adj = 0.5
 )
 
@@ -1257,7 +1257,7 @@ table.2 <- table.2[seq_len(nrow(table.2)) + c(1,-1),]
 
 # Define the number of colors you want
 nb.cols <- length(rownames(table.2))
-mycolors <- colorRampPalette(brewer.pal(9, "Set3"))(nb.cols)
+mycolors <- colorRampPalette(RColorBrewer::brewer.pal(9, "Set3"))(nb.cols)
 
 # plot 2 (IS_OA in plot)
 layout.m <- c(1)
@@ -1302,7 +1302,7 @@ if(sum(doi_all$citations) == 0){
 
 # Define the number of colors you want
 nb.cols <- length(table.3)
-mycolors <- colorRampPalette(brewer.pal(9, "Set3"))(nb.cols)
+mycolors <- colorRampPalette(RColorBrewer::brewer.pal(9, "Set3"))(nb.cols)
 
 # plot 3 (CITATIONS in plot)
 layout.m <- c(1)
@@ -1320,7 +1320,7 @@ title(main = "Total de citações",
 # calculate summary statistics for visibilidade
 summ.table.visibilidade <-
   cbind(
-    sum(table.1[, 2]),
+    sum(na.omit(as.numeric(table.1[, 2]))),
     formatC(
       min(table.1[, 2], na.rm = TRUE),
       format = "d",
@@ -1361,13 +1361,13 @@ source("Scripts/plot-summaries.R", local = knitr::knit_global())
 
 ```{r sintese-visibilidade-carousel, eval = any(has.producao.ppg, has.producao.sucupira)}
 # carousel
-bs_carousel(id = "visibilidade-carousel",
+bsplus::bs_carousel(id = "visibilidade-carousel",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-1.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-2.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-3.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-4.png"))
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-1.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-2.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-3.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-4.png"))
 
 cat('\n\n')
 cat(
@@ -1388,7 +1388,7 @@ cat('^[Dados sobre retratação são obtidos de PubMed API e CrossRef API.]')
 discentes.raw <-
   readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
 
-# separating egressos (master and doctoral) and current canditates
+# separating egressos (master and doctoral) and current candidates
 discentes <-
   discentes.raw[discentes.raw$`Status SAGA` == "Matriculado" |
                   discentes.raw$`Status SAGA` == "Pré-inscrito", ]
@@ -1400,7 +1400,7 @@ doutores <- egressos[egressos$Curso == "Doutorado", ]
 cursos <- levels(as.factor(c(discentes$Curso, egressos$Curso)))
 
 # reading BR geospatial data from IPEA
-datasets <- list_geobr()$years[3]
+datasets <- geobr::list_geobr()$years[3]
 last.update <-
   as.numeric(strsplit(datasets, ", ")[[1]][length(strsplit(datasets, ", ")[[1]]) - 1])
 states <-
@@ -1421,14 +1421,14 @@ table.1 <- table(egressos$Curso, egressos$`Ano Titulação`)
 # plot 1 (egressos titulados)
 barplot(as.matrix(table.1),
         ylab = "Egressos",
-        col = brewer.pal(n = 9, name = "Set3"))
+        col = RColorBrewer::brewer.pal(n = 9, name = "Set3"))
 title(main = "Formação de pessoal de nível superior",
       outer = TRUE,
       cex.main = 1.7)
 legend(
   "topleft",
   legend = cursos,
-  fill = brewer.pal(n = 9, name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = 9, name = "Set3"),
   text.col = "white",
   box.lwd = 0,
   bty = "n",
@@ -1445,9 +1445,9 @@ table.2.dsc <-
              as.numeric(doutores$`Tempo de Curso (meses)`))
 
 # plot 2 (violin plot of tempo para titulação por ano)
-vioplot(
+vioplot::vioplot(
   as.numeric(table.2.msc[, 2]) ~ as.numeric(table.2.msc[, 1]),
-  col = brewer.pal(n = 9, name = "Set3")[2],
+  col = RColorBrewer::brewer.pal(n = 9, name = "Set3")[2],
   xlab = NA,
   side = "left",
   at = sort(unique(as.numeric(table.2.msc[, 1]))),
@@ -1458,9 +1458,9 @@ vioplot(
   )),
   ylab = "Meses"
 )
-vioplot(
+vioplot::vioplot(
   as.numeric(table.2.dsc[, 2]) ~ as.numeric(table.2.dsc[, 1]),
-  col = brewer.pal(n = 9, name = "Set3")[1],
+  col = RColorBrewer::brewer.pal(n = 9, name = "Set3")[1],
   xlab = NA,
   side = "right",
   ylab = "Meses",
@@ -1478,7 +1478,7 @@ title(main = "Tempo para titulação",
 legend(
   "topleft",
   legend = cursos,
-  fill = brewer.pal(n = 9, name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = 9, name = "Set3"),
   text.col = "white",
   box.lwd = 0,
   bty = "n",
@@ -1564,7 +1564,7 @@ p3 <- ggplot(data, aes(x = "", y = N, fill = Cursos)) +
   )
 
 g <-
-  arrangeGrob(p1,
+  gridExtra::arrangeGrob(p1,
               p2,
               p3,
               layout_matrix = rbind(c(1, 2), c(1, 3)),
@@ -1653,7 +1653,7 @@ p3 <- ggplot(data, aes(x = "", y = N, fill = Cursos)) +
   )
 
 g <-
-  arrangeGrob(p1,
+  gridExtra::arrangeGrob(p1,
               p2,
               p3,
               layout_matrix = rbind(c(1, 2), c(1, 3)),
@@ -1729,14 +1729,14 @@ source("Scripts/plot-summaries.R", local = knitr::knit_global())
 
 ```{r sintese-pessoal-carousel, eval = has.discentes}
 # carousel
-bs_carousel(id = "pessoal-carousel",
+bsplus::bs_carousel(id = "pessoal-carousel",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-1.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-2.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-3.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-4.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-5.png"))
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-1.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-2.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-3.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-4.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-5.png"))
 
 cat('\n\n')
 cat(
@@ -1785,10 +1785,10 @@ for (i in 1:n.proj) {
 }
 
 # build the graph object
-network <- graph_from_edgelist(edge.matrix, directed = FALSE)
+network <- igraph::graph_from_edgelist(edge.matrix, directed = FALSE)
 
 # set member category and color
-colrs <- brewer.pal(n = n.categ, name = "Set3")
+colrs <- RColorBrewer::brewer.pal(n = n.categ, name = "Set3")
 for (i in 1:length(V(network))) {
   categ.id <-
     match(V(network)[[i]]$name, sucupira.raw$`Nome do Membro do Projeto`)
@@ -1901,7 +1901,7 @@ barplot(
   height = rev(data.nac$value),
   names = rev(data.nac$name),
   xlab = "N",
-  col = rep(brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
+  col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
   horiz = T,
   las = 1,
   cex.names = 0.7
@@ -1939,7 +1939,7 @@ barplot(
   height = rev(data.inter$value),
   names = rev(data.inter$name),
   xlab = "N",
-  col = rep(brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
+  col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
   horiz = T,
   las = 1,
   cex.names = 0.7
@@ -1977,7 +1977,7 @@ barplot(
   height = rev(data.pais$value),
   names = rev(data.pais$name),
   xlab = "N",
-  col = rep(brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
+  col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
   horiz = T,
   las = 1,
   cex.names = 0.7
@@ -2023,15 +2023,15 @@ source("Scripts/plot-summaries.R", local = knitr::knit_global())
 
 ```{r sintese-rede-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", out.width = "100%", eval = has.sucupira.files}
 # carousel
-bs_carousel(id = "rede-carousel",
+bsplus::bs_carousel(id = "rede-carousel",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-rede-1.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/Participante Externo.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-rede-2.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-rede-3.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-rede-4.png")) %>%
-  bs_append(content = bs_carousel_image(src = "index_files/figure-html/sintese-rede-5.png"))
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-1.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/Participante Externo.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-2.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-3.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-4.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-5.png"))
 
 cat('\n\n')
 cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")

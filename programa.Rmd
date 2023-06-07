@@ -360,7 +360,7 @@ if (dim(projetos.doc)[1] != 0) {
   pie(
     head(colSums(table.doc), -1),
     labels = NA,
-    col = brewer.pal(n = length(levels), name = "Set3"),
+    col = RColorBrewer::brewer.pal(n = length(levels), name = "Set3"),
     init.angle = 90,
     main = "Docentes"
   )
@@ -371,7 +371,7 @@ if (dim(projetos.posdoc)[1] != 0) {
   pie(
     head(colSums(table.posdoc), -1),
     labels = NA,
-    col = brewer.pal(n = length(levels), name = "Set3"),
+    col = RColorBrewer::brewer.pal(n = length(levels), name = "Set3"),
     init.angle = 90,
     main = "Pós-Doutorandos"
   )
@@ -383,7 +383,7 @@ legend(
   "top",
   inset = 0,
   legend = levels,
-  fill = brewer.pal(n = length(levels), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(levels), name = "Set3"),
   box.lwd = 0,
   cex = 0.7
 )
@@ -599,7 +599,7 @@ if (dim(projetos.doc)[1] != 0) {
   pie(
     head(colSums(table.doc), -1),
     labels = NA,
-    col = brewer.pal(n = length(levels), name = "Set3"),
+    col = RColorBrewer::brewer.pal(n = length(levels), name = "Set3"),
     init.angle = 90,
     main = "Docentes"
   )
@@ -610,7 +610,7 @@ if (dim(projetos.posdoc)[1] != 0) {
   pie(
     head(colSums(table.posdoc), -1),
     labels = NA,
-    col = brewer.pal(n = length(levels), name = "Set3"),
+    col = RColorBrewer::brewer.pal(n = length(levels), name = "Set3"),
     init.angle = 90,
     main = "Pós-Doutorandos"
   )
@@ -622,7 +622,7 @@ legend(
   "top",
   inset = 0,
   legend = levels,
-  fill = brewer.pal(n = length(levels), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(levels), name = "Set3"),
   box.lwd = 0,
   cex = 0.7
 )
@@ -838,7 +838,7 @@ if (dim(projetos.doc)[1] != 0) {
   pie(
     head(colSums(table.doc), -1),
     labels = NA,
-    col = brewer.pal(n = length(levels), name = "Set3"),
+    col = RColorBrewer::brewer.pal(n = length(levels), name = "Set3"),
     init.angle = 90,
     main = "Docentes"
   )
@@ -849,7 +849,7 @@ if (dim(projetos.posdoc)[1] != 0) {
   pie(
     head(colSums(table.posdoc), -1),
     labels = NA,
-    col = brewer.pal(n = length(levels), name = "Set3"),
+    col = RColorBrewer::brewer.pal(n = length(levels), name = "Set3"),
     init.angle = 90,
     main = "Pós-Doutorandos"
   )
@@ -861,7 +861,7 @@ legend(
   "top",
   inset = 0,
   legend = levels,
-  fill = brewer.pal(n = length(levels), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(levels), name = "Set3"),
   box.lwd = 0,
   cex = 0.7
 )
@@ -1077,7 +1077,7 @@ if (dim(projetos.doc)[1] != 0) {
   pie(
     head(colSums(table.doc), -1),
     labels = NA,
-    col = brewer.pal(n = length(levels), name = "Set3"),
+    col = RColorBrewer::brewer.pal(n = length(levels), name = "Set3"),
     init.angle = 90,
     main = "Docentes"
   )
@@ -1088,7 +1088,7 @@ if (dim(projetos.posdoc)[1] != 0) {
   pie(
     head(colSums(table.posdoc), -1),
     labels = NA,
-    col = brewer.pal(n = length(levels), name = "Set3"),
+    col = RColorBrewer::brewer.pal(n = length(levels), name = "Set3"),
     init.angle = 90,
     main = "Pós-Doutorandos"
   )
@@ -1100,7 +1100,7 @@ legend(
   "top",
   inset = 0,
   legend = levels,
-  fill = brewer.pal(n = length(levels), name = "Set3"),
+  fill = RColorBrewer::brewer.pal(n = length(levels), name = "Set3"),
   box.lwd = 0,
   cex = 0.7
 )
@@ -2144,7 +2144,7 @@ if (!is.null(table)) {
     pie(
       table(table.msc[, which(colnames(table.msc) == "Obrigatória")]),
       labels = NA,
-      col = brewer.pal(n = min(unique(
+      col = RColorBrewer::brewer.pal(n = min(unique(
         colnames(table.msc)
       ), 3), name = "Set3"),
       init.angle = 90,
@@ -2155,7 +2155,7 @@ if (!is.null(table)) {
     pie(
       table(table.dsc[, which(colnames(table.dsc) == "Obrigatória")]),
       labels = NA,
-      col = brewer.pal(n = min(unique(
+      col = RColorBrewer::brewer.pal(n = min(unique(
         colnames(table.dsc)
       ), 3), name = "Set3"),
       init.angle = 90,
@@ -2170,7 +2170,7 @@ if (!is.null(table)) {
   legend(
     "center",
     legend = obrigatoria,
-    fill = brewer.pal(n = length(obrigatoria), name = "Set3"),
+    fill = RColorBrewer::brewer.pal(n = length(obrigatoria), name = "Set3"),
     box.lwd = 0,
     cex = 1
   )
@@ -2318,7 +2318,7 @@ bib.ano <- as.numeric(na.exclude(str_extract(bib.ano.raw, "[' '][1-1][9-9][5-9][
 
 par(oma=c(2, 0.1, 2, 0.1), mar = c(5, 4, 2, 2))
 # generate plot of conceitos per year
-hist(bib.ano, xlab = "Ano de publicação", ylab = "Referências (N)", col = brewer.pal(n = 3, name = "Set3")[1], main = NULL)
+hist(bib.ano, xlab = "Ano de publicação", ylab = "Referências (N)", col = RColorBrewer::brewer.pal(n = 3, name = "Set3")[1], main = NULL)
 title("Referências bibliográficas, por ano de publicação", outer = TRUE)
 
 cat('\n\n')
