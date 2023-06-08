@@ -775,6 +775,7 @@ references_eventos <- formatted_citations %>%
 ```
 
 ```{r bind-all, results = "hide", cache = TRUE, cache.path = "cache/bind-all/", eval = any(has.producao.sucupira, has.producao.ppg)}
+
 # bind sources
 doi_with_altmetric_all <-
   dplyr::bind_rows(

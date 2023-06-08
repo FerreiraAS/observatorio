@@ -1048,7 +1048,7 @@ vioplot::vioplot(
 )
 
 # hist CiteScore base e PPG
-CITESCORE.base <- citescore$x2021_cite_score[!is.na(citescore$x2021_cite_score)]
+CITESCORE.base <- citescore$CiteScore[!is.na(citescore$CiteScore)]
 CITESCORE.PPG <- doi_all$CiteScore[!is.na(doi_all$CiteScore)]
 
 vioplot::vioplot(

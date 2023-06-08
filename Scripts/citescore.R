@@ -11,6 +11,11 @@ citescore <-
   readxl::read_excel(files.to.read, sheet = 1)
 citescore <- janitor::clean_names(citescore)
 
+# find column with CiteScore data (yean change yearly)
+cite_score_col <- grep("cite_score", colnames(citescore))
+label.col <- "CiteScore"
+colnames(citescore)[cite_score_col] <-  label.col
+
 # get columns
 columns_to_grab <-
   c(
@@ -18,7 +23,7 @@ columns_to_grab <-
     "source_title_medline_sourced_journals_are_indicated_in_green",
     "print_issn",
     "e_issn",
-    "x2021_cite_score",
+    label.col,
     "coverage"
   )
 
@@ -28,9 +33,9 @@ citescore <- as.data.frame(citescore)
 
 # calculate percentile value
 perc <- c()
-distr <- ecdf(as.numeric(na.omit(citescore$x2021_cite_score)))
-for (i in 1:length(citescore$x2021_cite_score)) {
-  perc <- c(perc, distr(citescore$x2021_cite_score[i]))
+distr <- ecdf(as.numeric(na.omit(citescore$CiteScore)))
+for (i in 1:length(citescore$CiteScore)) {
+  perc <- c(perc, distr(citescore$CiteScore[i]))
 }
 citescore$percentile <- perc
 

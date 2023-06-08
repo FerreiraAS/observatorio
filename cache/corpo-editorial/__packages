@@ -11,6 +11,7 @@ BBmisc
 beepr
 bsplus
 cowplot
+curl
 data.tree
 details
 usethis
@@ -29,6 +30,7 @@ gtsummary
 hrbrthemes
 htmlwidgets
 httpuv
+httr
 igraph
 janitor
 kableExtra

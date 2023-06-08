@@ -70,7 +70,7 @@ get_citescore <-
     }
     if (!sjmisc::is_empty(citescore_id)) {
       citescore_value <-
-        citescore$x2021_cite_score[match(citescore_id, citescore$sourcerecord_id)]
+        citescore$CiteScore[match(citescore_id, citescore$sourcerecord_id)]
       citescore_year <-
         as.numeric(citescore$last_coverage[match(citescore_id, citescore$sourcerecord_id)]) - 1
       citescore_p <-

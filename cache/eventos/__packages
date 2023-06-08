@@ -1,9 +1,17 @@
+base
+methods
+datasets
+utils
+grDevices
+graphics
+stats
 alluvial
 anytime
 BBmisc
 beepr
 bsplus
 cowplot
+curl
 data.tree
 details
 usethis
@@ -16,11 +24,13 @@ fontawesome
 ggplot2
 ggpubr
 ggraph
+grid
 gridExtra
 gtsummary
 hrbrthemes
 htmlwidgets
 httpuv
+httr
 igraph
 janitor
 kableExtra
@@ -58,6 +68,7 @@ purrr
 forcats
 NLP
 tm
+tools
 sm
 zoo
 vioplot
@@ -69,5 +80,3 @@ packup
 rcrossref
 retractcheck
 textreadr
-curl
-httr
