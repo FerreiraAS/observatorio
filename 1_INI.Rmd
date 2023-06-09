@@ -48,6 +48,8 @@ source(file.path("Scripts", "citescore.R"), local = knitr::knit_global())
 source(file.path("Scripts", "sjr.R"), local = knitr::knit_global())
 source(file.path("Scripts", "webqualis.R"), local = knitr::knit_global())
 
+source("Scripts/doi_cleaner.R", local = knitr::knit_global())
+
 source(file.path("Scripts", "get_citescore.R"),
        local = knitr::knit_global())
 source(file.path("Scripts", "get_sjr.R"), local = knitr::knit_global())
@@ -516,40 +518,70 @@ if(has.artigos.completos.sucupira) {
 dois <- data.frame(DOI = c(dois.sucupira$DOI, dois.ppg$DOI))
 
 # Data cleaning
-dois <-data.frame(DOI = dois$DOI[!duplicated(dois)])
+dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
 dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
 
-# cria metadados para rastreio pelo Altmetric
-source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
+# limpa as entradas de DOI
+dois <- doi_cleaner(dois)
 
-# get metrics from Altmetric and CrossRef
-source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
-
-# store to use downstream
-doi_with_altmetric_artigos <- get_metrics(doi_with_altmetric = doi_with_altmetric, doi_without_altmetric = NULL, citescore, scimago, qualis)
-doi_without_altmetric_artigos <- get_metrics(doi_with_altmetric = NULL, doi_without_altmetric = doi_without_altmetric, citescore, scimago, qualis)
-
-# obtain formatted references
-formatted_citations <-
-  rcrossref::cr_cn(
-    c(doi_with_altmetric_artigos$doi, doi_without_altmetric_artigos$doi),
-    format = "text",
-    raw = TRUE,
-    style = "american-medical-association"
-  )
-formatted_citations <- substring(formatted_citations, 3)
-formatted_citations <-
-  cbind(seq(1, length(formatted_citations)), formatted_citations)
-names(formatted_citations) <- c("ID", "Reference")
-
-references_artigos <- formatted_citations %>%
-  data.frame()
+if(!sjmisc::is_empty(dois)) {
+  # cria metadados para rastreio pelo Altmetric
+  source("Scripts/altmetric-meta-from-dois.R",
+         local = knitr::knit_global())
+  
+  # get metrics from Altmetric and CrossRef
+  source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
+  
+  # store to use downstream
+  doi_with_altmetric_artigos <-
+    get_metrics(
+      doi_with_altmetric = doi_with_altmetric,
+      doi_without_altmetric = NULL,
+      citescore,
+      scimago,
+      qualis
+    )
+  doi_without_altmetric_artigos <-
+    get_metrics(
+      doi_with_altmetric = NULL,
+      doi_without_altmetric = doi_without_altmetric,
+      citescore,
+      scimago,
+      qualis
+    )
+  
+  # obtain formatted references
+  formatted_citations <-
+    rcrossref::cr_cn(
+      c(
+        doi_with_altmetric_artigos$doi,
+        doi_without_altmetric_artigos$doi
+      ),
+      format = "text",
+      raw = TRUE,
+      style = "american-medical-association"
+    )
+  formatted_citations <- substring(formatted_citations, 3)
+  formatted_citations <-
+    cbind(seq(1, length(formatted_citations)), formatted_citations)
+  names(formatted_citations) <- c("ID", "Reference")
+  
+  references_artigos <- formatted_citations %>%
+    data.frame()
+} else {
+  doi_with_altmetric_artigos = data.frame()
+  doi_without_altmetric_artigos = data.frame()
+  references_artigos = data.frame()
+  doi_with_altmetric_artigos_impacto = data.frame()
+  doi_without_altmetric_artigos_impacto = data.frame()
+  references_artigos_impacto = data.frame()
+}
 ```
 
 ```{r metrics-artigos-resumos, results = "hide", cache = TRUE, cache.path = "cache/artigos-resumos/", eval = any(has.artigos.resumos.ppg, has.artigos.resumos.sucupira)}
 # bind PPG and SUCUPIRA DOIs
 dois.ppg <- data.frame()
-if(has.artigos.resumos.ppg) {
+if (has.artigos.resumos.ppg) {
   # read data
   data.sheet <-
     data.frame(readxl::read_excel(
@@ -562,40 +594,70 @@ if(has.artigos.resumos.ppg) {
     data.frame(DOI = data.sheet[, match("DOI", names(data.sheet))])
 }
 dois.sucupira <- data.frame()
-if(has.artigos.resumos.sucupira) {
+if (has.artigos.resumos.sucupira) {
   dois.sucupira <- doi_artigos_resumos_sucupira
 }
 dois <- data.frame(DOI = c(dois.sucupira$DOI, dois.ppg$DOI))
 
 # Data cleaning
-dois <-data.frame(DOI = dois$DOI[!duplicated(dois)])
+dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
 dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
 
-# cria metadados para rastreio pelo Altmetric
-source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
+# limpa as entradas de DOI
+dois <- doi_cleaner(dois)
 
-# get metrics from Altmetric and CrossRef
-source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
-
-# store to use downstream
-doi_with_altmetric_resumos <- get_metrics(doi_with_altmetric = doi_with_altmetric, doi_without_altmetric = NULL, citescore, scimago, qualis)
-doi_without_altmetric_resumos <- get_metrics(doi_with_altmetric = NULL, doi_without_altmetric = doi_without_altmetric, citescore, scimago, qualis)
-
-# obtain formatted references
-formatted_citations <-
-  rcrossref::cr_cn(
-    c(doi_with_altmetric_resumos$doi, doi_without_altmetric_resumos$doi),
-    format = "text",
-    raw = TRUE,
-    style = "american-medical-association"
-  )
-formatted_citations <- substring(formatted_citations, 3)
-formatted_citations <-
-  cbind(seq(1, length(formatted_citations)), formatted_citations)
-names(formatted_citations) <- c("ID", "Reference")
-
-references_resumos <- formatted_citations %>%
-  data.frame()
+if (!sjmisc::is_empty(dois)) {
+  # cria metadados para rastreio pelo Altmetric
+  source("Scripts/altmetric-meta-from-dois.R",
+         local = knitr::knit_global())
+  
+  # get metrics from Altmetric and CrossRef
+  source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
+  
+  # store to use downstream
+  doi_with_altmetric_resumos <-
+    get_metrics(
+      doi_with_altmetric = doi_with_altmetric,
+      doi_without_altmetric = NULL,
+      citescore,
+      scimago,
+      qualis
+    )
+  doi_without_altmetric_resumos <-
+    get_metrics(
+      doi_with_altmetric = NULL,
+      doi_without_altmetric = doi_without_altmetric,
+      citescore,
+      scimago,
+      qualis
+    )
+  
+  # obtain formatted references
+  formatted_citations <-
+    rcrossref::cr_cn(
+      c(
+        doi_with_altmetric_resumos$doi,
+        doi_without_altmetric_resumos$doi
+      ),
+      format = "text",
+      raw = TRUE,
+      style = "american-medical-association"
+    )
+  formatted_citations <- substring(formatted_citations, 3)
+  formatted_citations <-
+    cbind(seq(1, length(formatted_citations)), formatted_citations)
+  names(formatted_citations) <- c("ID", "Reference")
+  
+  references_resumos <- formatted_citations %>%
+    data.frame()
+} else {
+  doi_with_altmetric_resumos = data.frame()
+  doi_without_altmetric_resumos = data.frame()
+  references_resumos = data.frame()
+  doi_with_altmetric_resumos_impacto = data.frame()
+  doi_without_altmetric_resumos_impacto = data.frame()
+  references_resumos_impacto = data.frame()
+}
 ```
 
 ```{r metrics-preprints, results = "hide", cache = TRUE, cache.path = "cache/preprints/", eval = has.preprints.ppg}
@@ -612,34 +674,64 @@ dois <-
   data.frame(DOI = data.sheet[, match("DOI", names(data.sheet))])
 
 # Data cleaning
-dois <-data.frame(DOI = dois$DOI[!duplicated(dois)])
+dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
 dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
 
-# cria metadados para rastreio pelo Altmetric
-source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
+# limpa as entradas de DOI
+dois <- doi_cleaner(dois)
 
-# get metrics from Altmetric and CrossRef
-source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
-
-# store to use downstream
-doi_with_altmetric_preprints <- get_metrics(doi_with_altmetric = doi_with_altmetric, doi_without_altmetric = NULL, citescore, scimago, qualis)
-doi_without_altmetric_preprints <- get_metrics(doi_with_altmetric = NULL, doi_without_altmetric = doi_without_altmetric, citescore, scimago, qualis)
-
-# obtain formatted references
-formatted_citations <-
-  rcrossref::cr_cn(
-    c(doi_with_altmetric_preprints$doi, doi_without_altmetric_preprints$doi),
-    format = "text",
-    raw = TRUE,
-    style = "american-medical-association"
-  )
-formatted_citations <- substring(formatted_citations, 3)
-formatted_citations <-
-  cbind(seq(1, length(formatted_citations)), formatted_citations)
-names(formatted_citations) <- c("ID", "Reference")
-
-references_preprints <- formatted_citations %>%
-  data.frame()
+if (!sjmisc::is_empty(dois)) {
+  # cria metadados para rastreio pelo Altmetric
+  source("Scripts/altmetric-meta-from-dois.R",
+         local = knitr::knit_global())
+  
+  # get metrics from Altmetric and CrossRef
+  source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
+  
+  # store to use downstream
+  doi_with_altmetric_preprints <-
+    get_metrics(
+      doi_with_altmetric = doi_with_altmetric,
+      doi_without_altmetric = NULL,
+      citescore,
+      scimago,
+      qualis
+    )
+  doi_without_altmetric_preprints <-
+    get_metrics(
+      doi_with_altmetric = NULL,
+      doi_without_altmetric = doi_without_altmetric,
+      citescore,
+      scimago,
+      qualis
+    )
+  
+  # obtain formatted references
+  formatted_citations <-
+    rcrossref::cr_cn(
+      c(
+        doi_with_altmetric_preprints$doi,
+        doi_without_altmetric_preprints$doi
+      ),
+      format = "text",
+      raw = TRUE,
+      style = "american-medical-association"
+    )
+  formatted_citations <- substring(formatted_citations, 3)
+  formatted_citations <-
+    cbind(seq(1, length(formatted_citations)), formatted_citations)
+  names(formatted_citations) <- c("ID", "Reference")
+  
+  references_preprints <- formatted_citations %>%
+    data.frame()
+} else {
+  doi_with_altmetric_preprints = data.frame()
+  doi_without_altmetric_preprints = data.frame()
+  references_preprints = data.frame()
+  doi_with_altmetric_preprints_impacto = data.frame()
+  doi_without_altmetric_preprints_impacto = data.frame()
+  references_preprints_impacto = data.frame()
+}
 ```
 
 ```{r metrics-livros, results = "hide", cache = TRUE, cache.path = "cache/livros/", eval = has.livros.ppg}
@@ -656,34 +748,64 @@ dois <-
   data.frame(DOI = data.sheet[, match("DOI", names(data.sheet))])
 
 # Data cleaning
-dois <-data.frame(DOI = dois$DOI[!duplicated(dois)])
+dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
 dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
 
-# cria metadados para rastreio pelo Altmetric
-source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
+# limpa as entradas de DOI
+dois <- doi_cleaner(dois)
 
-# get metrics from Altmetric and CrossRef
-source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
-
-# store to use downstream
-doi_with_altmetric_livros <- get_metrics(doi_with_altmetric = doi_with_altmetric, doi_without_altmetric = NULL, citescore, scimago, qualis)
-doi_without_altmetric_livros <- get_metrics(doi_with_altmetric = NULL, doi_without_altmetric = doi_without_altmetric, citescore, scimago, qualis)
-
-# obtain formatted references
-formatted_citations <-
-  rcrossref::cr_cn(
-    c(doi_with_altmetric_livros$doi, doi_without_altmetric_livros$doi),
-    format = "text",
-    raw = TRUE,
-    style = "american-medical-association"
-  )
-formatted_citations <- substring(formatted_citations, 3)
-formatted_citations <-
-  cbind(seq(1, length(formatted_citations)), formatted_citations)
-names(formatted_citations) <- c("ID", "Reference")
-
-references_livros <- formatted_citations %>%
-  data.frame()
+if (!sjmisc::is_empty(dois)) {
+  # cria metadados para rastreio pelo Altmetric
+  source("Scripts/altmetric-meta-from-dois.R",
+         local = knitr::knit_global())
+  
+  # get metrics from Altmetric and CrossRef
+  source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
+  
+  # store to use downstream
+  doi_with_altmetric_livros <-
+    get_metrics(
+      doi_with_altmetric = doi_with_altmetric,
+      doi_without_altmetric = NULL,
+      citescore,
+      scimago,
+      qualis
+    )
+  doi_without_altmetric_livros <-
+    get_metrics(
+      doi_with_altmetric = NULL,
+      doi_without_altmetric = doi_without_altmetric,
+      citescore,
+      scimago,
+      qualis
+    )
+  
+  # obtain formatted references
+  formatted_citations <-
+    rcrossref::cr_cn(
+      c(
+        doi_with_altmetric_livros$doi,
+        doi_without_altmetric_livros$doi
+      ),
+      format = "text",
+      raw = TRUE,
+      style = "american-medical-association"
+    )
+  formatted_citations <- substring(formatted_citations, 3)
+  formatted_citations <-
+    cbind(seq(1, length(formatted_citations)), formatted_citations)
+  names(formatted_citations) <- c("ID", "Reference")
+  
+  references_livros <- formatted_citations %>%
+    data.frame()
+} else {
+  doi_with_altmetric_livros = data.frame()
+  doi_without_altmetric_livros = data.frame()
+  references_livros = data.frame()
+  doi_with_altmetric_livros_impacto = data.frame()
+  doi_without_altmetric_livros_impacto = data.frame()
+  references_livros_impacto = data.frame()
+}
 ```
 
 ```{r metrics-capitulos, results = "hide", cache = TRUE, cache.path = "cache/capitulos/", eval = has.capitulos.ppg}
@@ -700,34 +822,64 @@ dois <-
   data.frame(DOI = data.sheet[, match("DOI", names(data.sheet))])
 
 # Data cleaning
-dois <-data.frame(DOI = dois$DOI[!duplicated(dois)])
+dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
 dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
 
-# cria metadados para rastreio pelo Altmetric
-source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
+# limpa as entradas de DOI
+dois <- doi_cleaner(dois)
 
-# get metrics from Altmetric and CrossRef
-source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
-
-# store to use downstream
-doi_with_altmetric_capitulos <- get_metrics(doi_with_altmetric = doi_with_altmetric, doi_without_altmetric = NULL, citescore, scimago, qualis)
-doi_without_altmetric_capitulos <- get_metrics(doi_with_altmetric = NULL, doi_without_altmetric = doi_without_altmetric, citescore, scimago, qualis)
-
-# obtain formatted references
-formatted_citations <-
-  rcrossref::cr_cn(
-    c(doi_with_altmetric_capitulos$doi, doi_without_altmetric_capitulos$doi),
-    format = "text",
-    raw = TRUE,
-    style = "american-medical-association"
-  )
-formatted_citations <- substring(formatted_citations, 3)
-formatted_citations <-
-  cbind(seq(1, length(formatted_citations)), formatted_citations)
-names(formatted_citations) <- c("ID", "Reference")
-
-references_capitulos <- formatted_citations %>%
-  data.frame()
+if (!sjmisc::is_empty(dois)) {
+  # cria metadados para rastreio pelo Altmetric
+  source("Scripts/altmetric-meta-from-dois.R",
+         local = knitr::knit_global())
+  
+  # get metrics from Altmetric and CrossRef
+  source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
+  
+  # store to use downstream
+  doi_with_altmetric_capitulos <-
+    get_metrics(
+      doi_with_altmetric = doi_with_altmetric,
+      doi_without_altmetric = NULL,
+      citescore,
+      scimago,
+      qualis
+    )
+  doi_without_altmetric_capitulos <-
+    get_metrics(
+      doi_with_altmetric = NULL,
+      doi_without_altmetric = doi_without_altmetric,
+      citescore,
+      scimago,
+      qualis
+    )
+  
+  # obtain formatted references
+  formatted_citations <-
+    rcrossref::cr_cn(
+      c(
+        doi_with_altmetric_capitulos$doi,
+        doi_without_altmetric_capitulos$doi
+      ),
+      format = "text",
+      raw = TRUE,
+      style = "american-medical-association"
+    )
+  formatted_citations <- substring(formatted_citations, 3)
+  formatted_citations <-
+    cbind(seq(1, length(formatted_citations)), formatted_citations)
+  names(formatted_citations) <- c("ID", "Reference")
+  
+  references_capitulos <- formatted_citations %>%
+    data.frame()
+} else {
+  doi_with_altmetric_capitulos = data.frame()
+  doi_without_altmetric_capitulos = data.frame()
+  references_capitulos = data.frame()
+  doi_with_altmetric_capitulos_impacto = data.frame()
+  doi_without_altmetric_capitulos_impacto = data.frame()
+  references_capitulos_impacto = data.frame()
+}
 ```
 
 ```{r metrics-eventos, results = "hide", cache = TRUE, cache.path = "cache/eventos/", eval = has.eventos.ppg}
@@ -744,34 +896,64 @@ dois <-
   data.frame(DOI = data.sheet[, match("DOI", names(data.sheet))])
 
 # Data cleaning
-dois <-data.frame(DOI = dois$DOI[!duplicated(dois)])
+dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
 dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
 
-# cria metadados para rastreio pelo Altmetric
-source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
+# limpa as entradas de DOI
+dois <- doi_cleaner(dois)
 
-# get metrics from Altmetric and CrossRef
-source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
-
-# store to use downstream
-doi_with_altmetric_eventos <- get_metrics(doi_with_altmetric = doi_with_altmetric, doi_without_altmetric = NULL, citescore, scimago, qualis)
-doi_without_altmetric_eventos <- get_metrics(doi_with_altmetric = NULL, doi_without_altmetric = doi_without_altmetric, citescore, scimago, qualis)
-
-# obtain formatted references
-formatted_citations <-
-  rcrossref::cr_cn(
-    c(doi_with_altmetric_eventos$doi, doi_without_altmetric_eventos$doi),
-    format = "text",
-    raw = TRUE,
-    style = "american-medical-association"
-  )
-formatted_citations <- substring(formatted_citations, 3)
-formatted_citations <-
-  cbind(seq(1, length(formatted_citations)), formatted_citations)
-names(formatted_citations) <- c("ID", "Reference")
-
-references_eventos <- formatted_citations %>%
-  data.frame()
+if (!sjmisc::is_empty(dois)) {
+  # cria metadados para rastreio pelo Altmetric
+  source("Scripts/altmetric-meta-from-dois.R",
+         local = knitr::knit_global())
+  
+  # get metrics from Altmetric and CrossRef
+  source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
+  
+  # store to use downstream
+  doi_with_altmetric_eventos <-
+    get_metrics(
+      doi_with_altmetric = doi_with_altmetric,
+      doi_without_altmetric = NULL,
+      citescore,
+      scimago,
+      qualis
+    )
+  doi_without_altmetric_eventos <-
+    get_metrics(
+      doi_with_altmetric = NULL,
+      doi_without_altmetric = doi_without_altmetric,
+      citescore,
+      scimago,
+      qualis
+    )
+  
+  # obtain formatted references
+  formatted_citations <-
+    rcrossref::cr_cn(
+      c(
+        doi_with_altmetric_eventos$doi,
+        doi_without_altmetric_eventos$doi
+      ),
+      format = "text",
+      raw = TRUE,
+      style = "american-medical-association"
+    )
+  formatted_citations <- substring(formatted_citations, 3)
+  formatted_citations <-
+    cbind(seq(1, length(formatted_citations)), formatted_citations)
+  names(formatted_citations) <- c("ID", "Reference")
+  
+  references_eventos <- formatted_citations %>%
+    data.frame()
+} else {
+  doi_with_altmetric_eventos = data.frame()
+  doi_without_altmetric_eventos = data.frame()
+  references_eventos = data.frame()
+  doi_with_altmetric_eventos_impacto = data.frame()
+  doi_without_altmetric_eventos_impacto = data.frame()
+  references_eventos_impacto = data.frame()
+}
 ```
 
 ```{r bind-all, results = "hide", cache = TRUE, cache.path = "cache/bind-all/", eval = any(has.producao.sucupira, has.producao.ppg)}
