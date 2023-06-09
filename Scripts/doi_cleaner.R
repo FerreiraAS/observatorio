@@ -1,7 +1,7 @@
 doi_cleaner <- function(dois) {
+  # duplicate data
+  clean_doi <- dois
   if (!sjmisc::is_empty(dois)) {
-    # duplicate data
-    clean_doi <- dois
     for (j in 1:dim(clean_doi)[1]) {
       # remove square brackets from start-end
       if (length(grep("\\[|\\]", "", clean_doi$DOI[j])) == 0) {
