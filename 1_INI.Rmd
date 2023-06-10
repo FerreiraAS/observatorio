@@ -439,12 +439,12 @@ titles <- (
 )
 titles <- titles[!is.na(titles)]
 
-doi_artigos_resumos_sucupira <-
+doi_anais_sucupira <-
   data.frame(DOI = matrix(NA, nrow = length(titles), ncol = 1))
-if (dim(doi_artigos_resumos_sucupira)[1] != 0) {
+if (dim(doi_anais_sucupira)[1] != 0) {
   # data filter
   for (i in 1:length(titles)) {
-    doi_artigos_resumos_sucupira$DOI[i] <-
+    doi_anais_sucupira$DOI[i] <-
       sucupira.raw$`Valor do Item de Detalhamento`[which(
         and(
           sucupira.raw$`Nome da Produção` == titles[i],
@@ -452,11 +452,11 @@ if (dim(doi_artigos_resumos_sucupira)[1] != 0) {
         ) == TRUE
       )]
   }
-  doi_artigos_anais_sucupira <- data.frame(doi_artigos_anais_sucupira[!is.na(doi_artigos_anais_sucupira)])
-  names(doi_artigos_anais_sucupira) <- "DOI"
+  doi_anais_sucupira <- data.frame(doi_anais_sucupira[!is.na(doi_anais_sucupira)])
+  names(doi_anais_sucupira) <- "DOI"
 }
 has.anais.sucupira <-
-  length(doi_artigos_anais_sucupira) != 0
+  length(doi_anais_sucupira) != 0
 
 has.producao.sucupira <-
   any(has.artigos.completos.sucupira,
