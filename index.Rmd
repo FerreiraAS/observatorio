@@ -1287,7 +1287,7 @@ legend(
   cex = 1,
 )
 
-if(sum(doi_all$citations) == 0){
+if(sjmisc::is_empty(doi_all$citations)){
   table.3 <- as.matrix(rep(0, length(max(anos) - min(anos) + 1)))
 } else {
   # generate cross tables of citations per year

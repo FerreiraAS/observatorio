@@ -777,17 +777,17 @@ try(references_capitulos_impacto <-
 )
 ```
 
-```{r pandemia-filtro-eventos, eval = has.eventos.ppg}
+```{r pandemia-filtro-anais, eval = has.anais.ppg}
 # dplyr::selecting those with COVID in the title
-try(doi_with_altmetric_eventos_impacto <-
-      doi_with_altmetric_eventos[grep(paste(tolower(pandemia), collapse = "|"),
-                              tolower(doi_with_altmetric_eventos$title)), ], silent = TRUE)
-try(doi_without_altmetric_eventos_impacto <-
-      doi_without_altmetric_eventos[grep(paste(tolower(pandemia), collapse = "|"),
-                                 tolower(doi_without_altmetric_eventos$title)), ],
+try(doi_with_altmetric_anais_impacto <-
+      doi_with_altmetric_anais[grep(paste(tolower(pandemia), collapse = "|"),
+                              tolower(doi_with_altmetric_anais$title)), ], silent = TRUE)
+try(doi_without_altmetric_anais_impacto <-
+      doi_without_altmetric_anais[grep(paste(tolower(pandemia), collapse = "|"),
+                                 tolower(doi_without_altmetric_anais$title)), ],
     silent = TRUE)
-try(references_eventos_impacto <-
-      references_eventos[grep(paste(tolower(pandemia), collapse = "|"), tolower(references_eventos)[, 2]), ], silent = TRUE
+try(references_anais_impacto <-
+      references_anais[grep(paste(tolower(pandemia), collapse = "|"), tolower(references_anais)[, 2]), ], silent = TRUE
 )
 ```
 
@@ -1377,11 +1377,11 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 ### **Trabalhos em anais** {.tabset}
 
-```{r pandemia-resumos-eventos, eval = has.eventos.ppg}
+```{r pandemia-resumos-anais, eval = has.anais.ppg}
 # bind sources
-try(doi_with_altmetric <- doi_with_altmetric_eventos_impacto, silent = TRUE)
-try(doi_without_altmetric <- doi_without_altmetric_eventos_impacto, silent = TRUE)
-try(references <- references_eventos_impacto, silent = TRUE)
+try(doi_with_altmetric <- doi_with_altmetric_anais_impacto, silent = TRUE)
+try(doi_without_altmetric <- doi_without_altmetric_anais_impacto, silent = TRUE)
+try(references <- references_anais_impacto, silent = TRUE)
 
 # available years of publication
 try(years <-

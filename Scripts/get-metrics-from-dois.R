@@ -13,6 +13,7 @@ if (sjmisc::is_empty(dois)) {
 # get data of papers without Altmetric from CrossRef
 if (sjmisc::is_empty(doi_without_altmetric)) {
   doi_without_altmetric <- data.frame(matrix(nrow = 0, ncol = 0))
+  doi_without_altmetric$citations <- rep(0, dim(doi_without_altmetric)[1])
 } else {
   if (dim(doi_without_altmetric)[1] != 0) {
     doi_without_altmetric <-

@@ -681,11 +681,11 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 ### **Trabalhos em anais** {.tabset}
 
-```{r resumos-eventos, eval = has.eventos.ppg}
+```{r resumos-anais, eval = has.anais.ppg}
 # bind sources
-doi_with_altmetric <- doi_with_altmetric_eventos
-doi_without_altmetric <- doi_without_altmetric_eventos
-references <- references_eventos
+doi_with_altmetric <- doi_with_altmetric_anais
+doi_without_altmetric <- doi_without_altmetric_anais
+references <- references_anais
 
 # available years of publication
 years <-
@@ -700,7 +700,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 } else {
   # print export buttons
   source("Scripts/print-only-buttons.R", local = knitr::knit_global())
-  print_buttons_dt(references, title = "Trabalhos em anais de eventos científicos")
+  print_buttons_dt(references, title = "Trabalhos em anais de anais científicos")
 }
 
 # Verifica se há DOIs
