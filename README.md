@@ -126,7 +126,6 @@ O **Obsevatório** pode exibir informações complementares, não disponíveis n
 │   └── Bolsas.xlsx
 │   └── Calendários.xlsx
 │   └── CEP.xlsx
-│   └── Colegiado.xlsx
 │   └── Convênios.xlsx
 │   └── Cooperações.xlsx
 │   └── Coordenação.xlsx
