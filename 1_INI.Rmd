@@ -68,6 +68,7 @@ has.sucupira.files <- length(files.to.read) != 0
 has.artigos.completos.sucupira <- FALSE
 has.artigos.resumos.sucupira <- FALSE
 has.anais.sucupira <- FALSE
+has.livros.sucupira <- FALSE
 has.producao.sucupira <- FALSE
 ```
 
@@ -335,7 +336,7 @@ source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 # características
 subtipo <- "ARTIGO EM PERIÓDICO"
 detalhamento <- "Completo"
-item.detalhamento <- "Número do DOI"
+item.detalhamento <- c("Número do DOI", "URL do DOI", "URL")[1]
 
 # Data selection
 produtos <-
@@ -378,7 +379,7 @@ has.artigos.completos.sucupira <-
 # características
 subtipo <- "ARTIGO EM PERIÓDICO"
 detalhamento <- "Resumo"
-item.detalhamento <- "Número do DOI"
+item.detalhamento <- c("Número do DOI", "URL do DOI", "URL")[1]
 
 # Data selection
 produtos <-
@@ -458,10 +459,53 @@ if (dim(doi_anais_sucupira)[1] != 0) {
 has.anais.sucupira <-
   length(doi_anais_sucupira) != 0
 
+
+# características
+subtipo <- "LIVROS"
+item.detalhamento <- "URL"
+
+# Data selection
+produtos <-
+  sucupira.raw %>% dplyr::select(
+    c(
+      "Nome da Produção",
+      "Subtipo de Produção",
+      "Item de Detalhamento",
+      "Valor do Item de Detalhamento"
+    )
+  )
+# find titles of artigos completos
+titles <- (
+  produtos$"Nome da Produção"[
+  produtos$"Subtipo de Produção" == subtipo]
+)
+titles <- titles[!is.na(titles)]
+
+doi_livros_sucupira <-
+  data.frame(DOI = matrix(NA, nrow = length(titles), ncol = 1))
+if (dim(doi_livros_sucupira)[1] != 0) {
+  # data filter
+  for (i in 1:length(titles)) {
+    doi_livros_sucupira$DOI[i] <-
+      sucupira.raw$`Valor do Item de Detalhamento`[which(
+        and(
+          sucupira.raw$`Nome da Produção` == titles[i],
+          sucupira.raw$`Item de Detalhamento` == item.detalhamento
+        ) == TRUE
+      )]
+  }
+  doi_livros_sucupira <- data.frame(doi_livros_sucupira[!is.na(doi_livros_sucupira)])
+  names(doi_livros_sucupira) <- "DOI"
+}
+has.livros.sucupira <-
+  length(doi_livros_sucupira) != 0
+
+
 has.producao.sucupira <-
   any(has.artigos.completos.sucupira,
       has.artigos.resumos.sucupira,
-      has.anais.sucupira)
+      has.anais.sucupira,
+      has.livros.sucupira)
 ```
 
 ```{r producao-ppg, results = "hide"}
@@ -780,7 +824,7 @@ if (!sjmisc::is_empty(dois)) {
 }
 ```
 
-```{r metrics-livros, results = "hide", cache = TRUE, cache.path = "cache/livros/", eval = has.livros.ppg}
+```{r metrics-livros, results = "hide", cache = TRUE, cache.path = "cache/livros/", eval = any(has.livros.ppg, has.livros.sucupira)}
 # read data
 data.sheet <-
   data.frame(readxl::read_excel(
@@ -1117,6 +1161,7 @@ has.softwares
 # data sucupira
 has.artigos.completos.sucupira
 has.artigos.resumos.sucupira
+has.livros.sucupira
 has.anais.sucupira
 has.producao.sucupira
 
