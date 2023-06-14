@@ -27,13 +27,12 @@ if (sjmisc::is_empty(doi_without_altmetric)) {
     authors <- dplyr::select(doi_without_altmetric, author)
     doi_without_altmetric$author.names <- rep("", dim(authors)[1])
     # deal with authors' name first to drop the list column data
-    for (ix in 1:dim(authors)[1]) {
+    for (ix in 1:dim(doi_without_altmetric)[1]) {
       names <- ""
       try(names <-
             stringr::str_sub(paste0(
               rbind(authors[[1]][[ix]]$given, " ", authors[[1]][[ix]]$family, ", "),
-              collapse = ""
-            ),
+              collapse = ""),
             start = 1,
             end = -3),
           silent = TRUE)
@@ -44,6 +43,7 @@ if (sjmisc::is_empty(doi_without_altmetric)) {
     drops <-
       c(
         "author",
+        "abstract",
         "link",
         "reference",
         "alternative.id",
@@ -97,4 +97,3 @@ if (sjmisc::is_empty(doi_without_altmetric)) {
     }
   }
 }
-

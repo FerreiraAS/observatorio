@@ -47,7 +47,7 @@ if(file.exists("PPG/Images/logo-IES.png")) {
 if(and(has.dados.cadastrais, has.sucupira.files)){
 cat(
   'O **Observatório ', toupper(as.character(sigla.PPG)),
-  '** é uma iniciativa do **Programa de Pós-graduação em ', as.character(nome.PPG), '** - [', toTitleCase(as.character(nome.IES)), '](', as.character(site.PPG),') ',
+  '** é uma iniciativa do **Programa de Pós-graduação em ', as.character(nome.PPG), '** - [', tools::toTitleCase(as.character(nome.IES)), '](', as.character(site.PPG),') ',
   'que envolve o registro, o acompanhamento e a análise agregada e estruturada de dados para divulgação transparente de suas atividades, planejamentos, ações e impactos, tornando-os acessíveis à sociedade',
    sep = "")
 } else {

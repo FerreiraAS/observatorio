@@ -79,7 +79,7 @@ table.with.badges <-
         ))
         
         # add journal's title
-        cat(paste0("*", toTitleCase(doi_with_altmetric$journal[ix]), "*", "<br>"))
+        cat(paste0("*", tools::toTitleCase(as.character(doi_with_altmetric$journal[ix])), "*", "<br>"))
         
         # initialize the DIV element for the badges
         cat("<div style=\"vertical-align: middle; display: inline-block;\">")
@@ -254,9 +254,9 @@ table.with.badges <-
                      "&nbsp; - &nbsp;"
                    )))
         
-        # add jornal's title
+        # add journal's title
         cat(paste0("*",
-                   toTitleCase(doi_without_altmetric$journal[ix]),
+                   tools::toTitleCase(as.character(doi_without_altmetric$journal[ix])),
                    "*",
                    "<br>"))
         

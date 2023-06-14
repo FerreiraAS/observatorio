@@ -93,7 +93,7 @@ for (input in 1:dim(dois_df)[1]) {
         
         # bind rows data
         doi_with_altmetric[input, columns_to_grab] <-
-          t(split_data.2)[2, ]
+          t(split_data.2)[2,]
         doi_with_altmetric$author.names[input] <- author.names
         
         # merge at least one ISSN to each journal to search for in the CSV provided by SCImago
@@ -177,15 +177,15 @@ doi_with_altmetric$cited_by_patents_count[doi_with_altmetric$mendeley == ""] <-
 
 # split and remove NA rows
 doi_with_altmetric <-
-  doi_with_altmetric[complete.cases(doi_with_altmetric), ]
+  doi_with_altmetric[complete.cases(doi_with_altmetric),]
 
 # remove duplicate entries
 doi_with_altmetric <-
-  doi_with_altmetric[!duplicated(doi_with_altmetric$doi), ]
+  doi_with_altmetric[!duplicated(doi_with_altmetric$doi),]
 
 # sort columns by title
 doi_with_altmetric <-
-  doi_with_altmetric[order(doi_with_altmetric$title), ]
+  doi_with_altmetric[order(doi_with_altmetric$title),]
 
 # replace is_oa from Crossref
 for (i in 1:length(doi_with_altmetric$doi)) {
@@ -197,9 +197,9 @@ for (i in 1:length(doi_with_altmetric$doi)) {
            "FALSE")
 }
 
-# add citation counts
 doi_with_altmetric$citations <- rep(0, dim(doi_with_altmetric)[1])
 for (i in 1:dim(doi_with_altmetric)[1]) {
+  # add citation counts
   try({
     citations <-
       rcrossref::cr_citation_count(doi = as.character(doi_with_altmetric$doi[i]), key = "cienciasdareabilitacao@souunisuam.com.br")
@@ -207,16 +207,18 @@ for (i in 1:dim(doi_with_altmetric)[1]) {
   },
   silent = TRUE)
   # search for alternative source of journal name
-  try(if (sjmisc::is_empty(doi_with_altmetric$journal[i])) {
-    doi_with_altmetric$journal[i] <-
-      scimago[grep(gsub("-", "", doi_with_altmetric$issn), scimago$Issn), 3][1]
-  }, silent = TRUE)
+  if (sjmisc::is_empty(doi_with_altmetric$journal[i]) & !sjmisc::is_empty(doi_with_altmetric$issn[i])) {
+    try({
+      journal <- scimago[grep(gsub("-", "", doi_with_altmetric$issn[i]), scimago$Issn), 3][1]
+      if(!sjmisc::is_empty(journal)){
+        doi_with_altmetric$journal[i] <- journal
+      }
+    }, silent = TRUE)
+  }
 }
 
 # collect DOIs without Altmetric data
 doi_without_altmetric <- c()
 doi_without_altmetric <-
-  data.frame(DOI = setdiff(
-    tolower(dois_df$DOI),
-    tolower(doi_with_altmetric$doi)
-  ))
+  data.frame(DOI = setdiff(tolower(dois_df$DOI),
+                           tolower(doi_with_altmetric$doi)))

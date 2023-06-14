@@ -272,7 +272,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Dados perdidos**
 
-```{r missing-data-sucupira, eval = has.sucupira.files}
+```{r missing-data-sucupira, cache = TRUE, cache.path = "cache/dados-perdidos/", eval = has.sucupira.files}
 # initialize data
 missing.data <- c()
 

@@ -818,17 +818,25 @@ if (!sjmisc::is_empty(dois)) {
 ```
 
 ```{r metrics-livros, results = "hide", cache = TRUE, cache.path = "cache/livros/", eval = any(has.livros.ppg, has.livros.sucupira)}
-# read data
-data.sheet <-
-  data.frame(readxl::read_excel(
-    "PPG/Produção.xlsx",
-    sheet = "PI.livros",
-    col_types = c("text")
-  ))
-
-# select DOI column
-dois <-
-  data.frame(DOI = data.sheet[, match("DOI", names(data.sheet))])
+# bind PPG and SUCUPIRA DOIs
+dois.ppg <- data.frame()
+if(has.livros.ppg) {
+  # read data
+  data.sheet <-
+    data.frame(readxl::read_excel(
+      "PPG/Produção.xlsx",
+      sheet = "PI.livros",
+      col_types = c("text")
+    ))
+  # select DOI column
+  dois.ppg <-
+    data.frame(DOI = data.sheet[, match("DOI", names(data.sheet))])
+}
+dois.sucupira <- data.frame()
+if(has.livros.sucupira) {
+  dois.sucupira <- doi_livros_sucupira
+}
+dois <- data.frame(DOI = c(dois.sucupira$DOI, dois.ppg$DOI))
 
 # Data cleaning
 dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
@@ -968,7 +976,7 @@ if (!sjmisc::is_empty(dois)) {
 ```{r metrics-anais, results = "hide", cache = TRUE, cache.path = "cache/anais/", eval = any(has.anais.ppg, has.anais.sucupira)}
 # bind PPG and SUCUPIRA DOIs
 dois.ppg <- data.frame()
-if(has.artigos.completos.ppg) {
+if(has.anais.ppg) {
   # read data
   data.sheet <-
     data.frame(readxl::read_excel(
@@ -981,8 +989,8 @@ if(has.artigos.completos.ppg) {
     data.frame(DOI = data.sheet[, match("DOI", names(data.sheet))])
 }
 dois.sucupira <- data.frame()
-if(has.artigos.completos.sucupira) {
-  dois.sucupira <- doi_artigos_completos_sucupira
+if(has.anais.ppg) {
+  dois.sucupira <- doi_anais_sucupira
 }
 dois <- data.frame(DOI = c(dois.sucupira$DOI, dois.ppg$DOI))
 
@@ -1165,4 +1173,12 @@ has.livros.ppg
 has.capitulos.ppg
 has.anais.ppg
 has.producao.ppg
+```
+
+```{r save, results = "hide", eval = FALSE}
+write.table(doi_with_altmetric_all, "doi_with_altmetric_all.tsv", quote = FALSE, sep = "\t", row.names = FALSE, col.names = TRUE)
+
+write.table(doi_without_altmetric_all, "doi_without_altmetric_all.tsv", quote = FALSE, sep = "\t", row.names = FALSE, col.names = TRUE)
+
+write.table(doi_all, "doi_all.tsv", quote = FALSE, sep = "\t", row.names = FALSE, col.names = TRUE)
 ```
