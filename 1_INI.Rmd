@@ -70,6 +70,10 @@ has.artigos.resumos.sucupira <- FALSE
 has.anais.sucupira <- FALSE
 has.livros.sucupira <- FALSE
 has.producao.sucupira <- FALSE
+has.2024.2021 <- FALSE
+has.2020.2017 <- FALSE
+has.2016.2013 <- FALSE
+has.2012.2010 <- FALSE
 ```
 
 ```{r try-ppg-files, results = "hide"}
@@ -1175,10 +1179,35 @@ has.anais.ppg
 has.producao.ppg
 ```
 
-```{r save, results = "hide", eval = FALSE}
-write.table(doi_with_altmetric_all, "doi_with_altmetric_all.tsv", quote = FALSE, sep = "\t", row.names = FALSE, col.names = TRUE)
+```{r save, results = "hide"}
+try(write.table(
+  doi_with_altmetric_all,
+  "doi_with_altmetric_all.tsv",
+  quote = FALSE,
+  sep = "\t",
+  row.names = FALSE,
+  col.names = TRUE
+),
+silent = TRUE)
 
-write.table(doi_without_altmetric_all, "doi_without_altmetric_all.tsv", quote = FALSE, sep = "\t", row.names = FALSE, col.names = TRUE)
+try(write.table(
+  doi_without_altmetric_all,
+  "doi_without_altmetric_all.tsv",
+  quote = FALSE,
+  sep = "\t",
+  row.names = FALSE,
+  col.names = TRUE
+),
+silent = TRUE)
 
-write.table(doi_all, "doi_all.tsv", quote = FALSE, sep = "\t", row.names = FALSE, col.names = TRUE)
+try(write.table(
+  doi_all,
+  "doi_all.tsv",
+  quote = FALSE,
+  sep = "\t",
+  row.names = FALSE,
+  col.names = TRUE
+),
+silent = TRUE
+)
 ```
