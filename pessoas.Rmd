@@ -788,16 +788,16 @@ for (i in 1:dim(docentes)[1]) {
   table <- cbind(
     i,
     paste(
-      '<a href=\"mailto:',
+      "[**",
+      docentes$'Nome Docente'[i],
+      "**](mailto:",
       docentes$"E-mail"[i],
-      '">',
-      tools::toTitleCase(tolower(docentes$'Nome Docente'[i])),
-      '</a>',
+      ')',
       sep = ""
     ),
     paste(
       docentes$Categoria[i],
-      " \n\n (",
+      " <br> (",
       docentes$'Data de Admissão'[i],
       "-",
       docentes$'Data de Desligamento'[i],
@@ -807,11 +807,11 @@ for (i in 1:dim(docentes)[1]) {
     ifelse(
       !is.na(docentes$'Número do currículo Lattes'[i]),
       paste(
-      '<a href=\"http://lattes.cnpq.br/',
+        "[",
+        gsub("http://lattes.cnpq.br/", "", docentes$'Número do currículo Lattes'[i]),
+        "](", "http://lattes.cnpq.br/",
         docentes$'Número do currículo Lattes'[i],
-        '\">',
-        docentes$'Número do currículo Lattes'[i],
-        '</a>',
+        '){target="_blank"}',
         sep = ""
       ),
       docentes$'Número do currículo Lattes'[i]
@@ -819,13 +819,12 @@ for (i in 1:dim(docentes)[1]) {
     ifelse(
       !is.na(docentes$ORCID[i]),
       paste(
-      '<a href=\"https://orcid.org/',
+        "[",
         paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-        '\">',
+        "](", "https://orcid.org/",
         paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-        '</a>',
-        sep = ""
-      ),
+        '){target="_blank"}',
+        sep = ""),
       docentes$ORCID[i]
     ),
     docentes$País[i]
@@ -841,10 +840,21 @@ colnames(table.2) <-
     "País")
 
 # print tables
-ids <- order(table.2$'Nome', decreasing = FALSE)
-table <- table.2[ids, ]
+ids <- order(table.2$'Nome', decreasing = TRUE)
+table <- discentes[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes")
+
+# print(
+#   kable(table.2, align = c("l", rep(
+#     "c", ncol(table.2) - 2
+#   ), "r")) %>%
+#     kable_styling(
+#     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+#     full_width = T,
+#     position = "center"
+#   )
+# )
 ```
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
@@ -981,16 +991,16 @@ for (i in 1:dim(docentes)[1]) {
   table <- cbind(
     i,
     paste(
-      '<a href=\"mailto:',
+      "[**",
+      docentes$'Nome Docente'[i],
+      "**](mailto:",
       docentes$"E-mail"[i],
-      '">',
-      tools::toTitleCase(tolower(docentes$'Nome Docente'[i])),
-      '</a>',
+      ')',
       sep = ""
     ),
     paste(
       docentes$Categoria[i],
-      " \n\n (",
+      " <br> (",
       docentes$'Data de Admissão'[i],
       "-",
       docentes$'Data de Desligamento'[i],
@@ -1000,11 +1010,11 @@ for (i in 1:dim(docentes)[1]) {
     ifelse(
       !is.na(docentes$'Número do currículo Lattes'[i]),
       paste(
-      '<a href=\"http://lattes.cnpq.br/',
+        "[",
+        gsub("http://lattes.cnpq.br/", "", docentes$'Número do currículo Lattes'[i]),
+        "](", "http://lattes.cnpq.br/",
         docentes$'Número do currículo Lattes'[i],
-        '\">',
-        docentes$'Número do currículo Lattes'[i],
-        '</a>',
+        '){target="_blank"}',
         sep = ""
       ),
       docentes$'Número do currículo Lattes'[i]
@@ -1012,13 +1022,12 @@ for (i in 1:dim(docentes)[1]) {
     ifelse(
       !is.na(docentes$ORCID[i]),
       paste(
-      '<a href=\"https://orcid.org/',
+        "[",
         paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-        '\">',
+        "](", "https://orcid.org/",
         paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-        '</a>',
-        sep = ""
-      ),
+        '){target="_blank"}',
+        sep = ""),
       docentes$ORCID[i]
     ),
     docentes$País[i]
@@ -1034,10 +1043,21 @@ colnames(table.2) <-
     "País")
 
 # print tables
-ids <- order(table.2$'Nome', decreasing = FALSE)
-table <- table.2[ids, ]
+ids <- order(table.2$'Nome', decreasing = TRUE)
+table <- discentes[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes")
+
+# print(
+#   kable(table.2, align = c("l", rep(
+#     "c", ncol(table.2) - 2
+#   ), "r")) %>%
+#     kable_styling(
+#     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+#     full_width = T,
+#     position = "center"
+#   )
+# )
 ```
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
@@ -1174,16 +1194,16 @@ for (i in 1:dim(docentes)[1]) {
   table <- cbind(
     i,
     paste(
-      '<a href=\"mailto:',
+      "[**",
+      docentes$'Nome Docente'[i],
+      "**](mailto:",
       docentes$"E-mail"[i],
-      '">',
-      tools::toTitleCase(tolower(docentes$'Nome Docente'[i])),
-      '</a>',
+      ')',
       sep = ""
     ),
     paste(
       docentes$Categoria[i],
-      " \n\n (",
+      " <br> (",
       docentes$'Data de Admissão'[i],
       "-",
       docentes$'Data de Desligamento'[i],
@@ -1193,11 +1213,11 @@ for (i in 1:dim(docentes)[1]) {
     ifelse(
       !is.na(docentes$'Número do currículo Lattes'[i]),
       paste(
-      '<a href=\"http://lattes.cnpq.br/',
+        "[",
+        gsub("http://lattes.cnpq.br/", "", docentes$'Número do currículo Lattes'[i]),
+        "](", "http://lattes.cnpq.br/",
         docentes$'Número do currículo Lattes'[i],
-        '\">',
-        docentes$'Número do currículo Lattes'[i],
-        '</a>',
+        '){target="_blank"}',
         sep = ""
       ),
       docentes$'Número do currículo Lattes'[i]
@@ -1205,13 +1225,12 @@ for (i in 1:dim(docentes)[1]) {
     ifelse(
       !is.na(docentes$ORCID[i]),
       paste(
-      '<a href=\"https://orcid.org/',
+        "[",
         paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-        '\">',
+        "](", "https://orcid.org/",
         paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-        '</a>',
-        sep = ""
-      ),
+        '){target="_blank"}',
+        sep = ""),
       docentes$ORCID[i]
     ),
     docentes$País[i]
@@ -1227,10 +1246,21 @@ colnames(table.2) <-
     "País")
 
 # print tables
-ids <- order(table.2$'Nome', decreasing = FALSE)
-table <- table.2[ids, ]
+ids <- order(table.2$'Nome', decreasing = TRUE)
+table <- discentes[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes")
+
+# print(
+#   kable(table.2, align = c("l", rep(
+#     "c", ncol(table.2) - 2
+#   ), "r")) %>%
+#     kable_styling(
+#     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+#     full_width = T,
+#     position = "center"
+#   )
+# )
 ```
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
@@ -1367,16 +1397,16 @@ for (i in 1:dim(docentes)[1]) {
   table <- cbind(
     i,
     paste(
-      '<a href=\"mailto:',
+      "[**",
+      docentes$'Nome Docente'[i],
+      "**](mailto:",
       docentes$"E-mail"[i],
-      '">',
-      tools::toTitleCase(tolower(docentes$'Nome Docente'[i])),
-      '</a>',
+      ')',
       sep = ""
     ),
     paste(
       docentes$Categoria[i],
-      " \n\n (",
+      " <br> (",
       docentes$'Data de Admissão'[i],
       "-",
       docentes$'Data de Desligamento'[i],
@@ -1386,11 +1416,11 @@ for (i in 1:dim(docentes)[1]) {
     ifelse(
       !is.na(docentes$'Número do currículo Lattes'[i]),
       paste(
-      '<a href=\"http://lattes.cnpq.br/',
+        "[",
+        gsub("http://lattes.cnpq.br/", "", docentes$'Número do currículo Lattes'[i]),
+        "](", "http://lattes.cnpq.br/",
         docentes$'Número do currículo Lattes'[i],
-        '\">',
-        docentes$'Número do currículo Lattes'[i],
-        '</a>',
+        '){target="_blank"}',
         sep = ""
       ),
       docentes$'Número do currículo Lattes'[i]
@@ -1398,13 +1428,12 @@ for (i in 1:dim(docentes)[1]) {
     ifelse(
       !is.na(docentes$ORCID[i]),
       paste(
-      '<a href=\"https://orcid.org/',
+        "[",
         paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-        '\">',
+        "](", "https://orcid.org/",
         paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-        '</a>',
-        sep = ""
-      ),
+        '){target="_blank"}',
+        sep = ""),
       docentes$ORCID[i]
     ),
     docentes$País[i]
@@ -1420,10 +1449,21 @@ colnames(table.2) <-
     "País")
 
 # print tables
-ids <- order(table.2$'Nome', decreasing = FALSE)
-table <- table.2[ids, ]
+ids <- order(table.2$'Nome', decreasing = TRUE)
+table <- discentes[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes")
+
+# print(
+#   kable(table.2, align = c("l", rep(
+#     "c", ncol(table.2) - 2
+#   ), "r")) %>%
+#     kable_styling(
+#     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+#     full_width = T,
+#     position = "center"
+#   )
+# )
 ```
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
@@ -1485,11 +1525,11 @@ if (dim(docentes)[1] == 0) {
     table <- cbind(
       i,
       paste(
-        '<a href=\"mailto:',
-        docentes$'E-mail'[i],
-        '">',
-        tools::toTitleCase(tolower(docentes$'Pós-Doc Nome'[i])),
-        '</a>',
+        "[**",
+        docentes$'Pós-Doc Nome'[i],
+        "**](mailto:",
+        docentes$"E-mail"[i],
+        ')',
         sep = ""
       ),
       docentes$'Origem IES Nome'[i],
@@ -1502,11 +1542,12 @@ if (dim(docentes)[1] == 0) {
       ifelse(
         !is.na(docentes$ORCID[i]),
         paste(
-          '<a href=\"https://orcid.org/',
+          "[",
           paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-          '\">',
+          "](",
+          "https://orcid.org/",
           paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-          '</a>',
+          '){target="_blank"}',
           sep = ""
         ),
         docentes$ORCID[i]
@@ -1524,10 +1565,16 @@ if (dim(docentes)[1] == 0) {
       "País")
   
   # print tables
-  ids <- order(table.2$'Nome', decreasing = FALSE)
-  table <- table.2[ids,]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pós-Docs")
+  print(
+    kable(table.2, align = c("l", rep(
+      "c", ncol(table.2) - 2
+    ), "r")) %>%
+      kable_styling(
+        bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+        full_width = T,
+        position = "center"
+      )
+  )
 }
 ```
 
@@ -1585,11 +1632,11 @@ if (dim(docentes)[1] == 0) {
     table <- cbind(
       i,
       paste(
-        '<a href=\"mailto:',
-        docentes$'E-mail'[i],
-        '">',
-        tools::toTitleCase(tolower(docentes$'Pós-Doc Nome'[i])),
-        '</a>',
+        "[**",
+        docentes$'Pós-Doc Nome'[i],
+        "**](mailto:",
+        docentes$"E-mail"[i],
+        ')',
         sep = ""
       ),
       docentes$'Origem IES Nome'[i],
@@ -1602,11 +1649,12 @@ if (dim(docentes)[1] == 0) {
       ifelse(
         !is.na(docentes$ORCID[i]),
         paste(
-          '<a href=\"https://orcid.org/',
+          "[",
           paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-          '\">',
+          "](",
+          "https://orcid.org/",
           paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-          '</a>',
+          '){target="_blank"}',
           sep = ""
         ),
         docentes$ORCID[i]
@@ -1625,10 +1673,16 @@ if (dim(docentes)[1] == 0) {
     )
 
   # print tables
-  ids <- order(table.2$'Nome', decreasing = FALSE)
-  table <- table.2[ids,]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pós-Docs")
+  print(
+    kable(table.2, align = c("l", rep(
+      "c", ncol(table.2) - 2
+    ), "r")) %>%
+      kable_styling(
+        bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+        full_width = T,
+        position = "center"
+      )
+  )
 }
 ```
 
@@ -1686,11 +1740,11 @@ if (dim(docentes)[1] == 0) {
     table <- cbind(
       i,
       paste(
-        '<a href=\"mailto:',
-        docentes$'E-mail'[i],
-        '">',
-        tools::toTitleCase(tolower(docentes$'Pós-Doc Nome'[i])),
-        '</a>',
+        "[**",
+        docentes$'Pós-Doc Nome'[i],
+        "**](mailto:",
+        docentes$"E-mail"[i],
+        ')',
         sep = ""
       ),
       docentes$'Origem IES Nome'[i],
@@ -1703,11 +1757,12 @@ if (dim(docentes)[1] == 0) {
       ifelse(
         !is.na(docentes$ORCID[i]),
         paste(
-          '<a href=\"https://orcid.org/',
+          "[",
           paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-          '\">',
+          "](",
+          "https://orcid.org/",
           paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-          '</a>',
+          '){target="_blank"}',
           sep = ""
         ),
         docentes$ORCID[i]
@@ -1726,10 +1781,16 @@ if (dim(docentes)[1] == 0) {
     )
 
   # print tables
-  ids <- order(table.2$'Nome', decreasing = FALSE)
-  table <- table.2[ids,]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pós-Docs")
+  print(
+    kable(table.2, align = c("l", rep(
+      "c", ncol(table.2) - 2
+    ), "r")) %>%
+      kable_styling(
+        bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+        full_width = T,
+        position = "center"
+      )
+  )
 }
 ```
 
@@ -1787,11 +1848,11 @@ if (dim(docentes)[1] == 0) {
     table <- cbind(
       i,
       paste(
-        '<a href=\"mailto:',
-        docentes$'E-mail'[i],
-        '">',
-        tools::toTitleCase(tolower(docentes$'Pós-Doc Nome'[i])),
-        '</a>',
+        "[**",
+        docentes$'Pós-Doc Nome'[i],
+        "**](mailto:",
+        docentes$"E-mail"[i],
+        ')',
         sep = ""
       ),
       docentes$'Origem IES Nome'[i],
@@ -1804,11 +1865,12 @@ if (dim(docentes)[1] == 0) {
       ifelse(
         !is.na(docentes$ORCID[i]),
         paste(
-          '<a href=\"https://orcid.org/',
+          "[",
           paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-          '\">',
+          "](",
+          "https://orcid.org/",
           paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-          '</a>',
+          '){target="_blank"}',
           sep = ""
         ),
         docentes$ORCID[i]
@@ -1827,10 +1889,16 @@ if (dim(docentes)[1] == 0) {
     )
 
   # print tables
-  ids <- order(table.2$'Nome', decreasing = FALSE)
-  table <- table.2[ids,]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pós-Docs")
+  print(
+    kable(table.2, align = c("l", rep(
+      "c", ncol(table.2) - 2
+    ), "r")) %>%
+      kable_styling(
+        bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+        full_width = T,
+        position = "center"
+      )
+  )
 }
 ```
 

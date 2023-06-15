@@ -32,7 +32,7 @@ get_citescore <-
     if (!is.null(doi_without_altmetric)) {
       if (sjmisc::is_empty(doi_without_altmetric$issn) | sjmisc::is_empty(doi_without_altmetric$issn)) {
         citescore_id <- character(0)
-        citescore_value <- "?"
+        citescore_value <- character(0)
         citescore_year <- character(0)
         citescore_p <- character(0)
       } else {
