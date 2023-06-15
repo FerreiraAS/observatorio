@@ -838,8 +838,8 @@ colnames(table.2) <-
     "País")
 
 # print tables
-ids <- order(table.2$'Nome', decreasing = TRUE)
-table <- docentes[ids, ]
+ids <- order(table.2$'Nome', decreasing = FALSE)
+table <- table.2[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes")
 ```
@@ -1028,8 +1028,8 @@ colnames(table.2) <-
     "País")
 
 # print tables
-ids <- order(table.2$'Nome', decreasing = TRUE)
-table <- docentes[ids, ]
+ids <- order(table.2$'Nome', decreasing = FALSE)
+table <- table.2[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes")
 ```
@@ -1218,8 +1218,8 @@ colnames(table.2) <-
     "País")
 
 # print tables
-ids <- order(table.2$'Nome', decreasing = TRUE)
-table <- docentes[ids, ]
+ids <- order(table.2$'Nome', decreasing = FALSE)
+table <- table.2[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes")
 ```
@@ -1408,8 +1408,8 @@ colnames(table.2) <-
     "País")
 
 # print tables
-ids <- order(table.2$'Nome', decreasing = TRUE)
-table <- docentes[ids, ]
+ids <- order(table.2$'Nome', decreasing = FALSE)
+table <- table.2[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes")
 ```
@@ -1512,8 +1512,8 @@ if (dim(docentes)[1] == 0) {
       "País")
   
   # print tables
-  ids <- order(table.2$'Pós-Doc Nome', decreasing = TRUE)
-  table <- docentes[ids, ]
+  ids <- order(table.2$'Pós-Doc Nome', decreasing = FALSE)
+  table <- table.2[ids, ]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Pós-Docs")
 }
@@ -1612,8 +1612,8 @@ if (dim(docentes)[1] == 0) {
       "País")
   
   # print tables
-  ids <- order(table.2$'Pós-Doc Nome', decreasing = TRUE)
-  table <- docentes[ids, ]
+  ids <- order(table.2$'Pós-Doc Nome', decreasing = FALSE)
+  table <- table.2[ids, ]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Pós-Docs")
 }
@@ -1712,8 +1712,8 @@ if (dim(docentes)[1] == 0) {
       "País")
   
   # print tables
-  ids <- order(table.2$'Pós-Doc Nome', decreasing = TRUE)
-  table <- docentes[ids, ]
+  ids <- order(table.2$'Pós-Doc Nome', decreasing = FALSE)
+  table <- table.2[ids, ]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Pós-Docs")
 }
@@ -1812,8 +1812,8 @@ if (dim(docentes)[1] == 0) {
       "País")
   
   # print tables
-  ids <- order(table.2$'Pós-Doc Nome', decreasing = TRUE)
-  table <- docentes[ids, ]
+  ids <- order(table.2$'Pós-Doc Nome', decreasing = FALSE)
+  table <- table.2[ids, ]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Pós-Docs")
 }
