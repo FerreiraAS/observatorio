@@ -238,6 +238,18 @@ Antes de começar, você vai precisar instalar em sua máquina os seguintes prog
 *Ao criar um repositório no GitHub.com, ele existirá como um repositório remoto. É possível clonar o repositório para criar uma cópia local no seu computador e sincronizar entre os dois locais.*
 
 
+### [**5. Configurar uma fonte de publicação para o site do GitHub Pages**](https://docs.github.com/pt/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+
+*Você pode configurar seu site do GitHub Pages para ser publicado quando alterações são enviadas por push a um branch específico ou pode escrever um fluxo de trabalho do GitHub Actions para publicar seu site.*
+
+1. Acesse o repositório cicando no link
+2. Clique em “Settings”
+3. Na barra lateral esquerda, clique em “Pages”
+4. No item “Build and deployment”, selecione branch -> “main” e folder -> “/docs”
+5, Aguarde alguns instantes e atualize a página
+6. Copie o link de acesso ao Observatório.
+
+
 ### [**Tutorial**](https://resources.github.com/github-and-rstudio/)
 
 *This tutorial teaches you to create R Markdown documents with RStudio and publish them via GitHub, using GitHub Pages.*
