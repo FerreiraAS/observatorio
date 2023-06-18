@@ -258,7 +258,7 @@ Antes de começar, você vai precisar instalar em sua máquina os seguintes prog
 2. Clique no nome da sua organização.
 3. Sob o nome da organização, clique em "People".
 4. Clique em "Invite member".
-5. No campo de pesquisa, digite o nome de usuário, o nome completo ou o endereço de email [arthur_sf@icloud.com](arthur_sf@icloud.com) da pessoa que você deseja convidar e clique em "Invite".
+5. No campo de pesquisa, digite o nome de usuário, o nome completo (**Arthur de Sá Ferreira**) ou o endereço de email [arthur_sf@icloud.com](arthur_sf@icloud.com) da pessoa que você deseja convidar e clique em "Invite".
 6. Se a pessoa que você está convidando foi membro da organização nos últimos três meses, selecione se deseja restaurar os privilégios dela ou começar de novo e clique em Convidar e restabelecer ou Convidar e começar de novo.
 7. Se a pessoa que você está convidando nunca foi membro da organização ou se você limpou os privilégios dela, em "Função na organização", selecione uma função de organização para o usuário.
 8. Opcionalmente, para adicionar o usuário a uma equipe na organização, selecione a equipe.
