@@ -238,7 +238,7 @@ Antes de começar, você vai precisar instalar em sua máquina os seguintes prog
 *Ao criar um repositório no GitHub.com, ele existirá como um repositório remoto. É possível clonar o repositório para criar uma cópia local no seu computador e sincronizar entre os dois locais.*
 
 
-### [**6. Configurar uma fonte de publicação para o site do GitHub Pages**](https://docs.github.com/pt/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+### [**5. Configurar uma fonte de publicação para o site do GitHub Pages**](https://docs.github.com/pt/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
 
 *Você pode configurar seu site do GitHub Pages para ser publicado quando alterações são enviadas por push a um branch específico ou pode escrever um fluxo de trabalho do GitHub Actions para publicar seu site.*
 
@@ -250,9 +250,7 @@ Antes de começar, você vai precisar instalar em sua máquina os seguintes prog
 6. Copie o link de acesso ao Observatório.
 
 
-### [**OPCIONAL**]
-
-#### **Como convidar usuários para ingressar em sua organização**[https://docs.github.com/pt/organizations/managing-membership-in-your-organization/inviting-users-to-join-your-organization#]
+### [**6.1 Como convidar usuários para ingressar em sua organização**](https://docs.github.com/pt/organizations/managing-membership-in-your-organization/inviting-users-to-join-your-organization)
 
 *É possível convidar qualquer pessoa para se tornar um membro da sua organização usando o nome de usuário ou o endereço de email dela para o GitHub.com.*
 
@@ -268,7 +266,7 @@ Antes de começar, você vai precisar instalar em sua máquina os seguintes prog
 10. A pessoa convidada receberá um e-mail com um convite para participar da organização. Eles precisarão aceitar o convite antes de se tornarem membros da organização. Você pode editar ou cancelar um convite a qualquer momento antes que o usuário o aceite.
 
 
-#### **Atribuindo a função de mantenedor da equipe a um integrante da equipe**(https://docs.github.com/pt/organizations/organizing-members-into-teams/assigning-the-team-maintainer-role-to-a-team-member)
+### [**6.2 Atribuindo a função de mantenedor da equipe a um integrante da equipe**](https://docs.github.com/pt/organizations/organizing-members-into-teams/assigning-the-team-maintainer-role-to-a-team-member)
 
 *Você pode conceder a um integrante da equipe a capacidade de gerenciar a associação e as configurações da equipe, atribuindo a função de mantenedor da equipe.*
 
@@ -280,12 +278,16 @@ Antes de começar, você vai precisar instalar em sua máquina os seguintes prog
 6. Acima da lista de membros da equipe, use o menu suspenso e clique em "Change role...".
 7. Selecione uma nova função e clique em Alterar função.
 
+
 ### [**Tutorial**](https://resources.github.com/github-and-rstudio/)
 
 *This tutorial teaches you to create R Markdown documents with RStudio and publish them via GitHub, using GitHub Pages.*
 
 
 ## **Atualizacoes**
+
+O Observatório é atualizado periodicamente pelo desenvolvedor. Para receber atualziações no seu repositório, siga os passos 6.1 e 6.2 acima.
+
 
 ## **Observatorios publicados**
 
