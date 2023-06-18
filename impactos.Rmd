@@ -286,7 +286,7 @@ if (dim(bolsistas)[1] != 0) {
   ids <- order(cotas$'Ano', decreasing = TRUE)
   table <- cotas[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Bolsistas - Cotas")
+  create_dt(table, title = "Cotas de bolsas")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -372,7 +372,7 @@ if (dim(bolsistas.tcc)[1] != 0) {
   ids <- order(bolsistas.tcc$'Ano de Defesa', bolsistas.tcc$'Linha de Pesquisa', decreasing = TRUE)
   table <- bolsistas.tcc[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Dissertações e Teses - Bolsistas")
+  create_dt(table, title = "Teses - Bolsistas")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -418,7 +418,7 @@ if (dim(bolsistas.tcc)[1] != 0) {
   ids <- order(bolsistas.tcc$'Ano de Defesa', bolsistas.tcc$'Linha de Pesquisa', decreasing = TRUE)
   table <- bolsistas.tcc[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Dissertações e Teses - Bolsistas")
+  create_dt(table, title = "Dissertações - Bolsistas")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -965,7 +965,7 @@ if (dim(tccs)[1] != 0) {
   colnames(table.tcc) <-
     c("Ano", "Nível", "Título", "Autor", "Orientador")
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table.tcc, title = "Ações durante a Pandemia - Trabalhos de conclusào de curso")
+  create_dt(table.tcc, title = "Ações durante a Pandemia - Trabalhos de conclusão de curso")
 } else {
   cat('\n\n')
   cat('*Sem produção para exibir no período*')

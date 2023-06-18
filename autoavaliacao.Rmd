@@ -377,15 +377,12 @@ for (i in 1:length(abas)) {
   }
   
   # print table
-  print(
-    kable(periodo.raw, align = c("l", rep(
-      "c", ncol(periodo.raw) - 2
-    ), "r")) %>% kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
+  if (dim(periodo.raw)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    create_dt(periodo.raw, title = "Documentos CAPES)")
+  } else {
+    cat("*Sem dados para exibir*")
+  }
   
   # print end of tab rows
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')

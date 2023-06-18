@@ -19,26 +19,12 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
   }
   colnames(invited.pos) <- c("Periódico", "Atuação")
 
-  # print table (reviewed journals)
-  print(
-    kable(
-      invited.pos,
-      align = "l",
-      format = "html",
-      escape = FALSE
-    ) %>%
-      kable_styling(
-        bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-        full_width = T,
-        position = "center"
-      ) %>%
-      row_spec(
-        0,
-        background = main.color,
-        bold = TRUE,
-        color = "white"
-      ),
-    row.names = NULL
-  )
+  # print table
+  if (dim(invited.pos)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    create_dt(invited.pos, title = "Membro de corpo editorial (ORCID Invited positions)")
+  } else {
+    cat("*Sem dados para exibir*")
+  }
   cat('<br>')
 }

@@ -118,6 +118,7 @@ O **Obsevatório** pode exibir informações complementares, não disponíveis n
 ├── PPG
 │   └── Agendas de Pesquisa.xlsx
 │   └── Apresentação.xlsx
+│   └── Área.xlsx
 │   └── Autoavaliações.xlsx
 │   └── Avaliação.xlsx
 │   └── Bibliografia.xlsx

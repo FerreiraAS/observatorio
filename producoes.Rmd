@@ -105,7 +105,7 @@ table.tcc[, 5] <-
 colnames(table.tcc) <-
   c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador")
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table.tcc, title = "Dissertações e Teses")
+  create_dt(table.tcc, title = "")
 ```
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
@@ -156,7 +156,7 @@ table.tcc[, 5] <-
 colnames(table.tcc) <-
   c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador")
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table.tcc, title = "Dissertações e Teses")
+  create_dt(table.tcc, title = "Dissertações")
 ```
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
@@ -788,16 +788,13 @@ for (i in 1:length(abas)) {
   }
   
   # print table
-  print(
-    kable(software.raw, align = c("l", rep(
-      "c", ncol(software.raw) - 2
-    ), "r")) %>% kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
-  
+  if (dim(software.raw)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    create_dt(software.raw, title = "Softwares")
+  } else {
+    cat("*Sem dados para exibir*")
+  }
+
   # print end of tab rows
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }

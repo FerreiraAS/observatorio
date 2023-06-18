@@ -142,6 +142,37 @@ for (i in 1:length(abas)) {
 
 <br>
 
+## **Área de avaliação CAPES** {.tabset #area-avaliacao}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+```{r area-capes, eval = has.area.capes}
+area.capes <-
+  readxl::read_excel("PPG/Área CAPES.xlsx",
+             sheet = "CAPES",
+             col_types = c("text"))
+
+# print tables
+print(
+  kable(area.capes, align = c("l", rep(
+    "c", ncol(area.capes) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+
+cat('\n\n')
+cat('*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+
+<br>
+
 ## **Área de concentração** {.tabset #area-concentracao}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -511,7 +542,7 @@ colnames(table.projetos) <-
     "Membro Responsável")
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.projetos, title = "Projetos de Pesquisa 2021-2024")
+create_dt(table.projetos, title = "Projetos de Pesquisa - 2024-2021")
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -750,7 +781,7 @@ colnames(table.projetos) <-
     "Membro Responsável")
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.projetos, title = "Projetos de Pesquisa 2021-2024")
+create_dt(table.projetos, title = "Projetos de Pesquisa - 2020-2017")
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -989,7 +1020,7 @@ colnames(table.projetos) <-
     "Membro Responsável")
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.projetos, title = "Projetos de Pesquisa 2021-2024")
+create_dt(table.projetos, title = "Projetos de Pesquisa - 2016-2013")
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -1228,7 +1259,7 @@ colnames(table.projetos) <-
     "Membro Responsável")
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.projetos, title = "Projetos de Pesquisa 2021-2024")
+create_dt(table.projetos, title = "Projetos de Pesquisa - 2012-2010")
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -1332,7 +1363,7 @@ if (dim(financiadores)[1] != 0) {
   cat('\n\n')
 }
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-try(create_dt(financiadores, title = "Ações durante a Pandemia - Financiadores"),
+try(create_dt(financiadores, title = "Financiadores - 2024-2021"),
     silent = TRUE)
 
 cat('\n\n')
@@ -1397,7 +1428,7 @@ if (dim(financiadores)[1] != 0) {
   cat('\n\n')
 }
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-try(create_dt(financiadores, title = "Ações durante a Pandemia - Financiadores"),
+try(create_dt(financiadores, title = "Financiadores - 2020-2017"),
     silent = TRUE)
 
 cat('\n\n')
@@ -1462,7 +1493,7 @@ if (dim(financiadores)[1] != 0) {
   cat('\n\n')
 }
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-try(create_dt(financiadores, title = "Ações durante a Pandemia - Financiadores"),
+try(create_dt(financiadores, title = "Financiadores - 2016-2013"),
     silent = TRUE)
 
 cat('\n\n')
@@ -1527,7 +1558,7 @@ if (dim(financiadores)[1] != 0) {
   cat('\n\n')
 }
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-try(create_dt(financiadores, title = "Ações durante a Pandemia - Financiadores"),
+try(create_dt(financiadores, title = "Financiadores - 2012-2010"),
     silent = TRUE)
 
 cat('\n\n')

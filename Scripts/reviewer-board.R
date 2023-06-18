@@ -35,26 +35,12 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
     c(paste("Periódicos (", dim(peer.review)[1], ")", sep = ""), "SJR")
   rownames(peer.review) <- c()
   
-  # print table (reviewed journals)
-  print(
-    kable(
-      peer.review,
-      align = "l",
-      format = "html",
-      escape = FALSE
-    ) %>%
-      kable_styling(
-        bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-        full_width = T,
-        position = "center"
-      ) %>%
-      row_spec(
-        0,
-        background = main.color,
-        bold = TRUE,
-        color = "white"
-      ),
-    row.names = NULL
-  )
+  # print table
+  if (dim(peer.review)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    create_dt(peer.review, title = "Revisor de periódico (ORCID peer review)")
+  } else {
+    cat("*Sem dados para exibir*")
+  }
   cat('<br>')
 }

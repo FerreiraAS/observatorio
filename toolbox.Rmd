@@ -1,0 +1,59 @@
+---
+title: Toolbox
+output:
+  html_document:
+    toc: true
+    css:
+      - CSS/logo-above-toc.css
+      - CSS/narrow-margins.css
+      - CSS/responsive.css
+      - CSS/generic.css
+      - CSS/main-color.css
+---
+
+<!--install and/or load all R packages-->
+```{r setup, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%", results = "hide"}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = 'center',
+  results = "asis",
+  include = TRUE,
+  out.width = "100%",
+  knitr.kable.NA = '--',
+  knitr.table.format = "html"
+)
+source("Scripts/all-required-packages.R", local = knitr::knit_global())
+```
+
+<!--script for inserting LOGO ABOVE THE TOC-->
+```{js}
+$(document).ready(function() {
+  $('#TOC').parent().prepend('<div id=\"nav_logo\"><img src="PPG/Images/logo-programa.png"></div>');
+  });
+```
+
+<!--script for sharing-->
+<p align="right">
+```{r share}
+# home <- "https://ppgcr-unisuam.github.io/observatoriocr/"
+home <- metadata$repository_url
+source("Scripts/social-media-sharing.R", local = knitr::knit_global())
+```
+</p>
+
+<br>
+
+## **Toolbox** {#toolbox}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+
+<br>
+
+*Em construção!*
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>

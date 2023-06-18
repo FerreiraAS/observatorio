@@ -101,6 +101,12 @@ has.apresentacao <-
                 silent = TRUE))
 ```
 
+```{r try-area-capes, results = "hide"}
+has.area.capes <-
+  !is.error(try(readxl::read_excel("PPG/Área CAPES.xlsx", sheet = 1),
+                silent = TRUE))
+```
+
 ```{r try-autoavaliacoes, results = "hide"}
 has.autoavaliacoes <-
   !is.error(try(readxl::read_excel("PPG/Autoavaliações.xlsx", sheet = 1),

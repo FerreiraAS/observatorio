@@ -66,15 +66,12 @@ for (i in 1:dim(vigentes.raw)[1]) {
 }
 
 # print table
-print(
-  kable(vigentes.raw, align = c("l", rep(
-    "c", ncol(vigentes.raw) - 2
-  ), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
+if (dim(vigentes.raw)[1] != 0) {
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(vigentes.raw, title = "Documentos vigentes")
+} else {
+  cat("*Sem dados para exibir*")
+}
 ```
 
 <br>
@@ -99,15 +96,12 @@ for (i in 1:dim(revogados.raw)[1]) {
 }
 
 # print table
-print(
-  kable(revogados.raw, align = c("l", rep(
-    "c", ncol(revogados.raw) - 2
-  ), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
+if (dim(revogados.raw)[1] != 0) {
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(revogados.raw, title = "Documentos revogados")
+} else {
+  cat("*Sem dados para exibir*")
+}
 ```
 
 <br>
