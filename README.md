@@ -29,7 +29,8 @@
 - [x] Impactos
 - [x] Galeria
 - [x] Autoavaliação
-- [x] Área
+- [x] Toolbox
+- [x] Downloads
 
 ## **Recursos computacionais**
 
