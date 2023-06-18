@@ -147,6 +147,8 @@ for (i in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
+<br>
+
 ```{r area-capes, eval = has.area.capes}
 area.capes <-
   readxl::read_excel("PPG/Área CAPES.xlsx",
@@ -169,7 +171,6 @@ cat('*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br)')
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
 
 <br>
 
