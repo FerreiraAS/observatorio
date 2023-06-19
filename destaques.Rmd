@@ -110,66 +110,12 @@ for (j in 1:length(tabs)) {
 
 <br>
 
-### **Ana Paula Antunes Ferreira, DSc**
-
-**Presidente**, *Osteopathic International Alliance (2021-2022)*
-
-<br>
-
-<iframe src="https://oialliance.org/about-us/board-of-directors/" style="width:100%; height:600px; border:0;"></iframe>
-
-<br>
-
-*Fontes:* [**Osteopathic International Alliance**](https://oialliance.org)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Carla Porto Loreunço, DSc**
-
-**Membro Titular**, *Comissão da Câmara Técnica em Fisioterapia Vestibular do Conselho Regional de Fisioterapia e Terapia Ocupacional da 2ª Região (2020)*
-
-<br>
-
-<iframe src="https://www.crefito2.gov.br/home_profissional/comissoes_e_camaras_tecnicas" style="width:100%; height:600px; border:0;"></iframe>
-
-<br>
-
-*Fontes:* [**Crefito-2**](https://www.crefito2.gov.br/home_profissional/comissoes_e_camaras_tecnicas)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Gabriel Parisotto, MSc**
-
-**Coordenador**, *Associação Brasileira de Fisioterapia Cardiorrespiratória e Fisioterapia em Terapia Intensiva, Núcleo Roraima (2022)*
-
-<br>
-
-<iframe src="https://assobrafir.com.br/regionais/roraima/" style="width:100%; height:600px; border:0;"></iframe>
-
-<br>
-
-*Fontes:* [**ASSOBRAFIR**](https://assobrafir.com.br/regionais/roraima/)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
 ## **Dissertações/Teses de destaque** {#TCC-destaque}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
 
-*Em construção!*
+<br>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
@@ -264,6 +210,8 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 }
 ```
 
+<br>
+
 ### **Prestígio do periódico (Top-20 CiteScore)**
 
 ```{r destaque-prestigio, eval = any(has.producao.sucupira, has.producao.ppg)}
@@ -343,6 +291,8 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   )
 }
 ```
+
+<br>
 
 ## **Prêmios** {.tabset #premios}
 

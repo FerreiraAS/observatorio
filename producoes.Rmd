@@ -104,11 +104,11 @@ table.tcc[, 5] <-
 
 colnames(table.tcc) <-
   c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador")
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table.tcc, title = "")
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(table.tcc, title = "")
+cat('\n\n<!-- -->\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -155,11 +155,11 @@ table.tcc[, 5] <-
 
 colnames(table.tcc) <-
   c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador")
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table.tcc, title = "Dissertações")
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(table.tcc, title = "Dissertações")
+cat('\n\n<!-- -->\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -171,21 +171,6 @@ colnames(table.tcc) <-
 <br>
 
 ### **Institucional** {.tabset}
-
-#### **Sistema de Submissão de TCC**
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
-
-<iframe src="https://sstcc.unisuam.edu.br/" style="width:100%; height:600px; border:0;"></iframe>
-
-*Fontes:* [**SSTCC**](https://sstcc.unisuam.edu.br/)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
 
 #### **Sede** {.tabset}
 
@@ -199,10 +184,9 @@ cat('\n\n')
 
 cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[1,3], '#list" style="width:100%; height:600px; border:0;"></iframe>', sep = ""))
 
-cat('\n\n')
+cat('\n\n<!-- -->\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -216,10 +200,9 @@ cat('\n\n')
 
 cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[2,3], '#list" style="width:100%; height:600px; border:0;"></iframe>', sep = ""))
 
-cat('\n\n')
+cat('\n\n<!-- -->\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -890,138 +873,5 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 cat('\n\n')
 ```
-
-<br>
-
-## **Sobre as Métricas** {#metricas .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
-
-### **DORA**
-
-<br>
-
-<iframe src="https://sfdora.org" style="width:100%; height:600px; border:0;"></iframe>
-
-<br>
-
-*Fontes:* [**DORA**](https://sfdora.org)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Metrics Toolkit**
-
-<br>
-
-<iframe src="http://www.metrics-toolkit.org/metrics/" style="width:100%; height:600px; border:0;"></iframe>
-
-<br>
-
-*Fontes:* [**Metrics Toolkit**](http://www.metrics-toolkit.org)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Altmetric**
-
-<br>
-
-<iframe src="https://www.altmetric.com" style="width:100%; height:600px; border:0;"></iframe>
-
-<br>
-
-*Fontes:* [**Alternative Metric**](https://www.altmetric.com)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Dimensions**
-
-<br>
-
-<iframe src="https://www.dimensions.ai" style="width:100%; height:600px; border:0;"></iframe>
-
-<br>
-
-*Fontes:* [**Digital Science & Research Solutions Inc.**](https://www.dimensions.ai)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **PlumX**
-
-<br>
-
-<iframe src="https://plu.mx" style="width:100%; height:600px; border:0;"></iframe>
-
-<br>
-
-*Fontes:* [**Elsevier**](https://plu.mx)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **CitesScore**
-
-<br>
-
-<iframe src="https://www.scopus.com/sources" style="width:100%; height:600px; border:0;"></iframe>
-
-<br>
-
-*Fontes:* [**Scopus**](https://www.scopus.com/sources)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Scientific Journal Rankings**
-
-<br>
-
-<iframe src="https://www.scimagojr.com" style="width:100%; height:600px; border:0;"></iframe>
-
-<br>
-
-*Fontes:* [**Scientific Journal Ranking**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Qualis Periódicos**
-
-<br>
-
-<iframe src="https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf" style="width:100%; height:600px; border:0;"></iframe>
-
-<br>
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
