@@ -244,11 +244,11 @@ Antes de começar, você vai precisar instalar em sua máquina os seguintes prog
 
 *Você pode configurar seu site do GitHub Pages para ser publicado quando alterações são enviadas por push a um branch específico ou pode escrever um fluxo de trabalho do GitHub Actions para publicar seu site.*
 
-1. Acesse o repositório cicando no link.
+1. Acesse o repositório clicando no link.
 2. Clique em “Settings”.
 3. Na barra lateral esquerda, clique em “Pages”.
 4. No item “Build and deployment”, selecione branch -> “main” e folder -> “/docs”.
-5, Aguarde alguns instantes e atualize a página.
+5. Aguarde alguns instantes e atualize a página.
 6. Copie o link de acesso ao Observatório.
 
 
