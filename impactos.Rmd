@@ -57,7 +57,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 ## **Impacto educacional** {#impacto-educacional}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 
@@ -435,7 +435,7 @@ if (dim(bolsistas.tcc)[1] != 0) {
 ## **Impacto científico** {#impacto-cientifico}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 
@@ -550,7 +550,7 @@ print(
 ## **Impacto sociocultural** {#impacto-sociocultural}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 
@@ -619,7 +619,7 @@ print(
 ## **Impacto tecnológico/econômico** {#impacto-tecnologico}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 
@@ -632,7 +632,7 @@ print(
 ## **Ações durante a pandemia** {#acoes-pandemia}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 
@@ -1457,7 +1457,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 ### **Prêmios** {.tabset #premios}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
   
 ```{r pandemia-premios, eval = has.premios}
 # read separate sheets

@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
   knitr.kable.NA = '--',
   knitr.table.format = "html"
 )
-source("Scripts/all-required-packages.R", local = knitr::knit_global())
+source("Scripts/all-required-packages.R")
 ```
 
 <!--script for inserting LOGO ABOVE THE TOC-->
@@ -39,7 +39,7 @@ $(document).ready(function() {
 ```{r share}
 # home <- "https://ppgcr-unisuam.github.io/observatoriocr/"
 home <- metadata$repository_url
-source("Scripts/social-media-sharing.R", local = knitr::knit_global())
+source("Scripts/social-media-sharing.R")
 ```
 </p>
 
@@ -57,7 +57,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 ## **Trabalhos de conclusão** {#TCC}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 
@@ -105,8 +105,11 @@ table.tcc[, 5] <-
 colnames(table.tcc) <-
   c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador")
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.tcc, title = "")
-cat('\n\n<!-- -->\n\n')
+create_dt(table.tcc, title = "Teses")
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
@@ -157,7 +160,10 @@ colnames(table.tcc) <-
   c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador")
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.tcc, title = "Dissertações")
-cat('\n\n<!-- -->\n\n')
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
@@ -166,7 +172,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ## **Repositórios** {#repositorios}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 
@@ -184,7 +190,7 @@ cat('\n\n')
 
 cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[1,3], '#list" style="width:100%; height:600px; border:0;"></iframe>', sep = ""))
 
-cat('\n\n<!-- -->\n\n')
+cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
@@ -200,7 +206,7 @@ cat('\n\n')
 
 cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[2,3], '#list" style="width:100%; height:600px; border:0;"></iframe>', sep = ""))
 
-cat('\n\n<!-- -->\n\n')
+cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
@@ -219,9 +225,9 @@ cat('\n\n')
 cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[1,3], '#list" style="width:100%; height:600px; border:0;"></iframe>', sep = ""))
 
 cat('\n\n')
-```
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+```
 
 <br>
 
@@ -236,9 +242,8 @@ cat('\n\n')
 cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[2,3], '#list" style="width:100%; height:600px; border:0;"></iframe>', sep = ""))
 
 cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -263,7 +268,7 @@ cat('\n\n')
 ## **Produção bibliográfica** {#bibliografica}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 
@@ -744,7 +749,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 ## **Produção técnica** {#tecnica}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 
@@ -790,7 +795,7 @@ cat('\n\n')
 ## **Retratações** {#retratacoes}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 

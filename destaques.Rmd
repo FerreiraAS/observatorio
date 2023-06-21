@@ -57,7 +57,9 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 ## **Egressos de Destaque** {.tabset #egressos-destaque}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+<br>
 
 ```{r egressos-destaque, eval = has.destaques}
 # read separate sheets
@@ -113,18 +115,16 @@ for (j in 1:length(tabs)) {
 ## **Dissertações/Teses de destaque** {#TCC-destaque}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
 ## **Produções de destaque** {#produtos-destaque}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 
@@ -297,7 +297,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 ## **Prêmios** {.tabset #premios}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 
@@ -355,7 +355,7 @@ for (j in 1:length(tabs)) {
 ## **Prêmio CAPES de Tese** {.tabset #premio-capes}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 
@@ -404,7 +404,7 @@ for (j in 1:length(tabs)) {
 ## **Representatividade** {#representatividade}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 
@@ -536,7 +536,7 @@ for (id in 1:length(orcids)) {
 ## **Divulgação** {#divulgacao}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 

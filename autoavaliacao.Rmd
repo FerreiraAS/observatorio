@@ -47,7 +47,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 ## **Planejamento estratégico** {#planejamento .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ### **Programa (PPG)** {#planejanemto-ppg}
 
@@ -68,7 +68,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 ## **Metodologia** {#metodologia}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 
@@ -167,7 +167,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 ## **Resultados** {#resultados}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 
@@ -354,7 +354,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ### **Documentos CAPES** {#documentos .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r apresentacao-periodos, eval = has.avaliacao}
 # initialize all sheets
@@ -398,7 +398,7 @@ cat("*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br")
 ### **Qualidade das disciplinas** {#qualidade-disciplinas .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 #### **2024-2021**
 
@@ -419,7 +419,7 @@ cat("*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br")
 ### **Pesquisa do egresso** {#pesquisa-egresso .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 #### **Completa**
 
@@ -432,7 +432,7 @@ cat("*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br")
 ## **Ficha de avaliação** {#ficha-avaliacao}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 

@@ -48,7 +48,7 @@ source("Scripts/social-media-sharing.R")
 ## **Secretaria** {#secretaria}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 
@@ -93,7 +93,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ## **Colegiado** {.tabset #colegiado}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>
 
@@ -155,7 +155,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ## **Coordenação** {.tabset #coordenacao}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ### **2024-2021**
 
@@ -275,9 +275,9 @@ print(
     position = "center"
   )
 )
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -399,9 +399,9 @@ print(
     position = "center"
   )
 )
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -523,9 +523,9 @@ print(
     position = "center"
   )
 )
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -647,16 +647,16 @@ print(
     position = "center"
   )
 )
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
 ## **Docentes** {.tabset #docentes}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ### **2024-2021** {.tabset}
 
@@ -774,9 +774,10 @@ legend(
 #   bg = NA
 # )
 title("Descrição do Corpo Docente", outer = TRUE)
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
@@ -842,9 +843,10 @@ ids <- order(table.2$'Nome', decreasing = FALSE)
 table <- table.2[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes - 2024-2021")
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
@@ -964,9 +966,10 @@ legend(
 #   bg = NA
 # )
 title("Descrição do Corpo Docente", outer = TRUE)
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
@@ -1032,9 +1035,10 @@ ids <- order(table.2$'Nome', decreasing = FALSE)
 table <- table.2[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes - 2020-2017")
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
@@ -1154,9 +1158,10 @@ legend(
 #   bg = NA
 # )
 title("Descrição do Corpo Docente", outer = TRUE)
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
@@ -1222,9 +1227,10 @@ ids <- order(table.2$'Nome', decreasing = FALSE)
 table <- table.2[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes - 2016-2013")
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
@@ -1344,9 +1350,10 @@ legend(
 #   bg = NA
 # )
 title("Descrição do Corpo Docente", outer = TRUE)
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
@@ -1412,16 +1419,17 @@ ids <- order(table.2$'Nome', decreasing = FALSE)
 table <- table.2[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes - 2012-2010")
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
 ## **Pós-doutorandos** {.tabset #posdocs}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ### **2024-2021**
 
@@ -1516,10 +1524,11 @@ if (dim(docentes)[1] == 0) {
   table <- table.2[ids, ]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Pós-Docs - 2024-2021")
+  
+  cat('\n\n')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -1616,10 +1625,11 @@ if (dim(docentes)[1] == 0) {
   table <- table.2[ids, ]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Pós-Docs - 2020-2017")
+
+  cat('\n\n')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -1716,10 +1726,11 @@ if (dim(docentes)[1] == 0) {
   table <- table.2[ids, ]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Pós-Docs - 2016-2013")
+  
+  cat('\n\n')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -1816,17 +1827,18 @@ if (dim(docentes)[1] == 0) {
   table <- table.2[ids, ]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Pós-Docs - 2012-2010")
+  
+  cat('\n\n')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
 ## **Discentes** {.tabset #discentes}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ### **Inscritos** {.tabset #inscritos}
 
@@ -1882,7 +1894,6 @@ cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-
 ```
 
 <br>
@@ -2226,7 +2237,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ## **Egressos** {.tabset #egressos}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ### **Síntese** {.tabset}
 
@@ -2252,7 +2263,7 @@ rownames(periodos) <- c("Trienal", "Quadrienal", "Quadrienal")
 par(
   oma = c(0, 0, 0, 0),
   mar = c(5.1, 4.1, 4.1, 2.1),
-  bg = '#2C3E50',
+  bg = 'black',
   col.lab = "white",
   col.axis = "white",
   fg = "white",
@@ -2289,9 +2300,10 @@ for (j in 1:dim(periodos)[1]) {
     theme_minimal()
 }
 multiplot(plotlist = maps, cols = dim(periodos)[1])
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
@@ -2323,9 +2335,10 @@ if (dim(doutores)[1] != 0) {
 } else {
   cat("*Sem dados para exibir*")
 }
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
@@ -2355,9 +2368,11 @@ if (dim(mestres)[1] != 0) {
 } else {
   cat("*Sem dados para exibir*")
 }
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+
+```
 
 <br>
 
@@ -2389,9 +2404,11 @@ if (dim(doutores)[1] != 0) {
 } else {
   cat("*Sem dados para exibir*")
 }
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+
+```
 
 <br>
 
@@ -2421,9 +2438,11 @@ if (dim(mestres)[1] != 0) {
 } else {
   cat("*Sem dados para exibir*")
 }
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+
+```
 
 <br>
 
@@ -2455,9 +2474,11 @@ if (dim(doutores)[1] != 0) {
 } else {
   cat("*Sem dados para exibir*")
 }
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+
+```
 
 <br>
 
@@ -2487,9 +2508,11 @@ if (dim(mestres)[1] != 0) {
 } else {
   cat("*Sem dados para exibir*")
 }
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+
+```
 
 <br>
 
@@ -2521,9 +2544,11 @@ if (dim(doutores)[1] != 0) {
 } else {
   cat("*Sem dados para exibir*")
 }
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+
+```
 
 <br>
 
@@ -2553,16 +2578,18 @@ if (dim(mestres)[1] != 0) {
 } else {
   cat("*Sem dados para exibir*")
 }
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+
+```
 
 <br>
 
 ## **Bolsistas** {.tabset #bolsistas}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ### **Doutorado**
 
@@ -2613,8 +2640,6 @@ cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -2668,14 +2693,12 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
 <br>
 
 ## **Grupos de pesquisa** {.tabset #grupos-pesquisa}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ### **Membros**
 
@@ -2684,9 +2707,12 @@ membros.raw <- readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "Membro
 
 # print tables
 print(kable(membros.raw, align = c("l", rep("c", ncol(membros.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
@@ -2697,9 +2723,12 @@ grupos.raw <- readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.ativ
 
 # print tables
 print(kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
@@ -2710,9 +2739,12 @@ grupos.raw <- readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.inat
 
 # print tables
 print(kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
@@ -2723,16 +2755,17 @@ grupos.raw <- readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.exte
 
 # print tables
 print(kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
-```
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
 ## **Participantes externos** {.tabset #participantes-externos}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ### **Nacionais**
 
@@ -2771,13 +2804,12 @@ if (dim(externos)[1] != 0) {
 } else {
   cat("*Sem dados para exibir*")
 }
+
+cat('\n\n')
+cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<br>
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -2818,13 +2850,12 @@ if (dim(externos)[1] != 0) {
 } else {
   cat("*Sem dados para exibir*")
 }
+
+cat('\n\n')
+cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<br>
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -2858,12 +2889,11 @@ if (dim(externos)[1] != 0) {
 } else {
   cat("*Sem dados para exibir*")
 }
+
+cat('\n\n')
+cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<br>
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>

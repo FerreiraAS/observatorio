@@ -48,7 +48,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 ## **Sobre as Métricas** {#metricas}
 
 <!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:#2C3E50;background-color:#2C3E50">
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ### **DORA**
 

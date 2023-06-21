@@ -252,35 +252,6 @@ Antes de começar, você vai precisar instalar em sua máquina os seguintes prog
 6. Copie o link de acesso ao Observatório.
 
 
-### [**6.1 Como convidar usuários para ingressar em sua organização**](https://docs.github.com/pt/organizations/managing-membership-in-your-organization/inviting-users-to-join-your-organization)
-
-*É possível convidar qualquer pessoa para se tornar um membro da sua organização usando o nome de usuário ou o endereço de email dela para o GitHub.com.*
-
-1. No canto superior direito do GitHub.com, clique na foto do seu perfil e clique em Suas organizações.
-2. Clique no nome da sua organização.
-3. Sob o nome da organização, clique em "People".
-4. Clique em "Invite member".
-5. No campo de pesquisa, digite o nome de usuário, o nome completo (**Arthur de Sá Ferreira**) ou o endereço de email [arthur_sf@icloud.com](arthur_sf@icloud.com) da pessoa que você deseja convidar e clique em "Invite".
-6. Se a pessoa que você está convidando foi membro da organização nos últimos três meses, selecione se deseja restaurar os privilégios dela ou começar de novo e clique em Convidar e restabelecer ou Convidar e começar de novo.
-7. Se a pessoa que você está convidando nunca foi membro da organização ou se você limpou os privilégios dela, em "Função na organização", selecione uma função de organização para o usuário.
-8. Opcionalmente, para adicionar o usuário a uma equipe na organização, selecione a equipe.
-9. Clique em Enviar convite.
-10. A pessoa convidada receberá um e-mail com um convite para participar da organização. Eles precisarão aceitar o convite antes de se tornarem membros da organização. Você pode editar ou cancelar um convite a qualquer momento antes que o usuário o aceite.
-
-
-### [**6.2 Atribuindo a função de mantenedor da equipe a um integrante da equipe**](https://docs.github.com/pt/organizations/organizing-members-into-teams/assigning-the-team-maintainer-role-to-a-team-member)
-
-*Você pode conceder a um integrante da equipe a capacidade de gerenciar a associação e as configurações da equipe, atribuindo a função de mantenedor da equipe.*
-
-1. Faça login na página do Github.
-2. Na conta principal do Github, clique na foto de perfil e selecione "Your Organizations".
-3. Abaixo do nome da organização, clique em "Teams".
-4. Na parte superior da página da equipe, clique em  Membros.
-5. Selecione a pessoa que você gostaria de promover a mantenedor de equipe.
-6. Acima da lista de membros da equipe, use o menu suspenso e clique em "Change role...".
-7. Selecione uma nova função e clique em Alterar função.
-
-
 ### [**Tutorial**](https://resources.github.com/github-and-rstudio/)
 
 *This tutorial teaches you to create R Markdown documents with RStudio and publish them via GitHub, using GitHub Pages.*
@@ -294,9 +265,15 @@ O Observatório é atualizado periodicamente pelo desenvolvedor. Para receber at
 ## **Observatorios publicados**
 
 ### **Centro Universitário Augusto Motta | UNISUAM**
-- [**Observatório CR**](https://ppgcr-unisuam.github.io/observatoriocr) | Programa de Pós-graduação em Ciências da Reabilitação
 
+- [**Observatório CR**](https://ppgcr-unisuam.github.io/observatoriocr) | Programa de Pós-graduação em Ciências da Reabilitação
 - [**Observatório DL**](https://ppgdl-unisuam.github.io/observatoriodl) | Programa de Pós-graduação em Desenvolvimento Local
+
+
+### **Universidade Federal do Ceará | UFC**
+
+- [**Observatório PPGFisio**](https://ppgfisioufc.github.io/PPGFisio_UFC/) | Programa de Pós-graduação em Fisioterapia
+
 
 ## **Licenca**
 
