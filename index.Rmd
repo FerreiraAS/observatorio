@@ -35,8 +35,8 @@ title: "OBSERVATÓRIO `r ifelse(and(has.dados.cadastrais, has.sucupira.files), s
 <center>
 
 ```{r logo-ies}
-if(file.exists("PPG/Images/logo-IES.png")) {
-  cat('<img src=\"PPG/Images/logo-IES.png\" align=\"center\"/>')
+if(file.exists("PPG/Images/logo-programa.png")) {
+  cat('<img src=\"PPG/Images/logo-programa.png\" align=\"center\"/>')
 }
 ```
 
