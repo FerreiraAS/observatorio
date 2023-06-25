@@ -471,14 +471,14 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ### **Comitê de Ética em Pesquisa** {#cep .tabset}
 
 <p align="center">
-```{r logo-ies}
+```{r logo-ies, eval = has.cep}
 if(file.exists("PPG/Images/logo-cep.png") &
    has.cep) {
   # read separate sheets
   link <-
     readxl::read_excel("PPG/CEP.xlsx",
                        sheet = "CEP",
-                       col_types = c("text"))[1]
+                       col_types = c("text"))[[1]]
   cat('[<img src=\"PPG/Images/logo-cep.png\" align=\"center\"/>](', link, ')')
 }
 ```
