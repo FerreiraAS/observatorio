@@ -45,12 +45,14 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Documentos** {.tabset}
+## **Documentos**
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Vigentes**
+<br>
+
+### **Vigentes** {#vigentes}
 
 ```{r documentos-vigentes, eval = has.downloads}
 # read separate sheets
@@ -72,15 +74,13 @@ if (dim(vigentes.raw)[1] != 0) {
 } else {
   cat("*Sem dados para exibir*")
 }
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
 <br>
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Revogados**
+### **Revogados** {#revogados}
 
 ```{r documentos-revogados, eval = has.downloads}
 # read separate sheets
@@ -102,10 +102,8 @@ if (dim(revogados.raw)[1] != 0) {
 } else {
   cat("*Sem dados para exibir*")
 }
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>

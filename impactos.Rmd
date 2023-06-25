@@ -216,6 +216,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 #### **Cotas de bolsas** {.tabset}
 
 ```{r cotas, eval = has.sucupira.files}
@@ -338,6 +340,8 @@ cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 ### **Produção acadêmica** {.tabset}
 
 #### **Teses**
@@ -376,13 +380,12 @@ if (dim(bolsistas.tcc)[1] != 0) {
 } else {
   cat("*Sem dados para exibir*")
 }
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<br>
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -422,13 +425,12 @@ if (dim(bolsistas.tcc)[1] != 0) {
 } else {
   cat("*Sem dados para exibir*")
 }
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<br>
-
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -441,49 +443,50 @@ if (dim(bolsistas.tcc)[1] != 0) {
 
 ### **Periódicos institucionais**
 
-<iframe src="https://revistas.unisuam.edu.br" style="width:100%; height:600px; border:0;"></iframe>
+```{r periodicos-insrtitucionais, eval = has.calendarios}
+# read separate sheets
+periodicos.raw <- readxl::read_excel("PPG/Periódicos institucionais.xlsx", sheet = "Periódicos", col_types = c("text"))
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+Abrir <- matrix(NA, nrow = dim(periodicos.raw)[1])
+colnames(Abrir) <- "Abrir"
+# add hyperlinks
+for(i in 1:dim(periodicos.raw)[1]){
+  if(!is.na(periodicos.raw[i,3])){
+    Abrir[i] <- paste0('<a href="', periodicos.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>", sep = "")
+  }
+}
 
-<br>
+periodicos <- cbind(periodicos.raw[,-3], Abrir)
 
-### **Anuário de patentes**
+# print table
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(periodicos, title = "Períódicos institucionais")
 
-<iframe src="https://revistas.unisuam.edu.br/index.php/patentes" style="width:100%; height:600px; border:0;"></iframe>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Comitê de ética em pesquisa** {.tabset}
-
-<br>
-
-#### **Resoluções e normativas CNS**
-
-<iframe src="http://conselho.saude.gov.br/o-que-e-rss/92-comissoes/conep/normativas-conep/642-lista-de-resolucoes-conep" style="width:100%; height:600px; border:0;"></iframe>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **Plataforma Brasil CONEP**
-
-<iframe src="https://plataformabrasil.saude.gov.br/login.jsf" style="width:100%; height:600px; border:0;"></iframe>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
-#### **Comitê de Ética em Pesquisa** {#CEP .tabset}
+### **Comitê de Ética em Pesquisa** {#cep .tabset}
 
 <p align="center">
-[<img align="center" src="PPG/Images/logo-cep.png">](https://www.unisuam.edu.br/pesquisa-e-inovacao/){target="_blank"}
+```{r logo-ies}
+if(file.exists("PPG/Images/logo-cep.png") &
+   has.cep) {
+  # read separate sheets
+  link <-
+    readxl::read_excel("PPG/CEP.xlsx",
+                       sheet = "CEP",
+                       col_types = c("text"))[1]
+  cat('[<img src=\"PPG/Images/logo-cep.png\" align=\"center\"/>](', link, ')')
+}
+```
 </p>
 
 <br>
 
-##### **Documentos vigentes**
+#### **Documentos vigentes**
 
 ```{r cep-vigentes, eval = has.cep}
 # read separate sheets
@@ -508,13 +511,13 @@ print(
     position = "center"
   )
 )
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
-##### **Documentos revogados**
+#### **Documentos revogados**
 
 ```{r cep-revogados, eval = has.cep}
 # read separate sheets
@@ -539,11 +542,9 @@ print(
     position = "center"
   )
 )
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
@@ -554,63 +555,7 @@ print(
 
 <br>
 
-### **Organização de eventos** {.tabset}
-
-<br>
-
-#### **Semana de Pesquisa, Extensão e Inovação** {.tabset}
-
-##### **Programação**
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://hotsite.unisuam.edu.br/xviiispe/index.php" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-##### **Apresentações**
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/sBn1gOF8Atg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **Simpósio Paradesportivo Carioca**
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/1O_S0kEW9Rk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/i_PZ-Bgy1dE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
+*Em construção!*
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 

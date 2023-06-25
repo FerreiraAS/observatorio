@@ -148,8 +148,6 @@ navbar:
           href: [galeria.html#videos]
         - text: "Podcasts"
           href: [galeria.html#podcasts]
-        - text: "Fotos"
-          href: [galeria.html#fotos]
     - text: "Autoavaliação"
       href: [autoavaliacao.html]
       menu:
@@ -186,17 +184,18 @@ navbar:
               href: [autoavaliacao.html#formacao]
             - text: "3. Impacto na sociedade"
               href: [autoavaliacao.html#impacto]
-    - text: ""
-      icon: "fa-toolbox"
-      href: [toolbox.html]
-      menu:
-        - text: "Toolbox"
-          href: [toolbox.html]
-        - text: "Sobre as métricas"
-          href: [toolbox.html#metricas]
-    - text: ""
-      icon: "fa-download"
+    - text: "Downloads"
       href: [downloads.html]
+      menu:
+        - text: "Donwloads"
+          href: [downloads.html]
+        - text: "Vigentes"
+          href: [downloads.html#vigentes]
+        - text: "Revogados"
+          href: [downloads.html#revogados]
+    - text: ""
+      icon: "fa-circle-info"
+      href: [info.html]
     - text: ""
       icon: "fa-envelope"
       href: [mailto:arthur_sf@icloud.com]
@@ -207,9 +206,9 @@ navbar:
       icon: "fa-facebook"
       href: [https://pt-br.facebook.com/arthur.sa.ferreira]
   right:
-    - text: ""
-      icon: "fa-github"
-      href: [https://github.com/FerreiraAS/observatorio]
+        - text: ""
+          icon: "fa-github"
+          href: [https://github.com/FerreiraAS/observatorio]
 
 output:
   html_document:

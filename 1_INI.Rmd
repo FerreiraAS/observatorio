@@ -265,9 +265,9 @@ has.notas <-
   )
 ```
 
-```{r try-premios, results = "hide"}
-has.premios <-
-  !is.error(try(readxl::read_excel("PPG/Prêmios.xlsx", sheet = 1),
+```{r try-periodicos, results = "hide"}
+has.periodicos <-
+  !is.error(try(readxl::read_excel("PPG/Periódicos institucionais.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
@@ -275,6 +275,13 @@ has.premios <-
 ```{r try-premio-capes, results = "hide"}
 has.premio.capes <-
   !is.error(try(readxl::read_excel("PPG/Prêmio CAPES de Tese.xlsx", sheet = 1),
+                silent = TRUE)
+  )
+```
+
+```{r try-premios, results = "hide"}
+has.premios <-
+  !is.error(try(readxl::read_excel("PPG/Prêmios.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
@@ -1162,6 +1169,7 @@ has.infraestrutura
 has.internacionalizacao
 has.laboratorios
 has.notas
+has.periodicos
 has.premios
 has.premio.capes
 has.producao

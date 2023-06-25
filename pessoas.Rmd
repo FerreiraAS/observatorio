@@ -157,6 +157,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+<br>
 
 ```{r coordenadores, eval = has.coordenacao}
 coordenadores <-

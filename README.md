@@ -143,6 +143,7 @@ O **Obsevatório** pode exibir informações complementares, não disponíveis n
 │   └── Internacionalização.xlsx
 │   └── Laboratórios.xlsx
 │   └── Notas.xlsx
+│   └── Periódicos institucionais.xlsx
 │   └── Prêmio CAPES de Tese.xlsx
 │   └── Prêmios.xlsx
 │   └── Produção.xlsx
