@@ -61,16 +61,20 @@ vigentes.raw <-
              sheet = "Vigentes",
              col_types = c("text"))
 
-# replace the link by a tag
-for (i in 1:dim(vigentes.raw)[1]) {
-  vigentes.raw[i, 3] <-
-    paste("[↗️](", vigentes.raw[i, 3], '){target="_blank"}', sep = "")
+Abrir <- matrix(NA, nrow = dim(vigentes.raw)[1])
+colnames(Abrir) <- "Abrir"
+# add hyperlinks
+for(i in 1:dim(vigentes.raw)[1]){
+  if(!is.na(vigentes.raw[i,3])){
+    Abrir[i] <- paste0('<a href="', vigentes.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>", sep = "")
+  }
 }
+vigentes <- cbind(vigentes.raw[,-3], Abrir)
 
 # print table
-if (dim(vigentes.raw)[1] != 0) {
+if (dim(vigentes)[1] != 0) {
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(vigentes.raw, title = "Documentos vigentes")
+  create_dt(vigentes, title = "Documentos vigentes")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -89,16 +93,20 @@ revogados.raw <-
              sheet = "Revogados",
              col_types = c("text"))
 
-# replace the link by a tag
-for (i in 1:dim(revogados.raw)[1]) {
-  revogados.raw[i, 3] <-
-    paste("[↗️](", revogados.raw[i, 3], '){target="_blank"}', sep = "")
+Abrir <- matrix(NA, nrow = dim(revogados.raw)[1])
+colnames(Abrir) <- "Abrir"
+# add hyperlinks
+for(i in 1:dim(revogados.raw)[1]){
+  if(!is.na(revogados.raw[i,3])){
+    Abrir[i] <- paste0('<a href="', revogados.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>", sep = "")
+  }
 }
+revogados <- cbind(revogados.raw[,-3], Abrir)
 
 # print table
-if (dim(revogados.raw)[1] != 0) {
+if (dim(revogados)[1] != 0) {
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(revogados.raw, title = "Documentos revogados")
+  create_dt(revogados, title = "Documentos revogados")
 } else {
   cat("*Sem dados para exibir*")
 }

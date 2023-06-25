@@ -373,7 +373,7 @@ for (i in 1:length(abas)) {
   # replace the link by a tag
   for (i in 1:dim(periodo.raw)[1]) {
     periodo.raw[i, 3] <-
-      paste("[↗️](", periodo.raw[i, 3], '){target="_blank"}', sep = "")
+      paste0('<a href="', periodo.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
   }
   
   # print table

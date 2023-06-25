@@ -498,7 +498,7 @@ cep.vigentes.raw <-
 # replace the link by a tag
 for (i in 1:dim(cep.vigentes.raw)[1]) {
   cep.vigentes.raw[i, 3] <-
-    paste("[↗️](", cep.vigentes.raw[i, 3], '){target="_blank"}', sep = "")
+    paste0('<a href="', cep.vigentes.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
 }
 
 # print table
@@ -529,7 +529,7 @@ cep.revogados.raw <-
 # replace the link by a tag
 for (i in 1:dim(cep.revogados.raw)[1]) {
   cep.revogados.raw[i, 3] <-
-    paste("[↗️](", cep.revogados.raw[i, 3], '){target="_blank"}', sep = "")
+    paste0('<a href="', cep.revogados.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
 }
 
 # print table
@@ -1428,7 +1428,7 @@ for (j in 1:length(tabs)) {
       premios[i, 1] <-
         paste("#### **", as.character(as.Date(as.numeric(premios[i, 1]), origin = "1899-12-30")), "**", sep = "")
       premios[i, 3] <-
-        paste("[↗️](", premios[i, 3], '){target="_blank"}', sep = "")
+        paste0('<a href="', premios[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
     }
     
     # drop date column

@@ -1660,7 +1660,7 @@ for (i in 1:length(abas)) {
   # replace the link by a tag
   for (i in 1:dim(bolsas.raw)[1]) {
     bolsas.raw[i, 3] <-
-      paste("[↗️](", bolsas.raw[i, 3], '){target="_blank"}', sep = "")
+      paste0('<a href="', bolsas.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
   }
   
   print(
@@ -2991,7 +2991,7 @@ for (i in 1:length(abas)) {
   # replace the link by a tag
   for (i in 1:dim(convenios.raw)[1]) {
     convenios.raw[i, 3] <-
-      paste("[↗️](", convenios.raw[i, 3], '){target="_blank"}', sep = "")
+      paste0('<a href="', convenios.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
   }
   
   # print table
@@ -3039,7 +3039,7 @@ for (j in 1:length(tabs)) {
     cooperacao[i, 1] <-
       paste("**", cooperacao[i, 1], "**", sep = "")
     cooperacao[i, 3] <-
-      paste("[↗️](", cooperacao[i, 3], '){target="_blank"}', sep = "")
+      paste0('<a href="', cooperacao[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
   }
   
   # store data to print table
@@ -3090,7 +3090,7 @@ for (j in 1:length(tabs)) {
     news[i, 1] <-
       paste("### **", as.character(as.Date(as.numeric(news[i, 1]), origin = "1899-12-30")), "**", sep = "")
     news[i, 3] <-
-      paste("[↗️](", news[i, 3], '){target="_blank"}', sep = "")
+      paste0('<a href="', news[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
   }
   
   # drop date column
