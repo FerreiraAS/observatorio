@@ -155,17 +155,23 @@ area.capes <-
              sheet = "CAPES",
              col_types = c("text"))
 
-# print tables
-print(
-  kable(area.capes, align = c("l", rep(
-    "c", ncol(area.capes) - 2
-  ), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
+Abrir <- matrix(NA, nrow = dim(area.capes)[1])
+colnames(Abrir) <- "Abrir"
+# add hyperlinks
+for(i in 1:dim(area.capes)[1]){
+  if(!is.na(area.capes[i,2])){
+    Abrir[i] <- paste0('<a href="', area.capes[i,2],'" target="_blank"', '>', "↗️" ,"</a>", sep = "")
+  }
+}
+area.capes <- cbind(area.capes[,-2], Abrir)
 
+# print table
+if (dim(area.capes)[1] != 0) {
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(area.capes, title = "Áreas CAPES")
+} else {
+  cat("*Sem dados para exibir*")
+}
 cat('\n\n')
 cat('*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br)')
 cat('\n\n')
@@ -1662,17 +1668,16 @@ for (i in 1:length(abas)) {
     bolsas.raw[i, 3] <-
       paste0('<a href="', bolsas.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
   }
+  bolsas.raw <- cbind(bolsas.raw[,-3], Abrir)
   
-  print(
-    kable(bolsas.raw, align = c("l", rep(
-      "c", ncol(bolsas.raw) - 2
-    ), "r")) %>% kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
-
+  # print table
+  if (dim(bolsas.raw)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    create_dt(bolsas.raw, title = "Bolsas de estudo")
+  } else {
+    cat("*Sem dados para exibir*")
+  }
+  
   # print end of tab rows
   cat('\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
@@ -2993,17 +2998,15 @@ for (i in 1:length(abas)) {
     convenios.raw[i, 3] <-
       paste0('<a href="', convenios.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
   }
+  convenios.raw <- cbind(convenios.raw[,-3], Abrir)
   
   # print table
-  print(
-    kable(convenios.raw, align = c("l", rep(
-      "c", ncol(convenios.raw) - 2
-    ), "r")) %>% kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
+  if (dim(convenios.raw)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    create_dt(convenios.raw, title = "Convênios institucionais")
+  } else {
+    cat("*Sem dados para exibir*")
+  }
   
   # print end of tab rows
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
@@ -3041,6 +3044,7 @@ for (j in 1:length(tabs)) {
     cooperacao[i, 3] <-
       paste0('<a href="', cooperacao[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
   }
+  cooperacao <- cbind(cooperacao[,-3], Abrir)
   
   # store data to print table
   cooperacao.list[[j]] <- cooperacao
@@ -3051,15 +3055,15 @@ for (j in 1:length(tabs)) {
   cat('\n\n<!-- -->\n\n')
   cat("### **", tabs[j], "**", "\n", sep = "")
   cat('\n\n<!-- -->\n\n')
-  print(
-    kable(cooperacao.list[[j]], align = c("l", rep(
-      "c", ncol(premios) - 2
-    ), "r")) %>% kable_styling(
-      bootstrap_options = c("hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
+  
+  # print table
+  if (dim(cooperacao)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    create_dt(cooperacao, title = "Cooperação Interinstitucional")
+  } else {
+    cat("*Sem dados para exibir*")
+  }
+  
   cat('\n\n<!-- -->\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
@@ -3092,6 +3096,7 @@ for (j in 1:length(tabs)) {
     news[i, 3] <-
       paste0('<a href="', news[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
   }
+  news <- cbind(cooperacao[,-3], Abrir)
   
   # drop date column
   news <- news[,-1]
@@ -3107,15 +3112,13 @@ for (j in 1:length(tabs)) {
   cat('\n\n<!-- -->\n\n')
   cat("### **", tabs[j], "**", "\n", sep = "")
   cat('\n\n<!-- -->\n\n')
-  print(
-    kable(news.list[[j]], align = c("l", rep("c", ncol(
-      news
-    ) - 2), "r")) %>% kable_styling(
-      bootstrap_options = c("hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
+  # print table
+  if (dim(news.list[[j]])[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    create_dt(news.list[[j]], title = "Cooperação Interinstitucional")
+  } else {
+    cat("*Sem dados para exibir*")
+  }
   cat('\n\n<!-- -->\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
