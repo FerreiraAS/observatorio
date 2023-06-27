@@ -50,8 +50,6 @@ source("Scripts/social-media-sharing.R")
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
-
 ```{r dados-cadastrais-endereco, eval = has.dados.cadastrais}
 # read separate sheets
 endereco.raw <-
@@ -75,11 +73,12 @@ table <-
 print(
   kable(table, align = c("l", rep("c", ncol(
     table
-  ) - 2), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
+  ) - 2), "r"), escape = FALSE) %>%
+    kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
 )
 
 cat('\n\n')
@@ -90,12 +89,10 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Colegiado** {.tabset #colegiado}
+## **Colegiado** {#colegiado .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
-
-<br>
 
 ```{r docentes-atual-perfil, eval = has.sucupira.files}
 # projetos - membros
@@ -157,8 +154,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
-
 ```{r coordenadores, eval = has.coordenacao}
 coordenadores <-
   readxl::read_excel("PPG/Coordenação.xlsx", sheet = "Coordenação")
@@ -209,7 +204,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Docentes** {.tabset #docentes}
+## **Docentes** {#docentes .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -982,7 +977,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Pós-doutorandos** {.tabset #posdocs}
+## **Pós-doutorandos** {#posdocs .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -1079,7 +1074,7 @@ if (dim(docentes)[1] == 0) {
   ids <- order(table.2$'Nome', decreasing = FALSE)
   table <- table.2[ids, ]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pós-Docs - 2024-2021")
+  cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2024-2021")))
   
   cat('\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
@@ -1180,7 +1175,7 @@ if (dim(docentes)[1] == 0) {
   ids <- order(table.2$'Nome', decreasing = FALSE)
   table <- table.2[ids, ]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pós-Docs - 2020-2017")
+  cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2020-2017")))
 
   cat('\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
@@ -1281,7 +1276,7 @@ if (dim(docentes)[1] == 0) {
   ids <- order(table.2$'Nome', decreasing = FALSE)
   table <- table.2[ids, ]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pós-Docs - 2016-2013")
+  cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2016-2013")))
   
   cat('\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
@@ -1382,7 +1377,7 @@ if (dim(docentes)[1] == 0) {
   ids <- order(table.2$'Nome', decreasing = FALSE)
   table <- table.2[ids, ]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pós-Docs - 2012-2010")
+  cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2012-2010")))
   
   cat('\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
@@ -1391,12 +1386,12 @@ if (dim(docentes)[1] == 0) {
 
 <br>
 
-## **Discentes** {.tabset #discentes}
+## **Discentes** {#discentes .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Inscritos** {.tabset #inscritos}
+### **Inscritos** {#inscritos .tabset}
 
 #### **Doutorado**
 
@@ -1564,7 +1559,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-### **Datas e prazos** {.tabset #datas-prazos}
+### **Datas e prazos** {#datas-prazos .tabset}
 
 #### **Doutorado**
 
@@ -1790,7 +1785,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Egressos** {.tabset #egressos}
+## **Egressos** {#egressos .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -1887,7 +1882,7 @@ if (dim(doutores)[1] != 0) {
   ids <- order(doutores$`Ano Titulação`, decreasing = TRUE)
   table <- doutores[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos Doutorado - 2024-2020")
+  create_dt(table, title = "Egressos Doutorado - 2024-2021")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -2142,7 +2137,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Bolsistas** {.tabset #bolsistas}
+## **Bolsistas** {#bolsistas .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -2251,7 +2246,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Grupos de pesquisa** {.tabset #grupos-pesquisa}
+## **Grupos de pesquisa** {#grupos-pesquisa .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -2259,10 +2254,19 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ### **Membros**
 
 ```{r grupos-de-pesquisa-membros, eval = has.grupos.pesquisa}
-membros.raw <- readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "Membros")
+membros.raw <-
+  readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "Membros")
 
 # print tables
-print(kable(membros.raw, align = c("l", rep("c", ncol(membros.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+print(
+  kable(membros.raw, align = c("l", rep(
+    "c", ncol(membros.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
 
 cat('\n\n')
 cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
@@ -2275,10 +2279,19 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ### **Grupos ativos** {.tabset}
 
 ```{r grupos-de-pesquisa-ativos, eval = has.grupos.pesquisa}
-grupos.raw <- readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.ativos")
+grupos.raw <-
+  readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.ativos")
 
 # print tables
-print(kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+print(
+  kable(grupos.raw, align = c("l", rep(
+    "c", ncol(grupos.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
 
 cat('\n\n')
 cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
@@ -2304,13 +2317,22 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-### **Grupos de pesquisa externos** {.tabset #grupos-externos}
+### **Grupos de pesquisa externos** {#grupos-externos .tabset}
 
 ```{r grupos-de-pesquisa-externos, eval = has.grupos.pesquisa}
-grupos.raw <- readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.externos")
+grupos.raw <-
+  readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.externos")
 
 # print tables
-print(kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+print(
+  kable(grupos.raw, align = c("l", rep(
+    "c", ncol(grupos.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
 
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
@@ -2318,7 +2340,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Participantes externos** {.tabset #participantes-externos}
+## **Participantes externos** {#participantes-externos .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">

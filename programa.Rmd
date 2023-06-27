@@ -45,7 +45,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Apresentação** {.tabset #apresentacao}
+## **Apresentação** {#apresentacao .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -102,16 +102,14 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Breve histórico** {.tabset #breve-historico}
+## **Breve histórico** {#breve-historico .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
-
 ```{r programa-historico, eval = has.historico}
 # initialize all sheets
-abas <- excel_sheets("PPG/Histórico.xlsx")
+abas <- readxl::excel_sheets("PPG/Histórico.xlsx")
 
 # display each sheet in a tab
 for (i in 1:length(abas)) {
@@ -142,12 +140,10 @@ for (i in 1:length(abas)) {
 
 <br>
 
-## **Área de avaliação** {.tabset #area-avaliacao}
+## **Área de avaliação** {#area-avaliacao .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
-
-<br>
 
 ```{r area-capes, eval = has.area.capes}
 area.capes <-
@@ -180,7 +176,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Área de concentração** {.tabset #area-concentracao}
+## **Área de concentração** {#area-concentracao .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -247,7 +243,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Linhas de pesquisa** {.tabset #linha-pesquisa}
+## **Linhas de pesquisa** {#linha-pesquisa .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -315,7 +311,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Projetos de pesquisa** {.tabset #projeto-pesquisa}
+## **Projetos de pesquisa** {#projeto-pesquisa .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -1276,16 +1272,14 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Agendas de pesquisa** {.tabset #agendas-pesquisa}
+## **Agendas de pesquisa** {#agendas-pesquisa .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
-
 ```{r agendas-pesquisa, eval = has.agendas.pesquisa}
 # initialize all sheets
-abas <- excel_sheets("PPG/Agendas de Pesquisa.xlsx")
+abas <- readxl::excel_sheets("PPG/Agendas de Pesquisa.xlsx")
 
 # display each sheet in a tab
 for (i in 1:length(abas)) {
@@ -1313,7 +1307,7 @@ for (i in 1:length(abas)) {
 
 <br>
 
-## **Financiadores** {.tabset #financiadores}
+## **Financiadores** {#financiadores .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -1642,38 +1636,47 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Bolsas de estudo** {.tabset #bolsas}
+## **Bolsas de estudo** {#bolsas .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
-
 ```{r bolsas, eval = has.bolsas}
 # initialize all sheets
-abas <- excel_sheets("PPG/Bolsas.xlsx")
+abas <- readxl::excel_sheets("PPG/Bolsas.xlsx")
 
 # display each sheet in a tab
-for (i in 1:length(abas)) {
+for (j in 1:length(abas)) {
   cat('\n\n<!-- -->\n\n')
-  cat(paste0('### **', abas[i], '**'))
+  cat(paste0('### **', abas[j], '**'))
   cat('\n\n<!-- -->\n\n')
   bolsas.raw <-
     readxl::read_excel("PPG/Bolsas.xlsx",
-               sheet = abas[i],
-               col_types = c("text"))
+                       sheet = abas[j],
+                       col_types = c("text"))
   
   # replace the link by a tag
+  Abrir <- matrix(NA, nrow = dim(bolsas.raw)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
   for (i in 1:dim(bolsas.raw)[1]) {
-    bolsas.raw[i, 3] <-
-      paste0('<a href="', bolsas.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
+    if (!is.na(bolsas.raw[i, 3])) {
+      Abrir[i] <-
+        paste0('<a href="',
+               bolsas.raw[i, 3],
+               '" target="_blank"',
+               '>',
+               "↗️" ,
+               "</a>",
+               sep = "")
+    }
   }
-  bolsas.raw <- cbind(bolsas.raw[,-3], Abrir)
+  bolsas <- cbind(bolsas.raw[, -3], Abrir)
   
   # print table
-  if (dim(bolsas.raw)[1] != 0) {
+  if (dim(bolsas)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    create_dt(bolsas.raw, title = "Bolsas de estudo")
+    cat(knitr::knit_print(create_dt(bolsas, title = "Bolsas de estudo")))
   } else {
     cat("*Sem dados para exibir*")
   }
@@ -1686,7 +1689,7 @@ for (i in 1:length(abas)) {
 
 <br>
 
-## **Cursos** {.tabset #cursos}
+## **Cursos** {#cursos .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -1695,12 +1698,23 @@ for (i in 1:length(abas)) {
 
 ```{r cursos-niveis, eval = has.dados.cadastrais}
 # read separate sheets
-cursos.raw <- readxl::read_excel("PPG/Dados Cadastrais.xlsx", sheet = "Cursos", col_types = c("text"))
+cursos.raw <-
+  readxl::read_excel("PPG/Dados Cadastrais.xlsx",
+                     sheet = "Cursos",
+                     col_types = c("text"))
 
 cursos <- dplyr::select(cursos.raw, c("Código", "Curso", "Nível"))
 
 # print tables
-print(kable(cursos, align = c("l", rep("c", ncol(cursos)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+print(
+  kable(cursos, align = c("l", rep("c", ncol(
+    cursos
+  ) - 2), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -2081,7 +2095,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Estrutura curricular** {.tabset #estrutura-curricular}
+## **Estrutura curricular** {#estrutura-curricular .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -2415,7 +2429,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Turmas** {.tabset #turmas}
+## **Turmas** {#turmas .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -2768,7 +2782,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Calendários** {.tabset #calendarios}
+## **Calendários** {#calendarios .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -2777,8 +2791,10 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ```{r calendarios-sede, eval = has.calendarios}
 # read separate sheets
-turmas.raw <- readxl::read_excel("PPG/Calendários.xlsx", sheet = "Sede", col_types = c("text"))
-
+turmas.raw <-
+  readxl::read_excel("PPG/Calendários.xlsx",
+                     sheet = "Sede",
+                     col_types = c("text"))
 Abrir <- matrix(NA, nrow = dim(turmas.raw)[1])
 colnames(Abrir) <- "Abrir"
 # add hyperlinks
@@ -2829,7 +2845,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Editais de processo seletivo** {.tabset #editais}
+## **Editais de processo seletivo** {#editais .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -2890,12 +2906,10 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Infraestrutura** {.tabset #infraestrutura}
+## **Infraestrutura** {#infraestrutura .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
-
-<br>
 
 ```{r infraestrutura, eval = has.infraestrutura}
 cat('\n\n<!-- -->\n\n')
@@ -2922,7 +2936,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ```{r laboratorios-equipamentos, eval = has.laboratorios}
 # read data
-abas <- excel_sheets("PPG/Laboratórios.xlsx")
+abas <- readxl::excel_sheets("PPG/Laboratórios.xlsx")
 
 for (i in 1:length(abas)) {
   lab <-
@@ -2972,38 +2986,47 @@ for (i in 1:length(abas)) {
 
 <br>
 
-## **Convênios institucionais** {.tabset #convenios}
+## **Convênios institucionais** {#convenios .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
-
 ```{r programa-convenios, eval = has.convenios}
 # initialize all sheets
-abas <- excel_sheets("PPG/Convênios.xlsx")
+abas <- readxl::excel_sheets("PPG/Convênios.xlsx")
 
 # display each sheet in a tab
-for (i in 1:length(abas)) {
+for (j in 1:length(abas)) {
   cat('\n\n<!-- -->\n\n')
-  cat(paste0('### **', abas[i], '**'))
+  cat(paste0('### **', abas[j], '**'))
   cat('\n\n<!-- -->\n\n')
   convenios.raw <-
     readxl::read_excel("PPG/Convênios.xlsx",
-               sheet = abas[i],
-               col_types = c("text"))
+                       sheet = abas[j],
+                       col_types = c("text"))
   
   # replace the link by a tag
+  Abrir <- matrix(NA, nrow = dim(convenios.raw)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
   for (i in 1:dim(convenios.raw)[1]) {
-    convenios.raw[i, 3] <-
-      paste0('<a href="', convenios.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
+    if (!is.na(convenios.raw[i, 3])) {
+      Abrir[i] <-
+        paste0('<a href="',
+               convenios.raw[i, 3],
+               '" target="_blank"',
+               '>',
+               "↗️" ,
+               "</a>",
+               sep = "")
+    }
   }
-  convenios.raw <- cbind(convenios.raw[,-3], Abrir)
+  convenios <- cbind(convenios.raw[, -3], Abrir)
   
   # print table
-  if (dim(convenios.raw)[1] != 0) {
+  if (dim(convenios)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    create_dt(convenios.raw, title = "Convênios institucionais")
+    cat(knitr::knit_print(create_dt(convenios, title = "Convênios institucionais")))
   } else {
     cat("*Sem dados para exibir*")
   }
@@ -3011,115 +3034,110 @@ for (i in 1:length(abas)) {
   # print end of tab rows
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
-
-cat('<br>')
 ```
 
 <br>
 
-## **Cooperação interinstitucional** {.tabset #cooperacao}
+## **Cooperação interinstitucional** {#cooperacao .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
-
 ```{r programa-cooperacao, eval = has.cooperacoes}
-# read separate sheets
-file.path <- "PPG/Cooperações.xlsx"
-tabs <- excel_sheets(file.path)
-topics <- c()
-cooperacao.list <- vector(mode = "list", length = length(tabs))
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Cooperações.xlsx")
 
-# iterate across sheets
-for (j in 1:length(tabs)) {
-  cooperacao <-
-    readxl::read_excel(file.path,
-               sheet = tabs[j],
-               col_types = c("text", "text", "text"))
-  # replace the link by a tag
-  for (i in 1:dim(cooperacao)[1]) {
-    cooperacao[i, 1] <-
-      paste("**", cooperacao[i, 1], "**", sep = "")
-    cooperacao[i, 3] <-
-      paste0('<a href="', cooperacao[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
-  }
-  cooperacao <- cbind(cooperacao[,-3], Abrir)
+# display each sheet in a tab
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('### **', abas[j], '**'))
+  cat('\n\n<!-- -->\n\n')
+  cooperacoes.raw <-
+    readxl::read_excel("PPG/Cooperações.xlsx",
+                       sheet = abas[j],
+                       col_types = c("text"))
   
-  # store data to print table
-  cooperacao.list[[j]] <- cooperacao
-}
-
-# iterate across sheets
-for (j in 1:length(tabs)) {
-  cat('\n\n<!-- -->\n\n')
-  cat("### **", tabs[j], "**", "\n", sep = "")
-  cat('\n\n<!-- -->\n\n')
+  # replace the link by a tag
+  Abrir <- matrix(NA, nrow = dim(cooperacoes.raw)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(cooperacoes.raw)[1]) {
+    if (!is.na(cooperacoes.raw[i, 3])) {
+      Abrir[i] <-
+        paste0('<a href="',
+               cooperacoes.raw[i, 3],
+               '" target="_blank"',
+               '>',
+               "↗️" ,
+               "</a>",
+               sep = "")
+    }
+  }
+  cooperacoes <- cbind(cooperacoes.raw[, -3], Abrir)
   
   # print table
-  if (dim(cooperacao)[1] != 0) {
+  if (dim(cooperacoes)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    create_dt(cooperacao, title = "Cooperação Interinstitucional")
+    cat(knitr::knit_print(create_dt(cooperacoes, title = "Cooperação interinstitucional")))
   } else {
     cat("*Sem dados para exibir*")
   }
   
-  cat('\n\n<!-- -->\n\n')
+  # print end of tab rows
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
 
 <br>
 
-## **Internacionalização** {.tabset #internacional}
+## **Internacionalização** {#internacional .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r internacional, eval = has.internacionalizacao}
-# read separate sheets
-file.path <- "PPG/Internacionalização.xlsx"
-tabs <- excel_sheets(file.path)
-topics <- c()
-news.list <- vector(mode = "list", length = length(tabs))
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Internacionalização.xlsx")
 
-# iterate across sheets
-for (j in 1:length(tabs)) {
-  news <-
-    readxl::read_excel(file.path,
-               sheet = tabs[j],
-               col_types = c("text", "text", "text"))
+# display each sheet in a tab
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('### **', abas[j], '**'))
+  cat('\n\n<!-- -->\n\n')
+  internacional.raw <-
+    readxl::read_excel(
+      "PPG/Internacionalização.xlsx",
+      sheet = abas[j],
+      col_types = c("text")
+    )
+  
   # replace the link by a tag
-  for (i in 1:dim(news)[1]) {
-    news[i, 1] <-
-      paste("### **", as.character(as.Date(as.numeric(news[i, 1]), origin = "1899-12-30")), "**", sep = "")
-    news[i, 3] <-
-      paste0('<a href="', news[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
+  Abrir <- matrix(NA, nrow = dim(internacional.raw)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(internacional.raw)[1]) {
+    if (!is.na(internacional.raw[i, 3])) {
+      Abrir[i] <-
+        paste0('<a href="',
+               internacional.raw[i, 3],
+               '" target="_blank"',
+               '>',
+               "↗️" ,
+               "</a>",
+               sep = "")
+    }
   }
-  news <- cbind(cooperacao[,-3], Abrir)
+  internacional <- cbind(internacional.raw[, -3], Abrir)
   
-  # drop date column
-  news <- news[,-1]
-  # store data to print table
-  news.list[[j]] <- news
-  
-  # store data to plot wordcloud
-  topics <- rbind(topics, news[i, 1])
-}
-
-# iterate across sheets
-for (j in 1:length(tabs)) {
-  cat('\n\n<!-- -->\n\n')
-  cat("### **", tabs[j], "**", "\n", sep = "")
-  cat('\n\n<!-- -->\n\n')
   # print table
-  if (dim(news.list[[j]])[1] != 0) {
+  if (dim(internacional)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    create_dt(news.list[[j]], title = "Cooperação Interinstitucional")
+    cat(knitr::knit_print(create_dt(internacional, title = "Internacionalização")))
   } else {
     cat("*Sem dados para exibir*")
   }
-  cat('\n\n<!-- -->\n\n')
+  
+  # print end of tab rows
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```

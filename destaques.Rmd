@@ -54,41 +54,39 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Egressos de Destaque** {.tabset #egressos-destaque}
+## **Egressos de Destaque** {#egressos-destaque .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
-
-<br>
 
 ```{r egressos-destaque, eval = has.destaques}
 # read separate sheets
 file.path <- "PPG/Destaques.xlsx"
 tabs <- excel_sheets(file.path)
 topics <- c()
-premios.list <- vector(mode = "list", length = length(tabs))
+destaques.list <- vector(mode = "list", length = length(tabs))
 
 # iterate across sheets
 for (j in 1:length(tabs)) {
-  premios <-
+  destaques <-
     readxl::read_excel(file.path,
                sheet = tabs[j],
                col_types = c("text", "text", "text"))
   # replace the link by a tag
-  for (i in 1:dim(premios)[1]) {
-    premios[i, 1] <-
-      paste("### **", as.character(as.Date(as.numeric(premios[i, 1]), origin = "1899-12-30")), "**", sep = "")
-    premios[i, 3] <-
-      paste0('<a href="', premios[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
+  for (i in 1:dim(destaques)[1]) {
+    destaques[i, 1] <-
+      paste("### **", as.character(as.Date(as.numeric(destaques[i, 1]), origin = "1899-12-30")), "**", sep = "")
+    destaques[i, 3] <-
+      paste0('<a href="', destaques[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
   }
   
   # drop date column
-  premios <- premios[, -1]
+  destaques <- destaques[, -1]
   # store data to print table
-  premios.list[[j]] <- premios
+  destaques.list[[j]] <- destaques
   
   # store data to plot wordcloud
-  topics <- rbind(topics, premios[i, 1])
+  topics <- rbind(topics, destaques[i, 1])
 }
 
 # iterate across sheets
@@ -97,9 +95,9 @@ for (j in 1:length(tabs)) {
   cat("### **", tabs[j], "**", "\n", sep = "")
   cat('\n\n<!-- -->\n\n')
   print(
-    kable(premios.list[[j]], align = c("l", rep(
-      "c", ncol(premios) - 2
-    ), "r")) %>% kable_styling(
+    kable(destaques.list[[j]], align = c("l", rep(
+      "c", ncol(destaques) - 2
+    ), "r"), escape = FALSE) %>% kable_styling(
       bootstrap_options = c("hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
@@ -119,16 +117,16 @@ for (j in 1:length(tabs)) {
 
 <br>
 
+*Em construção*
+
 <br>
 
-## **Produções de destaque** {#produtos-destaque}
+## **Produções de destaque (top-20)** {#produtos-destaque}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
-
-### **Atenção e visibilidade (Top-20 Altmetric)** {.tabset}
+### **Atenção e visibilidade** {.tabset}
 
 ```{r destaque-visibilidade, eval = any(has.producao.sucupira, has.producao.ppg)}
 # sources
@@ -212,7 +210,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-### **Prestígio do periódico (Top-20 CiteScore)**
+### **Prestígio do periódico**
 
 ```{r destaque-prestigio, eval = any(has.producao.sucupira, has.producao.ppg)}
 doi_all_sorted <- doi_all[!is.na(doi_all$CiteScore), ]
@@ -294,12 +292,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-## **Prêmios** {.tabset #premios}
+## **Prêmios** {#premios .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
-
-<br>
 
 ```{r premios, eval = has.premios}
 # read separate sheets
@@ -339,7 +335,7 @@ for (j in 1:length(tabs)) {
   print(
     kable(premios.list[[j]], align = c("l", rep(
       "c", ncol(premios) - 2
-    ), "r")) %>% kable_styling(
+    ), "r"), escape = FALSE) %>% kable_styling(
       bootstrap_options = c("hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
@@ -352,12 +348,10 @@ for (j in 1:length(tabs)) {
 
 <br>
 
-## **Prêmio CAPES de Tese** {.tabset #premio-capes}
+## **Prêmio CAPES de Tese** {#premio-capes .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
-
-<br>
 
 ```{r premio-capes, eval = has.premio.capes}
 # read separate sheets
@@ -388,7 +382,7 @@ for (j in 1:length(tabs)) {
   print(
     kable(premios.list[[j]], align = c("l", rep(
       "c", ncol(premios) - 2
-    ), "r")) %>% kable_styling(
+    ), "r"), escape = FALSE) %>% kable_styling(
       bootstrap_options = c("hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
@@ -406,11 +400,7 @@ for (j in 1:length(tabs)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
-
 ### **Associações** {.tabset}
-
-<br>
 
 ```{r associacoes, cache = TRUE, cache.path = "cache/associacoes/", eval = has.sucupira.files}
 # docentes
@@ -453,8 +443,6 @@ for (id in 1:length(orcids)) {
 
 #### **Corpo editorial** {.tabset}
 
-<br>
-
 ```{r corpo-editorial, cache = TRUE, cache.path = "cache/corpo-editorial/", eval = has.sucupira.files}
 # docentes
 sheet <- "Docentes"
@@ -493,8 +481,6 @@ for (id in 1:length(orcids)) {
 <br>
 
 #### **Revisores** {.tabset}
-
-<br>
 
 ```{r revisores, cache = TRUE, cache.path = "cache/revisores/", eval = has.sucupira.files}
 # docentes
@@ -538,11 +524,7 @@ for (id in 1:length(orcids)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
-
 ### **Blog institucional** {.tabset}
-
-<br>
 
 ```{r blogs-ies, eval = has.blog.ies}
 # read separate sheets
@@ -582,7 +564,7 @@ for (j in 1:length(tabs)) {
   print(
     kable(news.list[[j]], align = c("l", rep("c", ncol(
       news
-    ) - 2), "r")) %>% kable_styling(
+    ) - 2), "r"), escape = FALSE) %>% kable_styling(
       bootstrap_options = c("hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
@@ -596,8 +578,6 @@ for (j in 1:length(tabs)) {
 <br>
 
 ### **Blogs externos** {.tabset}
-
-<br>
 
 ```{r blogs-externos, eval = has.blog.externos}
 # read separate sheets
@@ -637,7 +617,7 @@ for (j in 1:length(tabs)) {
   print(
     kable(news.list[[j]], align = c("l", rep("c", ncol(
       news
-    ) - 2), "r")) %>% kable_styling(
+    ) - 2), "r"), escape = FALSE) %>% kable_styling(
       bootstrap_options = c("hover", "condensed", "responsive"),
       full_width = T,
       position = "center"

@@ -45,7 +45,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Métricas** {.tabset #metricas}
+## **Métricas** {#metricas .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -178,7 +178,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Comissão Nacional de Ética em Pesquisa** {.tabset #conep}
+## **Comissão Nacional de Ética em Pesquisa** {#conep .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">

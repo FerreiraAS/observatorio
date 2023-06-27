@@ -5,15 +5,12 @@ set.seed(0)
 docs <- tm::Corpus(tm::VectorSource(data.to.cloud))
 
 # cleaning text
-docs <- docs %>%
-  tm::tm_map(removeNumbers) %>%
-  tm::tm_map(removePunctuation) %>%
-  tm::tm_map(stripWhitespace)
 docs <- tm::tm_map(docs, tm::content_transformer(tolower))
-try(docs <-
-      tm::tm_map(docs, removeWords, tm::stopwords("portuguese"), silent = TRUE))
-try(docs <-
-      tm::tm_map(docs, removeWords, tm::stopwords("english"), silent = TRUE))
+docs <- tm::tm_map(docs, removeWords, tm::stopwords("portuguese"))
+docs <- tm::tm_map(docs, removeWords, tm::stopwords("english"))
+docs <- tm::tm_map(docs, removePunctuation)
+docs <- tm::tm_map(docs, removeNumbers)
+docs <- tm::tm_map(docs, stripWhitespace)
 
 # create a document-term matrix
 dtm <- tm::TermDocumentMatrix(docs)
@@ -22,7 +19,7 @@ words <- sort(rowSums(matrix), decreasing = TRUE)
 df <- data.frame(word = names(words), freq = words)
 
 # set minimum word frequency
-df <- df[df$freq >= 1,]
+df <- df[df$freq >= 1, ]
 
 # set plot area
 par(
@@ -35,11 +32,14 @@ par(
   col.main = "white"
 )
 # generate word cloud
-if(length(df) != 0){
+if (length(df) != 0) {
   wordcloud <- wordcloud2::wordcloud2(
     data = df,
     size = 0.5,
-    color = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3"), length.out = length(df$freq)),
+    color = rep(
+      RColorBrewer::brewer.pal(n = 9, name = "Set3"),
+      length.out = length(df$freq)
+    ),
     backgroundColor = main.color,
     shuffle = FALSE,
     rotateRatio = 0,

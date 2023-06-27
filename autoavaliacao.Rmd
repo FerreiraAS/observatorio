@@ -70,8 +70,6 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
-
 ### **Formulários** {#formularios .tabset}
 
 #### **Qualidade das disciplinas**
@@ -169,9 +167,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
-
-### **Síntese dos dados** {.tabset #sintese-dados}
+### **Síntese dos dados** {#sintese-dados .tabset}
 
 #### **Dados completos**
 
@@ -379,7 +375,7 @@ for (i in 1:length(abas)) {
   # print table
   if (dim(periodo.raw)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    create_dt(periodo.raw, title = "Documentos CAPES)")
+    create_dt(periodo.raw, title = "Documentos CAPES")
   } else {
     cat("*Sem dados para exibir*")
   }
@@ -433,8 +429,6 @@ cat("*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br")
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
-
-<br>
 
 ## **1. Programa** {#programa .tabset}
 
@@ -813,8 +807,6 @@ cat(
 
 ## **2. Formação** {#formacao .tabset}
 
-<br>
-
 ### **2.1.1**
 
 #### **Coerência do produto final**
@@ -1086,8 +1078,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <br>
 
 ## **3. Impacto na sociedade** {#impacto .tabset}
-
-<br>
 
 ### **3.1.1**
 

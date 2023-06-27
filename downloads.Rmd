@@ -50,26 +50,33 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
-
 ### **Vigentes** {#vigentes}
+
+<br>
 
 ```{r documentos-vigentes, eval = has.downloads}
 # read separate sheets
 vigentes.raw <-
   readxl::read_excel("PPG/Downloads.xlsx",
-             sheet = "Vigentes",
-             col_types = c("text"))
+                     sheet = "Vigentes",
+                     col_types = c("text"))
 
 Abrir <- matrix(NA, nrow = dim(vigentes.raw)[1])
 colnames(Abrir) <- "Abrir"
 # add hyperlinks
-for(i in 1:dim(vigentes.raw)[1]){
-  if(!is.na(vigentes.raw[i,3])){
-    Abrir[i] <- paste0('<a href="', vigentes.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>", sep = "")
+for (i in 1:dim(vigentes.raw)[1]) {
+  if (!is.na(vigentes.raw[i, 3])) {
+    Abrir[i] <-
+      paste0('<a href="',
+             vigentes.raw[i, 3],
+             '" target="_blank"',
+             '>',
+             "↗️" ,
+             "</a>",
+             sep = "")
   }
 }
-vigentes <- cbind(vigentes.raw[,-3], Abrir)
+vigentes <- cbind(vigentes.raw[, -3], Abrir)
 
 # print table
 if (dim(vigentes)[1] != 0) {
@@ -86,22 +93,31 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **Revogados** {#revogados}
 
+<br>
+
 ```{r documentos-revogados, eval = has.downloads}
 # read separate sheets
 revogados.raw <-
   readxl::read_excel("PPG/Downloads.xlsx",
-             sheet = "Revogados",
-             col_types = c("text"))
+                     sheet = "Revogados",
+                     col_types = c("text"))
 
 Abrir <- matrix(NA, nrow = dim(revogados.raw)[1])
 colnames(Abrir) <- "Abrir"
 # add hyperlinks
-for(i in 1:dim(revogados.raw)[1]){
-  if(!is.na(revogados.raw[i,3])){
-    Abrir[i] <- paste0('<a href="', revogados.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>", sep = "")
+for (i in 1:dim(revogados.raw)[1]) {
+  if (!is.na(revogados.raw[i, 3])) {
+    Abrir[i] <-
+      paste0('<a href="',
+             revogados.raw[i, 3],
+             '" target="_blank"',
+             '>',
+             "↗️" ,
+             "</a>",
+             sep = "")
   }
 }
-revogados <- cbind(revogados.raw[,-3], Abrir)
+revogados <- cbind(revogados.raw[, -3], Abrir)
 
 # print table
 if (dim(revogados)[1] != 0) {
