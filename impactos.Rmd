@@ -443,18 +443,56 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ```{r periodicos-insrtitucionais, eval = has.calendarios}
 # read separate sheets
-periodicos.raw <- readxl::read_excel("PPG/Periódicos institucionais.xlsx", sheet = "Periódicos", col_types = c("text"))
+periodicos.raw <-
+  readxl::read_excel(
+    "PPG/Periódicos institucionais.xlsx",
+    sheet = "Periódicos",
+    col_types = c("text")
+  )
 
 Abrir <- matrix(NA, nrow = dim(periodicos.raw)[1])
 colnames(Abrir) <- "Abrir"
 # add hyperlinks
-for(i in 1:dim(periodicos.raw)[1]){
-  if(!is.na(periodicos.raw[i,3])){
-    Abrir[i] <- paste0('<a href="', periodicos.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>", sep = "")
+for (i in 1:dim(periodicos.raw)[1]) {
+  if (!is.na(periodicos.raw[i, 3])) {
+    Abrir[i] <-
+      paste0('<a href="',
+             periodicos.raw[i, 3],
+             '" target="_blank"',
+             '>',
+             "↗️" ,
+             "</a>",
+             sep = "")
   }
 }
 
-periodicos <- cbind(periodicos.raw[,-3], Abrir)
+periodicos <- cbind(periodicos.raw[, -3], Abrir)
+
+# add metrics
+source(file.path("Scripts", "get_citescore.R"), local = knitr::knit_global())
+source(file.path("Scripts", "get_sjr.R"), local = knitr::knit_global())
+source(file.path("Scripts", "get_webqualis.R"), local = knitr::knit_global())
+periodicos$WebQualis <- rep('-', dim(periodicos)[1])
+periodicos$SJR <- rep('-', dim(periodicos)[1])
+periodicos$CiteScore <- rep('-', dim(periodicos)[1])
+periodicos.df <- data.frame(
+  'issns' = periodicos$ISSN,
+  'issn' = periodicos$ISSN,
+  'journal' = periodicos$Nome
+)
+
+for (i in 1:dim(periodicos)[1]) {
+  periodicos$WebQualis[i] <-
+    get_webqualis(
+      qualis = qualis,
+      scimago = scimago,
+      doi_with_altmetric = periodicos.df[i, ]
+    )$WebQualis_value
+  periodicos$SJR[i] <-
+    get_sjr(scimago = scimago, doi_with_altmetric = periodicos.df[i, ])$SJR_value
+  periodicos$CiteScore[i] <-
+    get_citescore(citescore = citescore, doi_with_altmetric = periodicos.df[i, ])$citescore_value
+}
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -468,7 +506,10 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **Comitê de Ética em Pesquisa** {#cep .tabset}
 
-<p align="center">
+#### **CEP**
+
+<center>
+
 ```{r logo-ies, eval = has.cep}
 if(file.exists("PPG/Images/logo-cep.png") &
    has.cep) {
@@ -479,8 +520,11 @@ if(file.exists("PPG/Images/logo-cep.png") &
                        col_types = c("text"))[[1]]
   cat('[<img src=\"PPG/Images/logo-cep.png\" align=\"center\"/>](', link, ')')
 }
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-</p>
+
+</center>
 
 <br>
 
@@ -490,25 +534,31 @@ if(file.exists("PPG/Images/logo-cep.png") &
 # read separate sheets
 cep.vigentes.raw <-
   readxl::read_excel("PPG/CEP.xlsx",
-             sheet = "Vigentes",
-             col_types = c("text"))
+                     sheet = "Vigentes",
+                     col_types = c("text"))
 
-# replace the link by a tag
+Abrir <- matrix(NA, nrow = dim(cep.vigentes.raw)[1])
+colnames(Abrir) <- "Abrir"
+# add hyperlinks
 for (i in 1:dim(cep.vigentes.raw)[1]) {
-  cep.vigentes.raw[i, 3] <-
-    paste0('<a href="', cep.vigentes.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
+  if (!is.na(cep.vigentes.raw[i, 3])) {
+    Abrir[i] <-
+      paste0('<a href="',
+             cep.vigentes.raw[i, 3],
+             '" target="_blank"',
+             '>',
+             "↗️" ,
+             "</a>",
+             sep = "")
+  }
 }
 
+cep.vigentes <- cbind(cep.vigentes.raw[, -3], Abrir)
+
 # print table
-print(
-  kable(cep.vigentes.raw, align = c("l", rep(
-    "c", ncol(cep.vigentes.raw) - 2
-  ), "r"), escape = TRUE) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(cep.vigentes, title = "Comitê de Ética em Pesquisa - Documentos vigentes")
+
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
@@ -521,25 +571,31 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 # read separate sheets
 cep.revogados.raw <-
   readxl::read_excel("PPG/CEP.xlsx",
-             sheet = "Revogados",
-             col_types = c("text"))
+                     sheet = "Revogados",
+                     col_types = c("text"))
 
-# replace the link by a tag
+Abrir <- matrix(NA, nrow = dim(cep.revogados.raw)[1])
+colnames(Abrir) <- "Abrir"
+# add hyperlinks
 for (i in 1:dim(cep.revogados.raw)[1]) {
-  cep.revogados.raw[i, 3] <-
-    paste0('<a href="', cep.revogados.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
+  if (!is.na(cep.revogados.raw[i, 3])) {
+    Abrir[i] <-
+      paste0('<a href="',
+             cep.revogados.raw[i, 3],
+             '" target="_blank"',
+             '>',
+             "↗️" ,
+             "</a>",
+             sep = "")
+  }
 }
 
+cep.revogados <- cbind(cep.revogados.raw[, -3], Abrir)
+
 # print table
-print(
-  kable(cep.revogados.raw, align = c("l", rep(
-    "c", ncol(cep.revogados.raw) - 2
-  ), "r"), escape = TRUE) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(cep.revogados, title = "Comitê de Ética em Pesquisa - Documentos revogados")
+  
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
@@ -1401,60 +1457,49 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r pandemia-premios, eval = has.premios}
-# read separate sheets
-file.path <- "PPG/Prêmios.xlsx"
-tabs <- excel_sheets(file.path)
-topics <- c()
-premios.list <- vector(mode = "list", length = length(tabs))
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Prêmios.xlsx")
 
-# iterate across sheets
-for (j in 1:length(tabs)) {
-  premios <-
-    readxl::read_excel(file.path,
-               sheet = tabs[j],
-               col_types = c("text", "text", "text"))
-  
-  # dplyr::selecting those with COVID in the title
-  premios <-
-    premios[grep(paste(tolower(pandemia), collapse = "|"), tolower(premios$Documento)), ]
-  
-  if (dim(premios)[1] > 0) {
-    # replace the link by a tag
-    for (i in 1:dim(premios)[1]) {
-      premios[i, 1] <-
-        paste("#### **", as.character(as.Date(as.numeric(premios[i, 1]), origin = "1899-12-30")), "**", sep = "")
-      premios[i, 3] <-
-        paste0('<a href="', premios[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
-    }
-    
-    # drop date column
-    premios <- premios[, -1]
-    # store data to print table
-    premios.list[[j]] <- premios
-    
-    # store data to plot wordcloud
-    topics <- rbind(topics, premios[i, 1])
-  }
-}
-
-# iterate across sheets
-for (j in 1:length(tabs)) {
-  if (!is.null(dim(premios.list[[j]])[1])) {
-    cat('\n\n<!-- -->\n\n')
-    cat("#### **", tabs[j], "**", "\n", sep = "")
-    cat('\n\n<!-- -->\n\n')
-    print(
-      kable(premios.list[[j]], align = c("l", rep(
-        "c", ncol(premios) - 2
-      ), "r"), escape = TRUE) %>% kable_styling(
-        bootstrap_options = c("hover", "condensed", "responsive"),
-        full_width = T,
-        position = "center"
-      )
+# display each sheet in a tab
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('#### **', abas[j], '**'))
+  cat('\n\n<!-- -->\n\n')
+  premios.raw <-
+    readxl::read_excel(
+      "PPG/Prêmios.xlsx",
+      sheet = abas[j],
+      col_types = c("text")
     )
-    cat('\n\n<!-- -->\n\n')
-    cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  
+  # replace the link by a tag
+  Abrir <- matrix(NA, nrow = dim(premios.raw)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(premios.raw)[1]) {
+    if (!is.na(premios.raw[i, 3])) {
+      Abrir[i] <-
+        paste0('<a href="',
+               premios.raw[i, 3],
+               '" target="_blank"',
+               '>',
+               "↗️" ,
+               "</a>",
+               sep = "")
+    }
   }
+  premios <- cbind(premios.raw[, -3], Abrir)
+  
+  # print table
+  if (dim(premios)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    cat(knitr::knit_print(create_dt(premios, title = "Prêmios")))
+  } else {
+    cat("*Sem dados para exibir*")
+  }
+  
+  # print end of tab rows
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
 

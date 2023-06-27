@@ -302,50 +302,48 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <br>
 
 ```{r premios, eval = has.premios}
-# read separate sheets
-file.path <- "PPG/Prêmios.xlsx"
-tabs <- excel_sheets(file.path)
-topics <- c()
-premios.list <- vector(mode = "list", length = length(tabs))
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Prêmios.xlsx")
 
-# iterate across sheets
-for (j in 1:length(tabs)) {
-  premios <-
-    readxl::read_excel(file.path,
-               sheet = tabs[j],
-               col_types = c("text", "text", "text"))
+# display each sheet in a tab
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('#### **', abas[j], '**'))
+  cat('\n\n<!-- -->\n\n')
+  premios.raw <-
+    readxl::read_excel(
+      "PPG/Prêmios.xlsx",
+      sheet = abas[j],
+      col_types = c("text")
+    )
+  
   # replace the link by a tag
-  for (i in 1:dim(premios)[1]) {
-    premios[i, 1] <-
-      paste("### **", as.character(as.Date(as.numeric(premios[i, 1]), origin = "1899-12-30")), "**", sep = "")
-    premios[i, 3] <-
-      paste0('<a href="', premios[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
+  Abrir <- matrix(NA, nrow = dim(premios.raw)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(premios.raw)[1]) {
+    if (!is.na(premios.raw[i, 3])) {
+      Abrir[i] <-
+        paste0('<a href="',
+               premios.raw[i, 3],
+               '" target="_blank"',
+               '>',
+               "↗️" ,
+               "</a>",
+               sep = "")
+    }
+  }
+  premios <- cbind(premios.raw[, -3], Abrir)
+  
+  # print table
+  if (dim(premios)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    cat(knitr::knit_print(create_dt(premios, title = "Prêmios")))
+  } else {
+    cat("*Sem dados para exibir*")
   }
   
-  # drop date column
-  premios <- premios[, -1]
-  # store data to print table
-  premios.list[[j]] <- premios
-  
-  # store data to plot wordcloud
-  topics <- rbind(topics, premios[i, 1])
-}
-
-# iterate across sheets
-for (j in 1:length(tabs)) {
-  cat('\n\n<!-- -->\n\n')
-  cat("### **", tabs[j], "**", "\n", sep = "")
-  cat('\n\n<!-- -->\n\n')
-  print(
-    kable(premios.list[[j]], align = c("l", rep(
-      "c", ncol(premios) - 2
-    ), "r"), escape = FALSE) %>% kable_styling(
-      bootstrap_options = c("hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
-  cat('\n\n<!-- -->\n\n')
+  # print end of tab rows
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
@@ -360,41 +358,44 @@ for (j in 1:length(tabs)) {
 <br>
 
 ```{r premio-capes, eval = has.premio.capes}
-# read separate sheets
-file.path <- "PPG/Prêmio CAPES de Tese.xlsx"
-tabs <- excel_sheets(file.path)
-topics <- c()
-premios.list <- vector(mode = "list", length = length(tabs))
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Prêmio CAPES de Tese.xlsx")
 
-# iterate across sheets
-for (j in 1:length(tabs)) {
-  premios <-
-    readxl::read_excel(file.path,
-               sheet = tabs[j],
-               col_types = c("text"))
-
-  # store data to print table
-  premios.list[[j]] <- premios
-  
-  # store data to plot wordcloud
-  topics <- rbind(topics, premios[i, 1])
-}
-
-# iterate across sheets
-for (j in 1:length(tabs)) {
+# display each sheet in a tab
+for (j in 1:length(abas)) {
   cat('\n\n<!-- -->\n\n')
-  cat("### **", tabs[j], "**", "\n", sep = "")
+  cat(paste0('### **', abas[j], '**'))
   cat('\n\n<!-- -->\n\n')
-  print(
-    kable(premios.list[[j]], align = c("l", rep(
-      "c", ncol(premios) - 2
-    ), "r"), escape = FALSE) %>% kable_styling(
-      bootstrap_options = c("hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
+  premios.raw <-
+    readxl::read_excel(
+      "PPG/Prêmio CAPES de Tese.xlsx",
+      sheet = abas[j],
+      col_types = c("text")
     )
-  )
-  cat('\n\n<!-- -->\n\n')
+
+  # print table
+  if (dim(premios.raw)[1] != 0) {
+    cat('<div premios.raw = "row"><div class = "col-md-6">')
+    cat('<center>\n')
+    cat('\n\n<!-- -->\n\n')
+    link.tese <- premios.raw[j, 1]
+    cat(paste0('<iframe src=\"', link.tese, '\" style="width:100%; height:500px; border:0;"></iframe>', "\n"))
+    cat('\n\n<!-- -->\n\n')
+    cat('\n</center>')
+    cat('</div>')
+    
+    cat('<div class = "col-md-6">')
+    cat('<center>\n')
+    cat('\n\n<!-- -->\n\n')
+    link.mencao <- premios.raw[j, 2]
+    cat(paste0('<iframe src=\"', link.mencao, '\" style="width:100%; height:500px; border:0;"></iframe>', "\n"))
+    cat('\n</center>')
+    cat('</div></div>')
+  } else {
+    cat("*Sem dados para exibir*")
+  }
+  
+  # print end of tab rows
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
