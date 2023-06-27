@@ -123,8 +123,8 @@ O **Obsevatório** pode exibir informações complementares, não disponíveis n
 │   └── Autoavaliações.xlsx
 │   └── Avaliação.xlsx
 │   └── Bibliografia.xlsx
-│   └── Blog_externos.xlsx
-│   └── Blog_IES.xlsx
+│   └── Blog externo.xlsx
+│   └── Blog institucional.xlsx
 │   └── Bolsas.xlsx
 │   └── Calendários.xlsx
 │   └── CEP.xlsx

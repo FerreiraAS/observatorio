@@ -50,6 +50,8 @@ source("Scripts/social-media-sharing.R")
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+<br>
+
 ```{r dados-cadastrais-endereco, eval = has.dados.cadastrais}
 # read separate sheets
 endereco.raw <-
@@ -93,6 +95,8 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+<br>
 
 ```{r docentes-atual-perfil, eval = has.sucupira.files}
 # projetos - membros
@@ -153,6 +157,8 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+<br>
 
 ```{r coordenadores, eval = has.coordenacao}
 coordenadores <-

@@ -65,7 +65,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Metodologia** {#metodologia}
+## **Metodologia** {#metodologia .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -162,7 +162,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Resultados** {#resultados}
+## **Resultados** {#resultados .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -266,6 +266,8 @@ cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 #### **Dados perdidos**
 
 ```{r missing-data-sucupira, cache = TRUE, cache.path = "cache/dados-perdidos/", eval = has.sucupira.files}
@@ -325,6 +327,8 @@ cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 ### **Nota** {#nota}
 
 ```{r auto-notas, eval = has.notas}
@@ -347,10 +351,9 @@ cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
-### **Documentos CAPES** {#documentos .tabset}
+<br>
 
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
+### **Documentos CAPES** {#documentos .tabset}
 
 ```{r apresentacao-periodos, eval = has.avaliacao}
 # initialize all sheets
@@ -393,9 +396,6 @@ cat("*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br")
 
 ### **Qualidade das disciplinas** {#qualidade-disciplinas .tabset}
 
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
 #### **2024-2021**
 
 <iframe src="https://drive.google.com/file/d/1ilDduzPYnLHOlnhH-TUPL4cVPcq43Kqw/preview" style="width:100%; height:500px; border:0;"></iframe>
@@ -414,9 +414,6 @@ cat("*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br")
 
 ### **Pesquisa do egresso** {#pesquisa-egresso .tabset}
 
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
 #### **Completa**
 
 <iframe src="https://drive.google.com/file/d/1k3PppnhBXToQItVOiMzSGAeGvwOYOXFN/preview" style="width:100%; height:500px; border:0;"></iframe>
@@ -425,14 +422,10 @@ cat("*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br")
 
 <br>
 
-## **Ficha de avaliação** {#ficha-avaliacao}
+## **1. Programa** {#programa .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
-
-## **1. Programa** {#programa .tabset}
-
-<br>
 
 ### **1.1.1**
 
@@ -807,6 +800,9 @@ cat(
 
 ## **2. Formação** {#formacao .tabset}
 
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
 ### **2.1.1**
 
 #### **Coerência do produto final**
@@ -1078,6 +1074,9 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <br>
 
 ## **3. Impacto na sociedade** {#impacto .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ### **3.1.1**
 

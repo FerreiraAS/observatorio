@@ -107,6 +107,8 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+<br>
+
 ```{r programa-historico, eval = has.historico}
 # initialize all sheets
 abas <- readxl::excel_sheets("PPG/Histórico.xlsx")
@@ -144,6 +146,8 @@ for (i in 1:length(abas)) {
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+<br>
 
 ```{r area-capes, eval = has.area.capes}
 area.capes <-
@@ -1277,6 +1281,8 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+<br>
+
 ```{r agendas-pesquisa, eval = has.agendas.pesquisa}
 # initialize all sheets
 abas <- readxl::excel_sheets("PPG/Agendas de Pesquisa.xlsx")
@@ -1640,6 +1646,8 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+<br>
 
 ```{r bolsas, eval = has.bolsas}
 # initialize all sheets
@@ -2911,6 +2919,8 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+<br>
+
 ```{r infraestrutura, eval = has.infraestrutura}
 cat('\n\n<!-- -->\n\n')
 cat('### **Infraestrutura**')
@@ -2991,6 +3001,8 @@ for (i in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+<br>
+
 ```{r programa-convenios, eval = has.convenios}
 # initialize all sheets
 abas <- readxl::excel_sheets("PPG/Convênios.xlsx")
@@ -3043,6 +3055,8 @@ for (j in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+<br>
+
 ```{r programa-cooperacao, eval = has.cooperacoes}
 # initialize all sheets
 abas <- readxl::excel_sheets("PPG/Cooperações.xlsx")
@@ -3094,6 +3108,8 @@ for (j in 1:length(abas)) {
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+<br>
 
 ```{r internacional, eval = has.internacionalizacao}
 # initialize all sheets

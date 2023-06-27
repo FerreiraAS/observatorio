@@ -45,14 +45,12 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Documentos**
+## **Documentos** {#documentos .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ### **Vigentes** {#vigentes}
-
-<br>
 
 ```{r documentos-vigentes, eval = has.downloads}
 # read separate sheets
@@ -92,8 +90,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <br>
 
 ### **Revogados** {#revogados}
-
-<br>
 
 ```{r documentos-revogados, eval = has.downloads}
 # read separate sheets

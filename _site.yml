@@ -95,10 +95,14 @@ navbar:
       menu:
         - text: "Produções"
           href: [producoes.html]
-        - text: "Trabalhos de conclusão"
-          href: [producoes.html#TCC]
-        - text: "Repositórios"
-          href: [producoes.html#repositorios]
+        - text: "Teses"
+          href: [producoes.html#teses]
+        - text: "Dissertwções"
+          href: [producoes.html#dissertacoes]
+        - text: "Repositório institucional"
+          href: [producoes.html#repositorio-institucional]
+        - text: "Repositórios externos"
+          href: [producoes.html#repositorios-externos]
         - text: "Produção bibliográfica"
           href: [producoes.html#bibliografica]
         - text: "Produção técnica"
@@ -189,10 +193,8 @@ navbar:
       menu:
         - text: "Donwloads"
           href: [downloads.html]
-        - text: "Vigentes"
-          href: [downloads.html#vigentes]
-        - text: "Revogados"
-          href: [downloads.html#revogados]
+        - text: "Documentos"
+          href: [downloads.html#documentos]
     - text: ""
       icon: "fa-circle-info"
       href: [info.html]

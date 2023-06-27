@@ -59,6 +59,8 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+<br>
+
 ```{r egressos-destaque, eval = has.destaques}
 # read separate sheets
 file.path <- "PPG/Destaques.xlsx"
@@ -297,6 +299,8 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+<br>
+
 ```{r premios, eval = has.premios}
 # read separate sheets
 file.path <- "PPG/Prêmios.xlsx"
@@ -353,6 +357,8 @@ for (j in 1:length(tabs)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+<br>
+
 ```{r premio-capes, eval = has.premio.capes}
 # read separate sheets
 file.path <- "PPG/Prêmio CAPES de Tese.xlsx"
@@ -399,6 +405,8 @@ for (j in 1:length(tabs)) {
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+<br>
 
 ### **Associações** {.tabset}
 
@@ -524,11 +532,13 @@ for (id in 1:length(orcids)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+<br>
+
 ### **Blog institucional** {.tabset}
 
 ```{r blogs-ies, eval = has.blog.ies}
 # read separate sheets
-file.path <- "PPG/Blog_IES.xlsx"
+file.path <- "PPG/Blog institucional.xlsx"
 tabs <- excel_sheets(file.path)
 topics <- c()
 news.list <- vector(mode = "list", length = length(tabs))
@@ -581,7 +591,7 @@ for (j in 1:length(tabs)) {
 
 ```{r blogs-externos, eval = has.blog.externos}
 # read separate sheets
-file.path <- "PPG/Blog_externos.xlsx"
+file.path <- "PPG/Blog externo.xlsx"
 tabs <- excel_sheets(file.path)
 topics <- c()
 news.list <- vector(mode = "list", length = length(tabs))

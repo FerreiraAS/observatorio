@@ -54,12 +54,12 @@ source("Scripts/social-media-sharing.R")
 
 <br>
 
-## **Trabalhos de conclusão** {#TCC}
+## **Teses** {#teses}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Teses**
+<br>
 
 ```{r tcc-dsc, eval = has.sucupira.files}
 # tcc
@@ -113,7 +113,12 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-### **Dissertações**
+## **Dissertações** {#dissertacoes}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+<br>
 
 ```{r tcc-msc, eval = has.sucupira.files}
 # tcc
@@ -167,14 +172,12 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Repositórios** {#repositorios}
+## **Repositório institucional** {#repositorio-institucional .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Institucional** {.tabset}
-
-#### **Sede** {.tabset}
+### **Sede** {.tabset}
 
 ```{r repositorios-mestrado-sede, eval = has.repositorios.sede}
 # read separate sheets
@@ -208,7 +211,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-#### **Cooperação Interinstitucional** {.tabset}
+### **Cooperação Interinstitucional** {.tabset}
 
 ```{r repositorios-mestrado-cooperacao, eval = has.repositorios.cooperacao}
 # read separate sheets
@@ -243,7 +246,10 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-### **Externos** {.tabset}
+## **Repositórios externos** {#repositorios-externos .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 #### **Sucupira**
 
