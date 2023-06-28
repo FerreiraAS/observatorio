@@ -379,7 +379,7 @@ for (j in 1:length(abas)) {
     cat('<center>\n')
     cat('\n\n<!-- -->\n\n')
     link.tese <- premios.raw[j, 1]
-    cat(paste0('<iframe src=\"', link.tese, '\" style="width:100%; height:500px; border:0;"></iframe>', "\n"))
+    cat(paste0('<iframe src=\"', link.tese, '\" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>', "\n"))
     cat('\n\n<!-- -->\n\n')
     cat('\n</center>')
     cat('</div>')
@@ -388,7 +388,7 @@ for (j in 1:length(abas)) {
     cat('<center>\n')
     cat('\n\n<!-- -->\n\n')
     link.mencao <- premios.raw[j, 2]
-    cat(paste0('<iframe src=\"', link.mencao, '\" style="width:100%; height:500px; border:0;"></iframe>', "\n"))
+    cat(paste0('<iframe src=\"', link.mencao, '\" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>', "\n"))
     cat('\n</center>')
     cat('</div></div>')
   } else {

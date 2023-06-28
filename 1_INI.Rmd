@@ -312,12 +312,24 @@ has.softwares <-
 ```
 
 ```{r ppg-data, results = "hide", eval = all(has.dados.cadastrais, has.sucupira.files)}
-# get initials from the PPG data
-nome.PPG <-
-  readxl::read_excel("PPG/Dados Cadastrais.xlsx",
-             sheet = "Dados do programa",
-             col_types = c("text"))[2, 2]
+# projetos - membros
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# most recent Sucupira year
+most.recent <-
+  as.character(ifelse(!is.null(sucupira.list[[format(Sys.Date(), "%Y")]]), format(Sys.Date(), "%Y"), max(as.numeric(
+    names(sucupira.list)
+  ))))
+
+# read separate sheets
+docentes.raw <- sucupira.list[[most.recent]]
+
+# get initials from the PPG data
+nome.PPG <- unique(docentes.raw$'Nome do PPG')
 nome.PPG.split <- stringr::str_split_1(as.character(nome.PPG)[[1]], " ")
 match.stopwords <-
   match(stringr::str_split_1(as.character(nome.PPG)[[1]], " "), tm::stopwords("portuguese"))
