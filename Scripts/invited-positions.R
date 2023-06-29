@@ -22,7 +22,7 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
   # print table
   if (dim(invited.pos)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    create_dt(invited.pos, title = "Membro de corpo editorial (ORCID Invited positions)")
+    cat(knitr::knit_print(create_dt(invited.pos, title = "Membro de corpo editorial (ORCID Invited positions)")))
   } else {
     cat("*Sem dados para exibir*")
   }

@@ -38,7 +38,7 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
   # print table
   if (dim(peer.review)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    create_dt(peer.review, title = "Revisor de periódico (ORCID peer review)")
+    cat(knitr::knit_print(create_dt(peer.review, title = "Revisor de periódico (ORCID peer review)")))
   } else {
     cat("*Sem dados para exibir*")
   }

@@ -22,7 +22,7 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
   # print table
   if (dim(member)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    create_dt(member, title = "Membro de associações (ORCID memberships)")
+    cat(knitr::knit_print(create_dt(member, title = "Membro de associações (ORCID memberships)")))
   } else {
     cat("*Sem dados para exibir*")
   }
@@ -55,7 +55,7 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
   # print table
   if (dim(services)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    create_dt(services, title = "Membro de associações (ORCID services)")
+    cat(knitr::knit_print(create_dt(services, title = "Membro de associações (ORCID services)")))
   } else {
     cat("*Sem dados para exibir*")
   }

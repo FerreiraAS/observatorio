@@ -98,7 +98,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 ##### **GT-05**
 
-<iframe src="https://drive.google.com/file/d/1nH6uwlrnGT-FaR7CoJ3LfaEH_7yVhvE9/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>
+<iframe src="https://drive.google.com/file/d/1nH6uwlrnGT-FaR7CoJ3LfaEH_7yVhvE9/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
@@ -106,7 +106,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 ##### **GT-06**
 
-<iframe src="https://drive.google.com/file/d/1nVBJsNtabVPDJjBJqISPsrnpUs3THSx-/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>
+<iframe src="https://drive.google.com/file/d/1nVBJsNtabVPDJjBJqISPsrnpUs3THSx-/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
@@ -114,7 +114,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 ##### **GT-07**
 
-<iframe src="https://drive.google.com/file/d/1fi5VtKblMVEZ--_0_49ijnFn0VmqDyfS/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>
+<iframe src="https://drive.google.com/file/d/1fi5VtKblMVEZ--_0_49ijnFn0VmqDyfS/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
@@ -122,7 +122,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 ##### **GT-08**
 
-<iframe src="https://drive.google.com/file/d/1nRjCxEUpVdmoD5rY5Xa8EwnPbSoHmqE_/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>
+<iframe src="https://drive.google.com/file/d/1nRjCxEUpVdmoD5rY5Xa8EwnPbSoHmqE_/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
@@ -132,7 +132,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 ##### **GT-01**
 
-<iframe src="https://drive.google.com/file/d/1nSLC_mwELkrjKq2sMktkFgHooKwjgKRi/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>
+<iframe src="https://drive.google.com/file/d/1nSLC_mwELkrjKq2sMktkFgHooKwjgKRi/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
@@ -140,7 +140,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 ##### **GT-02**
 
-<iframe src="https://drive.google.com/file/d/1pX9XpxS4U3k5sjkXA9mZ54nyK2-XT2FS/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>
+<iframe src="https://drive.google.com/file/d/1pX9XpxS4U3k5sjkXA9mZ54nyK2-XT2FS/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
@@ -148,7 +148,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 ##### **GT-03**
 
-<iframe src="https://drive.google.com/file/d/1nVoIuS-WV9g_C34MXL9ESZr2r330s9z2/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>
+<iframe src="https://drive.google.com/file/d/1nVoIuS-WV9g_C34MXL9ESZr2r330s9z2/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
@@ -156,7 +156,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 ##### **GT-04**
 
-<iframe src="https://drive.google.com/file/d/1pd3TJKh-1xGKWMwcRB45-9P9rfaBA9jA/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>
+<iframe src="https://drive.google.com/file/d/1pd3TJKh-1xGKWMwcRB45-9P9rfaBA9jA/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
@@ -339,7 +339,7 @@ cat(
   paste(
     '<iframe src="',
     notas[1],
-    '" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>',
+    '" style=\"width:100%; height:600px; border:2px solid black;"></iframe>',
     sep = ""
   )
 )
@@ -398,7 +398,7 @@ cat("*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br")
 
 #### **2024-2021**
 
-<iframe src="https://drive.google.com/file/d/1ilDduzPYnLHOlnhH-TUPL4cVPcq43Kqw/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>
+<iframe src="https://drive.google.com/file/d/1ilDduzPYnLHOlnhH-TUPL4cVPcq43Kqw/preview" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
@@ -406,7 +406,7 @@ cat("*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br")
 
 #### **2020-2017**
 
-<iframe src="https://drive.google.com/file/d/1ix-9zIVULXlJMvntkXWl38iDEdvziDyK/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>
+<iframe src="https://drive.google.com/file/d/1ix-9zIVULXlJMvntkXWl38iDEdvziDyK/preview" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
@@ -416,7 +416,7 @@ cat("*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br")
 
 #### **Completa**
 
-<iframe src="https://drive.google.com/file/d/1k3PppnhBXToQItVOiMzSGAeGvwOYOXFN/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>
+<iframe src="https://drive.google.com/file/d/1k3PppnhBXToQItVOiMzSGAeGvwOYOXFN/preview" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 

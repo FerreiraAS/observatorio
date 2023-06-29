@@ -74,35 +74,40 @@ periodos <- names(sucupira.list)
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
-tccs <- tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "TESE", ]
+tccs <-
+  tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "TESE",]
 
-# select data
-table.tcc <-
-  data.frame(
-    format((as.Date(
-      gsub("/", "-", tccs$'Data da Defesa'), "%d-%m-%Y"
-    )), "%Y"),
-    tccs$`Linha de Pesquisa`,
-    tccs$`Nome do Trabalho de Conclusão`,
-    tccs$`Nome do Autor`,
-    tccs$`Nome do Orientador`
-  )
+if (dim(tccs)[1] != 0) {
+  # select data
+  table.tcc <-
+    data.frame(
+      format((as.Date(
+        gsub("/", "-", tccs$'Data da Defesa'), "%d-%m-%Y"
+      )), "%Y"),
+      tccs$`Linha de Pesquisa`,
+      tccs$`Nome do Trabalho de Conclusão`,
+      tccs$`Nome do Autor`,
+      tccs$`Nome do Orientador`
+    )
+  
+  table.tcc <-
+    table.tcc[order(table.tcc[, 1], table.tcc[, 2], table.tcc[, 3]), ]
+  
+  table.tcc[, 2] <-
+    as.vector(unlist(lapply(table.tcc[, 2], FUN = str_to_title)))
+  table.tcc[, 3] <-
+    as.vector(unlist(lapply(table.tcc[, 3], FUN = str_to_title)))
+  table.tcc[, 4] <-
+    as.vector(unlist(lapply(table.tcc[, 4], FUN = str_to_title)))
+  table.tcc[, 5] <-
+    as.vector(unlist(lapply(table.tcc[, 5], FUN = str_to_title)))
+  
+  colnames(table.tcc) <-
+    c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador")
+} else
+  (table.tcc <- data.frame())
 
-table.tcc <-
-  table.tcc[order(table.tcc[, 1], table.tcc[, 2], table.tcc[, 3]),]
-
-# print tables
-table.tcc[, 2] <-
-  as.vector(unlist(lapply(table.tcc[, 2], FUN = str_to_title)))
-table.tcc[, 3] <-
-  as.vector(unlist(lapply(table.tcc[, 3], FUN = str_to_title)))
-table.tcc[, 4] <-
-  as.vector(unlist(lapply(table.tcc[, 4], FUN = str_to_title)))
-table.tcc[, 5] <-
-  as.vector(unlist(lapply(table.tcc[, 5], FUN = str_to_title)))
-
-colnames(table.tcc) <-
-  c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador")
+# print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.tcc, title = "Teses")
 
@@ -134,34 +139,40 @@ periodos <- names(sucupira.list)
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
-tccs <- tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "DISSERTAÇÃO", ]
+tccs <-
+  tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "DISSERTAÇÃO",]
 
-# select data
-table.tcc <-
-  cbind(
-    format((as.Date(
-      gsub("/", "-", tccs$'Data da Defesa'), "%d-%m-%Y"
-    )), "%Y"),
-    tccs$`Linha de Pesquisa`,
-    tccs$`Nome do Trabalho de Conclusão`,
-    tccs$`Nome do Autor`,
-    tccs$`Nome do Orientador`
-  )
-table.tcc <-
-  table.tcc[order(table.tcc[, 1], table.tcc[, 2], table.tcc[, 3]),]
+if (dim(tccs)[1] != 0) {
+  # select data
+  table.tcc <-
+    data.frame(
+      format((as.Date(
+        gsub("/", "-", tccs$'Data da Defesa'), "%d-%m-%Y"
+      )), "%Y"),
+      tccs$`Linha de Pesquisa`,
+      tccs$`Nome do Trabalho de Conclusão`,
+      tccs$`Nome do Autor`,
+      tccs$`Nome do Orientador`
+    )
+  
+  table.tcc <-
+    table.tcc[order(table.tcc[, 1], table.tcc[, 2], table.tcc[, 3]), ]
+  
+  table.tcc[, 2] <-
+    as.vector(unlist(lapply(table.tcc[, 2], FUN = str_to_title)))
+  table.tcc[, 3] <-
+    as.vector(unlist(lapply(table.tcc[, 3], FUN = str_to_title)))
+  table.tcc[, 4] <-
+    as.vector(unlist(lapply(table.tcc[, 4], FUN = str_to_title)))
+  table.tcc[, 5] <-
+    as.vector(unlist(lapply(table.tcc[, 5], FUN = str_to_title)))
+  
+  colnames(table.tcc) <-
+    c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador")
+} else
+  (table.tcc <- data.frame())
 
-# print tables
-table.tcc[, 2] <-
-  as.vector(unlist(lapply(table.tcc[, 2], FUN = str_to_title)))
-table.tcc[, 3] <-
-  as.vector(unlist(lapply(table.tcc[, 3], FUN = str_to_title)))
-table.tcc[, 4] <-
-  as.vector(unlist(lapply(table.tcc[, 4], FUN = str_to_title)))
-table.tcc[, 5] <-
-  as.vector(unlist(lapply(table.tcc[, 5], FUN = str_to_title)))
-
-colnames(table.tcc) <-
-  c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador")
+# print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.tcc, title = "Dissertações")
 
@@ -188,7 +199,7 @@ cat(paste('##### **', repositorio[1,2], '**', sep = ""))
 
 cat('\n\n')
 
-cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[1,3], '#list" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>', sep = ""))
+cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[1,3], '#list" style=\"width:100%; height:600px; border:2px solid black;"></iframe>', sep = ""))
 
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
@@ -204,7 +215,7 @@ cat(paste('##### **', repositorio[2,2], '**', sep = ""))
 
 cat('\n\n')
 
-cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[2,3], '#list" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>', sep = ""))
+cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[2,3], '#list" style=\"width:100%; height:600px; border:2px solid black;"></iframe>', sep = ""))
 
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
@@ -222,7 +233,7 @@ cat(paste('##### **', repositorio[1,2], '**', sep = ""))
 
 cat('\n\n')
 
-cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[1,3], '#list" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>', sep = ""))
+cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[1,3], '#list" style=\"width:100%; height:600px; border:2px solid black;"></iframe>', sep = ""))
 
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
@@ -239,7 +250,7 @@ cat(paste('##### **', repositorio[2,2], '**', sep = ""))
 
 cat('\n\n')
 
-cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[2,3], '#list" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>', sep = ""))
+cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[2,3], '#list" style=\"width:100%; height:600px; border:2px solid black;"></iframe>', sep = ""))
 
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
@@ -252,17 +263,17 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-#### **Sucupira**
+### **Plataforma Sucupira**
 
-<iframe src="https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/trabalhoConclusao/listaTrabalhoConclusao.xhtml" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>
+<iframe src="https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/trabalhoConclusao/listaTrabalhoConclusao.xhtml" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 
-#### **Catálogo CAPES**
+### **Catálogo CAPES**
 
-<iframe src="https://catalogodeteses.capes.gov.br/catalogo-teses" style=\"width:100%; height:600px; border:2px solid black;"></iframe> height:600px; border:2px solid black;"></iframe>
+<iframe src="https://catalogodeteses.capes.gov.br/catalogo-teses" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
