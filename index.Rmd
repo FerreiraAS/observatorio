@@ -1389,18 +1389,18 @@ discentes.raw <-
   readxl::read_excel(
     "PPG/Discentes.xlsx",
     sheet = "Discentes",
-    col_types = c("text", "text", "date", "text", "date", "text", "text")
+    col_types = c("text")
   )
 discentes.raw <- discentes.raw[discentes.raw$País == "Brasil",]
 discentes.raw$'Data Matrícula' <-
-  as.Date(discentes.raw$'Data Matrícula', format = "%Y-%m-%d")
+  as.Date(discentes.raw$'Data Matrícula', format = "%d/%m/%Y")
 discentes.raw$'Data Situação' <-
-  as.Date(discentes.raw$'Data Situação', format = "%Y-%m-%d")
+  as.Date(discentes.raw$'Data Situação', format = "%d/%m/%Y")
 discentes.raw$'Ano Titulação' <-
-  substr(as.Date(discentes.raw$'Data Situação', format = "%Y-%m-%d"), 1, 4)
+  substr(as.Date(discentes.raw$'Data Situação', format = "%d/%m/%Y"), 1, 4)
 # tempo de curso
 discentes.raw$`Tempo de Curso (meses)` <-
-  lubridate::interval(start = ymd(gsub("/", "", discentes.raw$'Data Matrícula')), end = ymd(gsub("/", "", discentes.raw$'Data Situação'))) %/% months(1)
+  lubridate::interval(start = ymd(gsub("-", "", discentes.raw$'Data Matrícula')), end = ymd(gsub("-", "", discentes.raw$'Data Situação'))) %/% months(1)
 discentes.raw %>%
   mutate(`Tempo de Curso (meses)` = as.numeric(`Tempo de Curso (meses)`)) %>%
   mutate(`Ano Titulação` = as.numeric(`Ano Titulação`))
@@ -1603,7 +1603,10 @@ for (i in 1:length(UF$Var1)) {
 }
 
 p1 <- ggplot() +
-  geom_sf(data = states, aes(fill = egressos), color = "grey") +
+  geom_sf(
+    data = states,
+    aes(fill = egressos),
+    color = "grey") +
   scale_fill_distiller(
     palette = "Spectral",
     name = "Egressos, n",

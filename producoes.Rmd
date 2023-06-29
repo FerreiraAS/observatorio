@@ -78,7 +78,7 @@ tccs <- tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "TESE", ]
 
 # select data
 table.tcc <-
-  cbind(
+  data.frame(
     format((as.Date(
       gsub("/", "-", tccs$'Data da Defesa'), "%d-%m-%Y"
     )), "%Y"),
@@ -87,6 +87,7 @@ table.tcc <-
     tccs$`Nome do Autor`,
     tccs$`Nome do Orientador`
   )
+
 table.tcc <-
   table.tcc[order(table.tcc[, 1], table.tcc[, 2], table.tcc[, 3]),]
 
