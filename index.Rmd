@@ -1386,15 +1386,35 @@ cat('^[Dados sobre retratação são obtidos de PubMed API e CrossRef API.]')
 
 ```{r sintese-pessoal, include = FALSE, eval = has.discentes}
 discentes.raw <-
-  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
+  readxl::read_excel(
+    "PPG/Discentes.xlsx",
+    sheet = "Discentes",
+    col_types = c("text", "text", "date", "text", "date", "text", "text")
+  )
+discentes.raw <- discentes.raw[discentes.raw$País == "Brasil",]
+discentes.raw$'Data Matrícula' <-
+  as.Date(discentes.raw$'Data Matrícula', format = "%Y-%m-%d")
+discentes.raw$'Data Situação' <-
+  as.Date(discentes.raw$'Data Situação', format = "%Y-%m-%d")
+discentes.raw$'Ano Titulação' <-
+  substr(as.Date(discentes.raw$'Data Situação', format = "%Y-%m-%d"), 1, 4)
+# tempo de curso
+discentes.raw$`Tempo de Curso (meses)` <-
+  lubridate::interval(start = ymd(gsub("/", "", discentes.raw$'Data Matrícula')), end = ymd(gsub("/", "", discentes.raw$'Data Situação'))) %/% months(1)
+discentes.raw %>%
+  mutate(`Tempo de Curso (meses)` = as.numeric(`Tempo de Curso (meses)`)) %>%
+  mutate(`Ano Titulação` = as.numeric(`Ano Titulação`))
+discentes.raw$Curso[grepl("Mestrado", discentes.raw$Curso)] <- "Mestrado"
+discentes.raw$Curso[grepl("Doutorado", discentes.raw$Curso)] <-"Doutorado"
 
-# separating egressos (master and doctoral) and current candidates
-discentes <-
-  discentes.raw[discentes.raw$`Status SAGA` == "Matriculado" |
-                  discentes.raw$`Status SAGA` == "Pré-inscrito", ]
-egressos <- discentes.raw[discentes.raw$`Ano Titulação` != "*", ]
-mestres <- egressos[egressos$Curso == "Mestrado", ]
-doutores <- egressos[egressos$Curso == "Doutorado", ]
+discentes <- discentes.raw[is.na(discentes.raw$'Data Situação'), ]
+discentes <- discentes[discentes$'Situação' != "Cancelado", ]
+discentes <- discentes[discentes$'Situação' != "Desligado", ]
+discentes <- discentes[!is.na(discentes$'Nome'), ]
+
+egressos <- discentes.raw[!is.na(discentes.raw$'Data Situação'), ]
+mestres <- egressos[grepl("mestrado", tolower(egressos$Curso)), ]
+doutores <- egressos[grepl("doutorado", tolower(egressos$Curso)), ]
 
 # identifying available courses
 cursos <- levels(as.factor(c(discentes$Curso, egressos$Curso)))

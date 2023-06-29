@@ -26,7 +26,11 @@ sucupira.list <- list()
 if (length(files.to.read) != 0) {
   for (file in 1:length(files.to.read)) {
     sucupira <-
-      as.data.frame(readxl::read_excel(files.to.read[file], sheet = sheet)) %>%
+      as.data.frame(readxl::read_excel(
+        files.to.read[file],
+        sheet = sheet,
+        col_types = c("text")
+      )) %>%
       dplyr::mutate(across(everything(), as.character))
     
     # search for "|" (meaning there are changes within a given year)
@@ -52,7 +56,7 @@ if (length(files.to.read) != 0) {
           if (length(has.change) != 0) {
             rows.to.change <- c(rows.to.change, i)
             cols.to.change <- c(cols.to.change, j)
-            data.to.change <- rbind(data.to.change, sucupira[i,])
+            data.to.change <- rbind(data.to.change, sucupira[i, ])
           }
         }
       }
@@ -71,7 +75,7 @@ if (length(files.to.read) != 0) {
       }
       
       # delete original entries with "|"
-      sucupira <- sucupira[-unique(rows.to.change), ]
+      sucupira <- sucupira[-unique(rows.to.change),]
       sucupira  %>%
         dplyr::mutate_all(as.character())
       

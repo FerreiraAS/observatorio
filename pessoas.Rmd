@@ -1604,7 +1604,7 @@ discentes <- discentes %>% dplyr::select("Nome Discente", "Data Matrícula")
 
 # calculate hard deadlines
 discentes$'Tempo em curso' <-
-  interval(start = dmy(gsub("/", "", discentes$'Data Matrícula')), end = today()) %/% months(1)
+  lubridate::interval(start = dmy(gsub("/", "", discentes$'Data Matrícula')), end = today()) %/% months(1)
 discentes$'Defesa até' <-
   format(as.Date(discentes$'Data Matrícula', format = "%d/%m/%Y") + 365 *
            4,
@@ -1716,7 +1716,7 @@ discentes <- discentes %>% dplyr::select("Nome Discente", "Data Matrícula")
 
 # calculate hard deadlines
 discentes$'Tempo em curso' <-
-  interval(start = dmy(gsub("/", "", discentes$'Data Matrícula')), end = today()) %/% months(1)
+  lubridate::interval(start = dmy(gsub("/", "", discentes$'Data Matrícula')), end = today()) %/% months(1)
 discentes$'Defesa até' <-
   format(as.Date(discentes$'Data Matrícula', format = "%d/%m/%Y") + 365 *
            2,
@@ -1800,23 +1800,44 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ### **Síntese** {.tabset}
 
 ```{r egressos-periodo, eval = has.discentes}
-discentes.raw <-
-  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
-discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
-mestres <- discentes[discentes$Curso == "Mestrado",]
-doutores <- discentes[discentes$Curso == "Doutorado",]
+egressos.raw <-
+  readxl::read_excel(
+    "PPG/Discentes.xlsx",
+    sheet = "Discentes",
+    col_types = c("text", "text", "date", "text", "date", "text", "text")
+  )
+egressos.raw <- egressos.raw[egressos.raw$País == "Brasil",]
+egressos.raw$'Ano Titulação' <-
+  substr(as.Date(egressos.raw$'Data Situação', format = "%Y-%m-%d"), 1, 4)
 
-states <- read_state(year = 2019, showProgress = FALSE)
-states$discentes <- rep(NA, dim(states)[1])
-UF <- as.data.frame(table(discentes$UF))
+egressos.raw <- egressos.raw[!is.na(egressos.raw$'Data Situação'), ]
+UF <- as.data.frame(table(egressos$UF))
+
+# identifying available courses
+cursos <- levels(as.factor(c(egressos.raw$Curso)))
+
+# reading BR geospatial data from IPEA
+datasets <- geobr::list_geobr()$years[3]
+last.update <-
+  as.numeric(strsplit(datasets, ", ")[[1]][length(strsplit(datasets, ", ")[[1]]) - 1])
+states <-
+  read_state(
+    code_state = "all",
+    year = last.update,
+    simplified = TRUE,
+    showProgress = FALSE
+  )
+
+states$egressos <- rep(NA, dim(states)[1])
 for (i in 1:length(UF$Var1)) {
-  states$discentes[states$abbrev_state == UF$Var1[i]] <- UF$Freq[i]
+  states$egressos[states$abbrev_state == UF$Var1[i]] <- UF$Freq[i]
 }
 
 # plot Brazil states per period
-periodos <- rbind(cbind(2010, 2012), c(2013, 2016), c(2017, 2020))
+periodos <-
+  rbind(cbind(2010, 2012), cbind(2013, 2016), cbind(2017, 2020), cbind(2021, 2024))
 colnames(periodos) <- c("Início", "Fim")
-rownames(periodos) <- c("Trienal", "Quadrienal", "Quadrienal")
+rownames(periodos) <- c("Trienal", "Quadrienal", "Quadrienal", "Quadrienal")
 
 par(
   oma = c(0, 0, 0, 0),
@@ -1830,19 +1851,18 @@ par(
 layout(matrix(seq(1:dim(periodos)[1]), ncol = dim(periodos)[1], byrow = TRUE))
 maps <- list()
 for (j in 1:dim(periodos)[1]) {
-  discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
-  discentes <-
-    discentes[discentes$`Ano Titulação` >= periodos[j, 1] &
-                discentes$`Ano Titulação` <= periodos[j, 2],]
-  states$discentes <- rep(NA, dim(states)[1])
-  UF <- as.data.frame(table(discentes$UF))
+  egressos <-
+    egressos.raw[egressos.raw$`Ano Titulação` >= periodos[j, 1] &
+                egressos.raw$`Ano Titulação` <= periodos[j, 2], ]
+  states$egressos <- rep(NA, dim(states)[1])
+  UF <- as.data.frame(table(egressos$UF))
   for (i in 1:length(UF$Var1)) {
-    states$discentes[states$abbrev_state == UF$Var1[i]] <- UF$Freq[i]
+    states$egressos[states$abbrev_state == UF$Var1[i]] <- UF$Freq[i]
   }
   maps[[j]] <- ggplot() +
     geom_sf(
       data = states,
-      aes(fill = discentes),
+      aes(fill = egressos),
       color = NA,
       size = .15
     ) +
@@ -1869,31 +1889,62 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Doutores**
 
-```{r historico-egressos-dsc-2024, eval = has.discentes}
-discentes.raw <-
-  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
-discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
-discentes <-
-  discentes.raw[discentes.raw$`Ano Titulação` >= 2021 &
-                  discentes.raw$`Ano Titulação` <= 2024,]
+```{r historico-egressos-dsc-2024, eval = has.sucupira.files}
+# periodo
+periodo <- 2021:min(as.numeric(format(Sys.Date(), "%Y")), 2024)
 
-discentes <-
-  discentes %>% dplyr::select("Ano Titulação", "Curso", "Nome", "Orientador")
-doutores <-
-  discentes[discentes$Curso == "Doutorado",] %>% dplyr::select("Ano Titulação", "Nome", "Orientador")
-if (dim(doutores)[1] != 0) {
-  doutores$Orientador <-
-    gsub("([A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9] - )",
-         "",
-         doutores$Orientador)
-  ids <- order(doutores$`Ano Titulação`, decreasing = TRUE)
-  table <- doutores[ids,]
+# dplyr::select level
+course.level <- "Doutorado"
+
+# egressos
+sheet <- "Discentes - Orientadores"
+source("Scripts/read-xlsx-sucupira.R")
+
+# get years
+source("Scripts/years-sucupira.R")
+names(sucupira.list) <- as.character(anos)
+
+# get egressos for the current period
+egressos <- sucupira.list[as.character(periodo)] %>%
+  compact()
+egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
+names(egressos) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# filter students
+egressos <- egressos[str_detect(egressos$`Nível Discente`, course.level), ]
+
+# dplyr::select active students
+egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
+
+# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
+egressos <- egressos[egressos$`Orientador Principal?` == "Sim", ]
+
+# get years
+egressos$'Data Situação' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`))
+egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
+
+# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
+egressos <- egressos %>% dplyr::select("Data Situação", "Nome Discente", "Nome do Orientador")
+
+# remove duplicates
+egressos <- unique(egressos)
+colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
+
+if (dim(egressos)[1] != 0) {
+  ids <- order(egressos$'Data Situação', decreasing = TRUE)
+  table <- egressos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos Doutorado - 2024-2021")
+  create_dt(table, title = "Egressos - Doutorado")
 } else {
   cat("*Sem dados para exibir*")
 }
 
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
@@ -1902,34 +1953,64 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Mestres**
 
-```{r historico-egressos-msc-2024, eval = has.discentes}
-discentes.raw <-
-  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
-discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
-discentes <-
-  discentes.raw[discentes.raw$`Ano Titulação` >= 2021 &
-                  discentes.raw$`Ano Titulação` <= 2024,]
+```{r historico-egressos-msc-2024, eval = has.sucupira.files}
+# periodo
+periodo <- 2021:min(as.numeric(format(Sys.Date(), "%Y")), 2024)
 
-discentes <-
-  discentes %>% dplyr::select("Ano Titulação", "Curso", "Nome", "Orientador")
-mestres <-
-  discentes[discentes$Curso == "Mestrado",] %>% dplyr::select("Ano Titulação", "Nome", "Orientador")
-if (dim(mestres)[1] != 0) {
-  mestres$Orientador <-
-    gsub("([A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9] - )",
-         "",
-         mestres$Orientador)
-  ids <- order(mestres$`Ano Titulação`, decreasing = TRUE)
-  table <- mestres[ids,]
+# dplyr::select level
+course.level <- "Mestrado"
+
+# egressos
+sheet <- "Discentes - Orientadores"
+source("Scripts/read-xlsx-sucupira.R")
+
+# get years
+source("Scripts/years-sucupira.R")
+names(sucupira.list) <- as.character(anos)
+
+# get egressos for the current period
+egressos <- sucupira.list[as.character(periodo)] %>%
+  compact()
+egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
+names(egressos) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# filter students
+egressos <- egressos[str_detect(egressos$`Nível Discente`, course.level), ]
+
+# dplyr::select active students
+egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
+
+# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
+egressos <- egressos[egressos$`Orientador Principal?` == "Sim", ]
+
+# get years
+egressos$'Data Situação' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`))
+egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
+
+# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
+egressos <- egressos %>% dplyr::select("Data Situação", "Nome Discente", "Nome do Orientador")
+
+# remove duplicates
+egressos <- unique(egressos)
+colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
+
+if (dim(egressos)[1] != 0) {
+  ids <- order(egressos$'Data Situação', decreasing = TRUE)
+  table <- egressos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos Mestrado - 2024-2021")
+  create_dt(table, title = "Egressos - Doutorado")
 } else {
   cat("*Sem dados para exibir*")
 }
 
 cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-
 ```
 
 <br>
@@ -1938,68 +2019,128 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Doutores**
 
-```{r historico-egressos-dsc-2020, eval = has.discentes}
-discentes.raw <-
-  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
-discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
-discentes <-
-  discentes.raw[discentes.raw$`Ano Titulação` >= 2017 &
-                  discentes.raw$`Ano Titulação` <= 2020,]
+```{r historico-egressos-dsc-2020, eval = has.sucupira.files}
+# periodo
+periodo <- 2017:min(as.numeric(format(Sys.Date(), "%Y")), 2020)
 
-discentes <-
-  discentes %>% dplyr::select("Ano Titulação", "Curso", "Nome", "Orientador")
-doutores <-
-  discentes[discentes$Curso == "Doutorado",] %>% dplyr::select("Ano Titulação", "Nome", "Orientador")
-if (dim(doutores)[1] != 0) {
-  doutores$Orientador <-
-    gsub("([A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9] - )",
-         "",
-         doutores$Orientador)
-  ids <- order(doutores$`Ano Titulação`, decreasing = TRUE)
-  table <- doutores[ids,]
+# dplyr::select level
+course.level <- "Doutorado"
+
+# egressos
+sheet <- "Discentes - Orientadores"
+source("Scripts/read-xlsx-sucupira.R")
+
+# get years
+source("Scripts/years-sucupira.R")
+names(sucupira.list) <- as.character(anos)
+
+# get egressos for the current period
+egressos <- sucupira.list[as.character(periodo)] %>%
+  compact()
+egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
+names(egressos) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# filter students
+egressos <- egressos[str_detect(egressos$`Nível Discente`, course.level), ]
+
+# dplyr::select active students
+egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
+
+# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
+egressos <- egressos[egressos$`Orientador Principal?` == "Sim", ]
+
+# get years
+egressos$'Data Situação' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`))
+egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
+
+# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
+egressos <- egressos %>% dplyr::select("Data Situação", "Nome Discente", "Nome do Orientador")
+
+# remove duplicates
+egressos <- unique(egressos)
+colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
+
+if (dim(egressos)[1] != 0) {
+  ids <- order(egressos$'Data Situação', decreasing = TRUE)
+  table <- egressos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos Doutorado - 2020-2017")
+  create_dt(table, title = "Egressos - Doutorado")
 } else {
   cat("*Sem dados para exibir*")
 }
 
 cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-
 ```
 
 <br>
 
 #### **Mestres**
 
-```{r historico-egressos-msc-2020, eval = has.discentes}
-discentes.raw <-
-  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
-discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
-discentes <-
-  discentes.raw[discentes.raw$`Ano Titulação` >= 2017 &
-                  discentes.raw$`Ano Titulação` <= 2020,]
+```{r historico-egressos-msc-2020, eval = has.sucupira.files}
+# periodo
+periodo <- 2017:min(as.numeric(format(Sys.Date(), "%Y")), 2020)
 
-discentes <-
-  discentes %>% dplyr::select("Ano Titulação", "Curso", "Nome", "Orientador")
-mestres <-
-  discentes[discentes$Curso == "Mestrado",] %>% dplyr::select("Ano Titulação", "Nome", "Orientador")
-if (dim(mestres)[1] != 0) {
-  mestres$Orientador <-
-    gsub("([A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9] - )",
-         "",
-         mestres$Orientador)
-  ids <- order(mestres$`Ano Titulação`, decreasing = TRUE)
-  table <- mestres[ids,]
+# dplyr::select level
+course.level <- "Mestrado"
+
+# egressos
+sheet <- "Discentes - Orientadores"
+source("Scripts/read-xlsx-sucupira.R")
+
+# get years
+source("Scripts/years-sucupira.R")
+names(sucupira.list) <- as.character(anos)
+
+# get egressos for the current period
+egressos <- sucupira.list[as.character(periodo)] %>%
+  compact()
+egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
+names(egressos) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# filter students
+egressos <- egressos[str_detect(egressos$`Nível Discente`, course.level), ]
+
+# dplyr::select active students
+egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
+
+# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
+egressos <- egressos[egressos$`Orientador Principal?` == "Sim", ]
+
+# get years
+egressos$'Data Situação' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`))
+egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
+
+# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
+egressos <- egressos %>% dplyr::select("Data Situação", "Nome Discente", "Nome do Orientador")
+
+# remove duplicates
+egressos <- unique(egressos)
+colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
+
+if (dim(egressos)[1] != 0) {
+  ids <- order(egressos$'Data Situação', decreasing = TRUE)
+  table <- egressos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos Mestrado - 2020-2017")
+  create_dt(table, title = "Egressos - Doutorado")
 } else {
   cat("*Sem dados para exibir*")
 }
 
 cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-
 ```
 
 <br>
@@ -2008,68 +2149,128 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Doutores**
 
-```{r historico-egressos-dsc-2016, eval = has.discentes}
-discentes.raw <-
-  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
-discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
-discentes <-
-  discentes.raw[discentes.raw$`Ano Titulação` >= 2013 &
-                  discentes.raw$`Ano Titulação` <= 2016,]
+```{r historico-egressos-dsc-2016, eval = has.sucupira.files}
+# periodo
+periodo <- 2013:min(as.numeric(format(Sys.Date(), "%Y")), 2016)
 
-discentes <-
-  discentes %>% dplyr::select("Ano Titulação", "Curso", "Nome", "Orientador")
-doutores <-
-  discentes[discentes$Curso == "Doutorado",] %>% dplyr::select("Ano Titulação", "Nome", "Orientador")
-if (dim(doutores)[1] != 0) {
-  doutores$Orientador <-
-    gsub("([A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9] - )",
-         "",
-         doutores$Orientador)
-  ids <- order(doutores$`Ano Titulação`, decreasing = TRUE)
-  table <- doutores[ids,]
+# dplyr::select level
+course.level <- "Doutorado"
+
+# egressos
+sheet <- "Discentes - Orientadores"
+source("Scripts/read-xlsx-sucupira.R")
+
+# get years
+source("Scripts/years-sucupira.R")
+names(sucupira.list) <- as.character(anos)
+
+# get egressos for the current period
+egressos <- sucupira.list[as.character(periodo)] %>%
+  compact()
+egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
+names(egressos) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# filter students
+egressos <- egressos[str_detect(egressos$`Nível Discente`, course.level), ]
+
+# dplyr::select active students
+egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
+
+# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
+egressos <- egressos[egressos$`Orientador Principal?` == "Sim", ]
+
+# get years
+egressos$'Data Situação' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`))
+egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
+
+# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
+egressos <- egressos %>% dplyr::select("Data Situação", "Nome Discente", "Nome do Orientador")
+
+# remove duplicates
+egressos <- unique(egressos)
+colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
+
+if (dim(egressos)[1] != 0) {
+  ids <- order(egressos$'Data Situação', decreasing = TRUE)
+  table <- egressos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos Doutorado - 2016-2013")
+  create_dt(table, title = "Egressos - Doutorado")
 } else {
   cat("*Sem dados para exibir*")
 }
 
 cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-
 ```
 
 <br>
 
 #### **Mestres**
 
-```{r historico-egressos-msc-2016, eval = has.discentes}
-discentes.raw <-
-  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
-discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
-discentes <-
-  discentes.raw[discentes.raw$`Ano Titulação` >= 2013 &
-                  discentes.raw$`Ano Titulação` <= 2016,]
+```{r historico-egressos-msc-2016, eval = has.sucupira.files}
+# periodo
+periodo <- 2013:min(as.numeric(format(Sys.Date(), "%Y")), 2016)
 
-discentes <-
-  discentes %>% dplyr::select("Ano Titulação", "Curso", "Nome", "Orientador")
-mestres <-
-  discentes[discentes$Curso == "Mestrado",] %>% dplyr::select("Ano Titulação", "Nome", "Orientador")
-if (dim(mestres)[1] != 0) {
-  mestres$Orientador <-
-    gsub("([A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9] - )",
-         "",
-         mestres$Orientador)
-  ids <- order(mestres$`Ano Titulação`, decreasing = TRUE)
-  table <- mestres[ids,]
+# dplyr::select level
+course.level <- "Mestrado"
+
+# egressos
+sheet <- "Discentes - Orientadores"
+source("Scripts/read-xlsx-sucupira.R")
+
+# get years
+source("Scripts/years-sucupira.R")
+names(sucupira.list) <- as.character(anos)
+
+# get egressos for the current period
+egressos <- sucupira.list[as.character(periodo)] %>%
+  compact()
+egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
+names(egressos) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# filter students
+egressos <- egressos[str_detect(egressos$`Nível Discente`, course.level), ]
+
+# dplyr::select active students
+egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
+
+# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
+egressos <- egressos[egressos$`Orientador Principal?` == "Sim", ]
+
+# get years
+egressos$'Data Situação' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`))
+egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
+
+# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
+egressos <- egressos %>% dplyr::select("Data Situação", "Nome Discente", "Nome do Orientador")
+
+# remove duplicates
+egressos <- unique(egressos)
+colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
+
+if (dim(egressos)[1] != 0) {
+  ids <- order(egressos$'Data Situação', decreasing = TRUE)
+  table <- egressos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos Mestrado - 2016-2013")
+  create_dt(table, title = "Egressos - Doutorado")
 } else {
   cat("*Sem dados para exibir*")
 }
 
 cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-
 ```
 
 <br>
@@ -2078,68 +2279,128 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Doutores**
 
-```{r historico-egressos-dsc-2012, eval = has.discentes}
-discentes.raw <-
-  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
-discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
-discentes <-
-  discentes.raw[discentes.raw$`Ano Titulação` >= 2010 &
-                  discentes.raw$`Ano Titulação` <= 2012,]
+```{r historico-egressos-dsc-2012, eval = has.sucupira.files}
+# periodo
+periodo <- 2010:min(as.numeric(format(Sys.Date(), "%Y")), 2012)
 
-discentes <-
-  discentes %>% dplyr::select("Ano Titulação", "Curso", "Nome", "Orientador")
-doutores <-
-  discentes[discentes$Curso == "Doutorado",] %>% dplyr::select("Ano Titulação", "Nome", "Orientador")
-if (dim(doutores)[1] != 0) {
-  doutores$Orientador <-
-    gsub("([A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9] - )",
-         "",
-         doutores$Orientador)
-  ids <- order(doutores$`Ano Titulação`, decreasing = TRUE)
-  table <- doutores[ids,]
+# dplyr::select level
+course.level <- "Doutorado"
+
+# egressos
+sheet <- "Discentes - Orientadores"
+source("Scripts/read-xlsx-sucupira.R")
+
+# get years
+source("Scripts/years-sucupira.R")
+names(sucupira.list) <- as.character(anos)
+
+# get egressos for the current period
+egressos <- sucupira.list[as.character(periodo)] %>%
+  compact()
+egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
+names(egressos) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# filter students
+egressos <- egressos[str_detect(egressos$`Nível Discente`, course.level), ]
+
+# dplyr::select active students
+egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
+
+# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
+egressos <- egressos[egressos$`Orientador Principal?` == "Sim", ]
+
+# get years
+egressos$'Data Situação' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`))
+egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
+
+# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
+egressos <- egressos %>% dplyr::select("Data Situação", "Nome Discente", "Nome do Orientador")
+
+# remove duplicates
+egressos <- unique(egressos)
+colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
+
+if (dim(egressos)[1] != 0) {
+  ids <- order(egressos$'Data Situação', decreasing = TRUE)
+  table <- egressos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos Doutorado - 2012-2010")
+  create_dt(table, title = "Egressos - Doutorado")
 } else {
   cat("*Sem dados para exibir*")
 }
 
 cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-
 ```
 
 <br>
 
 #### **Mestres**
 
-```{r historico-egressos-msc-2012, eval = has.discentes}
-discentes.raw <-
-  readxl::read_excel("PPG/Discentes.xlsx", sheet = "DATA.discentes")
-discentes <- discentes.raw[discentes.raw$`Ano Titulação` != "*",]
-discentes <-
-  discentes.raw[discentes.raw$`Ano Titulação` >= 2010 &
-                  discentes.raw$`Ano Titulação` <= 2012,]
+```{r historico-egressos-msc-2012, eval = has.sucupira.files}
+# periodo
+periodo <- 2010:min(as.numeric(format(Sys.Date(), "%Y")), 2012)
 
-discentes <-
-  discentes %>% dplyr::select("Ano Titulação", "Curso", "Nome", "Orientador")
-mestres <-
-  discentes[discentes$Curso == "Mestrado",] %>% dplyr::select("Ano Titulação", "Nome", "Orientador")
-if (dim(mestres)[1] != 0) {
-  mestres$Orientador <-
-    gsub("([A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9] - )",
-         "",
-         mestres$Orientador)
-  ids <- order(mestres$`Ano Titulação`, decreasing = TRUE)
-  table <- mestres[ids,]
+# dplyr::select level
+course.level <- "Mestrado"
+
+# egressos
+sheet <- "Discentes - Orientadores"
+source("Scripts/read-xlsx-sucupira.R")
+
+# get years
+source("Scripts/years-sucupira.R")
+names(sucupira.list) <- as.character(anos)
+
+# get egressos for the current period
+egressos <- sucupira.list[as.character(periodo)] %>%
+  compact()
+egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
+names(egressos) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# filter students
+egressos <- egressos[str_detect(egressos$`Nível Discente`, course.level), ]
+
+# dplyr::select active students
+egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
+
+# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
+egressos <- egressos[egressos$`Orientador Principal?` == "Sim", ]
+
+# get years
+egressos$'Data Situação' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`))
+egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
+
+# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
+egressos <- egressos %>% dplyr::select("Data Situação", "Nome Discente", "Nome do Orientador")
+
+# remove duplicates
+egressos <- unique(egressos)
+colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
+
+if (dim(egressos)[1] != 0) {
+  ids <- order(egressos$'Data Situação', decreasing = TRUE)
+  table <- egressos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos Mestrado - 2012-2010")
+  create_dt(table, title = "Egressos - Doutorado")
 } else {
   cat("*Sem dados para exibir*")
 }
 
 cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-
 ```
 
 <br>
