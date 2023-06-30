@@ -175,15 +175,12 @@ area.raw <-
 area.raw$Fim <- NULL
 
 # print tables
-print(
-  kable(area.raw, align = c("l", rep(
-    "c", ncol(area.raw) - 2
-  ), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
+ids <- order(area.raw$'Área de Concentração', decreasing = TRUE)
+table <- area.raw[ids, ]
+
+# print tables
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(table, title = "Áreas de Concentração")
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -243,15 +240,12 @@ linhas.atual <- linhas.raw[is.na(linhas.raw$Fim),]
 linhas.atual$Fim <- NULL
 
 # print tables
-print(
-  kable(linhas.atual, align = c("l", rep(
-    "c", ncol(linhas.atual) - 2
-  ), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
+ids <- order(linhas.atual$'Linhas de Pesquisa', decreasing = TRUE)
+table <- linhas.atual[ids, ]
+
+# print tables
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(table, title = "Linhas de Pesquisa")
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -2218,28 +2212,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Ementas**
-
-```{r ementas, eval = has.bibliografia}
-# read separate sheets
-bibliografia.raw <-
-  readxl::read_excel("PPG/Bibliografia.xlsx",
-             sheet = "Ementas",
-             col_types = c("text"))
-link_ementas <- bibliografia.raw[, 3]
-
-cat(
-  '<iframe src=\"',
-  as.character(link_ementas),
-  '/preview" style=\"width:100%; height:600px; border:0;\"></iframe>',
-  sep = ""
-)
-
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
 ### **Disciplinas**
 
 ```{r estrutura-academica-atual-tabela, eval = has.sucupira.files}
@@ -2309,20 +2281,38 @@ colnames(table) <-
     "CH (DA)"
   )
 
+ids <- order(table$'Disciplina', decreasing = TRUE)
+table <- table[ids,]
+
 # print tables
-print(
-  kable(table, align = c("l", rep("c", ncol(
-    table
-  ) - 2), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  ) %>% scroll_box(width = "100%")
-)
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(table, title = "Disciplinas ativas")
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
 cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
+### **Ementas**
+
+```{r ementas, eval = has.bibliografia}
+# read separate sheets
+bibliografia.raw <-
+  readxl::read_excel("PPG/Bibliografia.xlsx",
+             sheet = "Ementas",
+             col_types = c("text"))
+link_ementas <- bibliografia.raw[, 3]
+
+cat(
+  '<iframe src=\"',
+  as.character(link_ementas),
+  '/preview" style=\"width:100%; height:600px; border:0;\"></iframe>',
+  sep = ""
+)
+
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
@@ -2374,33 +2364,66 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 disciplinas.raw <- sucupira.raw
-disciplinas.raw <- disciplinas.raw[!is.na(disciplinas.raw$`Data de fim`), ]
+disciplinas.raw <-
+  disciplinas.raw[!is.na(disciplinas.raw$`Data de fim`),]
 
 disciplinas.msc <-
-  disciplinas.raw[which(`dim<-`(grepl('Mestrado', disciplinas.raw$`Nível do Curso`), dim(disciplinas.raw$`Nível do Curso`)), arr.ind = TRUE),]
-table.msc <- cbind(disciplinas.msc$`Nome da Disciplina`, disciplinas.msc$`Indicadora de disciplina obrigatória`, disciplinas.msc$`Quantidade de créditos`, disciplinas.msc$`Carga Horária`, disciplinas.msc$`Data de fim`)
-colnames(table.msc) <- c("Disciplina", "Obrigatória", "CR", "CH", "Fim")
+  disciplinas.raw[which(`dim<-`(
+    grepl('Mestrado', disciplinas.raw$`Nível do Curso`),
+    dim(disciplinas.raw$`Nível do Curso`)
+  ), arr.ind = TRUE), ]
+table.msc <-
+  cbind(
+    disciplinas.msc$`Nome da Disciplina`,
+    disciplinas.msc$`Indicadora de disciplina obrigatória`,
+    disciplinas.msc$`Quantidade de créditos`,
+    disciplinas.msc$`Carga Horária`,
+    disciplinas.msc$`Data de fim`
+  )
+colnames(table.msc) <-
+  c("Disciplina", "Obrigatória", "CR", "CH", "Fim")
 
 disciplinas.dsc <-
-  disciplinas.raw[which(`dim<-`(grepl('Doutorado', disciplinas.raw$`Nível do Curso`), dim(disciplinas.raw$`Nível do Curso`)), arr.ind = TRUE),]
-table.dsc <- cbind(disciplinas.dsc$`Nome da Disciplina`, disciplinas.dsc$`Indicadora de disciplina obrigatória`, disciplinas.dsc$`Quantidade de créditos`, disciplinas.dsc$`Carga Horária`, disciplinas.dsc$`Data de fim`)
-colnames(table.dsc) <- c("Disciplina", "Obrigatória", "CR", "CH", "Fim")
+  disciplinas.raw[which(`dim<-`(
+    grepl('Doutorado', disciplinas.raw$`Nível do Curso`),
+    dim(disciplinas.raw$`Nível do Curso`)
+  ), arr.ind = TRUE), ]
+table.dsc <-
+  cbind(
+    disciplinas.dsc$`Nome da Disciplina`,
+    disciplinas.dsc$`Indicadora de disciplina obrigatória`,
+    disciplinas.dsc$`Quantidade de créditos`,
+    disciplinas.dsc$`Carga Horária`,
+    disciplinas.dsc$`Data de fim`
+  )
+colnames(table.dsc) <-
+  c("Disciplina", "Obrigatória", "CR", "CH", "Fim")
 
-table <- merge(table.msc, table.dsc, by="Disciplina", all.x = TRUE, all.y = TRUE)
-colnames(table) <- c("Disciplina", "Obrigatória (MA)", "CR (MA)", "CH (MA)", "Fim", "Obrigatória (DA)", "CR (DA)", "CH (DA)", "Fim")
+table <-
+  merge(table.msc,
+        table.dsc,
+        by = "Disciplina",
+        all.x = TRUE,
+        all.y = TRUE)
+colnames(table) <-
+  c(
+    "Disciplina",
+    "Obrigatória (MA)",
+    "CR (MA)",
+    "CH (MA)",
+    "Fim",
+    "Obrigatória (DA)",
+    "CR (DA)",
+    "CH (DA)",
+    "Fim"
+  )
+
+ids <- order(table$'Disciplina', decreasing = TRUE)
+table <- table[ids, ]
 
 # print tables
-print(
-  kable(
-    unique(table),
-    row.names = FALSE,
-    align = c("l", rep("c", ncol(table) - 2), "r")
-  ) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  ) %>% scroll_box(width = "100%")
-)
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(table, title = "Disciplinas inativas")
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')

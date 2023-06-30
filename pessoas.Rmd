@@ -91,69 +91,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Colegiado** {#colegiado .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-<br>
-
-```{r docentes-atual-perfil, eval = has.sucupira.files}
-# projetos - membros
-sheet <- "Docentes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# most recent Sucupira year
-most.recent <-
-  as.character(ifelse(!is.null(sucupira.list[[format(Sys.Date(), "%Y")]]), format(Sys.Date(), "%Y"), max(as.numeric(
-    names(sucupira.list)
-  ))))
-
-# read separate sheets
-docentes.raw <- sucupira.list[[most.recent]]
-docentes <-
-  docentes.raw[is.na(docentes.raw$`Data de Desligamento`),]
-
-# remove duplicates between docs and postdocs
-docentes <- docentes[!duplicated(docentes$`Nome Docente`),]
-
-ids <- seq(1:dim(docentes)[1])
-docentes <- docentes[order(docentes$`Nome Docente`), ]
-
-for (i in 1:dim(docentes)[1]) {
-  cat('\n\n<!-- -->\n\n')
-#  cat("### **", paste(docentes$`Nome Docente`[i], sep = ""), "**", "\n", sep = "")
-  cat("### **", as.character(i), "**", "\n", sep = "")
-  cat('<center>\n')
-  if (!is.na(docentes$`Número do currículo Lattes`[i])) {
-    cat(
-      paste0(
-        '<iframe src="PPG/Lattes/',
-        gsub("http://lattes.cnpq.br/", "", docentes$`Número do currículo Lattes`[i]),
-        '.pdf" style=\"width:100%; height:600px; border:2px solid black;"></iframe>'
-      )
-    )
-  } else {
-    cat("<br>No data available<br>")
-  }
-  cat('\n</center>')
-  cat('\n\n<!-- -->\n\n')
-  cat(paste0('*Fontes:* [**Currículo Lattes**](http://lattes.cnpq.br/', docentes$`Número do currículo Lattes`[i]),')')
-  cat('\n\n<!-- -->\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-}
-
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
 ## **Coordenação** {#coordenacao}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -216,7 +153,65 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **2024-2021** {.tabset}
+### **Lattes** {#lattes .tabset}
+
+```{r docentes-atual-lattes, eval = has.sucupira.files}
+# projetos - membros
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# most recent Sucupira year
+most.recent <-
+  as.character(ifelse(!is.null(sucupira.list[[format(Sys.Date(), "%Y")]]), format(Sys.Date(), "%Y"), max(as.numeric(
+    names(sucupira.list)
+  ))))
+
+# read separate sheets
+docentes.raw <- sucupira.list[[most.recent]]
+docentes <-
+  docentes.raw[is.na(docentes.raw$`Data de Desligamento`),]
+
+# remove duplicates between docs and postdocs
+docentes <- docentes[!duplicated(docentes$`Nome Docente`),]
+
+ids <- seq(1:dim(docentes)[1])
+docentes <- docentes[order(docentes$`Nome Docente`), ]
+
+for (i in 1:dim(docentes)[1]) {
+  cat('\n\n<!-- -->\n\n')
+#  cat("### **", paste(docentes$`Nome Docente`[i], sep = ""), "**", "\n", sep = "")
+  cat("#### **", as.character(i), "**", "\n", sep = "")
+  cat('<center>\n')
+  if (!is.na(docentes$`Número do currículo Lattes`[i])) {
+    cat(
+      paste0(
+        '<iframe src="PPG/Lattes/',
+        gsub("http://lattes.cnpq.br/", "", docentes$`Número do currículo Lattes`[i]),
+        '.pdf" style=\"width:100%; height:600px; border:2px solid black;"></iframe>'
+      )
+    )
+  } else {
+    cat("<br>No data available<br>")
+  }
+  cat('\n</center>')
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('*Fontes:* [**Currículo Lattes**](http://lattes.cnpq.br/', docentes$`Número do currículo Lattes`[i]),')')
+  cat('\n\n<!-- -->\n\n')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
+### **2024-2021**
 
 ```{r docentes-2024-2021, eval = has.sucupira.files, results = "hide"}
 # periodo
@@ -256,8 +251,6 @@ if(has.2024.2021) {
   docentes <- docentes[order(docentes$"Nome Docente"), ]
 }
 ```
-
-#### **Tabela**
 
 ```{r docentes-2024-2021-tabela, eval = has.2024.2021}
 table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 7))
@@ -325,8 +318,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ```
 
 <br>
-
-#### **Figura**
 
 ```{r docentes-2024-2021-grafico, eval = has.2024.2021}
 # generate plot of docentes per information
@@ -408,7 +399,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-### **2020-2017** {.tabset}
+### **2020-2017**
 
 ```{r docentes-2020-2017, eval = has.sucupira.files, results = "hide"}
 # periodo
@@ -448,8 +439,6 @@ if(has.2020.2017) {
   docentes <- docentes[order(docentes$"Nome Docente"), ]
 }
 ```
-
-#### **Tabela**
 
 ```{r docentes-2020-tabela, eval = has.2020.2017}
 table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 7))
@@ -517,8 +506,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ```
 
 <br>
-
-#### **Figura**
 
 ```{r docentes-2020-grafico, eval = has.2020.2017}
 # generate plot of docentes per information
@@ -600,7 +587,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-### **2016-2013** {.tabset}
+### **2016-2013**
 
 ```{r docentes-2016-2013, eval = has.sucupira.files, results = "hide"}
 # periodo
@@ -640,8 +627,6 @@ if(has.2016.2013) {
   docentes <- docentes[order(docentes$"Nome Docente"), ]
 }
 ```
-
-#### **Tabela**
 
 ```{r docentes-2016-tabela, eval = has.2016.2013}
 table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 7))
@@ -709,8 +694,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ```
 
 <br>
-
-#### **Figura**
 
 ```{r docentes-2016-grafico, eval = has.2016.2013}
 # generate plot of docentes per information
@@ -792,7 +775,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-### **2012-2010** {.tabset}
+### **2012-2010**
 
 ```{r docentes-2012-2010, eval = has.sucupira.files, results = "hide"}
 # periodo
@@ -832,8 +815,6 @@ if(has.2012.2010) {
   docentes <- docentes[order(docentes$"Nome Docente"), ]
 }
 ```
-
-#### **Tabela**
 
 ```{r docentes-2012-tabela, eval = has.2012.2010}
 table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 7))
@@ -901,8 +882,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ```
 
 <br>
-
-#### **Figura**
 
 ```{r docentes-2012-grafico, eval = has.2012.2010}
 # generate plot of docentes per information
@@ -1797,102 +1776,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Síntese** {.tabset}
-
-```{r egressos-periodo, eval = has.discentes}
-egressos.raw <-
-  readxl::read_excel(
-    "PPG/Discentes.xlsx",
-    sheet = "Discentes",
-    col_types = c("text")
-  )
-egressos.raw <- egressos.raw[egressos.raw$País == "Brasil",]
-egressos.raw$'Ano Titulação' <-
-  substr(as.Date(egressos.raw$'Data Situação', format = "%d/%m/%Y"), 1, 4)
-
-egressos.raw <- egressos.raw[!is.na(egressos.raw$'Data Situação'), ]
-UF <- as.data.frame(table(egressos$UF))
-
-# identifying available courses
-cursos <- levels(as.factor(c(egressos.raw$Curso)))
-
-# reading BR geospatial data from IPEA
-datasets <- geobr::list_geobr()$years[3]
-last.update <-
-  as.numeric(strsplit(datasets, ", ")[[1]][length(strsplit(datasets, ", ")[[1]]) - 1])
-states <-
-  read_state(
-    code_state = "all",
-    year = last.update,
-    simplified = TRUE,
-    showProgress = FALSE
-  )
-
-states$egressos <- rep(NA, dim(states)[1])
-for (i in 1:length(UF$Var1)) {
-  states$egressos[states$abbrev_state == UF$Var1[i]] <- UF$Freq[i]
-}
-
-# plot Brazil states per period
-periodos <-
-  rbind(cbind(2010, 2012), cbind(2013, 2016), cbind(2017, 2020), cbind(2021, 2024))
-colnames(periodos) <- c("Início", "Fim")
-rownames(periodos) <- c("Trienal", "Quadrienal", "Quadrienal", "Quadrienal")
-
-par(
-  oma = c(0, 0, 0, 0),
-  mar = c(5.1, 4.1, 4.1, 2.1),
-  bg = 'black',
-  col.lab = "white",
-  col.axis = "white",
-  fg = "white",
-  col.main = "white"
-)
-layout(matrix(seq(1:dim(periodos)[1]), ncol = dim(periodos)[1], byrow = TRUE))
-maps <- list()
-for (j in 1:dim(periodos)[1]) {
-  egressos <-
-    egressos.raw[egressos.raw$`Ano Titulação` >= periodos[j, 1] &
-                egressos.raw$`Ano Titulação` <= periodos[j, 2], ]
-  states$egressos <- rep(NA, dim(states)[1])
-  UF <- as.data.frame(table(egressos$UF))
-  for (i in 1:length(UF$Var1)) {
-    states$egressos[states$abbrev_state == UF$Var1[i]] <- UF$Freq[i]
-  }
-  maps[[j]] <- ggplot() +
-    geom_sf(
-      data = states,
-      aes(fill = egressos),
-      color = NA,
-      size = .15
-    ) +
-    scale_fill_distiller(
-      palette = "Spectral",
-      name = "Egressos, n",
-      limits = c(min(0, UF$Freq), max(UF$Freq)),
-      na.value = "grey"
-    ) +
-    theme_minimal() +
-    theme(
-      plot.margin = unit(c(0, 0, 0, 0), "cm"),
-      panel.background = element_rect(fill = "transparent",  color = "transparent"),
-      plot.background = element_rect(fill = "transparent",  color = "transparent"),
-      panel.grid.major = element_line(color = "transparent"),
-      axis.text.x = element_blank(),
-      axis.text.y = element_blank()
-  ) +
-    labs(subtitle = paste(periodos[j, 1], "-", periodos[j, 2], sep = ""),
-         size = 12) +
-    guides(fill = FALSE)
-}
-multiplot(plotlist = maps, cols = dim(periodos)[1])
-
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
 ### **2024-2021** {.tabset}
 
 #### **Doutores**
@@ -2407,6 +2290,102 @@ if (dim(egressos)[1] != 0) {
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
+### **Distribuição nacional** {.tabset}
+
+```{r egressos-periodo, eval = has.discentes}
+egressos.raw <-
+  readxl::read_excel(
+    "PPG/Discentes.xlsx",
+    sheet = "Discentes",
+    col_types = c("text")
+  )
+egressos.raw <- egressos.raw[egressos.raw$País == "Brasil",]
+egressos.raw$'Ano Titulação' <-
+  substr(as.Date(egressos.raw$'Data Situação', format = "%d/%m/%Y"), 1, 4)
+
+egressos.raw <- egressos.raw[!is.na(egressos.raw$'Data Situação'), ]
+UF <- as.data.frame(table(egressos$UF))
+
+# identifying available courses
+cursos <- levels(as.factor(c(egressos.raw$Curso)))
+
+# reading BR geospatial data from IPEA
+datasets <- geobr::list_geobr()$years[3]
+last.update <-
+  as.numeric(strsplit(datasets, ", ")[[1]][length(strsplit(datasets, ", ")[[1]]) - 1])
+states <-
+  read_state(
+    code_state = "all",
+    year = last.update,
+    simplified = TRUE,
+    showProgress = FALSE
+  )
+
+states$egressos <- rep(NA, dim(states)[1])
+for (i in 1:length(UF$Var1)) {
+  states$egressos[states$abbrev_state == UF$Var1[i]] <- UF$Freq[i]
+}
+
+# plot Brazil states per period
+periodos <-
+  rbind(cbind(2010, 2012), cbind(2013, 2016), cbind(2017, 2020), cbind(2021, 2024))
+colnames(periodos) <- c("Início", "Fim")
+rownames(periodos) <- c("Trienal", "Quadrienal", "Quadrienal", "Quadrienal")
+
+par(
+  oma = c(0, 0, 0, 0),
+  mar = c(5.1, 4.1, 4.1, 2.1),
+  bg = 'black',
+  col.lab = "white",
+  col.axis = "white",
+  fg = "white",
+  col.main = "white"
+)
+layout(matrix(seq(1:dim(periodos)[1]), ncol = dim(periodos)[1], byrow = TRUE))
+maps <- list()
+for (j in 1:dim(periodos)[1]) {
+  egressos <-
+    egressos.raw[egressos.raw$`Ano Titulação` >= periodos[j, 1] &
+                egressos.raw$`Ano Titulação` <= periodos[j, 2], ]
+  states$egressos <- rep(NA, dim(states)[1])
+  UF <- as.data.frame(table(egressos$UF))
+  for (i in 1:length(UF$Var1)) {
+    states$egressos[states$abbrev_state == UF$Var1[i]] <- UF$Freq[i]
+  }
+  maps[[j]] <- ggplot() +
+    geom_sf(
+      data = states,
+      aes(fill = egressos),
+      color = NA,
+      size = .15
+    ) +
+    scale_fill_distiller(
+      palette = "Spectral",
+      name = "Egressos, n",
+      limits = c(min(0, UF$Freq), max(UF$Freq)),
+      na.value = "grey"
+    ) +
+    theme_minimal() +
+    theme(
+      plot.margin = unit(c(0, 0, 0, 0), "cm"),
+      panel.background = element_rect(fill = "transparent",  color = "transparent"),
+      plot.background = element_rect(fill = "transparent",  color = "transparent"),
+      panel.grid.major = element_line(color = "transparent"),
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank()
+  ) +
+    labs(subtitle = paste(periodos[j, 1], "-", periodos[j, 2], sep = ""),
+         size = 12) +
+    guides(fill = FALSE)
+}
+multiplot(plotlist = maps, cols = dim(periodos)[1])
+
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
