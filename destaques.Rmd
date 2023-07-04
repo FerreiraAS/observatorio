@@ -64,15 +64,15 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 ```{r egressos-destaque, eval = has.destaques}
 # read separate sheets
 file.path <- "PPG/Destaques.xlsx"
-tabs <- excel_sheets(file.path)
+abas <- excel_sheets(file.path)
 topics <- c()
-destaques.list <- vector(mode = "list", length = length(tabs))
+destaques.list <- vector(mode = "list", length = length(abas))
 
 # iterate across sheets
-for (j in 1:length(tabs)) {
+for (j in 1:length(abas)) {
   destaques <-
     readxl::read_excel(file.path,
-               sheet = tabs[j],
+               sheet = abas[j],
                col_types = c("text", "text", "text"))
   # replace the link by a tag
   for (i in 1:dim(destaques)[1]) {
@@ -92,9 +92,9 @@ for (j in 1:length(tabs)) {
 }
 
 # iterate across sheets
-for (j in 1:length(tabs)) {
+for (j in 1:length(abas)) {
   cat('\n\n<!-- -->\n\n')
-  cat("### **", tabs[j], "**", "\n", sep = "")
+  cat("### **", abas[j], "**", "\n", sep = "")
   cat('\n\n<!-- -->\n\n')
   print(
     kable(destaques.list[[j]], align = c("l", rep(
@@ -438,6 +438,7 @@ for (id in 1:length(orcids)) {
   cat('#### **', assoc.name, '**', sep = "")
   cat('\n\n<!-- -->\n\n')
   source("Scripts/memberships-services.R", local = knitr::knit_global())
+  cat('\n\n<!-- -->\n\n')
   cat(
     "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"
   )
@@ -479,6 +480,7 @@ for (id in 1:length(orcids)) {
   cat('##### **', editor.name, '**', sep = "")
   cat('\n\n<!-- -->\n\n')
   source("Scripts/invited-positions.R", local = knitr::knit_global())
+  cat('\n\n<!-- -->\n\n')
   cat(
     "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"
   )
@@ -518,6 +520,7 @@ for (id in 1:length(orcids)) {
   cat('##### **', reviewer.name, '**', sep = "")
   cat('\n\n<!-- -->\n\n')
   source("Scripts/reviewer-board.R", local = knitr::knit_global())
+  cat('\n\n<!-- -->\n\n')
   cat(
     "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"
   )
@@ -540,15 +543,15 @@ for (id in 1:length(orcids)) {
 ```{r blogs-ies, eval = has.blog.ies}
 # read separate sheets
 file.path <- "PPG/Blog institucional.xlsx"
-tabs <- excel_sheets(file.path)
+abas <- excel_sheets(file.path)
 topics <- c()
-news.list <- vector(mode = "list", length = length(tabs))
+news.list <- vector(mode = "list", length = length(abas))
 
 # iterate across sheets
-for (j in 1:length(tabs)) {
+for (j in 1:length(abas)) {
   news <-
     readxl::read_excel(file.path,
-               sheet = tabs[j],
+               sheet = abas[j],
                col_types = c("text", "text", "text"))
   # replace the link by a tag
   for (i in 1:dim(news)[1]) {
@@ -568,9 +571,9 @@ for (j in 1:length(tabs)) {
 }
 
 # iterate across sheets
-for (j in 1:length(tabs)) {
+for (j in 1:length(abas)) {
   cat('\n\n<!-- -->\n\n')
-  cat("#### **", tabs[j], "**", "\n", sep = "")
+  cat("#### **", abas[j], "**", "\n", sep = "")
   cat('\n\n<!-- -->\n\n')
   print(
     kable(news.list[[j]], align = c("l", rep("c", ncol(
@@ -593,15 +596,15 @@ for (j in 1:length(tabs)) {
 ```{r blogs-externos, eval = has.blog.externos}
 # read separate sheets
 file.path <- "PPG/Blog externo.xlsx"
-tabs <- excel_sheets(file.path)
+abas <- excel_sheets(file.path)
 topics <- c()
-news.list <- vector(mode = "list", length = length(tabs))
+news.list <- vector(mode = "list", length = length(abas))
 
 # iterate across sheets
-for (j in 1:length(tabs)) {
+for (j in 1:length(abas)) {
   news <-
     readxl::read_excel(file.path,
-               sheet = tabs[j],
+               sheet = abas[j],
                col_types = c("text", "text", "text"))
   # replace the link by a tag
   for (i in 1:dim(news)[1]) {
@@ -621,9 +624,9 @@ for (j in 1:length(tabs)) {
 }
 
 # iterate across sheets
-for (j in 1:length(tabs)) {
+for (j in 1:length(abas)) {
   cat('\n\n<!-- -->\n\n')
-  cat("#### **", tabs[j], "**", "\n", sep = "")
+  cat("#### **", abas[j], "**", "\n", sep = "")
   cat('\n\n<!-- -->\n\n')
   print(
     kable(news.list[[j]], align = c("l", rep("c", ncol(

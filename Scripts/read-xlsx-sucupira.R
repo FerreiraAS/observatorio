@@ -22,7 +22,6 @@ for (i in 1:length(dirs)) {
 sucupira <- c()
 sucupira.raw <- c()
 sucupira.list <- list()
-
 if (length(files.to.read) != 0) {
   for (file in 1:length(files.to.read)) {
     sucupira <-
@@ -86,11 +85,11 @@ if (length(files.to.read) != 0) {
       sucupira <- bind_rows(sucupira, data.to.change)
     }
     
+    sucupira.list[[file]] <- sucupira
+    
     sucupira.raw <-
       bind_rows(sucupira.raw, sucupira)
     readr::type_convert(sucupira.raw)
-    readr::type_convert(sucupira)
     
-    sucupira.list[[file]] <- sucupira
   }
 }

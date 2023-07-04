@@ -209,10 +209,10 @@ if (has.sucupira.files) {
   # get amount of data from Sucupira XLSX files
   source("Scripts/get-sucupira-sheets-names.R",
          local = knitr::knit_global())
-  sheets <- sucupira.sheets
+  abas <- sucupira.sheets
   
-  for (i in 1:length(sheets)) {
-    sheet <- sheets[i]
+  for (i in 1:length(abas)) {
+    aba <- abas[i]
     source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
     data.sucupira <- sum(data.sucupira, !is.na(sucupira.raw))
   }
@@ -224,11 +224,11 @@ if (has.ppg.files) {
   source("Scripts/get-ppg-xlsx-data.R", local = knitr::knit_global())
   if (length(files.to.read) != 0) {
     for (i in 1:length(files.to.read)) {
-      sheets <- excel_sheets(files.to.read[i])
-      for (j in 1:length(sheets)) {
-        sheet <- sheets[j]
+      abas <- excel_sheets(files.to.read[i])
+      for (j in 1:length(abas)) {
+        sheet <- abas[j]
         try(ppg.file <-
-              readxl::read_excel(files.to.read[i], sheet = sheets[j]),
+              readxl::read_excel(files.to.read[i], sheet = abas[j]),
             silent = TRUE)
         data.ppg <- sum(data.ppg, !is.na(ppg.file))
       }
@@ -431,9 +431,77 @@ cat("*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br")
 
 #### **Estrutura Acadêmica do Programa**
 
+#### *Qualitativa*
+
+<br>
+
 *Em construção*
 
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+#### *Quantitativa*
+
+```{r 1-1-1-quanti, eval = has.sucupira.files}
+# read each tab content
+sheet <- "Projetos"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get all years available
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+síntese.ano <- c()
+# loop for every available year
+for (i in 1:length(anos)) {
+  # get síntese anual
+  source("Scripts/síntese-sucupira.R", local = knitr::knit_global())
+  síntese.ano <-
+    dplyr::bind_rows(síntese.ano,
+          sintese(
+            sucupira.list = sucupira.list,
+            ano = anos[i]
+          ))
+}
+
+# Data selection
+síntese.ano <- síntese.ano %>%
+  dplyr::select(c(
+    "Ano",
+    "Áreas de concentração",
+    "Linhas de pesquisa",
+    "Projetos de pesquisa"
+    ))
+
+# generate table (total by year)
+table.1 <-
+  gtsummary::tbl_summary(
+    síntese.ano,
+    by = "Ano",
+    type = list(
+      "Áreas de concentração" ~ "continuous",
+      "Linhas de pesquisa" ~ "continuous",
+      "Projetos de pesquisa" ~ "continuous"),
+    statistic = list(
+      all_continuous() ~ c("{max}")),
+    missing = "no") %>%
+  gtsummary::modify_header(
+#    label = "**Ano**",
+    all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(
+    tidyselect::everything() ~ NA) %>%
+  gtsummary::bold_labels()
+
+# print table
+print(table.1)
+
+cat('<br>')
+cat('\n\n')
+cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
+
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 

@@ -1,7 +1,7 @@
 peer.review <- c()
 
 # get peer review data
-res <- orcid_peer_reviews(my_orcid)
+res <- rorcid::orcid_peer_reviews(my_orcid)
 
 if (is.null(res[[1]]$group$`external-ids.external-id`)) {
   # do nothing
@@ -35,12 +35,26 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
     c(paste("Periódicos (", dim(peer.review)[1], ")", sep = ""), "SJR")
   rownames(peer.review) <- c()
   
-  # print table
-  if (dim(peer.review)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(peer.review, title = "Revisor de periódico (ORCID peer review)")))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
+  # print table (reviewed journals)
+  print(
+    knitr::kable(
+      peer.review,
+      align = "l",
+      format = "html",
+      escape = FALSE
+    ) %>%
+      kableExtra::kable_styling(
+        bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+        full_width = T,
+        position = "center"
+      ) %>%
+      kableExtra::row_spec(
+        0,
+        background = main.color,
+        bold = TRUE,
+        color = "white"
+      ),
+    row.names = NULL
+  )
   cat('<br>')
 }

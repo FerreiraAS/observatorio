@@ -1,7 +1,7 @@
 member <- c()
 
 # get invited positions data
-res <- orcid_memberships(my_orcid)
+res <- rorcid::orcid_memberships(my_orcid)
 
 if (is.null(res[[1]]$`affiliation-group`$summaries)) {
   # do nothing
@@ -19,13 +19,27 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
   }
   colnames(member) <- c("Afiliação", "Atuação")
   
-  # print table
-  if (dim(member)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(member, title = "Membro de associações (ORCID memberships)")))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
+  # print table (reviewed journals)
+  print(
+    knitr::kable(
+      member,
+      align = "l",
+      format = "html",
+      escape = FALSE
+    ) %>%
+      kableExtra::kable_styling(
+        bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+        full_width = T,
+        position = "center"
+      ) %>%
+      kableExtra::row_spec(
+        0,
+        background = main.color,
+        bold = TRUE,
+        color = "white"
+      ),
+    row.names = NULL
+  )
   cat('<br>')
 }
 
@@ -34,7 +48,7 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
 services <- c()
 
 # get invited positions data
-res <- orcid_services(my_orcid)
+res <- rorcid::orcid_services(my_orcid)
 
 if (is.null(res[[1]]$`affiliation-group`$summaries)) {
   # do nothing
@@ -52,12 +66,26 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
   }
   colnames(services) <- c("Afiliação", "Atuação")
   
-  # print table
-  if (dim(services)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(services, title = "Membro de associações (ORCID services)")))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
+  # print table (reviewed journals)
+  print(
+    knitr::kable(
+      services,
+      align = "l",
+      format = "html",
+      escape = FALSE
+    ) %>%
+      kableExtra::kable_styling(
+        bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+        full_width = T,
+        position = "center"
+      ) %>%
+      kableExtra::row_spec(
+        0,
+        background = main.color,
+        bold = TRUE,
+        color = "white"
+      ),
+    row.names = NULL
+  )
   cat('<br>')
 }

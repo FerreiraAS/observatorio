@@ -1,7 +1,7 @@
 invited.pos <- c()
 
 # get invited positions data
-res <- orcid_invited_positions(my_orcid)
+res <- rorcid::orcid_invited_positions(my_orcid)
 
 if (is.null(res[[1]]$`affiliation-group`$summaries)) {
   # do nothing
@@ -18,13 +18,27 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
       affiliations[[i]][['invited-position-summary.role-title']]
   }
   colnames(invited.pos) <- c("Periódico", "Atuação")
-
-  # print table
-  if (dim(invited.pos)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(invited.pos, title = "Membro de corpo editorial (ORCID Invited positions)")))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
+  
+  # print table (reviewed journals)
+  print(
+    knitr::kable(
+      invited.pos,
+      align = "l",
+      format = "html",
+      escape = FALSE
+    ) %>%
+      kableExtra::kable_styling(
+        bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+        full_width = T,
+        position = "center"
+      ) %>%
+      kableExtra::row_spec(
+        0,
+        background = main.color,
+        bold = TRUE,
+        color = "white"
+      ),
+    row.names = NULL
+  )
   cat('<br>')
 }

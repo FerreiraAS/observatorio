@@ -212,12 +212,14 @@ Para análise das métricas, as seguintes fontes são utilizadas:
 │       └── scimagojr 2022.csv
 ```
 
+
 ## **Instalacao**
 
 Antes de começar, você vai precisar instalar em sua máquina os seguintes programas:
 
 - [R project](https://www.r-project.org)
 - [Rstudio desktop](https://posit.co/download/rstudio-desktop/)
+
 
 ## **Como usar**
 
