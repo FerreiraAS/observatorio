@@ -258,12 +258,10 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Produção bibliográfica** {#bibliografica}
+## **Artigos completos em periódicos** {#artigos-completos .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
-
-### **Artigos completos em periódicos** {.tabset}
 
 ```{r artigos-completos, eval = any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
 # bind sources
@@ -309,7 +307,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   for (year in 1:length(years)) {
     # print tab header
     cat('\n\n<!-- -->\n\n')
-    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    cat("### **", as.character(years[year]), "**", "\n", sep = "")
     
     # print table of papers with/without badges
     source("Scripts/papers-with-badges.R", local = knitr::knit_global())
@@ -342,7 +340,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-### **Artigos resumos em periódicos** {.tabset}
+## **Artigos resumos em periódicos** {#artigos-resumos .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r artigos-resumos, eval = any(has.artigos.resumos.ppg, has.artigos.resumos.sucupira)}
 # bind sources
@@ -388,7 +389,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   for (year in 1:length(years)) {
     # print tab header
     cat('\n\n<!-- -->\n\n')
-    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    cat("### **", as.character(years[year]), "**", "\n", sep = "")
     
     # print table of papers with/without badges
     source("Scripts/papers-with-badges.R", local = knitr::knit_global())
@@ -421,7 +422,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-### **Preprints** {.tabset}
+## **Preprints** {#preprints .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r preprints, eval = has.preprints.ppg}
 # bind sources
@@ -467,7 +471,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   for (year in 1:length(years)) {
     # print tab header
     cat('\n\n<!-- -->\n\n')
-    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    cat("### **", as.character(years[year]), "**", "\n", sep = "")
     
     # print table of papers with/without badges
     source("Scripts/papers-with-badges.R", local = knitr::knit_global())
@@ -500,7 +504,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-### **Livros**  {.tabset}
+## **Livros**  {#livros .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r livros, eval = has.livros.ppg}
 # bind sources
@@ -546,7 +553,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   for (year in 1:length(years)) {
     # print tab header
     cat('\n\n<!-- -->\n\n')
-    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    cat("### **", as.character(years[year]), "**", "\n", sep = "")
     
     # print table of papers with/without badges
     source("Scripts/papers-with-badges.R", local = knitr::knit_global())
@@ -579,7 +586,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-### **Capítulos**  {.tabset}
+## **Capítulos**  {#capitulos .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r livros-capitulos, eval = has.capitulos.ppg}
 # bind sources
@@ -625,7 +635,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   for (year in 1:length(years)) {
     # print tab header
     cat('\n\n<!-- -->\n\n')
-    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    cat("### **", as.character(years[year]), "**", "\n", sep = "")
     
     # print table of papers with/without badges
     source("Scripts/papers-with-badges.R", local = knitr::knit_global())
@@ -658,7 +668,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-### **Trabalhos em anais** {.tabset}
+## **Trabalhos em anais** {#trabalhos-em-anais .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r resumos-anais, eval = has.anais.ppg}
 # bind sources
@@ -704,7 +717,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   for (year in 1:length(years)) {
     # print tab header
     cat('\n\n<!-- -->\n\n')
-    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    cat("### **", as.character(years[year]), "**", "\n", sep = "")
     
     # print table of papers with/without badges
     source("Scripts/papers-with-badges.R", local = knitr::knit_global())
@@ -737,12 +750,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-## **Produção técnica** {#tecnica}
+## **Desenvolvimento de aplicativos** {#aplicativos .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
-
-### **Desenvolvimento de aplicativos** {.tabset}
 
 ```{r softwares, eval = has.softwares}
 # initialize all sheets
@@ -751,7 +762,7 @@ abas <- excel_sheets("PPG/Softwares.xlsx")
 # display each sheet in a tab
 for (i in 1:length(abas)) {
   cat('\n\n<!-- -->\n\n')
-  cat(paste0('#### **', abas[i], '**'))
+  cat(paste0('### **', abas[i], '**'))
   cat('\n\n<!-- -->\n\n')
   software.raw <-
     readxl::read_excel("PPG/Softwares.xlsx",
@@ -781,7 +792,7 @@ cat('\n\n')
 
 <br>
 
-## **Retratações** {#retratacoes}
+## **Retratações** {#retratacoes .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -831,7 +842,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   for (year in 1:length(years)) {
     # print tab header
     cat('\n\n<!-- -->\n\n')
-    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
+    cat("### **", as.character(years[year]), "**", "\n", sep = "")
     
     # print table of papers with/without badges
     source("Scripts/papers-with-badges.R", local = knitr::knit_global())

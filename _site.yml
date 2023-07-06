@@ -70,8 +70,6 @@ navbar:
           href: [pessoas.html]
         - text: "Secretaria"
           href: [pessoas.html#secretaria]
-        - text: "Colegiado"
-          href: [pessoas.html#colegiado]
         - text: "Coordenação"
           href: [pessoas.html#coordenacao]
         - text: "Docentes"
@@ -99,10 +97,20 @@ navbar:
           href: [producoes.html#TCC]
         - text: "Repositórios"
           href: [producoes.html#repositorios]
-        - text: "Produção bibliográfica"
-          href: [producoes.html#bibliografica]
-        - text: "Produção técnica"
-          href: [producoes.html#tecnica]
+        - text: "Artigos completos"
+          href: [producoes.html#artigos-completos]
+        - text: "Artigos resumos"
+          href: [producoes.html#artigos-resumos]
+        - text: "Preprints"
+          href: [producoes.html#preprints]
+        - text: "Livros"
+          href: [producoes.html#livros]
+        - text: "Capítulos"
+          href: [producoes.html#capitulos]
+        - text: "Trabalhos em anais de eventos"
+          href: [producoes.html#trabalhos-em-anais]
+        - text: "Desenvolvimento de aplicativos"
+          href: [producoes.html#aplicativos]
         - text: "Retratações"
           href: [producoes.html#retratacoes]
     - text: "Destaques"
@@ -114,8 +122,10 @@ navbar:
           href: [destaques.html#egressos-destaque]
         - text: "Dissertações/Teses"
           href: [destaques.html#TCC-destaque]
-        - text: "Produções"
-          href: [destaques.html#produtos-destaque]
+        - text: "Produções em destaque - Visibilidade"
+          href: [destaques.html#destaque-visibilidade]
+        - text: "Produções em destaque - Prestígio"
+          href: [destaques.html#destaque-prestigio]
         - text: "Prêmios"
           href: [destaques.html#premios]
         - text: "Prêmio CAPES de Tese"
@@ -186,15 +196,8 @@ navbar:
               href: [autoavaliacao.html#impacto]
     - text: "Downloads"
       href: [downloads.html]
-      menu:
-        - text: "Donwloads"
-          href: [downloads.html]
-        - text: "Vigentes"
-          href: [downloads.html#vigentes]
-        - text: "Revogados"
-          href: [downloads.html#revogados]
     - text: ""
-      icon: "fa-circle-info"
+      icon: "fa-globe"
       href: [info.html]
     - text: ""
       icon: "fa-envelope"

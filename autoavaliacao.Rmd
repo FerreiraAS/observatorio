@@ -70,25 +70,52 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Formulários** {#formularios .tabset}
+```{r mtodologia, eval = has.metodologia}
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Metodologia.xlsx")
 
-#### **Qualidade das disciplinas**
-
-<p align="center">
-[<img align="center" src="PPG/Images/pesquisadasdisciplinas.png">](https://forms.gle/vp5yDpqrgb695M7y9){target="_blank"}
-</p>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **Pesquisa do Egresso**
-
-<p align="center">
-[<img align="center" src="PPG/Images/pesquisadoegresso.png">](https://forms.gle/a4P8MeKmfYmKadf76){target="_blank"}
-</p>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+# display each sheet in a tab
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('### **', abas[j], '**'))
+  cat('\n\n<!-- -->\n\n')
+  metodologia.raw <-
+    readxl::read_excel("PPG/Metodologia.xlsx",
+                       sheet = abas[j],
+                       col_types = c("text"))
+  
+  # replace the link by a tag
+  Abrir <- matrix(NA, nrow = dim(metodologia.raw)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(metodologia.raw)[1]) {
+    if (!is.na(metodologia.raw[i, 2])) {
+      Abrir[i] <-
+        paste0('<a href="',
+               metodologia.raw[i, 2],
+               '" target="_blank"',
+               '>',
+               "↗️" ,
+               "</a>",
+               sep = "")
+    }
+  }
+  metodologia <- cbind(metodologia.raw[, -2], Abrir)
+  
+  # print table
+  if (dim(metodologia)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    cat(knitr::knit_print(
+      create_dt(metodologia, title = "Downloads")
+    ))
+  } else {
+    cat("*Sem dados para exibir*")
+  }
+  
+  # print end of tab rows
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+```
 
 <br>
 

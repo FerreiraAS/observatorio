@@ -267,13 +267,16 @@ O Observatório é atualizado periodicamente pelo desenvolvedor. Para receber at
 
 ## **Observatorios publicados**
 
-### **Centro Universitário Augusto Motta | UNISUAM**
+- [**Observatório**](https://ferreiraas.github.io/observatorio) | Modelo para PPGs
+
+
+### **Centro Universitário Augusto Motta | [UNISUAM](https://www.unisuam.edu.br)**
 
 - [**Observatório CR**](https://ppgcr-unisuam.github.io/observatoriocr) | Programa de Pós-graduação em Ciências da Reabilitação
 - [**Observatório DL**](https://ppgdl-unisuam.github.io/observatoriodl) | Programa de Pós-graduação em Desenvolvimento Local
 
 
-### **Universidade Federal do Ceará | UFC**
+### **Universidade Federal do Ceará | [UFC](https://www.ufc.br)**
 
 - [**Observatório PPGFisio**](https://ppgfisioufc.github.io/PPGFisio_UFC/) | Programa de Pós-graduação em Fisioterapia
 

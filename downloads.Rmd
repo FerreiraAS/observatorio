@@ -50,80 +50,50 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Vigentes** {#vigentes}
+```{r downloads, eval = has.downloads}
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Downloads.xlsx")
 
-```{r documentos-vigentes, eval = has.downloads}
-# read separate sheets
-vigentes.raw <-
-  readxl::read_excel("PPG/Downloads.xlsx",
-                     sheet = "Vigentes",
-                     col_types = c("text"))
-
-Abrir <- matrix(NA, nrow = dim(vigentes.raw)[1])
-colnames(Abrir) <- "Abrir"
-# add hyperlinks
-for (i in 1:dim(vigentes.raw)[1]) {
-  if (!is.na(vigentes.raw[i, 3])) {
-    Abrir[i] <-
-      paste0('<a href="',
-             vigentes.raw[i, 3],
-             '" target="_blank"',
-             '>',
-             "↗️" ,
-             "</a>",
-             sep = "")
+# display each sheet in a tab
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('### **', abas[j], '**'))
+  cat('\n\n<!-- -->\n\n')
+  downloads.raw <-
+    readxl::read_excel("PPG/Downloads.xlsx",
+                       sheet = abas[j],
+                       col_types = c("text"))
+  
+  # replace the link by a tag
+  Abrir <- matrix(NA, nrow = dim(downloads.raw)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(downloads.raw)[1]) {
+    if (!is.na(downloads.raw[i, 3])) {
+      Abrir[i] <-
+        paste0('<a href="',
+               downloads.raw[i, 3],
+               '" target="_blank"',
+               '>',
+               "↗️" ,
+               "</a>",
+               sep = "")
+    }
   }
+  downloads <- cbind(downloads.raw[, -3], Abrir)
+
+  # print table
+  print(
+    kable(downloads, align = "l", col.names = NULL, escape = FALSE) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+  
+  # print end of tab rows
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
-vigentes <- cbind(vigentes.raw[, -3], Abrir)
-
-# print table
-if (dim(vigentes)[1] != 0) {
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(vigentes, title = "Documentos vigentes")
-} else {
-  cat("*Sem dados para exibir*")
-}
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
-### **Revogados** {#revogados}
-
-```{r documentos-revogados, eval = has.downloads}
-# read separate sheets
-revogados.raw <-
-  readxl::read_excel("PPG/Downloads.xlsx",
-                     sheet = "Revogados",
-                     col_types = c("text"))
-
-Abrir <- matrix(NA, nrow = dim(revogados.raw)[1])
-colnames(Abrir) <- "Abrir"
-# add hyperlinks
-for (i in 1:dim(revogados.raw)[1]) {
-  if (!is.na(revogados.raw[i, 3])) {
-    Abrir[i] <-
-      paste0('<a href="',
-             revogados.raw[i, 3],
-             '" target="_blank"',
-             '>',
-             "↗️" ,
-             "</a>",
-             sep = "")
-  }
-}
-revogados <- cbind(revogados.raw[, -3], Abrir)
-
-# print table
-if (dim(revogados)[1] != 0) {
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(revogados, title = "Documentos revogados")
-} else {
-  cat("*Sem dados para exibir*")
-}
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
 <br>

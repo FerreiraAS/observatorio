@@ -45,6 +45,39 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
+## **Iniciativas** {#iniciativas .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+### **DORA**
+
+<iframe src="https://sfdora.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**DORA**](https://sfdora.org)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **FAIR**
+
+<iframe src="https://www.go-fair.org/go-fair-initiative/" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**DORA**](https://www.go-fair.org/go-fair-initiative/)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
 ## **Repositórios externos** {#repositorios-externos .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -71,25 +104,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **DORA**
-
-<br>
-
-<iframe src="https://sfdora.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
-
-<br>
-
-*Fontes:* [**DORA**](https://sfdora.org)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
 ### **Metrics Toolkit**
-
-<br>
 
 <iframe src="http://www.metrics-toolkit.org/metrics/" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
@@ -105,8 +120,6 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 ### **Altmetric**
 
-<br>
-
 <iframe src="https://www.altmetric.com" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
 <br>
@@ -120,8 +133,6 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <br>
 
 ### **Dimensions**
-
-<br>
 
 <iframe src="https://www.dimensions.ai" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
@@ -137,8 +148,6 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 ### **PlumX**
 
-<br>
-
 <iframe src="https://plu.mx" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
 <br>
@@ -152,8 +161,6 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <br>
 
 ### **CitesScore**
-
-<br>
 
 <iframe src="https://www.scopus.com/sources" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
@@ -169,8 +176,6 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 ### **Scientific Journal Rankings**
 
-<br>
-
 <iframe src="https://www.scimagojr.com" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
 <br>
@@ -185,8 +190,6 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 ### **Qualis Periódicos**
 
-<br>
-
 <iframe src="https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
 <br>
@@ -199,7 +202,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Comissão Nacional de Ética em Pesquisa** {#conep .tabset}
+## **Sistema CEP/CONEP** {#conep .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">

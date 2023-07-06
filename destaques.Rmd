@@ -123,12 +123,10 @@ for (j in 1:length(abas)) {
 
 <br>
 
-## **Produções de destaque (top-20)** {#produtos-destaque}
+## **Produções em destaque: visibilidade** {#destaque-visibilidade .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
-
-### **Atenção e visibilidade** {.tabset}
 
 ```{r destaque-visibilidade, eval = any(has.producao.sucupira, has.producao.ppg)}
 # sources
@@ -212,7 +210,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-### **Prestígio do periódico**
+## **Produções em destaque: Prestígio** {#destaque-prestigio .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r destaque-prestigio, eval = any(has.producao.sucupira, has.producao.ppg)}
 doi_all_sorted <- doi_all[!is.na(doi_all$CiteScore), ]
@@ -535,8 +536,6 @@ for (id in 1:length(orcids)) {
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
-
-<br>
 
 ### **Blog institucional** {.tabset}
 

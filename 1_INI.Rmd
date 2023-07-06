@@ -258,6 +258,13 @@ has.laboratorios <-
   )
 ```
 
+```{r try-metodologia, results = "hide"}
+has.metodologia <-
+  !is.error(try(readxl::read_excel("PPG/Metodologia.xlsx", sheet = 1),
+                silent = TRUE)
+  )
+```
+
 ```{r try-notas, results = "hide"}
 has.notas <-
   !is.error(try(readxl::read_excel("PPG/Notas.xlsx", sheet = 1),
@@ -1180,6 +1187,7 @@ has.historico
 has.infraestrutura
 has.internacionalizacao
 has.laboratorios
+has.metodologia
 has.notas
 has.periodicos
 has.premios
