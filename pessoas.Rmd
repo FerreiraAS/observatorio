@@ -2632,7 +2632,7 @@ for (i in 1:dim(docentes)[1]) {
       paste0(
         '<iframe src="https://dgp.cnpq.br/dgp/espelhorh/',
         gsub("http://lattes.cnpq.br/", "", docentes$`Número do currículo Lattes`[i]),
-        ' style=\"width:100%; height:600px; border:2px solid black;"></iframe>'
+        '\" style=\"width:100%; height:600px; border:2px solid black;"></iframe>'
       )
     )
   } else {

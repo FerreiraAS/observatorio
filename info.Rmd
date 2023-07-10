@@ -50,6 +50,20 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+### **EQUATOR Network** {#diretrizes .tabset}
+
+<iframe src="https://www.equator-network.org/" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**EQUATOR**](https://www.equator-network.org/)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
 ### **DORA**
 
 <iframe src="https://sfdora.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
