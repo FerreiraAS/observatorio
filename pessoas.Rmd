@@ -2595,6 +2595,64 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
+### **Diretório de grupos de pesquisa** {#dgp-cnpq .tabset}
+
+```{r dgp-cnpq, eval = has.sucupira.files}
+# projetos - membros
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# most recent Sucupira year
+most.recent <-
+  as.character(ifelse(!is.null(sucupira.list[[format(Sys.Date(), "%Y")]]), format(Sys.Date(), "%Y"), max(as.numeric(
+    names(sucupira.list)
+  ))))
+
+# read separate sheets
+docentes.raw <- sucupira.list[[most.recent]]
+docentes <-
+  docentes.raw[is.na(docentes.raw$`Data de Desligamento`),]
+
+# remove duplicates between docs and postdocs
+docentes <- docentes[!duplicated(docentes$`Nome Docente`),]
+
+ids <- seq(1:dim(docentes)[1])
+docentes <- docentes[order(docentes$`Nome Docente`), ]
+
+for (i in 1:dim(docentes)[1]) {
+  cat('\n\n<!-- -->\n\n')
+#  cat("### **", paste(docentes$`Nome Docente`[i], sep = ""), "**", "\n", sep = "")
+  cat("#### **", as.character(i), "**", "\n", sep = "")
+  cat('<center>\n')
+  if (!is.na(docentes$`Número do currículo Lattes`[i])) {
+    cat(
+      paste0(
+        '<iframe src="https://dgp.cnpq.br/dgp/espelhorh/',
+        gsub("http://lattes.cnpq.br/", "", docentes$`Número do currículo Lattes`[i]),
+        ' style=\"width:100%; height:600px; border:2px solid black;"></iframe>'
+      )
+    )
+  } else {
+    cat("<br>No data available<br>")
+  }
+  cat('\n</center>')
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('*Fontes:* [**Diretório dos Grupos de Pesquisa no Brasil**](https://dgp.cnpq.br/dgp/espelhorh/', docentes$`Número do currículo Lattes`[i]),')')
+  cat('\n\n<!-- -->\n\n')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+
+cat('\n\n')
+cat('*Fontes:* [**Diretório dos Grupos de Pesquisa no Brasil**](https://lattes.cnpq.br/web/dgp)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
 ## **Participantes externos** {#participantes-externos .tabset}
 
 <!--script for generating HORIZONTAL LINE-->

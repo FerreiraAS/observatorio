@@ -263,6 +263,10 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
+cat('<br>')
+```
+
 ```{r artigos-completos, eval = any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
 # bind sources
 doi_with_altmetric <- doi_with_altmetric_artigos
@@ -344,6 +348,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = any(has.artigos.resumos.ppg, has.artigos.resumos.sucupira)}
+cat('<br>')
+```
 
 ```{r artigos-resumos, eval = any(has.artigos.resumos.ppg, has.artigos.resumos.sucupira)}
 # bind sources
@@ -427,6 +435,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = has.preprints.ppg}
+cat('<br>')
+```
+
 ```{r preprints, eval = has.preprints.ppg}
 # bind sources
 doi_with_altmetric <- doi_with_altmetric_preprints
@@ -508,6 +520,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = has.livros.ppg}
+cat('<br>')
+```
 
 ```{r livros, eval = has.livros.ppg}
 # bind sources
@@ -591,6 +607,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = has.capitulos.ppg}
+cat('<br>')
+```
+
 ```{r livros-capitulos, eval = has.capitulos.ppg}
 # bind sources
 doi_with_altmetric <- doi_with_altmetric_capitulos
@@ -672,6 +692,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = has.anais.ppg}
+cat('<br>')
+```
 
 ```{r resumos-anais, eval = has.anais.ppg}
 # bind sources
@@ -755,7 +779,11 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r softwares, eval = has.softwares}
+```{r, eval = has.softwares.ppg}
+cat('<br>')
+```
+
+```{r softwares, eval = has.softwares.ppg}
 # initialize all sheets
 abas <- excel_sheets("PPG/Softwares.xlsx")
 

@@ -312,7 +312,7 @@ has.repositorios.cooperacao <-
 ```
 
 ```{r try-softwares, results = "hide"}
-has.softwares <-
+has.softwares.ppg <-
   !is.error(try(readxl::read_excel("PPG/Softwares.xlsx", sheet = 1),
                 silent = TRUE)
   )
@@ -1195,7 +1195,7 @@ has.premio.capes
 has.producao
 has.repositorios.cooperacao
 has.repositorios.sede
-has.softwares
+has.softwares.ppg
 
 # data sucupira
 has.artigos.completos.sucupira
