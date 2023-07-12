@@ -96,7 +96,9 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
+```{r, eval = !has.coordenacao}
+cat('<br>')
+```
 
 ```{r coordenadores, eval = has.coordenacao}
 coordenadores <-
@@ -142,6 +144,8 @@ colnames(table.2) <-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.2, title = "Coordenação")
 
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
@@ -249,6 +253,11 @@ if(has.2024.2021) {
     sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]),]
   docentes <- docentes[order(docentes$"Nome Docente"), ]
 }
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
 ```{r docentes-2024-2021-tabela, eval = has.2024.2021}
@@ -437,6 +446,11 @@ if(has.2020.2017) {
     sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]),]
   docentes <- docentes[order(docentes$"Nome Docente"), ]
 }
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
 ```{r docentes-2020-tabela, eval = has.2020.2017}
@@ -625,6 +639,11 @@ if(has.2016.2013) {
     sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]),]
   docentes <- docentes[order(docentes$"Nome Docente"), ]
 }
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
 ```{r docentes-2016-tabela, eval = has.2016.2013}
@@ -813,6 +832,11 @@ if(has.2012.2010) {
     sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]),]
   docentes <- docentes[order(docentes$"Nome Docente"), ]
 }
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
 ```{r docentes-2012-tabela, eval = has.2012.2010}
@@ -1062,6 +1086,8 @@ if (dim(docentes)[1] == 0) {
   cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2024-2021")))
   
   cat('\n\n')
+  cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+  cat('\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
@@ -1162,6 +1188,8 @@ if (dim(docentes)[1] == 0) {
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2020-2017")))
 
+  cat('\n\n')
+  cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
   cat('\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
@@ -1264,6 +1292,8 @@ if (dim(docentes)[1] == 0) {
   cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2016-2013")))
   
   cat('\n\n')
+  cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+  cat('\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
@@ -1364,6 +1394,8 @@ if (dim(docentes)[1] == 0) {
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2012-2010")))
   
+  cat('\n\n')
+  cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
   cat('\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
@@ -1600,7 +1632,7 @@ if (dim(discentes)[1] != 0) {
   ids <-
     order(discentes$'Tempo em curso',
           discentes$'Nome Discente',
-          decreasing = FALSE)
+          decreasing = c(FALSE, FALSE))
   table <- discentes[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Datas e Prazos - Doutorado") %>%
@@ -1712,7 +1744,7 @@ if (dim(discentes)[1] != 0) {
   ids <-
     order(discentes$'Tempo em curso',
           discentes$'Nome Discente',
-          decreasing = FALSE)
+          decreasing = c(FALSE, FALSE))
   table <- discentes[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Datas e Prazos - Mestrado") %>%
@@ -1825,7 +1857,7 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  ids <- order(egressos$'Data Situação', decreasing = TRUE)
+  ids <- order(egressos$'Data Situação', egressos$'Nome Discente', decreasing = c(TRUE, FALSE))
   table <- egressos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Egressos - Doutorado")
@@ -1889,7 +1921,7 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  ids <- order(egressos$'Data Situação', decreasing = TRUE)
+  ids <- order(egressos$'Data Situação', egressos$'Nome Discente', decreasing = c(TRUE, FALSE))
   table <- egressos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Egressos - Doutorado")
@@ -1955,7 +1987,7 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  ids <- order(egressos$'Data Situação', decreasing = TRUE)
+  ids <- order(egressos$'Data Situação', egressos$'Nome Discente', decreasing = c(TRUE, FALSE))
   table <- egressos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Egressos - Doutorado")
@@ -2019,7 +2051,7 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  ids <- order(egressos$'Data Situação', decreasing = TRUE)
+  ids <- order(egressos$'Data Situação', egressos$'Nome Discente', decreasing = c(TRUE, FALSE))
   table <- egressos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Egressos - Doutorado")
@@ -2085,7 +2117,7 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  ids <- order(egressos$'Data Situação', decreasing = TRUE)
+  ids <- order(egressos$'Data Situação', egressos$'Nome Discente', decreasing = c(TRUE, FALSE))
   table <- egressos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Egressos - Doutorado")
@@ -2149,7 +2181,7 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  ids <- order(egressos$'Data Situação', decreasing = TRUE)
+  ids <- order(egressos$'Data Situação', egressos$'Nome Discente', decreasing = c(TRUE, FALSE))
   table <- egressos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Egressos - Doutorado")
@@ -2215,7 +2247,7 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  ids <- order(egressos$'Data Situação', decreasing = TRUE)
+  ids <- order(egressos$'Data Situação', egressos$'Nome Discente', decreasing = c(TRUE, FALSE))
   table <- egressos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Egressos - Doutorado")
@@ -2279,7 +2311,7 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  ids <- order(egressos$'Data Situação', decreasing = TRUE)
+  ids <- order(egressos$'Data Situação', egressos$'Nome Discente', decreasing = c(TRUE, FALSE))
   table <- egressos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Egressos - Doutorado")
@@ -2432,7 +2464,7 @@ bolsistas <- unique(bolsistas)
 bolsistas <- bolsistas[complete.cases(bolsistas), ]
   
 if (dim(bolsistas)[1] != 0) {
-  ids <- order(bolsistas$'Matrícula', decreasing = TRUE)
+  ids <- order(bolsistas$'Matrícula', bolsistas$'Nome do Autor', decreasing = c(TRUE, FALSE))
   table <- bolsistas[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Bolsistas - Doutorado")
@@ -2484,7 +2516,7 @@ bolsistas <- unique(bolsistas)
 bolsistas <- bolsistas[complete.cases(bolsistas), ]
   
 if (dim(bolsistas)[1] != 0) {
-  ids <- order(bolsistas$'Matrícula', decreasing = TRUE)
+  ids <- order(bolsistas$'Matrícula', bolsistas$'Nome do Autor', decreasing = c(TRUE, FALSE))
   table <- bolsistas[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Bolsistas - Mestrado")
@@ -2697,7 +2729,7 @@ if (dim(externos)[1] != 0) {
 }
 
 cat('\n\n')
-cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
@@ -2744,7 +2776,7 @@ if (dim(externos)[1] != 0) {
 }
 
 cat('\n\n')
-cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
@@ -2783,7 +2815,7 @@ if (dim(externos)[1] != 0) {
 }
 
 cat('\n\n')
-cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
