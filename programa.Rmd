@@ -162,7 +162,8 @@ area.raw <-
   readxl::read_excel("PPG/Dados Cadastrais.xlsx",
                      sheet = "AC",
                      col_types = c("text"))
-area.ativas$Fim <- NULL
+area.raw$Fim <- NULL
+area.ativas <- area.raw
 
 # print tables
 ids <- order(area.ativas$'Área de Concentração', decreasing = FALSE)
