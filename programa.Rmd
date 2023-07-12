@@ -192,7 +192,7 @@ areas.inativas <-
   areas.inativas[order(areas.inativas$Fim, decreasing = TRUE),]
 
 # print tables
-ids <- order(area.ativas$'Área de Concentração', decreasing = FALSE)
+ids <- order(areas.inativas$'Área de Concentração', decreasing = FALSE)
 areas.inativas <- areas.inativas[ids, ]
 
 # print tables
