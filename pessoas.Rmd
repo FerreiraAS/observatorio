@@ -182,7 +182,6 @@ docentes <- docentes[order(docentes$`Nome Docente`), ]
 
 for (i in 1:dim(docentes)[1]) {
   cat('\n\n<!-- -->\n\n')
-#  cat("### **", paste(docentes$`Nome Docente`[i], sep = ""), "**", "\n", sep = "")
   cat("#### **", as.character(i), "**", "\n", sep = "")
   cat('<center>\n')
   if (!is.na(docentes$`Número do currículo Lattes`[i])) {
@@ -2572,7 +2571,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-### **Grupos de pesquisa externos** {#grupos-externos .tabset}
+### **Grupos externos** {#grupos-externos .tabset}
 
 ```{r grupos-de-pesquisa-externos, eval = has.grupos.pesquisa}
 grupos.raw <-
@@ -2595,7 +2594,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-### **Diretório de grupos de pesquisa** {#dgp-cnpq .tabset}
+### **Diretório CNPq** {#dgp-cnpq .tabset}
 
 ```{r dgp-cnpq, eval = has.sucupira.files}
 # projetos - membros

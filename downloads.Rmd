@@ -50,6 +50,10 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = !has.downloads}
+cat('<br>')
+```
+
 ```{r downloads, eval = has.downloads}
 # initialize all sheets
 abas <- readxl::excel_sheets("PPG/Downloads.xlsx")
@@ -59,20 +63,20 @@ for (j in 1:length(abas)) {
   cat('\n\n<!-- -->\n\n')
   cat(paste0('### **', abas[j], '**'))
   cat('\n\n<!-- -->\n\n')
-  downloads.raw <-
+  donwloads.raw <-
     readxl::read_excel("PPG/Downloads.xlsx",
                        sheet = abas[j],
                        col_types = c("text"))
   
   # replace the link by a tag
-  Abrir <- matrix(NA, nrow = dim(downloads.raw)[1])
+  Abrir <- matrix(NA, nrow = dim(donwloads.raw)[1])
   colnames(Abrir) <- "Abrir"
   # add hyperlinks
-  for (i in 1:dim(downloads.raw)[1]) {
-    if (!is.na(downloads.raw[i, 3])) {
+  for (i in 1:dim(donwloads.raw)[1]) {
+    if (!is.na(donwloads.raw[i, 3])) {
       Abrir[i] <-
         paste0('<a href="',
-               downloads.raw[i, 3],
+               donwloads.raw[i, 3],
                '" target="_blank"',
                '>',
                "↗️" ,
@@ -80,18 +84,18 @@ for (j in 1:length(abas)) {
                sep = "")
     }
   }
-  downloads <- cbind(downloads.raw[, -3], Abrir)
-
+  donwloads <- cbind(donwloads.raw[, -3], Abrir)
+  
   # print table
-  print(
-    kable(downloads, align = "l", col.names = NULL, escape = FALSE) %>% kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
+  if (dim(donwloads)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    cat(knitr::knit_print(create_dt(donwloads, title = "Downloads")))
+  } else {
+    cat("*Sem dados para exibir*")
+  }
   
   # print end of tab rows
+  cat('\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```

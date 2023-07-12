@@ -138,20 +138,10 @@ for(i in 1:dim(area.capes)[1]){
 }
 area.capes <- cbind(area.capes[,-2], Abrir)
 
-if (dim(area.capes)[1] != 0) {
-  # print tables
-  print(
-    kable(area.capes, align = c("l", rep(
-      "c", ncol(area.capes) - 2
-    ), "r"), escape = FALSE) %>% kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
-} else {
-  cat("*Sem dados para exibir*")
-}
+# print tables
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(area.capes, title = "Áreas de Concentração")
+
 cat('\n\n')
 cat('*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br)')
 cat('\n\n')
@@ -172,15 +162,15 @@ area.raw <-
   readxl::read_excel("PPG/Dados Cadastrais.xlsx",
                      sheet = "AC",
                      col_types = c("text"))
-area.raw$Fim <- NULL
+area.ativas$Fim <- NULL
 
 # print tables
-ids <- order(area.raw$'Área de Concentração', decreasing = TRUE)
-table <- area.raw[ids, ]
+ids <- order(area.ativas$'Área de Concentração', decreasing = FALSE)
+area.ativas <- area.ativas[ids, ]
 
 # print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table, title = "Áreas de Concentração")
+create_dt(area.ativas, title = "Áreas de Concentração")
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -202,19 +192,12 @@ areas.inativas <-
   areas.inativas[order(areas.inativas$Fim, decreasing = TRUE),]
 
 # print tables
-if (dim(areas.inativas)[1] != 0) {
-  print(
-    kable(areas.inativas, align = c("l", rep(
-      "c", ncol(areas.inativas) - 2
-    ), "r")) %>% kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
-} else {
-  cat("*Sem dados para exibir*")
-}
+ids <- order(area.ativas$'Área de Concentração', decreasing = FALSE)
+areas.inativas <- areas.inativas[ids, ]
+
+# print tables
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(areas.inativas, title = "Áreas de Concentração (inativas)")
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -240,12 +223,12 @@ linhas.atual <- linhas.raw[is.na(linhas.raw$Fim),]
 linhas.atual$Fim <- NULL
 
 # print tables
-ids <- order(linhas.atual$'Linhas de Pesquisa', decreasing = TRUE)
-table <- linhas.atual[ids, ]
+ids <- order(linhas.atual$'Linhas de Pesquisa', decreasing = FALSE)
+linhas.atual <- linhas.atual[ids, ]
 
 # print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table, title = "Linhas de Pesquisa")
+create_dt(linhas.atual, title = "Linhas de Pesquisa")
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -267,19 +250,12 @@ linhas.inativas <-
   linhas.inativas[order(linhas.inativas$Fim, decreasing = TRUE),]
 
 # print tables
-if (dim(linhas.inativas)[1] != 0) {
-  print(
-    kable(linhas.inativas, align = c("l", rep(
-      "c", ncol(linhas.inativas) - 2
-    ), "r")) %>% kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
-} else {
-  cat("*Sem dados para exibir*")
-}
+ids <- order(linhas.inativas$'Linhas de Pesquisa', decreasing = FALSE)
+linhas.inativas <- linhas.inativas[ids, ]
+
+# print tables
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(linhas.inativas, title = "Linhas de Pesquisa (inativas)")
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -1255,7 +1231,9 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
+```{r, eval = !has.agendas.pesquisa}
+cat('<br>')
+```
 
 ```{r agendas-pesquisa, eval = has.agendas.pesquisa}
 # initialize all sheets
@@ -1621,7 +1599,9 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
+```{r, eval = !has.bolsas}
+cat('<br>')
+```
 
 ```{r bolsas, eval = has.bolsas}
 # initialize all sheets
@@ -1653,12 +1633,12 @@ for (j in 1:length(abas)) {
                sep = "")
     }
   }
-  bolsas <- cbind(bolsas.raw[, -3], Abrir)
+  bolsas.raw <- cbind(bolsas.raw[, -3], Abrir)
   
   # print table
-  if (dim(bolsas)[1] != 0) {
+  if (dim(bolsas.raw)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(bolsas, title = "Bolsas de estudo")))
+    cat(knitr::knit_print(create_dt(bolsas.raw, title = "Bolsas de estudo")))
   } else {
     cat("*Sem dados para exibir*")
   }
@@ -2281,7 +2261,7 @@ colnames(table) <-
     "CH (DA)"
   )
 
-ids <- order(table$'Disciplina', decreasing = TRUE)
+ids <- order(table$'Disciplina', decreasing = FALSE)
 table <- table[ids,]
 
 # print tables
@@ -2323,6 +2303,9 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ```{r bibliografia, eval = has.bibliografia}
 # read separate sheets
 bibliografia.raw <- readxl::read_excel("PPG/Bibliografia.xlsx", sheet = "Bibliografia", col_types = c("text"))
+
+ids <- order(bibliografia.raw$'Disciplina', decreasing = FALSE)
+bibliografia.raw <- bibliografia.raw[ids,]
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(bibliografia.raw, title = "Bibliografia")
@@ -2418,7 +2401,7 @@ colnames(table) <-
     "Fim"
   )
 
-ids <- order(table$'Disciplina', decreasing = TRUE)
+ids <- order(table$'Disciplina', decreasing = FALSE)
 table <- table[ids, ]
 
 # print tables
@@ -2791,60 +2774,57 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Sede**
-
-```{r calendarios-sede, eval = has.calendarios}
-# read separate sheets
-turmas.raw <-
-  readxl::read_excel("PPG/Calendários.xlsx",
-                     sheet = "Sede",
-                     col_types = c("text"))
-Abrir <- matrix(NA, nrow = dim(turmas.raw)[1])
-colnames(Abrir) <- "Abrir"
-# add hyperlinks
-for(i in 1:dim(turmas.raw)[1]){
-  if(!is.na(turmas.raw[i,3])){
-    Abrir[i] <- paste0('<a href="', turmas.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>", sep = "")
-  }
-}
-
-turmas <- cbind(turmas.raw[,-3], Abrir)
-turmas <- turmas[order(turmas$Publicação, decreasing = TRUE), ]
-
-# print table
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(turmas, title = "Calendários - Sede")
-
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```{r, eval = !has.calendarios}
+cat('<br>')
 ```
 
-<br>
+```{r calendarios, eval = has.calendarios}
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Calendários.xlsx")
 
-### **Cooperação interinstitucional**
-
-```{r calendarios-cooperacao, eval = has.calendarios}
-# read separate sheets
-turmas.raw <- readxl::read_excel("PPG/Calendários.xlsx", sheet = "Cooperação Interinstitucional", col_types = c("text"))
-
-Abrir <- matrix(NA, nrow = dim(turmas.raw)[1])
-colnames(Abrir) <- "Abrir"
-# add hyperlinks
-for(i in 1:dim(turmas.raw)[1]){
-  if(!is.na(turmas.raw[i,3])){
-    Abrir[i] <- paste0('<a href="', turmas.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>", sep = "")
+# display each sheet in a tab
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('### **', abas[j], '**'))
+  cat('\n\n<!-- -->\n\n')
+  calendarios.raw <-
+    readxl::read_excel("PPG/Calendários.xlsx",
+                       sheet = abas[j],
+                       col_types = c("text"))
+  
+  # replace the link by a tag
+  Abrir <- matrix(NA, nrow = dim(calendarios.raw)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(calendarios.raw)[1]) {
+    if (!is.na(calendarios.raw[i, 3])) {
+      Abrir[i] <-
+        paste0('<a href="',
+               calendarios.raw[i, 3],
+               '" target="_blank"',
+               '>',
+               "↗️" ,
+               "</a>",
+               sep = "")
+    }
   }
+  calendarios <- cbind(calendarios.raw[, -3], Abrir)
+  
+  ids <- order(calendarios[, 1], decreasing = TRUE)
+  calendarios <- calendarios[ids,]
+
+  # print table
+  if (dim(calendarios)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    cat(knitr::knit_print(create_dt(calendarios, title = "Calendários")))
+  } else {
+    cat("*Sem dados para exibir*")
+  }
+  
+  # print end of tab rows
+  cat('\n\n')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
-
-turmas <- cbind(turmas.raw[,-3], Abrir)
-turmas <- turmas[order(turmas$Publicação, decreasing = TRUE), ]
-
-# print table
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(turmas, title = "Calendários - Cooperação Interinstitucional")
-
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
 <br>
@@ -2854,58 +2834,57 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Sede**
-
-```{r editais-sede, eval = has.calendarios}
-# read separate sheets
-editais.raw <- readxl::read_excel("PPG/Editais.xlsx", sheet = "Sede", col_types = c("text"))
-
-Abrir <- matrix(NA, nrow = dim(editais.raw)[1])
-colnames(Abrir) <- "Abrir"
-# add hyperlinks
-for(i in 1:dim(editais.raw)[1]){
-  if(!is.na(editais.raw[i,3])){
-    Abrir[i] <- paste0('<a href="', editais.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>", sep = "")
-  }
-}
-
-editais <- cbind(editais.raw[,-3], Abrir)
-editais <- editais[order(editais$Publicação, decreasing = TRUE), ]
-
-# print table
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(editais, title = "Editais - Sede")
-
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```{r, eval = !has.calendarios}
+cat('<br>')
 ```
 
-<br>
+```{r editais, eval = has.calendarios}
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Editais.xlsx")
 
-### **Cooperação Interinstitucional**
-
-```{r editais-cooperacao, eval = has.calendarios}
-# read separate sheets
-editais.raw <- readxl::read_excel("PPG/Editais.xlsx", sheet = "Cooperação Interinstitucional", col_types = c("text"))
-
-Abrir <- matrix(NA, nrow = dim(editais.raw)[1])
-colnames(Abrir) <- "Abrir"
-# add hyperlinks
-for(i in 1:dim(editais.raw)[1]){
-  if(!is.na(editais.raw[i,3])){
-    Abrir[i] <- paste0('<a href="', editais.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>", sep = "")
+# display each sheet in a tab
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('### **', abas[j], '**'))
+  cat('\n\n<!-- -->\n\n')
+  editais.raw <-
+    readxl::read_excel("PPG/Editais.xlsx",
+                       sheet = abas[j],
+                       col_types = c("text"))
+  
+  # replace the link by a tag
+  Abrir <- matrix(NA, nrow = dim(editais.raw)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(editais.raw)[1]) {
+    if (!is.na(editais.raw[i, 3])) {
+      Abrir[i] <-
+        paste0('<a href="',
+               editais.raw[i, 3],
+               '" target="_blank"',
+               '>',
+               "↗️" ,
+               "</a>",
+               sep = "")
+    }
   }
+  editais <- cbind(editais.raw[, -3], Abrir)
+  
+  ids <- order(editais[, 1], decreasing = TRUE)
+  editais <- editais[ids,]
+
+  # print table
+  if (dim(editais)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    cat(knitr::knit_print(create_dt(editais, title = "Editais")))
+  } else {
+    cat("*Sem dados para exibir*")
+  }
+  
+  # print end of tab rows
+  cat('\n\n')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
-
-editais <- cbind(editais.raw[,-3], Abrir)
-editais <- editais[order(editais$Publicação, decreasing = TRUE), ]
-
-# print table
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(editais, title = "Editais - Cooperação Interinstitucional")
-
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
 <br>
@@ -2997,7 +2976,9 @@ for (i in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
+```{r, eval = !has.convenios}
+cat('<br>')
+```
 
 ```{r programa-convenios, eval = has.convenios}
 # initialize all sheets
@@ -3051,7 +3032,9 @@ for (j in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
+```{r, eval = !has.convenios}
+cat('<br>')
+```
 
 ```{r programa-cooperacao, eval = has.cooperacoes}
 # initialize all sheets
@@ -3107,7 +3090,9 @@ for (j in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
+```{r, eval = !has.internacionalizacao}
+cat('<br>')
+```
 
 ```{r internacional, eval = has.internacionalizacao}
 # initialize all sheets
