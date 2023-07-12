@@ -1630,9 +1630,9 @@ discentes <- discentes[complete.cases(discentes), ]
 
 if (dim(discentes)[1] != 0) {
   ids <-
-    order(as.character(discentes$'Tempo em curso'),
+    order(discentes$'Tempo em curso',
           discentes$'Nome Discente',
-          decreasing = c(FALSE, FALSE), method = "radix")
+          decreasing = FALSE)
   table <- discentes[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Datas e Prazos - Doutorado") %>%
@@ -1742,9 +1742,9 @@ discentes <- discentes[complete.cases(discentes), ]
 
 if (dim(discentes)[1] != 0) {
   ids <-
-    order(as.character(discentes$'Tempo em curso'),
+    order(discentes$'Tempo em curso',
           discentes$'Nome Discente',
-          decreasing = c(FALSE, FALSE), method = "radix")
+          decreasing = FALSE)
   table <- discentes[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Datas e Prazos - Mestrado") %>%
@@ -1857,11 +1857,10 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  ids <-
-    order(as.character(egressos$'Data Situação'),
-          egressos$'Nome Discente',
-          decreasing = c(TRUE, FALSE), method = "radix")
-  table <- egressos[ids,]
+  table <- egressos %>% dplyr::arrange(
+    desc(egressos$'Data Situação'),
+    egressos$'Nome Discente'
+    )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Egressos - Doutorado")
 } else {
@@ -1924,13 +1923,12 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  ids <-
-    order(as.character(egressos$'Data Situação'),
-          egressos$'Nome Discente',
-          decreasing = c(TRUE, FALSE), method = "radix")
-  table <- egressos[ids,]
+  table <- egressos %>% dplyr::arrange(
+    desc(egressos$'Data Situação'),
+    egressos$'Nome Discente'
+    )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos - Doutorado")
+  create_dt(table, title = "Egressos - Mestrado")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1993,11 +1991,10 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  ids <-
-    order(as.character(egressos$'Data Situação'),
-          egressos$'Nome Discente',
-          decreasing = c(TRUE, FALSE), method = "radix")
-  table <- egressos[ids,]
+  table <- egressos %>% dplyr::arrange(
+    desc(egressos$'Data Situação'),
+    egressos$'Nome Discente'
+    )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Egressos - Doutorado")
 } else {
@@ -2060,13 +2057,12 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  ids <-
-    order(as.character(egressos$'Data Situação'),
-          egressos$'Nome Discente',
-          decreasing = c(TRUE, FALSE), method = "radix")
-  table <- egressos[ids,]
+  table <- egressos %>% dplyr::arrange(
+    desc(egressos$'Data Situação'),
+    egressos$'Nome Discente'
+    )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos - Doutorado")
+  create_dt(table, title = "Egressos - Mestrado")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -2129,11 +2125,10 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  ids <-
-    order(as.character(egressos$'Data Situação'),
-          egressos$'Nome Discente',
-          decreasing = c(TRUE, FALSE), method = "radix")
-  table <- egressos[ids,]
+  table <- egressos %>% dplyr::arrange(
+    desc(egressos$'Data Situação'),
+    egressos$'Nome Discente'
+    )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Egressos - Doutorado")
 } else {
@@ -2196,13 +2191,12 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  ids <-
-    order(as.character(egressos$'Data Situação'),
-          egressos$'Nome Discente',
-          decreasing = c(TRUE, FALSE), method = "radix")
-  table <- egressos[ids,]
+  table <- egressos %>% dplyr::arrange(
+    desc(egressos$'Data Situação'),
+    egressos$'Nome Discente'
+    )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos - Doutorado")
+  create_dt(table, title = "Egressos - Mestrado")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -2265,11 +2259,10 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  ids <-
-    order(as.character(egressos$'Data Situação'),
-          egressos$'Nome Discente',
-          decreasing = c(TRUE, FALSE), method = "radix")
-  table <- egressos[ids,]
+  table <- egressos %>% dplyr::arrange(
+    desc(egressos$'Data Situação'),
+    egressos$'Nome Discente'
+    )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Egressos - Doutorado")
 } else {
@@ -2332,13 +2325,12 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  ids <-
-    order(as.character(egressos$'Data Situação'),
-          egressos$'Nome Discente',
-          decreasing = c(TRUE, FALSE), method = "radix")
-  table <- egressos[ids,]
+  table <- egressos %>% dplyr::arrange(
+    desc(egressos$'Data Situação'),
+    egressos$'Nome Discente'
+    )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos - Doutorado")
+  create_dt(table, title = "Egressos - Mestrado")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -2488,11 +2480,10 @@ bolsistas <- unique(bolsistas)
 bolsistas <- bolsistas[complete.cases(bolsistas), ]
   
 if (dim(bolsistas)[1] != 0) {
-  ids <-
-    order(as.character(bolsistas$'Matrícula'),
-          bolsistas$'Nome do Autor',
-          decreasing = c(TRUE, FALSE), method = "radix")
-  table <- bolsistas[ids,]
+  table <- bolsistas %>% dplyr::arrange(
+    desc(egressos$'Matrícula'),
+    egressos$'Nome do Autor'
+    )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Bolsistas - Doutorado")
 } else {
@@ -2543,11 +2534,10 @@ bolsistas <- unique(bolsistas)
 bolsistas <- bolsistas[complete.cases(bolsistas), ]
   
 if (dim(bolsistas)[1] != 0) {
-  ids <-
-    order(as.character(bolsistas$'Matrícula'),
-          bolsistas$'Nome do Autor',
-          decreasing = c(TRUE, FALSE), method = "radix")
-  table <- bolsistas[ids,]
+  table <- bolsistas %>% dplyr::arrange(
+    desc(egressos$'Matrícula'),
+    egressos$'Nome do Autor'
+    )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Bolsistas - Mestrado")
 } else {
