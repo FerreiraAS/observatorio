@@ -104,9 +104,14 @@ if (dim(tccs)[1] != 0) {
   
   colnames(table.tcc) <-
     c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador")
-} else
-  (table.tcc <- data.frame())
+} else {
+  table.tcc <- data.frame()
+}
 
+table.tcc <- table.tcc %>% dplyr::arrange(
+  table.tcc$'Ano',
+  table.tcc$'Autor'
+)
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.tcc, title = "Teses")
@@ -169,9 +174,14 @@ if (dim(tccs)[1] != 0) {
   
   colnames(table.tcc) <-
     c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador")
-} else
-  (table.tcc <- data.frame())
+} else {
+  table.tcc <- data.frame()
+}
 
+table.tcc <- table.tcc %>% dplyr::arrange(
+  table.tcc$'Ano',
+  table.tcc$'Autor'
+)
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.tcc, title = "Dissertações")
@@ -195,7 +205,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 # read separate sheets
 repositorio <- readxl::read_excel("PPG/Repositórios.xlsx", sheet = "Sede")
 
-cat(paste('##### **', repositorio[1,2], '**', sep = ""))
+cat(paste('#### **', repositorio[1,2], '**', sep = ""))
 
 cat('\n\n')
 
@@ -211,7 +221,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 # read separate sheets
 repositorio <- readxl::read_excel("PPG/Repositórios.xlsx", sheet = "Sede")
 
-cat(paste('##### **', repositorio[2,2], '**', sep = ""))
+cat(paste('#### **', repositorio[2,2], '**', sep = ""))
 
 cat('\n\n')
 
