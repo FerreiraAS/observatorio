@@ -75,15 +75,15 @@ for (j in 1:length(abas)) {
                sep = "")
     }
   }
-  downloads <- cbind(downloads.raw[, -3], Abrir)
-  datasets[[j]] <- downloads
+  downloads.raw <- cbind(downloads.raw[, -3], Abrir)
+  datasets[[j]] <- downloads.raw
 }
 ```
 
-```{r create-markdown-chunks-dynamically, include = FALSE, eval = has.downloads}
-out = NULL
+```{r create-markdown-chunks-dynamically, eval = has.downloads}
+out <- NULL
 for (i in 1:length(abas)) {
-  knit_expanded <- paste0("\n```{r echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', include = TRUE, out.width = '100%', knitr.kable.NA = '--', knitr.table.format = 'html'}
+  knit_expanded <- paste0("\n```{r abas[", as.character(i), "]}
                           cat('\n\n<!-- -->\n\n')
                           cat(paste0('## **', abas[", as.character(i), "], '**'))
                           cat('\n\n<!-- -->\n\n')
@@ -94,15 +94,12 @@ for (i in 1:length(abas)) {
                           create_dt(datasets[[", as.character(i), "]], title = abas[", as.character(i), "])
                           \n\n
                           cat('<br><a style=\"float:right\" href=\"#top\"><b>Início &nbsp;</b>⬆️</a><br>')
-                          \n\n
-                          ```")
-  out = c(out, knit_expanded)
+                          \n\n```")
+  out <- c(out, knit_expanded)
 }
 ```
  
 <!--- knit those table chunk statements --> 
-```{r knit-expand, eval = has.downloads}
-paste(knit(text = out), collapse = '\n')
-```
+`r if(has.downloads){paste(knit(text = out), collapse = '\n')}`
 
 <br>
