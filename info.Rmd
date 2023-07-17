@@ -45,7 +45,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Iniciativas** {#iniciativas .tabset}
+## **Diretrizes** {#diretrizes .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -63,6 +63,25 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
+
+### **COPE** {#diretrizes .tabset}
+
+<iframe src="https://publicationethics.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**COPE**](https://publicationethics.org)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Iniciativas** {#iniciativas .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ### **DORA**
 
@@ -92,6 +111,25 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
+### **Leiden Manifesto**
+
+<iframe src="http://www.leidenmanifesto.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**Leiden Manifesto**](http://www.leidenmanifesto.org)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Autoria em publicações** {#autoria .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
 ### **CRediT**
 
 <iframe src="https://credit.niso.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
@@ -106,18 +144,13 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Repositórios externos** {#repositorios-externos .tabset}
+### **Think-Check-Submit**
 
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-### **Plataforma Sucupira**
-
-<iframe src="https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/trabalhoConclusao/listaTrabalhoConclusao.xhtml" style="width:100%; height:600px; border:2px solid black;"></iframe>
+<iframe src="https://thinkchecksubmit.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
 <br>
 
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/trabalhoConclusao/listaTrabalhoConclusao.xhtml)
+*Fontes:* [**Think-Check-Submit**](https://thinkchecksubmit.org)
 
 <br>
 
@@ -125,13 +158,32 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-### **Catálogo CAPES**
+## **Plagisrismo** {#plagiarismo .tabset}
 
-<iframe src="https://catalogodeteses.capes.gov.br/catalogo-teses" style="width:100%; height:600px; border:2px solid black;"></iframe>
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+### **CNPq**
+
+<iframe src="https://www.gov.br/cnpq/pt-br/composicao/comissao-de-integridade" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
 <br>
 
-*Fontes:* [**CAPES**](https://catalogodeteses.capes.gov.br/catalogo-teses)
+*Fontes:* [**CNPq**](https://www.gov.br/cnpq/pt-br/composicao/comissao-de-integridade)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **CAPES**
+
+<iframe src="https://www.capes.gov.br/images/stories/download/diversos/OrientacoesCapes_CombateAoPlagio.pdf" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**CAPES**](https://www.capes.gov.br/images/stories/download/diversos/OrientacoesCapes_CombateAoPlagio.pdf)
 
 <br>
 
@@ -254,6 +306,39 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <br>
 
 *Fontes:* [**CNS**](http://conselho.saude.gov.br/o-que-e-rss/92-comissoes/conep/normativas-conep/642-lista-de-resolucoes-conep)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Repositórios externos** {#repositorios-externos .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+### **Plataforma Sucupira**
+
+<iframe src="https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/trabalhoConclusao/listaTrabalhoConclusao.xhtml" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/trabalhoConclusao/listaTrabalhoConclusao.xhtml)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Catálogo CAPES**
+
+<iframe src="https://catalogodeteses.capes.gov.br/catalogo-teses" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**CAPES**](https://catalogodeteses.capes.gov.br/catalogo-teses)
 
 <br>
 
