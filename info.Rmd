@@ -45,12 +45,59 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Diretrizes** {#diretrizes .tabset}
+## **Portais de periódicos** {#portais .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **EQUATOR Network** {#diretrizes .tabset}
+### **Periódicos CAPES** {#periodicos-capes}
+
+<iframe src="https://www-periodicos-capes-gov-br.ezl.periodicos.capes.gov.br/index.php" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**Periódicos CAPES**](https://www-periodicos-capes-gov-br.ezl.periodicos.capes.gov.br/index.php)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **PubMed** {#pubmed}
+
+<iframe src="https://pubmed.ncbi.nlm.nih.gov" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**PubMed**](https://pubmed.ncbi.nlm.nih.gov)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **SciELO** {#scielo}
+
+<iframe src="https://scielo.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**SciELO**](https://scielo.org)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Diretrizes para redação científica** {#diretrizes .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+### **EQUATOR Network** {#equator}
 
 <iframe src="https://www.equator-network.org/" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
@@ -64,46 +111,18 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-### **COPE** {#diretrizes .tabset}
-
-<iframe src="https://publicationethics.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
-
-<br>
-
-*Fontes:* [**COPE**](https://publicationethics.org)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-## **Iniciativas** {#iniciativas .tabset}
+## **Registros de protocolos** {#registros .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **DORA**
+### **ClinicalTrials.gov** {#clinicaltrials-gov}
 
-<iframe src="https://sfdora.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
-
-<br>
-
-*Fontes:* [**DORA**](https://sfdora.org)
+<iframe src="https://clinicaltrials.gov" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
 <br>
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **FAIR**
-
-<iframe src="https://www.go-fair.org/go-fair-initiative/" style="width:100%; height:600px; border:2px solid black;"></iframe>
-
-<br>
-
-*Fontes:* [**FAIE**](https://www.go-fair.org/go-fair-initiative/)
+*Fontes:* [**ClinicalTrials.gov**](https://clinicaltrials.gov)
 
 <br>
 
@@ -111,46 +130,13 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-### **Leiden Manifesto**
+### **PROSPERO** {#prospero}
 
-<iframe src="http://www.leidenmanifesto.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
-
-<br>
-
-*Fontes:* [**Leiden Manifesto**](http://www.leidenmanifesto.org)
+<iframe src="https://www.crd.york.ac.uk/prospero/" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
 <br>
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-## **Autoria em publicações** {#autoria .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-### **CRediT**
-
-<iframe src="https://credit.niso.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
-
-<br>
-
-*Fontes:* [**CRT**](https://credit.niso.org)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Think-Check-Submit**
-
-<iframe src="https://thinkchecksubmit.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
-
-<br>
-
-*Fontes:* [**Think-Check-Submit**](https://thinkchecksubmit.org)
+*Fontes:* [**PROSPERO**](https://www.crd.york.ac.uk/prospero/)
 
 <br>
 
@@ -184,6 +170,138 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <br>
 
 *Fontes:* [**CAPES**](https://www.capes.gov.br/images/stories/download/diversos/OrientacoesCapes_CombateAoPlagio.pdf)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **COPE** {#cope}
+
+<iframe src="https://publicationethics.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**COPE**](https://publicationethics.org)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Compartilhamnto de dados** {#compartilhamento-dados .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+### **FAIR** {#fair}
+
+<iframe src="https://www.go-fair.org/go-fair-initiative/" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**FAIR**](https://www.go-fair.org/go-fair-initiative/)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Autoria em publicações** {#autoria .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+### **CRediT** {#credit}
+
+<iframe src="https://credit.niso.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**CRT**](https://credit.niso.org)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **COPE** {#cope}
+
+<iframe src="https://publicationethics.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**COPE**](https://publicationethics.org)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Práticas editoriais** {#praticas-editoriais .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+### **COPE** {#cope}
+
+<iframe src="https://publicationethics.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**COPE**](https://publicationethics.org)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Think-Check-Submit** {#think-check-submit}
+
+<iframe src="https://thinkchecksubmit.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**Think-Check-Submit**](https://thinkchecksubmit.org)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Avaliação de pesquisas** {#iniciativas .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+### **DORA** {#dora}
+
+<iframe src="https://sfdora.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**DORA**](https://sfdora.org)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Leiden Manifesto** {#leiden}
+
+<iframe src="http://www.leidenmanifesto.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**Leiden Manifesto**](http://www.leidenmanifesto.org)
 
 <br>
 
@@ -313,11 +431,6 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Repositórios externos** {#repositorios-externos .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
 ### **Plataforma Sucupira**
 
 <iframe src="https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/trabalhoConclusao/listaTrabalhoConclusao.xhtml" style="width:100%; height:600px; border:2px solid black;"></iframe>
@@ -331,6 +444,11 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
+
+## **Repositórios externos** {#repositorios-externos .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ### **Catálogo CAPES**
 
