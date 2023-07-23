@@ -70,7 +70,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r mtodologia, eval = has.metodologia}
+```{r metodologia, eval = has.metodologia}
 # initialize all sheets
 abas <- readxl::excel_sheets("PPG/Metodologia.xlsx")
 
@@ -510,7 +510,8 @@ table.1.1.1 <-
       "Projetos de pesquisa" ~ "continuous"),
     statistic = list(
       all_continuous() ~ c("{max}")),
-    missing = "no") %>%
+    missing = "no",
+    digits = list(everything() ~ 0)) %>%
   gtsummary::modify_header(
 #    label = "**Ano**",
     all_stat_cols() ~ "**{level}**") %>%
@@ -572,11 +573,19 @@ for (i in 1:length(anos)) {
 síntese.ano <- síntese.ano %>%
   dplyr::select(c(
     "Ano",
-    "Nível do Curso",
-    "Nome da Disciplina",
-    "Indicadora de disciplina obrigatória",
-    "Quantidade de créditos",
-    "Carga Horária"
+    "Níveis de curso",
+    "Mestrado",
+    "Doutorado",
+    "Disciplinas (M)",
+    "Disciplinas (D)",
+    "Disciplinas obrigatórias (M)",
+    "Disciplinas obrigatórias (D)",
+    "Disciplinas eletivas (M)",
+    "Disciplinas eletivas (D)",
+    "Créditos totais (M)",
+    "Créditos totais (D)",
+    "Carga horária total (M)",
+    "Carga horária total (D)"
     ))
 
 # generate table (total by year)
@@ -585,14 +594,24 @@ table.1.1.2 <-
     síntese.ano,
     by = "Ano",
     type = list(
-      "Nível do Curso" ~ "continuous",
-      "Nome da Disciplina" ~ "continuous",
-      "Indicadora de disciplina obrigatória" ~ "continuous",
-      "Quantidade de créditos" ~ "continuous",
-      "Carga Horária" ~ "continuous"),
+      "Níveis de curso" ~ "continuous",
+      "Mestrado" ~ "continuous",
+      "Doutorado" ~ "continuous",
+      "Disciplinas (M)" ~ "continuous",
+      "Disciplinas (D)" ~ "continuous",
+      "Disciplinas obrigatórias (M)" ~ "continuous",
+      "Disciplinas obrigatórias (D)" ~ "continuous",
+      "Disciplinas eletivas (M)" ~ "continuous",
+      "Disciplinas eletivas (D)" ~ "continuous",
+      "Créditos totais (M)" ~ "continuous",
+      "Créditos totais (D)" ~ "continuous",
+      "Carga horária total (M)" ~ "continuous",
+      "Carga horária total (D)" ~ "continuous"
+      ),
     statistic = list(
       all_continuous() ~ c("{max}")),
-    missing = "no") %>%
+    missing = "no",
+    digits = list(everything() ~ 0)) %>%
   gtsummary::modify_header(
 #    label = "**Ano**",
     all_stat_cols() ~ "**{level}**") %>%
