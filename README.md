@@ -288,7 +288,7 @@ O Observatório é atualizado periodicamente pelo desenvolvedor. Para receber at
 
 Todas as contribuições são bem-vindas!
 
-- Você pode [criar um problema](https://docs.github.com/pt/issues/tracking-your-work-with-issues/creating-an-issue) ou [clonar o repositório](https://docs.github.com/pt/repositories/creating-and-managing-repositories/cloning-a-repository) e me enviar uma [solicitação de pull](https://docs.github.com/pt/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request.
+- Você pode [criar um problema](https://docs.github.com/pt/issues/tracking-your-work-with-issues/creating-an-issue) ou [clonar o repositório](https://docs.github.com/pt/repositories/creating-and-managing-repositories/cloning-a-repository) e me enviar uma [solicitação de pull](https://docs.github.com/pt/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
 
 - Envie um [e-mail](mailto:arthur_sf@icloud.com) para mim com sugestões.
 
