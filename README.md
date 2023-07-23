@@ -17,6 +17,7 @@
    * [Como usar](#Como-usar)
    * [Atualizações](#Atualizacoes)
    * [Observatorios publicados](#Observatorios-publicados)
+   * [FAQ](#faq)
    * [Licenca](#licenca)
 <!--te-->
 
@@ -279,6 +280,17 @@ O Observatório é atualizado periodicamente pelo desenvolvedor. Para receber at
 ### **Universidade Federal do Ceará | [UFC](https://www.ufc.br)**
 
 - [**Observatório PPGFisio**](https://ppgfisioufc.github.io/PPGFisio_UFC/) | Programa de Pós-graduação em Fisioterapia
+
+
+## **FAQ**
+
+1. Como posso contribuir para este projeto?
+
+Todas as contribuições são bem-vindas!
+
+- Você pode [criar um problema](https://docs.github.com/pt/issues/tracking-your-work-with-issues/creating-an-issue) ou [clonar o repositório](https://docs.github.com/pt/repositories/creating-and-managing-repositories/cloning-a-repository) e me enviar uma [solicitação de pull](https://docs.github.com/pt/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request.
+
+- Envie um [e-mail](mailto:arthur_sf@icloud.com) para mim com sugestões.
 
 
 ## **Licenca**

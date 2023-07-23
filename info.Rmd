@@ -215,13 +215,13 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **CRediT** {#credit}
+### **ICMJE** {#icmje}
 
-<iframe src="https://credit.niso.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
+<iframe src="https://www.icmje.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
 <br>
 
-*Fontes:* [**CRT**](https://credit.niso.org)
+*Fontes:* [**ICMJR**](https://www.icmje.org)
 
 <br>
 
@@ -236,6 +236,34 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <br>
 
 *Fontes:* [**COPE**](https://publicationethics.org)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **CRediT** {#credit}
+
+<iframe src="https://credit.niso.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**CRT**](https://credit.niso.org)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **CRediT generator** {#credit-generator}
+
+<iframe src="https://www.fgu.cas.cz/en/articles/833-credit-generator" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**Institute of Physics**](https://www.fgu.cas.cz/en/articles/833-credit-generator)
 
 <br>
 
@@ -431,13 +459,27 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-### **Plataforma Sucupira**
+### **Plataforma Brasil CONEP**
 
-<iframe src="https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/trabalhoConclusao/listaTrabalhoConclusao.xhtml" style="width:100%; height:600px; border:2px solid black;"></iframe>
+<iframe src="https://plataformabrasil.saude.gov.br/login.jsf" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
 <br>
 
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/trabalhoConclusao/listaTrabalhoConclusao.xhtml)
+*Fontes:* [**CONEP**](https://plataformabrasil.saude.gov.br/login.jsf)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+### **Qualificação CEPs**
+
+<iframe src="https://edx.hospitalmoinhos.org.br/project/cep" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**CONEP**](https://edx.hospitalmoinhos.org.br/project/cep)
 
 <br>
 
@@ -464,13 +506,13 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-### **Plataforma Brasil CONEP**
+### **Plataforma Sucupira**
 
-<iframe src="https://plataformabrasil.saude.gov.br/login.jsf" style="width:100%; height:600px; border:2px solid black;"></iframe>
+<iframe src="https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/trabalhoConclusao/listaTrabalhoConclusao.xhtml" style="width:100%; height:600px; border:2px solid black;"></iframe>
 
 <br>
 
-*Fontes:* [**CONEP**](https://plataformabrasil.saude.gov.br/login.jsf)
+*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/trabalhoConclusao/listaTrabalhoConclusao.xhtml)
 
 <br>
 
