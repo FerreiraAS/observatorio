@@ -59,34 +59,34 @@ sintese <- function(sucupira.list = NULL, ano = NULL) {
   try(resultados$'Níveis de curso' <-
         nlevels(as.factor(sucupira$'Nível do Curso')), silent = TRUE)
   try(resultados$'Mestrado' <-
-        nlevels(as.factor(sucupira$'Nível do Curso'[tolower(sucupira$'Nível do Curso') == "mestrado"])), silent = TRUE)
+        nlevels(as.factor(sucupira$'Nível do Curso'[stringr::str_detect(tolower(sucupira$'Nível do Curso'), "mestrado")])), silent = TRUE)
   try(resultados$'Doutorado' <-
-        nlevels(as.factor(sucupira$'Nível do Curso'[tolower(sucupira$'Nível do Curso') == "doutorado"])), silent = TRUE)
+        nlevels(as.factor(sucupira$'Nível do Curso'[stringr::str_detect(tolower(sucupira$'Nível do Curso'), "doutorado")])), silent = TRUE)
   
   try(resultados$'Disciplinas (M)' <-
-        nlevels(as.factor(sucupira$'Nome da Disciplina'[tolower(sucupira$'Nível do Curso') == "mestrado"])), silent = TRUE)
+        nlevels(as.factor(sucupira$'Nome da Disciplina'[stringr::str_detect(tolower(sucupira$'Nível do Curso'), "mestrado")])), silent = TRUE)
   try(resultados$'Disciplinas (D)' <-
-        nlevels(as.factor(sucupira$'Nome da Disciplina'[tolower(sucupira$'Nível do Curso') == "doutorado"])), silent = TRUE)
+        nlevels(as.factor(sucupira$'Nome da Disciplina'[stringr::str_detect(tolower(sucupira$'Nível do Curso'), "doutorado")])), silent = TRUE)
   
   try(resultados$'Disciplinas obrigatórias (M)' <-
-        sum(as.factor(sucupira$'Indicadora de disciplina obrigatória'[tolower(sucupira$'Nível do Curso') == "mestrado"]) == 'Sim'), silent = TRUE)
+        sum(as.factor(sucupira$'Indicadora de disciplina obrigatória'[stringr::str_detect(tolower(sucupira$'Nível do Curso'), "mestrado")]) == 'Sim'), silent = TRUE)
   try(resultados$'Disciplinas obrigatórias (D)' <-
-        sum(as.factor(sucupira$'Indicadora de disciplina obrigatória'[tolower(sucupira$'Nível do Curso') == "doutorado"]) == 'Sim'), silent = TRUE)
+        sum(as.factor(sucupira$'Indicadora de disciplina obrigatória'[stringr::str_detect(tolower(sucupira$'Nível do Curso'), "doutorado")]) == 'Sim'), silent = TRUE)
   
   try(resultados$'Disciplinas eletivas (M)' <-
-        sum(as.factor(sucupira$'Indicadora de disciplina obrigatória'[tolower(sucupira$'Nível do Curso') == "mestrado"]) == 'Não'), silent = TRUE)
+        sum(as.factor(sucupira$'Indicadora de disciplina obrigatória'[stringr::str_detect(tolower(sucupira$'Nível do Curso'), "mestrado")]) == 'Não'), silent = TRUE)
   try(resultados$'Disciplinas eletivas (D)' <-
-        sum(as.factor(sucupira$'Indicadora de disciplina obrigatória'[tolower(sucupira$'Nível do Curso') == "doutorado"]) == 'Não'), silent = TRUE)
+        sum(as.factor(sucupira$'Indicadora de disciplina obrigatória'[stringr::str_detect(tolower(sucupira$'Nível do Curso'), "doutorado")]) == 'Não'), silent = TRUE)
   
   try(resultados$'Créditos totais (M)' <-
-        sum(as.numeric(sucupira$'Quantidade de créditos'[tolower(sucupira$'Nível do Curso') == "mestrado"])), silent = TRUE)
+        sum(as.numeric(sucupira$'Quantidade de créditos'[stringr::str_detect(tolower(sucupira$'Nível do Curso'), "mestrado")])), silent = TRUE)
   try(resultados$'Créditos totais (D)' <-
-        sum(as.numeric(sucupira$'Quantidade de créditos'[tolower(sucupira$'Nível do Curso') == "doutorado"])), silent = TRUE)
+        sum(as.numeric(sucupira$'Quantidade de créditos'[stringr::str_detect(tolower(sucupira$'Nível do Curso'), "doutorado")])), silent = TRUE)
   
   try(resultados$'Carga horária total (M)' <-
-        sum(as.numeric(sucupira$'Carga Horária'[tolower(sucupira$'Nível do Curso') == "mestrado"])), silent = TRUE)
+        sum(as.numeric(sucupira$'Carga Horária'[stringr::str_detect(tolower(sucupira$'Nível do Curso'), "mestrado")])), silent = TRUE)
   try(resultados$'Carga horária total (D)' <-
-        sum(as.numeric(sucupira$'Carga Horária'[tolower(sucupira$'Nível do Curso') == "doutorado"])), silent = TRUE)
+        sum(as.numeric(sucupira$'Carga Horária'[stringr::str_detect(tolower(sucupira$'Nível do Curso'), "doutorado")])), silent = TRUE)
   
   # output
   return(resultados)

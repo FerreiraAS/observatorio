@@ -1100,7 +1100,7 @@ if (dim(disciplinas.raw)[1] != 0) {
   # select level
   course.level <- "Mestrado"
   disciplinas.msc <-
-    disciplinas.raw[str_detect(disciplinas.raw$`Nível do Curso`, course.level), ]
+    disciplinas.raw[stringr::str_detect(disciplinas.raw$`Nível do Curso`, course.level), ]
   
   disciplinas.msc <-
     disciplinas.raw[course.level,]
@@ -1115,7 +1115,7 @@ if (dim(disciplinas.raw)[1] != 0) {
   
   course.level <- "Doutorado"
   disciplinas.dsc <-
-    disciplinas.raw[str_detect(disciplinas.raw$`Nível do Curso`, course.level), ]
+    disciplinas.raw[stringr::str_detect(disciplinas.raw$`Nível do Curso`, course.level), ]
   disciplinas.dsc <-
     disciplinas.raw[course.level,]
   table.dsc <-

@@ -1754,7 +1754,7 @@ disciplinas.raw <-
 # select level
 course.level <- "Mestrado"
 disciplinas.msc <-
-  disciplinas.raw[str_detect(disciplinas.raw$`Nível do Curso`, course.level), ]
+  disciplinas.raw[stringr::str_detect(disciplinas.raw$`Nível do Curso`, course.level), ]
 
 table.msc <-
   data.frame(
@@ -1770,7 +1770,7 @@ try(colnames(table.msc) <-
 # select level
 course.level <- "Doutorado"
 disciplinas.dsc <-
-  disciplinas.raw[str_detect(disciplinas.raw$`Nível do Curso`, course.level), ]
+  disciplinas.raw[stringr::str_detect(disciplinas.raw$`Nível do Curso`, course.level), ]
 table.dsc <-
   data.frame(
     disciplinas.dsc$`Nome da Disciplina`,
@@ -2222,7 +2222,7 @@ disciplinas.raw <-
 # select level
 course.level <- "Mestrado"
 disciplinas.msc <-
-  disciplinas.raw[str_detect(disciplinas.raw$`Nível do Curso`, course.level),]
+  disciplinas.raw[stringr::str_detect(disciplinas.raw$`Nível do Curso`, course.level),]
 table.msc <-
   data.frame(
     disciplinas.msc$`Nome da Disciplina`,
@@ -2235,7 +2235,7 @@ colnames(table.msc) <- c("Disciplina", "Obrigatória", "CR", "CH")
 # select level
 course.level <- "Doutorado"
 disciplinas.dsc <-
-  disciplinas.raw[str_detect(disciplinas.raw$`Nível do Curso`, course.level),]
+  disciplinas.raw[stringr::str_detect(disciplinas.raw$`Nível do Curso`, course.level),]
 table.dsc <-
   data.frame(
     disciplinas.dsc$`Nome da Disciplina`,

@@ -1428,7 +1428,7 @@ names(sucupira.list) <- as.character(anos)
 discentes <- sucupira.list[[length(anos)]]
 
 # filter students
-discentes <- discentes[str_detect(discentes$`Nível Discente`, course.level), ]
+discentes <- discentes[stringr::str_detect(discentes$`Nível Discente`, course.level), ]
 
 # dplyr::select active students
 discentes <- discentes[discentes$`Situação Discente` == "MATRICULADO", ]
@@ -1484,7 +1484,7 @@ names(sucupira.list) <- as.character(anos)
 discentes <- sucupira.list[[length(anos)]]
 
 # filter students
-discentes <- discentes[str_detect(discentes$`Nível Discente`, course.level), ]
+discentes <- discentes[stringr::str_detect(discentes$`Nível Discente`, course.level), ]
 
 # dplyr::select active students
 discentes <- discentes[discentes$`Situação Discente` == "MATRICULADO", ]
@@ -1538,7 +1538,7 @@ source("Scripts/years-sucupira.R")
 names(sucupira.list) <- as.character(anos)
 
 # filter students
-discentes <- discentes[str_detect(discentes$`Nível Discente`, course.level), ]
+discentes <- discentes[stringr::str_detect(discentes$`Nível Discente`, course.level), ]
 
 # dplyr::select active students
 discentes <- discentes[discentes$`Situação Discente` == "MATRICULADO", ]
@@ -1596,7 +1596,7 @@ names(sucupira.list) <- as.character(anos)
 discentes <- sucupira.list[[length(anos)]]
 
 # filter students
-discentes <- discentes[str_detect(discentes$`Nível Discente`, course.level), ]
+discentes <- discentes[stringr::str_detect(discentes$`Nível Discente`, course.level), ]
 
 # dplyr::select active students
 discentes <-
@@ -1708,7 +1708,7 @@ names(sucupira.list) <- as.character(anos)
 discentes <- sucupira.list[[length(anos)]]
 
 # filter students
-discentes <- discentes[str_detect(discentes$`Nível Discente`, course.level), ]
+discentes <- discentes[stringr::str_detect(discentes$`Nível Discente`, course.level), ]
 
 # dplyr::select active students
 discentes <-
@@ -1834,7 +1834,7 @@ names(egressos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
 # filter students
-egressos <- egressos[str_detect(egressos$`Nível Discente`, course.level), ]
+egressos <- egressos[stringr::str_detect(egressos$`Nível Discente`, course.level), ]
 
 # dplyr::select active students
 egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
@@ -1900,7 +1900,7 @@ names(egressos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
 # filter students
-egressos <- egressos[str_detect(egressos$`Nível Discente`, course.level), ]
+egressos <- egressos[stringr::str_detect(egressos$`Nível Discente`, course.level), ]
 
 # dplyr::select active students
 egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
@@ -1968,7 +1968,7 @@ names(egressos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
 # filter students
-egressos <- egressos[str_detect(egressos$`Nível Discente`, course.level), ]
+egressos <- egressos[stringr::str_detect(egressos$`Nível Discente`, course.level), ]
 
 # dplyr::select active students
 egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
@@ -2034,7 +2034,7 @@ names(egressos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
 # filter students
-egressos <- egressos[str_detect(egressos$`Nível Discente`, course.level), ]
+egressos <- egressos[stringr::str_detect(egressos$`Nível Discente`, course.level), ]
 
 # dplyr::select active students
 egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
@@ -2102,7 +2102,7 @@ names(egressos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
 # filter students
-egressos <- egressos[str_detect(egressos$`Nível Discente`, course.level), ]
+egressos <- egressos[stringr::str_detect(egressos$`Nível Discente`, course.level), ]
 
 # dplyr::select active students
 egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
@@ -2168,7 +2168,7 @@ names(egressos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
 # filter students
-egressos <- egressos[str_detect(egressos$`Nível Discente`, course.level), ]
+egressos <- egressos[stringr::str_detect(egressos$`Nível Discente`, course.level), ]
 
 # dplyr::select active students
 egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
@@ -2236,7 +2236,7 @@ names(egressos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
 # filter students
-egressos <- egressos[str_detect(egressos$`Nível Discente`, course.level), ]
+egressos <- egressos[stringr::str_detect(egressos$`Nível Discente`, course.level), ]
 
 # dplyr::select active students
 egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
@@ -2302,7 +2302,7 @@ names(egressos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
 # filter students
-egressos <- egressos[str_detect(egressos$`Nível Discente`, course.level), ]
+egressos <- egressos[stringr::str_detect(egressos$`Nível Discente`, course.level), ]
 
 # dplyr::select active students
 egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
@@ -2458,11 +2458,11 @@ source("Scripts/read-xlsx-sucupira.R")
 bolsistas <- sucupira.raw
 
 # filter students
-bolsistas <- bolsistas[str_detect(bolsistas$`Tipo de Trabalho de Conclusão`, course.level), ]
+bolsistas <- bolsistas[stringr::str_detect(bolsistas$`Tipo de Trabalho de Conclusão`, course.level), ]
 
 # filter funding
 funding <- "PROSUP / Cursos Novos"
-bolsistas <- bolsistas[str_detect(bolsistas$`Nome do Programa de Fomento`, funding), ]
+bolsistas <- bolsistas[stringr::str_detect(bolsistas$`Nome do Programa de Fomento`, funding), ]
 
 # get years
 bolsistas$'Matrícula' <- substr(as.Date(bolsistas$`Data início da orientação`, format = "%d/%m/%Y"), 1, 4)
@@ -2512,11 +2512,11 @@ source("Scripts/read-xlsx-sucupira.R")
 bolsistas <- sucupira.raw
 
 # filter students
-bolsistas <- bolsistas[str_detect(bolsistas$`Tipo de Trabalho de Conclusão`, course.level), ]
+bolsistas <- bolsistas[stringr::str_detect(bolsistas$`Tipo de Trabalho de Conclusão`, course.level), ]
 
 # filter funding
 funding <- "PROSUP / Cursos Novos"
-bolsistas <- bolsistas[str_detect(bolsistas$`Nome do Programa de Fomento`, funding), ]
+bolsistas <- bolsistas[stringr::str_detect(bolsistas$`Nome do Programa de Fomento`, funding), ]
 
 # get years
 bolsistas$'Matrícula' <- substr(as.Date(bolsistas$`Data início da orientação`, format = "%d/%m/%Y"), 1, 4)

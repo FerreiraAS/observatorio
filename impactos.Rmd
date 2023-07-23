@@ -128,11 +128,11 @@ source("Scripts/read-xlsx-sucupira.R")
 bolsistas <- sucupira.raw
 
 # filter students
-bolsistas <- bolsistas[str_detect(bolsistas$`Tipo de Trabalho de Conclusão`, course.level), ]
+bolsistas <- bolsistas[stringr::str_detect(bolsistas$`Tipo de Trabalho de Conclusão`, course.level), ]
 
 # filter funding
 funding <- "PROSUP / Cursos Novos"
-bolsistas <- bolsistas[str_detect(bolsistas$`Nome do Programa de Fomento`, funding), ]
+bolsistas <- bolsistas[stringr::str_detect(bolsistas$`Nome do Programa de Fomento`, funding), ]
 
 # get years
 bolsistas$'Matrícula' <- substr(as.Date(bolsistas$`Data início da orientação`, format = "%d/%m/%Y"), 1, 4)
@@ -178,11 +178,11 @@ source("Scripts/read-xlsx-sucupira.R")
 bolsistas <- sucupira.raw
 
 # filter students
-bolsistas <- bolsistas[str_detect(bolsistas$`Tipo de Trabalho de Conclusão`, course.level), ]
+bolsistas <- bolsistas[stringr::str_detect(bolsistas$`Tipo de Trabalho de Conclusão`, course.level), ]
 
 # filter funding
 funding <- "PROSUP / Cursos Novos"
-bolsistas <- bolsistas[str_detect(bolsistas$`Nome do Programa de Fomento`, funding), ]
+bolsistas <- bolsistas[stringr::str_detect(bolsistas$`Nome do Programa de Fomento`, funding), ]
 
 # get years
 bolsistas$'Matrícula' <- substr(as.Date(bolsistas$`Data início da orientação`, format = "%d/%m/%Y"), 1, 4)
@@ -229,7 +229,7 @@ bolsistas <- sucupira.raw
 # filter funding
 funding <- "PROSUP / Cursos Novos"
 bolsistas <-
-  bolsistas[str_detect(bolsistas$`Nome do Programa de Fomento`, funding),]
+  bolsistas[stringr::str_detect(bolsistas$`Nome do Programa de Fomento`, funding),]
 
 # get years
 bolsistas$'Matrícula' <-
