@@ -1,6 +1,3 @@
-cat("*Compartilhe*")
-cat("&nbsp;&nbsp;&nbsp;")
-
 # Twitter
 # https://twitter.com
 cat("[", sep = "")

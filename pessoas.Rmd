@@ -50,7 +50,9 @@ source("Scripts/social-media-sharing.R")
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
+```{r, eval = !has.dados.cadastrais}
+cat('<br>')
+```
 
 ```{r dados-cadastrais-endereco, eval = has.dados.cadastrais}
 # read separate sheets
@@ -2549,95 +2551,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Membros**
-
-```{r grupos-de-pesquisa-membros, eval = has.grupos.pesquisa}
-membros.raw <-
-  readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "Membros")
-
-# print tables
-print(
-  kable(membros.raw, align = c("l", rep(
-    "c", ncol(membros.raw) - 2
-  ), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
-
-cat('\n\n')
-cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
-### **Grupos ativos** {.tabset}
-
-```{r grupos-de-pesquisa-ativos, eval = has.grupos.pesquisa}
-grupos.raw <-
-  readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.ativos")
-
-# print tables
-print(
-  kable(grupos.raw, align = c("l", rep(
-    "c", ncol(grupos.raw) - 2
-  ), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
-
-cat('\n\n')
-cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
-### **Grupos inativos** {.tabset}
-
-```{r grupos-de-pesquisa-inativos, eval = has.grupos.pesquisa}
-grupos.raw <- readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.inativos")
-
-# print tables
-print(kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
-
-cat('\n\n')
-cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
-### **Grupos externos** {#grupos-externos .tabset}
-
-```{r grupos-de-pesquisa-externos, eval = has.grupos.pesquisa}
-grupos.raw <-
-  readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.externos")
-
-# print tables
-print(
-  kable(grupos.raw, align = c("l", rep(
-    "c", ncol(grupos.raw) - 2
-  ), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
-
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
 ### **Diretório CNPq** {#dgp-cnpq .tabset}
 
 ```{r dgp-cnpq, eval = has.sucupira.files}
@@ -2690,6 +2603,95 @@ for (i in 1:dim(docentes)[1]) {
 
 cat('\n\n')
 cat('*Fontes:* [**Diretório dos Grupos de Pesquisa no Brasil**](https://lattes.cnpq.br/web/dgp)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
+### **Ativos** {.tabset}
+
+```{r grupos-de-pesquisa-ativos, eval = has.grupos.pesquisa}
+grupos.raw <-
+  readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.ativos")
+
+# print tables
+print(
+  kable(grupos.raw, align = c("l", rep(
+    "c", ncol(grupos.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+
+cat('\n\n')
+cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
+### **Inativos** {.tabset}
+
+```{r grupos-de-pesquisa-inativos, eval = has.grupos.pesquisa}
+grupos.raw <- readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.inativos")
+
+# print tables
+print(kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+cat('\n\n')
+cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
+### **Membros**
+
+```{r grupos-de-pesquisa-membros, eval = has.grupos.pesquisa}
+membros.raw <-
+  readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "Membros")
+
+# print tables
+print(
+  kable(membros.raw, align = c("l", rep(
+    "c", ncol(membros.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+
+cat('\n\n')
+cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
+### **Externos** {#grupos-externos .tabset}
+
+```{r grupos-de-pesquisa-externos, eval = has.grupos.pesquisa}
+grupos.raw <-
+  readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.externos")
+
+# print tables
+print(
+  kable(grupos.raw, align = c("l", rep(
+    "c", ncol(grupos.raw) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```

@@ -515,7 +515,7 @@ if(file.exists("PPG/Images/logo-cep.png") &
    has.cep) {
   # read separate sheets
   link <-
-    readxl::read_excel("PPG/CEP.xlsx",
+    readxl::read_excel("PPG/Comitê de Ética em Pesquisa.xlsx",
                        sheet = "CEP",
                        col_types = c("text"))[[1]]
   cat('[<img src=\"PPG/Images/logo-cep.png\" align=\"center\"/>](', link, ')')
@@ -533,7 +533,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ```{r cep-vigentes, eval = has.cep}
 # read separate sheets
 cep.vigentes.raw <-
-  readxl::read_excel("PPG/CEP.xlsx",
+  readxl::read_excel("PPG/Comitê de Ética em Pesquisa.xlsx",
                      sheet = "Vigentes",
                      col_types = c("text"))
 
@@ -570,7 +570,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ```{r cep-revogados, eval = has.cep}
 # read separate sheets
 cep.revogados.raw <-
-  readxl::read_excel("PPG/CEP.xlsx",
+  readxl::read_excel("PPG/Comitê de Ética em Pesquisa.xlsx",
                      sheet = "Revogados",
                      col_types = c("text"))
 

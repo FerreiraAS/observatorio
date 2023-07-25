@@ -310,13 +310,13 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   cat('\n\n<!-- -->\n\n')
   cat(
     paste(
-      "*Produtos (n = ",
+      "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
       sep = ""
     )
   )
-  cat('<br>')
+  cat('\n\n<!-- -->\n\n')
   
   for (year in 1:length(years)) {
     # print tab header
@@ -392,13 +392,13 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   cat('\n\n<!-- -->\n\n')
   cat(
     paste(
-      "*Produtos (n = ",
+      "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
       sep = ""
     )
   )
-  cat('<br>')
+  cat('\n\n<!-- -->\n\n')
   
   for (year in 1:length(years)) {
     # print tab header
@@ -474,13 +474,13 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   cat('\n\n<!-- -->\n\n')
   cat(
     paste(
-      "*Produtos (n = ",
+      "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
       sep = ""
     )
   )
-  cat('<br>')
+  cat('\n\n<!-- -->\n\n')
   
   for (year in 1:length(years)) {
     # print tab header
@@ -556,13 +556,13 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   cat('\n\n<!-- -->\n\n')
   cat(
     paste(
-      "*Produtos (n = ",
+      "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
       sep = ""
     )
   )
-  cat('<br>')
+  cat('\n\n<!-- -->\n\n')
   
   for (year in 1:length(years)) {
     # print tab header
@@ -638,13 +638,13 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   cat('\n\n<!-- -->\n\n')
   cat(
     paste(
-      "*Produtos (n = ",
+      "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
       sep = ""
     )
   )
-  cat('<br>')
+  cat('\n\n<!-- -->\n\n')
   
   for (year in 1:length(years)) {
     # print tab header
@@ -720,13 +720,13 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   cat('\n\n<!-- -->\n\n')
   cat(
     paste(
-      "*Produtos (n = ",
+      "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
       sep = ""
     )
   )
-  cat('<br>')
+  cat('\n\n<!-- -->\n\n')
   
   for (year in 1:length(years)) {
     # print tab header
@@ -845,13 +845,13 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   cat('\n\n<!-- -->\n\n')
   cat(
     paste(
-      "*Produtos (n = ",
+      "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
       sep = ""
     )
   )
-  cat('<br>')
+  cat('\n\n<!-- -->\n\n')
   
   for (year in 1:length(years)) {
     # print tab header

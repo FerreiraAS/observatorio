@@ -114,21 +114,26 @@ Ao completar esta etapa, a estrutura dos diretórios e arquivos será esta:
 
 ### **Programa**
 
-O **Obsevatório** pode exibir informações complementares, não disponíveis na Plataforma Sucupira, desde que organizadas em planilhas XLSX. As seguintes planilhas podem ser complementadas:
+O **Obsevatório** pode exibir informações complementares, não disponíveis na Plataforma Sucupira, desde que organizadas em planilhas XLSX.
 
+O arquivo-modelo de cada planilha está disponível no [repositório do Observatório CR](
+https://github.com/ppgcr-unisuam/observatoriocr/tree/76185c88ea0ead961c03c0a09f6c5fb9eb104e39/PPG)
+
+As seguintes planilhas podem ser complementadas:
+ 
 ```bash
 ├── PPG
 │   └── Agendas de Pesquisa.xlsx
 │   └── Apresentação.xlsx
-│   └── Área.xlsx
+│   └── Área CAPES.xlsx
 │   └── Autoavaliações.xlsx
 │   └── Avaliação.xlsx
 │   └── Bibliografia.xlsx
-│   └── Blog externo.xlsx
 │   └── Blog institucional.xlsx
+│   └── Blogs externos.xlsx
 │   └── Bolsas.xlsx
 │   └── Calendários.xlsx
-│   └── CEP.xlsx
+│   └── Comitê de Ética em Pesquisa.xlsx
 │   └── Convênios.xlsx
 │   └── Cooperações.xlsx
 │   └── Coordenação.xlsx
@@ -143,6 +148,7 @@ O **Obsevatório** pode exibir informações complementares, não disponíveis n
 │   └── Infraestrutura.xlsx
 │   └── Internacionalização.xlsx
 │   └── Laboratórios.xlsx
+│   └── Metodologia.xlsx
 │   └── Notas.xlsx
 │   └── Periódicos institucionais.xlsx
 │   └── Prêmio CAPES de Tese.xlsx
@@ -150,6 +156,7 @@ O **Obsevatório** pode exibir informações complementares, não disponíveis n
 │   └── Produção.xlsx
 │   └── Repositórios.xlsx
 │   └── Softwares.xlsx
+│   └── Videos.xlsx
 ```
 
 ### **Agencias**

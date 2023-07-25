@@ -178,7 +178,7 @@ has.calendarios <-
 
 ```{r try-cep, results = "hide"}
 has.cep <-
-  !is.error(try(readxl::read_excel("PPG/CEP.xlsx", sheet = 1),
+  !is.error(try(readxl::read_excel("PPG/Comitê de Ética em Pesquisa.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```

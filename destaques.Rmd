@@ -59,7 +59,9 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
+```{r, eval = !has.destaques}
+cat('<br>')
+```
 
 ```{r egressos-destaque, eval = has.destaques}
 # read separate sheets
@@ -119,12 +121,18 @@ for (j in 1:length(abas)) {
 
 <br>
 
+*Em construção*
+
 <br>
 
-## **Produções em destaque: visibilidade** {#destaque-visibilidade .tabset}
+## **Produções em destaque: Visibilidade** {#destaque-visibilidade .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !any(has.producao.sucupira, has.producao.ppg)}
+cat('<br>')
+```
 
 ```{r destaque-visibilidade, eval = any(has.producao.sucupira, has.producao.ppg)}
 # sources
@@ -213,6 +221,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = !any(has.producao.sucupira, has.producao.ppg)}
+cat('<br>')
+```
+
 ```{r destaque-prestigio, eval = any(has.producao.sucupira, has.producao.ppg)}
 doi_all_sorted <- doi_all[!is.na(doi_all$CiteScore), ]
 
@@ -298,7 +310,9 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
+```{r, eval = !has.premios}
+cat('<br>')
+```
 
 ```{r premios, eval = has.premios}
 # initialize all sheets
@@ -354,7 +368,9 @@ for (j in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
+```{r, eval = !has.premio.capes}
+cat('<br>')
+```
 
 ```{r premio-capes, eval = has.premio.capes}
 # initialize all sheets
@@ -406,7 +422,9 @@ for (j in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
+```{r, eval = !has.sucupira.files}
+cat('<br>')
+```
 
 ### **Associações** {.tabset}
 
@@ -592,7 +610,7 @@ for (j in 1:length(abas)) {
 
 ```{r blogs-externos, eval = has.blog.externos}
 # read separate sheets
-file.path <- "PPG/Blog externo.xlsx"
+file.path <- "PPG/Blogs externos.xlsx"
 abas <- excel_sheets(file.path)
 topics <- c()
 news.list <- vector(mode = "list", length = length(abas))

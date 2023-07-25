@@ -26,7 +26,7 @@ table.with.badges <-
     
     # start table
     cat(
-      "<table class=\"tb\" style=\"width:100%; font-size: 16px !important;\">\n    <tr>\n      <th>Produtos (n = ",
+      "<table class=\"tb\" style=\"width:100%;\">\n    <tr>\n      <th>Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
       ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^) </th>\n    </tr>",
       sep = ""
