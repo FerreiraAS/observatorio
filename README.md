@@ -117,7 +117,11 @@ Ao completar esta etapa, a estrutura dos diretórios e arquivos será esta:
 O **Observatório** pode exibir informações complementares, não disponíveis na Plataforma Sucupira, desde que organizadas em planilhas XLSX.
 
 Um arquivo-modelo de cada planilha está disponível no [repositório do Observatório CR](
-https://github.com/ppgcr-unisuam/observatoriocr/tree/76185c88ea0ead961c03c0a09f6c5fb9eb104e39/PPG). As seguintes planilhas podem ser complementadas:
+https://github.com/ppgcr-unisuam/observatoriocr/tree/76185c88ea0ead961c03c0a09f6c5fb9eb104e39/PPG).
+
+*Importante*: Os modelos são disponibilizados com dados do PPGCR-UNISUAM, os quais devem ser substituídos pelos dados do PPG.
+
+As seguintes planilhas podem ser complementadas:
  
 ```bash
 ├── PPG
@@ -156,8 +160,6 @@ https://github.com/ppgcr-unisuam/observatoriocr/tree/76185c88ea0ead961c03c0a09f6
 │   └── Softwares.xlsx
 │   └── Videos.xlsx
 ```
-
-*Importante*: Os modelos são disponibilizados com dados do PPGCR-UNISUAM, os quais devem ser substituídos pelos dados do PPG.
 
 
 ### **Agencias**
@@ -271,10 +273,12 @@ Antes de começar, você vai precisar instalar em sua máquina os seguintes prog
 
 ## **Atualizacoes**
 
-O Observatório é atualizado periodicamente pelo desenvolvedor. Para receber atualziações no seu repositório, siga os passos 6.1 e 6.2 acima.
+O Observatório é atualizado semanalmente. Para receber atualizações no seu repositório, siga os passos 6.1 e 6.2 acima.
 
 
 ## **Observatorios publicados**
+
+### **Modelo**
 
 - [**Observatório**](https://ferreiraas.github.io/observatorio) | Modelo para PPGs
 
@@ -292,9 +296,7 @@ O Observatório é atualizado periodicamente pelo desenvolvedor. Para receber at
 
 ## **FAQ**
 
-1. Como posso contribuir para este projeto?
-
-Todas as contribuições são bem-vindas!
+*Como posso contribuir para este projeto?*
 
 - Você pode [criar um problema](https://docs.github.com/pt/issues/tracking-your-work-with-issues/creating-an-issue) ou [clonar o repositório](https://docs.github.com/pt/repositories/creating-and-managing-repositories/cloning-a-repository) e me enviar uma [solicitação de pull](https://docs.github.com/pt/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
 
