@@ -54,7 +54,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Egressos de Destaque** {#egressos-destaque .tabset}
+## **Egressos** {#egressos-destaque .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -114,7 +114,7 @@ for (j in 1:length(abas)) {
 
 <br>
 
-## **Dissertações/Teses de destaque** {#TCC-destaque}
+## **Dissertações/Teses** {#TCC-destaque}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -125,7 +125,7 @@ for (j in 1:length(abas)) {
 
 <br>
 
-## **Produções em destaque: Visibilidade** {#destaque-visibilidade .tabset}
+## **Produções: Visibilidade** {#destaque-visibilidade .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -175,9 +175,9 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   cat('\n\n<!-- -->\n\n')
   cat(
     paste(
-      "*Produtos (n = ",
+      "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
       sep = ""
     )
   )
@@ -216,7 +216,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-## **Produções em destaque: Prestígio** {#destaque-prestigio .tabset}
+## **Produções: Prestígio** {#destaque-prestigio .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -264,9 +264,9 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   cat('\n\n<!-- -->\n\n')
   cat(
     paste(
-      "*Produtos (n = ",
+      "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
       sep = ""
     )
   )
