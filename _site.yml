@@ -27,10 +27,10 @@ navbar:
       menu:
         - text: "Programa"
           href: [programa.html]
-        - text: "Dados básicos do Programa"
-          href: [programa.html#dados-basicos]
         - text: "Breve histórico"
           href: [programa.html#breve-historico]
+        - text: "Dados básicos do Programa"
+          href: [programa.html#dados-basicos]
         - text: "Área de avaliação"
           href: [programa#area-avaliacao.html]
         - text: "Área de concentração"

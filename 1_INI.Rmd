@@ -59,6 +59,7 @@ source(file.path("Scripts", "get_webqualis.R"),
 source(file.path("Scripts", "get-metrics-from-sources.R"), local = knitr::knit_global())
 ```
 
+<!--check Sucupira folder-->
 ```{r try-sucupira-files, results = "hide"}
 files.to.read <-
   list.dirs(file.path(getwd(), "Sucupira"),
@@ -76,6 +77,28 @@ has.2016.2013 <- FALSE
 has.2012.2010 <- FALSE
 ```
 
+```{r try-periodos, results = "hide", eval = has.sucupira.files}
+# get years
+source("Scripts/years-sucupira.R")
+
+# periodo
+periodo <- 2021:min(as.numeric(format(Sys.Date(), "%Y")), 2024)
+has.2024.2021 <- any(!is.na(match(periodo, anos)))
+
+# periodo
+periodo <- 2017:min(as.numeric(format(Sys.Date(), "%Y")), 2020)
+has.2020.2017 <- any(!is.na(match(periodo, anos)))
+
+# periodo
+periodo <- 2013:min(as.numeric(format(Sys.Date(), "%Y")), 2016)
+has.2016.2013 <- any(!is.na(match(periodo, anos)))
+
+# periodo
+periodo <- 2010:min(as.numeric(format(Sys.Date(), "%Y")), 2012)
+has.2012.2010 <- any(!is.na(match(periodo, anos)))
+```
+
+<!--check PPG folder-->
 ```{r try-ppg-files, results = "hide"}
 # list all PPG files
 files.to.read <-
@@ -1203,6 +1226,10 @@ has.artigos.resumos.sucupira
 has.livros.sucupira
 has.anais.sucupira
 has.producao.sucupira
+has.2024.2021
+has.2020.2017
+has.2016.2013
+has.2012.2010
 
 # data ppg
 has.artigos.completos.ppg

@@ -216,7 +216,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2024-2021**
 
-```{r docentes-2024-2021, eval = has.sucupira.files, results = "hide"}
+```{r docentes-2024-2021, eval = has.2024.2021, results = "hide"}
 # periodo
 periodo <- 2021:min(as.numeric(format(Sys.Date(), "%Y")), 2024)
 
@@ -227,8 +227,6 @@ source("Scripts/read-xlsx-sucupira.R")
 # get years
 source("Scripts/years-sucupira.R")
 names(sucupira.list) <- as.character(anos)
-
-has.2024.2021 <- any(!is.na(match(periodo, anos)))
 
 if(has.2024.2021) {
   # get docentes for the current period
@@ -409,7 +407,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2020-2017**
 
-```{r docentes-2020-2017, eval = has.sucupira.files, results = "hide"}
+```{r docentes-2020-2017, eval = has.2020.2017, results = "hide"}
 # periodo
 periodo <- 2017:min(as.numeric(format(Sys.Date(), "%Y")), 2020)
 
@@ -420,8 +418,6 @@ source("Scripts/read-xlsx-sucupira.R")
 # get years
 source("Scripts/years-sucupira.R")
 names(sucupira.list) <- as.character(anos)
-
-has.2020.2017 <- any(!is.na(match(periodo, anos)))
 
 if(has.2020.2017) {
   # get docentes for the current period
@@ -602,7 +598,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2016-2013**
 
-```{r docentes-2016-2013, eval = has.sucupira.files, results = "hide"}
+```{r docentes-2016-2013, eval = has.2016.2013, results = "hide"}
 # periodo
 periodo <- 2013:min(as.numeric(format(Sys.Date(), "%Y")), 2016)
 
@@ -613,8 +609,6 @@ source("Scripts/read-xlsx-sucupira.R")
 # get years
 source("Scripts/years-sucupira.R")
 names(sucupira.list) <- as.character(anos)
-
-has.2016.2013 <- any(!is.na(match(periodo, anos)))
 
 if(has.2016.2013) {
   # get docentes for the current period
@@ -795,7 +789,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **2012-2010**
 
-```{r docentes-2012-2010, eval = has.sucupira.files, results = "hide"}
+```{r docentes-2012-2010, eval = has.2012.2010, results = "hide"}
 # periodo
 periodo <- 2010:min(as.numeric(format(Sys.Date(), "%Y")), 2012)
 
@@ -806,8 +800,6 @@ source("Scripts/read-xlsx-sucupira.R")
 # get years
 source("Scripts/years-sucupira.R")
 names(sucupira.list) <- as.character(anos)
-
-has.2012.2010 <- any(!is.na(match(periodo, anos)))
 
 if(has.2012.2010) {
   # get docentes for the current period

@@ -59,7 +59,9 @@ source("Scripts/social-media-sharing.R")
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
+```{r, eval = !has.sucupira.files}
+cat('<br>')
+```
 
 ```{r tcc-dsc, eval = has.sucupira.files}
 # tcc
@@ -129,7 +131,9 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
+```{r, eval = !has.sucupira.files}
+cat('<br>')
+```
 
 ```{r tcc-msc, eval = has.sucupira.files}
 # tcc
