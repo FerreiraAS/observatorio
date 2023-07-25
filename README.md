@@ -114,12 +114,10 @@ Ao completar esta etapa, a estrutura dos diretórios e arquivos será esta:
 
 ### **Programa**
 
-O **Obsevatório** pode exibir informações complementares, não disponíveis na Plataforma Sucupira, desde que organizadas em planilhas XLSX.
+O **Observatório** pode exibir informações complementares, não disponíveis na Plataforma Sucupira, desde que organizadas em planilhas XLSX.
 
-O arquivo-modelo de cada planilha está disponível no [repositório do Observatório CR](
-https://github.com/ppgcr-unisuam/observatoriocr/tree/76185c88ea0ead961c03c0a09f6c5fb9eb104e39/PPG)
-
-As seguintes planilhas podem ser complementadas:
+Um arquivo-modelo de cada planilha está disponível no [repositório do Observatório CR](
+https://github.com/ppgcr-unisuam/observatoriocr/tree/76185c88ea0ead961c03c0a09f6c5fb9eb104e39/PPG). As seguintes planilhas podem ser complementadas:
  
 ```bash
 ├── PPG
@@ -158,6 +156,9 @@ As seguintes planilhas podem ser complementadas:
 │   └── Softwares.xlsx
 │   └── Videos.xlsx
 ```
+
+*Importante*: Os modelos são disponibilizados com dados do PPGCR-UNISUAM, os quais devem ser substituídos pelos dados do PPG.
+
 
 ### **Agencias**
 
