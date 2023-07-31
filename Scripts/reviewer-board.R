@@ -57,4 +57,8 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
     row.names = NULL
   )
   cat('<br>')
+  cat(
+    "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"
+  )
+  cat('<br>')
 }

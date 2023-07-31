@@ -456,10 +456,6 @@ for (id in 1:length(orcids)) {
   cat('\n\n<!-- -->\n\n')
   source("Scripts/memberships-services.R", local = knitr::knit_global())
   cat('\n\n<!-- -->\n\n')
-  cat(
-    "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"
-  )
-  cat('\n\n<!-- -->\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
@@ -497,10 +493,6 @@ for (id in 1:length(orcids)) {
   cat('##### **', editor.name, '**', sep = "")
   cat('\n\n<!-- -->\n\n')
   source("Scripts/invited-positions.R", local = knitr::knit_global())
-  cat('\n\n<!-- -->\n\n')
-  cat(
-    "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"
-  )
   cat('\n\n<!-- -->\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }

@@ -41,4 +41,9 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
     row.names = NULL
   )
   cat('<br>')
+  cat(
+    "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"
+  )
+  cat('^[https://info.orcid.org/new-to-the-orcid-record-interface-professional-activities/]')
+  cat('<br>')
 }
