@@ -597,7 +597,7 @@ for (j in 1:length(abas)) {
 
 ### **Blogs externos** {.tabset}
 
-```{r blogs-externos, eval = has.blog.externos}
+```{r blogs-externos, eval = has.blogs.externos}
 # read separate sheets
 file.path <- "PPG/Blogs externos.xlsx"
 abas <- excel_sheets(file.path)

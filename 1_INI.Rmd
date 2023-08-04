@@ -149,8 +149,8 @@ has.bibliografia <-
 ```
 
 ```{r try-blog-externos, results = "hide"}
-has.blog.externos <-
-  !is.error(try(readxl::read_excel("PPG/Blog externo.xlsx", sheet = 1),
+has.blogs.externos <-
+  !is.error(try(readxl::read_excel("PPG/Blogs externos.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
@@ -1191,7 +1191,7 @@ has.area.capes
 has.autoavaliacoes
 has.avaliacao
 has.bibliografia
-has.blog.externos
+has.blogs.externos
 has.blog.ies
 has.bolsas
 has.calendarios
