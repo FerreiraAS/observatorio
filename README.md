@@ -153,11 +153,11 @@ As seguintes planilhas podem ser complementadas:
 │   └── Metodologia.xlsx
 │   └── Notas.xlsx
 │   └── Periódicos institucionais.xlsx
+│   └── Planejamento estratégico.xlsx
 │   └── Prêmio CAPES de Tese.xlsx
 │   └── Prêmios.xlsx
 │   └── Produção.xlsx
 │   └── Repositórios.xlsx
-│   └── Softwares.xlsx
 │   └── Videos.xlsx
 ```
 

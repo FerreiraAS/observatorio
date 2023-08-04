@@ -764,48 +764,6 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-## **Desenvolvimento de aplicativos** {#aplicativos .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r softwares, eval = has.softwares.ppg}
-# initialize all sheets
-abas <- excel_sheets("PPG/Softwares.xlsx")
-
-# display each sheet in a tab
-for (i in 1:length(abas)) {
-  cat('\n\n<!-- -->\n\n')
-  cat(paste0('### **', abas[i], '**'))
-  cat('\n\n<!-- -->\n\n')
-  software.raw <-
-    readxl::read_excel("PPG/Softwares.xlsx",
-               sheet = abas[i],
-               col_types = c("text"))
-  
-  # replace the link by a tag
-  for (i in 1:dim(software.raw)[1]) {
-    software.raw[i, 3] <-
-      paste0('<a href="', software.raw[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
-  }
-  
-  # print table
-  if (dim(software.raw)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(software.raw, title = "Softwares")))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
-
-  # print end of tab rows
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-}
-
-cat('\n\n')
-```
-
-<br>
-
 ## **Retratações** {#retratacoes .tabset}
 
 <!--script for generating HORIZONTAL LINE-->

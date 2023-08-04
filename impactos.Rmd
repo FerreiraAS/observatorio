@@ -59,6 +59,10 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = !has.sucupira.files}
+cat('<br>')
+```
+
 ### **Formação discente** {.tabset}
 
 #### **Turmas oferecidas**
@@ -439,9 +443,13 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = !any(has.periodicos, has.cep)}
+cat('<br>')
+```
+
 ### **Periódicos institucionais**
 
-```{r periodicos-insrtitucionais, eval = has.calendarios}
+```{r periodicos-institucionais, eval = has.periodicos}
 # read separate sheets
 periodicos.raw <-
   readxl::read_excel(
@@ -632,6 +640,10 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
+cat('<br>')
+```
 
 ```{r pandemia-termos}
 pandemia <-
@@ -914,7 +926,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-### **Trabalhos de conclusão de curso**
+### **Dissertações e Teses**
 
 ```{r pandemia-tcc, eval = has.sucupira.files}
 # tcc

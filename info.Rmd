@@ -191,7 +191,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Compartilhamnto de dados** {#compartilhamento-dados .tabset}
+## **Compartilhamento de dados** {#compartilhamento-dados .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">

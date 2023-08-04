@@ -49,19 +49,37 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Programa (PPG)** {#planejanemto-ppg}
+```{r, eval = !has.planejamento}
+cat('<br>')
+```
 
-*Em construção*
+```{r agendas-pesquisa, eval = has.planejamento}
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Planejamento estratégico.xlsx")
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Institucional (PDI)** {#planejanemto-pdi}
-
-*Em construção*
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+# display each sheet in a tab
+for (i in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('### **', abas[i], '**'))
+  cat('\n\n<!-- -->\n\n')
+  agendas <-
+    readxl::read_excel("PPG/Planejamento estratégico.xlsx",
+               sheet = abas[i],
+               col_types = c("text"))
+  
+  cat(
+    paste(
+      '<iframe src="',
+      agendas[1],
+      '" style=\"width:100%; height:600px; border:2px solid black;"></iframe>',
+      sep = ""
+    )
+  )
+  
+  # print end of tab rows
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+```
 
 <br>
 

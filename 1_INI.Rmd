@@ -302,6 +302,13 @@ has.periodicos <-
   )
 ```
 
+```{r try-planejamento, results = "hide"}
+has.planejamento <-
+  !is.error(try(readxl::read_excel("PPG/Planejamento estratégico.xlsx", sheet = 1),
+                silent = TRUE)
+  )
+```
+
 ```{r try-premio-capes, results = "hide"}
 has.premio.capes <-
   !is.error(try(readxl::read_excel("PPG/Prêmio CAPES de Tese.xlsx", sheet = 1),
@@ -330,13 +337,6 @@ has.repositorios.sede <-
   )
 has.repositorios.cooperacao <-
   !is.error(try(readxl::read_excel("PPG/Repositórios.xlsx", sheet = "Cooperação"),
-                silent = TRUE)
-  )
-```
-
-```{r try-softwares, results = "hide"}
-has.softwares.ppg <-
-  !is.error(try(readxl::read_excel("PPG/Softwares.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
@@ -1213,12 +1213,12 @@ has.laboratorios
 has.metodologia
 has.notas
 has.periodicos
+has.planejamento
 has.premios
 has.premio.capes
 has.producao
 has.repositorios.cooperacao
 has.repositorios.sede
-has.softwares.ppg
 
 # data sucupira
 has.artigos.completos.sucupira
