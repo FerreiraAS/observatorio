@@ -400,7 +400,7 @@ for (j in 1:length(abas)) {
     cat('<center>\n')
     cat('\n\n<!-- -->\n\n')
     link.mencao <- premios.raw[j, 2]
-    cat(paste0('<iframe src=\"', link.mencao, '\" style=\"width:100%; height:600px; border:2px solid black;"></iframe>', "\n"))
+    cat(paste0('<iframe src=\"', link.mencao, '/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe>', "\n"))
     cat('\n</center>')
     cat('</div></div>')
   } else {
