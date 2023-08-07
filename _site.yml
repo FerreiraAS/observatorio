@@ -165,11 +165,6 @@ navbar:
           href: [autoavaliacao.html#planejamento]
         - text: "Metodologia"
           href: [autoavaliacao.html#metodologia]
-          menu:
-            - text: "Formulários"
-              href: [autoavaliacao.html#formularios]
-            - text: "Grupos de trabalho"
-              href: [autoavaliacao.html#grupos-trabalho]
         - text: "Resultados"
           href: [autoavaliacao.html#resultados]
           menu:
