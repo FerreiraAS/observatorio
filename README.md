@@ -128,7 +128,7 @@ As seguintes planilhas podem ser complementadas:
 │   └── Agendas de Pesquisa.xlsx
 │   └── Apresentação.xlsx
 │   └── Área CAPES.xlsx
-│   └── Autoavaliações.xlsx
+│   └── Autoavaliação.xlsx
 │   └── Avaliação.xlsx
 │   └── Bibliografia.xlsx
 │   └── Blog institucional.xlsx

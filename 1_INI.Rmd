@@ -131,8 +131,8 @@ has.area.capes <-
 ```
 
 ```{r try-autoavaliacoes, results = "hide"}
-has.autoavaliacoes <-
-  !is.error(try(readxl::read_excel("PPG/Autoavaliações.xlsx", sheet = 1),
+has.autoavaliacao <-
+  !is.error(try(readxl::read_excel("PPG/Autoavaliação.xlsx", sheet = 1),
                 silent = TRUE))
 ```
 
@@ -1188,7 +1188,7 @@ has.ppg.files
 has.agendas.pesquisa
 has.apresentacao
 has.area.capes
-has.autoavaliacoes
+has.autoavaliacao
 has.avaliacao
 has.bibliografia
 has.blogs.externos

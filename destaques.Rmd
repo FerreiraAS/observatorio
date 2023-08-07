@@ -119,6 +119,9 @@ for (j in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = !has.sucupira.files}
+cat('<br>')
+```
 
 <br>
 
@@ -541,6 +544,10 @@ for (id in 1:length(orcids)) {
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !any(has.blog.ies, has.blogs.externos)}
+cat('<br>')
+```
 
 ### **Blog institucional** {.tabset}
 
