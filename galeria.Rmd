@@ -56,7 +56,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <div class="sizer" text-align:"center">
   <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://drive.google.com/file/d/1hX8JTcRvGgCcvjgCNgQtbHTku__ZWeFt/view" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+    <iframe class="embed-responsive-item" src="https://drive.google.com/file/d/1hX8JTcRvGgCcvjgCNgQtbHTku__ZWeFt/preview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
     </iframe>
   </div>
 </div>
