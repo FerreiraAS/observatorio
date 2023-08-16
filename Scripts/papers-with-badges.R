@@ -241,7 +241,7 @@ table.with.badges <-
         )
         
         # add authors' names
-        doi_without_altmetric$author.names[ix]
+        cat(doi_without_altmetric$author.names[ix])
         
         # add year
         cat(paste0("<br>",
