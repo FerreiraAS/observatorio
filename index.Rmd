@@ -1338,12 +1338,35 @@ summ.table.visibilidade <-
       format = "d",
       digits = 0,
       big.mark = "."
+    ),
+    sum(na.omit(as.numeric(table.3[, 2]))),
+    formatC(
+      min(table.3[, 2], na.rm = TRUE),
+      format = "d",
+      digits = 0,
+      big.mark = "."
+    ),
+    formatC(
+      median(table.3[, 2], na.rm = TRUE),
+      format = "d",
+      digits = 0,
+      big.mark = "."
+    ),
+    formatC(
+      max(table.3[, 2], na.rm = TRUE),
+      format = "d",
+      digits = 0,
+      big.mark = "."
     )
   )
 
 names(summ.table.visibilidade) <-
   c(
     "Altmetric total",
+    "Mínimo",
+    "Mediana anual",
+    "Máximo",
+    "Citação total",
     "Mínimo",
     "Mediana anual",
     "Máximo"
