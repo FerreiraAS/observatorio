@@ -19,6 +19,7 @@ packs.cran <-
     "beepr",
     "bsplus",
     "cowplot",
+    "chromote",
     "curl",
     "data.tree",
     "details",

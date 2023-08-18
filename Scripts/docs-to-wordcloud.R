@@ -53,9 +53,15 @@ if (length(df) != 0) {
     )
   # save it in html
   htmlwidgets::saveWidget(wordcloud, file.path(dir.path, "tmp.html"), selfcontained = F)
+  
+  # deactivate the crash reporter
+  old_chrome_args <- chromote::get_chrome_args()
+  chromote::set_chrome_args("--disable-crash-reporter")
+  Sys.setenv(CHROMOTE_CHROME = chromote::find_chrome())
+  
   # and in png
   webshot2::webshot(
-    url = file.path(dir.path, "tmp.html"),
+    url = file.path("file:///", dir.path, "tmp.html"),
     file = file.path(dir.path, paste0(sheet, ".png")),
     delay = 5,
     vwidth = round(1344 * 0.7),
@@ -64,8 +70,12 @@ if (length(df) != 0) {
   # delete the tmp folder and file
   unlink(file.path(dir.path, "tmp_files"), recursive = TRUE)
   unlink(file.path(dir.path, "tmp.html"))
+  
+  # Restore old defaults
+  chromote::set_chrome_args(old_chrome_args)
 } else {
-  png(file.path(dir.path, paste0(sheet, ".png")))
+  layout.m <- c(1)
+  png(file.path(dir.path, paste0(sheet, ".png")), width = round(1344 * 0.7), height = round(960 * 0.7))
   source("Scripts/plot-margins.R", local = knitr::knit_global())
   plot(0, type = 'n', axes = FALSE)
   dev.off()

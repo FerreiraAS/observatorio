@@ -419,7 +419,7 @@ categorias <-
 summ.table.projetos <-
   c(paste0(
     formatC(
-      sum(na.omit(concluido.ano)),
+      sum(concluido.ano, na.rm = TRUE),
       format = "d",
       digits = 0,
       big.mark = ".",
@@ -428,7 +428,7 @@ summ.table.projetos <-
   ),
   paste0(
     formatC(
-      sum(na.omit(andamento.ano[, dim(andamento.ano)[2]])),
+      sum(andamento.ano[, dim(andamento.ano)[2]], na.rm = TRUE),
       format = "d",
       digits = 0,
       big.mark = ".",
@@ -709,7 +709,7 @@ summ.table.financiadores <-
     paste0(
       "R$ ",
       formatC(
-        sum(na.omit(financiadores$Total)),
+        sum(financiadores$Total, na.rm = TRUE),
         format = "f",
         digits = 2,
         big.mark = ".",
@@ -717,20 +717,20 @@ summ.table.financiadores <-
       )
     ),
     paste0("R$ ", formatC(
-      median(na.omit(financiadores$Total)),
+      median(financiadores$Total, na.rm = TRUE),
       format = "f",
       digits = 0,
       big.mark = "."
     )),
     paste0("R$ ", formatC(
-      min(na.omit(financiadores$Total)),
+      min(financiadores$Total, na.rm = TRUE),
       format = "f",
       digits = 0,
       big.mark = "."
     )),
     paste0("R$ ",
            formatC(
-             max(na.omit(financiadores$Total)),
+             max(financiadores$Total, na.rm = TRUE),
              format = "f",
              digits = 0,
              big.mark = "."
@@ -1204,8 +1204,7 @@ cat('^[Produções com DOI apenas; a produção pode estar subsestimada pois pro
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
-table.1 <- 
-  table.1 <- data.frame(doi_all$published_on, doi_all$altmetric_score)
+table.1 <- data.frame(doi_all$published_on, doi_all$altmetric_score)
 
 # plot area setup
 layout.m <- c(1)
@@ -1213,14 +1212,15 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 
 # plot 1 (violin plot of Altmetric por ano)
 vioplot::vioplot(as.numeric(table.1[, 2]) ~ as.numeric(table.1[, 1]),
-        xlab = NA,
-        ylab = "Altmetric")
+                 xlab = NA,
+                 ylab = "Altmetric")
 title(main = "Atenção e visibilidade (Altmetric)",
       outer = TRUE,
       cex.main = 1.7)
 # add Altmetric logo and summary
 par(new = TRUE)
-my_image <- readPNG("Metrics/Altmetric/cropped-altmetric-symbol.png")
+my_image <-
+  readPNG("Metrics/Altmetric/cropped-altmetric-symbol.png")
 img <- as.raster(my_image)
 lm <- par("usr")
 r <- (lm[2] - lm[1]) / (lm[4] - lm[3])
@@ -1240,24 +1240,23 @@ rasterImage(
 text(
   x = (x1 + x2) / 2,
   y = (y1 + y2) / 2,
-  labels = as.character(sum(na.omit(as.numeric(table.1[, 2])))),
+  labels = as.character(sum(as.numeric(table.1[, 2]), na.rm = TRUE)),
   adj = 0.5
 )
 
 # generate cross tables of IS_OA artigos per year
 table.2 <-
-  t(table(
-    doi_all$published_on,
-    as.logical(doi_all$is_oa)
-  ))
+  t(table(doi_all$published_on,
+          as.logical(doi_all$is_oa)))
 table.2 <- table.2[order(rownames(table.2)), ]
 rownames(table.2) <- c("Open access", "Paywall")
 # swap lines
-table.2 <- table.2[seq_len(nrow(table.2)) + c(1,-1),]
+table.2 <- table.2[seq_len(nrow(table.2)) + c(1, -1),]
 
 # Define the number of colors you want
 nb.cols <- length(rownames(table.2))
-mycolors <- colorRampPalette(RColorBrewer::brewer.pal(9, "Set3"))(nb.cols)
+mycolors <-
+  colorRampPalette(RColorBrewer::brewer.pal(9, "Set3"))(nb.cols)
 
 # plot 2 (IS_OA in plot)
 layout.m <- c(1)
@@ -1287,22 +1286,21 @@ legend(
   cex = 1,
 )
 
-if(sjmisc::is_empty(doi_all$citations)){
+if (sjmisc::is_empty(doi_all$citations)) {
   table.3 <- as.matrix(rep(0, length(max(anos) - min(anos) + 1)))
 } else {
   # generate cross tables of citations per year
   table.3 <-
-    t(table(
-      doi_all$published_on,
-      doi_all$citations
-    ))
+    t(table(doi_all$published_on,
+            doi_all$citations))
   table.3 <- table.3[order(rownames(table.3)),]
   table.3 <- colSums(table.3)
 }
 
 # Define the number of colors you want
 nb.cols <- length(table.3)
-mycolors <- colorRampPalette(RColorBrewer::brewer.pal(9, "Set3"))(nb.cols)
+mycolors <-
+  colorRampPalette(RColorBrewer::brewer.pal(9, "Set3"))(nb.cols)
 
 # plot 3 (CITATIONS in plot)
 layout.m <- c(1)
@@ -1320,7 +1318,7 @@ title(main = "Total de citações",
 # calculate summary statistics for visibilidade
 summ.table.visibilidade <-
   cbind(
-    sum(na.omit(as.numeric(table.1[, 2]))),
+    sum(as.numeric(table.1[, 2]), na.rm = TRUE),
     formatC(
       min(table.1[, 2], na.rm = TRUE),
       format = "d",
@@ -1339,21 +1337,21 @@ summ.table.visibilidade <-
       digits = 0,
       big.mark = "."
     ),
-    sum(na.omit(as.numeric(table.3[, 2]))),
+    sum(as.numeric(table.3), na.rm = TRUE),
     formatC(
-      min(table.3[, 2], na.rm = TRUE),
+      min(table.3, na.rm = TRUE),
       format = "d",
       digits = 0,
       big.mark = "."
     ),
     formatC(
-      median(table.3[, 2], na.rm = TRUE),
+      median(table.3, na.rm = TRUE),
       format = "d",
       digits = 0,
       big.mark = "."
     ),
     formatC(
-      max(table.3[, 2], na.rm = TRUE),
+      max(table.3, na.rm = TRUE),
       format = "d",
       digits = 0,
       big.mark = "."
@@ -1366,14 +1364,14 @@ names(summ.table.visibilidade) <-
     "Mínimo",
     "Mediana anual",
     "Máximo",
-    "Citação total",
+    "Citações totais",
     "Mínimo",
     "Mediana anual",
     "Máximo"
   )
 
 # plot area setup
-layout.m <- matrix(c(1, 1, 1, 2, 3, 4),
+layout.m <- matrix(c(1, 1, 1, 2, 3, 4, 5, 5, 5, 6, 7, 8),
                    ncol = 3,
                    byrow = TRUE)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
