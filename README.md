@@ -13,6 +13,7 @@
       * [Agencias](#Agencias)
       * [Curriculo Lattes](#Curriculo-Lattes)
       * [Metricas](#Metricas)
+      * [API](#api)
    * [Instalacao](#instalacao)
    * [Como usar](#Como-usar)
    * [Atualizações](#Atualizacoes)
@@ -224,12 +225,15 @@ Para análise das métricas, as seguintes fontes são utilizadas:
 ```
 
 
-## **Instalacao**
+### **API**
 
-Antes de começar, você vai precisar instalar em sua máquina os seguintes programas:
+Para obter dados de métricas, as seguintes API são utilizadas:
 
-- [R project](https://www.r-project.org)
-- [Rstudio desktop](https://posit.co/download/rstudio-desktop/)
+- [**ORCID API**](https://info.orcid.org/documentation/features/public-api/)
+Para acesso a dados de *Invited positions*, *Membership*, *Services*, *Reviewer board*
+
+- [**Scopus API**](https://dev.elsevier.com/sc_apis.html)
+Para acesso a dados da Scopus e SciVal
 
 
 ## **Como usar**
