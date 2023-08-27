@@ -452,7 +452,9 @@ for (id in 1:length(orcids)) {
   my_orcid <- orcids[id]
 
   cat('\n\n<!-- -->\n\n')
-  cat('#### **', assoc.name, '**', sep = "")
+  cat('#### **', as.character(id), '**', sep = "")
+  cat('\n\n<!-- -->\n\n')
+  cat('##### **', assoc.name, '**', sep = "")
   cat('\n\n<!-- -->\n\n')
   source("Scripts/memberships-services.R", local = knitr::knit_global())
   cat('\n\n<!-- -->\n\n')
@@ -490,7 +492,9 @@ for (id in 1:length(orcids)) {
   my_orcid <- orcids[id]
 
   cat('\n\n<!-- -->\n\n')
-  cat('##### **', editor.name, '**', sep = "")
+  cat('##### **', as.character(id), '**', sep = "")
+  cat('\n\n<!-- -->\n\n')
+  cat('###### **', editor.name, '**', sep = "")
   cat('\n\n<!-- -->\n\n')
   source("Scripts/invited-positions.R", local = knitr::knit_global())
   cat('\n\n<!-- -->\n\n')
@@ -526,7 +530,9 @@ for (id in 1:length(orcids)) {
   my_orcid <- orcids[id]
 
   cat('\n\n<!-- -->\n\n')
-  cat('##### **', reviewer.name, '**', sep = "")
+  cat('##### **', as.character(id), '**', sep = "")
+  cat('\n\n<!-- -->\n\n')
+  cat('###### **', reviewer.name, '**', sep = "")
   cat('\n\n<!-- -->\n\n')
   source("Scripts/reviewer-board.R", local = knitr::knit_global())
   cat('\n\n<!-- -->\n\n')
