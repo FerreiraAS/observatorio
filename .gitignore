@@ -6,7 +6,8 @@
 .Rdata
 .httr-oauth
 .DS_Store
-
-# ignore Sucupira files
-Sucupira/
 .quarto
+
+# ignore folder & files
+cache/
+Sucupira/

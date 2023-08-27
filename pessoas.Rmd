@@ -141,6 +141,7 @@ colnames(table.2) <-
     "Nome",
     "Categoria",
     "Vigência")
+rownames(table.2) <- c()
 
 # print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -211,6 +212,37 @@ for (i in 1:dim(docentes)[1]) {
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
 cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
+### **IDs** {.tabset}
+
+```{r ids-externos-docentes, cache = TRUE, cache.path = "cache/external-ids/", eval = has.sucupira.files}
+# docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# keep active professors and remove duplicated data
+sucupira <-
+  sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`),]
+sucupira.unique <-
+  sucupira[!duplicated(sucupira$`Nome Docente`) &
+             !is.na(sucupira$ORCID), ]
+
+my_orcid <-
+  gsub("(.{14})(.*)$",
+       "\\1-\\2",
+       gsub(
+         "(.{9})(.*)$",
+         "\\1-\\2",
+         gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
+       ))
+
+cat('\n\n<!-- -->\n\n')
+source("Scripts/external_identifiers.R", local = knitr::knit_global())
+cat('\n\n<!-- -->\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
@@ -318,6 +350,7 @@ colnames(table.2) <-
 # print tables
 ids <- order(table.2$'Nome', decreasing = FALSE)
 table <- table.2[ids, ]
+rownames(table) <- c()
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes - 2024-2021")
 
@@ -509,6 +542,7 @@ colnames(table.2) <-
 # print tables
 ids <- order(table.2$'Nome', decreasing = FALSE)
 table <- table.2[ids, ]
+rownames(table) <- c()
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes - 2020-2017")
 
@@ -700,6 +734,7 @@ colnames(table.2) <-
 # print tables
 ids <- order(table.2$'Nome', decreasing = FALSE)
 table <- table.2[ids, ]
+rownames(table) <- c()
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes - 2016-2013")
 
@@ -891,6 +926,7 @@ colnames(table.2) <-
 # print tables
 ids <- order(table.2$'Nome', decreasing = FALSE)
 table <- table.2[ids, ]
+rownames(table) <- c()
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes - 2012-2010")
 
@@ -1076,6 +1112,7 @@ if (dim(docentes)[1] == 0) {
   # print tables
   ids <- order(table.2$'Nome', decreasing = FALSE)
   table <- table.2[ids, ]
+  rownames(table) <- c()
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2024-2021")))
   
@@ -1179,6 +1216,7 @@ if (dim(docentes)[1] == 0) {
   # print tables
   ids <- order(table.2$'Nome', decreasing = FALSE)
   table <- table.2[ids, ]
+  rownames(table) <- c()
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2020-2017")))
 
@@ -1282,6 +1320,7 @@ if (dim(docentes)[1] == 0) {
   # print tables
   ids <- order(table.2$'Nome', decreasing = FALSE)
   table <- table.2[ids, ]
+  rownames(table) <- c()
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2016-2013")))
   
@@ -1385,6 +1424,7 @@ if (dim(docentes)[1] == 0) {
   # print tables
   ids <- order(table.2$'Nome', decreasing = FALSE)
   table <- table.2[ids, ]
+  rownames(table) <- c()
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2012-2010")))
   
