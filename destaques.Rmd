@@ -582,9 +582,6 @@ for (j in 1:length(abas)) {
   news <- news[, -1]
   # store data to print table
   news.list[[j]] <- news
-  
-  # store data to plot wordcloud
-  topics <- rbind(topics, news[i, 1])
 }
 
 # iterate across sheets
@@ -635,9 +632,6 @@ for (j in 1:length(abas)) {
   news <- news[, -1]
   # store data to print table
   news.list[[j]] <- news
-  
-  # store data to plot wordcloud
-  topics <- rbind(topics, news[i, 1])
 }
 
 # iterate across sheets

@@ -229,7 +229,7 @@ for (j in 1:length(abas)) {
 
 <br>
 
-```{r barchart-data, eval = any(has.sucupira.files, has.ppg.files)}
+```{r barchart-data, eval = any(has.sucupira.files, has.ppg.files), cache = TRUE, cache.path = "cache/missing/"}
 data.sucupira <- 0
 if (has.sucupira.files) {
   # get amount of data from Sucupira XLSX files

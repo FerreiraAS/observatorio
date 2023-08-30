@@ -160,6 +160,17 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
+<div class="sizer" text-align:"center">
+  <div class="embed-responsive embed-responsive-16by9">
+    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/76131bUiBxs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
 #### **Semana Nacional de Ciência e Tecnologia**
 
 <br>
@@ -318,50 +329,54 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-### **Minha história junto à CAPES** {.tabset}
-
-#### **Gabriela Saliba**
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/76131bUiBxs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-## **Podcasts** {#podcasts}
+## **Podcasts** {#podcasts .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<iframe src=https://open.spotify.com/embed/episode/2IsWuEZ2lRgx6L4P1EsGbB?utm_source=generator" height="102px" width="400px" frameborder="0" scrolling="no"></iframe>
+```{r, eval = !has.podcasts}
+cat('<br>')
+```
 
-<br>
+```{r podcasts, eval = has.podcasts}
+# read separate sheets
+file.path <- "PPG/Podcasts.xlsx"
+abas <- excel_sheets(file.path)
+topics <- c()
+podcasts.list <- vector(mode = "list", length = length(abas))
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+# iterate across sheets
+for (j in 1:length(abas)) {
+  podcasts <-
+    readxl::read_excel(file.path,
+               sheet = abas[j],
+               col_types = c("text", "text", "text"))
+  # replace the link by a tag
+  for (i in 1:dim(podcasts)[1]) {
+    podcasts[i, 3] <-
+      paste0('<iframe src=', podcasts[i,3],'\" height="100px" width="400px" frameborder="0" scrolling="no"></iframe>')
+  }
+  
+  # store data to print table
+  podcasts.list[[j]] <- podcasts[i,3]
+}
 
-<br>
-
-<iframe src="https://anchor.fm/fisiounisuam-podcast/embed/episodes/Fisiounisuam-Podcast---A-importncia-do-mestrado-e-do-doutorado-na-carreira-profissional-ee3pe2/a-a271fuh" height="102px" width="400px" frameborder="0" scrolling="no"></iframe>
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-<iframe src="https://anchor.fm/fisiounisuam-podcast/embed/episodes/Fisiounisuam-Podcast---COVID-19---Fatos-e-Fakes-ec0tkc/a-a1pkpui" height="102px" width="400px" frameborder="0" scrolling="no"></iframe>
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+# iterate across sheets
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat("### **", abas[j], "**", "\n", sep = "")
+  cat('\n\n<!-- -->\n\n')
+  print(
+    kable(podcasts.list[[j]], align = c("l", rep("c", ncol(
+      podcasts
+    ) - 2), "r"), escape = FALSE) %>% kable_styling(
+      bootstrap_options = c("hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+```
 
 <br>
