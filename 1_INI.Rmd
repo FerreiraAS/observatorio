@@ -36,7 +36,6 @@ if(!file.exists(".nojekyll")) {
 }
 ```
 
-
 ```{r main-color, results = "hide"}
 # read CSS color for this page
 css <- cssparser::read_css("CSS/main-color.css")
