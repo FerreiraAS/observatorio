@@ -30,6 +30,11 @@ knitr::opts_chunk$set(
 source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
+```{r update, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, results = "hide"}
+# update all packages
+update.packages(checkBuilt = TRUE, ask = FALSE)
+```
+
 ```{r nojekyll, results = "hide"}
 if(!file.exists(".nojekyll")) {
   file.create('.nojekyll')
@@ -350,6 +355,13 @@ has.repositorios.sede <-
   )
 has.repositorios.cooperacao <-
   !is.error(try(readxl::read_excel("PPG/Repositórios.xlsx", sheet = "Cooperação"),
+                silent = TRUE)
+  )
+```
+
+```{r try-vidos, results = "hide"}
+has.videos <-
+  !is.error(try(readxl::read_excel("PPG/Videos.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
@@ -1233,6 +1245,7 @@ has.premio.capes
 has.producao
 has.repositorios.cooperacao
 has.repositorios.sede
+has.videos
 
 # data sucupira
 has.artigos.completos.sucupira

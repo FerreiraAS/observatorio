@@ -115,9 +115,6 @@ if (!require("pacman"))
   install.packages("pacman")
 pacman::p_load_gh("trinker/textreadr")
 
-# update all packages
-update.packages(checkBuilt = TRUE, ask = FALSE)
-
 # load all libraries
 packs <- c(packs.cran, packs.git)
 

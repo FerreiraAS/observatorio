@@ -45,287 +45,57 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Videos** {#videos}
+## **Videos** {#videos .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Aula inaugural**
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://drive.google.com/file/d/1hX8JTcRvGgCcvjgCNgQtbHTku__ZWeFt/preview" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Nacionais** {.tabset}
-
-#### **Simpósio Docente UNISUAM**
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/JuKDdmZBH2U" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **Simpósio Paradesportivo Carioca**
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/1O_S0kEW9Rk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/i_PZ-Bgy1dE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **Semana de Pesquisa, Extensão e Inovação** {.tabset}
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/sBn1gOF8Atg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **Seminários**
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/lTCOy16h72M" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/oCiy3mVQzwc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/fgH6bdfPNIw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/76131bUiBxs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **Semana Nacional de Ciência e Tecnologia**
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/sOPly6iq_Ks" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **Entrevistas**
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/khl3Jgfsag8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **Internacionais** {.tabset}
-
-#### **Pós-Doutorado**
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/Gxp1Jf_E4y0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/U82ga-7a6UY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/WmHL5xColOU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/cS0fTOzBtPg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/9NqqtmxrDzs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/g3UPrMRnuWw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **Eventos**
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/gqgdUrxDzMo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/RqoKeSQf6tg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/dd994Nj-HF4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-#### **Seminários**
-
-<br>
-
-<div class="sizer" text-align:"center">
-  <div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/LCwWYpWo6fs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+```{r, eval = !has.videos}
+cat('<br>')
+```
+
+```{r videos, eval = has.videos}
+# read separate sheets
+file.path <- "PPG/Videos.xlsx"
+abas <- excel_sheets(file.path)
+topics <- c()
+videos.list <- vector(mode = "list", length = length(abas))
+
+# iterate across sheets
+for (j in 1:length(abas)) {
+  videos <-
+    readxl::read_excel(file.path,
+               sheet = abas[j],
+               col_types = c("text"))
+  # replace the link by a tag
+  for (i in 1:dim(videos)[1]) {
+    videos[i, 4] <-
+      paste0('<div class="sizer" text-align:"center"><div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="',
+    videos[i,4],
+    '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>')
+  }
+  
+  # store data to print table
+  videos.list[[j]] <- videos
+}
+
+# iterate across sheets
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat("### **", abas[j], "**", "\n", sep = "")
+  cat('\n\n<!-- -->\n\n')
+  print(
+    kable(videos.list[[j]][4], align = c("l", rep("c", ncol(
+      videos
+    ) - 2), "r"), escape = FALSE, col.names = NA) %>% kable_styling(
+      bootstrap_options = c("hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+```
 
 <br>
 
@@ -350,7 +120,7 @@ for (j in 1:length(abas)) {
   podcasts <-
     readxl::read_excel(file.path,
                sheet = abas[j],
-               col_types = c("text", "text", "text"))
+               col_types = c("text"))
   # replace the link by a tag
   for (i in 1:dim(podcasts)[1]) {
     podcasts[i, 3] <-
@@ -358,7 +128,7 @@ for (j in 1:length(abas)) {
   }
   
   # store data to print table
-  podcasts.list[[j]] <- podcasts[i,3]
+  podcasts.list[[j]] <- podcasts
 }
 
 # iterate across sheets
@@ -369,7 +139,7 @@ for (j in 1:length(abas)) {
   print(
     kable(podcasts.list[[j]], align = c("l", rep("c", ncol(
       podcasts
-    ) - 2), "r"), escape = FALSE) %>% kable_styling(
+    ) - 2), "r"), escape = FALSE, col.names = NA) %>% kable_styling(
       bootstrap_options = c("hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
