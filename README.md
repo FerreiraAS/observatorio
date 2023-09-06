@@ -2,6 +2,8 @@
 
 ## O **Observatório** é uma iniciativa que envolve o registro, o acompanhamento e a análise agregada e estruturada de dados de Programas de Pós-graduação Stricto Sensu do Brasil para divulgação transparente de suas atividades, planejamentos, ações e impactos, tornando-os acessíveis à sociedade
 
+<a href="https://zenodo.org/badge/latestdoi/580590445"><img src="https://zenodo.org/badge/580590445.svg" alt="DOI"></a>
+
 **Sumário**
 =================
 <!--ts-->
