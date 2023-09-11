@@ -18,11 +18,11 @@ for (id in 1:length(my_orcid)) {
         },
       t(c(my_orcid[id], res[[id]]$`external-identifier`$`external-id-value`))
     ))
+    # add column names
+    colnames(ext.id) <- c("Nome", "ORCID", res[[id]]$`external-identifier`$`external-id-type`)
     # remove duplicated columns if any
     ext.id <- ext.id[!duplicated(as.list(ext.id))]
 
-    # add column names
-    colnames(ext.id) <- c("Nome", "ORCID", res[[id]]$`external-identifier`$`external-id-type`)
     res.all <- 
       dplyr::bind_rows(
         res.all,
@@ -33,9 +33,12 @@ for (id in 1:length(my_orcid)) {
 
 # remove multiple Scopus ID if any
 mult.ids <- c()
-for(i in 2:10){
+for(i in 2:100){
   mult.ids <- c(mult.ids, paste("Scopus Author ID...", as.character(i), sep = ""))
 }
+
+# data %>% mutate(mycol = coalesce(x,y,z)) %>%
+#   select(a, mycol)
 
 res.all <- res.all[ , !names(res.all) %in% mult.ids]
 
