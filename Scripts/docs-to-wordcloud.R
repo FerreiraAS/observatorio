@@ -6,11 +6,11 @@ docs <- tm::Corpus(tm::VectorSource(data.to.cloud))
 
 # cleaning text
 docs <- tm::tm_map(docs, tm::content_transformer(tolower))
-docs <- tm::tm_map(docs, removeWords, tm::stopwords("portuguese"))
-docs <- tm::tm_map(docs, removeWords, tm::stopwords("english"))
-docs <- tm::tm_map(docs, removePunctuation)
-docs <- tm::tm_map(docs, removeNumbers)
-docs <- tm::tm_map(docs, stripWhitespace)
+docs <- tm::tm_map(docs, tm::removeWords, tm::stopwords("portuguese"))
+docs <- tm::tm_map(docs, tm::removeWords, tm::stopwords("english"))
+docs <- tm::tm_map(docs, tm::removePunctuation)
+docs <- tm::tm_map(docs, tm::removeNumbers)
+docs <- tm::tm_map(docs, tm::stripWhitespace)
 
 # create a document-term matrix
 dtm <- tm::TermDocumentMatrix(docs)

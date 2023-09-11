@@ -16,12 +16,13 @@ for (id in 1:length(my_orcid)) {
         temp <- rorcid::orcid_id(my_orcid[id])
         tools::toTitleCase(paste(temp[[1]]$name$`given-names`, temp[[1]]$name$`family-name`))
         },
-      t(res[[id]]$`external-identifier`$`external-id-value`)
+      t(c(my_orcid[id], res[[id]]$`external-identifier`$`external-id-value`))
     ))
-    # add column names
-    colnames(ext.id) <- c("Nome", res[[id]]$`external-identifier`$`external-id-type`)
     # remove duplicated columns if any
     ext.id <- ext.id[!duplicated(as.list(ext.id))]
+
+    # add column names
+    colnames(ext.id) <- c("Nome", "ORCID", res[[id]]$`external-identifier`$`external-id-type`)
     res.all <- 
       dplyr::bind_rows(
         res.all,
@@ -29,6 +30,14 @@ for (id in 1:length(my_orcid)) {
       )
   }
 }
+
+# remove multiple Scopus ID if any
+mult.ids <- c()
+for(i in 2:10){
+  mult.ids <- c(mult.ids, paste("Scopus Author ID...", as.character(i), sep = ""))
+}
+
+res.all <- res.all[ , !names(res.all) %in% mult.ids]
 
 if(!sjmisc::is_empty(res.all)){
   # print table (external IDs)
@@ -60,3 +69,4 @@ if(!sjmisc::is_empty(res.all)){
   )
   cat('<br>')
 }
+  

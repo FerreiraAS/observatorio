@@ -486,7 +486,7 @@ table.1.1.1 <-
     missing = "no",
     digits = list(everything() ~ 0)) %>%
   gtsummary::modify_header(
-#    label = "**Ano**",
+    label = "**Ano**",
     all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(
     tidyselect::everything() ~ NA) %>%
@@ -586,7 +586,7 @@ table.1.1.2 <-
     missing = "no",
     digits = list(everything() ~ 0)) %>%
   gtsummary::modify_header(
-#    label = "**Ano**",
+    label = "**Ano**",
     all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(
     tidyselect::everything() ~ NA) %>%
