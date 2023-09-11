@@ -33,12 +33,9 @@ for (id in 1:length(my_orcid)) {
 
 # remove multiple Scopus ID if any
 mult.ids <- c()
-for(i in 2:100){
-  mult.ids <- c(mult.ids, paste("Scopus Author ID...", as.character(i), sep = ""))
+for(i in 1:100){
+  mult.ids <- c(mult.ids, paste("Scopus Author ID.", as.character(i), sep = ""), paste("Scopus Author ID...", as.character(i), sep = ""))
 }
-
-# data %>% mutate(mycol = coalesce(x,y,z)) %>%
-#   select(a, mycol)
 
 res.all <- res.all[ , !names(res.all) %in% mult.ids]
 
