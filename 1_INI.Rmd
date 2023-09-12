@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
   results = "asis",
   include = TRUE,
   out.width = "100%",
-  knitr.kable.NA = '--',
+  knitr.kable.NA = '',
   knitr.table.format = "html"
 )
 source("Scripts/all-required-packages.R", local = knitr::knit_global())
@@ -32,7 +32,7 @@ source("Scripts/all-required-packages.R", local = knitr::knit_global())
 
 ```{r update, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, results = "hide"}
 # update all packages
-update.packages(checkBuilt = TRUE, ask = FALSE)
+# update.packages(checkBuilt = TRUE, ask = FALSE)
 ```
 
 ```{r nojekyll, results = "hide"}

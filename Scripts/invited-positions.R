@@ -19,6 +19,27 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
   }
   colnames(invited.pos) <- c("Periódico", "Atuação")
   
+  # get SJR from SCImago database
+  SJR <- c()
+  for (k in 1:dim(invited.pos)[1]){
+    SJR.i <- scimago[match(tolower(invited.pos[k, 1]), tolower(scimago$Title)), 6]
+    SJR <- c(SJR, ifelse(length(SJR.i) != 0, SJR.i, NA))
+  }
+  # get CiteScore from SCOPUS database
+  CITESCORE <- c()
+  for (k in 1:dim(invited.pos)[1]){
+    CITESCORE.i <- citescore$CiteScore[match(tolower(invited.pos[k, 1]), tolower(citescore$source_title_medline_sourced_journals_are_indicated_in_green))]
+    CITESCORE <- c(CITESCORE, ifelse(length(CITESCORE.i) != 0, CITESCORE.i, NA))
+  }
+  # get QUALIS from CAPES database
+  QUALIS <- c()
+  for (k in 1:dim(invited.pos)[1]){
+    QUALIS.i <- qualis$Estrato[match(tolower(invited.pos[k, 1]), tolower(qualis$Título))]
+    QUALIS <- c(QUALIS, ifelse(length(QUALIS.i) != 0, QUALIS.i, NA))
+  }
+  
+  invited.pos <- cbind(invited.pos, SJR, CITESCORE, QUALIS)
+  
   # print table (reviewed journals)
   print(
     knitr::kable(

@@ -12,6 +12,9 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
       res[[1]]$group$`external-ids.external-id`, `[[`, 2
     ), ":"), `[[`, 2)
   
+  # list journals
+  journals <- issn_title[issn]
+  
   # get SJR from SCImago database
   SJR <- c()
   for (i in 1:length(issn)) {
@@ -19,23 +22,23 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
       scimago[grep(gsub("-", "", substr(issn[i], 1, 9)), scimago$Issn), 6]
     SJR <- c(SJR, ifelse(length(SJR.i) != 0, SJR.i, ""))
   }
-  
-  # list journals
-  journals <- issn_title[issn]
-  
+
   # bind and rank by SJR
   peer.review <-
     data.frame(matrix(unname(journals), ncol = 1), matrix(SJR, ncol = 1))
   peer.review <-
     peer.review[order(as.numeric(SJR), decreasing = TRUE), ]
-  
+
   # remove rows with incomplete data
   peer.review <- peer.review[complete.cases(peer.review), ]
   colnames(peer.review) <-
     c(paste("Periódicos (", dim(peer.review)[1], ")", sep = ""), "SJR")
   rownames(peer.review) <- c()
   
-  # print table (reviewed journals)
+  # remove duplicates
+  peer.review <- peer.review[!duplicated(peer.review), ]
+
+  # print table (peer review)
   print(
     knitr::kable(
       peer.review,
