@@ -1831,19 +1831,23 @@ colnames(table.3) <- posdoc.years
 table.3a <- table.3
 table.3b <- table.3
 
-for(i in 1:dim(table.1)[1]){
-  for(j in 1:dim(table.1)[2]){
-    table.3a[
-      match(rownames(table.1)[i], rownames(table.3)),
-      match(colnames(table.1)[j], colnames(table.3))] <- table.1[i, j]
-  } 
+if(sum(table.1) != 0) {
+  for (i in 1:dim(table.1)[1]) {
+    for (j in 1:dim(table.1)[2]) {
+      table.3a[match(rownames(table.1)[i], rownames(table.3)),
+               match(colnames(table.1)[j], colnames(table.3))] <-
+        table.1[i, j]
+    }
+  }
 }
-for(i in 1:dim(table.2)[1]){
-  for(j in 1:dim(table.2)[2]){
-    table.3b[
-      match(rownames(table.2)[i], rownames(table.3)),
-      match(colnames(table.2)[j], colnames(table.3))] <- table.2[i, j]
-  } 
+if (sum(table.2) != 0) {
+  for (i in 1:dim(table.2)[1]) {
+    for (j in 1:dim(table.2)[2]) {
+      table.3b[match(rownames(table.2)[i], rownames(table.3)),
+               match(colnames(table.2)[j], colnames(table.3))] <-
+        table.2[i, j]
+    }
+  }
 }
 table.3 <- as.matrix(table.3a) + as.matrix(table.3b)
 
@@ -1905,13 +1909,13 @@ ggplot2::ggplot() +
     axis.text.x = element_blank(),
     axis.text.y = element_blank(),
     plot.title = element_text(
-      size = 15,
+      size = 18,
       color = "white",
       face = "bold",
       hjust = 0.5
     )
   ) +
-  ggtitle("Nacionalidade dos pesquisadores em Pós-Doutorado")
+  ggtitle("Distribuição global de Pós-Docs")
 
 # plot 3 (summary table in plot)
 
@@ -2249,7 +2253,7 @@ ggplot2::ggplot() +
       hjust = 0.5
     )
   ) +
-  ggtitle("Pesquisadores colaboradores internacionais")
+  ggtitle("Distribuição global de Participantes Externos")
 
 # plot 7 (summary table in plot)
 
