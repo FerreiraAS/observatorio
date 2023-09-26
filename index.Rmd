@@ -1792,6 +1792,177 @@ cat(
 
 <br>
 
+```{r sintese-posdoc, include = FALSE, eval = has.posdocs}
+# posdocs
+sheet <- "Pós-Doc"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+posdoc.raw <- sucupira.raw
+posdoc.raw$`Vínculo Início` <-
+  as.Date(posdoc.raw$`Vínculo Início`, format = "%d/%m/%Y")
+posdoc.raw$`Vínculo Fim` <-
+  substr(as.Date(posdoc.raw$`Vínculo Fim`, format = "%d/%m/%Y"), 1, 4)
+posdoc.raw$'Ano Matrícula' <-
+  substr(as.Date(posdoc.raw$`Vínculo Início`, format = "%d/%m/%Y"), 1, 4)
+
+posdocs <- posdoc.raw[!is.na(posdoc.raw$`Vínculo Fim`), ]
+posdocs <- posdocs[!is.na(posdocs$`Pós-Doc Nome`), ]
+posdocs <- posdocs[!duplicated(posdocs), ]
+
+posdocs.atuais <- posdoc.raw[is.na(posdoc.raw$`Vínculo Fim`), ]
+posdocs.atuais <- posdocs.atuais[!is.na(posdocs.atuais$`Pós-Doc Nome`), ]
+posdocs.atuais <- posdocs.atuais[!duplicated(posdocs.atuais), ]
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+# generate plot of posdocs per year
+table.1 <- table(posdocs$Nacionalidade, posdocs$'Ano Matrícula')
+table.2 <- table(posdocs.atuais$Nacionalidade, posdocs.atuais$'Ano Matrícula')
+
+# all posdocs
+posdoc.years <- min(posdocs$'Ano Matrícula', posdocs.atuais$'Ano Matrícula'):max(posdocs$'Ano Matrícula', posdocs.atuais$'Ano Matrícula')
+
+table.3 <- matrix(0, nrow = length(unique(posdoc.raw$Nacionalidade)), ncol = length(posdoc.years))
+rownames(table.3) <- unique(posdoc.raw$Nacionalidade)
+colnames(table.3) <- posdoc.years
+
+table.3a <- table.3
+table.3b <- table.3
+
+for(i in 1:dim(table.1)[1]){
+  for(j in 1:dim(table.1)[2]){
+    table.3a[
+      match(rownames(table.1)[i], rownames(table.3)),
+      match(colnames(table.1)[j], colnames(table.3))] <- table.1[i, j]
+  } 
+}
+for(i in 1:dim(table.2)[1]){
+  for(j in 1:dim(table.2)[2]){
+    table.3b[
+      match(rownames(table.2)[i], rownames(table.3)),
+      match(colnames(table.2)[j], colnames(table.3))] <- table.2[i, j]
+  } 
+}
+table.3 <- as.matrix(table.3a) + as.matrix(table.3b)
+
+# plot 1 (posdocs titulados)
+barplot(as.matrix(table.3),
+        ylab = "Pós-docs",
+        col = RColorBrewer::brewer.pal(n = 9, name = "Set3"))
+title(main = "Estágio Pós-Doutoral",
+      outer = TRUE,
+      cex.main = 1.7)
+legend(
+  "topleft",
+  legend = unique(posdocs$Nacionalidade),
+  fill = RColorBrewer::brewer.pal(n = 9, name = "Set3"),
+  text.col = "white",
+  box.lwd = 0,
+  bty = "n",
+  horiz = FALSE,
+  cex = 1
+)
+
+# plot 2 (geospatial plot of posdocs)
+paises <- as.data.frame(table(c(posdocs$País, posdocs.atuais$País)))
+source("Scripts/worldmap.R", local = knitr::knit_global())
+
+ggplot2::ggplot() +
+  ggplot2::geom_polygon(data = worldmap,
+                        aes(
+                          x = long,
+                          y = lat,
+                          group = group,
+                          fill = Freq
+                        )) +
+  cowplot::theme_map() +
+  scale_fill_distiller(
+    palette = "Spectral",
+    name = "Pós-Docs, n",
+    limits = c(min(0, paises$Freq), max(paises$Freq)),
+    na.value = "grey"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = 'bottom',
+    legend.title = element_text(color = "white"),
+    legend.text = element_text(color = "white"),
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank()
+  ) +
+  theme(
+    plot.margin = unit(c(0, 0, 0, 0), "cm"),
+    panel.background = element_rect(fill = main.color,  color = main.color),
+    plot.background = element_rect(fill = main.color,  color = main.color),
+    panel.grid.major = element_line(color = "transparent"),
+    panel.grid.minor = element_line(color = "transparent"),
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    plot.title = element_text(
+      size = 15,
+      color = "white",
+      face = "bold",
+      hjust = 0.5
+    )
+  ) +
+  ggtitle("Nacionalidade dos pesquisadores em Pós-Doutorado")
+
+# plot 3 (summary table in plot)
+
+# calculate summary statistics for posdocs
+summ.table.posdoc <-
+  c(
+    sum(table.3),
+    sum(table.1),
+    as.numeric(rowSums(table.1)),
+    sum(table.2),
+    as.numeric(rowSums(table.2))
+  )
+
+names(summ.table.posdoc) <-
+  c(
+    "Pós-Docs total",
+    "Concluídos",
+    names(rowSums(table.1)),
+    "Vigentes",
+    names(rowSums(table.2))
+  )
+
+# plot area setup
+layout.m <- matrix(c(1,1,1,2,3,4,5,6,7),
+                   ncol = 3,
+                   byrow = TRUE)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+summ.data <- summ.table.posdoc
+source("Scripts/plot-summaries.R", local = knitr::knit_global())
+```
+
+```{r sintese-posdoc-carousel, eval = has.posdocs}
+# carousel
+bsplus::bs_carousel(id = "posdoc-carousel",
+            use_indicators = FALSE,
+            use_controls = TRUE) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-1.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-2.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-3.png"))
+
+cat('\n\n')
+cat(
+  "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)"
+)
+```
+
+<br>
+
+<br>
+
 ```{r sintese-rede, include = FALSE, eval = has.sucupira.files}
 # projetos
 sheet <- "Projetos - Membros"
@@ -2032,7 +2203,55 @@ title(
   cex.main = 1.7
 )
 
-# plot 6 (summary table in plot)
+# plot 6 (geospatial plot of participantes externos)
+paises <- as.data.frame(table(as.character(mundo)))
+source("Scripts/worldmap.R", local = knitr::knit_global())
+
+ggplot2::ggplot() +
+  ggplot2::geom_polygon(data = worldmap,
+                        aes(
+                          x = long,
+                          y = lat,
+                          group = group,
+                          fill = Freq
+                        )) +
+  cowplot::theme_map() +
+  scale_fill_distiller(
+    palette = "Spectral",
+    name = "Pós-Docs, n",
+    limits = c(min(0, paises$Freq), max(paises$Freq)),
+    na.value = "grey"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = 'bottom',
+    legend.title = element_text(color = "white"),
+    legend.text = element_text(color = "white"),
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank()
+  ) +
+  theme(
+    plot.margin = unit(c(0, 0, 0, 0), "cm"),
+    panel.background = element_rect(fill = main.color,  color = main.color),
+    plot.background = element_rect(fill = main.color,  color = main.color),
+    panel.grid.major = element_line(color = "transparent"),
+    panel.grid.minor = element_line(color = "transparent"),
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    plot.title = element_text(
+      size = 15,
+      color = "white",
+      face = "bold",
+      hjust = 0.5
+    )
+  ) +
+  ggtitle("Pesquisadores colaboradores internacionais")
+
+# plot 7 (summary table in plot)
 
 # calculate summary statistics for IES
 summ.table.ies <-
@@ -2075,7 +2294,8 @@ bsplus::bs_carousel(id = "rede-carousel",
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-2.png")) %>%
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-3.png")) %>%
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-4.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-5.png"))
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-5.png")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-6.png"))
 
 cat('\n\n')
 cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
@@ -2085,7 +2305,7 @@ cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/
 
 <br>
 
-<div><center><img width="10%" height="10%" src="https://raw.githubusercontent.com/rstudio/hex-stickers/main/thumbs/RStudio.png"> Esta página foi desenvolvida em [**`r R.version$version.string`**](https://www.rstudio.com) usando [**R markdown**](https://rmarkdown.rstudio.com)
+<div><center><img width="5%" height="5%" src="https://raw.githubusercontent.com/rstudio/hex-stickers/main/thumbs/RStudio.png"> Esta página foi desenvolvida em [**`r R.version$version.string`**](https://www.rstudio.com) usando [**R markdown**](https://rmarkdown.rstudio.com)
 </center></div>
 
 <br>
