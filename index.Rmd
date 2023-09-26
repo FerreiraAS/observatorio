@@ -348,7 +348,7 @@ source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
 
 ```{r sintese-temas-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", out.width = "100%", eval = has.sucupira.files}
 # carousel of wordclouds
-bsplus::bs_carousel(id = "temas-carouse",
+bsplus::bs_carousel(id = "temas-carousel",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/Projetos.png")) %>%
