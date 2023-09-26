@@ -2222,7 +2222,7 @@ ggplot2::ggplot() +
   cowplot::theme_map() +
   scale_fill_distiller(
     palette = "Spectral",
-    name = "Pós-Docs, n",
+    name = "Pesquisadores, n",
     limits = c(min(0, paises$Freq), max(paises$Freq)),
     na.value = "grey"
   ) +
