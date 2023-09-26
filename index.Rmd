@@ -1934,7 +1934,7 @@ names(summ.table.posdoc) <-
     "Pós-Docs total",
     "Concluídos",
     names(rowSums(table.1)),
-    "Vigentes",
+    "Em andamento",
     names(rowSums(table.2))
   )
 
