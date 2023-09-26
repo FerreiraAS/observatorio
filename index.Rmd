@@ -1860,7 +1860,7 @@ title(main = "Estágio Pós-Doutoral",
       cex.main = 1.7)
 legend(
   "topleft",
-  legend = unique(posdocs$Nacionalidade),
+  legend = unique(posdoc.raw$Nacionalidade),
   fill = RColorBrewer::brewer.pal(n = 9, name = "Set3"),
   text.col = "white",
   box.lwd = 0,
