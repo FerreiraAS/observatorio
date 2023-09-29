@@ -425,9 +425,14 @@ cat("*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br")
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r quadrienal-vigente, eval = has.sucupira.files, results = "hide"}
+# periodo
+quadrienal.vigente <- 2021:min(as.numeric(format(Sys.Date(), "%Y")), 2024)
+```
+
 ### **1.1.1**
 
-#### **Estrutura Acadêmica do Programa**
+#### **Estrutura Acadêmica do Programa** {.tabset}
 
 ##### *Qualitativa*
 
@@ -506,7 +511,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **1.1.2**
 
-#### **Proposta Curricular do Programa**
+#### **Proposta Curricular do Programa** {.tabset}
 
 ##### *Qualitativa*
 
@@ -616,23 +621,479 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ### **1.2.1**
 
-#### **Dimensão do corpo Docente Permanente**
+#### **Dimensão do corpo Docente Permanente** {.tabset}
 
-*Em construção*
+##### **Categoria**
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+```{r categoria-corpo-docente, eval = has.sucupira.files}
+# docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R")
 
-<br>
+# get years
+source("Scripts/years-sucupira.R")
+names(sucupira.list) <- as.character(anos)
+
+# get docentes for the current period
+sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
+  compact()
+sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
+names(sucupira) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# recode
+sucupira$'Data de Admissão' <-
+  substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
+sucupira$'Data de Desligamento' <-
+  substr(as.Date(sucupira$'Data de Desligamento', format = "%d/%m/%Y"),
+         1,
+         4)
+sucupira$'Data de Desligamento'[is.na(sucupira$'Data de Desligamento')] <-
+  "Atual"
+
+# filter duplicated docentes (changes in details will we exhibited)
+docentes <-
+  sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Categoria", colnames(sucupira))]), ]
+docentes <- docentes[order(docentes$"Nome Docente"),]
+
+# generate tables
+table.doc <- data.frame(matrix(NA, nrow = dim(docentes)[1], ncol = length(quadrienal.vigente)))
+rownames(table.doc) <- NULL
+table.doc <- cbind(docentes$`Nome Docente`, table.doc)
+colnames(table.doc) <- c("Nome Docente", as.character(quadrienal.vigente))
+for (i in 1:dim(docentes)[1]) {
+  for (j in 1:length(quadrienal.vigente)) {
+    sucupira.temp <-
+      sucupira.list[as.character(quadrienal.vigente[j])][[1]]
+    
+    table.doc[i, j + 1] <-
+      try(sucupira.temp$'Categoria'[match(table.doc$`Nome Docente`[i], sucupira.temp$`Nome Docente`)]
+          , silent = TRUE)
+  }
+}
+
+table.doc.long <- tidyr::gather(table.doc[, -1], "Ano", "Categoria", colnames(table.doc)[-1], factor_key=TRUE)
+
+table.doc.long <- rbind(
+  table.doc.long,
+  data.frame(
+    "Ano" = rep(paste0(min(quadrienal.vigente), "-", max(quadrienal.vigente)), times = dim(table.doc)[1]),
+    "Categoria" = rep("Docentes", times = dim(table.doc)[1]),
+    check.names = FALSE
+  )
+)
+
+my_N <- function(data, ...) {
+  style_number(sum(data == "Docentes", na.rm = TRUE), digits = 0)
+}
+
+# print tables
+table.1 <-
+  gtsummary::tbl_summary(
+    table.doc.long,
+    by = "Ano",
+    statistic = list(all_categorical() ~ "{n}"),
+    missing = "no",
+    digits = everything() ~ 0) %>%
+  gtsummary::modify_header(label = "", all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels() %>%
+  gtsummary::add_stat(fns = all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(
+    list(
+      add_stat_1 ~ "**N (Quadriênio)**",
+      all_stat_cols() ~ "**{level}**"
+    )
+  ) %>%  
+  remove_row_type(variables = c('Categoria'), 
+                  type = "level", level_value = ("Docentes")) %>%
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+
+print(table.1)
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+##### **Vínculo**
+
+```{r vinculacao-corpo-docente, eval = has.sucupira.files}
+# docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R")
+
+# get years
+source("Scripts/years-sucupira.R")
+names(sucupira.list) <- as.character(anos)
+
+# get docentes for the current period
+sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
+  compact()
+sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
+names(sucupira) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# recode
+sucupira$'Data de Admissão' <-
+  substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
+sucupira$'Data de Desligamento' <-
+  substr(as.Date(sucupira$'Data de Desligamento', format = "%d/%m/%Y"),
+         1,
+         4)
+sucupira$'Data de Desligamento'[is.na(sucupira$'Data de Desligamento')] <-
+  "Atual"
+
+# filter duplicated docentes (changes in details will we exhibited)
+docentes <-
+  sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]), ]
+docentes <- docentes[order(docentes$"Nome Docente"),]
+
+# generate tables
+table.doc <- data.frame(matrix(NA, nrow = dim(docentes)[1], ncol = length(quadrienal.vigente)))
+rownames(table.doc) <- NULL
+table.doc <- cbind(docentes$`Nome Docente`, table.doc)
+colnames(table.doc) <- c("Nome Docente", as.character(quadrienal.vigente))
+for (i in 1:dim(docentes)[1]) {
+  for (j in 1:length(quadrienal.vigente)) {
+    sucupira.temp <-
+      sucupira.list[as.character(quadrienal.vigente[j])][[1]]
+    
+    table.doc[i, j + 1] <-
+      try(sucupira.temp$'Tipo vínculo'[match(table.doc$`Nome Docente`[i], sucupira.temp$`Nome Docente`)]
+          , silent = TRUE)
+  }
+}
+
+table.doc.long <- tidyr::gather(table.doc[, -1], "Ano", "Tipo vínculo", colnames(table.doc)[-1], factor_key=TRUE)
+
+table.doc.long <- rbind(
+  table.doc.long,
+  data.frame(
+    "Ano" = rep(paste0(min(quadrienal.vigente), "-", max(quadrienal.vigente)), times = dim(table.doc)[1]),
+    "Tipo vínculo" = rep("Docentes", times = dim(table.doc)[1]),
+    check.names = FALSE
+  )
+)
+
+my_N <- function(data, ...) {
+  style_number(sum(data == "Docentes", na.rm = TRUE), digits = 0)
+}
+
+# print tables
+table.1 <-
+  gtsummary::tbl_summary(
+    table.doc.long,
+    by = "Ano",
+    statistic = list(all_categorical() ~ "{n}"),
+    missing = "no",
+    digits = everything() ~ 0) %>%
+  gtsummary::modify_header(label = "", all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels() %>%
+  gtsummary::add_stat(fns = all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(
+    list(
+      add_stat_1 ~ "**N (Quadriênio)**",
+      all_stat_cols() ~ "**{level}**"
+    )
+  ) %>%  
+  remove_row_type(variables = c('Tipo vínculo'), 
+                  type = "level", level_value = ("Docentes")) %>%
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+
+print(table.1)
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+##### **Regime de trabalho**
+
+```{r regime-corpo-docente, eval = has.sucupira.files}
+# docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R")
+
+# get years
+source("Scripts/years-sucupira.R")
+names(sucupira.list) <- as.character(anos)
+
+# get docentes for the current period
+sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
+  compact()
+sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
+names(sucupira) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# recode
+sucupira$'Data de Admissão' <-
+  substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
+sucupira$'Data de Desligamento' <-
+  substr(as.Date(sucupira$'Data de Desligamento', format = "%d/%m/%Y"),
+         1,
+         4)
+sucupira$'Data de Desligamento'[is.na(sucupira$'Data de Desligamento')] <-
+  "Atual"
+
+# filter duplicated docentes (changes in details will we exhibited)
+docentes <-
+  sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]), ]
+docentes <- docentes[order(docentes$"Nome Docente"),]
+
+# generate tables
+table.doc <- data.frame(matrix(NA, nrow = dim(docentes)[1], ncol = length(quadrienal.vigente)))
+rownames(table.doc) <- NULL
+table.doc <- cbind(docentes$`Nome Docente`, table.doc)
+colnames(table.doc) <- c("Nome Docente", as.character(quadrienal.vigente))
+for (i in 1:dim(docentes)[1]) {
+  for (j in 1:length(quadrienal.vigente)) {
+    sucupira.temp <-
+      sucupira.list[as.character(quadrienal.vigente[j])][[1]]
+    
+    table.doc[i, j + 1] <-
+      try(sucupira.temp$'Regime de Trabalho'[match(table.doc$`Nome Docente`[i], sucupira.temp$`Nome Docente`)]
+          , silent = TRUE)
+  }
+}
+
+table.doc.long <- tidyr::gather(table.doc[, -1], "Ano", "Regime de Trabalho", colnames(table.doc)[-1], factor_key=TRUE)
+
+table.doc.long <- rbind(
+  table.doc.long,
+  data.frame(
+    "Ano" = rep(paste0(min(quadrienal.vigente), "-", max(quadrienal.vigente)), times = dim(table.doc)[1]),
+    "Regime de Trabalho" = rep("Docentes", times = dim(table.doc)[1]),
+    check.names = FALSE
+  )
+)
+
+my_N <- function(data, ...) {
+  style_number(sum(data == "Docentes", na.rm = TRUE), digits = 0)
+}
+
+# print tables
+table.1 <-
+  gtsummary::tbl_summary(
+    table.doc.long,
+    by = "Ano",
+    statistic = list(all_categorical() ~ "{n}"),
+    missing = "no",
+    digits = everything() ~ 0) %>%
+  gtsummary::modify_header(label = "", all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels() %>%
+  gtsummary::add_stat(fns = all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(
+    list(
+      add_stat_1 ~ "**N (Quadriênio)**",
+      all_stat_cols() ~ "**{level}**"
+    )
+  ) %>%  
+  remove_row_type(variables = c('Regime de Trabalho'), 
+                  type = "level", level_value = ("Docentes")) %>%
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+
+print(table.1)
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+##### **Carga horária**
+
+```{r carga-horaria-corpo-docente, eval = has.sucupira.files}
+# docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R")
+
+# get years
+source("Scripts/years-sucupira.R")
+names(sucupira.list) <- as.character(anos)
+
+# get docentes for the current period
+sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
+  compact()
+sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
+names(sucupira) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# recode
+sucupira$'Data de Admissão' <-
+  substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
+sucupira$'Data de Desligamento' <-
+  substr(as.Date(sucupira$'Data de Desligamento', format = "%d/%m/%Y"),
+         1,
+         4)
+sucupira$'Data de Desligamento'[is.na(sucupira$'Data de Desligamento')] <-
+  "Atual"
+
+# filter duplicated docentes (changes in details will we exhibited)
+docentes <-
+  sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]), ]
+docentes <- docentes[order(docentes$"Nome Docente"),]
+
+# generate tables
+table.doc <- data.frame(matrix(NA, nrow = dim(docentes)[1], ncol = length(quadrienal.vigente)))
+rownames(table.doc) <- NULL
+table.doc <- cbind(docentes$`Nome Docente`, table.doc)
+colnames(table.doc) <- c("Nome Docente", as.character(quadrienal.vigente))
+for (i in 1:dim(docentes)[1]) {
+  for (j in 1:length(quadrienal.vigente)) {
+    sucupira.temp <-
+      sucupira.list[as.character(quadrienal.vigente[j])][[1]]
+    
+    table.doc[i, j + 1] <-
+      try(sucupira.temp$"Carga Horária PG (Semanal)"[match(table.doc$`Nome Docente`[i], sucupira.temp$`Nome Docente`)]
+          , silent = TRUE)
+  }
+}
+
+table.doc.long <- tidyr::gather(table.doc[, -1], "Ano", "Carga Horária PG (Semanal)", colnames(table.doc)[-1], factor_key=TRUE)
+
+table.doc.long <- rbind(
+  table.doc.long,
+  data.frame(
+    "Ano" = rep(paste0(min(quadrienal.vigente), "-", max(quadrienal.vigente)), times = dim(table.doc)[1]),
+    "Carga Horária PG (Semanal)" = rep("Docentes", times = dim(table.doc)[1]),
+    check.names = FALSE
+  )
+)
+
+my_N <- function(data, ...) {
+  style_number(sum(data == "Docentes", na.rm = TRUE), digits = 0)
+}
+
+# print tables
+table.1 <-
+  gtsummary::tbl_summary(
+    table.doc.long,
+    by = "Ano",
+    statistic = list(all_categorical() ~ "{n}"),
+    missing = "no",
+    digits = everything() ~ 0) %>%
+  gtsummary::modify_header(label = "", all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels() %>%
+  gtsummary::add_stat(fns = all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(
+    list(
+      add_stat_1 ~ "**N (Quadriênio)**",
+      all_stat_cols() ~ "**{level}**"
+    )
+  ) %>%  
+  remove_row_type(variables = c('Carga Horária PG (Semanal)'), 
+                  type = "level", level_value = ("Docentes")) %>%
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+
+print(table.1)
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 ### **1.2.2**
 
 #### **Coerência acadêmica do Corpo Docente à proposta do PPG**
 
-*Em construção*
+```{r coerencia-corpo-docente, eval = has.sucupira.files}
+# docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R")
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+# get years
+source("Scripts/years-sucupira.R")
+names(sucupira.list) <- as.character(anos)
 
-<br>
+# get docentes for the current period
+sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
+  compact()
+sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
+names(sucupira) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# recode
+sucupira$'Data de Admissão' <-
+  substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
+sucupira$'Data de Desligamento' <-
+  substr(as.Date(sucupira$'Data de Desligamento', format = "%d/%m/%Y"),
+         1,
+         4)
+sucupira$'Data de Desligamento'[is.na(sucupira$'Data de Desligamento')] <-
+  "Atual"
+
+# filter duplicated docentes (changes in details will we exhibited)
+docentes <-
+  sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Área de Conhecimento Titulação", colnames(sucupira))]), ]
+docentes <- docentes[order(docentes$"Nome Docente"),]
+
+# generate tables
+table.doc <- data.frame(matrix(NA, nrow = dim(docentes)[1], ncol = length(quadrienal.vigente)))
+rownames(table.doc) <- NULL
+table.doc <- cbind(docentes$`Nome Docente`, table.doc)
+colnames(table.doc) <- c("Nome Docente", as.character(quadrienal.vigente))
+for (i in 1:dim(docentes)[1]) {
+  for (j in 1:length(quadrienal.vigente)) {
+    sucupira.temp <-
+      sucupira.list[as.character(quadrienal.vigente[j])][[1]]
+    
+    table.doc[i, j + 1] <-
+      try(sucupira.temp$'Área de Conhecimento Titulação'[match(table.doc$`Nome Docente`[i], sucupira.temp$`Nome Docente`)]
+          , silent = TRUE)
+  }
+}
+
+table.doc.long <- tidyr::gather(table.doc[, -1], "Ano", "Área de Conhecimento Titulação", colnames(table.doc)[-1], factor_key=TRUE)
+
+table.doc.long <- rbind(
+  table.doc.long,
+  data.frame(
+    "Ano" = rep(paste0(min(quadrienal.vigente), "-", max(quadrienal.vigente)), times = dim(table.doc)[1]),
+    "Área de Conhecimento Titulação" = rep("Docentes", times = dim(table.doc)[1]),
+    check.names = FALSE
+  )
+)
+
+my_N <- function(data, ...) {
+  style_number(sum(data == "Docentes", na.rm = TRUE), digits = 0)
+}
+
+# print tables
+table.1 <-
+  gtsummary::tbl_summary(
+    table.doc.long,
+    by = "Ano",
+    statistic = list(all_categorical() ~ "{n}"),
+    missing = "no",
+    digits = everything() ~ 0) %>%
+  gtsummary::modify_header(label = "", all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels() %>%
+  gtsummary::add_stat(fns = all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(
+    list(
+      add_stat_1 ~ "**N (Quadriênio)**",
+      all_stat_cols() ~ "**{level}**"
+    )
+  ) %>%  
+  remove_row_type(variables = c('Área de Conhecimento Titulação'), 
+                  type = "level", level_value = ("Docentes")) %>%
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+
+print(table.1)
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 ### **1.2.3**
 

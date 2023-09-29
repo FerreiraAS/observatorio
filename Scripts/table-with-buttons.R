@@ -1,11 +1,11 @@
-create_dt <- function(x, title) {
+create_dt <- function(x, title, pageLength = 4) {
   DT::datatable(
     x,
     rownames = FALSE,
     extensions = c('Buttons', 'ColReorder', 'Responsive'),
     options = list(
       colReorder = TRUE,
-      pageLength = 4,
+      pageLength = pageLength,
       scrolX = F,
       dom = 'Bftip',
       searchHighlight = TRUE,
