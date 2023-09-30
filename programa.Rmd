@@ -789,9 +789,9 @@ for (i in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **2024-2021**
+### **Lista**
 
-```{r historico-financiadores-2024, eval = has.financiadores}
+```{r financiadores, eval = has.financiadores}
 # this chunk requires additional data that may  be available
 financiadores.raw <-
   readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
@@ -808,12 +808,6 @@ fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
 financiadores <-
   financiadores.sub[complete.cases(financiadores.sub), ]
 fonte <- fonte.sub[complete.cases(financiadores.sub), ]
-
-fonte <-
-  fonte[financiadores$Ano >= 2021 & financiadores$Ano <= 2024, ]
-financiadores <-
-  financiadores[financiadores$Ano >= 2021 &
-                  financiadores$Ano <= 2024, ]
 
 if (dim(financiadores)[1] != 0) {
   Abrir <- matrix(NA, nrow = dim(financiadores)[1])
@@ -854,264 +848,97 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-### **2020-2017**
+### **Agência-Programa**
 
-```{r historico-financiadores-2020, eval = has.financiadores}
-# this chunk requires additional data that may  be available
+```{r auto-financiadores-agencia-programa, eval = has.financiadores}
+# this chunk requires additional data that may not be available
 financiadores.raw <-
   readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
-financiadores.sub <-
-  financiadores.raw %>% dplyr::select("Ano",
-                               "Agência",
-                               "Edital",
-                               "Processo No.",
-                               "Título do projeto",
-                               "Programa")
-fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
+options(scipen = 10)
 
+# dplyr::select variables to display, by AGENCIA & PROGRAMA
 financiadores <-
-  financiadores.sub[complete.cases(financiadores.sub),]
-fonte <- fonte.sub[complete.cases(financiadores.sub),]
+  financiadores.raw %>% dplyr::select("Agência", "Programa")
 
-fonte <-
-  fonte[financiadores$Ano >= 2017 & financiadores$Ano <= 2020,]
+# drop rows with empty cells
 financiadores <-
-  financiadores[financiadores$Ano >= 2017 &
-                  financiadores$Ano <= 2020,]
+  financiadores[complete.cases(financiadores),]
 
-if (dim(financiadores)[1] != 0) {
-  Abrir <- matrix(NA, nrow = dim(financiadores)[1])
-  colnames(Abrir) <- "Abrir"
-  # add hyperlinks
-  for (i in 1:dim(fonte)[1])
-  {
-    if (!is.na(fonte[i, 1]))
-    {
-      Abrir[i] <-
-        paste0('<a href="',
-               fonte[i, 1],
-               '" target="_blank"',
-               '>',
-               '↗️' ,
-               '</a>')
-    }
-  }
-  financiadores <- cbind(financiadores, Abrir)
-  financiadores <-
-    financiadores[order(financiadores$Ano, decreasing = TRUE),]
-} else {
-  cat('\n\n')
-  cat('*Sem dados para exibir*')
-  cat('\n\n')
-}
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-try(create_dt(financiadores, title = "Financiadores - 2020-2017"),
-    silent = TRUE)
+# generate table (total per edital, per agency)
+table.1 <-
+  tbl_summary(
+    financiadores,
+    by = "Agência",
+    statistic = all_categorical() ~ c("{n}"),
+    missing = "no",
+    sort = all_categorical() ~ "frequency"
+  ) %>%
+  add_overall(last = TRUE,
+              col_label = "Total") %>%
+  modify_header(label = "**Agência**") %>%
+  modify_footnote(update = everything() ~ NA) %>%
+  bold_labels()
+# print table
+print(table.1)
 
 cat('\n\n')
+
 cat(
   "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
 )
-cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
-<br>
+### **Agência-Ano**
 
-### **2016-2013**
-
-```{r historico-financiadores-2016, eval = has.financiadores}
-# this chunk requires additional data that may  be available
+```{r auto-financiadores-agencia-ano, eval = has.financiadores}
+# this chunk requires additional data that may not be available
 financiadores.raw <-
   readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
-financiadores.sub <-
-  financiadores.raw %>% dplyr::select("Ano",
-                               "Agência",
-                               "Edital",
-                               "Processo No.",
-                               "Título do projeto",
-                               "Programa")
-fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
+options(scipen = 10)
 
-financiadores <-
-  financiadores.sub[complete.cases(financiadores.sub),]
-fonte <- fonte.sub[complete.cases(financiadores.sub),]
-
-fonte <-
-  fonte[financiadores$Ano >= 2013 & financiadores$Ano <= 2016,]
-financiadores <-
-  financiadores[financiadores$Ano >= 2013 &
-                  financiadores$Ano <= 2016,]
-
-if (dim(financiadores)[1] != 0) {
-  Abrir <- matrix(NA, nrow = dim(financiadores)[1])
-  colnames(Abrir) <- "Abrir"
-  # add hyperlinks
-  for (i in 1:dim(fonte)[1])
-  {
-    if (!is.na(fonte[i, 1]))
-    {
-      Abrir[i] <-
-        paste0('<a href="',
-               fonte[i, 1],
-               '" target="_blank"',
-               '>',
-               '↗️' ,
-               '</a>')
-    }
-  }
-  financiadores <- cbind(financiadores, Abrir)
-  financiadores <-
-    financiadores[order(financiadores$Ano, decreasing = TRUE),]
-} else {
-  cat('\n\n')
-  cat('*Sem dados para exibir*')
-  cat('\n\n')
-}
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-try(create_dt(financiadores, title = "Financiadores - 2016-2013"),
-    silent = TRUE)
-
-cat('\n\n')
-cat(
-  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
-)
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
-### **2012-2010**
-
-```{r historico-financiadores-2012, eval = has.financiadores}
-# this chunk requires additional data that may  be available
 financiadores.raw <-
   readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
-financiadores.sub <-
-  financiadores.raw %>% dplyr::select("Ano",
-                               "Agência",
-                               "Edital",
-                               "Processo No.",
-                               "Título do projeto",
-                               "Programa")
-fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
+# dplyr::select variables to display, by AGENCIA & ANO
+financiadores <-
+  financiadores.raw %>% dplyr::select("Ano", "Agência", "Total")
+
+# drop rows with empty cells
+financiadores <- financiadores[complete.cases(financiadores),]
 
 financiadores <-
-  financiadores.sub[complete.cases(financiadores.sub),]
-fonte <- fonte.sub[complete.cases(financiadores.sub),]
+  financiadores[order(financiadores$Ano, decreasing = TRUE),]
+financiadores$Ano <- as.factor(financiadores$Ano)
 
-fonte <-
-  fonte[financiadores$Ano >= 2010 & financiadores$Ano <= 2012,]
-financiadores <-
-  financiadores[financiadores$Ano >= 2010 &
-                  financiadores$Ano <= 2012,]
-
-if (dim(financiadores)[1] != 0) {
-  Abrir <- matrix(NA, nrow = dim(financiadores)[1])
-  colnames(Abrir) <- "Abrir"
-  # add hyperlinks
-  for (i in 1:dim(fonte)[1])
-  {
-    if (!is.na(fonte[i, 1]))
-    {
-      Abrir[i] <-
-        paste0('<a href="',
-               fonte[i, 1],
-               '" target="_blank"',
-               '>',
-               '↗️' ,
-               '</a>')
-    }
-  }
-  financiadores <- cbind(financiadores, Abrir)
-  financiadores <-
-    financiadores[order(financiadores$Ano, decreasing = TRUE),]
-} else {
-  cat('\n\n')
-  cat('*Sem dados para exibir*')
-  cat('\n\n')
-}
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-try(create_dt(financiadores, title = "Financiadores - 2012-2010"),
-    silent = TRUE)
+# generate table (total per year, per agency)
+table.2 <-
+  tbl_summary(
+    financiadores,
+    by = "Agência",
+    type = list(all_continuous() ~ "continuous"),
+    statistic = list(all_continuous() ~ c("R$ {sum}")),
+    missing = "no",
+    digits = "Total" ~ 2,
+    sort = all_categorical() ~ "frequency"
+  ) %>%
+  add_overall(last = TRUE,
+              col_label = "Total") %>%
+  modify_header(label = "**Agência**") %>%
+  modify_footnote(update = everything() ~ NA) %>%
+  bold_labels()
+# print table
+print(table.2)
 
 cat('\n\n')
+
 cat(
   "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
 )
-cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
-
-<br>
-
-### **Pré-2010**
-
-```{r historico-financiadores-2010, eval = has.financiadores}
-# this chunk requires additional data that may  be available
-financiadores.raw <-
-  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
-
-financiadores.sub <-
-  financiadores.raw %>% dplyr::select("Ano",
-                               "Agência",
-                               "Edital",
-                               "Processo No.",
-                               "Título do projeto",
-                               "Programa")
-fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
-
-financiadores <-
-  financiadores.sub[complete.cases(financiadores.sub),]
-fonte <- fonte.sub[complete.cases(financiadores.sub),]
-
-fonte <-
-  fonte[financiadores$Ano < 2010,]
-financiadores <-
-  financiadores[financiadores$Ano < 2010,]
-
-if (dim(financiadores)[1] != 0) {
-  Abrir <- matrix(NA, nrow = dim(financiadores)[1])
-  colnames(Abrir) <- "Abrir"
-  # add hyperlinks
-  for (i in 1:dim(fonte)[1])
-  {
-    if (!is.na(fonte[i, 1]))
-    {
-      Abrir[i] <-
-        paste0('<a href="',
-               fonte[i, 1],
-               '" target="_blank"',
-               '>',
-               '↗️' ,
-               '</a>')
-    }
-  }
-  financiadores <- cbind(financiadores, Abrir)
-  financiadores <-
-    financiadores[order(financiadores$Ano, decreasing = TRUE),]
-} else {
-  cat('\n\n')
-  cat('*Sem dados para exibir*')
-  cat('\n\n')
-}
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-try(create_dt(financiadores, title = "Ações durante a Pandemia - Financiadores"),
-    silent = TRUE)
-
-cat('\n\n')
-cat(
-  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
-)
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
 
 ## **Bolsas de estudo** {#bolsas .tabset}
 
