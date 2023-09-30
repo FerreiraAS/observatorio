@@ -395,6 +395,8 @@ print(
 )
 ```
 
+<br>
+
 ##### **LP** {#linhas}
 
 ```{r LP, eval = has.dados.cadastrais}
@@ -424,6 +426,8 @@ cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
+
+<br>
 
 ##### **PP** {#projetos}
 
@@ -1324,8 +1328,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 #### **Capacidade de captação de recursos** {.tabset}
 
-##### **Docente/Ano**
-
 ```{r auto-financiadores-docente-ano, eval = has.financiadores}
 # this chunk requires additional data that may not be available
 financiadores.raw <-
@@ -1375,9 +1377,12 @@ cat(
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 ### **1.3.1**
 
 #### **Adequação da proposta ao Plano Institucional da IES** {.tabset}
+<br>
 
 ```{r planejamento, eval = has.planejamento}
 # initialize all sheets
@@ -1406,14 +1411,6 @@ for (i in 1:length(abas)) {
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
-
-<br>
-
-##### **Qualitativo**
-
-*Em construção*
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
 
 <br>
 

@@ -152,6 +152,13 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ## **Nota** {#nota}
 
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !has.notas}
+cat('<br>')
+```
+
 ```{r auto-notas, eval = has.notas}
 # read separate sheets
 notas <- readxl::read_excel("PPG/Notas.xlsx", sheet = "Notas")

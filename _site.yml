@@ -27,12 +27,14 @@ navbar:
       menu:
         - text: "Programa"
           href: [programa.html]
-        - text: "Breve histórico"
-          href: [programa.html#breve-historico]
         - text: "Dados básicos do Programa"
           href: [programa.html#dados-basicos]
+        - text: "Breve histórico"
+          href: [programa.html#breve-historico]
         - text: "Área de avaliação"
           href: [programa#area-avaliacao.html]
+        - text: "Nota"
+          href: [programa.html#nota]
         - text: "Área de concentração"
           href: [programa.html#area-concentracao]
         - text: "Linhas de pesquisa"
@@ -41,10 +43,6 @@ navbar:
           href: [programa.html#projeto-pesquisa]
         - text: "Agendas de pesquisa"
           href: [programa.html#agendas-pesquisa]
-        - text: "Financiadores"
-          href: [programa.html#financiadores]
-        - text: "Bolsas de estudo"
-          href: [programa.html#bolsas]
         - text: "Cursos"
           href: [programa.html#cursos]
         - text: "Estrutura curricular"
@@ -63,6 +61,10 @@ navbar:
           href: [programa.html#cooperacao]
         - text: "Internacionalização"
           href: [programa.html#internacional]
+        - text: "Financiadores"
+          href: [programa.html#financiadores]
+        - text: "Bolsas de estudo"
+          href: [programa.html#bolsas]
     - text: "Pessoas"
       href: [pessoas.html]
       menu:
@@ -161,8 +163,6 @@ navbar:
       menu:
         - text: "Autoavaliação"
           href: [autoavaliacao.html]
-        - text: "Planejamento estratégico"
-          href: [autoavaliacao.html#planejamento]
         - text: "Metodologia"
           href: [autoavaliacao.html#metodologia]
         - text: "Resultados"
@@ -170,8 +170,6 @@ navbar:
           menu:
             - text: "Síntese dos dados"
               href: [autoavaliacao.html#sintese-dados]
-            - text: "Nota"
-              href: [autoavaliacao.html#nota]
             - text: "Documentos"
               href: [autoavaliacao.html#documentos]
             - text: "Qualidade das disciplinas"
