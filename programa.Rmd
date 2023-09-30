@@ -45,6 +45,32 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
+## **Dados básicos do Programa** {#dados-basicos .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !has.apresentacao}
+cat('<br>')
+```
+
+```{r apresentacao, eval = has.apresentacao}
+cat(
+  paste0(
+    '<iframe src=\"',
+    readxl::read_excel("PPG/Apresentação.xlsx", sheet = "Sucupira")[1, 1],
+    '\" style=\"width:100%; height:600px; border:2px solid black;\"></iframe>'
+  )
+)
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
 ## **Breve histórico** {#breve-historico .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -87,32 +113,6 @@ for (i in 1:length(abas)) {
 
 <br>
 
-## **Dados básicos do Programa** {#dados-basicos .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !has.apresentacao}
-cat('<br>')
-```
-
-```{r apresentacao, eval = has.apresentacao}
-cat(
-  paste0(
-    '<iframe src=\"',
-    readxl::read_excel("PPG/Apresentação.xlsx", sheet = "Sucupira")[1, 1],
-    '\" style=\"width:100%; height:600px; border:2px solid black;\"></iframe>'
-  )
-)
-
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
 ## **Área de avaliação** {#area-avaliacao .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -145,6 +145,30 @@ create_dt(area.capes, title = "Áreas de Concentração")
 cat('\n\n')
 cat('*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br)')
 cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
+## **Nota** {#nota}
+
+```{r auto-notas, eval = has.notas}
+# read separate sheets
+notas <- readxl::read_excel("PPG/Notas.xlsx", sheet = "Notas")
+
+cat(
+  paste(
+    '<iframe src="',
+    notas[1],
+    '" style=\"width:100%; height:600px; border:2px solid black;"></iframe>',
+    sep = ""
+  )
+)
+
+cat('\n\n')
+
+cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/public/consultas/avaliacao/viewPreenchimentoFicha.xhtml?idFicha=6566&popup=true)")
+
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
@@ -304,8 +328,6 @@ projetos <-
 projetos <- unique(projetos)
 ```
 
-#### **Lista**
-
 ```{r projetos-de-pesquisa-em-andamento-lista, eval = has.sucupira.files}
 table.projetos <-
   data.frame(
@@ -334,170 +356,6 @@ colnames(table.projetos) <-
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.projetos, title = "Projetos de Pesquisa - 2024-2021")
-
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
-#### **Tabela**
-
-```{r projetos-de-pesquisa-em-andamento-tabela, eval = has.sucupira.files}
-# select data DOCENTES
-projetos.doc <-
-  projetos[projetos$`Categoria do Membro do Projeto` == "Docente",]
-table.doc <-
-  table(projetos.doc$`Nome do Membro do Projeto`,
-        projetos.doc$`Linha de Pesquisa`)
-# add row totals
-table.doc <- cbind(table.doc, rowSums(table.doc))
-colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
-# add column totals
-table.doc <- rbind(table.doc, colSums(table.doc))
-rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
-# print tables
-print(
-  kable(
-    table.doc,
-    align = c("c", rep("c", ncol(table.doc) - 2), "r"),
-    caption = "Docentes"
-  ) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  ) %>% scroll_box(width = "100%")
-)
-
-# line break
-cat("  \n")
-cat("  \n")
-
-# select data POS-DOC
-table.posdoc <- NULL
-projetos.posdoc <-
-  projetos[projetos$`Categoria do Membro do Projeto` == "Pós-Doc",]
-if (dim(projetos.posdoc)[1] != 0) {
-  table.posdoc <-
-    table(projetos.posdoc$`Nome do Membro do Projeto`,
-          projetos.posdoc$`Linha de Pesquisa`)
-  # add row totals
-  table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
-  colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
-  # add column totals
-  table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
-  rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
-  # print tables
-  print(
-    kable(
-      table.posdoc,
-      align = c("c", rep("c", ncol(table.posdoc) - 2), "r"),
-      caption = "Pós-Doutorandos"
-    ) %>% kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    ) %>% scroll_box(width = "100%")
-  )
-  
-}
-
-# line break
-cat("  \n")
-cat("  \n")
-
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
-#### **Figura**
-
-```{r projetos-de-pesquisa-em-andamento-figura, eval = has.sucupira.files}
-# select data DOCENTES
-projetos.doc <-
-  projetos[projetos$`Categoria do Membro do Projeto` == "Docente",]
-table.doc <-
-  table(projetos.doc$`Nome do Membro do Projeto`,
-        projetos.doc$`Linha de Pesquisa`)
-# add row totals
-table.doc <- cbind(table.doc, rowSums(table.doc))
-colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
-# add column totals
-table.doc <- rbind(table.doc, colSums(table.doc))
-rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
-
-# line break
-cat("  \n")
-cat("  \n")
-
-# select data POS-DOC
-table.posdoc <- NULL
-projetos.posdoc <-
-  projetos[projetos$`Categoria do Membro do Projeto` == "Pós-Doc",]
-if (length(projetos.posdoc)[1] != 0) {
-  table.posdoc <-
-    table(projetos.posdoc$`Nome do Membro do Projeto`,
-          projetos.posdoc$`Linha de Pesquisa`)
-  # add row totals
-  table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
-  colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
-  # add column totals
-  table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
-  rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
-}
-
-# line break
-cat("  \n")
-cat("  \n")
-
-# proporção de projetos por linha de pesquisa
-layout(matrix(
-  c(1, 2, 3, 3),
-  nrow = 2,
-  ncol = 2,
-  byrow = TRUE
-), heights = c(0.7, 0.3))
-par(oma = c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
-levels <- unique(c(colnames(table.doc), colnames(table.posdoc)))
-levels <- levels[which(levels != "N")]
-if (dim(projetos.doc)[1] != 0) {
-  pie(
-    head(colSums(table.doc), -1),
-    labels = NA,
-    col = RColorBrewer::brewer.pal(n = length(levels), name = "Set3"),
-    init.angle = 90,
-    main = "Docentes"
-  )
-} else {
-  plot(0, type = 'n', axes = FALSE)
-}
-if (dim(projetos.posdoc)[1] != 0) {
-  pie(
-    head(colSums(table.posdoc), -1),
-    labels = NA,
-    col = RColorBrewer::brewer.pal(n = length(levels), name = "Set3"),
-    init.angle = 90,
-    main = "Pós-Doutorandos"
-  )
-} else {
-  plot(0, type = 'n', axes = FALSE)
-}
-plot(0, type = 'n', axes = FALSE)
-legend(
-  "top",
-  inset = 0,
-  legend = levels,
-  fill = RColorBrewer::brewer.pal(n = length(levels), name = "Set3"),
-  box.lwd = 0,
-  cex = 0.7
-)
-title("Projetos de Pesquisa", outer = TRUE)
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -540,8 +398,6 @@ projetos <-
 projetos <- unique(projetos)
 ```
 
-#### **Lista**
-
 ```{r projetos-de-pesquisa-encerrados-lista, eval = has.sucupira.files}
 table.projetos <-
   data.frame(
@@ -572,170 +428,6 @@ colnames(table.projetos) <-
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.projetos, title = "Projetos de Pesquisa - 2024-2021")
-
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
-#### **Tabela**
-
-```{r projetos-de-pesquisa-encerrados-tabela, eval = has.sucupira.files}
-# select data DOCENTES
-projetos.doc <-
-  projetos[projetos$`Categoria do Membro do Projeto` == "Docente",]
-table.doc <-
-  table(projetos.doc$`Nome do Membro do Projeto`,
-        projetos.doc$`Linha de Pesquisa`)
-# add row totals
-table.doc <- cbind(table.doc, rowSums(table.doc))
-colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
-# add column totals
-table.doc <- rbind(table.doc, colSums(table.doc))
-rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
-# print tables
-print(
-  kable(
-    table.doc,
-    align = c("c", rep("c", ncol(table.doc) - 2), "r"),
-    caption = "Docentes"
-  ) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  ) %>% scroll_box(width = "100%")
-)
-
-# line break
-cat("  \n")
-cat("  \n")
-
-# select data POS-DOC
-table.posdoc <- NULL
-projetos.posdoc <-
-  projetos[projetos$`Categoria do Membro do Projeto` == "Pós-Doc",]
-if (dim(projetos.posdoc)[1] != 0) {
-  table.posdoc <-
-    table(projetos.posdoc$`Nome do Membro do Projeto`,
-          projetos.posdoc$`Linha de Pesquisa`)
-  # add row totals
-  table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
-  colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
-  # add column totals
-  table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
-  rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
-  # print tables
-  print(
-    kable(
-      table.posdoc,
-      align = c("c", rep("c", ncol(table.posdoc) - 2), "r"),
-      caption = "Pós-Doutorandos"
-    ) %>% kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    ) %>% scroll_box(width = "100%")
-  )
-  
-}
-
-# line break
-cat("  \n")
-cat("  \n")
-
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
-#### **Figura**
-
-```{r projetos-de-pesquisa-encerrados-figura, eval = has.sucupira.files}
-# select data DOCENTES
-projetos.doc <-
-  projetos[projetos$`Categoria do Membro do Projeto` == "Docente",]
-table.doc <-
-  table(projetos.doc$`Nome do Membro do Projeto`,
-        projetos.doc$`Linha de Pesquisa`)
-# add row totals
-table.doc <- cbind(table.doc, rowSums(table.doc))
-colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
-# add column totals
-table.doc <- rbind(table.doc, colSums(table.doc))
-rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
-
-# line break
-cat("  \n")
-cat("  \n")
-
-# select data POS-DOC
-table.posdoc <- NULL
-projetos.posdoc <-
-  projetos[projetos$`Categoria do Membro do Projeto` == "Pós-Doc",]
-if (length(projetos.posdoc)[1] != 0) {
-  table.posdoc <-
-    table(projetos.posdoc$`Nome do Membro do Projeto`,
-          projetos.posdoc$`Linha de Pesquisa`)
-  # add row totals
-  table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
-  colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
-  # add column totals
-  table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
-  rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
-}
-
-# line break
-cat("  \n")
-cat("  \n")
-
-# proporção de projetos por linha de pesquisa
-layout(matrix(
-  c(1, 2, 3, 3),
-  nrow = 2,
-  ncol = 2,
-  byrow = TRUE
-), heights = c(0.7, 0.3))
-par(oma = c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
-levels <- unique(c(colnames(table.doc), colnames(table.posdoc)))
-levels <- levels[which(levels != "N")]
-if (dim(projetos.doc)[1] != 0) {
-  pie(
-    head(colSums(table.doc), -1),
-    labels = NA,
-    col = RColorBrewer::brewer.pal(n = length(levels), name = "Set3"),
-    init.angle = 90,
-    main = "Docentes"
-  )
-} else {
-  plot(0, type = 'n', axes = FALSE)
-}
-if (dim(projetos.posdoc)[1] != 0) {
-  pie(
-    head(colSums(table.posdoc), -1),
-    labels = NA,
-    col = RColorBrewer::brewer.pal(n = length(levels), name = "Set3"),
-    init.angle = 90,
-    main = "Pós-Doutorandos"
-  )
-} else {
-  plot(0, type = 'n', axes = FALSE)
-}
-plot(0, type = 'n', axes = FALSE)
-legend(
-  "top",
-  inset = 0,
-  legend = levels,
-  fill = RColorBrewer::brewer.pal(n = length(levels), name = "Set3"),
-  box.lwd = 0,
-  cex = 0.7
-)
-title("Projetos de Pesquisa", outer = TRUE)
 
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
@@ -778,219 +470,6 @@ for (i in 1:length(abas)) {
   )
   
   # print end of tab rows
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-}
-```
-
-<br>
-
-## **Financiadores** {#financiadores .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-### **Lista**
-
-```{r financiadores, eval = has.financiadores}
-# this chunk requires additional data that may  be available
-financiadores.raw <-
-  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
-
-financiadores.sub <-
-  financiadores.raw %>% dplyr::select("Ano",
-                               "Agência",
-                               "Edital",
-                               "Processo No.",
-                               "Título do projeto",
-                               "Programa")
-fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
-
-financiadores <-
-  financiadores.sub[complete.cases(financiadores.sub), ]
-fonte <- fonte.sub[complete.cases(financiadores.sub), ]
-
-if (dim(financiadores)[1] != 0) {
-  Abrir <- matrix(NA, nrow = dim(financiadores)[1])
-  colnames(Abrir) <- "Abrir"
-  # add hyperlinks
-  for (i in 1:dim(fonte)[1])
-  {
-    if (!is.na(fonte[i, 1]))
-    {
-      Abrir[i] <-
-        paste0('<a href="',
-               fonte[i, 1],
-               '" target="_blank"',
-               '>',
-               '↗️' ,
-               '</a>')
-    }
-  }
-  financiadores <- cbind(financiadores, Abrir)
-  financiadores <-
-    financiadores[order(financiadores$Ano, decreasing = TRUE), ]
-} else {
-  cat('\n\n')
-  cat('*Sem dados para exibir*')
-  cat('\n\n')
-}
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-try(create_dt(financiadores, title = "Financiadores - 2024-2021"),
-    silent = TRUE)
-
-cat('\n\n')
-cat(
-  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
-)
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
-### **Agência-Programa**
-
-```{r auto-financiadores-agencia-programa, eval = has.financiadores}
-# this chunk requires additional data that may not be available
-financiadores.raw <-
-  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
-
-options(scipen = 10)
-
-# dplyr::select variables to display, by AGENCIA & PROGRAMA
-financiadores <-
-  financiadores.raw %>% dplyr::select("Agência", "Programa")
-
-# drop rows with empty cells
-financiadores <-
-  financiadores[complete.cases(financiadores),]
-
-# generate table (total per edital, per agency)
-table.1 <-
-  tbl_summary(
-    financiadores,
-    by = "Agência",
-    statistic = all_categorical() ~ c("{n}"),
-    missing = "no",
-    sort = all_categorical() ~ "frequency"
-  ) %>%
-  add_overall(last = TRUE,
-              col_label = "Total") %>%
-  modify_header(label = "**Agência**") %>%
-  modify_footnote(update = everything() ~ NA) %>%
-  bold_labels()
-# print table
-print(table.1)
-
-cat('\n\n')
-
-cat(
-  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
-)
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-### **Agência-Ano**
-
-```{r auto-financiadores-agencia-ano, eval = has.financiadores}
-# this chunk requires additional data that may not be available
-financiadores.raw <-
-  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
-
-options(scipen = 10)
-
-financiadores.raw <-
-  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
-
-# dplyr::select variables to display, by AGENCIA & ANO
-financiadores <-
-  financiadores.raw %>% dplyr::select("Ano", "Agência", "Total")
-
-# drop rows with empty cells
-financiadores <- financiadores[complete.cases(financiadores),]
-
-financiadores <-
-  financiadores[order(financiadores$Ano, decreasing = TRUE),]
-financiadores$Ano <- as.factor(financiadores$Ano)
-
-# generate table (total per year, per agency)
-table.2 <-
-  tbl_summary(
-    financiadores,
-    by = "Agência",
-    type = list(all_continuous() ~ "continuous"),
-    statistic = list(all_continuous() ~ c("R$ {sum}")),
-    missing = "no",
-    digits = "Total" ~ 2,
-    sort = all_categorical() ~ "frequency"
-  ) %>%
-  add_overall(last = TRUE,
-              col_label = "Total") %>%
-  modify_header(label = "**Agência**") %>%
-  modify_footnote(update = everything() ~ NA) %>%
-  bold_labels()
-# print table
-print(table.2)
-
-cat('\n\n')
-
-cat(
-  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
-)
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-## **Bolsas de estudo** {#bolsas .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !has.bolsas}
-cat('<br>')
-```
-
-```{r bolsas, eval = has.bolsas}
-# initialize all sheets
-abas <- readxl::excel_sheets("PPG/Bolsas.xlsx")
-
-# display each sheet in a tab
-for (j in 1:length(abas)) {
-  cat('\n\n<!-- -->\n\n')
-  cat(paste0('### **', abas[j], '**'))
-  cat('\n\n<!-- -->\n\n')
-  bolsas.raw <-
-    readxl::read_excel("PPG/Bolsas.xlsx",
-                       sheet = abas[j],
-                       col_types = c("text"))
-  
-  # replace the link by a tag
-  Abrir <- matrix(NA, nrow = dim(bolsas.raw)[1])
-  colnames(Abrir) <- "Abrir"
-  # add hyperlinks
-  for (i in 1:dim(bolsas.raw)[1]) {
-    if (!is.na(bolsas.raw[i, 3])) {
-      Abrir[i] <-
-        paste0('<a href="',
-               bolsas.raw[i, 3],
-               '" target="_blank"',
-               '>',
-               "↗️" ,
-               "</a>",
-               sep = "")
-    }
-  }
-  bolsas.raw <- cbind(bolsas.raw[, -3], Abrir)
-  
-  # print table
-  if (dim(bolsas.raw)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(bolsas.raw, title = "Bolsas de estudo")))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
-  
-  # print end of tab rows
-  cat('\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
@@ -2495,6 +1974,266 @@ for (j in 1:length(abas)) {
   # print end of tab rows
   cat('\n\n')
   cat('*Fonte:* **PPG**')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+```
+
+<br>
+
+## **Financiadores** {#financiadores .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+### **Lista**
+
+```{r financiadores, eval = has.financiadores}
+# this chunk requires additional data that may  be available
+financiadores.raw <-
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+financiadores.sub <-
+  financiadores.raw %>% dplyr::select("Ano",
+                               "Agência",
+                               "Edital",
+                               "Processo No.",
+                               "Título do projeto",
+                               "Programa")
+fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
+
+financiadores <-
+  financiadores.sub[complete.cases(financiadores.sub), ]
+fonte <- fonte.sub[complete.cases(financiadores.sub), ]
+
+if (dim(financiadores)[1] != 0) {
+  Abrir <- matrix(NA, nrow = dim(financiadores)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(fonte)[1])
+  {
+    if (!is.na(fonte[i, 1]))
+    {
+      Abrir[i] <-
+        paste0('<a href="',
+               fonte[i, 1],
+               '" target="_blank"',
+               '>',
+               '↗️' ,
+               '</a>')
+    }
+  }
+  financiadores <- cbind(financiadores, Abrir)
+  financiadores <-
+    financiadores[order(financiadores$Ano, decreasing = TRUE), ]
+} else {
+  cat('\n\n')
+  cat('*Sem dados para exibir*')
+  cat('\n\n')
+}
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+try(create_dt(financiadores, title = "Financiadores - 2024-2021"),
+    silent = TRUE)
+
+cat('\n\n')
+cat(
+  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
+)
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
+### **Agência-Edital**
+
+```{r auto-financiadores-agencia-programa, eval = has.financiadores}
+# this chunk requires additional data that may not be available
+financiadores.raw <-
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+options(scipen = 10)
+
+# dplyr::select variables to display, by AGENCIA & PROGRAMA
+financiadores <-
+  financiadores.raw %>% dplyr::select("Agência", "Programa")
+
+# drop rows with empty cells
+financiadores <-
+  financiadores[complete.cases(financiadores),]
+
+# generate table (total per edital, per agency)
+table.1 <-
+  gtsummary::tbl_summary(
+    financiadores,
+    by = "Agência",
+    statistic = all_categorical() ~ c("{n}"),
+    missing = "no",
+    sort = all_categorical() ~ "frequency"
+  ) %>%
+  gtsummary::add_overall(last = TRUE,
+              col_label = "Total") %>%
+  gtsummary::modify_header(label = "**Agência**") %>%
+  gtsummary::modify_footnote(update = everything() ~ NA) %>%
+  gtsummary::bold_labels()
+# print table
+print(table.1)
+
+cat('\n\n')
+
+cat(
+  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
+)
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+### **Agência-Ano**
+
+```{r auto-financiadores-agencia-ano, eval = has.financiadores}
+# this chunk requires additional data that may not be available
+financiadores.raw <-
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+options(scipen = 10)
+
+financiadores.raw <-
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+# dplyr::select variables to display, by AGENCIA & ANO
+financiadores <-
+  financiadores.raw %>% dplyr::select("Ano", "Agência", "Total")
+
+# drop rows with empty cells
+financiadores <- financiadores[complete.cases(financiadores),]
+
+financiadores <-
+  financiadores[order(financiadores$Ano, decreasing = TRUE),]
+financiadores$Ano <- as.factor(financiadores$Ano)
+
+# generate table (total per year, per agency)
+table.2 <-
+  gtsummary::tbl_summary(
+    financiadores,
+    by = "Agência",
+    type = list(all_continuous() ~ "continuous"),
+    statistic = list(all_continuous() ~ c("R$ {sum}")),
+    missing = "no",
+    digits = "Total" ~ 2
+  ) %>%
+  gtsummary::add_overall(last = TRUE,
+              col_label = "Total") %>%
+  gtsummary::modify_header(label = "**Agência**") %>%
+  gtsummary::modify_footnote(update = everything() ~ NA) %>%
+  gtsummary::bold_labels()
+# print table
+print(table.2)
+
+cat('\n\n')
+
+cat(
+  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
+)
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+##### **Edital-Ano**
+
+```{r auto-financiadores-docente-programa, eval = has.financiadores}
+# this chunk requires additional data that may not be available
+financiadores.raw <-
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+options(scipen = 10)
+
+financiadores.raw <-
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+# dplyr::select variables to display, by AGENCIA & ANO
+financiadores <-
+  financiadores.raw %>% dplyr::select("Programa", "Ano", "Total")
+
+# drop rows with empty cells
+financiadores <- financiadores[complete.cases(financiadores),]
+
+financiadores <-
+  financiadores[order(financiadores$Programa, decreasing = TRUE),]
+
+# generate table (total per year, per docente)
+table.2 <-
+  tbl_summary(
+    financiadores,
+    by = "Programa",
+    type = list(all_continuous() ~ "continuous"),
+    statistic = list(all_continuous() ~ c("R$ {sum}")),
+    missing = "no",
+    digits = "Total" ~ 2,
+    sort = all_categorical() ~ "frequency"
+  ) %>%
+  add_overall(last = TRUE,
+              col_label = "Total") %>%
+  modify_header(label = "**Programa**") %>%
+  modify_footnote(update = everything() ~ NA) %>%
+  bold_labels()
+# print table
+print(table.2)
+
+cat('\n\n')
+cat(
+  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
+)
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+## **Bolsas de estudo** {#bolsas .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !has.bolsas}
+cat('<br>')
+```
+
+```{r bolsas, eval = has.bolsas}
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Bolsas.xlsx")
+
+# display each sheet in a tab
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('### **', abas[j], '**'))
+  cat('\n\n<!-- -->\n\n')
+  bolsas.raw <-
+    readxl::read_excel("PPG/Bolsas.xlsx",
+                       sheet = abas[j],
+                       col_types = c("text"))
+  
+  # replace the link by a tag
+  Abrir <- matrix(NA, nrow = dim(bolsas.raw)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(bolsas.raw)[1]) {
+    if (!is.na(bolsas.raw[i, 3])) {
+      Abrir[i] <-
+        paste0('<a href="',
+               bolsas.raw[i, 3],
+               '" target="_blank"',
+               '>',
+               "↗️" ,
+               "</a>",
+               sep = "")
+    }
+  }
+  bolsas.raw <- cbind(bolsas.raw[, -3], Abrir)
+  
+  # print table
+  if (dim(bolsas.raw)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    cat(knitr::knit_print(create_dt(bolsas.raw, title = "Bolsas de estudo")))
+  } else {
+    cat("*Sem dados para exibir*")
+  }
+  
+  # print end of tab rows
+  cat('\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```

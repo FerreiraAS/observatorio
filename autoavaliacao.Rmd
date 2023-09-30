@@ -43,46 +43,6 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 ```
 </p>
 
-
-## **Planejamento estratégico** {#planejamento .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !has.planejamento}
-cat('<br>')
-```
-
-```{r planejamento, eval = has.planejamento}
-# initialize all sheets
-abas <- readxl::excel_sheets("PPG/Planejamento estratégico.xlsx")
-
-# display each sheet in a tab
-for (i in 1:length(abas)) {
-  cat('\n\n<!-- -->\n\n')
-  cat(paste0('### **', abas[i], '**'))
-  cat('\n\n<!-- -->\n\n')
-  planejamento <-
-    readxl::read_excel("PPG/Planejamento estratégico.xlsx",
-               sheet = abas[i],
-               col_types = c("text"))
-  
-  cat(
-    paste(
-      '<iframe src="',
-      planejamento[1],
-      '/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe>',
-      sep = ""
-    )
-  )
-  
-  # print end of tab rows
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-}
-```
-
-<br>
-
 ## **Metodologia** {#metodologia .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -355,30 +315,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-### **Nota** {#nota}
-
-```{r auto-notas, eval = has.notas}
-# read separate sheets
-notas <- readxl::read_excel("PPG/Notas.xlsx", sheet = "Notas")
-
-cat(
-  paste(
-    '<iframe src="',
-    notas[1],
-    '" style=\"width:100%; height:600px; border:2px solid black;"></iframe>',
-    sep = ""
-  )
-)
-
-cat('\n\n')
-
-cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/public/consultas/avaliacao/viewPreenchimentoFicha.xhtml?idFicha=6566&popup=true)")
-
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
 ### **Documentos CAPES** {#documentos .tabset}
 
 ```{r apresentacao-periodos, eval = has.avaliacao}
@@ -434,17 +370,212 @@ quadrienal.vigente <- 2021:min(as.numeric(format(Sys.Date(), "%Y")), 2024)
 
 #### **Estrutura Acadêmica do Programa** {.tabset}
 
-##### *Qualitativa*
+##### **AC** {#areas}
+
+```{r AC, eval = has.dados.cadastrais}
+area.raw <-
+  readxl::read_excel("PPG/Dados Cadastrais.xlsx",
+                     sheet = "AC",
+                     col_types = c("text"))
+area.raw$Fim <- NULL
+area.ativas <- area.raw
+
+# print tables
+ids <- order(area.ativas$'Área de Concentração', decreasing = FALSE)
+area.ativas <- area.ativas[ids, ]
+
+print(
+  kable(area.ativas, align = c("l", rep(
+    "c", ncol(area.ativas) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  ) %>% scroll_box(width = "100%")
+)
+```
+
+##### **LP** {#linhas}
+
+```{r LP, eval = has.dados.cadastrais}
+linhas.raw <-
+  readxl::read_excel("PPG/Dados Cadastrais.xlsx",
+             sheet = "LP",
+             col_types = c("text"))
+linhas.atual <- linhas.raw[is.na(linhas.raw$Fim),]
+linhas.atual$Fim <- NULL
+
+# print tables
+ids <- order(linhas.atual$'Linhas de Pesquisa', decreasing = FALSE)
+linhas.atual <- linhas.atual[ids, ]
+
+print(
+  kable(linhas.atual, align = c("l", rep(
+    "c", ncol(linhas.atual) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  ) %>% scroll_box(width = "100%")
+)
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+##### **PP** {#projetos}
+
+```{r PP, eval = has.sucupira.files}
+# projetos - membros
+sheet <- "Projetos - Membros"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# get data from last Sucupira year available
+projetos.all <-
+  do.call(rbind.data.frame, sucupira.list[as.character(max(anos))])
+
+# filter ongoing projects only
+projetos <-
+  projetos.all[projetos.all$`Membro Responsável` == "Sim" &
+                 projetos.all$Situação == "EM ANDAMENTO", ]
+
+projetos <-
+  projetos %>% dplyr::select(
+    "Área de Concentração",
+    "Linha de Pesquisa",
+    "Nome do Projeto de Pesquisa",
+    "Nome do Membro do Projeto",
+    "Categoria do Membro do Projeto",
+    "Data de Início",
+    "Data da Situação"
+  )
+projetos <- unique(projetos)
+```
+
+```{r PP-lista, eval = has.sucupira.files}
+table.projetos <-
+  data.frame(
+    projetos$`Área de Concentração`,
+    projetos$`Linha de Pesquisa`,
+    projetos$`Nome do Projeto de Pesquisa`,
+    projetos$`Nome do Membro do Projeto`,
+    projetos$`Data de Início`
+  )
+table.projetos <- table.projetos[order(table.projetos[, 1]),]
+labels <- colnames(table.projetos)
+# print tables
+table.projetos[, 1] <-
+  as.vector(unlist(lapply(table.projetos[, 1], FUN = str_to_upper)))
+table.projetos[, 2] <-
+  as.vector(unlist(lapply(table.projetos[, 2], FUN = str_to_sentence)))
+table.projetos[, 3] <-
+  as.vector(unlist(lapply(table.projetos[, 3], FUN = str_to_title)))
+
+colnames(table.projetos) <-
+  c("Área de Concentração",
+    "Linha de Pesquisa",
+    "Projeto de Pesquisa",
+    "Membro Responsável",
+    "Início")
+
+print(
+  kable(table.projetos, align = c("l", rep(
+    "c", ncol(table.projetos) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  ) %>% scroll_box(width = "100%")
+)
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
-*Em construção*
+##### **Docentes** {#docentes-linhas-pesquisa}
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+```{r projetos-de-pesquisa-em-andamento-tabela, eval = has.sucupira.files}
+# select data DOCENTES
+projetos.doc <-
+  projetos[projetos$`Categoria do Membro do Projeto` == "Docente",]
+table.doc <-
+  table(projetos.doc$`Nome do Membro do Projeto`,
+        projetos.doc$`Linha de Pesquisa`)
+# add row totals
+table.doc <- cbind(table.doc, rowSums(table.doc))
+colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
+# add column totals
+table.doc <- rbind(table.doc, colSums(table.doc))
+rownames(table.doc) <- c(head(rownames(table.doc), -1), "N")
+# print tables
+print(
+  kable(
+    table.doc,
+    align = c("c", rep("c", ncol(table.doc) - 2), "r"),
+    caption = "Docentes"
+  ) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  ) %>% scroll_box(width = "100%")
+)
+
+# line break
+cat("  \n")
+cat("  \n")
+
+# select data POS-DOC
+table.posdoc <- NULL
+projetos.posdoc <-
+  projetos[projetos$`Categoria do Membro do Projeto` == "Pós-Doc",]
+if (dim(projetos.posdoc)[1] != 0) {
+  table.posdoc <-
+    table(projetos.posdoc$`Nome do Membro do Projeto`,
+          projetos.posdoc$`Linha de Pesquisa`)
+  # add row totals
+  table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
+  colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
+  # add column totals
+  table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
+  rownames(table.posdoc) <- c(head(rownames(table.posdoc), -1), "N")
+  # print tables
+  print(
+    kable(
+      table.posdoc,
+      align = c("c", rep("c", ncol(table.posdoc) - 2), "r"),
+      caption = "Pós-Doutorandos"
+    ) %>% kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    ) %>% scroll_box(width = "100%")
+  )
+  
+}
+
+# line break
+cat("  \n")
+cat("  \n")
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
 
 <br>
 
-##### *Quantitativa*
+##### **Coerência** {#coerencia}
 
 ```{r 1-1-1-quanti, eval = has.sucupira.files}
 # read each tab content
@@ -669,6 +800,7 @@ for (i in 1:dim(docentes)[1]) {
           , silent = TRUE)
   }
 }
+table.doc.1 <- table.doc
 
 table.doc.long <- tidyr::gather(table.doc[, -1], "Ano", "Categoria", colnames(table.doc)[-1], factor_key=TRUE)
 
@@ -754,6 +886,7 @@ for (i in 1:dim(docentes)[1]) {
           , silent = TRUE)
   }
 }
+table.doc.2 <- table.doc
 
 table.doc.long <- tidyr::gather(table.doc[, -1], "Ano", "Tipo vínculo", colnames(table.doc)[-1], factor_key=TRUE)
 
@@ -839,6 +972,7 @@ for (i in 1:dim(docentes)[1]) {
           , silent = TRUE)
   }
 }
+table.doc.3 <- table.doc
 
 table.doc.long <- tidyr::gather(table.doc[, -1], "Ano", "Regime de Trabalho", colnames(table.doc)[-1], factor_key=TRUE)
 
@@ -924,6 +1058,7 @@ for (i in 1:dim(docentes)[1]) {
           , silent = TRUE)
   }
 }
+table.doc.4 <- table.doc
 
 table.doc.long <- tidyr::gather(table.doc[, -1], "Ano", "Carga Horária PG (Semanal)", colnames(table.doc)[-1], factor_key=TRUE)
 
@@ -973,7 +1108,75 @@ table.all <- gtsummary::tbl_stack(
   )
 )
 print(table.all)
+```
 
+<details>
+<summary>Dimensão | Dados individuais</summary>
+```{r dimensao-corpo-docente-detalhes, eval = has.sucupira.files}
+options(knitr.kable.NA = '')
+print(
+  kable(table.doc.1, align = c("l", rep(
+    "c", ncol(table.doc.1) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  ) %>% scroll_box(width = "100%")
+)
+```
+</details>
+
+<details>
+<summary>Vínculo | Dados individuais</summary>
+```{r vinculacao-corpo-docente-detalhes, eval = has.sucupira.files}
+options(knitr.kable.NA = '')
+print(
+  kable(table.doc.2, align = c("l", rep(
+    "c", ncol(table.doc.2) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  ) %>% scroll_box(width = "100%")
+)
+```
+</details>
+
+<details>
+<summary>Regime de trabalho | Dados individuais</summary>
+```{r regime-corpo-docente-detalhes, eval = has.sucupira.files}
+options(knitr.kable.NA = '')
+print(
+  kable(table.doc.3, align = c("l", rep(
+    "c", ncol(table.doc.3) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  ) %>% scroll_box(width = "100%")
+)
+```
+</details>
+
+<details>
+<summary>Carga horária PG | Dados individuais</summary>
+```{r carga-horaria-corpo-docente-detalhes, eval = has.sucupira.files}
+options(knitr.kable.NA = '')
+print(
+  kable(table.doc.4, align = c("l", rep(
+    "c", ncol(table.doc.4) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  ) %>% scroll_box(width = "100%")
+)
+```
+</details>
+
+<br>
+
+```{r, eval = has.sucupira.files}
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
 cat('\n\n')
@@ -1030,6 +1233,7 @@ for (i in 1:dim(docentes)[1]) {
           , silent = TRUE)
   }
 }
+table.doc.5 <- table.doc
 
 table.doc.long <- tidyr::gather(table.doc[, -1], "Ano", "Área de Conhecimento Titulação", colnames(table.doc)[-1], factor_key=TRUE)
 
@@ -1069,7 +1273,27 @@ table.1 <-
   modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 
 print(table.1)
+```
 
+<details>
+<summary>Área de conhecimento titulação | Dados individuais</summary>
+```{r coerencia-corpo-docente-detalhes, eval = has.sucupira.files}
+options(knitr.kable.NA = '')
+print(
+  kable(table.doc.5, align = c("l", rep(
+    "c", ncol(table.doc.5) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  ) %>% scroll_box(width = "100%")
+)
+```
+</details>
+
+<br>
+
+```{r, eval = has.sucupira.files}
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
 cat('\n\n')
@@ -1151,61 +1375,41 @@ cat(
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
-##### **Edital/Ano-Docente**
-
-```{r auto-financiadores-docente-programa, eval = has.financiadores}
-# this chunk requires additional data that may not be available
-financiadores.raw <-
-  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
-
-options(scipen = 10)
-
-financiadores.raw <-
-  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
-
-# dplyr::select variables to display, by AGENCIA & ANO
-financiadores <-
-  financiadores.raw %>% dplyr::select("Ano", "Proponente", "Programa", "Total")
-
-# drop rows with empty cells
-financiadores <- financiadores[complete.cases(financiadores),]
-
-financiadores <-
-  financiadores[order(financiadores$Proponente, decreasing = TRUE),]
-
-# filtra no período
-financiadores <- 
-  financiadores[financiadores$Ano %in% quadrienal.vigente, ]
-
-# generate table (total per year, per docente)
-table.2 <-
-  tbl_summary(
-    financiadores,
-    by = "Programa",
-    type = list(all_continuous() ~ "continuous"),
-    statistic = list(all_continuous() ~ c("R$ {sum}")),
-    missing = "no",
-    digits = "Total" ~ 2,
-    sort = all_categorical() ~ "frequency"
-  ) %>%
-  add_overall(last = TRUE,
-              col_label = "Total") %>%
-  modify_header(label = "**Programa**") %>%
-  modify_footnote(update = everything() ~ NA) %>%
-  bold_labels()
-# print table
-print(table.2)
-
-cat('\n\n')
-cat(
-  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
-)
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
 ### **1.3.1**
 
-#### **Adequação da proposta ao Plano Institucional da IES**
+#### **Adequação da proposta ao Plano Institucional da IES** {.tabset}
+
+```{r planejamento, eval = has.planejamento}
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Planejamento estratégico.xlsx")
+
+# display each sheet in a tab
+for (i in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('##### **', abas[i], '**'))
+  cat('\n\n<!-- -->\n\n')
+  planejamento <-
+    readxl::read_excel("PPG/Planejamento estratégico.xlsx",
+               sheet = abas[i],
+               col_types = c("text"))
+  
+  cat(
+    paste(
+      '<iframe src="',
+      planejamento[1],
+      '/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe>',
+      sep = ""
+    )
+  )
+  
+  # print end of tab rows
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+```
+
+<br>
+
+##### **Qualitativo**
 
 *Em construção*
 
