@@ -83,12 +83,12 @@ for (i in 1:length(projetos.id)) {
   matches <-
     sucupira.raw[sucupira.raw$`Identificador do Projeto` == projetos.id[i], ]
   if (dim(matches)[1] == 1) {
-    sucupira <- bind_rows(sucupira, matches)
+    sucupira <- dplyr::bind_rows(sucupira, matches)
   } else {
     keep <-
       matches[matches$Situação == "CONCLUÍDO" |
                 !is.na(matches$`Data de Fim da Linha`), ]
-    sucupira <- bind_rows(sucupira, keep)
+    sucupira <- dplyr::bind_rows(sucupira, keep)
   }
 }
 

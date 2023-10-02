@@ -447,6 +447,71 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 cat('<br>')
 ```
 
+### **Projetos de pesquisa**
+
+```{r impacto-projetos, eval = has.sucupira.files}
+# read each tab content
+sheet <- "Projetos"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get all years available
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+síntese.ano <- c()
+# loop for every available year
+for (i in 1:length(anos)) {
+  # get síntese anual
+  source("Scripts/síntese-sucupira.R", local = knitr::knit_global())
+  síntese.ano <-
+    dplyr::bind_rows(síntese.ano,
+          sintese(
+            sucupira.list = sucupira.list,
+            ano = anos[i]
+          ))
+}
+
+# Data selection
+síntese.ano <- síntese.ano %>%
+  dplyr::select(c(
+    "Ano",
+    "Áreas de concentração",
+    "Linhas de pesquisa",
+    "Projetos de pesquisa"
+    ))
+
+# generate table (total by year)
+table.1.1.1 <-
+  gtsummary::tbl_summary(
+    síntese.ano,
+    by = "Ano",
+    type = list(
+      "Áreas de concentração" ~ "continuous",
+      "Linhas de pesquisa" ~ "continuous",
+      "Projetos de pesquisa" ~ "continuous"),
+    statistic = list(
+      all_continuous() ~ c("{max}")),
+    missing = "no",
+    digits = list(everything() ~ 0)) %>%
+  gtsummary::modify_header(
+    label = "**Ano**",
+    all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(
+    tidyselect::everything() ~ NA) %>%
+  gtsummary::bold_labels()
+
+# print table
+print(table.1.1.1)
+
+cat('<br>')
+cat('\n\n')
+cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
+
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
 ### **Periódicos institucionais**
 
 ```{r periodicos-institucionais, eval = has.periodicos}
