@@ -518,25 +518,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-### **Objetivos**
-
-```{r cursos-objetivos, eval = has.dados.cadastrais}
-# read separate sheets
-cursos.raw <- readxl::read_excel("PPG/Dados Cadastrais.xlsx", sheet = "Cursos", col_types = c("text"))
-
-cursos <- dplyr::select(cursos.raw, c("Nível", "Objetivos"))
-
-# print tables
-print(kable(cursos, align = c("l", rep("c", ncol(cursos)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
-
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
 ### **Créditos**
 
 ```{r creditos, eval = has.dados.cadastrais}

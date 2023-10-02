@@ -370,6 +370,44 @@ quadrienal.vigente <- 2021:min(as.numeric(format(Sys.Date(), "%Y")), 2024)
 
 #### **Estrutura Acadêmica do Programa** {.tabset}
 
+##### **Objetivos**
+
+```{r cursos-objetivos, eval = has.dados.cadastrais}
+# read separate sheets
+cursos.raw <- readxl::read_excel("PPG/Dados Cadastrais.xlsx", sheet = "Cursos", col_types = c("text"))
+
+cursos <- dplyr::select(cursos.raw, c("Nível", "Objetivos"))
+
+# print tables
+print(kable(cursos, align = c("l", rep("c", ncol(cursos)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
+##### **Perfil do egresso**
+
+```{r cursos-egressos, eval = has.dados.cadastrais}
+# read separate sheets
+cursos.raw <- readxl::read_excel("PPG/Dados Cadastrais.xlsx", sheet = "Egressos", col_types = c("text"))
+
+cursos <- dplyr::select(cursos.raw, c("Nível", "Objetivos"))
+
+# print tables
+print(kable(cursos, align = c("l", rep("c", ncol(cursos)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
 ##### **AC** {#descricao-ac}
 
 ```{r 1-1-1-AC, eval = has.dados.cadastrais}
@@ -974,16 +1012,19 @@ table.posdoc.gt <-
 ```
 
 ```{r 1-1-1-ac-lp-pp-doc, eval = has.sucupira.files}
-table.all <- gtsummary::tbl_stack(
-  list(
-    table.ac.gt,
-    table.lp.gt,
-    table.pp.gt,
-    table.doc.gt,
-    table.posdoc.gt
-  )
-)
-print(table.all)
+# list all tables
+table.all <-
+  list(table.ac.gt,
+       table.lp.gt,
+       table.pp.gt,
+       table.doc.gt,
+       table.posdoc.gt)
+
+# drop empty elements from list
+table.all <- table.all[lapply(table.all, length) > 0]
+
+# print all tables stacked
+print(gtsummary::tbl_stack(table.all))
 ```
 
 <details>
