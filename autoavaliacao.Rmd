@@ -370,9 +370,7 @@ quadrienal.vigente <- 2021:min(as.numeric(format(Sys.Date(), "%Y")), 2024)
 
 #### **Estrutura Acadêmica do Programa** {.tabset}
 
-##### **Qualitativo** {#ac-cp .tabset}
-
-###### **Áreas de Concentração** {#descricao-ac}
+##### **AC** {#descricao-ac}
 
 ```{r 1-1-1-AC, eval = has.dados.cadastrais}
 area.raw <-
@@ -408,7 +406,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-###### **Linhas de Pesquisa** {#descricao-lp}
+##### **LP** {#descricao-lp}
 
 ```{r 1-1-1-LP, eval = has.dados.cadastrais}
 linhas.raw <-
@@ -444,7 +442,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-###### **Projetos de Pesquisa** {#descricao-pp}
+##### **PP** {#descricao-pp}
 
 ```{r 1-1-1-data, eval = has.sucupira.files}
 # projetos - membros
@@ -471,9 +469,6 @@ names(sucupira.df) <-
 # filter docente responsável
 sucupira.df <-
   sucupira.df[sucupira.df$`Membro Responsável` == "Sim", ]
-
-# remove duplicates
-sucupira.df <- sucupira.df[!duplicated(sucupira.df), ]
 
 sucupira.df <-
   sucupira.df %>% dplyr::select(
@@ -544,16 +539,17 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-###### **Docentes** {#docentes-linhas-pesquisa}
+##### **Docentes** {#docentes-linhas-pesquisa}
 
 ```{r 1-1-1-docentes, eval = has.sucupira.files}
 # remove duplicates
-sucupira.df <- sucupira.df[!duplicated(sucupira.df[, -1]), ]
+table.all <- sucupira.df[!duplicated(sucupira.df[, -1]), ]
 
 # select data DOCENTES
 table.doc <-
-  table(sucupira.df$`Nome do Membro do Projeto`,
-        sucupira.df$`Linha de Pesquisa`)
+  table(table.all$`Nome do Membro do Projeto`[table.all$`Categoria do Membro do Projeto` == "Docente"],
+        table.all$`Linha de Pesquisa`[table.all$`Categoria do Membro do Projeto` == "Docente"])
+
 # add row totals
 table.doc <- cbind(table.doc, rowSums(table.doc))
 colnames(table.doc) <- c(head(colnames(table.doc), -1), "N")
@@ -572,17 +568,31 @@ print(
     position = "center"
   ) %>% scroll_box(width = "100%")
 )
+```
 
-# line break
-cat("  \n")
-cat("  \n")
+<br>
+
+```{r, eval = has.sucupira.files}
+cat('\n\n')
+cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
+##### **Pós-Docs** {#posdocs-linhas-pesquisa}
+
+```{r 1-1-1-posdocs, eval = has.sucupira.files}
+# remove duplicates
+table.all <- sucupira.df[!duplicated(sucupira.df[, -1]), ]
 
 # select data POS-DOC
 table.posdoc <- NULL
-if (any(sucupira.df$`Categoria do Membro do Projeto` == "Pós-Doc")) {
+if (any(table.all$`Categoria do Membro do Projeto` == "Pós-Doc")) {
   table.posdoc <-
-    table(sucupira.df$`Nome do Membro do Projeto`[sucupira.df$`Categoria do Membro do Projeto` == "Pós-Doc"],
-          sucupira.df$`Linha de Pesquisa`[sucupira.df$`Categoria do Membro do Projeto` == "Pós-Doc"])
+    table(table.all$`Nome do Membro do Projeto`[table.all$`Categoria do Membro do Projeto` == "Pós-Doc"],
+          table.all$`Linha de Pesquisa`[table.all$`Categoria do Membro do Projeto` == "Pós-Doc"])
   # add row totals
   table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
   colnames(table.posdoc) <- c(head(colnames(table.posdoc), -1), "N")
@@ -615,7 +625,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-##### **Quantitativo** {#coerencia-quantitativo}
+##### **Síntese** {#coerencia-quantitativo}
 
 ```{r 1-1-1-ac, eval = has.sucupira.files}
 table.ac <-
@@ -796,6 +806,8 @@ my_N <- function(data, ...) {
   style_number(sum(data == "Projetos", na.rm = TRUE), digits = 0)
 }
 
+colnames(table.pp.long) <- c("Ano", "Projetos de Pesquisa por Linha")
+
 # print tables
 table.pp.gt <-
   gtsummary::tbl_summary(
@@ -814,7 +826,7 @@ table.pp.gt <-
     all_stat_cols() ~ "**{level}**"
   )) %>%
   remove_row_type(
-    variables = c('Nome do Projeto de Pesquisa'),
+    variables = c('Projetos de Pesquisa por Linha'),
     type = "level",
     level_value = ("Projetos")
   ) %>%
@@ -825,11 +837,11 @@ table.pp.gt <-
 table.doc <-
   data.frame(matrix(
     NA,
-    nrow = length(unique(sucupira.df$`Nome do Projeto de Pesquisa`)),
+    nrow = length(unique(sucupira.df$`Nome do Projeto de Pesquisa`[sucupira.df$`Categoria do Membro do Projeto` == "Docente"])),
     ncol = length(quadrienal.vigente)
   ))
 rownames(table.doc) <- NULL
-table.doc <- cbind(unique(sucupira.df$`Nome do Projeto de Pesquisa`), table.doc)
+table.doc <- cbind(unique(sucupira.df$`Nome do Projeto de Pesquisa`[sucupira.df$`Categoria do Membro do Projeto` == "Docente"]), table.doc)
 colnames(table.doc) <-
   c("Nome do Projeto de Pesquisa", as.character(quadrienal.vigente))
 for (i in 1:dim(table.doc)[1]) {
@@ -864,6 +876,8 @@ my_N <- function(data, ...) {
   style_number(sum(data == "Membros", na.rm = TRUE), digits = 0)
 }
 
+colnames(table.doc.long) <- c("Ano", "Projetos de pesquisa por Docente")
+
 # print tables
 table.doc.gt <-
   gtsummary::tbl_summary(
@@ -882,7 +896,77 @@ table.doc.gt <-
     all_stat_cols() ~ "**{level}**"
   )) %>%
   remove_row_type(
-    variables = c('Nome do Membro do Projeto'),
+    variables = c('Projetos de pesquisa por Docente'),
+    type = "level",
+    level_value = ("Membros")
+  ) %>%
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+```
+
+```{r 1-1-1-posdoc, eval = has.sucupira.files}
+table.posdoc <-
+  data.frame(matrix(
+    NA,
+    nrow = length(unique(sucupira.df$`Nome do Projeto de Pesquisa`[sucupira.df$`Categoria do Membro do Projeto` == "Pós-Doc"])),
+    ncol = length(quadrienal.vigente)
+  ))
+rownames(table.posdoc) <- NULL
+table.posdoc <- cbind(unique(sucupira.df$`Nome do Projeto de Pesquisa`[sucupira.df$`Categoria do Membro do Projeto` == "Pós-Doc"]), table.posdoc)
+colnames(table.posdoc) <-
+  c("Nome do Projeto de Pesquisa", as.character(quadrienal.vigente))
+for (i in 1:dim(table.posdoc)[1]) {
+  for (j in 1:length(quadrienal.vigente)) {
+    data <- sucupira.df[sucupira.df$Anos == quadrienal.vigente[j], ]
+    table.posdoc[i, j + 1] <-
+      try(
+        data$`Nome do Membro do Projeto`[match(table.posdoc$`Nome do Projeto de Pesquisa`[i],data$`Nome do Projeto de Pesquisa`)]
+          , silent = TRUE)
+  }
+}
+
+table.posdoc.long <-
+  tidyr::gather(table.posdoc[, -1],
+                "Ano",
+                "Nome do Membro do Projeto",
+                colnames(table.posdoc)[-1],
+                factor_key = TRUE)
+
+table.posdoc.long <- rbind(
+  table.posdoc.long,
+  data.frame(
+    "Ano" = rep(paste0(
+      min(quadrienal.vigente), "-", max(quadrienal.vigente)
+    ), times = dim(table.posdoc)[1]),
+    "Nome do Membro do Projeto" = rep("Membros", times = dim(table.posdoc)[1]),
+    check.names = FALSE
+  )
+)
+
+my_N <- function(data, ...) {
+  style_number(sum(data == "Membros", na.rm = TRUE), digits = 0)
+}
+
+colnames(table.posdoc.long) <- c("Ano", "Projetos de pesquisa por Pós-Doc")
+
+# print tables
+table.posdoc.gt <-
+  gtsummary::tbl_summary(
+    table.posdoc.long,
+    by = "Ano",
+    statistic = list(all_categorical() ~ "{n}"),
+    missing = "no",
+    digits = everything() ~ 0
+  ) %>%
+  gtsummary::modify_header(label = "", all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels() %>%
+  gtsummary::add_stat(fns = all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(list(
+    add_stat_1 ~ "**N (Quadriênio)**",
+    all_stat_cols() ~ "**{level}**"
+  )) %>%
+  remove_row_type(
+    variables = c('Projetos de pesquisa por Pós-Doc'),
     type = "level",
     level_value = ("Membros")
   ) %>%
@@ -895,7 +979,8 @@ table.all <- gtsummary::tbl_stack(
     table.ac.gt,
     table.lp.gt,
     table.pp.gt,
-    table.doc.gt
+    table.doc.gt,
+    table.posdoc.gt
   )
 )
 print(table.all)
@@ -956,6 +1041,22 @@ options(knitr.kable.NA = '')
 print(
   kable(table.doc, align = c("l", rep(
     "c", ncol(table.doc) - 2
+  ), "r")) %>% kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  ) %>% scroll_box(width = "100%")
+)
+```
+</details>
+
+<details>
+<summary>Pós-Docs | Dados individuais</summary>
+```{r posdoc-detalhes, eval = has.sucupira.files}
+options(knitr.kable.NA = '')
+print(
+  kable(table.posdoc, align = c("l", rep(
+    "c", ncol(table.posdoc) - 2
   ), "r")) %>% kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
