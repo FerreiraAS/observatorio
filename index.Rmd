@@ -1538,7 +1538,7 @@ p1 <- ggplot() +
   geom_sf(data = states, aes(fill = discentes), color = "grey") +
   scale_fill_distiller(
     palette = "Spectral",
-    name = "Egressos, n",
+    name = "Discentes, n",
     limits = c(min(0, UF$Freq), max(UF$Freq)),
     na.value = "grey"
   ) +
