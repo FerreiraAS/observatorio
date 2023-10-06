@@ -684,9 +684,7 @@ table.ac.gt <-
     type = "level",
     level_value = ("Áreas")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)) ) %>%
-  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
-  modify_header(n = "**Sem classificação**")
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 ```
 
 ```{r 1-1-1-lp, eval = has.sucupira.files}
@@ -754,9 +752,7 @@ table.lp.gt <-
     type = "level",
     level_value = ("Linhas")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
-  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
-  modify_header(n = "**Sem classificação**")
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 ```
 
 ```{r 1-1-1-pp, eval = has.sucupira.files}
@@ -826,9 +822,7 @@ table.pp.gt <-
     type = "level",
     level_value = ("Projetos")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
-  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
-  modify_header(n = "**Sem classificação**")
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 ```
 
 ```{r 1-1-1-doc, eval = has.sucupira.files}
@@ -898,9 +892,7 @@ table.doc.gt <-
     type = "level",
     level_value = ("Membros")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
-  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
-  modify_header(n = "**Sem classificação**")
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 ```
 
 ```{r 1-1-1-posdoc, eval = has.sucupira.files}
@@ -970,9 +962,7 @@ table.posdoc.gt <-
     type = "level",
     level_value = ("Membros")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
-  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
-  modify_header(n = "**Sem classificação**")
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 ```
 
 ```{r 1-1-1-list-tables, eval = has.sucupira.files}
@@ -2245,9 +2235,7 @@ table.ac.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
-  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
-  modify_header(n = "**Sem classificação**")
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 ```
 
 ```{r 3-1-2-lp, eval = has.sucupira.files}
@@ -2318,9 +2306,7 @@ table.lp.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
-  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
-  modify_header(n = "**Sem classificação**")
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 ```
 
 ```{r 3-1-2-producao, eval = has.sucupira.files}
@@ -2391,9 +2377,7 @@ table.prd.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
-  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
-  modify_header(n = "**Sem classificação**")
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 ```
 
 ```{r 3-1-2-autor, eval = has.sucupira.files}
@@ -2464,9 +2448,7 @@ table.aut.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
-  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
-  modify_header(n = "**Sem classificação**")
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 ```
 
 ```{r 3-1-2-tcc, eval = has.sucupira.files}
@@ -2537,9 +2519,7 @@ table.tcc.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
-  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
-  modify_header(n = "**Sem classificação**")
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 ```
 
 ```{r 3-1-2-bibliografica, eval = has.sucupira.files}
@@ -2610,9 +2590,7 @@ table.bib.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
-  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
-  modify_header(n = "**Sem classificação**")
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 ```
 
 ```{r 3-1-2-tecnica, eval = has.sucupira.files}
@@ -2683,9 +2661,7 @@ table.tec.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
-  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
-  modify_header(n = "**Sem classificação**")
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 ```
 
 <br>
