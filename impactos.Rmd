@@ -1052,9 +1052,7 @@ table.1.1.1 <-
 # print table
 print(table.1.1.1)
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global()) %>%
-  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
-  modify_header(n = "**Sem classificação**")
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
