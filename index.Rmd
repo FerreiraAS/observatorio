@@ -307,8 +307,7 @@ bsplus::bs_carousel(id = "coerencia-carousel",
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-1.png")) %>%
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-2.png"))
 
-cat('\n\n')
-cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 cat('^[Regiões correspondem à quantidade de linhas de pesquisa.]')
 cat('\n')
 cat('^[Áreas internas correspondem à quantidade de projetos na respectiva linha de pesquisa.]'
@@ -356,7 +355,7 @@ bsplus::bs_carousel(id = "temas-carousel",
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/Produções.png"))
 
 cat('\n\n')
-cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 cat('^[Termos nas nuvens correspondem àqueles encontrados nos títulos dos projetos de pesquisa, trabalho de conclusão de curso e produção intelectual, respectivamente.]')
 ```
 
@@ -502,7 +501,7 @@ bsplus::bs_carousel(id = "projetos-carousel",
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-projetos-3.png"))
 
 cat('\n\n')
-cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 cat('^[Quantidades referem-se ao número de projetos de pesquisa ativos no ano.]')
 ```
 
@@ -1957,10 +1956,7 @@ bsplus::bs_carousel(id = "posdoc-carousel",
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-2.png")) %>%
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-3.png"))
 
-cat('\n\n')
-cat(
-  "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)"
-)
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -2301,8 +2297,7 @@ bsplus::bs_carousel(id = "rede-carousel",
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-5.png")) %>%
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-6.png"))
 
-cat('\n\n')
-cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>

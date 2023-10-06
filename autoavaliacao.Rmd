@@ -245,11 +245,7 @@ cat(
 cat('</div>')
 cat('</div>')
 
-cat('<br>')
-cat('\n\n')
-cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
-
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -307,10 +303,8 @@ if (dim(missing.data)[1] != 0) {
 } else {
   cat("*Sem dados para exibir*")
 }
-cat('\n\n')
-cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
 
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -381,10 +375,7 @@ cursos <- dplyr::select(cursos.raw, c("Nível", "Objetivos"))
 # print tables
 print(kable(cursos, align = c("l", rep("c", ncol(cursos)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -400,10 +391,7 @@ cursos <- dplyr::select(cursos.raw, c("Nível", "Objetivos"))
 # print tables
 print(kable(cursos, align = c("l", rep("c", ncol(cursos)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -431,15 +419,8 @@ print(
     position = "center"
   ) %>% scroll_box(width = "100%")
 )
-```
 
-<br>
-
-```{r, eval = has.sucupira.files}
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -467,15 +448,8 @@ print(
     position = "center"
   ) %>% scroll_box(width = "100%")
 )
-```
 
-<br>
-
-```{r, eval = has.sucupira.files}
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -564,15 +538,8 @@ print(
     position = "center"
   ) %>% scroll_box(width = "100%")
 )
-```
 
-<br>
-
-```{r, eval = has.sucupira.files}
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -606,15 +573,8 @@ print(
     position = "center"
   ) %>% scroll_box(width = "100%")
 )
-```
 
-<br>
-
-```{r, eval = has.sucupira.files}
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -650,18 +610,12 @@ if (any(table.all$`Categoria do Membro do Projeto` == "Pós-Doc")) {
     ) %>% scroll_box(width = "100%")
   )
 }
+
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
 
-```{r, eval = has.sucupira.files}
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
 
 ##### **Síntese** {#coerencia-quantitativo}
 
@@ -730,7 +684,9 @@ table.ac.gt <-
     type = "level",
     level_value = ("Áreas")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)) ) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 ```{r 1-1-1-lp, eval = has.sucupira.files}
@@ -798,7 +754,9 @@ table.lp.gt <-
     type = "level",
     level_value = ("Linhas")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 ```{r 1-1-1-pp, eval = has.sucupira.files}
@@ -868,7 +826,9 @@ table.pp.gt <-
     type = "level",
     level_value = ("Projetos")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 ```{r 1-1-1-doc, eval = has.sucupira.files}
@@ -938,7 +898,9 @@ table.doc.gt <-
     type = "level",
     level_value = ("Membros")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 ```{r 1-1-1-posdoc, eval = has.sucupira.files}
@@ -1008,7 +970,9 @@ table.posdoc.gt <-
     type = "level",
     level_value = ("Membros")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 ```{r 1-1-1-list-tables, eval = has.sucupira.files}
@@ -1025,6 +989,8 @@ table.all <- table.all[lapply(table.all, length) > 0]
 
 # print all tables stacked
 print(gtsummary::tbl_stack(table.all))
+
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <details>
@@ -1106,15 +1072,6 @@ print(
 )
 ```
 </details>
-
-<br>
-
-```{r, eval = has.sucupira.files}
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
 
 <br>
 
@@ -1209,11 +1166,7 @@ table.1.1.2 <-
 # print table
 print(table.1.1.2)
 
-cat('<br>')
-cat('\n\n')
-cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
-
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1586,6 +1539,8 @@ table.all <- gtsummary::tbl_stack(
   )
 )
 print(table.all)
+
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <details>
@@ -1653,13 +1608,6 @@ print(
 </details>
 
 <br>
-
-```{r, eval = has.sucupira.files}
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
 
 ### **1.2.2**
 
@@ -1751,6 +1699,8 @@ table.1 <-
   modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 
 print(table.1)
+
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <details>
@@ -1770,13 +1720,6 @@ print(
 </details>
 
 <br>
-
-```{r, eval = has.sucupira.files}
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
 
 ### **1.2.3**
 
@@ -2134,10 +2077,7 @@ if (dim(disciplinas.raw)[1] != 0) {
   ))
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -2305,7 +2245,9 @@ table.ac.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 ```{r 3-1-2-lp, eval = has.sucupira.files}
@@ -2376,7 +2318,9 @@ table.lp.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 ```{r 3-1-2-producao, eval = has.sucupira.files}
@@ -2447,7 +2391,9 @@ table.prd.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 ```{r 3-1-2-autor, eval = has.sucupira.files}
@@ -2518,7 +2464,9 @@ table.aut.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 ```{r 3-1-2-tcc, eval = has.sucupira.files}
@@ -2589,7 +2537,9 @@ table.tcc.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 ```{r 3-1-2-bibliografica, eval = has.sucupira.files}
@@ -2660,7 +2610,9 @@ table.bib.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 ```{r 3-1-2-tecnica, eval = has.sucupira.files}
@@ -2731,7 +2683,9 @@ table.tec.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1))) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 <br>
@@ -2753,6 +2707,8 @@ table.all <- table.all[lapply(table.all, length) > 0]
 
 # print all tables stacked
 print(gtsummary::tbl_stack(table.all))
+
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -2868,15 +2824,6 @@ print(
 )
 ```
 </details>
-
-<br>
-
-```{r, eval = has.sucupira.files}
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
 
 <br>
 

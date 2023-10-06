@@ -116,10 +116,7 @@ legend(
   box.lty = 0
 )
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -170,10 +167,7 @@ if (dim(bolsistas)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 ##### **Mestrado**
@@ -220,10 +214,7 @@ if (dim(bolsistas)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -307,10 +298,7 @@ cat('\n\n')
 cat(
   '^1^ Dados de financiamento extraídos a partir dos financiadores dos trabalhos de conclusão de curso. Bolsistas ativos não estão incluídos.'
 )
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 
 cat('\n\n')
 cat('##### **Gráfico**')
@@ -344,15 +332,108 @@ cat('\n\n')
 cat(
   '^1^ Dados de financiamento extraídos a partir dos financiadores dos trabalhos de conclusão de curso. Bolsistas ativos não estão incluídos.'
 )
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
 
 ### **Produção acadêmica** {.tabset}
+
+#### **Teses**
+
+```{r tcc-dsc-financiados, eval = has.sucupira.files}
+# bolsistas
+sheet <- "TCC - Financiadores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+bolsistas.tcc <- sucupira.raw
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# get years
+bolsistas.tcc$'Ano de Defesa' <- substr(as.Date(bolsistas.tcc$`Data da Defesa`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+bolsistas.tcc$`Nome do Autor` <- tools::toTitleCase(tolower(bolsistas.tcc$`Nome do Autor`))
+bolsistas.tcc$`Nome do Orientador` <- tools::toTitleCase(tolower(bolsistas.tcc$`Nome do Orientador`))
+bolsistas.tcc$`Nome do Trabalho de Conclusão` <- tools::toTitleCase(tolower(bolsistas.tcc$`Nome do Trabalho de Conclusão`))
+
+bolsistas.tcc <- bolsistas.tcc[bolsistas.tcc$`Tipo de Trabalho de Conclusão` == "TESE", ]
+
+# drop columns
+bolsistas.tcc <- bolsistas.tcc %>% dplyr::select("Ano de Defesa", "Linha de Pesquisa", "Nome do Autor", "Nome do Trabalho de Conclusão", "Nome do Financiador")
+
+# drop NA values in "Quantidade de Meses"
+bolsistas.tcc <- bolsistas.tcc[complete.cases(bolsistas.tcc), ]
+bolsistas.tcc <- bolsistas.tcc[!duplicated(bolsistas.tcc), ]
+
+if (dim(bolsistas.tcc)[1] != 0) {
+  ids <- order(bolsistas.tcc$'Ano de Defesa', bolsistas.tcc$'Linha de Pesquisa', decreasing = TRUE)
+  table <- bolsistas.tcc[ids,]
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table, title = "Teses - Bolsistas")
+} else {
+  cat("*Sem dados para exibir*")
+}
+
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
+```
+
+<br>
+
+#### **Dissertações**
+
+```{r tcc-msc-financiados, eval = has.sucupira.files}
+# bolsistas
+sheet <- "TCC - Financiadores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+bolsistas.tcc <- sucupira.raw
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# get years
+bolsistas.tcc$'Ano de Defesa' <- substr(as.Date(bolsistas.tcc$`Data da Defesa`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+bolsistas.tcc$`Nome do Autor` <- tools::toTitleCase(tolower(bolsistas.tcc$`Nome do Autor`))
+bolsistas.tcc$`Nome do Orientador` <- tools::toTitleCase(tolower(bolsistas.tcc$`Nome do Orientador`))
+bolsistas.tcc$`Nome do Trabalho de Conclusão` <- tools::toTitleCase(tolower(bolsistas.tcc$`Nome do Trabalho de Conclusão`))
+
+bolsistas.tcc <- bolsistas.tcc[bolsistas.tcc$`Tipo de Trabalho de Conclusão` == "DISSERTAÇÃO", ]
+
+# drop columns
+bolsistas.tcc <- bolsistas.tcc %>% dplyr::select("Ano de Defesa", "Linha de Pesquisa", "Nome do Autor", "Nome do Trabalho de Conclusão", "Nome do Financiador")
+
+# drop NA values in "Quantidade de Meses"
+bolsistas.tcc <- bolsistas.tcc[complete.cases(bolsistas.tcc), ]
+bolsistas.tcc <- bolsistas.tcc[!duplicated(bolsistas.tcc), ]
+
+if (dim(bolsistas.tcc)[1] != 0) {
+  ids <- order(bolsistas.tcc$'Ano de Defesa', bolsistas.tcc$'Linha de Pesquisa', decreasing = TRUE)
+  table <- bolsistas.tcc[ids,]
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table, title = "Dissertações - Bolsistas")
+} else {
+  cat("*Sem dados para exibir*")
+}
+
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
+```
+
+<br>
+
+## **Impacto científico** {#impacto-cientifico}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !any(has.periodicos, has.cep)}
+cat('<br>')
+```
 
 #### **Produção do Programa**
 
@@ -460,7 +541,9 @@ table.ac.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1))) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 ```{r 3-1-2-lp, eval = has.sucupira.files}
@@ -531,7 +614,9 @@ table.lp.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1))) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 ```{r 3-1-2-producao, eval = has.sucupira.files}
@@ -602,7 +687,9 @@ table.prd.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1))) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 ```{r 3-1-2-autor, eval = has.sucupira.files}
@@ -673,7 +760,9 @@ table.aut.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1))) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 ```{r 3-1-2-tcc, eval = has.sucupira.files}
@@ -744,7 +833,9 @@ table.tcc.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1))) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 ```{r 3-1-2-bibliografica, eval = has.sucupira.files}
@@ -815,7 +906,9 @@ table.bib.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1))) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 ```{r 3-1-2-tecnica, eval = has.sucupira.files}
@@ -886,7 +979,9 @@ table.tec.gt <-
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1)))
+  modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1))) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 <br>
@@ -908,110 +1003,11 @@ table.all <- table.all[lapply(table.all, length) > 0]
 
 # print all tables stacked
 print(gtsummary::tbl_stack(table.all))
+
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
-
-#### **Teses**
-
-```{r tcc-dsc-financiados, eval = has.sucupira.files}
-# bolsistas
-sheet <- "TCC - Financiadores"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-bolsistas.tcc <- sucupira.raw
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get years
-bolsistas.tcc$'Ano de Defesa' <- substr(as.Date(bolsistas.tcc$`Data da Defesa`, format = "%d/%m/%Y"), 1, 4)
-
-# format names
-bolsistas.tcc$`Nome do Autor` <- tools::toTitleCase(tolower(bolsistas.tcc$`Nome do Autor`))
-bolsistas.tcc$`Nome do Orientador` <- tools::toTitleCase(tolower(bolsistas.tcc$`Nome do Orientador`))
-bolsistas.tcc$`Nome do Trabalho de Conclusão` <- tools::toTitleCase(tolower(bolsistas.tcc$`Nome do Trabalho de Conclusão`))
-
-bolsistas.tcc <- bolsistas.tcc[bolsistas.tcc$`Tipo de Trabalho de Conclusão` == "TESE", ]
-
-# drop columns
-bolsistas.tcc <- bolsistas.tcc %>% dplyr::select("Ano de Defesa", "Linha de Pesquisa", "Nome do Autor", "Nome do Trabalho de Conclusão", "Nome do Financiador")
-
-# drop NA values in "Quantidade de Meses"
-bolsistas.tcc <- bolsistas.tcc[complete.cases(bolsistas.tcc), ]
-bolsistas.tcc <- bolsistas.tcc[!duplicated(bolsistas.tcc), ]
-
-if (dim(bolsistas.tcc)[1] != 0) {
-  ids <- order(bolsistas.tcc$'Ano de Defesa', bolsistas.tcc$'Linha de Pesquisa', decreasing = TRUE)
-  table <- bolsistas.tcc[ids,]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Teses - Bolsistas")
-} else {
-  cat("*Sem dados para exibir*")
-}
-
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
-#### **Dissertações**
-
-```{r tcc-msc-financiados, eval = has.sucupira.files}
-# bolsistas
-sheet <- "TCC - Financiadores"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-bolsistas.tcc <- sucupira.raw
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get years
-bolsistas.tcc$'Ano de Defesa' <- substr(as.Date(bolsistas.tcc$`Data da Defesa`, format = "%d/%m/%Y"), 1, 4)
-
-# format names
-bolsistas.tcc$`Nome do Autor` <- tools::toTitleCase(tolower(bolsistas.tcc$`Nome do Autor`))
-bolsistas.tcc$`Nome do Orientador` <- tools::toTitleCase(tolower(bolsistas.tcc$`Nome do Orientador`))
-bolsistas.tcc$`Nome do Trabalho de Conclusão` <- tools::toTitleCase(tolower(bolsistas.tcc$`Nome do Trabalho de Conclusão`))
-
-bolsistas.tcc <- bolsistas.tcc[bolsistas.tcc$`Tipo de Trabalho de Conclusão` == "DISSERTAÇÃO", ]
-
-# drop columns
-bolsistas.tcc <- bolsistas.tcc %>% dplyr::select("Ano de Defesa", "Linha de Pesquisa", "Nome do Autor", "Nome do Trabalho de Conclusão", "Nome do Financiador")
-
-# drop NA values in "Quantidade de Meses"
-bolsistas.tcc <- bolsistas.tcc[complete.cases(bolsistas.tcc), ]
-bolsistas.tcc <- bolsistas.tcc[!duplicated(bolsistas.tcc), ]
-
-if (dim(bolsistas.tcc)[1] != 0) {
-  ids <- order(bolsistas.tcc$'Ano de Defesa', bolsistas.tcc$'Linha de Pesquisa', decreasing = TRUE)
-  table <- bolsistas.tcc[ids,]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Dissertações - Bolsistas")
-} else {
-  cat("*Sem dados para exibir*")
-}
-
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
-## **Impacto científico** {#impacto-cientifico}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !any(has.periodicos, has.cep)}
-cat('<br>')
-```
 
 ### **Projetos de pesquisa**
 
@@ -1069,11 +1065,9 @@ table.1.1.1 <-
 # print table
 print(table.1.1.1)
 
-cat('<br>')
-cat('\n\n')
-cat("*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)")
-
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global()) %>%
+  add_n(statistic = "{n_miss} ({p_miss}%)") %>%
+  modify_header(n = "**Sem classificação**")
 ```
 
 <br>
@@ -1482,10 +1476,7 @@ if (dim(projetos)[1] != 0) {
   cat('\n\n')
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1612,10 +1603,7 @@ if (dim(tccs)[1] != 0) {
   cat('\n\n')
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>

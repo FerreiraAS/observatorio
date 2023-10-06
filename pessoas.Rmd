@@ -145,10 +145,7 @@ rownames(table.2) <- NULL
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.2, title = "Coordenação")
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -207,10 +204,7 @@ for (i in 1:dim(docentes)[1]) {
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -238,10 +232,7 @@ my_orcid <-
          gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
        ))
 
-cat('\n\n<!-- -->\n\n')
-source("Scripts/external_identifiers.R", local = knitr::knit_global())
-cat('\n\n<!-- -->\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -284,10 +275,7 @@ if(has.2024.2021) {
   docentes <- docentes[order(docentes$"Nome Docente"), ]
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 ```{r docentes-2024-2021-tabela, eval = has.2024.2021}
@@ -474,10 +462,7 @@ if(has.2020.2017) {
   docentes <- docentes[order(docentes$"Nome Docente"), ]
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 ```{r docentes-2020-tabela, eval = has.2020.2017}
@@ -664,10 +649,7 @@ if(has.2016.2013) {
   docentes <- docentes[order(docentes$"Nome Docente"), ]
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 ```{r docentes-2016-tabela, eval = has.2016.2013}
@@ -854,10 +836,7 @@ if(has.2012.2010) {
   docentes <- docentes[order(docentes$"Nome Docente"), ]
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 ```{r docentes-2012-tabela, eval = has.2012.2010}
@@ -1103,10 +1082,7 @@ if (dim(docentes)[1] == 0) {
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2024-2021")))
   
-  cat('\n\n')
-  cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-  cat('\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  source("Scripts/fonte_capes.R", local = knitr::knit_global())
 }
 ```
 
@@ -1205,10 +1181,7 @@ if (dim(docentes)[1] == 0) {
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2020-2017")))
 
-  cat('\n\n')
-  cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-  cat('\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  source("Scripts/fonte_capes.R", local = knitr::knit_global())
 }
 ```
 
@@ -1307,10 +1280,7 @@ if (dim(docentes)[1] == 0) {
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2016-2013")))
   
-  cat('\n\n')
-  cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-  cat('\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  source("Scripts/fonte_capes.R", local = knitr::knit_global())
 }
 ```
 
@@ -1408,11 +1378,7 @@ if (dim(docentes)[1] == 0) {
   table <- table.2[ids, ]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2012-2010")))
-  
-  cat('\n\n')
-  cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-  cat('\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  source("Scripts/fonte_capes.R", local = knitr::knit_global())
 }
 ```
 
@@ -1473,10 +1439,7 @@ if (dim(discentes)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1529,10 +1492,7 @@ if (dim(discentes)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1583,10 +1543,7 @@ if (dim(discentes)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1697,10 +1654,7 @@ if (dim(discentes)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1809,10 +1763,7 @@ if (dim(discentes)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1882,10 +1833,7 @@ if (dim(egressos)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1948,10 +1896,7 @@ if (dim(egressos)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -2016,10 +1961,7 @@ if (dim(egressos)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -2082,10 +2024,7 @@ if (dim(egressos)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -2150,10 +2089,7 @@ if (dim(egressos)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -2216,10 +2152,7 @@ if (dim(egressos)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -2284,10 +2217,7 @@ if (dim(egressos)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -2350,10 +2280,7 @@ if (dim(egressos)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -2505,10 +2432,7 @@ if (dim(bolsistas)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -2559,10 +2483,7 @@ if (dim(bolsistas)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -2763,10 +2684,7 @@ if (dim(externos)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -2810,10 +2728,7 @@ if (dim(externos)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -2849,10 +2764,7 @@ if (dim(externos)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+source("Scripts/fonte_capes.R", local = knitr::knit_global())
 ```
 
 <br>
