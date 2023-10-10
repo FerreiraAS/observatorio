@@ -37,7 +37,6 @@ $(document).ready(function() {
 <!--script for sharing-->
 <p align="right">
 ```{r share}
-# home <- "https://ppgcr-unisuam.github.io/observatoriocr/"
 home <- metadata$repository_url
 source("Scripts/social-media-sharing.R")
 ```

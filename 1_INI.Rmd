@@ -30,9 +30,13 @@ knitr::opts_chunk$set(
 source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
+```{r yaml-metadata, results = "hide"}
+metadata$repository_url <- rmarkdown::metadata$repository_url
+```
+
 ```{r update, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, results = "hide"}
 # update all packages
-# update.packages(checkBuilt = TRUE, ask = FALSE)
+update.packages(checkBuilt = TRUE, ask = FALSE)
 ```
 
 ```{r nojekyll, results = "hide"}
