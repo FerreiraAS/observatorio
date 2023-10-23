@@ -22,7 +22,9 @@ knitr::opts_chunk$set(
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
-  knitr.table.format = "html"
+  knitr.table.format = "html",
+  webshot = "webshot",
+  dev = "png"
 )
 source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```

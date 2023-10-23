@@ -22,7 +22,9 @@ knitr::opts_chunk$set(
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
-  knitr.table.format = "html"
+  knitr.table.format = "html",
+  webshot = "webshot",
+  dev = "png"
 )
 source("Scripts/all-required-packages.R")
 ```
@@ -117,7 +119,7 @@ table.tcc <- table.tcc %>% dplyr::arrange(
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.tcc, title = "Teses")
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -186,7 +188,7 @@ table.tcc <- table.tcc %>% dplyr::arrange(
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.tcc, title = "Dissertações")
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>

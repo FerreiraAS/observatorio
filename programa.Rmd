@@ -22,7 +22,10 @@ knitr::opts_chunk$set(
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
-  knitr.table.format = "html"
+  knitr.table.format = "html",
+  webshot = "webshot",
+  dev = "png",
+  dev = "png"
 )
 source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
@@ -62,7 +65,7 @@ cat(
   )
 )
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -138,7 +141,7 @@ area.capes <- cbind(area.capes[,-2], Abrir)
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(area.capes, title = "Áreas de Concentração")
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -161,7 +164,7 @@ cat(
   )
 )
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -189,7 +192,7 @@ area.ativas <- area.ativas[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(area.ativas, title = "Áreas de Concentração")
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -213,7 +216,7 @@ areas.inativas <- areas.inativas[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(areas.inativas, title = "Áreas de Concentração (inativas)")
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -241,7 +244,7 @@ linhas.atual <- linhas.atual[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(linhas.atual, title = "Linhas de Pesquisa")
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -265,7 +268,7 @@ linhas.inativas <- linhas.inativas[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(linhas.inativas, title = "Linhas de Pesquisa (inativas)")
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -337,7 +340,7 @@ colnames(table.projetos) <-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.projetos, title = "Projetos de Pesquisa - Em andamento")
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -406,7 +409,7 @@ colnames(table.projetos) <-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.projetos, title = "Projetos de Pesquisa - Encerrados")
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -477,7 +480,7 @@ print(
   )
 )
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -623,7 +626,7 @@ if (!is.null(table)) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -715,7 +718,7 @@ if (dim(disciplinas.dsc)[1] != 0) {
   cat('</table></form>')
 }
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -788,7 +791,7 @@ if (dim(disciplinas.dsc)[1] != 0) {
   cat('</table></form>')
 }
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -871,7 +874,7 @@ if (dim(disciplinas.msc)[1] != 0) {
   cat('</table></form>')
 }
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -944,7 +947,7 @@ if (dim(disciplinas.msc)[1] != 0) {
   cat('</table></form>')
 }
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1032,7 +1035,7 @@ table <- table[ids,]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Disciplinas ativas")
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1169,7 +1172,7 @@ table <- table[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Disciplinas inativas")
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1258,7 +1261,7 @@ if (dim(turmas.raw)[1] != 0) {
   ))
 }
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1342,7 +1345,7 @@ if (dim(turmas.raw)[1] != 0) {
   ))
 }
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1426,7 +1429,7 @@ if (dim(turmas.raw)[1] != 0) {
   ))
 }
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1510,7 +1513,7 @@ if (dim(turmas.raw)[1] != 0) {
   ))
 }
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>

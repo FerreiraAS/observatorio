@@ -185,6 +185,9 @@ navbar:
               href: [autoavaliacao.html#formacao]
             - text: "3. Impacto na sociedade"
               href: [autoavaliacao.html#impacto]
+        - text: "Relatório quadrienal"
+          icon: "fa-file-pdf"
+          href: [autoavaliacao.pdf]
     - text: "Downloads"
       href: [downloads.html]
     - text: ""

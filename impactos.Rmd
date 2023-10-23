@@ -22,7 +22,9 @@ knitr::opts_chunk$set(
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
-  knitr.table.format = "html"
+  knitr.table.format = "html",
+  webshot = "webshot",
+  dev = "png"
 )
 source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
@@ -116,7 +118,7 @@ legend(
   box.lty = 0
 )
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -167,7 +169,7 @@ if (dim(bolsistas)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 ##### **Mestrado**
@@ -214,7 +216,7 @@ if (dim(bolsistas)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -298,7 +300,7 @@ cat('\n\n')
 cat(
   '^1^ Dados de financiamento extraídos a partir dos financiadores dos trabalhos de conclusão de curso. Bolsistas ativos não estão incluídos.'
 )
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 
 cat('\n\n')
 cat('##### **Gráfico**')
@@ -333,7 +335,7 @@ cat(
   '^1^ Dados de financiamento extraídos a partir dos financiadores dos trabalhos de conclusão de curso. Bolsistas ativos não estão incluídos.'
 )
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -378,7 +380,7 @@ if (dim(bolsistas.tcc)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -421,7 +423,7 @@ if (dim(bolsistas.tcc)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -990,7 +992,7 @@ table.all <- table.all[lapply(table.all, length) > 0]
 # print all tables stacked
 print(gtsummary::tbl_stack(table.all))
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1051,7 +1053,7 @@ table.1.1.1 <-
 # print table
 print(table.1.1.1)
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1460,7 +1462,7 @@ if (dim(projetos)[1] != 0) {
   cat('\n\n')
 }
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1587,7 +1589,7 @@ if (dim(tccs)[1] != 0) {
   cat('\n\n')
 }
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>

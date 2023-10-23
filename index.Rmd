@@ -19,7 +19,9 @@ knitr::opts_chunk$set(
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
-  knitr.table.format = "html"
+  knitr.table.format = "html",
+  webshot = "webshot",
+  dev = "png"
 )
 source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
@@ -307,11 +309,7 @@ bsplus::bs_carousel(id = "coerencia-carousel",
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-1.png")) %>%
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-2.png"))
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
-cat('^[Regiões correspondem à quantidade de linhas de pesquisa.]')
-cat('\n')
-cat('^[Áreas internas correspondem à quantidade de projetos na respectiva linha de pesquisa.]'
-)
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -355,8 +353,7 @@ bsplus::bs_carousel(id = "temas-carousel",
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/Produções.png"))
 
 cat('\n\n')
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
-cat('^[Termos nas nuvens correspondem àqueles encontrados nos títulos dos projetos de pesquisa, trabalho de conclusão de curso e produção intelectual, respectivamente.]')
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -501,8 +498,7 @@ bsplus::bs_carousel(id = "projetos-carousel",
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-projetos-3.png"))
 
 cat('\n\n')
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
-cat('^[Quantidades referem-se ao número de projetos de pesquisa ativos no ano.]')
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1192,7 +1188,6 @@ cat('\n\n')
 cat(
   "*Fontes:* [**WebQualis**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf), [**SJR**](https://www.scimagojr.com), [**Scopus**](https://www.scopus.com/home.uri), **PPG**"
 )
-cat('^[Produções com DOI apenas; a produção pode estar subsestimada pois produtos sem DOI não estão apresentados.]')
 ```
 
 <br>
@@ -1393,11 +1388,6 @@ cat('\n\n')
 cat(
   "*Fontes:* [**Altmetric**](https://www.altmetric.com), [**CrossRef**](https://www.crossref.org), **PPG**"
 )
-cat('^[Produções com DOI apenas; a produção pode estar subsestimada pois produtos sem DOI não estão apresentados.]')
-cat('\n')
-cat('^[O Altmetric score no donut representa a soma total do Altmetric score de cada produção.]')
-cat('\n')
-cat('^[Dados sobre retratação são obtidos de PubMed API e CrossRef API.]')
 ```
 
 <br>
@@ -1956,7 +1946,7 @@ bsplus::bs_carousel(id = "posdoc-carousel",
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-2.png")) %>%
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-3.png"))
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -2297,7 +2287,7 @@ bsplus::bs_carousel(id = "rede-carousel",
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-5.png")) %>%
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-6.png"))
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
