@@ -400,6 +400,7 @@ docentes.raw <- sucupira.list[[most.recent]]
 
 # get initials from the PPG data
 nome.PPG <- unique(docentes.raw$'Nome do PPG')
+
 nome.PPG.split <- stringr::str_split_1(as.character(nome.PPG)[[1]], " ")
 match.stopwords <-
   match(stringr::str_split_1(as.character(nome.PPG)[[1]], " "), tm::stopwords("portuguese"))
@@ -417,7 +418,10 @@ site.PPG <-
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 nome.IES <- unique(sucupira.raw$`IES Nome`)
+nome.IES <- tools::toTitleCase(as.character(nome.IES))
+
 sigla.IES <- unique(sucupira.raw$`IES Sigla`)
+
 ```
 
 ```{r producao-sucupira, results = "hide", eval = has.sucupira.files}
@@ -1221,67 +1225,67 @@ for (i in 1:dim(doi_without_altmetric_all)[1]) {
 
 ```{r has, results = "hide", cache = TRUE, cache.path = "cache/has/"}
 # directories
-has.sucupira.files
-has.ppg.files
+as.logical(has.sucupira.files)
+as.logical(has.ppg.files)
 
 # PPG files
-has.agendas.pesquisa
-has.apresentacao
-has.area.capes
-has.autoavaliacao
-has.avaliacao
-has.bibliografia
-has.blogs.externos
-has.blog.ies
-has.bolsas
-has.calendarios
-has.cep
-has.convenios
-has.cooperacoes
-has.coordenacao
-has.dados.cadastrais
-has.destaques
-has.discentes
-has.downloads
-has.editais
-has.financiadores
-has.grupos.pesquisa
-has.historico
-has.infraestrutura
-has.internacionalizacao
-has.laboratorios
-has.metodologia
-has.notas
-has.periodicos
-has.planejamento
-has.podcasts
-has.premios
-has.premio.capes
-has.producao
-has.repositorios.cooperacao
-has.repositorios.sede
-has.videos
+as.logical(has.agendas.pesquisa)
+as.logical(has.apresentacao)
+as.logical(has.area.capes)
+as.logical(has.autoavaliacao)
+as.logical(has.avaliacao)
+as.logical(has.bibliografia)
+as.logical(has.blogs.externos)
+as.logical(has.blog.ies)
+as.logical(has.bolsas)
+as.logical(has.calendarios)
+as.logical(has.cep)
+as.logical(has.convenios)
+as.logical(has.cooperacoes)
+as.logical(has.coordenacao)
+as.logical(has.dados.cadastrais)
+as.logical(has.destaques)
+as.logical(has.discentes)
+as.logical(has.downloads)
+as.logical(has.editais)
+as.logical(has.financiadores)
+as.logical(has.grupos.pesquisa)
+as.logical(has.historico)
+as.logical(has.infraestrutura)
+as.logical(has.internacionalizacao)
+as.logical(has.laboratorios)
+as.logical(has.metodologia)
+as.logical(has.notas)
+as.logical(has.periodicos)
+as.logical(has.planejamento)
+as.logical(has.podcasts)
+as.logical(has.premios)
+as.logical(has.premio.capes)
+as.logical(has.producao)
+as.logical(has.repositorios.cooperacao)
+as.logical(has.repositorios.sede)
+as.logical(has.videos)
 
 # data sucupira
-has.artigos.completos.sucupira
-has.artigos.resumos.sucupira
-has.livros.sucupira
-has.anais.sucupira
-has.producao.sucupira
-has.2024.2021
-has.2020.2017
-has.2016.2013
-has.2012.2010
-has.posdocs
+as.logical(has.artigos.completos.sucupira)
+as.logical(has.artigos.resumos.sucupira)
+as.logical(has.livros.sucupira)
+as.logical(has.anais.sucupira)
+as.logical(has.producao.sucupira)
+as.logical(has.2024.2021)
+as.logical(has.2020.2017)
+as.logical(has.2016.2013)
+as.logical(has.2012.2010)
+as.logical(has.posdocs)
 
 # data ppg
-has.artigos.completos.ppg
-has.artigos.resumos.ppg
-has.preprints.ppg
-has.livros.ppg
-has.capitulos.ppg
-has.anais.ppg
-has.producao.ppg
+as.logical(has.artigos.completos.ppg)
+as.logical(has.artigos.resumos.ppg)
+as.logical(has.preprints.ppg)
+as.logical(has.livros.ppg)
+as.logical(has.capitulos.ppg)
+as.logical(has.anais.ppg)
+as.logical(has.producao.ppg)
 ```
 
 ```{r save, results = "hide", eval = FALSE}

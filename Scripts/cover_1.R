@@ -24,27 +24,47 @@ plot(
   ylim = c(0, H)
 )
 
-# author name
+# IES name
+if (as.logical(has.dados.cadastrais)) {
+  label.IES <- nome.IES
+} else {
+  label.IES <- ""
+}
 text(
   x = W,
   y = H - 0.5,
-  labels = 
-      ifelse(has.dados.cadastrais,
-             substitute(grDevices::bold(tools::toTitleCase(nome.IES))),
-            ""),
+  labels = label.IES,
   pos = 2,
   cex = 2,
   col = "white"
 )
 
+# book subtitle
+if (as.logical(has.dados.cadastrais)) {
+  label.PPG <- nome.PPG
+} else {
+  label.PPG <- ""
+}
+text(
+  x = W,
+  y = H - 1.0,
+  labels = label.PPG,
+  pos = 2,
+  cex = 1.5,
+  col = "white"
+)
+
 # periodo
+if (as.logical(has.sucupira.files)) {
+  label.quad <-
+    paste0("Quadrienal ", as.character(min(quadrienal.vigente)), "-", as.character(max(quadrienal.vigente)))
+} else {
+  label.quad <- ""
+}
 text(
   x = W,
   y = H / 2 + 2 - 0.0,
-  labels = 
-    ifelse(has.sucupira.files,
-           paste0("Quadrienal ", as.character(min(quadrienal.vigente)), "-", as.character(max(quadrienal.vigente))),
-         ""),
+  labels = label.quad,
   pos = 2,
   cex = 2.5,
   col = "yellow"
@@ -54,23 +74,10 @@ text(
 text(
   x = W,
   y = H / 2 + 2 - 1.0,
-  labels = substitute(paste(bold("Autoavaliação"))),
+  labels = "Autoavaliação",
   pos = 2,
   cex = 6.5,
   col = "yellow"
-)
-
-# book subtitle
-text(
-  x = W,
-  y = H / 2 + 2 - 1.75,
-  labels = 
-    ifelse(has.dados.cadastrais,
-           substitute(grDevices::bold(tools::toTitleCase(nome.PPG))),
-           ""),
-  pos = 2,
-  cex = 1.5,
-  col = "white"
 )
 
 # year
