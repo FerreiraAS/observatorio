@@ -178,34 +178,35 @@ navbar:
               href: [autoavaliacao.html#pesquisa-egresso]
         - text: "Ficha de avaliação"
           href: [autoavaliacao.html#ficha-avaliacao]
-          menu:
-            - text: "1. Programa"
-              href: [autoavaliacao.html#programa]
-            - text: "2. Formação"
-              href: [autoavaliacao.html#formacao]
-            - text: "3. Impacto na sociedade"
-              href: [autoavaliacao.html#impacto]
+        - text: "1. Programa"
+          href: [autoavaliacao.html#programa]
+        - text: "2. Formação"
+          href: [autoavaliacao.html#formacao]
+        - text: "3. Impacto na sociedade"
+          href: [autoavaliacao.html#impacto]
         - text: "Relatório quadrienal"
           icon: "fa-file-pdf"
           href: [autoavaliacao.pdf]
     - text: "Downloads"
       href: [downloads.html]
-    - text: ""
-      icon: "fa-globe"
-      href: [info.html]
+    - text: "Links"
+      href: [links.html]
+  right:
     - text: ""
       icon: "fa-envelope"
       href: [mailto:arthur_sf@icloud.com]
     - text: ""
-      icon: "fa-instagram"
-      href: [https://www.instagram.com/arthur.sa.ferreira/]
+      icon: "fa-github"
+      href: [https://github.com/FerreiraAS/observatorio]
     - text: ""
-      icon: "fa-facebook"
-      href: [https://pt-br.facebook.com/arthur.sa.ferreira]
-  right:
+      icon: "fa-share-nodes"
+      menu:
         - text: ""
-          icon: "fa-github"
-          href: [https://github.com/FerreiraAS/observatorio]
+          icon: "fa-instagram"
+          href: [https://www.instagram.com/arthur.sa.ferreira/]
+        - text: ""
+          icon: "fa-facebook"
+          href: [https://pt-br.facebook.com/arthur.sa.ferreira]
 
 output:
   html_document:
@@ -217,12 +218,12 @@ output:
       after_body: [footer.html]
     css:
       - style.css
-      - CSS/responsive.css
-      - CSS/narrow-margins.css
-      - CSS/logo-above-toc.css
-      - CSS/index.css
-      - CSS/generic.css
-      - CSS/main-color.css
+      - css/responsive.css
+      - css/narrow-margins.css
+      - css/logo-above-toc.css
+      - css/index.css
+      - css/generic.css
+      - css/main-color.css
     toc: true
     toc_depth: 3
     toc_float: true

@@ -4,8 +4,8 @@ output:
   html_document:
     toc: false
     css:
-      - CSS/index.css
-      - CSS/main-color.css
+      - css/index.css
+      - css/main-color.css
 ---
 
 <!--install and/or load all R packages-->
