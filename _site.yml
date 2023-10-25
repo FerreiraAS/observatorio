@@ -218,8 +218,8 @@ output:
       after_body: [footer.html]
     css:
       - style.css
+      - index.css
       - css/generic.css
-      - css/index.css
       - css/logo-above-toc.css
       - css/main-color.css
       - css/narrow-margins.css

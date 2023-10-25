@@ -4,7 +4,7 @@ output:
   html_document:
     toc: false
     css:
-      - css/index.css
+      - index.css
       - css/main-color.css
       - css/responsive.css
 ---
