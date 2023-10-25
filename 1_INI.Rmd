@@ -4,11 +4,11 @@ output:
   html_document:
     toc: true
     css:
-      - CSS/generic.css
-      - CSS/logo-above-toc.css
-      - CSS/main-color.css
-      - CSS/narrow-margins.css
-      - CSS/responsive.css
+      - ./CSS/generic.css
+      - ./CSS/logo-above-toc.css
+      - ./CSS/main-color.css
+      - ./CSS/narrow-margins.css
+      - ./CSS/responsive.css
 ---
 
 <!--install and/or load all R packages-->
@@ -49,7 +49,7 @@ if(!file.exists(".nojekyll")) {
 
 ```{r main-color, results = "hide"}
 # read css color for this page
-css <- cssparser::read_css("CSS/main-color.css")
+css <- cssparser::read_css("./CSS/main-color.css")
 main.color <- css$`:root`$`--mybackgroundcolor`
 ```
 
