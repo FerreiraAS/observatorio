@@ -217,8 +217,7 @@ output:
       before_body: [google-translate.html]
       after_body: [footer.html]
     css:
-      - style.css
-      - index.css
+      - css/index.css
       - css/generic.css
       - css/logo-above-toc.css
       - css/main-color.css
