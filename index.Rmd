@@ -6,7 +6,6 @@ output:
     css:
       - css/index.css
       - css/main-color.css
-      - css/narrow-margins.css
       - css/responsive.css
 ---
 
