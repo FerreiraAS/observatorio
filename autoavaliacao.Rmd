@@ -11,11 +11,11 @@ output:
   html_document:
     toc: true
     css:
+      - css/generic.css
       - css/logo-above-toc.css
+      - css/main-color.css
       - css/narrow-margins.css
       - css/responsive.css
-      - css/generic.css
-      - css/main-color.css
   bookdown::pdf_book:
     toc: true
     lot: true
@@ -206,19 +206,11 @@ cat("## **Resultados** {-}")
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r, eval = knitr::is_html_output()}
-cat("### **Síntese dos dados** {#sintese-dados .tabset}")
+cat("### **Dados completos**")
 ```
 
 ```{r, eval = !knitr::is_html_output()}
-cat("### **Síntese dos dados** {-}")
-```
-
-```{r, eval = knitr::is_html_output()}
-cat("#### **Dados completos**")
-```
-
-```{r, eval = !knitr::is_html_output()}
-cat("#### **Dados completos** {-}")
+cat("### **Dados completos** {-}")
 ```
 
 <!--script for generating STACKED HORIZONTAL BAR CHART-->
@@ -315,11 +307,11 @@ source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 <br>
 
 ```{r, eval = knitr::is_html_output()}
-cat("#### **Dados perdidos**")
+cat("### **Dados perdidos**")
 ```
 
 ```{r, eval = !knitr::is_html_output()}
-cat("#### **Dados perdidos** {-}")
+cat("### **Dados perdidos** {-}")
 ```
 
 ```{r missing-data-sucupira, cache = TRUE, cache.path = "cache/dados-perdidos/", eval = all(has.sucupira.files, knitr::is_html_output())}

@@ -4,11 +4,11 @@ output:
   html_document:
     toc: true
     css:
+      - css/generic.css
       - css/logo-above-toc.css
+      - css/main-color.css
       - css/narrow-margins.css
       - css/responsive.css
-      - css/generic.css
-      - css/main-color.css
 ---
 
 <!--install and/or load all R packages-->
@@ -1410,6 +1410,8 @@ try(references_anais_impacto <-
       references_anais[grep(paste(tolower(pandemia), collapse = "|"), tolower(references_anais)[, 2]), ], silent = TRUE
 )
 ```
+
+<br>
 
 ### **Projetos de pesquisa**
 

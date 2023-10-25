@@ -4,11 +4,11 @@ output:
   html_document:
     toc: true
     css:
+      - css/generic.css
       - css/logo-above-toc.css
+      - css/main-color.css
       - css/narrow-margins.css
       - css/responsive.css
-      - css/generic.css
-      - css/main-color.css
 ---
 
 <!--install and/or load all R packages-->
@@ -272,6 +272,10 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = !any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
+cat('<br>')
+```
+
 ```{r artigos-completos, eval = any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
 # bind sources
 doi_with_altmetric <- doi_with_altmetric_artigos
@@ -353,6 +357,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !any(has.artigos.resumos.ppg, has.artigos.resumos.sucupira)}
+cat('<br>')
+```
 
 ```{r artigos-resumos, eval = any(has.artigos.resumos.ppg, has.artigos.resumos.sucupira)}
 # bind sources
@@ -436,6 +444,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = !has.preprints.ppg}
+cat('<br>')
+```
+
 ```{r preprints, eval = has.preprints.ppg}
 # bind sources
 doi_with_altmetric <- doi_with_altmetric_preprints
@@ -517,6 +529,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !has.livros.ppg}
+cat('<br>')
+```
 
 ```{r livros, eval = has.livros.ppg}
 # bind sources
@@ -600,6 +616,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = !has.capitulos.ppg}
+cat('<br>')
+```
+
 ```{r livros-capitulos, eval = has.capitulos.ppg}
 # bind sources
 doi_with_altmetric <- doi_with_altmetric_capitulos
@@ -682,6 +702,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = !has.anais.ppg}
+cat('<br>')
+```
+
 ```{r resumos-anais, eval = has.anais.ppg}
 # bind sources
 doi_with_altmetric <- doi_with_altmetric_anais
@@ -763,6 +787,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !has.producao.ppg}
+cat('<br>')
+```
 
 ```{r retratacoes, eval = has.producao.ppg}
 # get years

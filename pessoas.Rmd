@@ -4,11 +4,11 @@ output:
   html_document:
     toc: true
     css:
+      - css/generic.css
       - css/logo-above-toc.css
+      - css/main-color.css
       - css/narrow-margins.css
       - css/responsive.css
-      - css/generic.css
-      - css/main-color.css
 ---
 
 <!--install and/or load all R packages-->
@@ -210,6 +210,8 @@ source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 
 <br>
 
+<br>
+
 ### **IDs** {.tabset}
 
 ```{r ids-externos-docentes, cache = TRUE, cache.path = "cache/external-ids/", eval = has.sucupira.files}
@@ -235,6 +237,8 @@ my_orcid <-
 
 source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
+
+<br>
 
 <br>
 
