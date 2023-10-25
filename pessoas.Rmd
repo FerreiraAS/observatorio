@@ -235,6 +235,9 @@ my_orcid <-
          gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
        ))
 
+# compile external identifiers
+source("Scripts/external_identifiers.R", local = knitr::knit_global())
+
 source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
