@@ -1593,8 +1593,6 @@ discentes$`Nome Discente` <-
 discentes <- discentes %>% dplyr::select("Nome Discente", "Data Matrícula")
 
 # calculate hard deadlines
-discentes$'Tempo em curso' <-
-  lubridate::interval(start = dmy(gsub("/", "", discentes$'Data Matrícula')), end = today()) %/% months(1)
 discentes$'Defesa até' <-
   format(as.Date(discentes$'Data Matrícula', format = "%d/%m/%Y") + 365 *
            4,
@@ -1603,6 +1601,8 @@ discentes$'Jubilação a partir de' <-
   format(as.Date(discentes$'Data Matrícula', format = "%d/%m/%Y") + 365 *
            4.5,
          format = "%d/%m/%Y")
+discentes$'Tempo em curso' <-
+  lubridate::interval(start = dmy(gsub("/", "", discentes$'Data Matrícula')), end = today()) %/% months(1)
 
 # remove duplicates and empty rows
 discentes <- unique(discentes)
@@ -1702,8 +1702,6 @@ discentes$`Nome Discente` <-
 discentes <- discentes %>% dplyr::select("Nome Discente", "Data Matrícula")
 
 # calculate hard deadlines
-discentes$'Tempo em curso' <-
-  lubridate::interval(start = dmy(gsub("/", "", discentes$'Data Matrícula')), end = today()) %/% months(1)
 discentes$'Defesa até' <-
   format(as.Date(discentes$'Data Matrícula', format = "%d/%m/%Y") + 365 *
            2,
@@ -1712,6 +1710,8 @@ discentes$'Jubilação a partir de' <-
   format(as.Date(discentes$'Data Matrícula', format = "%d/%m/%Y") + 365 *
            2.5,
          format = "%d/%m/%Y")
+discentes$'Tempo em curso' <-
+  lubridate::interval(start = dmy(gsub("/", "", discentes$'Data Matrícula')), end = today()) %/% months(1)
 
 # remove duplicates and empty rows
 discentes <- unique(discentes)
