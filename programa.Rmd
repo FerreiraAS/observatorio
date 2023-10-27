@@ -1678,6 +1678,8 @@ for (j in 1:length(abas)) {
 }
 ```
 
+<br>
+
 ## **Laboratórios de pesquisa** {#laboratorios-pesquisa .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -1736,6 +1738,8 @@ for (i in 1:length(abas)) {
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
+
+<br>
 
 ## **Convênios institucionais** {#convenios .tabset}
 
