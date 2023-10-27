@@ -159,7 +159,7 @@ As seguintes planilhas podem ser complementadas:
 │   └── Notas.xlsx
 │   └── Periódicos institucionais.xlsx
 │   └── Planejamento estratégico.xlsx
-│   └── Podccasts.xlsx
+│   └── Podcasts.xlsx
 │   └── Prêmio CAPES de Tese.xlsx
 │   └── Prêmios.xlsx
 │   └── Produção.xlsx

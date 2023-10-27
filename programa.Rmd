@@ -1645,31 +1645,46 @@ for (j in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
+```{r, eval = !has.infraestrutura}
+cat('<br>')
+```
 
 ```{r infraestrutura, eval = has.infraestrutura}
-cat('\n\n<!-- -->\n\n')
-cat('### **Infraestrutura**')
-cat('\n\n<!-- -->\n\n')
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Infraestrutura.xlsx")
 
-# read separate sheets
-infraestrutura <- readxl::read_excel("PPG/Infraestrutura.xlsx", sheet = "Infraestrutura")
+# display each sheet in a tab
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('### **', abas[j], '**'))
+  cat('\n\n<!-- -->\n\n')
+  infraestrutura.raw <-
+    readxl::read_excel("PPG/Infraestrutura.xlsx",
+                       sheet = abas[j],
+                       col_types = c("text"))
+  
+  # print table
+  if (dim(infraestrutura.raw)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    cat(knitr::knit_print(create_dt(infraestrutura.raw, title = "Infraestrutura")))
+  } else {
+    cat("*Sem dados para exibir*")
+  }
+  
+  # print end of tab rows
+  cat('\n\n')
+  cat('*Fonte:* **PPG**')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+}
+```
 
-# print tables
-print(
-  kable(infraestrutura, digits = 0, align = c("l", rep(
-    "c", ncol(infraestrutura) - 2
-  ), "r")) %>% kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  ) %>% scroll_box(width = "100%")
-)
+## **Laboratórios de pesquisa** {#laboratorios-pesquisa .tabset}
 
-# print end of tab rows
-cat('\n\n')
-cat('*Fonte:* **PPG**')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !has.laboratorios}
+cat('<br>')
 ```
 
 ```{r laboratorios-equipamentos, eval = has.laboratorios}
@@ -1721,8 +1736,6 @@ for (i in 1:length(abas)) {
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
-
-<br>
 
 ## **Convênios institucionais** {#convenios .tabset}
 
