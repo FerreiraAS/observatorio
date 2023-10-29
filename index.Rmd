@@ -1435,7 +1435,7 @@ datasets <- geobr::list_geobr()$years[3]
 last.update <-
   as.numeric(strsplit(datasets, ", ")[[1]][length(strsplit(datasets, ", ")[[1]]) - 1])
 states <-
-  read_state(
+  geobr::read_state(
     code_state = "all",
     year = last.update,
     simplified = TRUE,
@@ -1524,34 +1524,34 @@ for (i in 1:length(UF$Var1)) {
   states$discentes[states$abbrev_state == UF$Var1[i]] <- UF$Freq[i]
 }
 
-p1 <- ggplot() +
-  geom_sf(data = states, aes(fill = discentes), color = "grey") +
-  scale_fill_distiller(
+p1 <- ggplot2::ggplot() +
+  ggplot2::geom_sf(data = states, ggplot2::aes(fill = discentes), color = "grey") +
+  ggplot2::scale_fill_distiller(
     palette = "Spectral",
     name = "Discentes, n",
     limits = c(min(0, UF$Freq), max(UF$Freq)),
     na.value = "grey"
   ) +
-  theme_minimal() +
-  theme(
+  ggplot2::theme_minimal() +
+  ggplot2::theme(
     legend.position = 'bottom',
-    legend.title = element_text(color = "white"),
-    legend.text = element_text(color = "white")
+    legend.title = ggplot2::element_text(color = "white"),
+    legend.text = ggplot2::element_text(color = "white")
   ) +
-  theme(
-    plot.margin = unit(c(0, 0, 0, 0), "cm"),
-    panel.background = element_rect(fill = main.color,  color = main.color),
-    plot.background = element_rect(fill = main.color,  color = main.color),
-    panel.grid.major = element_line(color = "transparent"),
-    axis.text.x = element_blank(),
-    axis.text.y = element_blank(),
-    plot.title = element_text(
+  ggplot2::theme(
+    plot.margin = ggplot2::unit(c(0, 0, 0, 0), "cm"),
+    panel.background = ggplot2::element_rect(fill = main.color,  color = main.color),
+    plot.background = ggplot2::element_rect(fill = main.color,  color = main.color),
+    panel.grid.major = ggplot2::element_line(color = "transparent"),
+    axis.text.x = ggplot2::element_blank(),
+    axis.text.y = ggplot2::element_blank(),
+    plot.title = ggplot2::element_text(
       size = 20,
       color = "white",
       face = "bold"
     )
   ) +
-  ggtitle("Distribuição regional de discentes")
+  ggplot2::ggtitle("Distribuição regional de discentes")
 
 data <-
   as.data.frame(table(c(discentes$UF[discentes$UF == "RJ"], rep(
@@ -1559,39 +1559,39 @@ data <-
   ))))
 colnames(data) <- c("Regiões", "N")
 
-p2 <- ggplot(data, aes(x = "", y = N, fill = Regiões)) +
-  scale_fill_manual(values = c("darkblue", "lightblue")) +
-  geom_bar(stat = "identity") +
-  coord_polar("y", start = 0) +
-  theme_void() +
-  theme(
+p2 <- ggplot2::ggplot(data, aes(x = "", y = N, fill = Regiões)) +
+  ggplot2::scale_fill_manual(values = c("darkblue", "lightblue")) +
+  ggplot2::geom_bar(stat = "identity") +
+  ggplot2::coord_polar("y", start = 0) +
+  ggplot2::theme_void() +
+  ggplot2::theme(
     legend.position = 'bottom',
-    legend.title = element_blank(),
-    legend.text = element_text(color = "white")
+    legend.title = ggplot2::element_blank(),
+    legend.text = ggplot2::element_text(color = "white")
   ) +
-  theme(
-    plot.margin = unit(c(0, 0, 0, 0), "cm"),
-    panel.background = element_rect(fill = main.color,  color = main.color),
-    plot.background = element_rect(fill = main.color,  color = main.color)
+  ggplot2::theme(
+    plot.margin = ggplot2::unit(c(0, 0, 0, 0), "cm"),
+    panel.background = ggplot2::element_rect(fill = main.color,  color = main.color),
+    plot.background = ggplot2::element_rect(fill = main.color,  color = main.color)
   )
 
 data <- as.data.frame(table(discentes$Curso))
 colnames(data) <- c("Cursos", "N")
 
-p3 <- ggplot(data, aes(x = "", y = N, fill = Cursos)) +
-  scale_fill_manual(values = c("darkblue", "lightblue")) +
-  geom_bar(stat = "identity") +
-  coord_polar("y", start = 0) +
-  theme_void() +
-  theme(
+p3 <- ggplot2::ggplot(data, aes(x = "", y = N, fill = Cursos)) +
+  ggplot2::scale_fill_manual(values = c("darkblue", "lightblue")) +
+  ggplot2::geom_bar(stat = "identity") +
+  ggplot2::coord_polar("y", start = 0) +
+  ggplot2::theme_void() +
+  ggplot2::theme(
     legend.position = 'bottom',
-    legend.title = element_blank(),
-    legend.text = element_text(color = "white")
+    legend.title = ggplot2::element_blank(),
+    legend.text = ggplot2::element_text(color = "white")
   ) +
-  theme(
-    plot.margin = unit(c(0, 0, 0, 0), "cm"),
-    panel.background = element_rect(fill = main.color,  color = main.color),
-    plot.background = element_rect(fill = main.color,  color = main.color)
+  ggplot2::theme(
+    plot.margin = ggplot2::unit(c(0, 0, 0, 0), "cm"),
+    panel.background = ggplot2::element_rect(fill = main.color,  color = main.color),
+    plot.background = ggplot2::element_rect(fill = main.color,  color = main.color)
   )
 
 g <-
@@ -1601,8 +1601,8 @@ g <-
               layout_matrix = rbind(c(1, 2), c(1, 3)),
               widths = c(7 / 10, 3 / 10))
 
-g2 <- ggdraw(g) +
-  theme(plot.background = element_rect(fill = main.color, color = NA))
+g2 <- ggplot2::ggdraw(g) +
+  ggplot2::theme(plot.background = ggplot2::element_rect(fill = main.color, color = NA))
 
 plot(g2)
 
@@ -1613,37 +1613,37 @@ for (i in 1:length(UF$Var1)) {
   states$egressos[states$abbrev_state == UF$Var1[i]] <- UF$Freq[i]
 }
 
-p1 <- ggplot() +
-  geom_sf(
+p1 <- ggplot2::ggplot() +
+  ggplot2::geom_sf(
     data = states,
-    aes(fill = egressos),
+    ggplot2::aes(fill = egressos),
     color = "grey") +
-  scale_fill_distiller(
+  ggplot2::scale_fill_distiller(
     palette = "Spectral",
     name = "Egressos, n",
     limits = c(min(0, UF$Freq), max(UF$Freq)),
     na.value = "grey"
   ) +
-  theme_minimal() +
-  theme(
+  ggplot2::theme_minimal() +
+  ggplot2::theme(
     legend.position = 'bottom',
     legend.title = element_text(color = "white"),
     legend.text = element_text(color = "white")
   ) +
-  theme(
-    plot.margin = unit(c(0, 0, 0, 0), "cm"),
-    panel.background = element_rect(fill = main.color,  color = main.color),
-    plot.background = element_rect(fill = main.color,  color = main.color),
-    panel.grid.major = element_line(color = "transparent"),
-    axis.text.x = element_blank(),
-    axis.text.y = element_blank(),
-    plot.title = element_text(
+  ggplot2::theme(
+    plot.margin = ggplot2::unit(c(0, 0, 0, 0), "cm"),
+    panel.background = ggplot2::element_rect(fill = main.color,  color = main.color),
+    plot.background = ggplot2::element_rect(fill = main.color,  color = main.color),
+    panel.grid.major = ggplot2::element_line(color = "transparent"),
+    axis.text.x = ggplot2::element_blank(),
+    axis.text.y = ggplot2::element_blank(),
+    plot.title = ggplot2::element_text(
       size = 20,
       color = "white",
       face = "bold"
     )
   ) +
-  ggtitle("Distribuição regional de egressos")
+  ggplot2::ggtitle("Distribuição regional de egressos")
 
 data <-
   as.data.frame(table(c(egressos$UF[egressos$UF == "RJ"], rep(
@@ -1651,39 +1651,39 @@ data <-
   ))))
 colnames(data) <- c("Regiões", "N")
 
-p2 <- ggplot(data, aes(x = "", y = N, fill = Regiões)) +
-  scale_fill_manual(values = c("darkblue", "lightblue")) +
-  geom_bar(stat = "identity") +
-  coord_polar("y", start = 0) +
-  theme_void() +
-  theme(
+p2 <- ggplot2::ggplot(data, aes(x = "", y = N, fill = Regiões)) +
+  ggplot2::scale_fill_manual(values = c("darkblue", "lightblue")) +
+  ggplot2::geom_bar(stat = "identity") +
+  ggplot2::coord_polar("y", start = 0) +
+  ggplot2::theme_void() +
+  ggplot2::theme(
     legend.position = 'bottom',
-    legend.title = element_blank(),
-    legend.text = element_text(color = "white")
+    legend.title = ggplot2::element_blank(),
+    legend.text = ggplot2::element_text(color = "white")
   ) +
-  theme(
-    plot.margin = unit(c(0, 0, 0, 0), "cm"),
-    panel.background = element_rect(fill = main.color,  color = main.color),
-    plot.background = element_rect(fill = main.color,  color = main.color)
+  ggplot2::theme(
+    plot.margin = ggplot2::unit(c(0, 0, 0, 0), "cm"),
+    panel.background = ggplot2::element_rect(fill = main.color,  color = main.color),
+    plot.background = ggplot2::element_rect(fill = main.color,  color = main.color)
   )
 
 data <- as.data.frame(table(egressos$Curso))
 colnames(data) <- c("Cursos", "N")
 
-p3 <- ggplot(data, aes(x = "", y = N, fill = Cursos)) +
-  scale_fill_manual(values = c("darkblue", "lightblue")) +
-  geom_bar(stat = "identity") +
-  coord_polar("y", start = 0) +
-  theme_void() +
-  theme(
+p3 <- ggplot2::ggplot(data, aes(x = "", y = N, fill = Cursos)) +
+  ggplot2::scale_fill_manual(values = c("darkblue", "lightblue")) +
+  ggplot2::geom_bar(stat = "identity") +
+  ggplot2::coord_polar("y", start = 0) +
+  ggplot2::theme_void() +
+  ggplot2::theme(
     legend.position = 'bottom',
-    legend.title = element_blank(),
-    legend.text = element_text(color = "white")
+    legend.title = ggplot2::element_blank(),
+    legend.text = ggplot2::element_text(color = "white")
   ) +
-  theme(
-    plot.margin = unit(c(0, 0, 0, 0), "cm"),
-    panel.background = element_rect(fill = main.color,  color = main.color),
-    plot.background = element_rect(fill = main.color,  color = main.color)
+  ggplot2::theme(
+    plot.margin = ggplot2::unit(c(0, 0, 0, 0), "cm"),
+    panel.background = ggplot2::element_rect(fill = main.color,  color = main.color),
+    plot.background = ggplot2::element_rect(fill = main.color,  color = main.color)
   )
 
 g <-
@@ -1693,8 +1693,8 @@ g <-
               layout_matrix = rbind(c(1, 2), c(1, 3)),
               widths = c(7 / 10, 3 / 10))
 
-g2 <- ggdraw(g) +
-  theme(plot.background = element_rect(fill = main.color, color = NA))
+g2 <- ggplot2::ggdraw(g) +
+  ggplot2::theme(plot.background = element_rect(fill = main.color, color = NA))
 
 plot(g2)
 
@@ -1865,47 +1865,47 @@ source("Scripts/worldmap.R", local = knitr::knit_global())
 
 ggplot2::ggplot() +
   ggplot2::geom_polygon(data = worldmap,
-                        aes(
+                        ggplot2::aes(
                           x = long,
                           y = lat,
                           group = group,
                           fill = Freq
                         )) +
   cowplot::theme_map() +
-  scale_fill_distiller(
+  ggplot2::scale_fill_distiller(
     palette = "Spectral",
     name = "Pós-Docs, n",
     limits = c(min(0, paises$Freq), max(paises$Freq)),
     na.value = "grey"
   ) +
-  theme_minimal() +
-  theme(
+  ggplot2::theme_minimal() +
+  ggplot2::theme(
     legend.position = 'bottom',
-    legend.title = element_text(color = "white"),
-    legend.text = element_text(color = "white"),
-    axis.title.x = element_blank(),
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(),
-    axis.title.y = element_blank(),
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank()
+    legend.title = ggplot2::element_text(color = "white"),
+    legend.text = ggplot2::element_text(color = "white"),
+    axis.title.x = ggplot2::element_blank(),
+    axis.text.x = ggplot2::element_blank(),
+    axis.ticks.x = ggplot2::element_blank(),
+    axis.title.y = ggplot2::element_blank(),
+    axis.text.y = ggplot2::element_blank(),
+    axis.ticks.y = ggplot2::element_blank()
   ) +
-  theme(
-    plot.margin = unit(c(0, 0, 0, 0), "cm"),
-    panel.background = element_rect(fill = main.color,  color = main.color),
-    plot.background = element_rect(fill = main.color,  color = main.color),
-    panel.grid.major = element_line(color = "transparent"),
-    panel.grid.minor = element_line(color = "transparent"),
-    axis.text.x = element_blank(),
-    axis.text.y = element_blank(),
-    plot.title = element_text(
+  ggplot2::theme(
+    plot.margin = ggplot2::unit(c(0, 0, 0, 0), "cm"),
+    panel.background = ggplot2::element_rect(fill = main.color,  color = main.color),
+    plot.background = ggplot2::element_rect(fill = main.color,  color = main.color),
+    panel.grid.major = ggplot2::element_line(color = "transparent"),
+    panel.grid.minor = ggplot2::element_line(color = "transparent"),
+    axis.text.x = ggplot2::element_blank(),
+    axis.text.y = ggplot2::element_blank(),
+    plot.title = ggplot2::element_text(
       size = 18,
       color = "white",
       face = "bold",
       hjust = 0.5
     )
   ) +
-  ggtitle("Distribuição global de Pós-Docs")
+  ggplot2::ggtitle("Distribuição global de Pós-Docs")
 
 # plot 3 (summary table in plot)
 
@@ -2207,40 +2207,40 @@ ggplot2::ggplot() +
                           fill = Freq
                         )) +
   cowplot::theme_map() +
-  scale_fill_distiller(
+  ggplot2::scale_fill_distiller(
     palette = "Spectral",
     name = "Pesquisadores, n",
     limits = c(min(0, paises$Freq), max(paises$Freq)),
     na.value = "grey"
   ) +
-  theme_minimal() +
-  theme(
+  ggplot2::theme_minimal() +
+  ggplot2::theme(
     legend.position = 'bottom',
-    legend.title = element_text(color = "white"),
-    legend.text = element_text(color = "white"),
-    axis.title.x = element_blank(),
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(),
-    axis.title.y = element_blank(),
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank()
+    legend.title = ggplot2::element_text(color = "white"),
+    legend.text = ggplot2::element_text(color = "white"),
+    axis.title.x = ggplot2::element_blank(),
+    axis.text.x = ggplot2::element_blank(),
+    axis.ticks.x = ggplot2::element_blank(),
+    axis.title.y = ggplot2::element_blank(),
+    axis.text.y = ggplot2::element_blank(),
+    axis.ticks.y = ggplot2::element_blank()
   ) +
-  theme(
-    plot.margin = unit(c(0, 0, 0, 0), "cm"),
-    panel.background = element_rect(fill = main.color,  color = main.color),
-    plot.background = element_rect(fill = main.color,  color = main.color),
-    panel.grid.major = element_line(color = "transparent"),
-    panel.grid.minor = element_line(color = "transparent"),
-    axis.text.x = element_blank(),
-    axis.text.y = element_blank(),
-    plot.title = element_text(
+  ggplot2::theme(
+    plot.margin = ggplot2::unit(c(0, 0, 0, 0), "cm"),
+    panel.background = ggplot2::element_rect(fill = main.color,  color = main.color),
+    plot.background = ggplot2::element_rect(fill = main.color,  color = main.color),
+    panel.grid.major = ggplot2::element_line(color = "transparent"),
+    panel.grid.minor = ggplot2::element_line(color = "transparent"),
+    axis.text.x = ggplot2::element_blank(),
+    axis.text.y = ggplot2::element_blank(),
+    plot.title = ggplot2::element_text(
       size = 15,
       color = "white",
       face = "bold",
       hjust = 0.5
     )
   ) +
-  ggtitle("Distribuição global de Participantes Externos")
+  ggplot2::ggtitle("Distribuição global de Participantes Externos")
 
 # plot 7 (summary table in plot)
 
