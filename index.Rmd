@@ -1601,7 +1601,7 @@ g <-
               layout_matrix = rbind(c(1, 2), c(1, 3)),
               widths = c(7 / 10, 3 / 10))
 
-g2 <- ggplot2::ggdraw(g) +
+g2 <- cowplot::ggdraw(g) +
   ggplot2::theme(plot.background = ggplot2::element_rect(fill = main.color, color = NA))
 
 plot(g2)
@@ -1693,7 +1693,7 @@ g <-
               layout_matrix = rbind(c(1, 2), c(1, 3)),
               widths = c(7 / 10, 3 / 10))
 
-g2 <- ggplot2::ggdraw(g) +
+g2 <- cowplot::ggdraw(g) +
   ggplot2::theme(plot.background = element_rect(fill = main.color, color = NA))
 
 plot(g2)
