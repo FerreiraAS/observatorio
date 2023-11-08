@@ -7,7 +7,7 @@
 # set default directory
 options(repos = structure(c(CRAN = "http://cran.r-project.org")))
 
-# set timeout to donwload packages, in seconds
+# set timeout to download packages, in seconds
 options(timeout = 360)
 
 # most packages work fine if installed from CRAN

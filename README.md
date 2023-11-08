@@ -303,6 +303,10 @@ O Observatório é atualizado semanalmente. Para receber atualizações no seu r
 - [**Observatório PPGFisio**](https://ppgfisioufc.github.io/PPGFisio_UFC/) | Programa de Pós-graduação em Fisioterapia
 
 
+### **Universidade Federal do Triângulo Mineiro - Universidade Federal de Uberlândia | [UFTM-UFU](https://www.uftm.edu.br/stricto-sensu/ppgfisio)**
+
+- [**Observatório UFTM-UFU**](https://ppgfisiouftmufu.github.io/ObservatorioUFTM_UFU/) | Programa de Pós-graduação em Fisioterapia
+
 ## **FAQ**
 
 *Como posso contribuir para este projeto?*

@@ -237,8 +237,6 @@ my_orcid <-
 
 # compile external identifiers
 source("Scripts/external_identifiers.R", local = knitr::knit_global())
-
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -347,7 +345,6 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes - 2024-2021")
 
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
 <br>
@@ -534,7 +531,6 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes - 2020-2017")
 
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
 <br>
@@ -721,7 +717,6 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes - 2016-2013")
 
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
 <br>
@@ -908,7 +903,6 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes - 2012-2010")
 
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
 <br>

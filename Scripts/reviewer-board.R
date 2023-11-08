@@ -13,7 +13,7 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
     ), ":"), `[[`, 2)
   
   # list journals
-  journals <- issn_title[issn]
+  journals <- rorcid::issn_title[issn]
   
   # get SJR from SCImago database
   SJR <- c()
