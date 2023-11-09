@@ -15,7 +15,6 @@
       * [Plataforma Sucupira](#Plataforma-Sucupira)
       * [Programa](#Programa)
       * [Agencias](#Agencias)
-      * [Curriculo Lattes](#Curriculo-Lattes)
       * [Metricas](#Metricas)
       * [API](#api)
    * [Instalacao](#instalacao)
@@ -184,26 +183,6 @@ Logotipos das principais agências de fomento estào disponíveis:
 │       ├── logo-cnpq.png
 │       ├── logo-fap.png
 │       └── logo-ods.png
-```
-
-### **Curriculo Lattes**
-
-Para cada docente em atividade do Programa, repita os seguintes passos:
-1. Acesse a [Plataforma Lattes](https://lattes.cnpq.br)
-2. Clique no ícone "Buscar currículo"
-3. Digite o nome do docente e clique em "Buscar"
-4. Identifique o nome do docente na lista e clique em abrir
-5. Na janela, clique em "Abrir Currículo"
-6. Selecione e copie o ID Lattes (apenas os números, ex: 5432142731317894)
-7. Clique no ícone "Imprimir currículo"
-8. Salve o currículo em formato PDF, com o nome igual ao ID lattes (ex.: "5432142731317894.pdf")
-
-Ao completar esta etapa, a estrutura dos diretórios e arquivos será esta:
-
-```bash
-├── PPG
-│   └── Lattes
-│       ├── 5432142731317894.pdf
 ```
 
 ### **Metricas**
