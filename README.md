@@ -286,6 +286,14 @@ O Observatório é atualizado semanalmente. Para receber atualizações no seu r
 
 - [**Observatório PPGFisio**](https://ppgfisiouftmufu.github.io/ObservatorioUFTM_UFU/) | Programa de Pós-graduação em Fisioterapia
 
+### **Universidade Federal do Rio Grande do Norte | [UFRN](https://posgraduacao.ufrn.br/ppgcreab)**
+
+- [**Observatório UFRN**](https://ppgfisioterapia.github.io/observatorioUFRN/) | Programa de Pós-graduação em Ciências da Reabilitação
+
+### **Universidade de São Paulo | [USP](https://www.fm.usp.br/fofito/pos-graduacao/programa-de-ciencias-da-reabilitacao)**
+
+- [**Observatório PPGPosReab-USP**](https://ppgreab.github.io/Observatorio-PPGPosReab-USP/) | Programa de Pós-graduação em Ciências da Reabilitação
+
 ## **FAQ**
 
 *Como posso contribuir para este projeto?*
