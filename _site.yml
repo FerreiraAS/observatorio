@@ -194,15 +194,18 @@ navbar:
     - text: "Links"
       href: [links.html]
     - text: ""
-      icon: "fa-envelope"
-      href: [mailto:arthur_sf@icloud.com]
-    - text: ""
       icon: "fa-share-nodes"
       menu:
-        - text: ""
+        - text: "E-mail"
+          icon: "fa-envelope"
+          href: [mailto:arthur_sf@icloud.com]
+        - text: "Site institucional"
+          icon: "fa-globe"
+          href: [https://orcid.org/0000-0001-7014-2002]
+        - text: "Instagram"
           icon: "fa-instagram"
-          href: [https://www.instagram.com/arthur.sa.ferreira/]
-        - text: ""
+          href: [https://www.instagram.com/arthur.sa.ferreira]
+        - text: "Facebook"
           icon: "fa-facebook"
           href: [https://pt-br.facebook.com/arthur.sa.ferreira]
   right:

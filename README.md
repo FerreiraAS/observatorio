@@ -271,26 +271,26 @@ O Observatório é atualizado semanalmente. Para receber atualizações no seu r
 - [**Observatório**](https://ferreiraas.github.io/observatorio) | Modelo para PPGs
 
 
-### **Centro Universitário Augusto Motta | [UNISUAM](https://www.unisuam.edu.br)**
+### **[UNISUAM](https://www.unisuam.edu.br) | Centro Universitário Augusto Motta**
 
 - [**Observatório CR**](https://ppgcr-unisuam.github.io/observatoriocr) | Programa de Pós-graduação em Ciências da Reabilitação
 - [**Observatório DL**](https://ppgdl-unisuam.github.io/observatoriodl) | Programa de Pós-graduação em Desenvolvimento Local
 
 
-### **Universidade Federal do Ceará | [UFC](https://www.ufc.br)**
+### **[UFC](https://www.ufc.br) | Universidade Federal do Ceará**
 
 - [**Observatório PPGFisio**](https://ppgfisioufc.github.io/PPGFisio_UFC/) | Programa de Pós-graduação em Fisioterapia
 
 
-### **Universidade Federal do Triângulo Mineiro - Universidade Federal de Uberlândia | [UFTM-UFU](https://www.uftm.edu.br/stricto-sensu/ppgfisio)**
+### **[UFTM-UFU](https://www.uftm.edu.br/stricto-sensu/ppgfisio) | Universidade Federal do Triângulo Mineiro - Universidade Federal de Uberlândia**
 
 - [**Observatório PPGFisio**](https://ppgfisiouftmufu.github.io/ObservatorioUFTM_UFU/) | Programa de Pós-graduação em Fisioterapia
 
-### **Universidade Federal do Rio Grande do Norte | [UFRN](https://posgraduacao.ufrn.br/ppgcreab)**
+### **[UFRN](https://posgraduacao.ufrn.br/ppgcreab) | Universidade Federal do Rio Grande do Norte**
 
 - [**Observatório UFRN**](https://ppgfisioterapia.github.io/observatorioUFRN/) | Programa de Pós-graduação em Ciências da Reabilitação
 
-### **Universidade de São Paulo | [USP](https://www.fm.usp.br/fofito/pos-graduacao/programa-de-ciencias-da-reabilitacao)**
+### **[USP](https://www.fm.usp.br/fofito/pos-graduacao/programa-de-ciencias-da-reabilitacao) | Universidade de São Paulo**
 
 - [**Observatório PPGPosReab-USP**](https://ppgreab.github.io/Observatorio-PPGPosReab-USP/) | Programa de Pós-graduação em Ciências da Reabilitação
 
