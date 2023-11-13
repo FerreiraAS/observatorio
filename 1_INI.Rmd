@@ -374,7 +374,7 @@ has.repositorios.cooperacao <-
   )
 ```
 
-```{r try-vidos, results = "hide"}
+```{r try-videos, results = "hide"}
 has.videos <-
   !is.error(try(readxl::read_excel("PPG/Videos.xlsx", sheet = 1),
                 silent = TRUE)
@@ -409,10 +409,11 @@ nome.PPG.no.stopwords <-
 source("Scripts/get-initials.R")
 sigla.PPG <- initials(nome.PPG.no.stopwords)
 
-site.PPG <-
+try(site.PPG <-
   readxl::read_excel("PPG/Dados Cadastrais.xlsx",
              sheet = "Endereço",
-             col_types = c("text"))[7, 2]
+             col_types = c("text"))[7, 2],
+  silent = TRUE)
 
 # qualquer planilha para obter os dados da IES
 sheet <- "Docentes"
@@ -421,7 +422,6 @@ nome.IES <- unique(sucupira.raw$`IES Nome`)
 nome.IES <- tools::toTitleCase(as.character(nome.IES))
 
 sigla.IES <- unique(sucupira.raw$`IES Sigla`)
-
 ```
 
 ```{r producao-sucupira, results = "hide", eval = has.sucupira.files}
@@ -432,7 +432,7 @@ source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 # características
 subtipo <- "ARTIGO EM PERIÓDICO"
 detalhamento <- "Completo"
-item.detalhamento <- c("Número do DOI", "URL do DOI", "URL")[1]
+item.detalhamento <- c("Número do DOI", "URL do DOI", "URL")
 
 # Data selection
 produtos <-
@@ -453,29 +453,32 @@ titles <- (
 titles <- titles[!is.na(titles)]
 
 doi_artigos_completos_sucupira <-
-  data.frame(DOI = matrix(NA, nrow = length(titles), ncol = 1))
+  data.frame(DOI = matrix(NA, nrow = 0, ncol = 1))
 if (dim(doi_artigos_completos_sucupira)[1] != 0) {
   # data filter
   for (i in 1:length(titles)) {
-    doi_artigos_completos_sucupira$DOI[i] <-
+    doi_artigos_completos_sucupira$DOI <- rbind(
+      doi_artigos_completos_sucupira$DOI,
       sucupira.raw$`Valor do Item de Detalhamento`[which(
         and(
           sucupira.raw$`Nome da Produção` == titles[i],
           sucupira.raw$`Item de Detalhamento` == item.detalhamento
         ) == TRUE
       )]
+    )
   }
   doi_artigos_completos_sucupira <- data.frame(doi_artigos_completos_sucupira[!is.na(doi_artigos_completos_sucupira)])
+  doi_artigos_completos_sucupira <- unique(doi_artigos_completos_sucupira)
   names(doi_artigos_completos_sucupira) <- "DOI"
 }
 has.artigos.completos.sucupira <-
-  length(doi_artigos_completos_sucupira) != 0
+  !sjmisc::is_empty(doi_artigos_completos_sucupira)
 
 
 # características
 subtipo <- "ARTIGO EM PERIÓDICO"
 detalhamento <- "Resumo"
-item.detalhamento <- c("Número do DOI", "URL do DOI", "URL")[1]
+item.detalhamento <- c("Número do DOI", "URL do DOI", "URL")
 
 # Data selection
 produtos <-
@@ -496,23 +499,26 @@ titles <- (
 titles <- titles[!is.na(titles)]
 
 doi_artigos_resumos_sucupira <-
-  data.frame(DOI = matrix(NA, nrow = length(titles), ncol = 1))
+  data.frame(DOI = matrix(NA, nrow = 0, ncol = 1))
 if (dim(doi_artigos_resumos_sucupira)[1] != 0) {
   # data filter
   for (i in 1:length(titles)) {
-    doi_artigos_resumos_sucupira$DOI[i] <-
+    doi_artigos_resumos_sucupira$DOI <- c(
+      doi_artigos_resumos_sucupira$DOI,
       sucupira.raw$`Valor do Item de Detalhamento`[which(
         and(
           sucupira.raw$`Nome da Produção` == titles[i],
           sucupira.raw$`Item de Detalhamento` == item.detalhamento
         ) == TRUE
       )]
+    )
   }
   doi_artigos_resumos_sucupira <- data.frame(doi_artigos_resumos_sucupira[!is.na(doi_artigos_resumos_sucupira)])
+  doi_artigos_resumos_sucupira <- unique(doi_artigos_resumos_sucupira)
   names(doi_artigos_resumos_sucupira) <- "DOI"
 }
 has.artigos.resumos.sucupira <-
-  length(doi_artigos_resumos_sucupira) != 0
+  !sjmisc::is_empty(doi_artigos_resumos_sucupira)
 
 
 # características
@@ -550,10 +556,11 @@ if (dim(doi_anais_sucupira)[1] != 0) {
       )]
   }
   doi_anais_sucupira <- data.frame(doi_anais_sucupira[!is.na(doi_anais_sucupira)])
+  doi_anais_sucupira <- unique(doi_anais_sucupira)
   names(doi_anais_sucupira) <- "DOI"
 }
 has.anais.sucupira <-
-  length(doi_anais_sucupira) != 0
+  !sjmisc::is_empty(doi_anais_sucupira)
 
 
 # características
@@ -591,10 +598,11 @@ if (dim(doi_livros_sucupira)[1] != 0) {
       )]
   }
   doi_livros_sucupira <- data.frame(doi_livros_sucupira[!is.na(doi_livros_sucupira)])
+  doi_livros_sucupira <- unique(doi_livros_sucupira)
   names(doi_livros_sucupira) <- "DOI"
 }
 has.livros.sucupira <-
-  length(doi_livros_sucupira) != 0
+  !sjmisc::is_empty(doi_livros_sucupira)
 
 
 has.producao.sucupira <-
