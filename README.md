@@ -130,7 +130,6 @@ https://github.com/ppgcr-unisuam/observatoriocr/tree/76185c88ea0ead961c03c0a09f6
 
 As seguintes planilhas podem ser complementadas:
  
-```bash
 ├── PPG
 │   └── [Agendas de Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Agendas%20de%20Pesquisa.xlsx)
 │   └── [Apresentação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Apresenta%C3%A7%C3%A3o.xlsx)
@@ -167,7 +166,6 @@ As seguintes planilhas podem ser complementadas:
 │   └── [Produção.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Produ%C3%A7%C3%A3o.xlsx)
 │   └── [Repositórios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Reposit%C3%B3rios.xlsx)
 │   └── [Videos.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Videos.xlsx)
-```
 
 
 ### **Agencias**
