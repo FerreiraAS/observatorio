@@ -429,6 +429,7 @@ sigla.IES <- unique(sucupira.raw$`IES Sigla`)
 sheet <- "Produções - Detalhes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
+
 # características
 subtipo <- "ARTIGO EM PERIÓDICO"
 detalhamento <- "Completo"
@@ -445,30 +446,25 @@ produtos <-
     )
   )
 # find titles of artigos completos
-titles <- (
-  produtos$"Nome da Produção"[
-  produtos$"Subtipo de Produção" == subtipo & 
-  produtos$"Valor do Item de Detalhamento" == detalhamento]
-)
+titles <- (produtos$"Nome da Produção"[
+  produtos$"Subtipo de Produção" == subtipo &
+    produtos$"Valor do Item de Detalhamento" == detalhamento])
 titles <- titles[!is.na(titles)]
 
-doi_artigos_completos_sucupira <-
-  data.frame(DOI = matrix(NA, nrow = 0, ncol = 1))
-if (dim(doi_artigos_completos_sucupira)[1] != 0) {
+doi_artigos_completos_sucupira <- data.frame()
+if (dim(produtos)[1] != 0) {
   # data filter
   for (i in 1:length(titles)) {
-    doi_artigos_completos_sucupira$DOI <- rbind(
-      doi_artigos_completos_sucupira$DOI,
-      sucupira.raw$`Valor do Item de Detalhamento`[which(
-        and(
-          sucupira.raw$`Nome da Produção` == titles[i],
-          sucupira.raw$`Item de Detalhamento` == item.detalhamento
-        ) == TRUE
-      )]
+    idx1 <- produtos$`Nome da Produção` %in% titles[i]
+    idx2 <- produtos$`Item de Detalhamento` %in% item.detalhamento
+    idx <- and(idx1, idx2)
+    doi_artigos_completos_sucupira <- rbind(
+      doi_artigos_completos_sucupira,
+      produtos$`Valor do Item de Detalhamento`[which(idx == TRUE)]
     )
   }
-  doi_artigos_completos_sucupira <- data.frame(doi_artigos_completos_sucupira[!is.na(doi_artigos_completos_sucupira)])
-  doi_artigos_completos_sucupira <- unique(doi_artigos_completos_sucupira)
+  doi_artigos_completos_sucupira <-
+    as.data.frame(doi_artigos_completos_sucupira[!is.na(doi_artigos_completos_sucupira)])
   names(doi_artigos_completos_sucupira) <- "DOI"
 }
 has.artigos.completos.sucupira <-
@@ -498,23 +494,20 @@ titles <- (
 )
 titles <- titles[!is.na(titles)]
 
-doi_artigos_resumos_sucupira <-
-  data.frame(DOI = matrix(NA, nrow = 0, ncol = 1))
-if (dim(doi_artigos_resumos_sucupira)[1] != 0) {
+doi_artigos_resumos_sucupira <- data.frame()
+if (dim(produtos)[1] != 0) {
   # data filter
   for (i in 1:length(titles)) {
-    doi_artigos_resumos_sucupira$DOI <- c(
-      doi_artigos_resumos_sucupira$DOI,
-      sucupira.raw$`Valor do Item de Detalhamento`[which(
-        and(
-          sucupira.raw$`Nome da Produção` == titles[i],
-          sucupira.raw$`Item de Detalhamento` == item.detalhamento
-        ) == TRUE
-      )]
+    idx1 <- produtos$`Nome da Produção` %in% titles[i]
+    idx2 <- produtos$`Item de Detalhamento` %in% item.detalhamento
+    idx <- and(idx1, idx2)
+    doi_artigos_resumos_sucupira <- rbind(
+      doi_artigos_resumos_sucupira,
+      produtos$`Valor do Item de Detalhamento`[which(idx == TRUE)]
     )
   }
-  doi_artigos_resumos_sucupira <- data.frame(doi_artigos_resumos_sucupira[!is.na(doi_artigos_resumos_sucupira)])
-  doi_artigos_resumos_sucupira <- unique(doi_artigos_resumos_sucupira)
+  doi_artigos_resumos_sucupira <-
+    as.data.frame(doi_artigos_resumos_sucupira[!is.na(doi_artigos_resumos_sucupira)])
   names(doi_artigos_resumos_sucupira) <- "DOI"
 }
 has.artigos.resumos.sucupira <-
@@ -542,21 +535,20 @@ titles <- (
 )
 titles <- titles[!is.na(titles)]
 
-doi_anais_sucupira <-
-  data.frame(DOI = matrix(NA, nrow = length(titles), ncol = 1))
-if (dim(doi_anais_sucupira)[1] != 0) {
+doi_anais_sucupira <- data.frame()
+if (dim(produtos)[1] != 0) {
   # data filter
   for (i in 1:length(titles)) {
-    doi_anais_sucupira$DOI[i] <-
-      sucupira.raw$`Valor do Item de Detalhamento`[which(
-        and(
-          sucupira.raw$`Nome da Produção` == titles[i],
-          sucupira.raw$`Item de Detalhamento` == item.detalhamento
-        ) == TRUE
-      )]
+    idx1 <- produtos$`Nome da Produção` %in% titles[i]
+    idx2 <- produtos$`Item de Detalhamento` %in% item.detalhamento
+    idx <- and(idx1, idx2)
+    doi_anais_sucupira <- rbind(
+      doi_artigos_resumos_sucupira,
+      produtos$`Valor do Item de Detalhamento`[which(idx == TRUE)]
+    )
   }
-  doi_anais_sucupira <- data.frame(doi_anais_sucupira[!is.na(doi_anais_sucupira)])
-  doi_anais_sucupira <- unique(doi_anais_sucupira)
+  doi_anais_sucupira <-
+    as.data.frame(doi_anais_sucupira[!is.na(doi_anais_sucupira)])
   names(doi_anais_sucupira) <- "DOI"
 }
 has.anais.sucupira <-
@@ -584,21 +576,20 @@ titles <- (
 )
 titles <- titles[!is.na(titles)]
 
-doi_livros_sucupira <-
-  data.frame(DOI = matrix(NA, nrow = length(titles), ncol = 1))
-if (dim(doi_livros_sucupira)[1] != 0) {
+doi_livros_sucupira <- data.frame()
+if (dim(produtos)[1] != 0) {
   # data filter
   for (i in 1:length(titles)) {
-    doi_livros_sucupira$DOI[i] <-
-      sucupira.raw$`Valor do Item de Detalhamento`[which(
-        and(
-          sucupira.raw$`Nome da Produção` == titles[i],
-          sucupira.raw$`Item de Detalhamento` == item.detalhamento
-        ) == TRUE
-      )]
+    idx1 <- produtos$`Nome da Produção` %in% titles[i]
+    idx2 <- produtos$`Item de Detalhamento` %in% item.detalhamento
+    idx <- and(idx1, idx2)
+    doi_livros_sucupira <- rbind(
+      doi_artigos_resumos_sucupira,
+      produtos$`Valor do Item de Detalhamento`[which(idx == TRUE)]
+    )
   }
-  doi_livros_sucupira <- data.frame(doi_livros_sucupira[!is.na(doi_livros_sucupira)])
-  doi_livros_sucupira <- unique(doi_livros_sucupira)
+  doi_livros_sucupira <-
+    as.data.frame(doi_livros_sucupira[!is.na(doi_livros_sucupira)])
   names(doi_livros_sucupira) <- "DOI"
 }
 has.livros.sucupira <-
