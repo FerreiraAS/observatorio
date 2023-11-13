@@ -123,122 +123,87 @@ Ao completar esta etapa, a estrutura dos diretórios e arquivos será esta:
 
 O **Observatório** pode exibir informações complementares, não disponíveis na Plataforma Sucupira, desde que organizadas em planilhas XLSX.
 
+```bash
+├── PPG
+│   └── Agendas de Pesquisa.xlsx
+│   └── Apresentação.xlsx
+│   └── Área CAPES.xlsx
+│   └── Autoavaliação.xlsx
+│   └── Avaliação.xlsx
+│   └── Bibliografia.xlsx
+│   └── Blog institucional.xlsx
+│   └── Blogs externos.xlsx
+│   └── Bolsas.xlsx
+│   └── Calendários.xlsx
+│   └── Comitê de Ética em Pesquisa.xlsx
+│   └── Convênios.xlsx
+│   └── Cooperações.xlsx
+│   └── Coordenação.xlsx
+│   └── Dados Cadastrais.xlsx
+│   └── Destaques.xlsx
+│   └── Discentes.xlsx
+│   └── Downloads.xlsx
+│   └── Editais.xlsx
+│   └── Financiadores.xlsx
+│   └── Grupos de Pesquisa.xlsx
+│   └── Histórico.xlsx
+│   └── Infraestrutura.xlsx
+│   └── Internacionalização.xlsx
+│   └── Laboratórios.xlsx
+│   └── Metodologia.xlsx
+│   └── Notas.xlsx
+│   └── Periódicos institucionais.xlsx
+│   └── Planejamento estratégico.xlsx
+│   └── Podcasts.xlsx
+│   └── Prêmio CAPES de Tese.xlsx
+│   └── Prêmios.xlsx
+│   └── Produção.xlsx
+│   └── Repositórios.xlsx
+│   └── Videos.xlsx
+```
+
+
 Um arquivo-modelo de cada planilha está disponível no [repositório do Observatório CR](
 https://github.com/ppgcr-unisuam/observatoriocr/tree/76185c88ea0ead961c03c0a09f6c5fb9eb104e39/PPG).
 
-*Importante*: Os modelos são disponibilizados com dados do PPGCR-UNISUAM, os quais devem ser substituídos pelos dados do PPG.
+*Importante*: Os modelos são disponibilizados com dados do PPGCR-UNISUAM, os quais devem ser substituídos pelos dados do PPG. As seguintes planilhas podem ser complementadas:
 
-As seguintes planilhas podem ser complementadas:
+- [Agendas de Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Agendas%20de%20Pesquisa.xlsx)
+- [Apresentação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Apresenta%C3%A7%C3%A3o.xlsx)
+- [Área CAPES.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/%C3%81rea%20CAPES.xlsx)
+- [Autoavaliação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Autoavalia%C3%A7%C3%A3o.xlsx)
+- [Avaliação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Avalia%C3%A7%C3%A3o.xlsx)
+- [Bibliografia.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Bibliografia.xlsx)
+- [Blog institucional.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Blog%20institucional.xlsx)
+- [Blogs externos.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Blogs%20externos.xlsx)
+- [Bolsas.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Bolsas.xlsx)
+- [Calendários.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Calend%C3%A1rios.xlsx)
+- [Comitê de Ética em Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Comit%C3%AA%20de%20%C3%89tica%20em%20Pesquisa.xlsx)
+- [Convênios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Conv%C3%AAnios.xlsx)
+- [Cooperações.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Coopera%C3%A7%C3%B5es.xlsx)
+- [Coordenação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Coordena%C3%A7%C3%A3o.xlsx)
+- [Dados Cadastrais.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Dados%20Cadastrais.xlsx)
+- [Destaques.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Destaques.xlsx)
+- [Discentes.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Discentes.xlsx)
+- [Downloads.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Downloads.xlsx)
+- [Editais.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Editais.xlsx)
+- [Financiadores.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Financiadores.xlsx)
+- [Grupos de Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Grupos%20de%20Pesquisa.xlsx)
+- [Histórico.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Hist%C3%B3rico.xlsx)
+- [Infraestrutura.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Infraestrutura.xlsx)
+- [Internacionalização.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Internacionaliza%C3%A7%C3%A3o.xlsx)
+- [Laboratórios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Laborat%C3%B3rios.xlsx)
+- [Metodologia.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Metodologia.xlsx)
+- [Notas.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Notas.xlsx)
+- [Periódicos institucionais.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Peri%C3%B3dicos%20institucionais.xlsx)
+- [Planejamento estratégico.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Planejamento%20estrat%C3%A9gico.xlsx)
+- [Podcasts.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Podcasts.xlsx)
+- [Prêmio CAPES de Tese.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Pr%C3%AAmio%20CAPES%20de%20Tese.xlsx)
+- [Prêmios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Pr%C3%AAmios.xlsx)
+- [Produção.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Produ%C3%A7%C3%A3o.xlsx)
+- [Repositórios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Reposit%C3%B3rios.xlsx)
+- [Videos.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Videos.xlsx)
 
-[Agendas de Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Agendas%20de%20Pesquisa.xlsx)
-
-[Apresentação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Apresenta%C3%A7%C3%A3o.xlsx)
-
-[Área CAPES.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/%C3%81rea%20CAPES.xlsx)
-
-[Autoavaliação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Autoavalia%C3%A7%C3%A3o.xlsx)
-
-[Avaliação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Avalia%C3%A7%C3%A3o.xlsx)
-
-[Bibliografia.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Bibliografia.xlsx)
-
-[Blog institucional.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Blog%20institucional.xlsx)
-
-[Blogs externos.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Blogs%20externos.xlsx)
-
-[Bolsas.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Bolsas.xlsx)
-
-[Calendários.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Calend%C3%A1rios.xlsx)
-
-[Comitê de Ética em Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Comit%C3%AA%20de%20%C3%89tica%20em%20Pesquisa.xlsx)
-
-[Convênios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Conv%C3%AAnios.xlsx)
-
-[Cooperações.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Coopera%C3%A7%C3%B5es.xlsx)
-
-[Coordenação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Coordena%C3%A7%C3%A3o.xlsx)
-
-[Dados Cadastrais.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Dados%20Cadastrais.xlsx)
-
-[Destaques.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Destaques.xlsx)
-
-[Discentes.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Discentes.xlsx)
-
-[Downloads.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Downloads.xlsx)
-
-[Editais.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Editais.xlsx)
-
-[Financiadores.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Financiadores.xlsx)
-
-[Grupos de Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Grupos%20de%20Pesquisa.xlsx)
-
-[Histórico.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Hist%C3%B3rico.xlsx)
-
-[Infraestrutura.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Infraestrutura.xlsx)
-
-[Internacionalização.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Internacionaliza%C3%A7%C3%A3o.xlsx)
-
-[Laboratórios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Laborat%C3%B3rios.xlsx)
-
-[Metodologia.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Metodologia.xlsx)
-
-[Notas.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Notas.xlsx)
-
-[Periódicos institucionais.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Peri%C3%B3dicos%20institucionais.xlsx)
-
-[Planejamento estratégico.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Planejamento%20estrat%C3%A9gico.xlsx)
-
-[Podcasts.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Podcasts.xlsx)
-
-[Prêmio CAPES de Tese.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Pr%C3%AAmio%20CAPES%20de%20Tese.xlsx)
-
-[Prêmios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Pr%C3%AAmios.xlsx)
-
-[Produção.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Produ%C3%A7%C3%A3o.xlsx)
-
-[Repositórios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Reposit%C3%B3rios.xlsx)
-
-[Videos.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Videos.xlsx)
-
-
-```bash
-├── PPG
-│   └── [Agendas de Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Agendas%20de%20Pesquisa.xlsx)
-│   └── [Apresentação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Apresenta%C3%A7%C3%A3o.xlsx)
-│   └── [Área CAPES.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/%C3%81rea%20CAPES.xlsx)
-│   └── [Autoavaliação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Autoavalia%C3%A7%C3%A3o.xlsx)
-│   └── [Avaliação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Avalia%C3%A7%C3%A3o.xlsx)
-│   └── [Bibliografia.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Bibliografia.xlsx)
-│   └── [Blog institucional.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Blog%20institucional.xlsx)
-│   └── [Blogs externos.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Blogs%20externos.xlsx)
-│   └── [Bolsas.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Bolsas.xlsx)
-│   └── [Calendários.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Calend%C3%A1rios.xlsx)
-│   └── [Comitê de Ética em Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Comit%C3%AA%20de%20%C3%89tica%20em%20Pesquisa.xlsx)
-│   └── [Convênios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Conv%C3%AAnios.xlsx)
-│   └── [Cooperações.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Coopera%C3%A7%C3%B5es.xlsx)
-│   └── [Coordenação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Coordena%C3%A7%C3%A3o.xlsx)
-│   └── [Dados Cadastrais.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Dados%20Cadastrais.xlsx)
-│   └── [Destaques.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Destaques.xlsx)
-│   └── [Discentes.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Discentes.xlsx)
-│   └── [Downloads.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Downloads.xlsx)
-│   └── [Editais.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Editais.xlsx)
-│   └── [Financiadores.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Financiadores.xlsx)
-│   └── [Grupos de Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Grupos%20de%20Pesquisa.xlsx)
-│   └── [Histórico.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Hist%C3%B3rico.xlsx)
-│   └── [Infraestrutura.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Infraestrutura.xlsx)
-│   └── [Internacionalização.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Internacionaliza%C3%A7%C3%A3o.xlsx)
-│   └── [Laboratórios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Laborat%C3%B3rios.xlsx)
-│   └── [Metodologia.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Metodologia.xlsx)
-│   └── [Notas.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Notas.xlsx)
-│   └── [Periódicos institucionais.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Peri%C3%B3dicos%20institucionais.xlsx)
-│   └── [Planejamento estratégico.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Planejamento%20estrat%C3%A9gico.xlsx)
-│   └── [Podcasts.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Podcasts.xlsx)
-│   └── [Prêmio CAPES de Tese.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Pr%C3%AAmio%20CAPES%20de%20Tese.xlsx)
-│   └── [Prêmios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Pr%C3%AAmios.xlsx)
-│   └── [Produção.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Produ%C3%A7%C3%A3o.xlsx)
-│   └── [Repositórios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Reposit%C3%B3rios.xlsx)
-│   └── [Videos.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Videos.xlsx)
-```
 
 
 ### **Agencias**
