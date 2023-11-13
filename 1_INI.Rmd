@@ -1203,22 +1203,25 @@ references_all <-
 ```
 
 ```{r retratacoes, results = "hide", cache = TRUE, cache.path = "cache/retratacoes/", eval = any(has.producao.sucupira, has.producao.ppg)}
-# bind sources
 doi_with_altmetric_retracted <- c()
-for (i in 1:dim(doi_with_altmetric_all)[1]) {
-  if (!retractcheck::check_doi(doi = as.character(doi_with_altmetric_all$doi[i]))) {
-    doi_with_altmetric_retracted <-
-      rbind(doi_with_altmetric_retracted,
-            doi_with_altmetric_all[i, ])
+if (!sjmisc::is_empty(doi_with_altmetric_all)) {
+  for (i in 1:dim(doi_with_altmetric_all)[1]) {
+    if (!retractcheck::check_doi(doi = as.character(doi_with_altmetric_all$doi[i]))) {
+      doi_with_altmetric_retracted <-
+        rbind(doi_with_altmetric_retracted,
+              doi_with_altmetric_all[i,])
+    }
   }
 }
 
 doi_without_altmetric_retracted <- c()
-for (i in 1:dim(doi_without_altmetric_all)[1]) {
-  if (!retractcheck::check_doi(doi = as.character(doi_without_altmetric_all$doi[i]))) {
-    doi_without_altmetric_retracted <-
-      rbind(doi_without_altmetric_retracted,
-            doi_without_altmetric_all[i, ])
+if (!sjmisc::is_empty(doi_without_altmetric_all)) {
+  for (i in 1:dim(doi_without_altmetric_all)[1]) {
+    if (!retractcheck::check_doi(doi = as.character(doi_without_altmetric_all$doi[i]))) {
+      doi_without_altmetric_retracted <-
+        rbind(doi_without_altmetric_retracted,
+              doi_without_altmetric_all[i,])
+    }
   }
 }
 ```

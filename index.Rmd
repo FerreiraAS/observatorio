@@ -231,7 +231,7 @@ nodes <- data.frame(name = c(as.character(links$source),
 
 # We need a data frame giving a hierarchical structure. Let's consider the flare dataset
 edges1 <-
-  aggregate(
+  stats::aggregate(
     alluv.data$sucupira.raw..Linha.de.Pesquisa.,
     by = list(
       alluv.data$sucupira.raw..Área.de.Concentração.,
@@ -816,28 +816,36 @@ for (i in 1:length(doi_all$WebQualis)) {
 }
 
 table.3 <- data.frame(doi_all$published_on, doi_all$SJR)
-table.3.median <-
-  aggregate(
-    table.3,
-    by = list(table.3$doi_all.published_on),
-    FUN = median,
-    na.rm = TRUE
-  )
-table.3.median <- t(as.matrix(table.3.median[, -2]))
-table.3.median <- as.numeric(table.3.median[-1, ])
-names(table.3.median) <- names(table.1)
+if (!sjmisc::is_empty(table.3)) {
+  table.3.median <-
+    stats::aggregate(
+      table.3,
+      by = list(table.3$doi_all.published_on),
+      FUN = median,
+      na.rm = TRUE
+    )
+  table.3.median <- t(as.matrix(table.3.median[, -2]))
+  table.3.median <- as.numeric(table.3.median[-1, ])
+  names(table.3.median) <- names(table.1)
+} else {
+  table.3.median <- rep(NA, dim(table.3)[1])
+}
 
 table.4 <- data.frame(doi_all$published_on, doi_all$CiteScore)
-table.4.median <-
-  aggregate(
-    table.4,
-    by = list(table.4$doi_all.published_on),
-    FUN = median,
-    na.rm = TRUE
-  )
-table.4.median <- t(as.matrix(table.4.median[, -2]))
-table.4.median <- as.numeric(table.4.median[-1, ])
-names(table.4.median) <- names(table.1)
+if (!sjmisc::is_empty(table.4)) {
+  table.4.median <-
+    stats::aggregate(
+      table.4,
+      by = list(table.4$doi_all.published_on),
+      FUN = median,
+      na.rm = TRUE
+    )
+  table.4.median <- t(as.matrix(table.4.median[, -2]))
+  table.4.median <- as.numeric(table.4.median[-1, ])
+  names(table.4.median) <- names(table.1)
+} else {
+  table.4.median <- rep(NA, dim(table.4)[1])
+}
 
 table.5 <-
   data.frame(doi_all$journal, doi_all$SJR)
