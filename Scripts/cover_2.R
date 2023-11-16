@@ -23,7 +23,7 @@ texto <- paste0(
   ". ",
   try(paste0(pdftools::pdf_info("docs/autoavaliacao.pdf")$pages, "p"), silent = TRUE),
   ". ",
-  "Relatório elaborado computacionalnente pelo Observatório do Programa disponível em ",
+  "Relatório elaborado computacionalmente pelo Observatório do Programa disponível em ",
   yaml::read_yaml(file = "./_site.yml")$href,
   ". ",
   paste0("Atualizado em ", format(Sys.Date(), "%d/%m/%Y")),
