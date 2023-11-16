@@ -160,6 +160,8 @@ navbar:
           href: [galeria.html#videos]
         - text: "Podcasts"
           href: [galeria.html#podcasts]
+    - text: "Downloads"
+      href: [downloads.html]
     - text: "Autoavaliação"
       href: [autoavaliacao.html]
       menu:
@@ -189,10 +191,11 @@ navbar:
         - text: "Relatório quadrienal"
           icon: "fa-file-pdf"
           href: [autoavaliacao.pdf]
-    - text: "Downloads"
-      href: [downloads.html]
     - text: "Links"
       href: [links.html]
+    - text: ""
+      icon: "fa-binoculars"
+      href: [https://sucupira-beta.capes.gov.br/sucupira4/observatorio/detalhamento/programas/]
     - text: ""
       icon: "fa-share-nodes"
       menu:
@@ -212,6 +215,8 @@ navbar:
     - text: ""
       icon: "fa-github"
       href: [https://github.com/FerreiraAS/observatorio]
+
+href: https://ferreiraas.github.io/observatorio/
 
 output:
   html_document:

@@ -1,6 +1,19 @@
 W <- 8.27
 H <- 11.69
 
+# define font family
+extrafont::loadfonts(device = "all")
+
+grDevices::quartzFonts(
+  ComputerModern = c(
+    "Computer Modern",
+    "Computer Modern Bold",
+    "Computer Modern Oblique",
+    "Computer Modern BoldOblique"
+  )
+)
+par(family = 'ComputerModern')
+
 grDevices::png(
   file = "PPG/Images/Cover_1.png",
   width = W,
@@ -13,7 +26,7 @@ par(
   oma = c(0, 0, 0, 0),
   omi = c(0, 0, 0, 0),
   mai = c(0, 0, 0, 0),
-  bg = "black"
+  bg = "white"
 )
 plot(
   1,
@@ -24,6 +37,23 @@ plot(
   ylim = c(0, H)
 )
 
+# IES log
+try(logo <-
+      logo <- magick::image_read("PPG/Images/logo-programa.png"),
+    silent = TRUE)
+try (size <-
+       dim(png::readPNG("PPG/Images/logo-programa.png"))[c(1, 2)] / 72 / 2, silent = TRUE)
+if (exists("logo")) {
+  rasterImage(
+    logo,
+    ytop = H,
+    ybottom = H - size[1],
+    xleft = W,
+    xright = W - size[2],
+    interpolate = FALSE
+  )
+}
+
 # IES name
 if (as.logical(has.dados.cadastrais)) {
   label.IES <- nome.IES
@@ -32,11 +62,11 @@ if (as.logical(has.dados.cadastrais)) {
 }
 text(
   x = W,
-  y = H - 0.5,
+  y = H - 1.0,
   labels = label.IES,
   pos = 2,
-  cex = 2,
-  col = "white"
+  cex = 1.5,
+  col = "black"
 )
 
 # book subtitle
@@ -47,11 +77,11 @@ if (as.logical(has.dados.cadastrais)) {
 }
 text(
   x = W,
-  y = H - 1.0,
+  y = H - 1.5,
   labels = label.PPG,
   pos = 2,
-  cex = 1.5,
-  col = "white"
+  cex = 1.0,
+  col = "black"
 )
 
 # periodo
@@ -67,7 +97,7 @@ text(
   labels = label.quad,
   pos = 2,
   cex = 2.5,
-  col = "yellow"
+  col = "black"
 )
 
 # book title
@@ -77,7 +107,7 @@ text(
   labels = "Autoavaliação",
   pos = 2,
   cex = 6.5,
-  col = "yellow"
+  col = "black"
 )
 
 # year
@@ -87,7 +117,7 @@ text(
   labels = paste0("Atualizado em ", format(Sys.Date(), "%m/%Y")),
   adj = c(0.5, 0.5),
   cex = 1.0,
-  col = "white"
+  col = "black"
 )
 
 grDevices::dev.off()
@@ -103,7 +133,7 @@ par(
   oma = c(0, 0, 0, 0),
   omi = c(0, 0, 0, 0),
   mai = c(0, 0, 0, 0),
-  bg = "black"
+  bg = "white"
 )
 plot(img)
 grDevices::dev.off()

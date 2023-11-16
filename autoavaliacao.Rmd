@@ -23,7 +23,7 @@ output:
     number_sections: false
     includes:
       in_header: tex/preamble.tex
-      before_body: tex/cover_1.tex
+      before_body: [tex/cover_1.tex, tex/cover_2.tex]
     latex_engine: xelatex
     keep_tex: no
 ---
@@ -35,6 +35,7 @@ quadrienal.vigente <- 2021:min(as.numeric(format(Sys.Date(), "%Y")), 2024)
 
 ```{r cover-one, echo = FALSE, include = FALSE, eval = knitr::is_html_output()}
 source("Scripts/cover_1.R", local = knitr::knit_global())
+source("Scripts/cover_2.R", local = knitr::knit_global())
 ```
 
 ```{=latex}

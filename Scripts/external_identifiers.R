@@ -31,7 +31,7 @@ for (id in 1:length(my_orcid)) {
   }
 }
 
-# remove multiple Scopus ID if any
+# remove multiple Scopus ID if any (up to 100)
 mult.ids <- c()
 for(i in 1:100){
   mult.ids <- c(mult.ids, paste("Scopus Author ID.", as.character(i), sep = ""), paste("Scopus Author ID...", as.character(i), sep = ""))

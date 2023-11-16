@@ -1,11 +1,11 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.11.12)  13 NOV 2023 10:50
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.11.15)  16 NOV 2023 10:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **autoavaliacao.tex
 (./autoavaliacao.tex
 LaTeX2e <2023-11-01>
-L3 programming layer <2023-11-01>
+L3 programming layer <2023-11-09>
 (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/latex/base/book.cls
 Document Class: book 2023/05/17 v1.4n Standard LaTeX document class
 (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/latex/base/bk10.clo
@@ -98,9 +98,9 @@ LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 )) (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty
 Package: iftex 2022/02/03 v1.0f TeX engine tests
 ) (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/latex/unicode-math/unicode-math.sty (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2023-11-01 L3 programming layer (loader) 
+Package: expl3 2023-11-09 L3 programming layer (loader) 
 (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-xetex.def
-File: l3backend-xetex.def 2023-11-04 L3 backend support: XeTeX
+File: l3backend-xetex.def 2023-11-09 L3 backend support: XeTeX
 \g__graphics_track_int=\count269
 \l__pdf_internal_box=\box53
 \g__pdf_backend_object_int=\count270
@@ -214,22 +214,22 @@ Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
 ) (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
 Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
 ))) (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/latex/xcolor/xcolor.sty
-Package: xcolor 2022/06/12 v2.14 LaTeX color extensions (UK)
+Package: xcolor 2023/11/11 v3.00 LaTeX color extensions (UK)
 (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
-Package xcolor Info: Driver file: xetex.def on input line 227.
+Package xcolor Info: Driver file: xetex.def on input line 264.
 (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/latex/graphics-def/xetex.def
 File: xetex.def 2022/09/22 v5.0n Graphics/color driver for xetex
 ) (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)
-Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1353.
-Package xcolor Info: Model `RGB' extended on input line 1369.
-Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1371.
-Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1372.
-Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1373.
-Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1374.
-Package xcolor Info: Model `Gray' substituted by `gray' on input line 1375.
-Package xcolor Info: Model `wave' substituted by `hsb' on input line 1376.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1340.
+Package xcolor Info: Model `RGB' extended on input line 1356.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1358.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1359.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1360.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1361.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1362.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1363.
 ) (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
 (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/generic/iftex/ifvtex.sty
@@ -326,7 +326,7 @@ Package graphics Info: Driver file: xetex.def on input line 107.
 ) (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/latex/academicons/academicons.sty
 Package: academicons 2021/11/26 v1.9.1 Academicons Icons
 ) (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2023/10/25 v3.96 The Babel package
+Package: babel 2023/11/11 v3.97 The Babel package
 \babel@savecnt=\count305
 \U@D=\dimen183
 \l@unhyphenated=\language4
@@ -1061,7 +1061,22 @@ File: PPG/Images/Cover_1.pdf Graphic file (type pdf)
 [1
 
 
-] (./autoavaliacao.toc
+]
+File: PPG/Images/Cover_2.pdf Graphic file (type pdf)
+<use PPG/Images/Cover_2.pdf>
+File: PPG/Images/Cover_2.pdf Graphic file (type pdf)
+<use PPG/Images/Cover_2.pdf>
+File: PPG/Images/Cover_2.pdf Graphic file (type pdf)
+<use PPG/Images/Cover_2.pdf, page 1>
+File: PPG/Images/Cover_2.pdf Graphic file (type pdf)
+<use PPG/Images/Cover_2.pdf, page 1>
+File: PPG/Images/Cover_2.pdf Graphic file (type pdf)
+<use PPG/Images/Cover_2.pdf, page 1>
+File: PPG/Images/Cover_2.pdf Graphic file (type pdf)
+<use PPG/Images/Cover_2.pdf, page 1>
+File: PPG/Images/Cover_2.pdf Graphic file (type pdf)
+<use PPG/Images/Cover_2.pdf, page 1>
+[2] (./autoavaliacao.toc
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
 (Font)              scaled to size 7.0pt on input line 2.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
@@ -1097,34 +1112,11 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 \tf@toc=\write4
 \openout4 = `autoavaliacao.toc'.
 
-[2] [3
+[3] [4
 
+] [5
 
-] [4]
-Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
-[5]
-Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
-[6]
-Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
-Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
+] [6]
 Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
 Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
 Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
@@ -1149,19 +1141,43 @@ Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=
 Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
 Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
 Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
-[9] (./autoavaliacao.aux)
+Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
+[9]
+Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
+[10]
+Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ⬆ (U+2B06) in font [lmroman10-regular]:mapping=tex-text;!
+Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=tex-text;!
+[11] (./autoavaliacao.aux)
  ***********
 LaTeX2e <2023-11-01>
-L3 programming layer <2023-11-01>
+L3 programming layer <2023-11-09>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 33605 strings out of 476918
- 649076 string characters out of 5804936
- 1925161 words of memory out of 5000000
- 54940 multiletter control sequences out of 15000+600000
+ 33638 strings out of 476913
+ 650743 string characters out of 5804859
+ 1925186 words of memory out of 5000000
+ 54976 multiletter control sequences out of 15000+600000
  561654 words of font info for 74 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
  94i,18n,120p,1202b,501s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on autoavaliacao.pdf (9 pages).
+Output written on autoavaliacao.pdf (11 pages).
