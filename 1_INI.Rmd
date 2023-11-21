@@ -702,12 +702,12 @@ if(has.artigos.completos.sucupira) {
 }
 dois <- data.frame(DOI = c(dois.sucupira$DOI, dois.ppg$DOI))
 
+# limpa as entradas de DOI
+dois <- doi_cleaner(dois)
+
 # Data cleaning
 dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
 dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
-
-# limpa as entradas de DOI
-dois <- doi_cleaner(dois)
 
 if(!sjmisc::is_empty(dois)) {
   # cria metadados para rastreio pelo Altmetric
@@ -784,12 +784,12 @@ if (has.artigos.resumos.sucupira) {
 }
 dois <- data.frame(DOI = c(dois.sucupira$DOI, dois.ppg$DOI))
 
+# limpa as entradas de DOI
+dois <- doi_cleaner(dois)
+
 # Data cleaning
 dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
 dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
-
-# limpa as entradas de DOI
-dois <- doi_cleaner(dois)
 
 if (!sjmisc::is_empty(dois)) {
   # cria metadados para rastreio pelo Altmetric
@@ -858,12 +858,12 @@ data.sheet <-
 dois <-
   data.frame(DOI = data.sheet[, match("DOI", names(data.sheet))])
 
+# limpa as entradas de DOI
+dois <- doi_cleaner(dois)
+
 # Data cleaning
 dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
 dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
-
-# limpa as entradas de DOI
-dois <- doi_cleaner(dois)
 
 if (!sjmisc::is_empty(dois)) {
   # cria metadados para rastreio pelo Altmetric
@@ -940,12 +940,12 @@ if(has.livros.sucupira) {
 }
 dois <- data.frame(DOI = c(dois.sucupira$DOI, dois.ppg$DOI))
 
+# limpa as entradas de DOI
+dois <- doi_cleaner(dois)
+
 # Data cleaning
 dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
 dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
-
-# limpa as entradas de DOI
-dois <- doi_cleaner(dois)
 
 if (!sjmisc::is_empty(dois)) {
   # cria metadados para rastreio pelo Altmetric
@@ -1014,12 +1014,12 @@ data.sheet <-
 dois <-
   data.frame(DOI = data.sheet[, match("DOI", names(data.sheet))])
 
+# limpa as entradas de DOI
+dois <- doi_cleaner(dois)
+
 # Data cleaning
 dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
 dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
-
-# limpa as entradas de DOI
-dois <- doi_cleaner(dois)
 
 if (!sjmisc::is_empty(dois)) {
   # cria metadados para rastreio pelo Altmetric
@@ -1096,12 +1096,12 @@ if(has.anais.ppg) {
 }
 dois <- data.frame(DOI = c(dois.sucupira$DOI, dois.ppg$DOI))
 
+# limpa as entradas de DOI
+dois <- doi_cleaner(dois)
+
 # Data cleaning
 dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
 dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
-
-# limpa as entradas de DOI
-dois <- doi_cleaner(dois)
 
 if (!sjmisc::is_empty(dois)) {
   # cria metadados para rastreio pelo Altmetric
