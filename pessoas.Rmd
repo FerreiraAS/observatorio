@@ -156,6 +156,161 @@ source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+### **Credenciados**
+
+```{r docentes-credenciados, eval = has.sucupira.files, results = "hide"}
+# docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R")
+
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# most recent Sucupira year
+most.recent <-
+  as.character(ifelse(!is.null(sucupira.list[[format(Sys.Date(), "%Y")]]), format(Sys.Date(), "%Y"), max(as.numeric(
+    names(sucupira.list)
+  ))))
+
+# periodo
+periodo <- most.recent
+
+# get docentes for the current period
+sucupira <- sucupira.list[as.character(periodo)] %>%
+  compact()
+sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
+names(sucupira) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# recode
+sucupira$'Data de Admissão' <-
+  substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
+sucupira$'Data de Desligamento' <-
+  substr(as.Date(sucupira$'Data de Desligamento', format = "%d/%m/%Y"),
+         1,
+         4)
+sucupira$'Data de Desligamento'[is.na(sucupira$'Data de Desligamento')] <-
+  "Atual"
+
+# filter duplicated docentes (changes in details will we exhibited)
+docentes <-
+  sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]), ]
+docentes <- docentes[order(docentes$"Nome Docente"),]
+
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+```
+
+```{r docentes-credenciados-tabela, eval = has.sucupira.files}
+table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 7))
+for (i in 1:dim(docentes)[1]) {
+  table <- cbind(
+    paste(
+      '<a href=\"mailto:', docentes$"E-mail"[i], '\">',
+      docentes$'Nome Docente'[i],
+      '</a>',
+      sep = ""
+    ),
+    docentes$Categoria[i],
+    paste(
+      docentes$'Data de Admissão'[i],
+      "-",
+      docentes$'Data de Desligamento'[i],
+      sep = ""
+    ),
+    ifelse(
+      !is.na(docentes$'Número do currículo Lattes'[i]),
+      paste(
+        '<a href=\"http://lattes.cnpq.br/',
+        docentes$'Número do currículo Lattes'[i],
+        '\">',
+        docentes$'Número do currículo Lattes'[i],
+        '</a>',
+        sep = ""
+      ),
+      docentes$'Número do currículo Lattes'[i]
+    ),
+    ifelse(
+      !is.na(docentes$ORCID[i]),
+      paste(
+        '<a href=\"https://orcid.org/',
+        paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
+        '\">',
+        paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
+        '</a>',
+        sep = ""
+      ),
+      docentes$ORCID[i]
+    ),
+    docentes$País[i]
+  )
+  table.2 <- rbind(table.2, table)
+}
+colnames(table.2) <-
+  c("Nome",
+    "Categoria",
+    "Credenciamento",
+    "Lattes ID",
+    "ORCID",
+    "País")
+rownames(table.2) <- NULL
+
+# print tables
+ids <- order(table.2$'Nome', decreasing = FALSE)
+table <- table.2[ids, ]
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(table, title = "Docentes - Credenciados")
+
+cat('\n\n')
+```
+
+<br>
+
+```{r docentes-credenciados-grafico, eval = has.sucupira.files}
+# generate plot of docentes per information
+layout(matrix(seq(1:2), ncol = 2, byrow = TRUE))
+par(oma = c(2, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
+
+total.categoria <- table(docentes$Categoria)
+pie(
+  total.categoria,
+  labels = NA,
+  col = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
+  init.angle = 90,
+  main = names(docentes$Categoria)
+)
+legend(
+  "topleft",
+  legend = names(total.categoria),
+  fill = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
+  box.lwd = 0,
+  cex = 1,
+  bg = NA
+)
+
+total.regime <- table(docentes$`Regime de Trabalho`)
+pie(
+  total.regime,
+  labels = NA,
+  col = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
+  init.angle = 90,
+  main = names(docentes$`Regime de Trabalho`)
+)
+legend(
+  "topleft",
+  legend = names(total.regime),
+  fill = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
+  box.lwd = 0,
+  cex = 1,
+  bg = NA
+)
+title("Descrição do Corpo Docente - Credenciados", outer = TRUE)
+
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
 ### **Diretório CNPq** {#dgp-cnpq .tabset}
 
 ```{r dgp-cnpq, eval = has.sucupira.files}
@@ -214,8 +369,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-<br>
-
 ### **IDs** {.tabset}
 
 ```{r ids-externos-docentes, cache = TRUE, cache.path = "cache/external-ids/", eval = has.sucupira.files}
@@ -246,47 +399,6 @@ source("Scripts/external_identifiers.R", local = knitr::knit_global())
 <br>
 
 <br>
-
-### **2024-2021**
-
-```{r docentes-2024-2021, eval = has.2024.2021, results = "hide"}
-# periodo
-periodo <- 2021:min(as.numeric(format(Sys.Date(), "%Y")), 2024)
-
-# docentes
-sheet <- "Docentes"
-source("Scripts/read-xlsx-sucupira.R")
-
-# get years
-source("Scripts/years-sucupira.R")
-names(sucupira.list) <- as.character(anos)
-
-if(has.2024.2021) {
-  # get docentes for the current period
-  sucupira <- sucupira.list[as.character(periodo)] %>%
-    compact()
-  sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
-  names(sucupira) <-
-    names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
-  
-  # recode
-  sucupira$'Data de Admissão' <-
-    substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
-  sucupira$'Data de Desligamento' <-
-    substr(as.Date(sucupira$'Data de Desligamento', format = "%d/%m/%Y"),
-           1,
-           4)
-  sucupira$'Data de Desligamento'[is.na(sucupira$'Data de Desligamento')] <-
-    "Atual"
-  
-  # filter duplicated docentes (changes in details will we exhibited)
-  docentes <-
-    sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]),]
-  docentes <- docentes[order(docentes$"Nome Docente"), ]
-}
-
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
-```
 
 ```{r docentes-2024-2021-tabela, eval = has.2024.2021}
 table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 7))
@@ -433,48 +545,45 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-### **2020-2017**
+### **Histórico**
 
-```{r docentes-2020-2017, eval = has.2020.2017, results = "hide"}
-# periodo
-periodo <- 2017:min(as.numeric(format(Sys.Date(), "%Y")), 2020)
-
+```{r docentes-historico, eval = has.sucupira.files, results = "hide"}
 # docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R")
 
-# get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
-if(has.2020.2017) {
-  # get docentes for the current period
-  sucupira <- sucupira.list[as.character(periodo)] %>%
-    compact()
-  sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
-  names(sucupira) <-
-    names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
-  
-  # recode
-  sucupira$'Data de Admissão' <-
-    substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
-  sucupira$'Data de Desligamento' <-
-    substr(as.Date(sucupira$'Data de Desligamento', format = "%d/%m/%Y"),
-           1,
-           4)
-  sucupira$'Data de Desligamento'[is.na(sucupira$'Data de Desligamento')] <-
-    "Atual"
-  
-  # filter duplicated docentes (changes in details will we exhibited)
-  docentes <-
-    sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]),]
-  docentes <- docentes[order(docentes$"Nome Docente"), ]
-}
+# periodo
+periodo <- anos
+
+# get docentes for the current period
+sucupira <- sucupira.list[as.character(periodo)] %>%
+  compact()
+sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
+names(sucupira) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# recode
+sucupira$'Data de Admissão' <-
+  substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
+sucupira$'Data de Desligamento' <-
+  substr(as.Date(sucupira$'Data de Desligamento', format = "%d/%m/%Y"),
+         1,
+         4)
+sucupira$'Data de Desligamento'[is.na(sucupira$'Data de Desligamento')] <-
+  "Atual"
+
+# filter duplicated docentes (changes in details will we exhibited)
+docentes <-
+  sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]), ]
+docentes <- docentes[order(docentes$"Nome Docente"),]
 
 source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
-```{r docentes-2020-tabela, eval = has.2020.2017}
+```{r docentes-historico-tabela, eval = has.sucupira.files}
 table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 7))
 for (i in 1:dim(docentes)[1]) {
   table <- cbind(
@@ -532,16 +641,16 @@ rownames(table.2) <- NULL
 ids <- order(table.2$'Nome', decreasing = FALSE)
 table <- table.2[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table, title = "Docentes - 2020-2017")
+create_dt(table, title = "Docentes - Histórico")
 
 cat('\n\n')
 ```
 
 <br>
 
-```{r docentes-2020-grafico, eval = has.2020.2017}
+```{r docentes-historico-grafico, eval = has.sucupira.files}
 # generate plot of docentes per information
-layout(matrix(seq(1:4), ncol = 2, byrow = TRUE))
+layout(matrix(seq(1:2), ncol = 2, byrow = TRUE))
 par(oma = c(2, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
 
 total.categoria <- table(docentes$Categoria)
@@ -577,413 +686,7 @@ legend(
   cex = 1,
   bg = NA
 )
-
-# total.dedicação <- table(docentes$Dedicação)
-# pie(
-#   total.dedicação,
-#   labels = NA,
-#   col = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
-#   init.angle = 90,
-#   main = names(docentes$Dedicação)
-# )
-# legend(
-#   "topleft",
-#   legend = names(total.dedicação),
-#   fill = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
-#   box.lwd = 0,
-#   cex = 1,
-#   bg = NA
-# )
-# 
-# total.graduação <- table(docentes$Graduação)
-# pie(
-#   total.graduação,
-#   labels = NA,
-#   col = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"),
-#   init.angle = 90,
-#   main = names(docentes$Graduação)
-# )
-# legend(
-#   "topleft",
-#   legend = names(total.graduação),
-#   fill = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"),
-#   box.lwd = 0,
-#   cex = 1,
-#   bg = NA
-# )
-title("Descrição do Corpo Docente", outer = TRUE)
-
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
-### **2016-2013**
-
-```{r docentes-2016-2013, eval = has.2016.2013, results = "hide"}
-# periodo
-periodo <- 2013:min(as.numeric(format(Sys.Date(), "%Y")), 2016)
-
-# docentes
-sheet <- "Docentes"
-source("Scripts/read-xlsx-sucupira.R")
-
-# get years
-source("Scripts/years-sucupira.R")
-names(sucupira.list) <- as.character(anos)
-
-if(has.2016.2013) {
-  # get docentes for the current period
-  sucupira <- sucupira.list[as.character(periodo)] %>%
-    compact()
-  sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
-  names(sucupira) <-
-    names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
-  
-  # recode
-  sucupira$'Data de Admissão' <-
-    substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
-  sucupira$'Data de Desligamento' <-
-    substr(as.Date(sucupira$'Data de Desligamento', format = "%d/%m/%Y"),
-           1,
-           4)
-  sucupira$'Data de Desligamento'[is.na(sucupira$'Data de Desligamento')] <-
-    "Atual"
-  
-  # filter duplicated docentes (changes in details will we exhibited)
-  docentes <-
-    sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]),]
-  docentes <- docentes[order(docentes$"Nome Docente"), ]
-}
-
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
-```
-
-```{r docentes-2016-tabela, eval = has.2016.2013}
-table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 7))
-for (i in 1:dim(docentes)[1]) {
-  table <- cbind(
-    paste(
-      '<a href=\"mailto:', docentes$"E-mail"[i], '\">',
-      docentes$'Nome Docente'[i],
-      '</a>',
-      sep = ""
-    ),
-    docentes$Categoria[i],
-    paste(
-      docentes$'Data de Admissão'[i],
-      "-",
-      docentes$'Data de Desligamento'[i],
-      sep = ""
-    ),
-    ifelse(
-      !is.na(docentes$'Número do currículo Lattes'[i]),
-      paste(
-        '<a href=\"http://lattes.cnpq.br/',
-        docentes$'Número do currículo Lattes'[i],
-        '\">',
-        docentes$'Número do currículo Lattes'[i],
-        '</a>',
-        sep = ""
-      ),
-      docentes$'Número do currículo Lattes'[i]
-    ),
-    ifelse(
-      !is.na(docentes$ORCID[i]),
-      paste(
-        '<a href=\"https://orcid.org/',
-        paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-        '\">',
-        paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-        '</a>',
-        sep = ""
-      ),
-      docentes$ORCID[i]
-    ),
-    docentes$País[i]
-  )
-  table.2 <- rbind(table.2, table)
-}
-colnames(table.2) <-
-  c("Nome",
-    "Categoria",
-    "Credenciamento",
-    "Lattes ID",
-    "ORCID",
-    "País")
-rownames(table.2) <- NULL
-
-# print tables
-ids <- order(table.2$'Nome', decreasing = FALSE)
-table <- table.2[ids, ]
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table, title = "Docentes - 2016-2013")
-
-cat('\n\n')
-```
-
-<br>
-
-```{r docentes-2016-grafico, eval = has.2016.2013}
-# generate plot of docentes per information
-layout(matrix(seq(1:4), ncol = 2, byrow = TRUE))
-par(oma = c(2, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
-
-total.categoria <- table(docentes$Categoria)
-pie(
-  total.categoria,
-  labels = NA,
-  col = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
-  init.angle = 90,
-  main = names(docentes$Categoria)
-)
-legend(
-  "topleft",
-  legend = names(total.categoria),
-  fill = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
-  box.lwd = 0,
-  cex = 1,
-  bg = NA
-)
-
-total.regime <- table(docentes$`Regime de Trabalho`)
-pie(
-  total.regime,
-  labels = NA,
-  col = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
-  init.angle = 90,
-  main = names(docentes$`Regime de Trabalho`)
-)
-legend(
-  "topleft",
-  legend = names(total.regime),
-  fill = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
-  box.lwd = 0,
-  cex = 1,
-  bg = NA
-)
-
-# total.dedicação <- table(docentes$Dedicação)
-# pie(
-#   total.dedicação,
-#   labels = NA,
-#   col = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
-#   init.angle = 90,
-#   main = names(docentes$Dedicação)
-# )
-# legend(
-#   "topleft",
-#   legend = names(total.dedicação),
-#   fill = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
-#   box.lwd = 0,
-#   cex = 1,
-#   bg = NA
-# )
-# 
-# total.graduação <- table(docentes$Graduação)
-# pie(
-#   total.graduação,
-#   labels = NA,
-#   col = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"),
-#   init.angle = 90,
-#   main = names(docentes$Graduação)
-# )
-# legend(
-#   "topleft",
-#   legend = names(total.graduação),
-#   fill = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"),
-#   box.lwd = 0,
-#   cex = 1,
-#   bg = NA
-# )
-title("Descrição do Corpo Docente", outer = TRUE)
-
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
-### **2012-2010**
-
-```{r docentes-2012-2010, eval = has.2012.2010, results = "hide"}
-# periodo
-periodo <- 2010:min(as.numeric(format(Sys.Date(), "%Y")), 2012)
-
-# docentes
-sheet <- "Docentes"
-source("Scripts/read-xlsx-sucupira.R")
-
-# get years
-source("Scripts/years-sucupira.R")
-names(sucupira.list) <- as.character(anos)
-
-if(has.2012.2010) {
-  # get docentes for the current period
-  sucupira <- sucupira.list[as.character(periodo)] %>%
-    compact()
-  sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
-  names(sucupira) <-
-    names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
-  
-  # recode
-  sucupira$'Data de Admissão' <-
-    substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
-  sucupira$'Data de Desligamento' <-
-    substr(as.Date(sucupira$'Data de Desligamento', format = "%d/%m/%Y"),
-           1,
-           4)
-  sucupira$'Data de Desligamento'[is.na(sucupira$'Data de Desligamento')] <-
-    "Atual"
-  
-  # filter duplicated docentes (changes in details will we exhibited)
-  docentes <-
-    sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]),]
-  docentes <- docentes[order(docentes$"Nome Docente"), ]
-}
-
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
-```
-
-```{r docentes-2012-tabela, eval = has.2012.2010}
-table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 7))
-for (i in 1:dim(docentes)[1]) {
-  table <- cbind(
-    paste(
-      '<a href=\"mailto:', docentes$"E-mail"[i], '\">',
-      docentes$'Nome Docente'[i],
-      '</a>',
-      sep = ""
-    ),
-    docentes$Categoria[i],
-    paste(
-      docentes$'Data de Admissão'[i],
-      "-",
-      docentes$'Data de Desligamento'[i],
-      sep = ""
-    ),
-    ifelse(
-      !is.na(docentes$'Número do currículo Lattes'[i]),
-      paste(
-        '<a href=\"http://lattes.cnpq.br/',
-        docentes$'Número do currículo Lattes'[i],
-        '\">',
-        docentes$'Número do currículo Lattes'[i],
-        '</a>',
-        sep = ""
-      ),
-      docentes$'Número do currículo Lattes'[i]
-    ),
-    ifelse(
-      !is.na(docentes$ORCID[i]),
-      paste(
-        '<a href=\"https://orcid.org/',
-        paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-        '\">',
-        paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-        '</a>',
-        sep = ""
-      ),
-      docentes$ORCID[i]
-    ),
-    docentes$País[i]
-  )
-  table.2 <- rbind(table.2, table)
-}
-colnames(table.2) <-
-  c("Nome",
-    "Categoria",
-    "Credenciamento",
-    "Lattes ID",
-    "ORCID",
-    "País")
-rownames(table.2) <- NULL
-
-# print tables
-ids <- order(table.2$'Nome', decreasing = FALSE)
-table <- table.2[ids, ]
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table, title = "Docentes - 2012-2010")
-
-cat('\n\n')
-```
-
-<br>
-
-```{r docentes-2012-grafico, eval = has.2012.2010}
-# generate plot of docentes per information
-layout(matrix(seq(1:4), ncol = 2, byrow = TRUE))
-par(oma = c(2, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
-
-total.categoria <- table(docentes$Categoria)
-pie(
-  total.categoria,
-  labels = NA,
-  col = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
-  init.angle = 90,
-  main = names(docentes$Categoria)
-)
-legend(
-  "topleft",
-  legend = names(total.categoria),
-  fill = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
-  box.lwd = 0,
-  cex = 1,
-  bg = NA
-)
-
-total.regime <- table(docentes$`Regime de Trabalho`)
-pie(
-  total.regime,
-  labels = NA,
-  col = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
-  init.angle = 90,
-  main = names(docentes$`Regime de Trabalho`)
-)
-legend(
-  "topleft",
-  legend = names(total.regime),
-  fill = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
-  box.lwd = 0,
-  cex = 1,
-  bg = NA
-)
-
-# total.dedicação <- table(docentes$Dedicação)
-# pie(
-#   total.dedicação,
-#   labels = NA,
-#   col = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
-#   init.angle = 90,
-#   main = names(docentes$Dedicação)
-# )
-# legend(
-#   "topleft",
-#   legend = names(total.dedicação),
-#   fill = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
-#   box.lwd = 0,
-#   cex = 1,
-#   bg = NA
-# )
-# 
-# total.graduação <- table(docentes$Graduação)
-# pie(
-#   total.graduação,
-#   labels = NA,
-#   col = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"),
-#   init.angle = 90,
-#   main = names(docentes$Graduação)
-# )
-# legend(
-#   "topleft",
-#   legend = names(total.graduação),
-#   fill = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"),
-#   box.lwd = 0,
-#   cex = 1,
-#   bg = NA
-# )
-title("Descrição do Corpo Docente", outer = TRUE)
+title("Corpo Docente - Histórico", outer = TRUE)
 
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
@@ -996,19 +699,24 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **2024-2021**
+### **Credenciados**
 
-```{r pos-doc-2024, eval = has.2024.2021}
-# periodo
-periodo <- 2021:min(as.numeric(format(Sys.Date(), "%Y")), 2024)
-
-# docentes
+```{r pos-doc-credenciados, eval = has.sucupira.files}
+# pós-docs
 sheet <- "Pós-Doc"
 source("Scripts/read-xlsx-sucupira.R")
 
-# get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
+
+# most recent Sucupira year
+most.recent <-
+  as.character(ifelse(!is.null(sucupira.list[[format(Sys.Date(), "%Y")]]), format(Sys.Date(), "%Y"), max(as.numeric(
+    names(sucupira.list)
+  ))))
+
+# periodo
+periodo <- most.recent
 
 # get docentes for the current period
 sucupira <- sucupira.list[as.character(periodo)] %>%
@@ -1094,19 +802,18 @@ if (dim(docentes)[1] == 0) {
 
 <br>
 
-### **2020-2017**
+### **Histórico**
 
-```{r pos-doc-2020, eval = has.2020.2017}
-# periodo
-periodo <- 2017:min(as.numeric(format(Sys.Date(), "%Y")), 2020)
-
-# docentes
+```{r pos-doc-historico, eval = has.sucupira.files}
+# pós-docs
 sheet <- "Pós-Doc"
 source("Scripts/read-xlsx-sucupira.R")
 
-# get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
+
+# periodo
+periodo <- anos
 
 # get docentes for the current period
 sucupira <- sucupira.list[as.character(periodo)] %>%
@@ -1180,210 +887,12 @@ if (dim(docentes)[1] == 0) {
       "ORCID",
       "País")
   rownames(table.2) <- NULL
-  
   # print tables
   ids <- order(table.2$'Nome', decreasing = FALSE)
   table <- table.2[ids, ]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2020-2017")))
-
-  source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
-}
-```
-
-<br>
-
-### **2016-2013**
-
-```{r pos-doc-2016, eval = has.2016.2013}
-# periodo
-periodo <- 2013:min(as.numeric(format(Sys.Date(), "%Y")), 2016)
-
-# docentes
-sheet <- "Pós-Doc"
-source("Scripts/read-xlsx-sucupira.R")
-
-# get years
-source("Scripts/years-sucupira.R")
-names(sucupira.list) <- as.character(anos)
-
-# get docentes for the current period
-sucupira <- sucupira.list[as.character(periodo)] %>%
-  compact()
-sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
-names(sucupira) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
-
-# recode
-sucupira$'Vínculo Início' <-
-  substr(as.Date(sucupira$'Vínculo Início', format = "%d/%m/%Y"), 1, 4)
-sucupira$'Vínculo Fim' <-
-  substr(as.Date(sucupira$'Vínculo Fim', format = "%d/%m/%Y"),
-         1,
-         4)
-sucupira$'Vínculo Fim'[is.na(sucupira$'Vínculo Fim')] <-
-  "Atual"
-
-# filter duplicated docentes (changes in details will we exhibited)
-docentes <-
-  sucupira[
-    !duplicated(
-      sucupira[, 
-          match("Pós-Doc Nome", colnames(sucupira)):match("Vínculo Fim", colnames(sucupira))]
-      ), ]
-docentes <- docentes[order(docentes$"Pós-Doc Nome"),]
-
-if (dim(docentes)[1] == 0) {
-  cat("*Sem dados para exibir*")
-} else {
-  docentes <- docentes[order(docentes$'Pós-Doc Nome'),]
+  cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2024-2021")))
   
-  table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 6))
-  for (i in 1:dim(docentes)[1]) {
-    table <- cbind(
-      paste(
-        '<a href=\"mailto:',
-        docentes$"E-mail"[i],
-        '\">',
-        docentes$'Pós-Doc Nome'[i],
-        '</a>',
-        sep = ""
-      ),
-      docentes$'Origem IES Nome'[i],
-      paste(
-        docentes$'Vínculo Início'[i],
-        "-",
-        docentes$'Vínculo Fim'[i],
-        sep = ""
-      ),
-      ifelse(
-        !is.na(docentes$ORCID[i]),
-        paste(
-          '<a href=\"https://orcid.org/',
-          paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-          '\">',
-          paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-          '</a>',
-          sep = ""
-        ),
-        docentes$ORCID[i]
-      ),
-      docentes$País[i]
-    )
-    table.2 <- rbind(table.2, table)
-  }
-  colnames(table.2) <-
-    c("Nome",
-      "Instituição de origem",
-      "Vigência",
-      "ORCID",
-      "País")
-  rownames(table.2) <- NULL
-  
-  # print tables
-  ids <- order(table.2$'Nome', decreasing = FALSE)
-  table <- table.2[ids, ]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2016-2013")))
-  
-  source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
-}
-```
-
-<br>
-
-### **2010-2012**
-
-```{r pos-doc-2012, eval = has.2012.2010}
-# periodo
-periodo <- 2010:min(as.numeric(format(Sys.Date(), "%Y")), 2012)
-
-# docentes
-sheet <- "Pós-Doc"
-source("Scripts/read-xlsx-sucupira.R")
-
-# get years
-source("Scripts/years-sucupira.R")
-names(sucupira.list) <- as.character(anos)
-
-# get docentes for the current period
-sucupira <- sucupira.list[as.character(periodo)] %>%
-  compact()
-sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
-names(sucupira) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
-
-# recode
-sucupira$'Vínculo Início' <-
-  substr(as.Date(sucupira$'Vínculo Início', format = "%d/%m/%Y"), 1, 4)
-sucupira$'Vínculo Fim' <-
-  substr(as.Date(sucupira$'Vínculo Fim', format = "%d/%m/%Y"),
-         1,
-         4)
-sucupira$'Vínculo Fim'[is.na(sucupira$'Vínculo Fim')] <-
-  "Atual"
-
-# filter duplicated docentes (changes in details will we exhibited)
-docentes <-
-  sucupira[
-    !duplicated(
-      sucupira[, 
-          match("Pós-Doc Nome", colnames(sucupira)):match("Vínculo Fim", colnames(sucupira))]
-      ), ]
-docentes <- docentes[order(docentes$"Pós-Doc Nome"),]
-
-if (dim(docentes)[1] == 0) {
-  cat("*Sem dados para exibir*")
-} else {
-  docentes <- docentes[order(docentes$'Pós-Doc Nome'),]
-  
-  table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 6))
-  for (i in 1:dim(docentes)[1]) {
-    table <- cbind(
-      paste(
-        '<a href=\"mailto:',
-        docentes$"E-mail"[i],
-        '\">',
-        docentes$'Pós-Doc Nome'[i],
-        '</a>',
-        sep = ""
-      ),
-      docentes$'Origem IES Nome'[i],
-      paste(
-        docentes$'Vínculo Início'[i],
-        "-",
-        docentes$'Vínculo Fim'[i],
-        sep = ""
-      ),
-      ifelse(
-        !is.na(docentes$ORCID[i]),
-        paste(
-          '<a href=\"https://orcid.org/',
-          paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-          '\">',
-          paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-          '</a>',
-          sep = ""
-        ),
-        docentes$ORCID[i]
-      ),
-      docentes$País[i]
-    )
-    table.2 <- rbind(table.2, table)
-  }
-  colnames(table.2) <-
-    c("Nome",
-      "Instituição de origem",
-      "Vigência",
-      "ORCID",
-      "País")
-  rownames(table.2) <- NULL
-  
-  # print tables
-  ids <- order(table.2$'Nome', decreasing = FALSE)
-  table <- table.2[ids, ]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2012-2010")))
   source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 }
 ```
@@ -1395,14 +904,9 @@ if (dim(docentes)[1] == 0) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Inscritos** {#inscritos .tabset}
+### **Matriculados** {#matriculados .tabset}
 
-#### **Doutorado**
-
-```{r discentes-dsc, eval = has.sucupira.files}
-# dplyr::select level
-course.level <- "Doutorado"
-
+```{r discentes-inscritos, eval = has.sucupira.files}
 # discentes
 sheet <- "Discentes - Orientadores"
 source("Scripts/read-xlsx-sucupira.R")
@@ -1414,9 +918,6 @@ names(sucupira.list) <- as.character(anos)
 # get only last data available
 discentes <- sucupira.list[[length(anos)]]
 
-# filter students
-discentes <- discentes[stringr::str_detect(discentes$`Nível Discente`, course.level), ]
-
 # dplyr::select active students
 discentes <- discentes[discentes$`Situação Discente` == "MATRICULADO", ]
 
@@ -1427,11 +928,12 @@ discentes <- discentes[discentes$`Orientador Principal?` == "Sim", ]
 discentes$'Ano de Matrícula' <- substr(as.Date(discentes$`Data Matrícula`, format = "%d/%m/%Y"), 1, 4)
 
 # format names
+discentes$`Nível Discente` <- tools::toTitleCase(tolower(discentes$`Nível Discente`))
 discentes$`Nome Discente` <- tools::toTitleCase(tolower(discentes$`Nome Discente`))
 discentes$`Nome do Orientador` <- tools::toTitleCase(tolower(discentes$`Nome do Orientador`))
 
 # drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-discentes <- discentes %>% dplyr::select("Ano de Matrícula", "Nome Discente", "Nome do Orientador")
+discentes <- discentes %>% dplyr::select("Nível Discente", "Ano de Matrícula", "Nome Discente", "Nome do Orientador")
 
 # remove duplicates
 discentes <- unique(discentes)
@@ -1441,110 +943,6 @@ if (dim(discentes)[1] != 0) {
   table <- discentes[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Discentes - Doutorado")
-} else {
-  cat("*Sem dados para exibir*")
-}
-
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-#### **Mestrado**
-
-```{r discentes-msc, eval = has.sucupira.files}
-# dplyr::select level
-course.level <- "Mestrado"
-
-# discentes
-sheet <- "Discentes - Orientadores"
-source("Scripts/read-xlsx-sucupira.R")
-
-# get years
-source("Scripts/years-sucupira.R")
-names(sucupira.list) <- as.character(anos)
-
-# get only last data available
-discentes <- sucupira.list[[length(anos)]]
-
-# filter students
-discentes <- discentes[stringr::str_detect(discentes$`Nível Discente`, course.level), ]
-
-# dplyr::select active students
-discentes <- discentes[discentes$`Situação Discente` == "MATRICULADO", ]
-
-# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
-discentes <- discentes[discentes$`Orientador Principal?` == "Sim", ]
-
-# get years
-discentes$'Ano de Matrícula' <- substr(as.Date(discentes$`Data Matrícula`, format = "%d/%m/%Y"), 1, 4)
-
-# format names
-discentes$`Nome Discente` <- tools::toTitleCase(tolower(discentes$`Nome Discente`))
-discentes$`Nome do Orientador` <- tools::toTitleCase(tolower(discentes$`Nome do Orientador`))
-
-# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-discentes <- discentes %>% dplyr::select("Ano de Matrícula", "Nome Discente", "Nome do Orientador")
-
-# remove duplicates
-discentes <- unique(discentes)
-
-if (dim(discentes)[1] != 0) {
-  ids <- order(discentes$'Ano de Matrícula', decreasing = TRUE)
-  table <- discentes[ids,]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Discentes - Mestrado")
-} else {
-  cat("*Sem dados para exibir*")
-}
-
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-#### **Iniciação científica**
-
-```{r discentes-ic, eval = has.sucupira.files}
-# dplyr::select level
-course.level <- "Bacharelado"
-
-# discentes
-sheet <- "Discentes - Orientadores"
-source("Scripts/read-xlsx-sucupira.R")
-discentes <- sucupira.raw
-
-# get years
-source("Scripts/years-sucupira.R")
-names(sucupira.list) <- as.character(anos)
-
-# filter students
-discentes <- discentes[stringr::str_detect(discentes$`Nível Discente`, course.level), ]
-
-# dplyr::select active students
-discentes <- discentes[discentes$`Situação Discente` == "MATRICULADO", ]
-
-# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
-# discentes <- discentes[discentes$`Orientador Principal?` == "Sim", ]
-
-# remove duplicates
-discentes <- unique(discentes)
-
-# get years
-discentes$'Ano de Matrícula' <- substr(as.Date(discentes$`Data Matrícula`, format = "%d/%m/%Y"), 1, 4)
-
-# format names (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-discentes$`Nome Discente` <- tools::toTitleCase(tolower(discentes$`Nome Discente`))
-# discentes$`Nome do Orientador` <- tools::toTitleCase(tolower(discentes$`Nome do Orientador`))
-
-# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-discentes <- discentes %>% dplyr::select("Ano de Matrícula", "Nome Discente")
-
-if (dim(discentes)[1] != 0) {
-  ids <- order(discentes$'Ano de Matrícula', decreasing = TRUE)
-  table <- discentes[ids,]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Discentes - Graduação")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1774,21 +1172,80 @@ source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 
 <br>
 
+## **Titulados** {#titulados .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r titulados, eval = has.sucupira.files}
+# periodo
+periodo <- as.numeric(format(Sys.Date(), "%Y"))
+
+# egressos
+sheet <- "Discentes - Orientadores"
+source("Scripts/read-xlsx-sucupira.R")
+
+# get years
+source("Scripts/years-sucupira.R")
+names(sucupira.list) <- as.character(anos)
+
+# get egressos for the current period
+egressos <- sucupira.list[as.character(periodo)] %>%
+  compact()
+egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
+names(egressos) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# filter students
+egressos <- egressos[stringr::str_detect(egressos$`Nível Discente`, course.level), ]
+
+# dplyr::select active students
+egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
+
+# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
+egressos <- egressos[egressos$`Orientador Principal?` == "Sim", ]
+
+# get years
+egressos$'Data Situação' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`))
+egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
+
+# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
+egressos <- egressos %>% dplyr::select("Nível Discente", "Data Situação", "Nome Discente", "Nome do Orientador")
+
+# remove duplicates
+egressos <- unique(egressos)
+colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
+
+if (dim(egressos)[1] != 0) {
+  table <- egressos %>% dplyr::arrange(
+    desc(egressos$'Data Situação'),
+    egressos$'Nome Discente'
+    )
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table, title = "Egressos - 5 anos")
+} else {
+  cat("*Sem dados para exibir*")
+}
+
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+```
+
+<br>
+
 ## **Egressos** {#egressos .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **2024-2021** {.tabset}
+### **5 anos**
 
-#### **Doutores**
-
-```{r historico-egressos-dsc-2024, eval = has.2024.2021}
+```{r historico-egressos-5, eval = has.sucupira.files}
 # periodo
-periodo <- 2021:min(as.numeric(format(Sys.Date(), "%Y")), 2024)
-
-# dplyr::select level
-course.level <- "Doutorado"
+n.anos <- 5
+periodo <- (as.numeric(format(Sys.Date(), "%Y")) - n.anos):(as.numeric(format(Sys.Date(), "%Y")) - 1)
 
 # egressos
 sheet <- "Discentes - Orientadores"
@@ -1822,7 +1279,7 @@ egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`)
 egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
 
 # drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-egressos <- egressos %>% dplyr::select("Data Situação", "Nome Discente", "Nome do Orientador")
+egressos <- egressos %>% dplyr::select("Nível Discente", "Data Situação", "Nome Discente", "Nome do Orientador")
 
 # remove duplicates
 egressos <- unique(egressos)
@@ -1834,7 +1291,7 @@ if (dim(egressos)[1] != 0) {
     egressos$'Nome Discente'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos - Doutorado")
+  create_dt(table, title = "Egressos - 5 anos")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1844,14 +1301,12 @@ source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 
 <br>
 
-#### **Mestres**
+### **10 anos**
 
-```{r historico-egressos-msc-2024, eval = has.2024.2021}
+```{r historico-egressos-10, eval = has.sucupira.files}
 # periodo
-periodo <- 2021:min(as.numeric(format(Sys.Date(), "%Y")), 2024)
-
-# dplyr::select level
-course.level <- "Mestrado"
+n.anos <- 10
+periodo <- (as.numeric(format(Sys.Date(), "%Y")) - n.anos):(as.numeric(format(Sys.Date(), "%Y")) - 1)
 
 # egressos
 sheet <- "Discentes - Orientadores"
@@ -1885,7 +1340,7 @@ egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`)
 egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
 
 # drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-egressos <- egressos %>% dplyr::select("Data Situação", "Nome Discente", "Nome do Orientador")
+egressos <- egressos %>% dplyr::select("Nível Discente", "Data Situação", "Nome Discente", "Nome do Orientador")
 
 # remove duplicates
 egressos <- unique(egressos)
@@ -1897,7 +1352,7 @@ if (dim(egressos)[1] != 0) {
     egressos$'Nome Discente'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos - Mestrado")
+  create_dt(table, title = "Egressos - 5 anos")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1907,16 +1362,12 @@ source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **2020-2017** {.tabset}
+### **Todos**
 
-#### **Doutores**
-
-```{r historico-egressos-dsc-2020, eval = has.2020.2017}
+```{r historico-egressos, eval = has.sucupira.files}
 # periodo
-periodo <- 2017:min(as.numeric(format(Sys.Date(), "%Y")), 2020)
-
-# dplyr::select level
-course.level <- "Doutorado"
+n.anos <- 100
+periodo <- (as.numeric(format(Sys.Date(), "%Y")) - n.anos):(as.numeric(format(Sys.Date(), "%Y")) - 1)
 
 # egressos
 sheet <- "Discentes - Orientadores"
@@ -1950,7 +1401,7 @@ egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`)
 egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
 
 # drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-egressos <- egressos %>% dplyr::select("Data Situação", "Nome Discente", "Nome do Orientador")
+egressos <- egressos %>% dplyr::select("Nível Discente", "Data Situação", "Nome Discente", "Nome do Orientador")
 
 # remove duplicates
 egressos <- unique(egressos)
@@ -1962,326 +1413,7 @@ if (dim(egressos)[1] != 0) {
     egressos$'Nome Discente'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos - Doutorado")
-} else {
-  cat("*Sem dados para exibir*")
-}
-
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-#### **Mestres**
-
-```{r historico-egressos-msc-2020, eval = has.2020.2017}
-# periodo
-periodo <- 2017:min(as.numeric(format(Sys.Date(), "%Y")), 2020)
-
-# dplyr::select level
-course.level <- "Mestrado"
-
-# egressos
-sheet <- "Discentes - Orientadores"
-source("Scripts/read-xlsx-sucupira.R")
-
-# get years
-source("Scripts/years-sucupira.R")
-names(sucupira.list) <- as.character(anos)
-
-# get egressos for the current period
-egressos <- sucupira.list[as.character(periodo)] %>%
-  compact()
-egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
-names(egressos) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
-
-# filter students
-egressos <- egressos[stringr::str_detect(egressos$`Nível Discente`, course.level), ]
-
-# dplyr::select active students
-egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
-
-# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
-egressos <- egressos[egressos$`Orientador Principal?` == "Sim", ]
-
-# get years
-egressos$'Data Situação' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
-
-# format names
-egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`))
-egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
-
-# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-egressos <- egressos %>% dplyr::select("Data Situação", "Nome Discente", "Nome do Orientador")
-
-# remove duplicates
-egressos <- unique(egressos)
-colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
-
-if (dim(egressos)[1] != 0) {
-  table <- egressos %>% dplyr::arrange(
-    desc(egressos$'Data Situação'),
-    egressos$'Nome Discente'
-    )
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos - Mestrado")
-} else {
-  cat("*Sem dados para exibir*")
-}
-
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-### **2016-2013** {.tabset}
-
-#### **Doutores**
-
-```{r historico-egressos-dsc-2016, eval = has.2016.2013}
-# periodo
-periodo <- 2013:min(as.numeric(format(Sys.Date(), "%Y")), 2016)
-
-# dplyr::select level
-course.level <- "Doutorado"
-
-# egressos
-sheet <- "Discentes - Orientadores"
-source("Scripts/read-xlsx-sucupira.R")
-
-# get years
-source("Scripts/years-sucupira.R")
-names(sucupira.list) <- as.character(anos)
-
-# get egressos for the current period
-egressos <- sucupira.list[as.character(periodo)] %>%
-  compact()
-egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
-names(egressos) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
-
-# filter students
-egressos <- egressos[stringr::str_detect(egressos$`Nível Discente`, course.level), ]
-
-# dplyr::select active students
-egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
-
-# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
-egressos <- egressos[egressos$`Orientador Principal?` == "Sim", ]
-
-# get years
-egressos$'Data Situação' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
-
-# format names
-egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`))
-egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
-
-# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-egressos <- egressos %>% dplyr::select("Data Situação", "Nome Discente", "Nome do Orientador")
-
-# remove duplicates
-egressos <- unique(egressos)
-colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
-
-if (dim(egressos)[1] != 0) {
-  table <- egressos %>% dplyr::arrange(
-    desc(egressos$'Data Situação'),
-    egressos$'Nome Discente'
-    )
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos - Doutorado")
-} else {
-  cat("*Sem dados para exibir*")
-}
-
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-#### **Mestres**
-
-```{r historico-egressos-msc-2016, eval = has.2016.2013}
-# periodo
-periodo <- 2013:min(as.numeric(format(Sys.Date(), "%Y")), 2016)
-
-# dplyr::select level
-course.level <- "Mestrado"
-
-# egressos
-sheet <- "Discentes - Orientadores"
-source("Scripts/read-xlsx-sucupira.R")
-
-# get years
-source("Scripts/years-sucupira.R")
-names(sucupira.list) <- as.character(anos)
-
-# get egressos for the current period
-egressos <- sucupira.list[as.character(periodo)] %>%
-  compact()
-egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
-names(egressos) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
-
-# filter students
-egressos <- egressos[stringr::str_detect(egressos$`Nível Discente`, course.level), ]
-
-# dplyr::select active students
-egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
-
-# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
-egressos <- egressos[egressos$`Orientador Principal?` == "Sim", ]
-
-# get years
-egressos$'Data Situação' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
-
-# format names
-egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`))
-egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
-
-# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-egressos <- egressos %>% dplyr::select("Data Situação", "Nome Discente", "Nome do Orientador")
-
-# remove duplicates
-egressos <- unique(egressos)
-colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
-
-if (dim(egressos)[1] != 0) {
-  table <- egressos %>% dplyr::arrange(
-    desc(egressos$'Data Situação'),
-    egressos$'Nome Discente'
-    )
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos - Mestrado")
-} else {
-  cat("*Sem dados para exibir*")
-}
-
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-### **2012-2010** {.tabset}
-
-#### **Doutores**
-
-```{r historico-egressos-dsc-2012, eval = has.2012.2010}
-# periodo
-periodo <- 2010:min(as.numeric(format(Sys.Date(), "%Y")), 2012)
-
-# dplyr::select level
-course.level <- "Doutorado"
-
-# egressos
-sheet <- "Discentes - Orientadores"
-source("Scripts/read-xlsx-sucupira.R")
-
-# get years
-source("Scripts/years-sucupira.R")
-names(sucupira.list) <- as.character(anos)
-
-# get egressos for the current period
-egressos <- sucupira.list[as.character(periodo)] %>%
-  compact()
-egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
-names(egressos) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
-
-# filter students
-egressos <- egressos[stringr::str_detect(egressos$`Nível Discente`, course.level), ]
-
-# dplyr::select active students
-egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
-
-# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
-egressos <- egressos[egressos$`Orientador Principal?` == "Sim", ]
-
-# get years
-egressos$'Data Situação' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
-
-# format names
-egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`))
-egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
-
-# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-egressos <- egressos %>% dplyr::select("Data Situação", "Nome Discente", "Nome do Orientador")
-
-# remove duplicates
-egressos <- unique(egressos)
-colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
-
-if (dim(egressos)[1] != 0) {
-  table <- egressos %>% dplyr::arrange(
-    desc(egressos$'Data Situação'),
-    egressos$'Nome Discente'
-    )
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos - Doutorado")
-} else {
-  cat("*Sem dados para exibir*")
-}
-
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-#### **Mestres**
-
-```{r historico-egressos-msc-2012, eval = has.2012.2010}
-# periodo
-periodo <- 2010:min(as.numeric(format(Sys.Date(), "%Y")), 2012)
-
-# dplyr::select level
-course.level <- "Mestrado"
-
-# egressos
-sheet <- "Discentes - Orientadores"
-source("Scripts/read-xlsx-sucupira.R")
-
-# get years
-source("Scripts/years-sucupira.R")
-names(sucupira.list) <- as.character(anos)
-
-# get egressos for the current period
-egressos <- sucupira.list[as.character(periodo)] %>%
-  compact()
-egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
-names(egressos) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
-
-# filter students
-egressos <- egressos[stringr::str_detect(egressos$`Nível Discente`, course.level), ]
-
-# dplyr::select active students
-egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
-
-# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
-egressos <- egressos[egressos$`Orientador Principal?` == "Sim", ]
-
-# get years
-egressos$'Data Situação' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
-
-# format names
-egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`))
-egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
-
-# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-egressos <- egressos %>% dplyr::select("Data Situação", "Nome Discente", "Nome do Orientador")
-
-# remove duplicates
-egressos <- unique(egressos)
-colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
-
-if (dim(egressos)[1] != 0) {
-  table <- egressos %>% dplyr::arrange(
-    desc(egressos$'Data Situação'),
-    egressos$'Nome Discente'
-    )
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos - Mestrado")
+  create_dt(table, title = "Egressos - 5 anos")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -2387,104 +1519,51 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-## **Bolsistas** {#bolsistas .tabset}
+## **Iniciação científica** {#iniciacao-cientifica .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Doutorado**
-
-```{r bolsistas-dsc, eval = has.sucupira.files}
+```{r discentes-ic, eval = has.sucupira.files}
 # dplyr::select level
-course.level <- "TESE"
+course.level <- "Bacharelado"
 
 # discentes
-sheet <- "TCC - Financiadores"
+sheet <- "Discentes - Orientadores"
 source("Scripts/read-xlsx-sucupira.R")
-
-# get only last data available
-bolsistas <- sucupira.raw
-
-# filter students
-bolsistas <- bolsistas[stringr::str_detect(bolsistas$`Tipo de Trabalho de Conclusão`, course.level), ]
-
-# filter funding
-funding <- "PROSUP / Cursos Novos"
-bolsistas <- bolsistas[stringr::str_detect(bolsistas$`Nome do Programa de Fomento`, funding), ]
+discentes <- sucupira.raw
 
 # get years
-bolsistas$'Matrícula' <- substr(as.Date(bolsistas$`Data início da orientação`, format = "%d/%m/%Y"), 1, 4)
-
-bolsistas$'Titulação' <- substr(as.Date(bolsistas$`Data da Defesa`, format = "%d/%m/%Y"), 1, 4)
-
-# format names
-bolsistas$`Nome do Autor` <- tools::toTitleCase(tolower(bolsistas$`Nome do Autor`))
-bolsistas$`Nome do Orientador` <- tools::toTitleCase(tolower(bolsistas$`Nome do Orientador`))
-
-bolsistas <- dplyr::select(bolsistas, c("Nome do Autor", "Nome do Orientador", "Matrícula", "Titulação"))
-
-# remove duplicates and NA rows if any
-bolsistas <- unique(bolsistas)
-bolsistas <- bolsistas[complete.cases(bolsistas), ]
-  
-if (dim(bolsistas)[1] != 0) {
-  table <- bolsistas %>% dplyr::arrange(
-    desc(egressos$'Matrícula'),
-    egressos$'Nome do Autor'
-    )
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Bolsistas - Doutorado")
-} else {
-  cat("*Sem dados para exibir*")
-}
-
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-### **Mestrado**
-
-```{r bolsistas-msc, eval = has.sucupira.files}
-# dplyr::select level
-course.level <- "DISSERTAÇÃO"
-
-# discentes
-sheet <- "TCC - Financiadores"
-source("Scripts/read-xlsx-sucupira.R")
-
-# get only last data available
-bolsistas <- sucupira.raw
+source("Scripts/years-sucupira.R")
+names(sucupira.list) <- as.character(anos)
 
 # filter students
-bolsistas <- bolsistas[stringr::str_detect(bolsistas$`Tipo de Trabalho de Conclusão`, course.level), ]
+discentes <- discentes[stringr::str_detect(discentes$`Nível Discente`, course.level), ]
 
-# filter funding
-funding <- "PROSUP / Cursos Novos"
-bolsistas <- bolsistas[stringr::str_detect(bolsistas$`Nome do Programa de Fomento`, funding), ]
+# dplyr::select active students
+discentes <- discentes[discentes$`Situação Discente` == "MATRICULADO", ]
+
+# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
+# discentes <- discentes[discentes$`Orientador Principal?` == "Sim", ]
+
+# remove duplicates
+discentes <- unique(discentes)
 
 # get years
-bolsistas$'Matrícula' <- substr(as.Date(bolsistas$`Data início da orientação`, format = "%d/%m/%Y"), 1, 4)
+discentes$'Ano de Matrícula' <- substr(as.Date(discentes$`Data Matrícula`, format = "%d/%m/%Y"), 1, 4)
 
-bolsistas$'Titulação' <- substr(as.Date(bolsistas$`Data da Defesa`, format = "%d/%m/%Y"), 1, 4)
+# format names (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
+discentes$`Nome Discente` <- tools::toTitleCase(tolower(discentes$`Nome Discente`))
+# discentes$`Nome do Orientador` <- tools::toTitleCase(tolower(discentes$`Nome do Orientador`))
 
-# format names
-bolsistas$`Nome do Autor` <- tools::toTitleCase(tolower(bolsistas$`Nome do Autor`))
-bolsistas$`Nome do Orientador` <- tools::toTitleCase(tolower(bolsistas$`Nome do Orientador`))
+# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
+discentes <- discentes %>% dplyr::select("Ano de Matrícula", "Nome Discente")
 
-bolsistas <- dplyr::select(bolsistas, c("Nome do Autor", "Nome do Orientador", "Matrícula", "Titulação"))
-
-# remove duplicates and NA rows if any
-bolsistas <- unique(bolsistas)
-bolsistas <- bolsistas[complete.cases(bolsistas), ]
-  
-if (dim(bolsistas)[1] != 0) {
-  table <- bolsistas %>% dplyr::arrange(
-    desc(egressos$'Matrícula'),
-    egressos$'Nome do Autor'
-    )
+if (dim(discentes)[1] != 0) {
+  ids <- order(discentes$'Ano de Matrícula', decreasing = TRUE)
+  table <- discentes[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Bolsistas - Mestrado")
+  create_dt(table, title = "Discentes - Graduação")
 } else {
   cat("*Sem dados para exibir*")
 }

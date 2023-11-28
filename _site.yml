@@ -82,10 +82,12 @@ navbar:
           href: [pessoas.html#posdocs]
         - text: "Discentes"
           href: [pessoas.html#discentes]
+        - text: "Titulados"
+          href: [pessoas.html#titulados]
         - text: "Egressos"
           href: [pessoas.html#egressos]
-        - text: "Bolsistas"
-          href: [pessoas.html#bolsistas]
+        - text: "Iniciação científica"
+          href: [pessoas.html#iniciacao-cientifica]
         - text: "Grupos de pesquisa"
           href: [pessoas.html#grupos-pesquisa]
         - text: "Participantes externos"
