@@ -66,7 +66,7 @@ cat('<br>')
 
 ```{r tcc-dsc, eval = has.sucupira.files}
 # tcc
-sheet <- "TCC"
+sheet <- "TCC - Financiadores"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
@@ -90,26 +90,32 @@ if (dim(tccs)[1] != 0) {
       tccs$`Linha de Pesquisa`,
       tccs$`Nome do Trabalho de Conclusão`,
       tccs$`Nome do Autor`,
-      tccs$`Nome do Orientador`
+      tccs$`Nome do Orientador`,
+      tccs$`Nome do Financiador`
     )
   
   table.tcc <-
     table.tcc[order(table.tcc[, 1], table.tcc[, 2], table.tcc[, 3]), ]
   
   table.tcc[, 2] <-
-    as.vector(unlist(lapply(table.tcc[, 2], FUN = str_to_title)))
+    as.vector(unlist(lapply(table.tcc[, 2], FUN = stringr::str_to_title)))
   table.tcc[, 3] <-
-    as.vector(unlist(lapply(table.tcc[, 3], FUN = str_to_title)))
+    as.vector(unlist(lapply(table.tcc[, 3], FUN = stringr::str_to_title)))
   table.tcc[, 4] <-
-    as.vector(unlist(lapply(table.tcc[, 4], FUN = str_to_title)))
+    as.vector(unlist(lapply(table.tcc[, 4], FUN = stringr::str_to_title)))
   table.tcc[, 5] <-
-    as.vector(unlist(lapply(table.tcc[, 5], FUN = str_to_title)))
+    as.vector(unlist(lapply(table.tcc[, 5], FUN = stringr::str_to_title)))
+  table.tcc[, 6] <-
+    as.vector(unlist(lapply(table.tcc[, 6], FUN = stringr::str_to_title)))
   
   colnames(table.tcc) <-
-    c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador")
+    c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador", "Financiador")
 } else {
   table.tcc <- data.frame()
 }
+
+# drop duplicated entries (ignore funding)
+table.tcc <- table.tcc[!duplicated(table.tcc[1:5, ]),]
 
 table.tcc <- table.tcc %>% dplyr::arrange(
   table.tcc$'Ano',
@@ -135,7 +141,7 @@ cat('<br>')
 
 ```{r tcc-msc, eval = has.sucupira.files}
 # tcc
-sheet <- "TCC"
+sheet <- "TCC - Financiadores"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
@@ -159,26 +165,32 @@ if (dim(tccs)[1] != 0) {
       tccs$`Linha de Pesquisa`,
       tccs$`Nome do Trabalho de Conclusão`,
       tccs$`Nome do Autor`,
-      tccs$`Nome do Orientador`
+      tccs$`Nome do Orientador`,
+      tccs$`Nome do Financiador`
     )
   
   table.tcc <-
     table.tcc[order(table.tcc[, 1], table.tcc[, 2], table.tcc[, 3]), ]
   
   table.tcc[, 2] <-
-    as.vector(unlist(lapply(table.tcc[, 2], FUN = str_to_title)))
+    as.vector(unlist(lapply(table.tcc[, 2], FUN = stringr::str_to_title)))
   table.tcc[, 3] <-
-    as.vector(unlist(lapply(table.tcc[, 3], FUN = str_to_title)))
+    as.vector(unlist(lapply(table.tcc[, 3], FUN = stringr::str_to_title)))
   table.tcc[, 4] <-
-    as.vector(unlist(lapply(table.tcc[, 4], FUN = str_to_title)))
+    as.vector(unlist(lapply(table.tcc[, 4], FUN = stringr::str_to_title)))
   table.tcc[, 5] <-
-    as.vector(unlist(lapply(table.tcc[, 5], FUN = str_to_title)))
+    as.vector(unlist(lapply(table.tcc[, 5], FUN = stringr::str_to_title)))
+  table.tcc[, 6] <-
+    as.vector(unlist(lapply(table.tcc[, 6], FUN = stringr::str_to_title)))
   
   colnames(table.tcc) <-
-    c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador")
+    c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador", "Financiador")
 } else {
   table.tcc <- data.frame()
 }
+
+# drop duplicated entries (ignore funding)
+table.tcc <- table.tcc[!duplicated(table.tcc[1:5, ]),]
 
 table.tcc <- table.tcc %>% dplyr::arrange(
   table.tcc$'Ano',

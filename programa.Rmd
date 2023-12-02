@@ -1165,6 +1165,9 @@ colnames(table) <-
     "Fim"
   )
 
+# remove duplicated entries
+table <- table[!duplicated(table), ]
+
 ids <- order(table$'Disciplina', decreasing = FALSE)
 table <- table[ids, ]
 
@@ -1889,10 +1892,10 @@ for (j in 1:length(abas)) {
   colnames(Abrir) <- "Abrir"
   # add hyperlinks
   for (i in 1:dim(internacional.raw)[1]) {
-    if (!is.na(internacional.raw[i, 3])) {
+    if (!is.na(internacional.raw[i, 4])) {
       Abrir[i] <-
         paste0('<a href="',
-               internacional.raw[i, 3],
+               internacional.raw[i, 4],
                '" target="_blank"',
                '>',
                "↗️" ,
@@ -1900,7 +1903,7 @@ for (j in 1:length(abas)) {
                sep = "")
     }
   }
-  internacional <- cbind(internacional.raw[, -3], Abrir)
+  internacional <- cbind(internacional.raw[, -4], Abrir)
   
   # print table
   if (dim(internacional)[1] != 0) {
@@ -1924,9 +1927,170 @@ for (j in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Lista**
+### **Projetos de pesquisa** {#financiadores-projetos .tabset}
 
-```{r financiadores, eval = has.financiadores}
+#### **Auxílio financeiro** {#auxilio-financeiro}
+
+```{r financiadores-sucupira-pp-auxilios, eval = has.sucupira.files}
+# projetos - membros
+sheet <- "Projetos - Financiadores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)
+financiadores.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+financiadores.all <- unique(financiadores.all)
+
+if (dim(financiadores.all)[1] != 0) {
+  # dplyr::select data
+  table.financiadores <- dplyr::select(financiadores.all,
+                                      c("Nome do Financiador",
+                                        "Natureza do Financiador",
+                                        "Data Início Financiador",
+                                        "Data Fim Financiador"))
+  table.financiadores <- table.financiadores[order(financiadores.all[, 1]), ]
+  # print tables
+  table.financiadores[, 1] <-
+    as.vector(unlist(lapply(table.financiadores[, 1], FUN = stringr::str_to_upper)))
+  table.financiadores[, 2] <-
+    as.vector(unlist(lapply(table.financiadores[, 2], FUN = stringr::str_to_sentence)))
+
+  # remove duplicated entries
+  table.financiadores <- table.financiadores[!duplicated(table.financiadores),]
+  
+  # select only outros auxílios
+  table.financiadores <- table.financiadores[table.financiadores$`Natureza do Financiador` != "Bolsa", ]
+  
+  colnames(table.financiadores) <-
+    c("Agência",
+      "Natureza",
+      "Início",
+      "Fim")
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table.financiadores, title = "Financiadores - Projetos de Pesquisa")
+} else {
+  cat('\n\n')
+  cat('*Sem produção para exibir no período*')
+  cat('\n\n')
+}
+
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+```
+
+<br>
+
+#### **Bolsas** {#bolsas}
+
+```{r financiadores-sucupira-pp-bolsas, eval = has.sucupira.files}
+# projetos - membros
+sheet <- "Projetos - Financiadores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)
+financiadores.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+financiadores.all <- unique(financiadores.all)
+
+if (dim(financiadores.all)[1] != 0) {
+  # dplyr::select data
+  table.financiadores <- dplyr::select(financiadores.all,
+                                      c("Nome do Financiador",
+                                        "Natureza do Financiador",
+                                        "Data Início Financiador",
+                                        "Data Fim Financiador"))
+  table.financiadores <- table.financiadores[order(financiadores.all[, 1]), ]
+  # print tables
+  table.financiadores[, 1] <-
+    as.vector(unlist(lapply(table.financiadores[, 1], FUN = stringr::str_to_upper)))
+  table.financiadores[, 2] <-
+    as.vector(unlist(lapply(table.financiadores[, 2], FUN = stringr::str_to_sentence)))
+
+  # remove duplicated entries
+  table.financiadores <- table.financiadores[!duplicated(table.financiadores),]
+  
+  # select only outros auxílios
+  table.financiadores <- table.financiadores[table.financiadores$`Natureza do Financiador` == "Bolsa", ]
+  
+  colnames(table.financiadores) <-
+    c("Agência",
+      "Natureza",
+      "Início",
+      "Fim")
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table.financiadores, title = "Financiadores - Projetos de Pesquisa")
+} else {
+  cat('\n\n')
+  cat('*Sem produção para exibir no período*')
+  cat('\n\n')
+}
+
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+```
+
+<br>
+
+### **Trabalhos de conclusão de curso**
+
+```{r financiadores-sucupira-tcc, eval = has.sucupira.files}
+# projetos - membros
+sheet <- "TCC - Financiadores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)
+financiadores.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+financiadores.all <- unique(financiadores.all)
+
+if (dim(financiadores.all)[1] != 0) {
+  # dplyr::select data
+  table.financiadores <- dplyr::select(financiadores.all,
+                                      c("Nome do Financiador",
+                                        "Nome do Programa de Fomento",
+                                        "Data início da orientação",
+                                        "Data fim da orientação"))
+  table.financiadores <- table.financiadores[order(financiadores.all[, 1]), ]
+  # print tables
+  table.financiadores[, 1] <-
+    as.vector(unlist(lapply(table.financiadores[, 1], FUN = stringr::str_to_upper)))
+  table.financiadores[, 2] <-
+    as.vector(unlist(lapply(table.financiadores[, 2], FUN = stringr::str_to_sentence)))
+
+  # remove duplicated entries
+  table.financiadores <- table.financiadores[!duplicated(table.financiadores),]
+  
+  # remove empty rows
+  table.financiadores <- table.financiadores[!is.na(table.financiadores$`Nome do Financiador`),]
+  
+  colnames(table.financiadores) <-
+    c("Agência",
+      "Natureza",
+      "Início",
+      "Fim")
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table.financiadores, title = "Financiadores - Trabalhos de Conclusão de Curso")
+} else {
+  cat('\n\n')
+  cat('*Sem produção para exibir no período*')
+  cat('\n\n')
+}
+
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+```
+
+<br>
+
+### **Detalhamento**
+
+```{r financiadores-ppg, eval = has.financiadores}
 # this chunk requires additional data that may  be available
 financiadores.raw <-
   readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
@@ -1982,145 +2146,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ```
 
 <br>
-
-### **Agência-Edital**
-
-```{r auto-financiadores-agencia-programa, eval = has.financiadores}
-# this chunk requires additional data that may not be available
-financiadores.raw <-
-  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
-
-options(scipen = 10)
-
-# dplyr::select variables to display, by AGENCIA & PROGRAMA
-financiadores <-
-  financiadores.raw %>% dplyr::select("Agência", "Programa")
-
-# drop rows with empty cells
-financiadores <-
-  financiadores[complete.cases(financiadores),]
-
-# generate table (total per edital, per agency)
-table.1 <-
-  gtsummary::tbl_summary(
-    financiadores,
-    by = "Agência",
-    statistic = all_categorical() ~ c("{n}"),
-    missing = "no",
-    sort = all_categorical() ~ "frequency"
-  ) %>%
-  gtsummary::add_overall(last = TRUE,
-              col_label = "Total") %>%
-  gtsummary::modify_header(label = "**Agência**") %>%
-  gtsummary::modify_footnote(update = everything() ~ NA) %>%
-  gtsummary::bold_labels()
-# print table
-print(table.1)
-
-cat('\n\n')
-
-cat(
-  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
-)
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-### **Agência-Ano**
-
-```{r auto-financiadores-agencia-ano, eval = has.financiadores}
-# this chunk requires additional data that may not be available
-financiadores.raw <-
-  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
-
-options(scipen = 10)
-
-financiadores.raw <-
-  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
-
-# dplyr::select variables to display, by AGENCIA & ANO
-financiadores <-
-  financiadores.raw %>% dplyr::select("Ano", "Agência", "Total")
-
-# drop rows with empty cells
-financiadores <- financiadores[complete.cases(financiadores),]
-
-financiadores <-
-  financiadores[order(financiadores$Ano, decreasing = TRUE),]
-financiadores$Ano <- as.factor(financiadores$Ano)
-
-# generate table (total per year, per agency)
-table.2 <-
-  gtsummary::tbl_summary(
-    financiadores,
-    by = "Agência",
-    type = list(all_continuous() ~ "continuous"),
-    statistic = list(all_continuous() ~ c("R$ {sum}")),
-    missing = "no",
-    digits = "Total" ~ 2
-  ) %>%
-  gtsummary::add_overall(last = TRUE,
-              col_label = "Total") %>%
-  gtsummary::modify_header(label = "**Agência**") %>%
-  gtsummary::modify_footnote(update = everything() ~ NA) %>%
-  gtsummary::bold_labels()
-# print table
-print(table.2)
-
-cat('\n\n')
-
-cat(
-  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
-)
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-##### **Edital-Ano**
-
-```{r auto-financiadores-docente-programa, eval = has.financiadores}
-# this chunk requires additional data that may not be available
-financiadores.raw <-
-  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
-
-options(scipen = 10)
-
-financiadores.raw <-
-  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
-
-# dplyr::select variables to display, by AGENCIA & ANO
-financiadores <-
-  financiadores.raw %>% dplyr::select("Programa", "Ano", "Total")
-
-# drop rows with empty cells
-financiadores <- financiadores[complete.cases(financiadores),]
-
-financiadores <-
-  financiadores[order(financiadores$Programa, decreasing = TRUE),]
-
-# generate table (total per year, per docente)
-table.2 <-
-  tbl_summary(
-    financiadores,
-    by = "Programa",
-    type = list(all_continuous() ~ "continuous"),
-    statistic = list(all_continuous() ~ c("R$ {sum}")),
-    missing = "no",
-    digits = "Total" ~ 2,
-    sort = all_categorical() ~ "frequency"
-  ) %>%
-  add_overall(last = TRUE,
-              col_label = "Total") %>%
-  modify_header(label = "**Programa**") %>%
-  modify_footnote(update = everything() ~ NA) %>%
-  bold_labels()
-# print table
-print(table.2)
-
-cat('\n\n')
-cat(
-  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
-)
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
 
 ## **Bolsas de estudo** {#bolsas .tabset}
 
