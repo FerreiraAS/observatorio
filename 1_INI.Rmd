@@ -334,6 +334,13 @@ has.podcasts <-
   )
 ```
 
+```{r try-politicas, results = "hide"}
+has.politicas <-
+  !is.error(try(readxl::read_excel("PPG/Políticas.xlsx", sheet = 1),
+                silent = TRUE)
+  )
+```
+
 ```{r try-premio-capes, results = "hide"}
 has.premio.capes <-
   !is.error(try(readxl::read_excel("PPG/Prêmio CAPES de Tese.xlsx", sheet = 1),
@@ -1261,6 +1268,7 @@ as.logical(has.notas)
 as.logical(has.periodicos)
 as.logical(has.planejamento)
 as.logical(has.podcasts)
+as.logical(has.politicas)
 as.logical(has.premios)
 as.logical(has.premio.capes)
 as.logical(has.producao)

@@ -155,6 +155,7 @@ O **Observatório** pode exibir informações complementares, não disponíveis 
 │   └── Periódicos institucionais.xlsx
 │   └── Planejamento estratégico.xlsx
 │   └── Podcasts.xlsx
+│   └── Políticas.xlsx
 │   └── Prêmio CAPES de Tese.xlsx
 │   └── Prêmios.xlsx
 │   └── Produção.xlsx
@@ -198,6 +199,7 @@ https://github.com/ppgcr-unisuam/observatoriocr/tree/76185c88ea0ead961c03c0a09f6
 - [Periódicos institucionais.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Peri%C3%B3dicos%20institucionais.xlsx)
 - [Planejamento estratégico.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Planejamento%20estrat%C3%A9gico.xlsx)
 - [Podcasts.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Podcasts.xlsx)
+- [Políticas.xlsx]()
 - [Prêmio CAPES de Tese.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Pr%C3%AAmio%20CAPES%20de%20Tese.xlsx)
 - [Prêmios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Pr%C3%AAmios.xlsx)
 - [Produção.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Produ%C3%A7%C3%A3o.xlsx)

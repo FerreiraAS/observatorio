@@ -1172,10 +1172,12 @@ source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 
 <br>
 
-## **Titulados** {#titulados .tabset}
+## **Egressos** {#egressos .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+### **Titulados**
 
 ```{r titulados, eval = has.sucupira.files}
 # periodo
@@ -1195,9 +1197,6 @@ egressos <- sucupira.list[as.character(periodo)] %>%
 egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
 names(egressos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
-
-# filter students
-egressos <- egressos[stringr::str_detect(egressos$`Nível Discente`, course.level), ]
 
 # dplyr::select active students
 egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
@@ -1221,7 +1220,7 @@ colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
   table <- egressos %>% dplyr::arrange(
-    desc(egressos$'Data Situação'),
+    dplyr::desc(egressos$'Data Situação'),
     egressos$'Nome Discente'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -1234,11 +1233,6 @@ source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
-
-## **Egressos** {#egressos .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ### **5 anos**
 
@@ -1262,9 +1256,6 @@ egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
 names(egressos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
-# filter students
-egressos <- egressos[stringr::str_detect(egressos$`Nível Discente`, course.level), ]
-
 # dplyr::select active students
 egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
 
@@ -1287,7 +1278,7 @@ colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
   table <- egressos %>% dplyr::arrange(
-    desc(egressos$'Data Situação'),
+    dplyr::desc(egressos$'Data Situação'),
     egressos$'Nome Discente'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -1323,9 +1314,6 @@ egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
 names(egressos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
-# filter students
-egressos <- egressos[stringr::str_detect(egressos$`Nível Discente`, course.level), ]
-
 # dplyr::select active students
 egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
 
@@ -1348,7 +1336,7 @@ colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
   table <- egressos %>% dplyr::arrange(
-    desc(egressos$'Data Situação'),
+    dplyr::desc(egressos$'Data Situação'),
     egressos$'Nome Discente'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -1384,9 +1372,6 @@ egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
 names(egressos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
-# filter students
-egressos <- egressos[stringr::str_detect(egressos$`Nível Discente`, course.level), ]
-
 # dplyr::select active students
 egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
 
@@ -1409,7 +1394,7 @@ colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
   table <- egressos %>% dplyr::arrange(
-    desc(egressos$'Data Situação'),
+    dplyr::desc(egressos$'Data Situação'),
     egressos$'Nome Discente'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())

@@ -25,7 +25,7 @@ navbar:
     - text: "Programa"
       href: [programa.html]
       menu:
-        - text: "Programa"
+        - text: "-Programa-"
           href: [programa.html]
         - text: "Dados básicos do Programa"
           href: [programa.html#dados-basicos]
@@ -70,7 +70,7 @@ navbar:
     - text: "Pessoas"
       href: [pessoas.html]
       menu:
-        - text: "Pessoas"
+        - text: "-Pessoas-"
           href: [pessoas.html]
         - text: "Secretaria"
           href: [pessoas.html#secretaria]
@@ -82,8 +82,6 @@ navbar:
           href: [pessoas.html#posdocs]
         - text: "Discentes"
           href: [pessoas.html#discentes]
-        - text: "Titulados"
-          href: [pessoas.html#titulados]
         - text: "Egressos"
           href: [pessoas.html#egressos]
         - text: "Iniciação científica"
@@ -95,32 +93,46 @@ navbar:
     - text: "Produções"
       href: [producoes.html]
       menu:
-        - text: "Produções"
+        - text: "-Produções-"
           href: [producoes.html]
-        - text: "Trabalhos de conclusão"
-          href: [producoes.html#TCC]
-        - text: "Repositórios"
-          href: [producoes.html#repositorios]
-        - text: "Artigos completos"
-          href: [producoes.html#artigos-completos]
-        - text: "Artigos resumos"
-          href: [producoes.html#artigos-resumos]
-        - text: "Preprints"
-          href: [producoes.html#preprints]
-        - text: "Livros"
-          href: [producoes.html#livros]
-        - text: "Capítulos"
-          href: [producoes.html#capitulos]
-        - text: "Trabalhos em anais de eventos"
-          href: [producoes.html#trabalhos-em-anais]
-        - text: "Desenvolvimento de aplicativos"
-          href: [producoes.html#aplicativos]
-        - text: "Retratações"
-          href: [producoes.html#retratacoes]
+        - text: "Tese"
+          href: [producoes.html#tese]
+        - text: "Dissertação"
+          href: [producoes.html#dissertacao]
+        - text: "Repositório"
+          href: [producoes.html#repositorio]
+        - text: "Artigo completo"
+          href: [producoes.html#artigo-completo]
+        - text: "Artigo resumo"
+          href: [producoes.html#artigo-resumo]
+        - text: "Preprint"
+          href: [producoes.html#preprint]
+        - text: "Retratação"
+          href: [producoes.html#retratacao]
+        - text: "Editoria"
+          href: [producoes.html#editoria]
+        - text: "Livro"
+          href: [producoes.html#livro]
+        - text: "Capítulo"
+          href: [producoes.html#capitulo]
+        - text: "Trabalho em anais"
+          href: [producoes.html#trabalho-em-anais]
+        - text: "Apresentação de trabalho"
+          href: [producoes.html#apresentacao-trabalho]
+        - text: "Organização de evento"
+          href: [producoes.html#organizacao-evento]
+        - text: "Curso de curta duração"
+          href: [producoes.html#curso-curta-duracao]
+        - text: "Material didático e instrucional"
+          href: [producoes.html#didatico-instrucional]
+        - text: "Patente"
+          href: [producoes.html#patente]
+        - text: "Aplicativo"
+          href: [producoes.html#aplicativo]
     - text: "Destaques"
       href: [destaques.html]
       menu:
-        - text: "Destaques"
+        - text: "-Destaques-"
           href: [destaques.html]
         - text: "Egressos"
           href: [destaques.html#egressos-destaque]
@@ -141,7 +153,7 @@ navbar:
     - text: "Impactos"
       href: [impactos.html]
       menu:
-        - text: "Impactos"
+        - text: "-Impactos-"
           href: [impactos.html]
         - text: "Educacional"
           href: [impactos.html#impacto-educacional]
@@ -156,7 +168,7 @@ navbar:
     - text: "Galeria"
       href: [galeria.html]
       menu:
-        - text: "Galeria"
+        - text: "-Galeria-"
           href: [galeria.html]
         - text: "Videos"
           href: [galeria.html#videos]
@@ -167,7 +179,7 @@ navbar:
     - text: "Autoavaliação"
       href: [autoavaliacao.html]
       menu:
-        - text: "Autoavaliação"
+        - text: "-Autoavaliação-"
           href: [autoavaliacao.html]
         - text: "Metodologia"
           href: [autoavaliacao.html#metodologia]
