@@ -1418,7 +1418,7 @@ periodos <- names(sucupira.list)
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
-tccs <-
+tccs.all <-
   tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "TESE",]
 
 # dplyr::selecting those with COVID in the title
@@ -1493,7 +1493,7 @@ periodos <- names(sucupira.list)
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
-tccs <-
+tccs.all <-
   tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "DISSERTAÇÃO",]
 
 # dplyr::selecting those with COVID in the title
