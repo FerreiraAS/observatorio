@@ -1509,6 +1509,10 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = !has.sucupira.files}
+cat('<br>')
+```
+
 ```{r discentes-ic, eval = has.sucupira.files}
 # dplyr::select level
 course.level <- "Bacharelado"

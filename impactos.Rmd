@@ -125,10 +125,6 @@ source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 
 <br>
 
-*Em construção!*
-
-<br>
-
 ## **Impacto científico** {#impacto-cientifico}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -734,8 +730,6 @@ table.tec.gt <-
   modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1)))
 ```
 
-<br>
-
 ```{r 3-1-2-list-tables, eval = has.sucupira.files}
 # list all tables
 table.all <-
@@ -1010,6 +1004,8 @@ cat(
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
+<br>
+
 ### **Agência-Ano**
 
 ```{r auto-financiadores-agencia-ano, eval = has.financiadores}
@@ -1058,6 +1054,8 @@ cat(
 )
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
+
+<br>
 
 ### **Edital-Ano**
 
@@ -1286,9 +1284,10 @@ source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
-periodos <- names(sucupira.list)
-periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
-projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+# get data from all Sucupira years available
+projetos.all <-
+  do.call(rbind.data.frame, sucupira.list)
+
 projetos.all <-
   unique(projetos.all[projetos.all$`Membro Responsável` == "Sim",])
 
@@ -1298,14 +1297,16 @@ projetos <-
                     tolower(projetos.all$`Nome do Projeto de Pesquisa`)),]
 
 if (dim(projetos)[1] != 0) {
-  # dplyr::select data DOCENTES
   table.projetos <-
     data.frame(
-      projetos$`Nome do Membro do Projeto`,
+      projetos$`Área de Concentração`,
+      projetos$`Linha de Pesquisa`,
       projetos$`Nome do Projeto de Pesquisa`,
-      projetos$`Linha de Pesquisa`
+      projetos$`Nome do Membro do Projeto`,
+      projetos$`Data de Início`
     )
   table.projetos <- table.projetos[order(table.projetos[, 1]), ]
+  labels <- colnames(table.projetos)
   # print tables
   table.projetos[, 1] <-
     as.vector(unlist(lapply(table.projetos[, 1], FUN = str_to_upper)))
@@ -1315,9 +1316,13 @@ if (dim(projetos)[1] != 0) {
     as.vector(unlist(lapply(table.projetos[, 3], FUN = str_to_title)))
   
   colnames(table.projetos) <-
-    c("Nome do Membro Responsável",
-      "Nome do Projeto de Pesquisa",
-      "Linha de Pesquisa")
+    c(
+      "Área de Concentração",
+      "Linha de Pesquisa",
+      "Projeto de Pesquisa",
+      "Membro Responsável",
+      "Início"
+    )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table.projetos, title = "Ações durante a Pandemia - Projetos de Pesquisa")
 } else {
@@ -1398,11 +1403,11 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 <br>
 
-### **Dissertações e Teses**
+### **Teses**
 
-```{r pandemia-tcc, eval = has.sucupira.files}
+```{r pandemia-tese, eval = has.sucupira.files}
 # tcc
-sheet <- "TCC"
+sheet <- "TCC - Financiadores"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
@@ -1413,52 +1418,142 @@ periodos <- names(sucupira.list)
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
+tccs <-
+  tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "TESE",]
+
 # dplyr::selecting those with COVID in the title
 tccs <-
   tcc.all[grep(paste(tolower(pandemia), collapse = "|"),
                tolower(tcc.all$`Nome do Trabalho de Conclusão`)),]
 
 if (dim(tccs)[1] != 0) {
-  # dplyr::select data
+  # select data
   table.tcc <-
     data.frame(
       format((as.Date(
-        gsub("/", "-", tccs$'Data da Defesa'), "%d-%d-%Y"
+        gsub("/", "-", tccs$'Data da Defesa'), "%d-%m-%Y"
       )), "%Y"),
-      tccs$`Tipo de Trabalho de Conclusão`,
+      tccs$`Linha de Pesquisa`,
       tccs$`Nome do Trabalho de Conclusão`,
       tccs$`Nome do Autor`,
-      tccs$`Nome do Orientador`
+      tccs$`Nome do Orientador`,
+      tccs$`Nome do Financiador`
     )
+  
   table.tcc <-
     table.tcc[order(table.tcc[, 1], table.tcc[, 2], table.tcc[, 3]), ]
   
-  # print tables
   table.tcc[, 2] <-
-    as.vector(unlist(lapply(table.tcc[, 2], FUN = str_to_title)))
+    as.vector(unlist(lapply(table.tcc[, 2], FUN = stringr::str_to_title)))
   table.tcc[, 3] <-
-    as.vector(unlist(lapply(table.tcc[, 3], FUN = str_to_title)))
+    as.vector(unlist(lapply(table.tcc[, 3], FUN = stringr::str_to_title)))
   table.tcc[, 4] <-
-    as.vector(unlist(lapply(table.tcc[, 4], FUN = str_to_title)))
+    as.vector(unlist(lapply(table.tcc[, 4], FUN = stringr::str_to_title)))
   table.tcc[, 5] <-
-    as.vector(unlist(lapply(table.tcc[, 5], FUN = str_to_title)))
+    as.vector(unlist(lapply(table.tcc[, 5], FUN = stringr::str_to_title)))
+  table.tcc[, 6] <-
+    as.vector(unlist(lapply(table.tcc[, 6], FUN = stringr::str_to_title)))
   
   colnames(table.tcc) <-
-    c("Ano", "Nível", "Título", "Autor", "Orientador")
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table.tcc, title = "Ações durante a Pandemia - Trabalhos de conclusão de curso")
+    c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador", "Financiador")
 } else {
-  cat('\n\n')
-  cat('*Sem produção para exibir no período*')
-  cat('\n\n')
+  table.tcc <- data.frame()
 }
+
+# drop duplicated entries (ignore funding)
+table.tcc <- table.tcc[!duplicated(table.tcc[1:5, ]),]
+
+table.tcc <- table.tcc %>% dplyr::arrange(
+  table.tcc$'Ano',
+  table.tcc$'Autor'
+)
+table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano')),
+                                        table.tcc$'Título')
+# print table
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(table.tcc, title = "Ações durante a Pandemia - Teses")
 
 source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
 
-### **Artigos completos** {.tabset}
+### **Dissertação**
+
+```{r pandemia-dissertacao, eval = has.sucupira.files}
+# tcc
+sheet <- "TCC - Financiadores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)
+periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
+tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+
+tccs <-
+  tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "DISSERTAÇÃO",]
+
+# dplyr::selecting those with COVID in the title
+tccs <-
+  tcc.all[grep(paste(tolower(pandemia), collapse = "|"),
+               tolower(tcc.all$`Nome do Trabalho de Conclusão`)),]
+
+if (dim(tccs)[1] != 0) {
+  # select data
+  table.tcc <-
+    data.frame(
+      format((as.Date(
+        gsub("/", "-", tccs$'Data da Defesa'), "%d-%m-%Y"
+      )), "%Y"),
+      tccs$`Linha de Pesquisa`,
+      tccs$`Nome do Trabalho de Conclusão`,
+      tccs$`Nome do Autor`,
+      tccs$`Nome do Orientador`,
+      tccs$`Nome do Financiador`
+    )
+  
+  table.tcc <-
+    table.tcc[order(table.tcc[, 1], table.tcc[, 2], table.tcc[, 3]), ]
+  
+  table.tcc[, 2] <-
+    as.vector(unlist(lapply(table.tcc[, 2], FUN = stringr::str_to_title)))
+  table.tcc[, 3] <-
+    as.vector(unlist(lapply(table.tcc[, 3], FUN = stringr::str_to_title)))
+  table.tcc[, 4] <-
+    as.vector(unlist(lapply(table.tcc[, 4], FUN = stringr::str_to_title)))
+  table.tcc[, 5] <-
+    as.vector(unlist(lapply(table.tcc[, 5], FUN = stringr::str_to_title)))
+  table.tcc[, 6] <-
+    as.vector(unlist(lapply(table.tcc[, 6], FUN = stringr::str_to_title)))
+  
+  colnames(table.tcc) <-
+    c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador", "Financiador")
+} else {
+  table.tcc <- data.frame()
+}
+
+# drop duplicated entries (ignore funding)
+table.tcc <- table.tcc[!duplicated(table.tcc[1:5, ]),]
+
+table.tcc <- table.tcc %>% dplyr::arrange(
+  table.tcc$'Ano',
+  table.tcc$'Autor'
+)
+table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano')),
+                                        table.tcc$'Título')
+# print table
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(table.tcc, title = "Ações durante a Pandemia - Dissertações")
+
+source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+```
+
+<br>
+
+### **Artigo completo** {.tabset}
 
 ```{r pandemia-artigos-completos, eval = any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
 # bind sources
@@ -1537,7 +1632,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-### **Artigos resumos** {.tabset}
+### **Artigo resumo** {.tabset}
 
 ```{r pandemia-artigos-resumos, eval = any(has.artigos.resumos.ppg, has.artigos.resumos.sucupira)}
 # bind sources
@@ -1616,7 +1711,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-### **Preprints** {.tabset}
+### **Preprint** {.tabset}
 
 ```{r pandemia-preprints, eval = has.preprints.ppg}
 # bind sources
@@ -1695,7 +1790,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-### **Livros** {.tabset}
+### **Livro** {.tabset}
 
 ```{r pandemia-Livros, eval = has.livros.ppg}
 # bind sources
@@ -1774,7 +1869,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-### **Capítulos** {.tabset}
+### **Capítulo** {.tabset}
 
 ```{r pandemia-capitulos, eval = has.capitulos.ppg}
 # bind sources
@@ -1853,7 +1948,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-### **Trabalhos em anais** {.tabset}
+### **Trabalho em Anais** {.tabset}
 
 ```{r pandemia-resumos-anais, eval = has.anais.ppg}
 # bind sources
@@ -1932,7 +2027,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-### **Prêmios** {#premios .tabset}
+### **Prêmio** {#premios .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">

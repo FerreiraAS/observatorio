@@ -463,7 +463,6 @@ for (id in 1:length(orcids)) {
 }
 ```
 
-
 ```{r, eval = !has.sucupira.files}
 cat('<br>')
 ```

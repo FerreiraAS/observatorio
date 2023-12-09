@@ -295,23 +295,9 @@ projetos.all <-
 
 # filter ongoing projects only
 projetos <-
-  projetos.all[projetos.all$`Membro Responsável` == "Sim" &
-                 projetos.all$Situação == "EM ANDAMENTO", ]
+  unique(projetos.all[projetos.all$`Membro Responsável` == "Sim" &
+                 projetos.all$Situação == "EM ANDAMENTO", ])
 
-projetos <-
-  projetos %>% dplyr::select(
-    "Área de Concentração",
-    "Linha de Pesquisa",
-    "Nome do Projeto de Pesquisa",
-    "Nome do Membro do Projeto",
-    "Categoria do Membro do Projeto",
-    "Data de Início",
-    "Data da Situação"
-  )
-projetos <- unique(projetos)
-```
-
-```{r projetos-de-pesquisa-em-andamento-lista, eval = has.sucupira.files}
 table.projetos <-
   data.frame(
     projetos$`Área de Concentração`,
@@ -362,23 +348,9 @@ projetos.all <-
 
 # filter closed projects only
 projetos <-
-  projetos.all[projetos.all$`Membro Responsável` == "Sim" &
-                 projetos.all$Situação != "EM ANDAMENTO", ]
+  unique(projetos.all[projetos.all$`Membro Responsável` == "Sim" &
+                 projetos.all$Situação != "EM ANDAMENTO", ])
 
-projetos <-
-  projetos %>% dplyr::select(
-    "Área de Concentração",
-    "Linha de Pesquisa",
-    "Nome do Projeto de Pesquisa",
-    "Nome do Membro do Projeto",
-    "Categoria do Membro do Projeto",
-    "Data de Início",
-    "Data da Situação"
-  )
-projetos <- unique(projetos)
-```
-
-```{r projetos-de-pesquisa-encerrados-lista, eval = has.sucupira.files}
 table.projetos <-
   data.frame(
     projetos$`Área de Concentração`,

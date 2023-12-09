@@ -373,8 +373,6 @@ if (dim(produtos.df)[1] != 0) {
 source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
-<br>
-
 ```{r artigos-completos, eval = any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
 # bind sources
 doi_with_altmetric <- doi_with_altmetric_artigos
@@ -895,8 +893,6 @@ if (dim(produtos.df)[1] != 0) {
 source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
 
-<br>
-
 ```{r livros, eval = has.livros.ppg}
 # bind sources
 doi_with_altmetric <- doi_with_altmetric_livros
@@ -1148,8 +1144,6 @@ if (dim(produtos.df)[1] != 0) {
 
 source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```
-
-<br>
 
 ```{r resumos-anais, eval = has.anais.ppg}
 # bind sources
