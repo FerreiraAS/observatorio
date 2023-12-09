@@ -77,21 +77,21 @@ periodos <- names(sucupira.list)
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
-tccs <-
+tcc <-
   tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "TESE",]
 
-if (dim(tccs)[1] != 0) {
+if (dim(tcc)[1] != 0) {
   # select data
   table.tcc <-
     data.frame(
       format((as.Date(
-        gsub("/", "-", tccs$'Data da Defesa'), "%d-%m-%Y"
+        gsub("/", "-", tcc$'Data da Defesa'), "%d-%m-%Y"
       )), "%Y"),
-      tccs$`Linha de Pesquisa`,
-      tccs$`Nome do Trabalho de Conclusão`,
-      tccs$`Nome do Autor`,
-      tccs$`Nome do Orientador`,
-      tccs$`Nome do Financiador`
+      tcc$`Linha de Pesquisa`,
+      tcc$`Nome do Trabalho de Conclusão`,
+      tcc$`Nome do Autor`,
+      tcc$`Nome do Orientador`,
+      tcc$`Nome do Financiador`
     )
   
   table.tcc <-
@@ -154,21 +154,21 @@ periodos <- names(sucupira.list)
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
-tccs <-
+tcc <-
   tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "DISSERTAÇÃO",]
 
-if (dim(tccs)[1] != 0) {
+if (dim(tcc)[1] != 0) {
   # select data
   table.tcc <-
     data.frame(
       format((as.Date(
-        gsub("/", "-", tccs$'Data da Defesa'), "%d-%m-%Y"
+        gsub("/", "-", tcc$'Data da Defesa'), "%d-%m-%Y"
       )), "%Y"),
-      tccs$`Linha de Pesquisa`,
-      tccs$`Nome do Trabalho de Conclusão`,
-      tccs$`Nome do Autor`,
-      tccs$`Nome do Orientador`,
-      tccs$`Nome do Financiador`
+      tcc$`Linha de Pesquisa`,
+      tcc$`Nome do Trabalho de Conclusão`,
+      tcc$`Nome do Autor`,
+      tcc$`Nome do Orientador`,
+      tcc$`Nome do Financiador`
     )
   
   table.tcc <-

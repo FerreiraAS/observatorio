@@ -1418,26 +1418,26 @@ periodos <- names(sucupira.list)
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
-tccs.all <-
+tcc.all <-
   tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "TESE",]
 
 # dplyr::selecting those with COVID in the title
-tccs <-
+tcc <-
   tcc.all[grep(paste(tolower(pandemia), collapse = "|"),
                tolower(tcc.all$`Nome do Trabalho de Conclusão`)),]
 
-if (dim(tccs)[1] != 0) {
+if (dim(tcc)[1] != 0) {
   # select data
   table.tcc <-
     data.frame(
       format((as.Date(
-        gsub("/", "-", tccs$'Data da Defesa'), "%d-%m-%Y"
+        gsub("/", "-", tcc$'Data da Defesa'), "%d-%m-%Y"
       )), "%Y"),
-      tccs$`Linha de Pesquisa`,
-      tccs$`Nome do Trabalho de Conclusão`,
-      tccs$`Nome do Autor`,
-      tccs$`Nome do Orientador`,
-      tccs$`Nome do Financiador`
+      tcc$`Linha de Pesquisa`,
+      tcc$`Nome do Trabalho de Conclusão`,
+      tcc$`Nome do Autor`,
+      tcc$`Nome do Orientador`,
+      tcc$`Nome do Financiador`
     )
   
   table.tcc <-
@@ -1493,26 +1493,26 @@ periodos <- names(sucupira.list)
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
-tccs.all <-
+tcc.all <-
   tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "DISSERTAÇÃO",]
 
 # dplyr::selecting those with COVID in the title
-tccs <-
+tcc <-
   tcc.all[grep(paste(tolower(pandemia), collapse = "|"),
                tolower(tcc.all$`Nome do Trabalho de Conclusão`)),]
 
-if (dim(tccs)[1] != 0) {
+if (dim(tcc)[1] != 0) {
   # select data
   table.tcc <-
     data.frame(
       format((as.Date(
-        gsub("/", "-", tccs$'Data da Defesa'), "%d-%m-%Y"
+        gsub("/", "-", tcc$'Data da Defesa'), "%d-%m-%Y"
       )), "%Y"),
-      tccs$`Linha de Pesquisa`,
-      tccs$`Nome do Trabalho de Conclusão`,
-      tccs$`Nome do Autor`,
-      tccs$`Nome do Orientador`,
-      tccs$`Nome do Financiador`
+      tcc$`Linha de Pesquisa`,
+      tcc$`Nome do Trabalho de Conclusão`,
+      tcc$`Nome do Autor`,
+      tcc$`Nome do Orientador`,
+      tcc$`Nome do Financiador`
     )
   
   table.tcc <-
