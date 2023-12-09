@@ -114,11 +114,11 @@ if (dim(tcc)[1] != 0) {
   table.tcc <- data.frame()
 }
 
-# drop duplicated entries (ignore funding)
-table.tcc <- table.tcc[!duplicated(table.tcc[1:5, ]),]
+# drop duplicated entries
+table.tcc <- table.tcc[!duplicated(table.tcc),]
 
 table.tcc <- table.tcc %>% dplyr::arrange(
-  table.tcc$'Ano',
+  dplyr::desc(table.tcc$'Ano'),
   table.tcc$'Autor'
 )
 table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano')),
@@ -191,11 +191,11 @@ if (dim(tcc)[1] != 0) {
   table.tcc <- data.frame()
 }
 
-# drop duplicated entries (ignore funding)
-table.tcc <- table.tcc[!duplicated(table.tcc[1:5, ]),]
+# drop duplicated entries
+table.tcc <- table.tcc[!duplicated(table.tcc),]
 
 table.tcc <- table.tcc %>% dplyr::arrange(
-  table.tcc$'Ano',
+  dplyr::desc(table.tcc$'Ano'),
   table.tcc$'Autor'
 )
 table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano')),
