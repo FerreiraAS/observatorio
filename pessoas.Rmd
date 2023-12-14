@@ -1355,7 +1355,7 @@ source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
 ```{r historico-egressos, eval = has.sucupira.files}
 # periodo
 n.anos <- 100
-periodo <- (as.numeric(format(Sys.Date(), "%Y")) - n.anos):(as.numeric(format(Sys.Date(), "%Y")) - 1)
+periodo <- (as.numeric(format(Sys.Date(), "%Y")) - n.anos):(as.numeric(format(Sys.Date(), "%Y")))
 
 # egressos
 sheet <- "Discentes - Orientadores"
