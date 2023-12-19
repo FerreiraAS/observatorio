@@ -70,7 +70,7 @@ ggplot2::ggplot(df) +
   )
 
 ggplot2::ggsave(
-    "PPG/Images/Cover_2.png",
+    "PPG/Images/Cover-2.png",
     width = W,
     height = H,
     units = "in",
@@ -78,10 +78,10 @@ ggplot2::ggsave(
   )
 
 # save PDF
-grDevices::pdf(file = "PPG/Images/Cover_2.pdf",
+grDevices::pdf(file = "PPG/Images/Cover-2.pdf",
                width = W,
                height = H)
-img <- png::readPNG("PPG/Images/Cover_2.png")
+img <- png::readPNG("PPG/Images/Cover-2.png")
 img <- grDevices::as.raster(img[, , 1:3])
 par(
   mar = c(0, 0, 0, 0),

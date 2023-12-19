@@ -116,7 +116,7 @@ legend(
   box.lty = 0
 )
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -190,7 +190,7 @@ table.1.1.1 <-
 # print table
 print(table.1.1.1)
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -748,7 +748,7 @@ table.all <- table.all[lapply(table.all, length) > 0]
 # print all tables stacked
 print(gtsummary::tbl_stack(table.all))
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1331,7 +1331,7 @@ if (dim(projetos)[1] != 0) {
   cat('\n\n')
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1473,7 +1473,7 @@ table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano'
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.tcc, title = "Ações durante a Pandemia - Teses")
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1548,7 +1548,7 @@ table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano'
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.tcc, title = "Ações durante a Pandemia - Dissertações")
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>

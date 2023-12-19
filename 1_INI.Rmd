@@ -32,6 +32,10 @@ knitr::opts_chunk$set(
 source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
+```{r custom-yml, results = "hide"}
+source("Scripts/custom-yml.R", local = knitr::knit_global())
+```
+
 ```{r yaml-metadata, results = "hide"}
 metadata$repository_url <- rmarkdown::metadata$repository_url
 ```
@@ -65,7 +69,7 @@ source(file.path("Scripts", "citescore.R"), local = knitr::knit_global())
 source(file.path("Scripts", "sjr.R"), local = knitr::knit_global())
 source(file.path("Scripts", "webqualis.R"), local = knitr::knit_global())
 
-source("Scripts/doi_cleaner.R", local = knitr::knit_global())
+source("Scripts/doi-cleaner.R", local = knitr::knit_global())
 
 source(file.path("Scripts", "get_citescore.R"),
        local = knitr::knit_global())

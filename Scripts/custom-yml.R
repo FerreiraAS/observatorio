@@ -1,5 +1,5 @@
 # read YAML file
-header_in <- yaml::read_yaml("_site_in.yml")
+header_in <- yaml::read_yaml("_site.yml")
 
 # get items from header
 observatorio_capes <- header_in$navbar$left[[11]]$href
@@ -30,8 +30,13 @@ form$facebook <- "TESTE"
 form$observatorio_href <- "TESTE"
 
 # CHECK IF THE FORM
-
-
+data <- svDialogs::dlg_form(
+  form,
+  title = "Formulário",
+  columns = 1,
+  gui = .GUI
+  )
+form <- data$res
 
 # replace elements from the list
 header_out <- header_in

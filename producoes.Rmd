@@ -127,7 +127,7 @@ table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano'
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.tcc, title = "Teses")
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -205,7 +205,7 @@ table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano'
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.tcc, title = "Dissertações")
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -370,7 +370,7 @@ if (dim(produtos.df)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 ```{r artigos-completos, eval = any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
@@ -799,7 +799,7 @@ if (dim(produtos.df)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -890,7 +890,7 @@ if (dim(produtos.df)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 ```{r livros, eval = has.livros.ppg}
@@ -1142,7 +1142,7 @@ if (dim(produtos.df)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 ```{r resumos-anais, eval = has.anais.ppg}
@@ -1308,7 +1308,7 @@ if (dim(produtos.df)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1399,7 +1399,7 @@ if (dim(produtos.df)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1490,7 +1490,7 @@ if (dim(produtos.df)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1581,7 +1581,7 @@ if (dim(produtos.df)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1672,7 +1672,7 @@ if (dim(produtos.df)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1763,7 +1763,7 @@ if (dim(produtos.df)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>

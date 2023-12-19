@@ -15,7 +15,7 @@ grDevices::quartzFonts(
 par(family = 'ComputerModern')
 
 grDevices::png(
-  file = "PPG/Images/Cover_1.png",
+  file = "PPG/Images/Cover-1.png",
   width = W,
   height = H,
   units = "in",
@@ -126,10 +126,10 @@ text(
 grDevices::dev.off()
 
 # save PDF
-grDevices::pdf(file = "PPG/Images/Cover_1.pdf",
+grDevices::pdf(file = "PPG/Images/Cover-1.pdf",
                width = W,
                height = H)
-img <- png::readPNG("PPG/Images/Cover_1.png")
+img <- png::readPNG("PPG/Images/Cover-1.png")
 img <- grDevices::as.raster(img[, , 1:3])
 par(
   mar = c(0, 0, 0, 0),

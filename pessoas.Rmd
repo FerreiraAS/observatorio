@@ -146,7 +146,7 @@ rownames(table.2) <- NULL
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.2, title = "Coordenação")
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -197,7 +197,7 @@ docentes <-
   sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]), ]
 docentes <- docentes[order(docentes$"Nome Docente"),]
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 ```{r docentes-credenciados-tabela, eval = has.sucupira.files}
@@ -393,7 +393,7 @@ my_orcid <-
        ))
 
 # compile external identifiers
-source("Scripts/external_identifiers.R", local = knitr::knit_global())
+source("Scripts/external-identifiers.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -580,7 +580,7 @@ docentes <-
   sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]), ]
 docentes <- docentes[order(docentes$"Nome Docente"),]
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 ```{r docentes-historico-tabela, eval = has.sucupira.files}
@@ -796,7 +796,7 @@ if (dim(docentes)[1] == 0) {
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2024-2021")))
   
-  source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+  source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 }
 ```
 
@@ -893,7 +893,7 @@ if (dim(docentes)[1] == 0) {
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2024-2021")))
   
-  source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+  source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 }
 ```
 
@@ -947,7 +947,7 @@ if (dim(discentes)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1058,7 +1058,7 @@ if (dim(discentes)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1167,7 +1167,7 @@ if (dim(discentes)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1229,7 +1229,7 @@ if (dim(egressos)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1287,7 +1287,7 @@ if (dim(egressos)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1345,7 +1345,7 @@ if (dim(egressos)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1403,7 +1403,7 @@ if (dim(egressos)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1557,7 +1557,7 @@ if (dim(discentes)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1700,7 +1700,7 @@ if (dim(externos)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1744,7 +1744,7 @@ if (dim(externos)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1780,7 +1780,7 @@ if (dim(externos)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>

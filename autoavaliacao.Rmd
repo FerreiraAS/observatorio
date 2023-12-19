@@ -23,7 +23,7 @@ output:
     number_sections: false
     includes:
       in_header: tex/preamble.tex
-      before_body: [tex/cover_1.tex, tex/cover_2.tex]
+      before_body: [tex/cover-1.tex, tex/cover-2.tex]
     latex_engine: xelatex
     keep_tex: no
 ---
@@ -34,8 +34,8 @@ quadrienal.vigente <- 2021:min(as.numeric(format(Sys.Date(), "%Y")), 2024)
 ```
 
 ```{r cover-one, echo = FALSE, include = FALSE, eval = knitr::is_html_output()}
-source("Scripts/cover_1.R", local = knitr::knit_global())
-source("Scripts/cover_2.R", local = knitr::knit_global())
+source("Scripts/cover-1.R", local = knitr::knit_global())
+source("Scripts/cover-2.R", local = knitr::knit_global())
 ```
 
 ```{=latex}
@@ -302,7 +302,7 @@ cat(
 cat('</div>')
 cat('</div>')
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -367,7 +367,7 @@ if (dim(missing.data)[1] != 0) {
   cat("*Sem dados para exibir*")
 }
 
-source("Scripts/fonte_capes.R", local = knitr::knit_global())
+source("Scripts/fonte-capes.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -409,7 +409,7 @@ for (i in 1:length(abas)) {
   }
   
   # print end of tab rows
-  source("Scripts/fonte_capes.R", local = knitr::knit_global())
+  source("Scripts/fonte-capes.R", local = knitr::knit_global())
 }
 ```
 
@@ -455,7 +455,7 @@ print(
   )
 )
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -479,7 +479,7 @@ print(
   )
 )
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -508,7 +508,7 @@ print(
   ) %>% kableExtra::scroll_box(width = "100%")
 )
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -537,7 +537,7 @@ print(
   ) %>% kableExtra::scroll_box(width = "100%")
 )
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -627,7 +627,7 @@ print(
   ) %>% kableExtra::scroll_box(width = "100%")
 )
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -662,7 +662,7 @@ print(
   ) %>% kableExtra::scroll_box(width = "100%")
 )
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -699,7 +699,7 @@ if (any(table.all$`Categoria do Membro do Projeto` == "Pós-Doc")) {
   )
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1078,7 +1078,7 @@ if(knitr::is_html_output()){
   print()
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <details>
@@ -1254,7 +1254,7 @@ table.1.1.2 <-
 # print table
 print(table.1.1.2)
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1628,7 +1628,7 @@ table.all <- gtsummary::tbl_stack(
 )
 print(table.all)
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <details>
@@ -1788,7 +1788,7 @@ table.1 <-
 
 print(table.1)
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <details>
@@ -2169,7 +2169,7 @@ if (dim(disciplinas.raw)[1] != 0) {
   ))
 }
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -2790,7 +2790,7 @@ table.all <- table.all[lapply(table.all, length) > 0]
 # print all tables stacked
 print(gtsummary::tbl_stack(table.all))
 
-source("Scripts/fonte_sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
