@@ -70,6 +70,7 @@ periodo.vigente <- anos
 
 ```{r, eval = !has.sucupira.files}
 cat('<br>')
+cat('<br>')
 ```
 
 ### **Formação discente** {.tabset}
@@ -131,6 +132,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r, eval = !any(has.periodicos, has.cep)}
+cat('<br>')
 cat('<br>')
 ```
 
@@ -923,6 +925,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ```{r, eval = !has.politicas}
 cat('<br>')
+cat('<br>')
 ```
 
 ### **Políticas** {#politicas .tabset}
@@ -1113,6 +1116,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r, eval = !any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
+cat('<br>')
 cat('<br>')
 ```
 

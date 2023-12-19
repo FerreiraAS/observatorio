@@ -2952,3 +2952,20 @@ print(
 ```{=latex}
 \DisableFootNotes
 ```
+
+```{r relatorio-consolidado, eval = knitr::is_html_output()}
+cat("## **Relatório consolidado** {#relatorio-consolidado}")
+cat('\n\n')
+cat('<!--script for generating HORIZONTAL LINE-->')
+cat('\n\n')
+cat('<hr style="height:2px;border-width:0;color:black;background-color:black">')
+cat('\n\n')
+cat(
+  paste0(
+    '<iframe src=\"',
+    'autoavaliacao.pdf',
+    '\" style=\"width:100%; height:600px; border:2px solid black;\"></iframe>'
+  )
+)
+cat('\n\n')
+```

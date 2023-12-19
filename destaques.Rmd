@@ -467,9 +467,7 @@ for (id in 1:length(orcids)) {
 cat('<br>')
 ```
 
-### **Periódicos** {.tabset}
-
-#### **Corpo editorial** {.tabset}
+### **Corpo editorial de periódicos** {.tabset}
 
 ```{r corpo-editorial, cache = TRUE, cache.path = "cache/corpo-editorial/", eval = has.sucupira.files}
 # docentes
@@ -495,9 +493,9 @@ for (id in 1:length(orcids)) {
   my_orcid <- orcids[id]
 
   cat('\n\n<!-- -->\n\n')
-  cat('##### **', as.character(id), '**', sep = "")
+  cat('#### **', as.character(id), '**', sep = "")
   cat('\n\n<!-- -->\n\n')
-  cat('###### **', editor.name, '**', sep = "")
+  cat('##### **', editor.name, '**', sep = "")
   cat('\n\n<!-- -->\n\n')
   source("Scripts/invited-positions.R", local = knitr::knit_global())
   cat('\n\n<!-- -->\n\n')
@@ -507,7 +505,7 @@ for (id in 1:length(orcids)) {
 
 <br>
 
-#### **Revisores** {.tabset}
+### **Revisor de periódicos** {.tabset}
 
 ```{r revisores, cache = TRUE, cache.path = "cache/revisores/", eval = has.sucupira.files}
 # docentes
@@ -533,9 +531,9 @@ for (id in 1:length(orcids)) {
   my_orcid <- orcids[id]
 
   cat('\n\n<!-- -->\n\n')
-  cat('##### **', as.character(id), '**', sep = "")
+  cat('#### **', as.character(id), '**', sep = "")
   cat('\n\n<!-- -->\n\n')
-  cat('###### **', reviewer.name, '**', sep = "")
+  cat('##### **', reviewer.name, '**', sep = "")
   cat('\n\n<!-- -->\n\n')
   source("Scripts/reviewer-board.R", local = knitr::knit_global())
   cat('\n\n<!-- -->\n\n')
