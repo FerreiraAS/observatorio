@@ -953,7 +953,11 @@ for (i in 1:length(abas)) {
     )
   )
   
-  # print end of tab rows
+  cat('\n\n')
+  
+  cat(
+    "*Fonte:* [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/)"
+  )
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
@@ -964,6 +968,11 @@ for (i in 1:length(abas)) {
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !has.financiadores}
+cat('<br>')
+cat('<br>')
+```
 
 ### **Agência-Edital**
 
