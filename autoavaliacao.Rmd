@@ -2954,7 +2954,7 @@ print(
 ```
 
 ```{r relatorio-quadrienal, eval = knitr::is_html_output()}
-cat("## **Relatório qudrienal** {#relatorio-quadrienal}")
+cat("## **Relatório quadrienal** {#relatorio-quadrienal}")
 cat('\n\n')
 cat('<!--script for generating HORIZONTAL LINE-->')
 cat('\n\n')
