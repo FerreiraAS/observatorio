@@ -6,6 +6,11 @@
 
 <br>
 
+<div style="text-align: center; font-size:14px">
+  <p>Copyright &copy; 2021-<script type="text/javascript">document.write( new Date().getFullYear() );</script> Arthur de Sá Ferreira, DSc. Todos os direitos reservados. Última atualização em <span id="datetime"></span><script>var dt = new Date().toLocaleDateString(); document.getElementById("datetime").innerHTML=dt.toLocaleString();</script>.</div>
+
+<br>
+
 **Sumário**
 =================
 <!--ts-->
