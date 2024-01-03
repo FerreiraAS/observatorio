@@ -28,9 +28,16 @@ output:
     keep_tex: no
 ---
 
-```{r quadrienal-vigente, results = "hide", echo = FALSE, include = FALSE}
+```{r quadrienal-vigente, results = "hide", echo = FALSE, include = FALSE, eval = has.sucupira.files}
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+
 # periodo
-quadrienal.vigente <- 2021:min(as.numeric(format(Sys.Date(), "%Y")), 2024)
+quadrienal.vigente <-
+  2021:min(
+    as.numeric(format(Sys.Date(), "%Y")),
+    max(anos),
+    2024)
 ```
 
 ```{r cover-one, echo = FALSE, include = FALSE, eval = knitr::is_html_output()}

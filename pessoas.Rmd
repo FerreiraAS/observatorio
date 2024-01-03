@@ -1180,15 +1180,15 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ### **Titulados**
 
 ```{r titulados, eval = has.sucupira.files}
+# get years
+source("Scripts/years-sucupira.R")
+
 # periodo
-periodo <- as.numeric(format(Sys.Date(), "%Y"))
+periodo <- min(max(as.numeric(format(Sys.Date(), "%Y"))), anos)
 
 # egressos
 sheet <- "Discentes - Orientadores"
 source("Scripts/read-xlsx-sucupira.R")
-
-# get years
-source("Scripts/years-sucupira.R")
 names(sucupira.list) <- as.character(anos)
 
 # get egressos for the current period
@@ -1237,6 +1237,9 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ### **5 anos**
 
 ```{r historico-egressos-5, eval = has.sucupira.files}
+# get years
+source("Scripts/years-sucupira.R")
+
 # periodo
 n.anos <- 5
 periodo <- (as.numeric(format(Sys.Date(), "%Y")) - n.anos):(as.numeric(format(Sys.Date(), "%Y")) - 1)
@@ -1245,8 +1248,6 @@ periodo <- (as.numeric(format(Sys.Date(), "%Y")) - n.anos):(as.numeric(format(Sy
 sheet <- "Discentes - Orientadores"
 source("Scripts/read-xlsx-sucupira.R")
 
-# get years
-source("Scripts/years-sucupira.R")
 names(sucupira.list) <- as.character(anos)
 
 # get egressos for the current period
@@ -1295,6 +1296,9 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ### **10 anos**
 
 ```{r historico-egressos-10, eval = has.sucupira.files}
+# get years
+source("Scripts/years-sucupira.R")
+
 # periodo
 n.anos <- 10
 periodo <- (as.numeric(format(Sys.Date(), "%Y")) - n.anos):(as.numeric(format(Sys.Date(), "%Y")) - 1)
@@ -1303,8 +1307,6 @@ periodo <- (as.numeric(format(Sys.Date(), "%Y")) - n.anos):(as.numeric(format(Sy
 sheet <- "Discentes - Orientadores"
 source("Scripts/read-xlsx-sucupira.R")
 
-# get years
-source("Scripts/years-sucupira.R")
 names(sucupira.list) <- as.character(anos)
 
 # get egressos for the current period
@@ -1353,6 +1355,9 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ### **Todos**
 
 ```{r historico-egressos, eval = has.sucupira.files}
+# get years
+source("Scripts/years-sucupira.R")
+
 # periodo
 n.anos <- 100
 periodo <- (as.numeric(format(Sys.Date(), "%Y")) - n.anos):(as.numeric(format(Sys.Date(), "%Y")))
@@ -1361,8 +1366,6 @@ periodo <- (as.numeric(format(Sys.Date(), "%Y")) - n.anos):(as.numeric(format(Sy
 sheet <- "Discentes - Orientadores"
 source("Scripts/read-xlsx-sucupira.R")
 
-# get years
-source("Scripts/years-sucupira.R")
 names(sucupira.list) <- as.character(anos)
 
 # get egressos for the current period
