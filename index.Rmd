@@ -63,6 +63,63 @@ cat(
 
 </center>
 
+```{r meta-observatorio, eval = all(!has.sucupira.files, !has.financiadores, !has.producao.ppg, !has.producao.sucupira, !has.discentes, !has.posdocs)}
+
+# se não ná nada para exibir, mostre os observatórios existentes
+
+shinyjs::inlineCSS("
+#wrap {
+  width: 1200px;
+  height: 600px;
+  padding: 0;
+  overflow: hidden;
+}
+#scaled-frame {
+  width: 100%;
+  height: 100%;
+  border: 5px;
+  border-style: solid;
+  border-color: #FFFFFF;
+}
+#scaled-frame {
+  zoom: 0.75;
+  -moz-transform: scale(0.75);
+  -moz-transform-origin: 0 0;
+  -o-transform: scale(0.75);
+  -o-transform-origin: 0 0;
+  -webkit-transform: scale(0.75);
+  -webkit-transform-origin: 0 0;
+}
+")
+
+shiny::br()
+shiny::br()
+
+shiny::HTML("<h1>UNISUAM | PPGCR</h1>")
+shiny::HTML('<div id="wrap"><iframe id="scaled-frame" src="https://ppgcr-unisuam.github.io/observatoriocr/"></iframe>
+</div>')
+
+shiny::HTML("<h1>UFC | PPGFisio</h1>")
+shiny::HTML('<div id="wrap"><iframe id="scaled-frame" src="https://ppgfisioufc.github.io/PPGFisio_UFC/"></iframe>
+</div>')
+
+shiny::HTML("<h1>UFTM-UFU | PPGFisio</h1>")
+shiny::HTML('<div id="wrap"><iframe id="scaled-frame" src="https://ppgfisiouftmufu.github.io/ObservatorioUFTM_UFU/"></iframe>
+</div>')
+
+shiny::HTML("<h1>UFRN | PPGCR</h1>")
+shiny::HTML('<div id="wrap"><iframe id="scaled-frame" src="https://ppgfisioterapia.github.io/observatorioUFRN/"></iframe>
+</div>')
+
+shiny::HTML("<h1>USP | PPGReab</h1>")
+shiny::HTML('<div id="wrap"><iframe id="scaled-frame" src="https://ppgreab.github.io/Observatorio-PPGPosReab-USP/"></iframe>
+</div>')
+
+shiny::HTML("<h1>UNISUAM | PPGDL")
+shiny::HTML('<div id="wrap"><iframe id="scaled-frame" src="https://ppgcr-ppgdl.github.io/observatoriodl/"></iframe>
+</div>')
+```
+
 <br>
 
 <br>
