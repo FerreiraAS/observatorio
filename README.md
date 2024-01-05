@@ -34,7 +34,7 @@ reservados.
 -   [FAQ](#faq)
 -   [Licenca](#licenca) <!--te-->
 
-## **Conteudo do Observatorio** {#conteudo-do-observatorio}
+## **Conteudo do Observatorio**
 
 -   [x] Home
 -   [x] Programa
