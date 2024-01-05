@@ -4,15 +4,12 @@
 
 <a href="https://zenodo.org/badge/latestdoi/580590445"><img src="https://zenodo.org/badge/580590445.svg" alt="DOI"/></a>
 
-<br>
-
 <div style="text-align: center; font-size:14px">
 
 <p>
 
 Copyright © 2021 Arthur de Sá Ferreira, DSc. Todos os direitos
-reservados. Última atualização em
-
+reservados.
 
 </div>
 
@@ -46,12 +43,13 @@ reservados. Última atualização em
 -   [x] Destaques
 -   [x] Impactos
 -   [x] Galeria
--   [x] Autoavaliação
 -   [x] Downloads
+-   [x] Autoavaliação
 -   [x] Links
+-   [x] Observatório CAPES
 -   [x] Redes sociais
 
-## **Recursos computacionais** {#recursos-computacionais}
+## **Recursos computacionais**
 
 Os seguintes programas foram usados na construção do **Obsevatório**:
 
@@ -59,11 +57,11 @@ Os seguintes programas foram usados na construção do **Obsevatório**:
 -   [Rstudio desktop](https://posit.co/download/rstudio-desktop/)
 -   [LaTeX](https://www.latex-project.org)
 
-## **Fontes de dados** {#fontes-de-dados}
+## **Fontes de dados**
 
-### **Plataforma Sucupira** {#plataforma-sucupira}
+### **Plataforma Sucupira**
 
-O **Obsevatório** utiliza arquivos exportados pela [Plataforma
+O **Observatório** utiliza arquivos exportados pela [Plataforma
 Sucupira](https://sucupira.capes.gov.br/sucupira/). Para gerar os
 arquivos, siga as seguintes etapas:
 
@@ -88,6 +86,7 @@ Ao completar esta etapa, a estrutura dos diretórios será esta:
 │   └── 2021
 │   └── 2022
 │   └── 2023
+│   └── 2024
 ```
 
 1.  Acesse a [Plataforma
@@ -137,9 +136,11 @@ esta:
 │       └── conferencia_programa.xlsx
 │   └── 2023
 │       └── conferencia_programa.xlsx
+│   └── 2024
+│       └── conferencia_programa.xlsx
 ```
 
-### **Programa** {#programa}
+### **Programa**
 
 O **Observatório** pode exibir informações complementares, não
 disponíveis na Plataforma Sucupira, desde que organizadas em planilhas
@@ -240,7 +241,7 @@ seguintes planilhas podem ser complementadas:
 -   [Repositórios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Reposit%C3%B3rios.xlsx)
 -   [Videos.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Videos.xlsx)
 
-### **Agencias** {#agencias}
+### **Agencias**
 
 Logotipos das principais agências de fomento estão disponíveis:
 
@@ -258,7 +259,7 @@ Logotipos das principais agências de fomento estão disponíveis:
 │       └── logo-ods.png
 ```
 
-### **Metricas** {#metricas}
+### **Metricas**
 
 Para análise das métricas, as seguintes fontes são utilizadas:
 
@@ -282,7 +283,7 @@ Para análise das métricas, as seguintes fontes são utilizadas:
 │       └── scimagojr 2022.csv
 ```
 
-### **API** {#api}
+### **API**
 
 Para obter dados de métricas, as seguintes API são utilizadas:
 
@@ -294,7 +295,7 @@ Para obter dados de métricas, as seguintes API são utilizadas:
 -   [**Scopus API**](https://dev.elsevier.com/sc_apis.html) Para acesso
     a dados da Scopus e SciVal
 
-## **Como usar** {#como-usar}
+## **Como usar**
 
 ### [**1. Fazer o registro em uma conta do GitHub**](https://docs.github.com/pt/get-started/signing-up-for-github/signing-up-for-a-new-github-account)
 
@@ -337,12 +338,12 @@ um fluxo de trabalho do GitHub Actions para publicar seu site.*
 *This tutorial teaches you to create R Markdown documents with RStudio
 and publish them via GitHub, using GitHub Pages.*
 
-## **Atualizacoes** {#atualizacoes}
+## **Atualizacoes**
 
 O Observatório é atualizado semanalmente. Para receber atualizações no
 seu repositório, siga os passos 6.1 e 6.2 acima.
 
-## **Observatorios publicados** {#observatorios-publicados}
+## **Observatorios publicados**
 
 ### **Modelo**
 
@@ -382,7 +383,7 @@ seu repositório, siga os passos 6.1 e 6.2 acima.
     PPGPosReab-USP**](https://ppgreab.github.io/Observatorio-PPGPosReab-USP/)
     \| Programa de Pós-graduação em Ciências da Reabilitação
 
-## **FAQ** {#faq}
+## **FAQ**
 
 *Como posso contribuir para este projeto?*
 
@@ -396,16 +397,8 @@ seu repositório, siga os passos 6.1 e 6.2 acima.
 -   Envie um [e-mail](mailto:arthur_sf@icloud.com) para mim com
     sugestões.
 
-## **Licenca** {#licenca}
+## **Licença**
 
-<p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/">
-
-<a property="dct:title" rel="cc:attributionURL" href="https://github.com/FerreiraAS/observatorio">Observatório</a>
-by
-<a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/FerreiraAS">Arthur
-de Sá Ferreira</a> is licensed under
-<a href="http://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC
-BY-NC
-4.0<img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"/><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"/><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"/></a>
-
-</p>
+<div style="text-align: center">
+  <p><b>Observatório</b> by <b>Arthur de Sa Ferreira</b> is licensed under an <a rel="license" data-spdx="Apache-2.0" href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a></p>
+</div>
