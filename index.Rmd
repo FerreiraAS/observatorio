@@ -67,62 +67,46 @@ cat(
 
 # se não ná nada para exibir, mostre os observatórios existentes
 
-shinyjs::inlineCSS("
-#wrap {
-  width: 1200px;
-  height: 600px;
-  padding: 0;
-  overflow: hidden;
-}
-#scaled-frame {
-  width: 100%;
-  height: 100%;
-  border: 5px;
-  border-style: solid;
-  border-color: #FFFFFF;
-}
-#scaled-frame {
-  zoom: 0.75;
-  -moz-transform: scale(0.75);
-  -moz-transform-origin: 0 0;
-  -o-transform: scale(0.75);
-  -o-transform-origin: 0 0;
-  -webkit-transform: scale(0.75);
-  -webkit-transform-origin: 0 0;
-}
-")
-
-shiny::br()
-shiny::br()
+cat('<br>')
+cat('<br>')
 
 shiny::HTML("<h1>UNISUAM | PPGCR</h1>")
-shiny::HTML('<div id="wrap"><iframe id="scaled-frame" src="https://ppgcr-unisuam.github.io/observatoriocr/"></iframe>
-</div>')
+shiny::HTML('<iframe src="https://ppgcr-unisuam.github.io/observatoriocr/" style="width:100%; height:600px; border:2px solid white;"></iframe>')
+
+cat('<br>')
+cat('<br>')
 
 shiny::HTML("<h1>UFC | PPGFisio</h1>")
-shiny::HTML('<div id="wrap"><iframe id="scaled-frame" src="https://ppgfisioufc.github.io/PPGFisio_UFC/"></iframe>
-</div>')
+shiny::HTML('<iframe id="scaled-frame" src="https://ppgfisioufc.github.io/PPGFisio_UFC/" style="width:100%; height:600px; border:2px solid white;"></iframe>')
+
+cat('<br>')
+cat('<br>')
 
 shiny::HTML("<h1>UFTM-UFU | PPGFisio</h1>")
-shiny::HTML('<div id="wrap"><iframe id="scaled-frame" src="https://ppgfisiouftmufu.github.io/ObservatorioUFTM_UFU/"></iframe>
-</div>')
+shiny::HTML('<iframe id="scaled-frame" src="https://ppgfisiouftmufu.github.io/ObservatorioUFTM_UFU/" style="width:100%; height:600px; border:2px solid white;"></iframe>')
+
+cat('<br>')
+cat('<br>')
 
 shiny::HTML("<h1>UFRN | PPGCR</h1>")
-shiny::HTML('<div id="wrap"><iframe id="scaled-frame" src="https://ppgfisioterapia.github.io/observatorioUFRN/"></iframe>
-</div>')
+shiny::HTML('<iframe id="scaled-frame" src="https://ppgfisioterapia.github.io/observatorioUFRN/" style="width:100%; height:600px; border:2px solid white;"></iframe>')
+
+cat('<br>')
+cat('<br>')
 
 shiny::HTML("<h1>USP | PPGReab</h1>")
-shiny::HTML('<div id="wrap"><iframe id="scaled-frame" src="https://ppgreab.github.io/Observatorio-PPGPosReab-USP/"></iframe>
-</div>')
+shiny::HTML('<iframe id="scaled-frame" src="https://ppgreab.github.io/Observatorio-PPGPosReab-USP/" style="width:100%; height:600px; border:2px solid white;"></iframe>')
 
-shiny::HTML("<h1>UNISUAM | PPGDL")
-shiny::HTML('<div id="wrap"><iframe id="scaled-frame" src="https://ppgcr-ppgdl.github.io/observatoriodl/"></iframe>
-</div>')
+cat('<br>')
+cat('<br>')
+
+shiny::HTML("<h1>UNISUAM | PPGDL</h1>")
+shiny::HTML('<iframe id="scaled-frame" src="https://ppgcr-ppgdl.github.io/observatoriodl/" style="width:100%; height:600px; border:2px solid white;"></iframe>')
+
+cat('<br>')
+cat('<br>')
+
 ```
-
-<br>
-
-<br>
 
 ```{r sintese-coerencia, include = FALSE, eval = has.sucupira.files}
 # projetos
@@ -360,6 +344,9 @@ source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-coerencia-carousel, eval = has.sucupira.files}
+cat('<br>')
+cat('<br>')
+
 # carousel
 bsplus::bs_carousel(id = "coerencia-carousel",
             use_indicators = FALSE,
@@ -369,10 +356,6 @@ bsplus::bs_carousel(id = "coerencia-carousel",
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
-
-<br>
-
-<br>
 
 ```{r sintese-temas, include = FALSE, eval = has.sucupira.files}
 # file path to save the wordclouds
@@ -402,6 +385,9 @@ source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-temas-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", out.width = "100%", eval = has.sucupira.files}
+cat('<br>')
+cat('<br>')
+
 # carousel of wordclouds
 bsplus::bs_carousel(id = "temas-carousel",
             use_indicators = FALSE,
@@ -413,10 +399,6 @@ bsplus::bs_carousel(id = "temas-carousel",
 cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
-
-<br>
-
-<br>
 
 ```{r sintese-projetos, include = FALSE, eval = has.sucupira.files}
 # projetos - membros
@@ -547,6 +529,9 @@ source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-projetos-carousel, eval = has.sucupira.files}
+cat('<br>')
+cat('<br>')
+
 # carousel
 bsplus::bs_carousel(id = "projetos-carousel",
             use_indicators = FALSE,
@@ -558,10 +543,6 @@ bsplus::bs_carousel(id = "projetos-carousel",
 cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
-
-<br>
-
-<br>
 
 ```{r sintese-financiadores, include = FALSE, eval = has.financiadores}
 options("scipen" = 100)
@@ -808,6 +789,9 @@ source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-financiadores-carousel, eval = has.financiadores}
+cat('<br>')
+cat('<br>')
+
 # carousel
 bsplus::bs_carousel(id = "financiadores-carousel",
             use_indicators = FALSE,
@@ -842,10 +826,6 @@ cat(
   "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **PPG**"
 )
 ```
-
-<br>
-
-<br>
 
 ```{r sintese-producao, include = FALSE, eval = any(has.producao.ppg, has.producao.sucupira)}
 # Qualis
@@ -1209,6 +1189,9 @@ source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-producao-carousel, eval = any(has.producao.ppg, has.producao.sucupira)}
+cat('<br>')
+cat('<br>')
+
 # carousel
 bsplus::bs_carousel(id = "producao-carousel",
             use_indicators = FALSE,
@@ -1226,10 +1209,6 @@ cat(
   "*Fontes:* [**WebQualis**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf), [**SJR**](https://www.scimagojr.com), [**Scopus**](https://www.scopus.com/home.uri), **PPG**"
 )
 ```
-
-<br>
-
-<br>
 
 ```{r sintese-visibilidade, include = FALSE, eval = any(has.producao.ppg, has.producao.sucupira)}
 # get years
@@ -1412,6 +1391,9 @@ source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-visibilidade-carousel, eval = any(has.producao.ppg, has.producao.sucupira)}
+cat('<br>')
+cat('<br>')
+
 # carousel
 bsplus::bs_carousel(id = "visibilidade-carousel",
             use_indicators = FALSE,
@@ -1426,10 +1408,6 @@ cat(
   "*Fontes:* [**Altmetric**](https://www.altmetric.com), [**CrossRef**](https://www.crossref.org), **PPG**"
 )
 ```
-
-<br>
-
-<br>
 
 ```{r sintese-pessoal, include = FALSE, eval = has.discentes}
 discentes.raw <-
@@ -1798,6 +1776,9 @@ source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-pessoal-carousel, eval = has.discentes}
+cat('<br>')
+cat('<br>')
+
 # carousel
 bsplus::bs_carousel(id = "pessoal-carousel",
             use_indicators = FALSE,
@@ -1813,10 +1794,6 @@ cat(
   "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), **PPG**"
 )
 ```
-
-<br>
-
-<br>
 
 ```{r sintese-posdoc, include = FALSE, eval = has.posdocs}
 # posdocs
@@ -1975,6 +1952,9 @@ source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-posdoc-carousel, eval = has.posdocs}
+cat('<br>')
+cat('<br>')
+
 # carousel
 bsplus::bs_carousel(id = "posdoc-carousel",
             use_indicators = FALSE,
@@ -1985,10 +1965,6 @@ bsplus::bs_carousel(id = "posdoc-carousel",
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
-
-<br>
-
-<br>
 
 ```{r sintese-rede, include = FALSE, eval = has.sucupira.files}
 # projetos
@@ -2312,6 +2288,9 @@ source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-rede-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", out.width = "100%", eval = has.sucupira.files}
+cat('<br>')
+cat('<br>')
+
 # carousel
 bsplus::bs_carousel(id = "rede-carousel",
             use_indicators = FALSE,
@@ -2331,10 +2310,8 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-<div><center><img width="5%" height="5%" src="https://raw.githubusercontent.com/rstudio/hex-stickers/main/thumbs/RStudio.png"> Esta página foi desenvolvida em [**`r R.version$version.string`**](https://www.rstudio.com) usando [**R markdown**](https://rmarkdown.rstudio.com)
-</center></div>
-
-<br>
+<center><img width="5%" height="5%" src="https://raw.githubusercontent.com/rstudio/hex-stickers/main/thumbs/RStudio.png"> Esta página foi desenvolvida em [**`r R.version$version.string`**](https://www.rstudio.com) usando [**R markdown**](https://rmarkdown.rstudio.com)
+</center>
 
 <br>
 
