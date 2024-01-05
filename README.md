@@ -13,10 +13,6 @@
 Copyright © 2021 Arthur de Sá Ferreira, DSc. Todos os direitos
 reservados. Última atualização em
 
-```{=html}
-<script>var dt = new Date().toLocaleDateString(); document.getElementById("datetime").innerHTML=dt.toLocaleString();</script>
-```
-.
 
 </div>
 
