@@ -930,7 +930,171 @@ cat('<br>')
 
 ### **Políticas** {#politicas .tabset}
 
-```{r politicas, eval = has.politicas}
+#### **Tabela**
+
+```{r politicas-sintese, eval = has.impacto.sage.files}
+# list all Sage Profiles
+files.to.read <-
+  list.files(file.path(getwd(), "Impacto", "Sage Policy Profiles"),
+            full.names = TRUE,
+            recursive = FALSE)
+
+# column bind all into a single dataframe
+sage.profiles.raw <- data.frame()
+for (i in 1:length(files.to.read)) {
+  sage.profiles.raw <-
+    rbind(sage.profiles.raw,
+          read.csv2(files.to.read[i],
+                    header = TRUE,
+                    sep = ",",
+                    stringsAsFactors = FALSE))
+}
+
+# remove duplicates
+sage.profiles.raw  <-
+  sage.profiles.raw[!duplicated(sage.profiles.raw$Policy.Document.ID), ]
+
+# select columns
+sage.profiles <- dplyr::select(sage.profiles.raw,
+                               c("Published.on",
+                                 "Title",
+                                 "Source.title",
+                                 "Document.URL",
+                                 "Source.country",
+                                 "Source.type",
+                                 "Cited.research.titles",
+                                 "Cited.research.DOIs"
+                                 ))
+
+# format Published.on as year
+sage.profiles$Published.on <-
+  format(as.Date(sage.profiles$Published.on, "%Y-%m-%d"), "%Y")
+
+# use title case
+sage.profiles$Source.title <-
+  tools::toTitleCase(sage.profiles$Source.title)
+sage.profiles$Source.type <-
+  tools::toTitleCase(sage.profiles$Source.type)
+
+# format link of Source.title using Document.URL and drop the latter column
+sage.profiles$Source.title <-
+  paste0('<a href="',
+         sage.profiles$Document.URL,
+         '" target="_blank"',
+         '>',
+         sage.profiles$Source.title,
+         "</a>",
+         sep = "")
+
+# loop for all entries to bind Cited.research.titles with respective Cited.research.DOIs
+bib.data.out <- c()
+for (i in 1:nrow(sage.profiles)) {
+  bib.data.in <- c()
+  dois.data <-
+    stringr::str_split_1(string = sage.profiles$Cited.research.DOIs[i],
+                         pattern = "  ，")
+  # try to retrieve data from the cache file
+  for (j in 1:length(dois.data)) {
+    indexes <- match(tolower(dois.data[j]), tolower(doi_all$doi))
+    if(sjmisc::is_empty(indexes)){
+      bib.data.in <- NA
+    } else {
+    bib.data.in <-
+        paste0(
+          bib.data.in,
+          ifelse(length(bib.data.in) > 1, "\n\n", ""),
+          doi_all$author.names[indexes[j]],
+          ". ",
+          "(", doi_all$published_on[indexes[j]], ")",
+          ". ",
+          "<strong>", doi_all$title[indexes[j]],"</strong>", 
+          ". ",
+          "<i>", doi_all$journal[indexes[j]], "</i>", 
+          ". ",
+          paste0(
+            '<a href="https://doi.org/',
+            doi_all$doi[indexes[j]],
+            '" target="_blank"',
+            '>',
+            doi_all$doi[indexes[j]],
+            '</a>'
+          )
+        )
+    }
+  }
+  bib.data.out <- c(bib.data.out, bib.data.in)
+}
+sage.profiles$Fontes <- bib.data.out
+
+# drop columns
+sage.profiles$Document.URL <- NULL
+sage.profiles$Cited.research.titles <- NULL
+sage.profiles$Cited.research.DOIs <- NULL
+
+# rename columns
+colnames(sage.profiles) <- c("Ano",
+                             "Título",
+                             "Fonte (URL)",
+                             "País",
+                             "Tipo",
+                             "Pesquisas citadas (DOI)")
+
+# keep complete cases only
+sage.profiles <-
+  sage.profiles[complete.cases(sage.profiles), ]
+sage.profiles.raw <-
+  sage.profiles.raw[complete.cases(sage.profiles), ]
+
+# sort by year decreasing
+sage.profiles <-
+  sage.profiles[order(sage.profiles$Ano, decreasing = TRUE), ]
+sage.profiles.raw <-
+  sage.profiles.raw[order(sage.profiles$Ano, decreasing = TRUE), ]
+
+# create DT table
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(sage.profiles, title = "Impacto da produção em políticas")
+
+cat('\n\n')
+cat(
+  "*Fonte:* [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/)"
+)
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+#### **Gráficos**
+
+```{r politicas-graficos, eval = has.impacto.sage.files}
+cross.table.politicas <-
+  as.matrix(table(format(as.Date(sage.profiles.raw$Published.on, "%Y-%m-%d"), "%Y")))
+colnames(cross.table.politicas) <- "Quantidade"
+
+# generate plot of total per year
+par(
+  oma = c(2, 0.1, 2, 0.1),
+  mar = c(5, 4, 2, 2)
+)
+# generate plot of turmas per year
+
+barplot(
+  cross.table.politicas,
+  las = 2,
+  ylab = "Políticas",
+  main = "Quantidade de documentos",
+  col = c("darkblue"),
+  beside = TRUE,
+  bty = "n"
+)
+axis(1, at = 1:length(cross.table.politicas), labels = rownames(cross.table.politicas), las = 2)
+
+cat('\n\n')
+cat(
+  "*Fonte:* [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/)"
+)
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+```{r politicas-docentes, eval = has.politicas}
 # initialize all sheets
 abas <- readxl::excel_sheets("PPG/Políticas.xlsx")
 

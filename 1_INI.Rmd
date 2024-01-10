@@ -58,9 +58,18 @@ main.color <- css$`:root`$`--mybackgroundcolor`
 ```
 
 <!--create (if non existent) all required folders-->
-```{r folders, results = "hide"}
-dir.create(file.path(getwd(), "PPG"), showWarnings = FALSE)
-dir.create(file.path(getwd(), "Sucupira"), showWarnings = FALSE)
+```{r check-create-folders, results = "hide"}
+paths <- c(
+  file.path(getwd(), "PPG"),
+  file.path(getwd(), "Sucupira"),
+  file.path(getwd(), "Impacto", "Sage Policy Profiles")
+  )
+
+for (i in 1:length(paths)) {
+  if (!dir.exists(paths[i])) {
+    dir.create(paths[i], recursive = TRUE, showWarnings = FALSE)
+  }
+}
 ```
 
 <!--read METRIC files-->
@@ -131,6 +140,16 @@ has.ppg.files <- length(files.to.read) != 0
 has.artigos.completos.ppg <- FALSE
 has.artigos.resumos.ppg <- FALSE
 has.producao.ppg <- FALSE
+```
+
+<!--check Impacto/Sage folder-->
+```{r try-impacto-sage-files, results = "hide"}
+# list all Sage Profiles
+files.to.read <-
+  list.files(file.path(getwd(), "Impacto", "Sage Policy Profiles"),
+            full.names = TRUE,
+            recursive = FALSE)
+has.impacto.sage.files <- length(files.to.read) != 0
 ```
 
 <!--check available files in PPG folder-->
@@ -1240,6 +1259,7 @@ if (!sjmisc::is_empty(doi_without_altmetric_all)) {
 # directories
 as.logical(has.sucupira.files)
 as.logical(has.ppg.files)
+as.logical(has.impacto.sage.files)
 
 # PPG files
 as.logical(has.agendas.pesquisa)

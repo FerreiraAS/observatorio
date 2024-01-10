@@ -26,6 +26,7 @@ reservados.
     -   [Programa](#Programa)
     -   [Agencias](#Agencias)
     -   [Metricas](#Metricas)
+    -   [Impacto](#Metricas)
     -   [API](#api)
 -   [Instalacao](#instalacao)
 -   [Como usar](#Como-usar)
@@ -281,6 +282,27 @@ Para análise das métricas, as seguintes fontes são utilizadas:
 │   │   └── classificações_publicadas_todas_as_areas_avaliacao1672761192111.xlsx
 │   └── SJR
 │       └── scimagojr 2022.csv
+```
+
+### **Impacto**
+
+O **Observatório** utiliza arquivos exportados pela [Sage Policy Profile](https://policyprofile.sagepub.com). Para gerar os
+arquivos, siga as seguintes etapas:
+
+1. Utilize o link público do cadastro de cada docente no Sage Policy Profile.
+2. Faça o download do arquivo em formato CSV.
+3. Renomeie o arquivo com o nome do docente.
+4. Salve o arquivo na pasta *Impacto -> Sage Policy Profile*.
+
+Ao completar esta etapa, a estrutura dos diretórios será esta:
+
+``` bash
+├── Impacto
+│   ├── Sage Policy Profiles
+│   │   └── policy-impact-export-2024-01-07_DOCENTE_1.csv
+│   │   └── policy-impact-export-2024-01-07_DOCENTE_2.csv
+│   │   └── ...
+│   │   └── policy-impact-export-2024-01-07_DOCENTE_N.csv
 ```
 
 ### **API**
