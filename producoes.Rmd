@@ -125,7 +125,7 @@ table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano'
                                         table.tcc$'Título')
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.tcc, title = "Teses")
+create_dt(table.tcc, title = "Produções - Teses")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -203,7 +203,7 @@ table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano'
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.tcc, title = "Dissertações")
+create_dt(table.tcc, title = "Produções - Dissertações")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -365,7 +365,7 @@ if (dim(produtos.df)[1] != 0) {
     produtos.df$'Título'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Produção - Artigo em Periódico (¹Discente, ²Egresso, ³Docente)")
+  create_dt(table, title = "Produções - Artigo em Periódico (¹Discente, ²Egresso, ³Docente)")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -794,7 +794,7 @@ if (dim(produtos.df)[1] != 0) {
     produtos.df$'Título'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Produção - Editoria (¹Discente, ²Egresso, ³Docente)")
+  create_dt(table, title = "Produções - Editoria (¹Discente, ²Egresso, ³Docente)")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -885,7 +885,7 @@ if (dim(produtos.df)[1] != 0) {
     produtos.df$'Título'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Produção - Livro (¹Discente, ²Egresso, ³Docente)")
+  create_dt(table, title = "Produções - Livro (¹Discente, ²Egresso, ³Docente)")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1137,7 +1137,7 @@ if (dim(produtos.df)[1] != 0) {
     produtos.df$'Título'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Produção - Trabalho em Anais (¹Discente, ²Egresso, ³Docente)")
+  create_dt(table, title = "Produções - Trabalho em Anais (¹Discente, ²Egresso, ³Docente)")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1303,7 +1303,7 @@ if (dim(produtos.df)[1] != 0) {
     produtos.df$'Título'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Produção - Apresentação de Trabalho (¹Discente, ²Egresso, ³Docente)")
+  create_dt(table, title = "Produções - Apresentação de Trabalho (¹Discente, ²Egresso, ³Docente)")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1394,7 +1394,7 @@ if (dim(produtos.df)[1] != 0) {
     produtos.df$'Título'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Produção - Organização de Evento (¹Discente, ²Egresso, ³Docente)")
+  create_dt(table, title = "Produções - Organização de Evento (¹Discente, ²Egresso, ³Docente)")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1485,7 +1485,7 @@ if (dim(produtos.df)[1] != 0) {
     produtos.df$'Título'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Produção - Curso de Curta Duração (¹Discente, ²Egresso, ³Docente)")
+  create_dt(table, title = "Produções - Curso de Curta Duração (¹Discente, ²Egresso, ³Docente)")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1576,7 +1576,7 @@ if (dim(produtos.df)[1] != 0) {
     produtos.df$'Título'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Produção - Material Didático e Instrucional (¹Discente, ²Egresso, ³Docente)")
+  create_dt(table, title = "Produções - Material Didático e Instrucional (¹Discente, ²Egresso, ³Docente)")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1667,7 +1667,7 @@ if (dim(produtos.df)[1] != 0) {
     produtos.df$'Título'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Produção - Patente (¹Discente, ²Egresso, ³Docente)")
+  create_dt(table, title = "Produções - Patente (¹Discente, ²Egresso, ³Docente)")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1758,7 +1758,7 @@ if (dim(produtos.df)[1] != 0) {
     produtos.df$'Título'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Produção - Aplicativo (¹Discente, ²Egresso, ³Docente)")
+  create_dt(table, title = "Produções - Aplicativo (¹Discente, ²Egresso, ³Docente)")
 } else {
   cat("*Sem dados para exibir*")
 }

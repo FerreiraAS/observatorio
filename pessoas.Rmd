@@ -144,7 +144,7 @@ rownames(table.2) <- NULL
 
 # print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.2, title = "Coordenação")
+create_dt(table.2, title = "Pessoas - Coordenação")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -258,7 +258,7 @@ rownames(table.2) <- NULL
 ids <- order(table.2$'Nome', decreasing = FALSE)
 table <- table.2[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table, title = "Docentes - Credenciados")
+create_dt(table, title = "Pessoas - Docentes - Credenciados")
 
 cat('\n\n')
 ```
@@ -458,7 +458,7 @@ rownames(table) <- NULL
 ids <- order(table.2$'Nome', decreasing = FALSE)
 table <- table.2[ids, ]
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table, title = "Docentes - 2024-2021")
+create_dt(table, title = "Pessoas - Docentes - 2024-2021")
 
 cat('\n\n')
 ```
@@ -794,7 +794,7 @@ if (dim(docentes)[1] == 0) {
   ids <- order(table.2$'Nome', decreasing = FALSE)
   table <- table.2[ids, ]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2024-2021")))
+  cat(knitr::knit_print(create_dt(table, title = "Pessoas - Pós-Docs - 2024-2021")))
   
   source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 }
@@ -891,7 +891,7 @@ if (dim(docentes)[1] == 0) {
   ids <- order(table.2$'Nome', decreasing = FALSE)
   table <- table.2[ids, ]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  cat(knitr::knit_print(create_dt(table, title = "Pós-Docs - 2024-2021")))
+  cat(knitr::knit_print(create_dt(table, title = "Pessoas - Pós-Docs - 2024-2021")))
   
   source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 }
@@ -942,7 +942,7 @@ if (dim(discentes)[1] != 0) {
   ids <- order(discentes$'Ano de Matrícula', decreasing = TRUE)
   table <- discentes[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Discentes - Doutorado")
+  create_dt(table, title = "Pessoas - Discentes - Doutorado")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1011,7 +1011,7 @@ if (dim(discentes)[1] != 0) {
           decreasing = FALSE)
   table <- discentes[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Datas e Prazos - Doutorado") %>%
+  create_dt(table, title = "Pessoas - Datas e Prazos - Doutorado") %>%
     formatStyle('Tempo em curso',
                 target = 'row',
                 backgroundColor = styleEqual(49:54, rep('lightyellow', length(49:54)))
@@ -1120,7 +1120,7 @@ if (dim(discentes)[1] != 0) {
           decreasing = FALSE)
   table <- discentes[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Datas e Prazos - Mestrado") %>%
+  create_dt(table, title = "Pessoas - Datas e Prazos - Mestrado") %>%
     formatStyle('Tempo em curso',
                 target = 'row',
                 backgroundColor = styleEqual(25:30, rep('lightyellow', length(25:30)))
@@ -1224,7 +1224,7 @@ if (dim(egressos)[1] != 0) {
     egressos$'Nome Discente'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos - 5 anos")
+  create_dt(table, title = "Pessoas - Egressos - Titulados")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1283,7 +1283,7 @@ if (dim(egressos)[1] != 0) {
     egressos$'Nome Discente'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos - 5 anos")
+  create_dt(table, title = "Pessoas - Egressos - 5 anos")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1342,7 +1342,7 @@ if (dim(egressos)[1] != 0) {
     egressos$'Nome Discente'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos - 5 anos")
+  create_dt(table, title = "Pessoas - Egressos - 10 anos")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1401,7 +1401,7 @@ if (dim(egressos)[1] != 0) {
     egressos$'Nome Discente'
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Egressos - 5 anos")
+  create_dt(table, title = "Pessoas - Egressos - Histórico")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1555,7 +1555,7 @@ if (dim(discentes)[1] != 0) {
   ids <- order(discentes$'Ano de Matrícula', decreasing = TRUE)
   table <- discentes[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Discentes - Graduação")
+  create_dt(table, title = "Pessoas - Discentes - Graduação")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1698,7 +1698,7 @@ if (dim(externos)[1] != 0) {
   ids <- order(externos$'Nome do Participante', decreasing = FALSE)
   table <- externos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Participantes externos - Nacionais")
+  create_dt(table, title = "Pessoas - Participantes externos - Nacionais")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1742,7 +1742,7 @@ if (dim(externos)[1] != 0) {
   ids <- order(externos$'Nome do Participante', decreasing = FALSE)
   table <- externos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Participantes externos - Internacionais")
+  create_dt(table, title = "Pessoas - Participantes externos - Internacionais")
 } else {
   cat("*Sem dados para exibir*")
 }
@@ -1778,7 +1778,7 @@ if (dim(externos)[1] != 0) {
   ids <- order(externos$'Instituição de Origem', decreasing = FALSE)
   table <- externos[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Participantes externos - Instituições")
+  create_dt(table, title = "Pessoas - Participantes externos - Instituições")
 } else {
   cat("*Sem dados para exibir*")
 }

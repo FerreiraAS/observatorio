@@ -139,7 +139,7 @@ area.capes <- cbind(area.capes[,-2], Abrir)
 
 # print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(area.capes, title = "Áreas de Concentração")
+create_dt(area.capes, title = "Programa - Área CAPES")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -190,7 +190,7 @@ area.ativas <- area.ativas[ids, ]
 
 # print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(area.ativas, title = "Áreas de Concentração")
+create_dt(area.ativas, title = "Programa - Áreas de Concentração - Ativas")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -214,7 +214,7 @@ areas.inativas <- areas.inativas[ids, ]
 
 # print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(areas.inativas, title = "Áreas de Concentração (inativas)")
+create_dt(areas.inativas, title = "Programa - Áreas de Concentração - Inativas")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -242,7 +242,7 @@ linhas.atual <- linhas.atual[ids, ]
 
 # print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(linhas.atual, title = "Linhas de Pesquisa")
+create_dt(linhas.atual, title = "Programa - Linhas de Pesquisa - Ativas")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -266,7 +266,7 @@ linhas.inativas <- linhas.inativas[ids, ]
 
 # print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(linhas.inativas, title = "Linhas de Pesquisa (inativas)")
+create_dt(linhas.inativas, title = "Programa - Linhas de Pesquisa - Inativas")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -324,7 +324,7 @@ colnames(table.projetos) <-
     "Início")
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.projetos, title = "Projetos de Pesquisa - Em andamento")
+create_dt(table.projetos, title = "Programa - Projetos de Pesquisa - Em andamento")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -379,7 +379,7 @@ colnames(table.projetos) <-
     "Fim")
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.projetos, title = "Projetos de Pesquisa - Encerrados")
+create_dt(table.projetos, title = "Programa - Projetos de Pesquisa - Encerrados")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1005,7 +1005,7 @@ table <- table[ids,]
 
 # print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table, title = "Disciplinas ativas")
+create_dt(table, title = "Programa - Disciplinas - Ativas")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1044,7 +1044,7 @@ ids <- order(bibliografia.raw$'Disciplina', decreasing = FALSE)
 bibliografia.raw <- bibliografia.raw[ids,]
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(bibliografia.raw, title = "Bibliografia")
+create_dt(bibliografia.raw, title = "Programa - Bibliografia")
 
 cat('<br>')
 ```
@@ -1145,7 +1145,7 @@ table <- table[ids, ]
 
 # print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table, title = "Disciplinas inativas")
+create_dt(table, title = "Programa - Disciplinas - Inativas")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1540,7 +1540,7 @@ for (j in 1:length(abas)) {
   # print table
   if (dim(calendarios)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(calendarios, title = "Calendários")))
+    cat(knitr::knit_print(create_dt(calendarios, title = "Programa - Calendários")))
   } else {
     cat("*Sem dados para exibir*")
   }
@@ -1601,7 +1601,7 @@ for (j in 1:length(abas)) {
   # print table
   if (dim(editais)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(editais, title = "Editais")))
+    cat(knitr::knit_print(create_dt(editais, title = "Programa - Editais")))
   } else {
     cat("*Sem dados para exibir*")
   }
@@ -1641,7 +1641,7 @@ for (j in 1:length(abas)) {
   # print table
   if (dim(infraestrutura.raw)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(infraestrutura.raw, title = "Infraestrutura")))
+    cat(knitr::knit_print(create_dt(infraestrutura.raw, title = "Programa - Infraestrutura")))
   } else {
     cat("*Sem dados para exibir*")
   }
@@ -1760,7 +1760,7 @@ for (j in 1:length(abas)) {
   # print table
   if (dim(convenios)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(convenios, title = "Convênios institucionais")))
+    cat(knitr::knit_print(create_dt(convenios, title = "Programa - Convênios institucionais")))
   } else {
     cat("*Sem dados para exibir*")
   }
@@ -1819,7 +1819,7 @@ for (j in 1:length(abas)) {
   if (dim(cooperacoes)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
     cat(knitr::knit_print(
-      create_dt(cooperacoes, title = "Cooperação interinstitucional")
+      create_dt(cooperacoes, title = "Programa - Cooperação interinstitucional")
     ))
   } else {
     cat("*Sem dados para exibir*")
@@ -1880,7 +1880,7 @@ for (j in 1:length(abas)) {
   # print table
   if (dim(internacional)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(internacional, title = "Internacionalização")))
+    cat(knitr::knit_print(create_dt(internacional, title = "Programa - Internacionalização")))
   } else {
     cat("*Sem dados para exibir*")
   }
@@ -1942,7 +1942,7 @@ if (dim(financiadores.all)[1] != 0) {
       "Início",
       "Fim")
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table.financiadores, title = "Financiadores - Projetos de Pesquisa")
+  create_dt(table.financiadores, title = "Programa - Financiadores - Projetos de Pesquisa - Auxílios")
 } else {
   cat('\n\n')
   cat('*Sem produção para exibir no período*')
@@ -1995,7 +1995,7 @@ if (dim(financiadores.all)[1] != 0) {
       "Início",
       "Fim")
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table.financiadores, title = "Financiadores - Projetos de Pesquisa")
+  create_dt(table.financiadores, title = "Programa - Financiadores - Projetos de Pesquisa - Bolsas")
 } else {
   cat('\n\n')
   cat('*Sem produção para exibir no período*')
@@ -2106,7 +2106,7 @@ if (dim(financiadores)[1] != 0) {
   cat('\n\n')
 }
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-try(create_dt(financiadores, title = "Financiadores - 2024-2021"),
+try(create_dt(financiadores, title = "Programa - Financiadores - 2024-2021"),
     silent = TRUE)
 
 cat('\n\n')
@@ -2163,7 +2163,7 @@ for (j in 1:length(abas)) {
   # print table
   if (dim(bolsas.raw)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(bolsas.raw, title = "Bolsas de estudo")))
+    cat(knitr::knit_print(create_dt(bolsas.raw, title = "Programa - Bolsas de estudo")))
   } else {
     cat("*Sem dados para exibir*")
   }

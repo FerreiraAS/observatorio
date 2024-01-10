@@ -812,7 +812,7 @@ for (i in 1:dim(periodicos)[1]) {
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(periodicos, title = "Períódicos institucionais")
+create_dt(periodicos, title = "Impactos - Períódicos institucionais")
 
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
@@ -873,7 +873,7 @@ cep.vigentes <- cbind(cep.vigentes.raw[, -3], Abrir)
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(cep.vigentes, title = "Comitê de Ética em Pesquisa - Documentos vigentes")
+create_dt(cep.vigentes, title = "Impactos - Comitê de Ética em Pesquisa - Documentos vigentes")
 
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
@@ -910,7 +910,7 @@ cep.revogados <- cbind(cep.revogados.raw[, -3], Abrir)
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(cep.revogados, title = "Comitê de Ética em Pesquisa - Documentos revogados")
+create_dt(cep.revogados, title = "Impactos - Comitê de Ética em Pesquisa - Documentos revogados")
   
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
@@ -1053,7 +1053,7 @@ sage.profiles.raw <-
 
 # create DT table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(sage.profiles, title = "Impacto da produção em políticas")
+create_dt(sage.profiles, title = "Impactos - Produção citada em diretrizes e políticas")
 
 cat('\n\n')
 cat(
@@ -1061,6 +1061,8 @@ cat(
 )
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
+
+<br>
 
 #### **Gráficos**
 
@@ -1501,7 +1503,7 @@ if (dim(projetos)[1] != 0) {
       "Início"
     )
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table.projetos, title = "Ações durante a Pandemia - Projetos de Pesquisa")
+  create_dt(table.projetos, title = "Impactos - Ações durante a Pandemia - Projetos de Pesquisa")
 } else {
   cat('\n\n')
   cat('*Sem produção para exibir no período*')
@@ -1567,7 +1569,7 @@ if (dim(financiadores)[1] != 0)
 cat('\n\n')
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-try(create_dt(financiadores, title = "Ações durante a Pandemia - Financiadores"),
+try(create_dt(financiadores, title = "Impactos - Ações durante a Pandemia - Financiadores"),
     silent = TRUE)
 
 cat('\n\n')
@@ -1648,7 +1650,7 @@ table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano'
                                         table.tcc$'Título')
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.tcc, title = "Ações durante a Pandemia - Teses")
+create_dt(table.tcc, title = "Impactos - Ações durante a Pandemia - Teses")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1723,7 +1725,7 @@ table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano'
                                         table.tcc$'Título')
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.tcc, title = "Ações durante a Pandemia - Dissertações")
+create_dt(table.tcc, title = "Impactos - Ações durante a Pandemia - Dissertações")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -2246,7 +2248,7 @@ for (j in 1:length(abas)) {
   # print table
   if (dim(premios)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(premios, title = "Prêmios")))
+    cat(knitr::knit_print(create_dt(premios, title = "Impactos - Ações durante a Pandemia - Prêmios")))
   } else {
     cat("*Sem dados para exibir*")
   }

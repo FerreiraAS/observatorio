@@ -139,7 +139,7 @@ for (j in 1:length(abas)) {
   if (dim(metodologia)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
     cat(knitr::knit_print(
-      create_dt(metodologia, title = "Metodologias")
+      create_dt(metodologia, title = "Autoavaliação - Metodologias")
     ))
   } else {
     cat("*Sem dados para exibir*")
@@ -185,7 +185,7 @@ for (j in 1:length(abas)) {
   if (dim(autoavaliacao)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
     cat(knitr::knit_print(
-      create_dt(autoavaliacao, title = "Autoavaliação")
+      create_dt(autoavaliacao, title = "Autoavaliação - Autoavaliação")
     ))
   } else {
     cat("*Sem dados para exibir*")
@@ -368,7 +368,7 @@ if (dim(missing.data)[1] != 0) {
   table <- missing.data[ids, ]
   
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Dados perdidos na Sucupira")
+  create_dt(table, title = "Autoavaliação - Dados perdidos na Sucupira")
 
 } else {
   cat("*Sem dados para exibir*")
@@ -410,7 +410,7 @@ for (i in 1:length(abas)) {
   # print table
   if (dim(periodo.raw)[1] != 0) {
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(periodo.raw, title = "Documentos CAPES")))
+    cat(knitr::knit_print(create_dt(periodo.raw, title = "Autoavaliação - Documentos CAPES")))
   } else {
     cat("*Sem dados para exibir*")
   }
