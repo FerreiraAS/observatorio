@@ -1,11 +1,11 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.12.19)  10 JAN 2024 16:09
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2024.1.10)  11 JAN 2024 14:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **autoavaliacao.tex
 (./autoavaliacao.tex
 LaTeX2e <2023-11-01>
-L3 programming layer <2023-12-11>
+L3 programming layer <2024-01-04>
 (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/latex/base/book.cls
 Document Class: book 2023/05/17 v1.4n Standard LaTeX document class
 (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/latex/base/bk10.clo
@@ -98,9 +98,9 @@ LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 )) (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty
 Package: iftex 2022/02/03 v1.0f TeX engine tests
 ) (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/latex/unicode-math/unicode-math.sty (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2023-12-11 L3 programming layer (loader) 
+Package: expl3 2024-01-04 L3 programming layer (loader) 
 (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-xetex.def
-File: l3backend-xetex.def 2023-11-09 L3 backend support: XeTeX
+File: l3backend-xetex.def 2024-01-04 L3 backend support: XeTeX
 \g__graphics_track_int=\count270
 \l__pdf_internal_box=\box53
 \g__pdf_backend_object_int=\count271
@@ -296,7 +296,7 @@ Package graphics Info: Driver file: xetex.def on input line 107.
 ) (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/latex/academicons/academicons.sty
 Package: academicons 2021/11/26 v1.9.1 Academicons Icons
 ) (/Users/asferreira/Library/TinyTeX/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2023/12/10 v3.99 The Babel package
+Package: babel 2024/01/07 v24.1 The Babel package
 \babel@savecnt=\count304
 \U@D=\dimen182
 \l@unhyphenated=\language6
@@ -1120,16 +1120,16 @@ Missing character: There is no ️ (U+FE0F) in font [lmroman10-regular]:mapping=
 [11] (./autoavaliacao.aux)
  ***********
 LaTeX2e <2023-11-01>
-L3 programming layer <2023-12-11>
+L3 programming layer <2024-01-04>
  ***********
 Package rerunfilecheck Info: File `autoavaliacao.out' has not changed.
 (rerunfilecheck)             Checksum: 51566A0B75F80898FB6A18CECAC30EAA;571.
  ) 
 Here is how much of TeX's memory you used:
- 31726 strings out of 476815
- 614418 string characters out of 5802774
- 1925106 words of memory out of 5000000
- 53198 multiletter control sequences out of 15000+600000
+ 31728 strings out of 476806
+ 614452 string characters out of 5802595
+ 1925174 words of memory out of 5000000
+ 53209 multiletter control sequences out of 15000+600000
  561654 words of font info for 74 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
  94i,18n,120p,467b,496s stack positions out of 10000i,1000n,20000p,200000b,200000s

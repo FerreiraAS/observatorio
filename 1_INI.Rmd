@@ -148,7 +148,8 @@ has.producao.ppg <- FALSE
 files.to.read <-
   list.files(file.path(getwd(), "Impacto", "Sage Policy Profiles"),
             full.names = TRUE,
-            recursive = FALSE)
+            recursive = FALSE,
+            pattern = ".csv")
 has.impacto.sage.files <- length(files.to.read) != 0
 ```
 
