@@ -58,7 +58,7 @@ cat('<br>')
 ```{r videos, eval = has.videos}
 # read separate sheets
 file.path <- "PPG/Videos.xlsx"
-abas <- excel_sheets(file.path)
+abas <- readxl::excel_sheets(file.path)
 topics <- c()
 videos.list <- vector(mode = "list", length = length(abas))
 
@@ -112,7 +112,7 @@ cat('<br>')
 ```{r podcasts, eval = has.podcasts}
 # read separate sheets
 file.path <- "PPG/Podcasts.xlsx"
-abas <- excel_sheets(file.path)
+abas <- readxl::excel_sheets(file.path)
 topics <- c()
 podcasts.list <- vector(mode = "list", length = length(abas))
 

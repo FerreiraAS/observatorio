@@ -22,7 +22,7 @@ for (i in 1:length(dirs)) {
 sucupira.sheets <- c()
 
 for (file in 1:length(files.to.read)) {
-  abas <- excel_sheets(files.to.read[file])
+  abas <- readxl::excel_sheets(files.to.read[file])
   sucupira.sheets <- c(sucupira.sheets, abas)
 }
 sucupira.sheets <- unique(sucupira.sheets)

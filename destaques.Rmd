@@ -67,7 +67,7 @@ cat('<br>')
 ```{r egressos-destaque, eval = has.destaques}
 # read separate sheets
 file.path <- "PPG/Destaques.xlsx"
-abas <- excel_sheets(file.path)
+abas <- readxl::excel_sheets(file.path)
 topics <- c()
 destaques.list <- vector(mode = "list", length = length(abas))
 
@@ -561,7 +561,7 @@ cat('<br>')
 ```{r blogs-ies, eval = has.blog.ies}
 # read separate sheets
 file.path <- "PPG/Blog institucional.xlsx"
-abas <- excel_sheets(file.path)
+abas <- readxl::excel_sheets(file.path)
 topics <- c()
 news.list <- vector(mode = "list", length = length(abas))
 
@@ -611,7 +611,7 @@ for (j in 1:length(abas)) {
 ```{r blogs-externos, eval = has.blogs.externos}
 # read separate sheets
 file.path <- "PPG/Blogs externos.xlsx"
-abas <- excel_sheets(file.path)
+abas <- readxl::excel_sheets(file.path)
 topics <- c()
 news.list <- vector(mode = "list", length = length(abas))
 

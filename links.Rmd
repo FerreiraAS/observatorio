@@ -104,6 +104,12 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
+### **LATITUDE Network** {#equator}
+
+<iframe src="https://www.latitudes-network.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
 ### **Good Reporting** {#equator}
 
 <iframe src="https://www.goodreports.org/" style="width:100%; height:600px; border:2px solid black;"></iframe>
