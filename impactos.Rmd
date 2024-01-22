@@ -1369,7 +1369,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 
 ```{r, eval = !any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
 cat('<br>')
-cat('<br>')
 ```
 
 ```{r pandemia-termos}
@@ -1531,6 +1530,9 @@ try(references_anais_impacto <-
 
 ### **Projetos de pesquisa**
 
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
 ```{r pandemia-projetos, eval = has.sucupira.files}
 # projetos - membros
 sheet <- "Projetos - Membros"
@@ -1593,6 +1595,9 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 <br>
 
 ### **Financiadores**
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r pandemia-financiadores, eval = has.financiadores}
 financiadores.sub <-
@@ -1660,6 +1665,9 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <br>
 
 ### **Tese**
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r pandemia-tese, eval = has.sucupira.files}
 # tcc
@@ -1736,6 +1744,9 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 ### **Dissertação**
 
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
 ```{r pandemia-dissertacao, eval = has.sucupira.files}
 # tcc
 sheet <- "TCC - Financiadores"
@@ -1809,7 +1820,10 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **Artigo completo** {.tabset}
+### **Artigo completo em periódico** {.tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r pandemia-artigos-completos, eval = any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
 # bind sources
@@ -1888,7 +1902,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-### **Artigo resumo** {.tabset}
+### **Artigo resumo em periódico** {.tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r pandemia-artigos-resumos, eval = any(has.artigos.resumos.ppg, has.artigos.resumos.sucupira)}
 # bind sources
@@ -1969,6 +1986,9 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 ### **Preprint** {.tabset}
 
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
 ```{r pandemia-preprints, eval = has.preprints.ppg}
 # bind sources
 try(doi_with_altmetric <- doi_with_altmetric_preprints_impacto, silent = TRUE)
@@ -2047,6 +2067,9 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <br>
 
 ### **Livro** {.tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r pandemia-Livros, eval = has.livros.ppg}
 # bind sources
@@ -2127,6 +2150,9 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 ### **Capítulo** {.tabset}
 
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
 ```{r pandemia-capitulos, eval = has.capitulos.ppg}
 # bind sources
 try(doi_with_altmetric <- doi_with_altmetric_capitulos_impacto, silent = TRUE)
@@ -2205,6 +2231,9 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <br>
 
 ### **Trabalho em Anais** {.tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r pandemia-resumos-anais, eval = has.anais.ppg}
 # bind sources

@@ -55,6 +55,80 @@ source("Scripts/social-media-sharing.R")
 
 <br>
 
+## **Repositório institucional** {#repositorio .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+### **Sede** {.tabset}
+
+```{r repositorios-mestrado-sede, eval = has.repositorios.sede}
+# read separate sheets
+repositorio <- readxl::read_excel("PPG/Repositórios.xlsx", sheet = "Sede")
+
+cat(paste('#### **', repositorio[1,2], '**', sep = ""))
+
+cat('\n\n')
+
+cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[1,3], '#list" style=\"width:100%; height:600px; border:2px solid black;"></iframe>', sep = ""))
+
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
+```{r repositorios-doutorado-sede, eval = has.repositorios.sede}
+# read separate sheets
+repositorio <- readxl::read_excel("PPG/Repositórios.xlsx", sheet = "Sede")
+
+cat(paste('#### **', repositorio[2,2], '**', sep = ""))
+
+cat('\n\n')
+
+cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[2,3], '#list" style=\"width:100%; height:600px; border:2px solid black;"></iframe>', sep = ""))
+
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
+### **Cooperação Interinstitucional** {.tabset}
+
+```{r repositorios-mestrado-cooperacao, eval = has.repositorios.cooperacao}
+# read separate sheets
+repositorio <- readxl::read_excel("PPG/Repositórios.xlsx", sheet = "Cooperação")
+
+cat(paste('#### **', repositorio[1,2], '**', sep = ""))
+
+cat('\n\n')
+
+cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[1,3], '#list" style=\"width:100%; height:600px; border:2px solid black;"></iframe>', sep = ""))
+
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+
+```
+
+<br>
+
+```{r repositorios-doutorado-cooperacao, eval = has.repositorios.cooperacao}
+# read separate sheets
+repositorio <- readxl::read_excel("PPG/Repositórios.xlsx", sheet = "Cooperação")
+
+cat(paste('#### **', repositorio[2,2], '**', sep = ""))
+
+cat('\n\n')
+
+cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[2,3], '#list" style=\"width:100%; height:600px; border:2px solid black;"></iframe>', sep = ""))
+
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+```
+
+<br>
+
 ## **Tese** {#tese}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -206,80 +280,6 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.tcc, title = "Produções - Dissertações")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-## **Repositório institucional** {#repositorio .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-### **Sede** {.tabset}
-
-```{r repositorios-mestrado-sede, eval = has.repositorios.sede}
-# read separate sheets
-repositorio <- readxl::read_excel("PPG/Repositórios.xlsx", sheet = "Sede")
-
-cat(paste('#### **', repositorio[1,2], '**', sep = ""))
-
-cat('\n\n')
-
-cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[1,3], '#list" style=\"width:100%; height:600px; border:2px solid black;"></iframe>', sep = ""))
-
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
-```{r repositorios-doutorado-sede, eval = has.repositorios.sede}
-# read separate sheets
-repositorio <- readxl::read_excel("PPG/Repositórios.xlsx", sheet = "Sede")
-
-cat(paste('#### **', repositorio[2,2], '**', sep = ""))
-
-cat('\n\n')
-
-cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[2,3], '#list" style=\"width:100%; height:600px; border:2px solid black;"></iframe>', sep = ""))
-
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-```
-
-<br>
-
-### **Cooperação Interinstitucional** {.tabset}
-
-```{r repositorios-mestrado-cooperacao, eval = has.repositorios.cooperacao}
-# read separate sheets
-repositorio <- readxl::read_excel("PPG/Repositórios.xlsx", sheet = "Cooperação")
-
-cat(paste('#### **', repositorio[1,2], '**', sep = ""))
-
-cat('\n\n')
-
-cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[1,3], '#list" style=\"width:100%; height:600px; border:2px solid black;"></iframe>', sep = ""))
-
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-
-```
-
-<br>
-
-```{r repositorios-doutorado-cooperacao, eval = has.repositorios.cooperacao}
-# read separate sheets
-repositorio <- readxl::read_excel("PPG/Repositórios.xlsx", sheet = "Cooperação")
-
-cat(paste('#### **', repositorio[2,2], '**', sep = ""))
-
-cat('\n\n')
-
-cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', repositorio[2,3], '#list" style=\"width:100%; height:600px; border:2px solid black;"></iframe>', sep = ""))
-
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
 <br>
@@ -618,97 +618,6 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
     )
   }
 }
-```
-
-<br>
-
-## **Retratação** {#retratacao .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !any(has.producao.ppg)}
-cat('<br>')
-```
-
-```{r retratacao, eval = has.producao.ppg}
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-# bind sources
-doi_with_altmetric <- doi_with_altmetric_retracted
-doi_without_altmetric <- doi_without_altmetric_retracted
-
-# available years of publication
-years <-
-  na.omit(sort(unique(
-    c(doi_with_altmetric$published_on, doi_without_altmetric$published_on)
-  ), decreasing = TRUE))
-
-# Verifica se há DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-} else {
-  # print export buttons
-  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
-  print_buttons_dt(references, title = "Retratações")
-}
-
-# Verifica se há DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-  cat('*Sem retratações para exibir*')
-  cat('\n')
-} else {
-  # section header
-  cat('\n\n<!-- -->\n\n')
-  cat(
-    paste(
-      "**Produtos (n = ",
-      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
-      sep = ""
-    )
-  )
-  cat('\n\n<!-- -->\n\n')
-  
-  for (year in 1:length(years)) {
-    # print tab header
-    cat('\n\n<!-- -->\n\n')
-    cat("### **", as.character(years[year]), "**", "\n", sep = "")
-    
-    # print table of papers with/without badges
-    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
-    table.with.badges(
-      show.Altmetric = TRUE,
-      show.Dimensions = TRUE,
-      show.PlumX = TRUE,
-      show.CiteScore = TRUE,
-      show.SJR = TRUE,
-      show.Qualis = TRUE,
-      doi_with_altmetric = tryCatch(
-        doi_with_altmetric[doi_with_altmetric$published_on == years[year], ],
-        error = function(e) {
-          doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
-        }
-      ),
-      doi_without_altmetric = tryCatch(
-        doi_without_altmetric[doi_without_altmetric$published_on == years[year], ],
-        error = function(e) {
-          doi_without_altmetric <- list()
-        }
-      ),
-      citescore = citescore,
-      scimago = scimago,
-      qualis = qualis
-    )
-  }
-}
-
-# print end of tab rows
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-cat('\n\n')
 ```
 
 <br>
@@ -1764,6 +1673,97 @@ if (dim(produtos.df)[1] != 0) {
 }
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+<br>
+
+## **Retratação** {#retratacao .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !any(has.producao.ppg)}
+cat('<br>')
+```
+
+```{r retratacao, eval = has.producao.ppg}
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+# bind sources
+doi_with_altmetric <- doi_with_altmetric_retracted
+doi_without_altmetric <- doi_without_altmetric_retracted
+
+# available years of publication
+years <-
+  na.omit(sort(unique(
+    c(doi_with_altmetric$published_on, doi_without_altmetric$published_on)
+  ), decreasing = TRUE))
+
+# Verifica se há DOIs
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
+  cat('\n')
+} else {
+  # print export buttons
+  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
+  print_buttons_dt(references, title = "Retratações")
+}
+
+# Verifica se há DOIs
+if (max(dim(doi_with_altmetric)[1], 0) == 0 &
+    max(dim(doi_without_altmetric)[1], 0) == 0) {
+  cat('\n')
+  cat('*Sem retratações para exibir*')
+  cat('\n')
+} else {
+  # section header
+  cat('\n\n<!-- -->\n\n')
+  cat(
+    paste(
+      "**Produtos (n = ",
+      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
+      sep = ""
+    )
+  )
+  cat('\n\n<!-- -->\n\n')
+  
+  for (year in 1:length(years)) {
+    # print tab header
+    cat('\n\n<!-- -->\n\n')
+    cat("### **", as.character(years[year]), "**", "\n", sep = "")
+    
+    # print table of papers with/without badges
+    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
+    table.with.badges(
+      show.Altmetric = TRUE,
+      show.Dimensions = TRUE,
+      show.PlumX = TRUE,
+      show.CiteScore = TRUE,
+      show.SJR = TRUE,
+      show.Qualis = TRUE,
+      doi_with_altmetric = tryCatch(
+        doi_with_altmetric[doi_with_altmetric$published_on == years[year], ],
+        error = function(e) {
+          doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
+        }
+      ),
+      doi_without_altmetric = tryCatch(
+        doi_without_altmetric[doi_without_altmetric$published_on == years[year], ],
+        error = function(e) {
+          doi_without_altmetric <- list()
+        }
+      ),
+      citescore = citescore,
+      scimago = scimago,
+      qualis = qualis
+    )
+  }
+}
+
+# print end of tab rows
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('\n\n')
 ```
 
 <br>
