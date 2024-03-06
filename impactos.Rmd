@@ -853,9 +853,9 @@ for (i in 1:dim(periodicos.raw)[1]) {
              periodicos.raw[i, 3],
              '" target="_blank"',
              '>',
-             "↗️" ,
-             "</a>",
-             sep = "")
+             # fontawesome icon
+             fontawesome::fa("up-right-from-square"),
+             '</a>')
   }
 }
 
@@ -940,9 +940,9 @@ for (i in 1:dim(cep.vigentes.raw)[1]) {
              cep.vigentes.raw[i, 3],
              '" target="_blank"',
              '>',
-             "↗️" ,
-             "</a>",
-             sep = "")
+             # fontawesome icon
+             fontawesome::fa("up-right-from-square"),
+             '</a>')
   }
 }
 
@@ -977,9 +977,9 @@ for (i in 1:dim(cep.revogados.raw)[1]) {
              cep.revogados.raw[i, 3],
              '" target="_blank"',
              '>',
-             "↗️" ,
-             "</a>",
-             sep = "")
+             # fontawesome icon
+             fontawesome::fa("up-right-from-square"),
+             '</a>')
   }
 }
 
@@ -1060,8 +1060,7 @@ sage.profiles$Source.title <-
          '" target="_blank"',
          '>',
          sage.profiles$Source.title,
-         "</a>",
-         sep = "")
+         '</a>')
 
 # loop for all entries to bind Cited.research.titles with respective Cited.research.DOIs
 bib.data.out <- c()
@@ -1134,7 +1133,7 @@ create_dt(sage.profiles, title = "Impactos - Produção citada em diretrizes e p
 
 cat('\n\n')
 cat(
-  "*Fonte:* [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/)"
+  "Fonte: [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/)"
 )
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
@@ -1168,7 +1167,7 @@ axis(1, at = 1:length(cross.table.politicas), labels = rownames(cross.table.poli
 
 cat('\n\n')
 cat(
-  "*Fonte:* [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/)"
+  "Fonte: [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/)"
 )
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
@@ -1188,18 +1187,17 @@ for (i in 1:length(abas)) {
                col_types = c("text"))
   
   cat(
-    paste(
+    paste0(
       '<iframe src="',
       agendas[1],
-      '" style=\"width:100%; height:600px; border:2px solid black;"></iframe>',
-      sep = ""
+      '" style=\"width:100%; height:600px; border:2px solid black;"></iframe>'
     )
   )
   
   cat('\n\n')
   
   cat(
-    "*Fonte:* [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/)"
+    "Fonte: [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/)"
   )
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
@@ -1220,7 +1218,6 @@ cat('<br>')
 ### **Agência-Edital**
 
 ```{r auto-financiadores-agencia-programa, eval = has.financiadores}
-# this chunk requires additional data that may not be available
 financiadores.raw <-
   readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
@@ -1264,7 +1261,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ### **Agência-Ano**
 
 ```{r auto-financiadores-agencia-ano, eval = has.financiadores}
-# this chunk requires additional data that may not be available
 financiadores.raw <-
   readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
@@ -1315,10 +1311,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ### **Edital-Ano**
 
 ```{r auto-financiadores-docente-programa, eval = has.financiadores}
-# this chunk requires additional data that may not be available
-financiadores.raw <-
-  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
-
 options(scipen = 10)
 
 financiadores.raw <-
@@ -1326,7 +1318,7 @@ financiadores.raw <-
 
 # dplyr::select variables to display, by AGENCIA & ANO
 financiadores <-
-  financiadores.raw %>% dplyr::select("Programa", "Ano", "Total")
+  financiadores.raw %>% dplyr::select("Ano", "Programa", "Total")
 
 # drop rows with empty cells
 financiadores <- financiadores[complete.cases(financiadores),]
@@ -1635,7 +1627,8 @@ if (dim(financiadores)[1] != 0)
                fonte[i, 1],
                '" target="_blank"',
                '>',
-               '↗️' ,
+               # fontawesome icon
+               fontawesome::fa("up-right-from-square"),
                '</a>')
     }
   }
@@ -1857,11 +1850,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   # section header
   cat('\n\n<!-- -->\n\n')
   cat(
-    paste(
+    paste0(
       "*Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
-      sep = ""
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n"
     )
   )
   cat('<br>')
@@ -1939,11 +1931,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   # section header
   cat('\n\n<!-- -->\n\n')
   cat(
-    paste(
+    paste0(
       "*Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
-      sep = ""
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n"
     )
   )
   cat('<br>')
@@ -2021,11 +2012,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   # section header
   cat('\n\n<!-- -->\n\n')
   cat(
-    paste(
+    paste0(
       "*Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
-      sep = ""
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n"
     )
   )
   cat('<br>')
@@ -2103,11 +2093,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   # section header
   cat('\n\n<!-- -->\n\n')
   cat(
-    paste(
+    paste0(
       "*Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
-      sep = ""
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n"
     )
   )
   cat('<br>')
@@ -2185,11 +2174,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   # section header
   cat('\n\n<!-- -->\n\n')
   cat(
-    paste(
+    paste0(
       "*Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
-      sep = ""
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n"
     )
   )
   cat('<br>')
@@ -2267,11 +2255,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   # section header
   cat('\n\n<!-- -->\n\n')
   cat(
-    paste(
+    paste0(
       "*Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n",
-      sep = ""
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n"
     )
   )
   cat('<br>')
@@ -2344,9 +2331,9 @@ for (j in 1:length(abas)) {
                premios.raw[i, 3],
                '" target="_blank"',
                '>',
-               "↗️" ,
-               "</a>",
-               sep = "")
+               # fontawesome icon
+               fontawesome::fa("up-right-from-square"),
+               '</a>')
     }
   }
   premios <- cbind(premios.raw[, -3], Abrir)

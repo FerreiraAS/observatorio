@@ -63,7 +63,7 @@ paths <- c(
   file.path(getwd(), "PPG"),
   file.path(getwd(), "Sucupira"),
   file.path(getwd(), "Impacto", "Sage Policy Profiles")
-  )
+)
 
 for (i in 1:length(paths)) {
   if (!dir.exists(paths[i])) {
@@ -78,14 +78,11 @@ source(file.path("Scripts", "citescore.R"), local = knitr::knit_global())
 source(file.path("Scripts", "sjr.R"), local = knitr::knit_global())
 source(file.path("Scripts", "webqualis.R"), local = knitr::knit_global())
 
-source("Scripts/doi-cleaner.R", local = knitr::knit_global())
+source(file.path("Scripts", "doi-cleaner.R"), local = knitr::knit_global())
 
-source(file.path("Scripts", "get_citescore.R"),
-       local = knitr::knit_global())
+source(file.path("Scripts", "get_citescore.R"), local = knitr::knit_global())
 source(file.path("Scripts", "get_sjr.R"), local = knitr::knit_global())
-source(file.path("Scripts", "get_webqualis.R"),
-       local = knitr::knit_global())
-# get metrics from Scopus, SCIMago and CAPES
+source(file.path("Scripts", "get_webqualis.R"), local = knitr::knit_global())
 source(file.path("Scripts", "get-metrics-from-sources.R"), local = knitr::knit_global())
 ```
 
@@ -1189,7 +1186,6 @@ if (!sjmisc::is_empty(dois)) {
 ```
 
 ```{r bind-all, results = "hide", cache = TRUE, cache.path = "cache/bind-all/", eval = any(has.producao.sucupira, has.producao.ppg)}
-
 # bind sources
 doi_with_altmetric_all <-
   dplyr::bind_rows(
@@ -1258,100 +1254,108 @@ if (!sjmisc::is_empty(doi_without_altmetric_all)) {
 
 ```{r has, results = "hide", cache = TRUE, cache.path = "cache/has/"}
 # directories
-as.logical(has.sucupira.files)
-as.logical(has.ppg.files)
-as.logical(has.impacto.sage.files)
+has.sucupira.files <- as.logical(has.sucupira.files)
+has.ppg.files <- as.logical(has.ppg.files)
+has.impacto.sage.files <- as.logical(has.impacto.sage.files)
 
 # PPG files
-as.logical(has.agendas.pesquisa)
-as.logical(has.apresentacao)
-as.logical(has.area.capes)
-as.logical(has.autoavaliacao)
-as.logical(has.avaliacao)
-as.logical(has.bibliografia)
-as.logical(has.blogs.externos)
-as.logical(has.blog.ies)
-as.logical(has.bolsas)
-as.logical(has.calendarios)
-as.logical(has.cep)
-as.logical(has.convenios)
-as.logical(has.cooperacoes)
-as.logical(has.coordenacao)
-as.logical(has.dados.cadastrais)
-as.logical(has.destaques)
-as.logical(has.discentes)
-as.logical(has.downloads)
-as.logical(has.editais)
-as.logical(has.financiadores)
-as.logical(has.grupos.pesquisa)
-as.logical(has.historico)
-as.logical(has.infraestrutura)
-as.logical(has.internacionalizacao)
-as.logical(has.laboratorios)
-as.logical(has.metodologia)
-as.logical(has.notas)
-as.logical(has.periodicos)
-as.logical(has.planejamento)
-as.logical(has.podcasts)
-as.logical(has.politicas)
-as.logical(has.premios)
-as.logical(has.premio.capes)
-as.logical(has.producao)
-as.logical(has.repositorios.cooperacao)
-as.logical(has.repositorios.sede)
-as.logical(has.videos)
+has.agendas.pesquisa <- as.logical(has.agendas.pesquisa)
+has.apresentacao <- as.logical(has.apresentacao)
+has.area.capes <- as.logical(has.area.capes)
+has.autoavaliacao <- as.logical(has.autoavaliacao)
+has.avaliacao <- as.logical(has.avaliacao)
+has.bibliografia <- as.logical(has.bibliografia)
+has.blogs.externos <- as.logical(has.blogs.externos)
+has.blog.ies <- as.logical(has.blog.ies)
+has.bolsas <- as.logical(has.bolsas)
+has.calendarios <- as.logical(has.calendarios)
+has.cep <- as.logical(has.cep)
+has.convenios <- as.logical(has.convenios)
+has.cooperacoes <- as.logical(has.cooperacoes)
+has.coordenacao <- as.logical(has.coordenacao)
+has.dados.cadastrais <- as.logical(has.dados.cadastrais)
+has.destaques <- as.logical(has.destaques)
+has.discentes <- as.logical(has.discentes)
+has.downloads <- as.logical(has.downloads)
+has.editais <- as.logical(has.editais)
+has.financiadores <- as.logical(has.financiadores)
+has.grupos.pesquisa <- as.logical(has.grupos.pesquisa)
+has.historico <- as.logical(has.historico)
+has.infraestrutura <- as.logical(has.infraestrutura)
+has.internacionalizacao <- as.logical(has.internacionalizacao)
+has.laboratorios <- as.logical(has.laboratorios)
+has.metodologia <- as.logical(has.metodologia)
+has.notas <- as.logical(has.notas)
+has.periodicos <- as.logical(has.periodicos)
+has.planejamento <- as.logical(has.planejamento)
+has.podcasts <- as.logical(has.podcasts)
+has.politicas <- as.logical(has.politicas)
+has.premios <- as.logical(has.premios)
+has.premio.capes <- as.logical(has.premio.capes)
+has.producao <- as.logical(has.producao)
+has.repositorios.cooperacao <- as.logical(has.repositorios.cooperacao)
+has.repositorios.sede <- as.logical(has.repositorios.sede)
+has.videos <- as.logical(has.videos)
 
 # data sucupira
-as.logical(has.artigos.completos.sucupira)
-as.logical(has.artigos.resumos.sucupira)
-as.logical(has.livros.sucupira)
-as.logical(has.anais.sucupira)
-as.logical(has.producao.sucupira)
-as.logical(has.2024.2021)
-as.logical(has.2020.2017)
-as.logical(has.2016.2013)
-as.logical(has.2012.2010)
-as.logical(has.posdocs)
+has.artigos.completos.sucupira <- as.logical(has.artigos.completos.sucupira)
+has.artigos.resumos.sucupira <- as.logical(has.artigos.resumos.sucupira)
+has.livros.sucupira <- as.logical(has.livros.sucupira)
+has.anais.sucupira <- as.logical(has.anais.sucupira)
+has.producao.sucupira <- as.logical(has.producao.sucupira)
+has.2024.2021 <- as.logical(has.2024.2021)
+has.2020.2017 <- as.logical(has.2020.2017)
+has.2016.2013 <- as.logical(has.2016.2013)
+has.2012.2010 <- as.logical(has.2012.2010)
+has.posdocs <- as.logical(has.posdocs)
 
 # data ppg
-as.logical(has.artigos.completos.ppg)
-as.logical(has.artigos.resumos.ppg)
-as.logical(has.preprints.ppg)
-as.logical(has.livros.ppg)
-as.logical(has.capitulos.ppg)
-as.logical(has.anais.ppg)
-as.logical(has.producao.ppg)
+has.artigos.completos.ppg <- as.logical(has.artigos.completos.ppg)
+has.artigos.resumos.ppg <- as.logical(has.artigos.resumos.ppg)
+has.preprints.ppg <- as.logical(has.preprints.ppg)
+has.livros.ppg <- as.logical(has.livros.ppg)
+has.capitulos.ppg <- as.logical(has.capitulos.ppg)
+has.anais.ppg <- as.logical(has.anais.ppg)
+has.producao.ppg <- as.logical(has.producao.ppg)
 ```
 
 ```{r save, results = "hide", eval = FALSE}
-try(write.table(
-  doi_with_altmetric_all,
-  "doi_with_altmetric_all.tsv",
-  quote = FALSE,
-  sep = "\t",
-  row.names = FALSE,
-  col.names = TRUE
-),
-silent = TRUE)
+# Write doi_with_altmetric_all to TSV file
+try(
+  write.table(
+    doi_with_altmetric_all,
+    "doi_with_altmetric_all.tsv",
+    quote = FALSE,
+    sep = "\t",
+    row.names = FALSE,
+    col.names = TRUE
+  ),
+  silent = TRUE
+)
 
-try(write.table(
-  doi_without_altmetric_all,
-  "doi_without_altmetric_all.tsv",
-  quote = FALSE,
-  sep = "\t",
-  row.names = FALSE,
-  col.names = TRUE
-),
-silent = TRUE)
+# Write doi_without_altmetric_all to TSV file
+try(
+  write.table(
+    doi_without_altmetric_all,
+    "doi_without_altmetric_all.tsv",
+    quote = FALSE,
+    sep = "\t",
+    row.names = FALSE,
+    col.names = TRUE
+  ),
+  silent = TRUE
+)
 
-try(write.table(
-  doi_all,
-  "doi_all.tsv",
-  quote = FALSE,
-  sep = "\t",
-  row.names = FALSE,
-  col.names = TRUE
-),
-silent = TRUE
+# Write doi_all to TSV file
+try(
+  write.table(
+    doi_all,
+    "doi_all.tsv",
+    quote = FALSE,
+    sep = "\t",
+    row.names = FALSE,
+    col.names = TRUE
+  ),
+  silent = TRUE
 )
 ```

@@ -47,11 +47,10 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <br>
 
 ```{r downloads, eval = has.downloads}
-# create a list of tables to display datatables in loop
-
 # initialize all sheets
 abas <- readxl::excel_sheets("PPG/Downloads.xlsx")
 
+# create a list of tables to display datatables in loop
 datasets <- list()
 # display each sheet in a tab
 for (j in 1:length(abas)) {
@@ -71,9 +70,9 @@ for (j in 1:length(abas)) {
                downloads.raw[i, 3],
                '" target="_blank"',
                '>',
-               "↗️" ,
-               "</a>",
-               sep = "")
+               # fontawesome icon
+               fontawesome::fa("up-right-from-square"),
+               '</a>')
     }
   }
   downloads.raw <- cbind(downloads.raw[, -3], Abrir)

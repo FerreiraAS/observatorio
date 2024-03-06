@@ -31,7 +31,7 @@ create_dt <- function(x, title, pageLength = 4) {
       language = list(paginate =
                         list(
                           'next' = "Próximo",
-                          previous = "Anterior"
+                          'previous' = "Anterior"
                         ))
     ),
     escape = FALSE

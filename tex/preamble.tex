@@ -1,15 +1,11 @@
-\usepackage{academicons}
-\usepackage[portuguese]{babel}
-\usepackage{booktabs}
-\usepackage{draftwatermark}
+% Load packages
+\usepackage[brazilian]{babel}
 \usepackage{fontspec}
-\usepackage{fontawesome5}
+\usepackage{booktabs}
 \usepackage{float}
-\usepackage{geometry}
 \usepackage{graphicx}
 \usepackage{letltxmacro}
 \usepackage{longtable}
-\usepackage[utf8]{inputenc}
 \usepackage{pdfpages}
 \usepackage[notransparent]{svg}
 \usepackage{tcolorbox}
@@ -19,31 +15,23 @@
 \usepackage{xcolor}
 \usepackage[linktoc=all]{hyperref}
 
-\SetWatermarkLightness{0.9}
-\SetWatermarkText{RASCUNHO}
-\SetWatermarkScale{1}
-
-\AtBeginDocument{\let\maketitle\relax}
-
-\renewcommand{\href}[2]{#2\footnote{\url{#1}}}
-
+% Define color
 \definecolor{lightgray}{gray}{0.95}
 
+% Define tcolorbox
 \newtcolorbox{blackbox}{
   colback=lightgray,
   colframe=orange,
   coltext=black,
   boxsep=5pt,
-  arc=4pt}
+  arc=4pt
+}
+
+% Define infobox environment
 \newenvironment{infobox}[1]
   {
   \begin{itemize}
-  \renewcommand{\labelitemi}{
-    \raisebox{-.7\height}[0pt][0pt]{
-      {\setkeys{Gin}{width=3em,keepaspectratio}
-        \includegraphics{#1}}
-    }
-  }
+  \renewcommand{\labelitemi}{\raisebox{-.7\height}[0pt][0pt]{\includegraphics[width=3em,keepaspectratio]{#1}}}
   \setlength{\fboxsep}{1em}
   \begin{blackbox}
   \item
@@ -53,14 +41,23 @@
   \end{itemize}
   }
 
-
+% Enable/disable footnotes
 \LetLtxMacro\Oldfootnote\footnote
-\newcommand{\EnableFootNotes}{%
-  \LetLtxMacro\footnote\Oldfootnote%
-}
-\newcommand{\DisableFootNotes}{%
-  \renewcommand{\footnote}[2][]{\relax}
-}
+\newcommand{\EnableFootNotes}{\LetLtxMacro\footnote\Oldfootnote}
+\newcommand{\DisableFootNotes}{\renewcommand{\footnote}[2][]{\relax}}
 
-% unnumbered chapters and arabic page numbering
-\backmatter
+% Watermark
+\usepackage{draftwatermark}
+\SetWatermarkLightness{0.9}
+\SetWatermarkText{RASCUNHO}
+\SetWatermarkScale{1}
+
+% Remove the title page
+\AtBeginDocument{\let\maketitle\relax}
+
+% Remove unnecessary packages
+\usepackage{academicons} % Consider removing if not needed
+\usepackage{fontawesome5} % Consider removing if not needed
+
+% Arabic page numbering for backmatter
+\pagenumbering{arabic}

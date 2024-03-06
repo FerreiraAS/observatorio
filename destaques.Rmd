@@ -24,13 +24,14 @@ knitr::opts_chunk$set(
   knitr.kable.NA = '',
   knitr.table.format = "html",
   webshot = "webshot",
+  dev = "png",
   dev = "png"
 )
 source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
 <!--script for inserting LOGO ABOVE THE TOC-->
-```{js table-of-contents}
+```{js}
 $(document).ready(function() {
   $('#TOC').parent().prepend('<div id=\"nav_logo\"><img src="PPG/Images/logo-programa.png"></div>');
   });
@@ -44,14 +45,25 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 ```
 </p>
 
+<br>
+
 <!--script for generating ALTMETRIC badges-->
+
+```{=html}
 <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
+```
 
 <!--script for generating multiple DIMENSIONS badges-->
+
+```{=html}
 <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
+```
 
 <!--script for generating multiple PLUMX badges-->
+
+```{=html}
 <script type="text/javascript" src="//cdn.plu.mx/widget-all.js"></script>
+```
 
 <br>
 
@@ -68,7 +80,6 @@ cat('<br>')
 # read separate sheets
 file.path <- "PPG/Destaques.xlsx"
 abas <- readxl::excel_sheets(file.path)
-topics <- c()
 destaques.list <- vector(mode = "list", length = length(abas))
 
 # iterate across sheets
@@ -82,16 +93,19 @@ for (j in 1:length(abas)) {
     destaques[i, 1] <-
       paste("### **", as.character(as.Date(as.numeric(destaques[i, 1]), origin = "1899-12-30")), "**", sep = "")
     destaques[i, 3] <-
-      paste0('<a href="', destaques[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
+        paste0('<a href="',
+               destaques[i, 3],
+               '" target="_blank"',
+               '>',
+               # fontawesome icon
+               fontawesome::fa("up-right-from-square"),
+               '</a>')
   }
   
   # drop date column
   destaques <- destaques[, -1]
   # store data to print table
   destaques.list[[j]] <- destaques
-  
-  # store data to plot wordcloud
-  topics <- rbind(topics, destaques[i, 1])
 }
 
 # iterate across sheets
@@ -100,9 +114,9 @@ for (j in 1:length(abas)) {
   cat("### **", abas[j], "**", "\n", sep = "")
   cat('\n\n<!-- -->\n\n')
   print(
-    kable(destaques.list[[j]], align = c("l", rep(
-      "c", ncol(destaques) - 2
-    ), "r"), escape = FALSE) %>% kable_styling(
+    kableExtra::kable(destaques.list[[j]], align = c("l", rep(
+      "c", ncol(destaques.list[[j]]) - 2
+    ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
       bootstrap_options = c("hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
@@ -115,9 +129,10 @@ for (j in 1:length(abas)) {
 
 <br>
 
-## **Dissertações/Teses** {#TCC-destaque}
+## **Dissertações/Teses** {#TCC-destaque .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
+
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r, eval = !has.sucupira.files}
@@ -129,6 +144,7 @@ cat('<br>')
 ## **Produções: Visibilidade** {#destaque-visibilidade .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
+
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r, eval = !any(has.producao.sucupira, has.producao.ppg)}
@@ -136,17 +152,17 @@ cat('<br>')
 ```
 
 ```{r destaque-visibilidade, eval = any(has.producao.sucupira, has.producao.ppg)}
-# sources
+# Sources
 doi_with_altmetric <- doi_with_altmetric_all
 doi_without_altmetric <- data.frame() # do not have Altmetric score anyway
 references <- references_all
 
-# sort columns by Altmetric then year
+# Sort columns by Altmetric then year
 ordering <-
   order(
     -as.numeric(doi_with_altmetric$altmetric_score),
     -as.numeric(doi_with_altmetric$published_on)
-    )
+  )
 doi_with_altmetric <- doi_with_altmetric[ordering, ]
 references <- references[ordering, ]
 
@@ -155,48 +171,47 @@ top <- min(dim(doi_with_altmetric)[1], 20)
 doi_with_altmetric <- doi_with_altmetric[1:top, ]
 references <- references[1:top, ]
 
-# Verifica se há DOIs
+# Check if there are DOIs
 if (max(dim(doi_with_altmetric)[1], 0) == 0 &
     max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
 } else {
-  # print export buttons
+  # Print export buttons
   source("Scripts/print-only-buttons.R", local = knitr::knit_global())
   print_buttons_dt(references, title = "Produção de destaque - Atenção e visibilidade")
 }
 
-# Verifica se há DOIs
+# Check if there are DOIs
 if (max(dim(doi_with_altmetric)[1], 0) == 0 &
     max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
   cat('*Sem produção para exibir*')
   cat('\n')
 } else {
-  # section header
+  # Section header
   cat('\n\n<!-- -->\n\n')
   cat(
-    paste(
+    paste0(
       "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
-      sep = ""
+      ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n"
     )
   )
   cat('<br>')
   
-  # print tab header
+  # Print tab header
   cat('\n\n<!-- -->\n\n')
   
-  # print table of papers with/without badges
+  # Print table of papers with/without badges
   source("Scripts/papers-with-badges.R", local = knitr::knit_global())
   table.with.badges(
-      show.Altmetric = TRUE,
-      show.Dimensions = TRUE,
-      show.PlumX = TRUE,
-      show.CiteScore = TRUE,
-      show.SJR = TRUE,
-      show.Qualis = TRUE,
-      doi_with_altmetric = tryCatch(
+    show.Altmetric = TRUE,
+    show.Dimensions = TRUE,
+    show.PlumX = TRUE,
+    show.CiteScore = TRUE,
+    show.SJR = TRUE,
+    show.Qualis = TRUE,
+    doi_with_altmetric = tryCatch(
       doi_with_altmetric,
       error = function(e) {
         doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
@@ -208,9 +223,9 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
         doi_without_altmetric <- list()
       }
     ),
-      citescore = citescore,
-      scimago = scimago,
-      qualis = qualis
+    citescore = citescore,
+    scimago = scimago,
+    qualis = qualis
   )
 }
 ```
@@ -227,6 +242,7 @@ cat('<br>')
 ```
 
 ```{r destaque-prestigio, eval = any(has.producao.sucupira, has.producao.ppg)}
+# Sources
 doi_all_sorted <- doi_all[!is.na(doi_all$CiteScore), ]
 
 ordering <- order(-as.numeric(doi_all_sorted$CiteScore),
@@ -240,52 +256,51 @@ top <- min(dim(doi_all_sorted)[1], 20)
 doi_all_sorted <- doi_all_sorted[1:top, ]
 references <- references_all[1:top, ]
 
-# split into papers with/without Altmetric
+# Split into papers with/without Altmetric
 doi_with_altmetric <- doi_all_sorted[!is.na(doi_all_sorted$altmetric_score),]
 doi_without_altmetric <- doi_all_sorted[is.na(doi_all_sorted$altmetric_score),]
 
-# Verifica se há DOIs
+# Check if there are DOIs
 if (max(dim(doi_with_altmetric)[1], 0) == 0 &
     max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
 } else {
-  # print export buttons
+  # Print export buttons
   source("Scripts/print-only-buttons.R", local = knitr::knit_global())
   print_buttons_dt(references, title = "Produção de destaque - Prestígio do peridódico")
 }
 
-# Verifica se há DOIs
+# Check if there are DOIs
 if (max(dim(doi_with_altmetric)[1], 0) == 0 &
     max(dim(doi_without_altmetric)[1], 0) == 0) {
   cat('\n')
   cat('*Sem produção para exibir*')
   cat('\n')
 } else {
-  # section header
+  # Section header
   cat('\n\n<!-- -->\n\n')
   cat(
-    paste(
+    paste0(
       "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
-      sep = ""
+      ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n"
     )
   )
   cat('<br>')
   
-  # print tab header
+  # Print tab header
   cat('\n\n<!-- -->\n\n')
   
-  # print table of papers with/without badges
+  # Print table of papers with/without badges
   source("Scripts/papers-with-badges.R", local = knitr::knit_global())
   table.with.badges(
-      show.Altmetric = TRUE,
-      show.Dimensions = TRUE,
-      show.PlumX = TRUE,
-      show.CiteScore = TRUE,
-      show.SJR = TRUE,
-      show.Qualis = TRUE,
-      doi_with_altmetric = tryCatch(
+    show.Altmetric = TRUE,
+    show.Dimensions = TRUE,
+    show.PlumX = TRUE,
+    show.CiteScore = TRUE,
+    show.SJR = TRUE,
+    show.Qualis = TRUE,
+    doi_with_altmetric = tryCatch(
       doi_with_altmetric,
       error = function(e) {
         doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
@@ -297,9 +312,9 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
         doi_without_altmetric <- list()
       }
     ),
-      citescore = citescore,
-      scimago = scimago,
-      qualis = qualis
+    citescore = citescore,
+    scimago = scimago,
+    qualis = qualis
   )
 }
 ```
@@ -316,48 +331,52 @@ cat('<br>')
 ```
 
 ```{r premios, eval = has.premios}
-# initialize all sheets
-abas <- readxl::excel_sheets("PPG/Prêmios.xlsx")
+# read separate sheets
+file.path <- "PPG/Prêmios.xlsx"
+abas <- readxl::excel_sheets(file.path)
+premios.list <- vector(mode = "list", length = length(abas))
 
-# display each sheet in a tab
+# iterate across sheets
 for (j in 1:length(abas)) {
-  cat('\n\n<!-- -->\n\n')
-  cat(paste0('#### **', abas[j], '**'))
-  cat('\n\n<!-- -->\n\n')
-  premios.raw <-
-    readxl::read_excel(
-      "PPG/Prêmios.xlsx",
-      sheet = abas[j],
-      col_types = c("text")
-    )
-  
+  premios <-
+    readxl::read_excel(file.path,
+               sheet = abas[j],
+               col_types = c("text", "text", "text"))
   # replace the link by a tag
-  Abrir <- matrix(NA, nrow = dim(premios.raw)[1])
-  colnames(Abrir) <- "Abrir"
-  # add hyperlinks
-  for (i in 1:dim(premios.raw)[1]) {
-    if (!is.na(premios.raw[i, 3])) {
-      Abrir[i] <-
+  for (i in 1:dim(premios)[1]) {
+    premios[i, 1] <-
+      paste("### **", as.character(as.Date(as.numeric(premios[i, 1]), origin = "1899-12-30")), "**", sep = "")
+    premios[i, 3] <-
         paste0('<a href="',
-               premios.raw[i, 3],
+               premios[i, 3],
                '" target="_blank"',
                '>',
-               "↗️" ,
-               "</a>",
-               sep = "")
-    }
-  }
-  premios <- cbind(premios.raw[, -3], Abrir)
-  
-  # print table
-  if (dim(premios)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(premios, title = "Destaques - Prêmios")))
-  } else {
-    cat("*Sem dados para exibir*")
+               # fontawesome icon
+               fontawesome::fa("up-right-from-square"),
+               '</a>')
   }
   
-  # print end of tab rows
+  # drop date column
+  premios <- premios[, -1]
+  # store data to print table
+  premios.list[[j]] <- premios
+}
+
+# iterate across sheets
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat("### **", abas[j], "**", "\n", sep = "")
+  cat('\n\n<!-- -->\n\n')
+  print(
+    kableExtra::kable(premios.list[[j]], align = c("l", rep(
+      "c", ncol(premios.list[[j]]) - 2
+    ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+      bootstrap_options = c("hover", "condensed", "responsive"),
+      full_width = T,
+      position = "center"
+    )
+  )
+  cat('\n\n<!-- -->\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
@@ -367,6 +386,7 @@ for (j in 1:length(abas)) {
 ## **Prêmio CAPES de Tese** {#premio-capes .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
+
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r, eval = !has.premio.capes}
@@ -374,10 +394,10 @@ cat('<br>')
 ```
 
 ```{r premio-capes, eval = has.premio.capes}
-# initialize all sheets
+# Initialize all sheets
 abas <- readxl::excel_sheets("PPG/Prêmio CAPES de Tese.xlsx")
 
-# display each sheet in a tab
+# Display each sheet in a tab
 for (j in 1:length(abas)) {
   cat('\n\n<!-- -->\n\n')
   cat(paste0('### **', abas[j], '**'))
@@ -389,29 +409,32 @@ for (j in 1:length(abas)) {
       col_types = c("text")
     )
 
-  # print table
+  # Print table
   if (dim(premios.raw)[1] != 0) {
-    cat('<div premios.raw = "row"><div class = "col-md-6">')
+    cat('<div class="row">') # Open row div
+    cat('<div class="col-md-6">') # Open first column div
     cat('<center>\n')
     cat('\n\n<!-- -->\n\n')
     link.tese <- premios.raw[j, 1]
-    cat(paste0('<iframe src=\"', link.tese, '\" style=\"width:100%; height:600px; border:2px solid black;"></iframe>', "\n"))
+    cat(paste0('<iframe src=\"', link.tese, '\" style=\"width:100%; height:600px; border:2px solid black;\"></iframe>', "\n"))
     cat('\n\n<!-- -->\n\n')
     cat('\n</center>')
-    cat('</div>')
+    cat('</div>') # Close first column div
     
-    cat('<div class = "col-md-6">')
+    cat('<div class="col-md-6">') # Open second column div
     cat('<center>\n')
     cat('\n\n<!-- -->\n\n')
     link.mencao <- premios.raw[j, 2]
-    cat(paste0('<iframe src=\"', link.mencao, '/preview" style=\"width:100%; height:600px; border:2px solid black;"></iframe>', "\n"))
+    cat(paste0('<iframe src=\"', link.mencao, '/preview\" style=\"width:100%; height:600px; border:2px solid black;\"></iframe>', "\n"))
     cat('\n</center>')
-    cat('</div></div>')
+    cat('</div>') # Close second column div
+    
+    cat('</div>') # Close row div
   } else {
     cat("*Sem dados para exibir*")
   }
   
-  # print end of tab rows
+  # Print end of tab rows
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
@@ -421,6 +444,7 @@ for (j in 1:length(abas)) {
 ## **Representatividade** {#representatividade}
 
 <!--script for generating HORIZONTAL LINE-->
+
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r, eval = !has.sucupira.files}
@@ -430,23 +454,19 @@ cat('<br>')
 ### **Associações** {.tabset}
 
 ```{r associacoes, cache = TRUE, cache.path = "cache/associacoes/", eval = has.sucupira.files}
-# docentes
+# Docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-# keep active professors and remove duplicated data
-sucupira <-
-  sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`), ]
+# Keep active professors and remove duplicated data
+sucupira <- sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`), ]
 sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupira$ORCID),]
 
-orcids <-
-  gsub("(.{14})(.*)$",
-       "\\1-\\2",
-       gsub(
-         "(.{9})(.*)$",
-         "\\1-\\2",
-         gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
-       ))
+orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
+               gsub("(.{9})(.*)$", "\\1-\\2",
+                    gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
+                  )
+              )
 
 for (id in 1:length(orcids)) {
   assoc.name <- sucupira.unique$`Nome Docente`[id]
@@ -470,23 +490,19 @@ cat('<br>')
 ### **Corpo editorial de periódicos** {.tabset}
 
 ```{r corpo-editorial, cache = TRUE, cache.path = "cache/corpo-editorial/", eval = has.sucupira.files}
-# docentes
+# Docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-# keep active professors and remove duplicated data
-sucupira <-
-  sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`), ]
+# Keep active professors and remove duplicated data
+sucupira <- sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`), ]
 sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupira$ORCID),]
 
-orcids <-
-  gsub("(.{14})(.*)$",
-       "\\1-\\2",
-       gsub(
-         "(.{9})(.*)$",
-         "\\1-\\2",
-         gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
-       ))
+orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
+               gsub("(.{9})(.*)$", "\\1-\\2",
+                    gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
+                  )
+              )
 
 for (id in 1:length(orcids)) {
   editor.name <- sucupira.unique$`Nome Docente`[id]
@@ -508,23 +524,19 @@ for (id in 1:length(orcids)) {
 ### **Revisor de periódicos** {.tabset}
 
 ```{r revisores, cache = TRUE, cache.path = "cache/revisores/", eval = has.sucupira.files}
-# docentes
+# Docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-# keep active professors and remove duplicated data
-sucupira <-
-  sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`), ]
+# Keep active professors and remove duplicated data
+sucupira <- sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`), ]
 sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupira$ORCID),]
 
-orcids <-
-  gsub("(.{14})(.*)$",
-       "\\1-\\2",
-       gsub(
-         "(.{9})(.*)$",
-         "\\1-\\2",
-         gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
-       ))
+orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
+               gsub("(.{9})(.*)$", "\\1-\\2",
+                    gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
+                  )
+              )
 
 for (id in 1:length(orcids)) {
   reviewer.name <- sucupira.unique$`Nome Docente`[id]
@@ -550,6 +562,7 @@ for (id in 1:length(orcids)) {
 ## **Divulgação** {#divulgacao}
 
 <!--script for generating HORIZONTAL LINE-->
+
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r, eval = !any(has.blog.ies, has.blogs.externos)}
@@ -562,38 +575,45 @@ cat('<br>')
 # read separate sheets
 file.path <- "PPG/Blog institucional.xlsx"
 abas <- readxl::excel_sheets(file.path)
-topics <- c()
 news.list <- vector(mode = "list", length = length(abas))
 
 # iterate across sheets
 for (j in 1:length(abas)) {
-  news <-
-    readxl::read_excel(file.path,
-               sheet = abas[j],
-               col_types = c("text", "text", "text"))
-  # replace the link by a tag
+  news <- readxl::read_excel(file.path,
+                             sheet = abas[j],
+                             col_types = c("text", "text", "text"))
+  
+  # Format date column and add hyperlink tags
   for (i in 1:dim(news)[1]) {
     news[i, 1] <-
-      paste("#### **", as.character(as.Date(as.numeric(news[i, 1]), origin = "1899-12-30")), "**", sep = "")
+      paste("#### **",
+            as.Date(as.numeric(news[i, 1]), origin = "1899-12-30"),
+            "**",
+            sep = "")
     news[i, 3] <-
-      paste0('<a href="', news[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
+      paste0(
+        '<a href="',
+        news[i, 3],
+        '" target="_blank">',
+        # fontawesome icon
+        fontawesome::fa("up-right-from-square"),
+        '</a>')
   }
   
-  # drop date column
+  # Drop date column
   news <- news[, -1]
-  # store data to print table
+  
+  # Store data to print table
   news.list[[j]] <- news
 }
 
-# iterate across sheets
+# Iterate across sheets
 for (j in 1:length(abas)) {
   cat('\n\n<!-- -->\n\n')
   cat("#### **", abas[j], "**", "\n", sep = "")
   cat('\n\n<!-- -->\n\n')
   print(
-    kable(news.list[[j]], align = c("l", rep("c", ncol(
-      news
-    ) - 2), "r"), escape = FALSE) %>% kable_styling(
+    knitr::kable(news.list[[j]], align = c("l", rep("c", ncol(news) - 2), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
       bootstrap_options = c("hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
@@ -612,38 +632,44 @@ for (j in 1:length(abas)) {
 # read separate sheets
 file.path <- "PPG/Blogs externos.xlsx"
 abas <- readxl::excel_sheets(file.path)
-topics <- c()
 news.list <- vector(mode = "list", length = length(abas))
 
 # iterate across sheets
 for (j in 1:length(abas)) {
-  news <-
-    readxl::read_excel(file.path,
-               sheet = abas[j],
-               col_types = c("text", "text", "text"))
-  # replace the link by a tag
+  news <- readxl::read_excel(file.path,
+                             sheet = abas[j],
+                             col_types = c("text", "text", "text"))
+  
+  # Format date column and add hyperlink tags
   for (i in 1:dim(news)[1]) {
     news[i, 1] <-
-      paste("#### **", as.character(as.Date(as.numeric(news[i, 1]), origin = "1899-12-30")), "**", sep = "")
+      paste("#### **",
+            as.Date(as.numeric(news[i, 1]), origin = "1899-12-30"),
+            "**",
+            sep = "")
     news[i, 3] <-
-      paste0('<a href="', news[i,3],'" target="_blank"', '>', "↗️" ,"</a>")
+      paste0(
+        '<a href="',
+        news[i, 3],
+        '" target="_blank">',
+        # fontawesome icon
+        fontawesome::fa("up-right-from-square"),
+        '</a>')
   }
-  
-  # drop date column
+  # Drop date column
   news <- news[, -1]
-  # store data to print table
+  
+  # Store data to print table
   news.list[[j]] <- news
 }
 
-# iterate across sheets
+# Iterate across sheets
 for (j in 1:length(abas)) {
   cat('\n\n<!-- -->\n\n')
   cat("#### **", abas[j], "**", "\n", sep = "")
   cat('\n\n<!-- -->\n\n')
   print(
-    kable(news.list[[j]], align = c("l", rep("c", ncol(
-      news
-    ) - 2), "r"), escape = FALSE) %>% kable_styling(
+    knitr::kable(news.list[[j]], align = c("l", rep("c", ncol(news) - 2), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
       bootstrap_options = c("hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
@@ -652,6 +678,7 @@ for (j in 1:length(abas)) {
   cat('\n\n<!-- -->\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
+
 ```
 
 <br>

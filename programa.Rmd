@@ -95,7 +95,7 @@ for (i in 1:length(abas)) {
   
   # print table
   print(
-    kable(historico.raw, align = "l", col.names = NULL) %>% kable_styling(
+    knitr::kable(historico.raw, align = "l", col.names = NULL, escape = FALSE, format = "html") %>% kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
@@ -103,7 +103,7 @@ for (i in 1:length(abas)) {
   )
   
   cat('\n\n')
-  cat('*Fonte:* **PPG**')
+  cat('Fonte: **PPG**')
 
   # print end of tab rows
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
@@ -130,9 +130,16 @@ area.capes <-
 Abrir <- matrix(NA, nrow = dim(area.capes)[1])
 colnames(Abrir) <- "Abrir"
 # add hyperlinks
-for(i in 1:dim(area.capes)[1]){
-  if(!is.na(area.capes[i,2])){
-    Abrir[i] <- paste0('<a href="', area.capes[i,2],'" target="_blank"', '>', "↗️" ,"</a>", sep = "")
+for (i in 1:dim(area.capes)[1]) {
+  if (!is.na(area.capes[i, 2])) {
+    Abrir[i] <-
+      paste0('<a href="',
+             area.capes[i, 2],
+             '" target="_blank"',
+             '>',
+             # fontawesome icon
+             fontawesome::fa("up-right-from-square"),
+             '</a>')
   }
 }
 area.capes <- cbind(area.capes[,-2], Abrir)
@@ -410,11 +417,10 @@ for (i in 1:length(abas)) {
                col_types = c("text"))
   
   cat(
-    paste(
+    paste0(
       '<iframe src="',
       agendas[1],
-      '" style=\"width:100%; height:600px; border:2px solid black;"></iframe>',
-      sep = ""
+      '" style=\"width:100%; height:600px; border:2px solid black;"></iframe>'
     )
   )
   
@@ -443,9 +449,9 @@ cursos <- dplyr::select(cursos.raw, c("Código", "Curso", "Nível"))
 
 # print tables
 print(
-  kable(cursos, align = c("l", rep("c", ncol(
+  knitr::kable(cursos, align = c("l", rep("c", ncol(
     cursos
-  ) - 2), "r")) %>% kable_styling(
+  ) - 2), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
     position = "center"
@@ -468,9 +474,9 @@ creditos.raw <-
 
 # print tables
 print(
-  kable(creditos.raw, align = c("l", rep(
+  knitr::kable(creditos.raw, align = c("l", rep(
     "c", ncol(creditos.raw) - 2
-  ), "r")) %>% kable_styling(
+  ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
     position = "center"
@@ -606,12 +612,11 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ### **Calculadora de créditos (D)** {#calculadora-creditos-d .tabset}
 
 ```{r calculadora-creditos, eval = has.dados.cadastrais}
-dados.do.programa.raw <-
-  readxl::read_excel("PPG/Dados Cadastrais.xlsx",
-             sheet = "Créditos",
-             col_types = c("text"))
-colnames(dados.do.programa.raw) <-
-  seq(1:dim(dados.do.programa.raw)[2])
+# Read the Excel file
+dados.do.programa.raw <- readxl::read_excel("PPG/Dados Cadastrais.xlsx", sheet = "Créditos", col_types = "text")
+
+# Rename the columns
+colnames(dados.do.programa.raw) <- seq_len(ncol(dados.do.programa.raw))
 ```
 
 <center>
@@ -867,7 +872,7 @@ for(var i=0; i < document.formELEMSC.ckb.length; i++){
 ```
 
 ```{r calculadora-mestrado-eletivas, eval = has.sucupira.files}
-# projetos
+# disciplinas
 sheet <- "Disciplinas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
@@ -929,9 +934,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Atual** {.tabset}
-
-#### **Disciplinas**
+### **Disciplinas**
 
 ```{r estrutura-academica-atual-tabela, eval = has.sucupira.files}
 # load custom function
@@ -966,9 +969,10 @@ table.msc <-
     disciplinas.msc$`Nome da Disciplina`,
     disciplinas.msc$`Indicadora de disciplina obrigatória`,
     disciplinas.msc$`Quantidade de créditos`,
-    disciplinas.msc$`Carga Horária`
+    disciplinas.msc$`Carga Horária`,
+    substr(as.Date(disciplinas.msc$`Data de início`, format = "%d/%m/%Y"), 1, 4)
   )
-colnames(table.msc) <- c("Disciplina", "Obrigatória", "CR", "CH")
+colnames(table.msc) <- c("Disciplina", "Obrigatória", "CR", "CH", "Início")
 
 # select level
 course.level <- "Doutorado"
@@ -979,9 +983,10 @@ table.dsc <-
     disciplinas.dsc$`Nome da Disciplina`,
     disciplinas.dsc$`Indicadora de disciplina obrigatória`,
     disciplinas.dsc$`Quantidade de créditos`,
-    disciplinas.dsc$`Carga Horária`
+    disciplinas.dsc$`Carga Horária`,
+    substr(as.Date(disciplinas.dsc$`Data de início`, format = "%d/%m/%Y"), 1, 4)
   )
-colnames(table.dsc) <- c("Disciplina", "Obrigatória", "CR", "CH")
+colnames(table.dsc) <- c("Disciplina", "Obrigatória", "CR", "CH", "Início")
 
 table <-
   merge(table.msc,
@@ -993,11 +998,13 @@ colnames(table) <-
   c(
     "Disciplina",
     "Obrigatória (MA)",
-    "CR (MA)",
-    "CH (MA)",
+    "CR",
+    "CH",
+    "Início",
     "Obrigatória (DA)",
-    "CR (DA)",
-    "CH (DA)"
+    "CR",
+    "CH",
+    "Início"
   )
 
 ids <- order(table$'Disciplina', decreasing = FALSE)
@@ -1012,36 +1019,46 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-#### **Ementas**
+### **Ementas**
 
 ```{r ementas, eval = has.bibliografia}
-# read separate sheets
-bibliografia.raw <-
-  readxl::read_excel("PPG/Bibliografia.xlsx",
-             sheet = "Ementas",
-             col_types = c("text"))
-link_ementas <- bibliografia.raw[, 3]
+# Read separate sheets
+bibliografia.raw <- readxl::read_excel("PPG/Bibliografia.xlsx",
+                                       sheet = "Ementas",
+                                       col_types = c("text"))
 
-cat(
+# Extract link to ementas
+link_ementas <- as.character(bibliografia.raw[, 3])
+
+# Sanitize the link
+sanitized_link <- utils::URLencode(link_ementas)
+
+# Embed the content into an iframe
+iframe_code <- paste0(
   '<iframe src=\"',
-  as.character(link_ementas),
-  '/preview" style=\"width:100%; height:600px; border:0;\"></iframe>',
-  sep = ""
+  sanitized_link,
+  '/preview\" style=\"width:100%; height:600px; border:0;\"></iframe>'
 )
+
+# Print the iframe code
+cat(iframe_code)
 
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 ```
 
 <br>
 
-#### **Bibliografia**
+### **Bibliografia**
 
 ```{r bibliografia, eval = has.bibliografia}
 # read separate sheets
-bibliografia.raw <- readxl::read_excel("PPG/Bibliografia.xlsx", sheet = "Bibliografia", col_types = c("text"))
+bibliografia.raw <-
+  readxl::read_excel("PPG/Bibliografia.xlsx",
+                     sheet = "Bibliografia",
+                     col_types = c("text"))
 
 ids <- order(bibliografia.raw$'Disciplina', decreasing = FALSE)
-bibliografia.raw <- bibliografia.raw[ids,]
+bibliografia.raw <- bibliografia.raw[ids, ]
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(bibliografia.raw, title = "Programa - Bibliografia")
@@ -1051,15 +1068,31 @@ cat('<br>')
 
 ```{r bibliografia-ano, eval = has.bibliografia}
 # read separate sheets
-bibliografia.raw <- readxl::read_excel("PPG/Bibliografia.xlsx", sheet = "Bibliografia", col_types = c("text"))
+bibliografia.raw <-
+  readxl::read_excel("PPG/Bibliografia.xlsx",
+                     sheet = "Bibliografia",
+                     col_types = c("text"))
 
 bib.ano.raw <- bibliografia.raw$Referência
-bib.ano <- as.numeric(na.exclude(str_extract(bib.ano.raw, "[' '][2-2][0-9][0-9][0-9]")))
-bib.ano <- as.numeric(na.exclude(str_extract(bib.ano.raw, "[' '][1-1][9-9][5-9][0-9]|[2-2][0-0][0-2][0-1]")))
+bib.ano <-
+  as.numeric(na.exclude(str_extract(bib.ano.raw, "[' '][2-2][0-9][0-9][0-9]")))
+bib.ano <-
+  as.numeric(na.exclude(
+    str_extract(
+      bib.ano.raw,
+      "[' '][1-1][9-9][5-9][0-9]|[2-2][0-0][0-2][0-1]"
+    )
+  ))
 
-par(oma=c(2, 0.1, 2, 0.1), mar = c(5, 4, 2, 2))
+par(oma = c(2, 0.1, 2, 0.1), mar = c(5, 4, 2, 2))
 # generate plot of conceitos per year
-hist(bib.ano, xlab = "Ano de publicação", ylab = "Referências (N)", col = RColorBrewer::brewer.pal(n = 3, name = "Set3")[1], main = NULL)
+hist(
+  bib.ano,
+  xlab = "Ano de publicação",
+  ylab = "Referências (N)",
+  col = RColorBrewer::brewer.pal(n = 3, name = "Set3")[1],
+  main = NULL
+)
 title("Referências bibliográficas, por ano de publicação", outer = TRUE)
 
 cat('\n\n')
@@ -1084,20 +1117,20 @@ names(sucupira.list) <- as.character(anos)
 
 disciplinas.raw <- sucupira.raw
 disciplinas.raw <-
-  disciplinas.raw[!is.na(disciplinas.raw$`Data de fim`),]
+  disciplinas.raw[!is.na(disciplinas.raw$`Data de fim`), ]
 
 disciplinas.msc <-
   disciplinas.raw[which(`dim<-`(
     grepl('Mestrado', disciplinas.raw$`Nível do Curso`),
     dim(disciplinas.raw$`Nível do Curso`)
-  ), arr.ind = TRUE), ]
+  ), arr.ind = TRUE),]
 table.msc <-
   cbind(
     disciplinas.msc$`Nome da Disciplina`,
     disciplinas.msc$`Indicadora de disciplina obrigatória`,
     disciplinas.msc$`Quantidade de créditos`,
     disciplinas.msc$`Carga Horária`,
-    disciplinas.msc$`Data de fim`
+    substr(as.Date(disciplinas.msc$`Data de fim`, format = "%d/%m/%Y"), 1, 4)
   )
 colnames(table.msc) <-
   c("Disciplina", "Obrigatória", "CR", "CH", "Fim")
@@ -1106,14 +1139,14 @@ disciplinas.dsc <-
   disciplinas.raw[which(`dim<-`(
     grepl('Doutorado', disciplinas.raw$`Nível do Curso`),
     dim(disciplinas.raw$`Nível do Curso`)
-  ), arr.ind = TRUE), ]
+  ), arr.ind = TRUE),]
 table.dsc <-
   cbind(
     disciplinas.dsc$`Nome da Disciplina`,
     disciplinas.dsc$`Indicadora de disciplina obrigatória`,
     disciplinas.dsc$`Quantidade de créditos`,
     disciplinas.dsc$`Carga Horária`,
-    disciplinas.dsc$`Data de fim`
+    substr(as.Date(disciplinas.dsc$`Data de fim`, format = "%d/%m/%Y"), 1, 4)
   )
 colnames(table.dsc) <-
   c("Disciplina", "Obrigatória", "CR", "CH", "Fim")
@@ -1128,20 +1161,20 @@ colnames(table) <-
   c(
     "Disciplina",
     "Obrigatória (MA)",
-    "CR (MA)",
-    "CH (MA)",
+    "CR",
+    "CH",
     "Fim",
     "Obrigatória (DA)",
-    "CR (DA)",
-    "CH (DA)",
+    "CR",
+    "CH",
     "Fim"
   )
 
 # remove duplicated entries
-table <- table[!duplicated(table), ]
+table <- table[!duplicated(table),]
 
 ids <- order(table$'Disciplina', decreasing = FALSE)
-table <- table[ids, ]
+table <- table[ids,]
 
 # print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -1172,7 +1205,7 @@ names(sucupira.list) <- as.character(anos)
 periodos <-
   names(sucupira.list)[na.omit(match(c(2021:2024), names(sucupira.list)))]
 
-has.avaliacao <- length(periodos) != 0
+has.avaliacao <- as.logical(length(periodos) != 0)
 ```
 
 ```{r turmas-2024, eval = all(has.sucupira.files, has.avaliacao)}
@@ -1206,13 +1239,13 @@ if (dim(turmas.raw)[1] != 0) {
       turmas.oferecidas[, order(colnames(turmas.oferecidas), decreasing = TRUE)]
   }
   print(
-    kable(turmas.oferecidas, align = c("l", rep(
+    knitr::kable(turmas.oferecidas, align = c("l", rep(
       "c",  max(0, ncol(turmas.oferecidas) - 2)
-    ), "r")) %>% kable_styling(
+    ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
-    ) %>% scroll_box(width = "100%")
+    ) %>% kableExtra::scroll_box(width = "100%")
   )
   
   # line break
@@ -1225,13 +1258,12 @@ if (dim(turmas.raw)[1] != 0) {
       turmas.raw$`Nome da Disciplina`
     ))
   legenda.turma <- legenda.turma[order(legenda.turma[, 1]),]
-  cat(paste(
+  cat(paste0(
     "*",
     legenda.turma[, 1],
     ": ",
     lapply(legenda.turma[, 2], str_to_title),
     "*",
-    sep = "",
     collapse = "; "
   ))
 }
@@ -1256,7 +1288,7 @@ names(sucupira.list) <- as.character(anos)
 periodos <-
   names(sucupira.list)[na.omit(match(c(2017:2020), names(sucupira.list)))]
 
-has.avaliacao <- length(periodos) != 0
+has.avaliacao <- as.logical(length(periodos) != 0)
 ```
 
 ```{r turmas-2020, eval = all(has.sucupira.files, has.avaliacao)}
@@ -1290,13 +1322,13 @@ if (dim(turmas.raw)[1] != 0) {
       turmas.oferecidas[, order(colnames(turmas.oferecidas), decreasing = TRUE)]
   }
   print(
-    kable(turmas.oferecidas, align = c("l", rep(
+    knitr::kable(turmas.oferecidas, align = c("l", rep(
       "c",  max(0, ncol(turmas.oferecidas) - 2)
-    ), "r")) %>% kable_styling(
+    ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
-    ) %>% scroll_box(width = "100%")
+    ) %>% kableExtra::scroll_box(width = "100%")
   )
   
   # line break
@@ -1309,13 +1341,12 @@ if (dim(turmas.raw)[1] != 0) {
       turmas.raw$`Nome da Disciplina`
     ))
   legenda.turma <- legenda.turma[order(legenda.turma[, 1]),]
-  cat(paste(
+  cat(paste0(
     "*",
     legenda.turma[, 1],
     ": ",
     lapply(legenda.turma[, 2], str_to_title),
     "*",
-    sep = "",
     collapse = "; "
   ))
 }
@@ -1340,7 +1371,7 @@ names(sucupira.list) <- as.character(anos)
 periodos <-
   names(sucupira.list)[na.omit(match(c(2013:2016), names(sucupira.list)))]
 
-has.avaliacao <- length(periodos) != 0
+has.avaliacao <- as.logical(length(periodos) != 0)
 ```
 
 ```{r turmas-2016, eval = all(has.sucupira.files, has.avaliacao)}
@@ -1374,13 +1405,13 @@ if (dim(turmas.raw)[1] != 0) {
       turmas.oferecidas[, order(colnames(turmas.oferecidas), decreasing = TRUE)]
   }
   print(
-    kable(turmas.oferecidas, align = c("l", rep(
+    knitr::kable(turmas.oferecidas, align = c("l", rep(
       "c",  max(0, ncol(turmas.oferecidas) - 2)
-    ), "r")) %>% kable_styling(
+    ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
-    ) %>% scroll_box(width = "100%")
+    ) %>% kableExtra::scroll_box(width = "100%")
   )
   
   # line break
@@ -1393,13 +1424,12 @@ if (dim(turmas.raw)[1] != 0) {
       turmas.raw$`Nome da Disciplina`
     ))
   legenda.turma <- legenda.turma[order(legenda.turma[, 1]),]
-  cat(paste(
+  cat(paste0(
     "*",
     legenda.turma[, 1],
     ": ",
     lapply(legenda.turma[, 2], str_to_title),
     "*",
-    sep = "",
     collapse = "; "
   ))
 }
@@ -1424,7 +1454,7 @@ names(sucupira.list) <- as.character(anos)
 periodos <-
   names(sucupira.list)[na.omit(match(c(2010:2012), names(sucupira.list)))]
 
-has.avaliacao <- length(periodos) != 0
+has.avaliacao <- as.logical(length(periodos) != 0)
 ```
 
 ```{r turmas-2012, eval = all(has.sucupira.files, has.avaliacao)}
@@ -1458,13 +1488,13 @@ if (dim(turmas.raw)[1] != 0) {
       turmas.oferecidas[, order(colnames(turmas.oferecidas), decreasing = TRUE)]
   }
   print(
-    kable(turmas.oferecidas, align = c("l", rep(
+    knitr::kable(turmas.oferecidas, align = c("l", rep(
       "c",  max(0, ncol(turmas.oferecidas) - 2)
-    ), "r")) %>% kable_styling(
+    ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
-    ) %>% scroll_box(width = "100%")
+    ) %>% kableExtra::scroll_box(width = "100%")
   )
   
   # line break
@@ -1477,13 +1507,12 @@ if (dim(turmas.raw)[1] != 0) {
       turmas.raw$`Nome da Disciplina`
     ))
   legenda.turma <- legenda.turma[order(legenda.turma[, 1]),]
-  cat(paste(
+  cat(paste0(
     "*",
     legenda.turma[, 1],
     ": ",
     lapply(legenda.turma[, 2], str_to_title),
     "*",
-    sep = "",
     collapse = "; "
   ))
 }
@@ -1527,9 +1556,9 @@ for (j in 1:length(abas)) {
                calendarios.raw[i, 3],
                '" target="_blank"',
                '>',
-               "↗️" ,
-               "</a>",
-               sep = "")
+               # fontawesome icon
+               fontawesome::fa("up-right-from-square"),
+               '</a>')
     }
   }
   calendarios <- cbind(calendarios.raw[, -3], Abrir)
@@ -1547,7 +1576,7 @@ for (j in 1:length(abas)) {
   
   # print end of tab rows
   cat('\n\n')
-  cat('*Fonte:* **PPG**')
+  cat('Fonte: **PPG**')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
@@ -1588,9 +1617,9 @@ for (j in 1:length(abas)) {
                editais.raw[i, 3],
                '" target="_blank"',
                '>',
-               "↗️" ,
-               "</a>",
-               sep = "")
+               # fontawesome icon
+               fontawesome::fa("up-right-from-square"),
+               '</a>')
     }
   }
   editais <- cbind(editais.raw[, -3], Abrir)
@@ -1608,7 +1637,7 @@ for (j in 1:length(abas)) {
   
   # print end of tab rows
   cat('\n\n')
-  cat('*Fonte:* **PPG**')
+  cat('Fonte: **PPG**')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
@@ -1648,7 +1677,7 @@ for (j in 1:length(abas)) {
   
   # print end of tab rows
   cat('\n\n')
-  cat('*Fonte:* **PPG**')
+  cat('Fonte: **PPG**')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
@@ -1671,7 +1700,7 @@ abas <- readxl::excel_sheets("PPG/Laboratórios.xlsx")
 for (i in 1:length(abas)) {
   lab <-
     readxl::read_excel("PPG/Laboratórios.xlsx",
-               sheet = paste("Lab", i, sep = ""))
+               sheet = paste0("Lab", i))
   name <- names(lab[1])
   
   cat('\n\n<!-- -->\n\n')
@@ -1679,7 +1708,7 @@ for (i in 1:length(abas)) {
   colnames(lab) <- lab[1, ]
   
   cat('\n\n<!-- -->\n\n')
-  cat("### **", paste("Lab. ", i, sep = ""), "**", "\n", sep = "")
+  cat("### **", paste0("Lab. ", i), "**", "\n", sep = "")
   cat('\n\n<!-- -->\n\n')
   cat('<center>\n')
   cat("**", name, "**", sep = "")
@@ -1699,13 +1728,13 @@ for (i in 1:length(abas)) {
   cat('<center>\n')
   cat('\n\n<!-- -->\n\n')
   print(
-    kable(lab, digits = 0, align = c("l", rep("c", ncol(
+    knitr::kable(lab, digits = 0, align = c("l", rep("c", ncol(
       lab
-    ) - 2), "r")) %>% kable_styling(
+    ) - 2), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
-    )  %>% scroll_box(width = "100%", height = "250px")
+    )  %>% kableExtra::scroll_box(width = "100%", height = "250px")
   )
   cat('\n</center>')
   cat('</div></div>')
@@ -1750,9 +1779,9 @@ for (j in 1:length(abas)) {
                convenios.raw[i, 3],
                '" target="_blank"',
                '>',
-               "↗️" ,
-               "</a>",
-               sep = "")
+               # fontawesome icon
+               fontawesome::fa("up-right-from-square"),
+               '</a>')
     }
   }
   convenios <- cbind(convenios.raw[, -3], Abrir)
@@ -1767,7 +1796,7 @@ for (j in 1:length(abas)) {
   
   # print end of tab rows
   cat('\n\n')
-  cat('*Fonte:* **PPG**')
+  cat('Fonte: **PPG**')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
@@ -1808,9 +1837,9 @@ for (j in 1:length(abas)) {
                cooperacoes.raw[i, 3],
                '" target="_blank"',
                '>',
-               "↗️" ,
-               "</a>",
-               sep = "")
+               # fontawesome icon
+               fontawesome::fa("up-right-from-square"),
+               '</a>')
     }
   }
   cooperacoes <- cbind(cooperacoes.raw[, -3], Abrir)
@@ -1827,7 +1856,7 @@ for (j in 1:length(abas)) {
   
   # print end of tab rows
   cat('\n\n')
-  cat('*Fonte:* **PPG**')
+  cat('Fonte: **PPG**')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
@@ -1870,9 +1899,9 @@ for (j in 1:length(abas)) {
                internacional.raw[i, 4],
                '" target="_blank"',
                '>',
-               "↗️" ,
-               "</a>",
-               sep = "")
+               # fontawesome icon
+               fontawesome::fa("up-right-from-square"),
+               '</a>')
     }
   }
   internacional <- cbind(internacional.raw[, -4], Abrir)
@@ -1887,7 +1916,7 @@ for (j in 1:length(abas)) {
   
   # print end of tab rows
   cat('\n\n')
-  cat('*Fonte:* **PPG**')
+  cat('Fonte: **PPG**')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 ```
@@ -2063,7 +2092,6 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ### **Detalhamento**
 
 ```{r financiadores-ppg, eval = has.financiadores}
-# this chunk requires additional data that may  be available
 financiadores.raw <-
   readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
@@ -2093,7 +2121,8 @@ if (dim(financiadores)[1] != 0) {
                fonte[i, 1],
                '" target="_blank"',
                '>',
-               '↗️' ,
+               # fontawesome icon
+               fontawesome::fa("up-right-from-square"),
                '</a>')
     }
   }
@@ -2153,9 +2182,9 @@ for (j in 1:length(abas)) {
                bolsas.raw[i, 3],
                '" target="_blank"',
                '>',
-               "↗️" ,
-               "</a>",
-               sep = "")
+               # fontawesome icon
+               fontawesome::fa("up-right-from-square"),
+               '</a>')
     }
   }
   bolsas.raw <- cbind(bolsas.raw[, -3], Abrir)

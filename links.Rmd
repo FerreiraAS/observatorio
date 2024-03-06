@@ -46,53 +46,6 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Portais de periódicos** {#portais .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-### **Periódicos CAPES** {#periodicos-capes}
-
-<iframe src="https://www-periodicos-capes-gov-br.ezl.periodicos.capes.gov.br/index.php" style="width:100%; height:600px; border:2px solid black;"></iframe>
-
-<br>
-
-*Fontes:* [**Periódicos CAPES**](https://www-periodicos-capes-gov-br.ezl.periodicos.capes.gov.br/index.php
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **PubMed** {#pubmed}
-
-<iframe src="https://pubmed.ncbi.nlm.nih.gov" style="width:100%; height:600px; border:2px solid black;"></iframe>
-
-<br>
-
-*Fontes:* [**PubMed**](https://pubmed.ncbi.nlm.nih.gov)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
-### **SciELO** {#scielo}
-
-<iframe src="https://scielo.org" style="width:100%; height:600px; border:2px solid black;"></iframe>
-
-<br>
-
-*Fontes:* [**SciELO**](https://scielo.org)
-
-<br>
-
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
-
-<br>
-
 ## **Diretrizes para redação científica** {#diretrizes .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -512,6 +465,23 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <br>
 
 *Fontes:* [**CONEP**](https://edx.hospitalmoinhos.org.br/project/cep)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<br>
+
+## **Plataforma Nacional de Infraestrutura de Pesquisa MCTI** {#plataforma-mcti .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+<iframe src="https://pnipe.mcti.gov.br/" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+*Fontes:* [**MCTI**](https://pnipe.mcti.gov.br/)
 
 <br>
 

@@ -47,16 +47,18 @@ if(file.exists("PPG/Images/logo-programa.png")) {
 
 <p style="font-size:1.5em">
 ```{r intro, results = "asis"}
-if(and(has.dados.cadastrais, has.sucupira.files)){
-cat(
-  'O **Observatório ', toupper(as.character(sigla.PPG)),
-  '** é uma iniciativa do **Programa de Pós-graduação em ', as.character(nome.PPG), '** - [', tools::toTitleCase(as.character(nome.IES)), '](', as.character(site.PPG),') ',
-  'que envolve o registro, o acompanhamento e a análise agregada e estruturada de dados para divulgação transparente de suas atividades, planejamentos, ações e impactos, tornando-os acessíveis à sociedade',
-   sep = "")
+if (has.dados.cadastrais && has.sucupira.files) {
+  cat(
+    'O **Observatório ', toupper(as.character(sigla.PPG)),
+    '** é uma iniciativa do **Programa de Pós-graduação em ', as.character(nome.PPG), '** - [', tools::toTitleCase(as.character(nome.IES)), '](', as.character(site.PPG),') ',
+    'que envolve o registro, o acompanhamento e a análise agregada e estruturada de dados para divulgação transparente de suas atividades, planejamentos, ações e impactos, tornando-os acessíveis à sociedade',
+    sep = ""
+  )
 } else {
-cat(
-  'O **Observatório** é uma iniciativa que envolve o registro, o acompanhamento e a análise agregada e estruturada de dados para divulgação transparente de suas atividades, planejamentos, ações e impactos, tornando-os acessíveis à sociedade',
-   sep = "")
+  cat(
+    'O **Observatório** é uma iniciativa que envolve o registro, o acompanhamento e a análise agregada e estruturada de dados para divulgação transparente de suas atividades, planejamentos, ações e impactos, tornando-os acessíveis à sociedade',
+    sep = ""
+  )
 }
 ```
 </p>
@@ -64,9 +66,7 @@ cat(
 </center>
 
 ```{r meta-observatorio, eval = all(!has.sucupira.files, !has.financiadores, !has.producao.ppg, !has.producao.sucupira, !has.discentes, !has.posdocs)}
-
 # se não ná nada para exibir, mostre os observatórios existentes
-
 cat('<br>')
 cat('<br>')
 
@@ -101,11 +101,10 @@ cat('<br>')
 cat('<br>')
 
 shiny::HTML("<h1>UNISUAM | PPGDL</h1>")
-shiny::HTML('<iframe id="scaled-frame" src="https://ppgcr-ppgdl.github.io/observatoriodl/" style="width:100%; height:600px; border:2px solid white;"></iframe>')
+shiny::HTML('<iframe id="scaled-frame" src="https://ppgdl-unisuam.github.io/observatoriodl/" style="width:100%; height:600px; border:2px solid white;"></iframe>')
 
 cat('<br>')
 cat('<br>')
-
 ```
 
 ```{r sintese-coerencia, include = FALSE, eval = has.sucupira.files}
@@ -270,7 +269,7 @@ links <- summ.AC.LP
 nodes <- data.frame(name = c(as.character(links$source),
                              as.character(links$target)) %>% unique())
 
-# We need a data frame giving a hierarchical structure. Let's consider the flare dataset
+# We need a data frame giving a hierarchical structure. Lets consider the flare dataset
 edges1 <-
   stats::aggregate(
     alluv.data$sucupira.raw..Linha.de.Pesquisa.,
@@ -284,7 +283,7 @@ edges1 <-
 # Usually we associate another dataset that give information about each node of the dataset
 vertices <- NULL
 
-# Then we have to make a 'graph' object using the igraph library:
+# Then we have to make a 'graph' object using the igraph library
 mygraph <- graph_from_data_frame(edges1[, 1:2], vertices = vertices)
 
 # plot 1
@@ -299,7 +298,7 @@ par(
 )
 
 # Make the plot
-ggraph(mygraph, layout = 'circlepack', weight = c(0, edges1[, 3])) +
+ggraph(mygraph, layout = "circlepack", weight = c(0, edges1[, 3])) +
   geom_node_circle(aes(fill = as.factor(depth))) +
   scale_colour_brewer(RColorBrewer::brewer.pal(n = 9, name = "Set3")) +
   scale_fill_discrete(labels = c("Áreas de concentração", "Linhas de pesquisa")) +
@@ -328,17 +327,6 @@ names(summ.coerencia.1) <-
   c("Áreas de Concentração",
     "Linhas de Pesquisa")
 
-# names(summ.coerencia.1) <-
-#   c("Áreas de Concentração \n (ativas)",
-#     "Linhas de Pesquisa \n (ativas)")
-
-# summ.coerencia.2 <- c(length(unique(old.AC)),
-#                       length(unique(old.LP)))
-# names(summ.coerencia.2) <-
-#   c("Áreas de Concentração \n (inativas)",
-#     "Linhas de Pesquisa \n (inativas)")
-#
-# summ.data <- c(summ.coerencia.1, summ.coerencia.2)
 summ.data <- c(summ.coerencia.1)
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
@@ -895,21 +883,6 @@ legend(
   horiz = FALSE,
   cex = 1,
 )
-
-# # plot 3 (percentual de produção bilbiográfica, por estrato, por ano)
-# barplot(
-#   scale(
-#     as.matrix(table.2),
-#     center = FALSE,
-#     scale = colSums(as.matrix(table.2))
-#   ) * 100,
-#   ylab = "%",
-#   col = rev(mycolors),
-#   ylim = c(0, 100)
-# )
-# title(main = "Qualidade da produção (Qualis)",
-#       outer = TRUE,
-#       cex.main = 1.7)
 
 # plot 4 (violin plot of SJR por ano)
 vioplot::vioplot(as.numeric(table.3[, 2]) ~ as.numeric(table.3[, 1]),

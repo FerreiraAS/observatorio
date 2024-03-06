@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
   webshot = "webshot",
   dev = "png"
 )
-source("Scripts/all-required-packages.R")
+source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
 <!--script for inserting LOGO ABOVE THE TOC-->
@@ -108,7 +108,6 @@ cat(paste('<iframe src="https://drive.google.com/embeddedfolderview?id=', reposi
 
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-
 ```
 
 <br>
@@ -348,7 +347,6 @@ if (dim(produtos.2)[1] != 0) {
       "Título" = produtos.id$"Nome da Produção"[1],
       "Autores" = paste0(
         produtos.id$"Nome do Autor",
-        sep = "",
         collapse = "; "
       )
     )
@@ -405,11 +403,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   # section header
   cat('\n\n<!-- -->\n\n')
   cat(
-    paste(
+    paste0(
       "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
-      sep = ""
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n"
     )
   )
   cat('\n\n<!-- -->\n\n')
@@ -491,11 +488,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   # section header
   cat('\n\n<!-- -->\n\n')
   cat(
-    paste(
+    paste0(
       "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
-      sep = ""
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n"
     )
   )
   cat('\n\n<!-- -->\n\n')
@@ -577,11 +573,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   # section header
   cat('\n\n<!-- -->\n\n')
   cat(
-    paste(
+    paste0(
       "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
-      sep = ""
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n"
     )
   )
   cat('\n\n<!-- -->\n\n')
@@ -686,7 +681,6 @@ if (dim(produtos.2)[1] != 0) {
       "Título" = produtos.id$"Nome da Produção"[1],
       "Autores" = paste0(
         produtos.id$"Nome do Autor",
-        sep = "",
         collapse = "; "
       )
     )
@@ -777,7 +771,6 @@ if (dim(produtos.2)[1] != 0) {
       "Título" = produtos.id$"Nome da Produção"[1],
       "Autores" = paste0(
         produtos.id$"Nome do Autor",
-        sep = "",
         collapse = "; "
       )
     )
@@ -834,11 +827,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   # section header
   cat('\n\n<!-- -->\n\n')
   cat(
-    paste(
+    paste0(
       "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
-      sep = ""
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n"
     )
   )
   cat('\n\n<!-- -->\n\n')
@@ -920,11 +912,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   # section header
   cat('\n\n<!-- -->\n\n')
   cat(
-    paste(
+    paste0(
       "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
-      sep = ""
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n"
     )
   )
   cat('\n\n<!-- -->\n\n')
@@ -1029,7 +1020,6 @@ if (dim(produtos.2)[1] != 0) {
       "Título" = produtos.id$"Nome da Produção"[1],
       "Autores" = paste0(
         produtos.id$"Nome do Autor",
-        sep = "",
         collapse = "; "
       )
     )
@@ -1086,11 +1076,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   # section header
   cat('\n\n<!-- -->\n\n')
   cat(
-    paste(
+    paste0(
       "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
-      sep = ""
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n"
     )
   )
   cat('\n\n<!-- -->\n\n')
@@ -1195,7 +1184,6 @@ if (dim(produtos.2)[1] != 0) {
       "Título" = produtos.id$"Nome da Produção"[1],
       "Autores" = paste0(
         produtos.id$"Nome do Autor",
-        sep = "",
         collapse = "; "
       )
     )
@@ -1286,7 +1274,6 @@ if (dim(produtos.2)[1] != 0) {
       "Título" = produtos.id$"Nome da Produção"[1],
       "Autores" = paste0(
         produtos.id$"Nome do Autor",
-        sep = "",
         collapse = "; "
       )
     )
@@ -1377,7 +1364,6 @@ if (dim(produtos.2)[1] != 0) {
       "Título" = produtos.id$"Nome da Produção"[1],
       "Autores" = paste0(
         produtos.id$"Nome do Autor",
-        sep = "",
         collapse = "; "
       )
     )
@@ -1468,7 +1454,6 @@ if (dim(produtos.2)[1] != 0) {
       "Título" = produtos.id$"Nome da Produção"[1],
       "Autores" = paste0(
         produtos.id$"Nome do Autor",
-        sep = "",
         collapse = "; "
       )
     )
@@ -1559,7 +1544,6 @@ if (dim(produtos.2)[1] != 0) {
       "Título" = produtos.id$"Nome da Produção"[1],
       "Autores" = paste0(
         produtos.id$"Nome do Autor",
-        sep = "",
         collapse = "; "
       )
     )
@@ -1650,7 +1634,6 @@ if (dim(produtos.2)[1] != 0) {
       "Título" = produtos.id$"Nome da Produção"[1],
       "Autores" = paste0(
         produtos.id$"Nome do Autor",
-        sep = "",
         collapse = "; "
       )
     )
@@ -1719,11 +1702,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   # section header
   cat('\n\n<!-- -->\n\n')
   cat(
-    paste(
+    paste0(
       "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n",
-      sep = ""
+    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n"
     )
   )
   cat('\n\n<!-- -->\n\n')

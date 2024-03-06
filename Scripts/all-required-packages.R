@@ -77,8 +77,9 @@ packs.cran <-
   )
 
 for (i in 1:length(packs.cran)) {
-  if (!require(packs.cran[i], character.only = TRUE, quietly = TRUE))
-    install.packages(packs.cran[i], character.only = TRUE, )
+  if (!require(packs.cran[i], character.only = TRUE, quietly = TRUE)){
+    install.packages(packs.cran[i], character.only = TRUE, dependencies = TRUE)
+  }
 }
 
 # other packages work better if installed from github

@@ -399,8 +399,7 @@ table.with.badges <-
     cat(', ', sep = "")
     cat(
       '^6^ [**WebQualis**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)',
-      sep = ""
-    )
+      sep = "")
     cat(', ', sep = "")
     cat('^7^ [**DOAJ**](https://doaj.org)', sep = "")
     cat('<br>')

@@ -59,7 +59,6 @@ cat('<br>')
 # read separate sheets
 file.path <- "PPG/Videos.xlsx"
 abas <- readxl::excel_sheets(file.path)
-topics <- c()
 videos.list <- vector(mode = "list", length = length(abas))
 
 # iterate across sheets
@@ -71,9 +70,9 @@ for (j in 1:length(abas)) {
   # replace the link by a tag
   for (i in 1:dim(videos)[1]) {
     videos[i, 4] <-
-      paste0('<div class="sizer" text-align:"center"><div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="',
+      paste0('<iframe src="',
     videos[i,4],
-    '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>')
+    '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display: block; margin: 0 auto;"></iframe>') # Added CSS styling to center justify
   }
   
   # store data to print table
@@ -86,15 +85,14 @@ for (j in 1:length(abas)) {
   cat("### **", abas[j], "**", "\n", sep = "")
   cat('\n\n<!-- -->\n\n')
   print(
-    kable(videos.list[[j]][4], align = c("l", rep("c", ncol(
+    knitr::kable(videos.list[[j]][4], align = c("l", rep("c", ncol(
       videos
-    ) - 2), "r"), escape = FALSE, col.names = NA) %>% kable_styling(
+    ) - 2), "r"), escape = FALSE, col.names = NA, format = "html") %>% kableExtra::kable_styling(
       bootstrap_options = c("hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
-    )
-  )
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+    ), results = 'asis')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>', "\n\n")
 }
 ```
 
@@ -113,7 +111,6 @@ cat('<br>')
 # read separate sheets
 file.path <- "PPG/Podcasts.xlsx"
 abas <- readxl::excel_sheets(file.path)
-topics <- c()
 podcasts.list <- vector(mode = "list", length = length(abas))
 
 # iterate across sheets
@@ -125,7 +122,7 @@ for (j in 1:length(abas)) {
   # replace the link by a tag
   for (i in 1:dim(podcasts)[1]) {
     podcasts[i, 3] <-
-      paste0('<iframe src=', podcasts[i,3],'\" height="100px" width="400px" frameborder="0" scrolling="no"></iframe>')
+      paste0('<iframe src="', podcasts[i,3],'\" height="100px" width="400px" frameborder="0" scrolling="no"></iframe>')
   }
   
   # store data to print table
@@ -138,15 +135,14 @@ for (j in 1:length(abas)) {
   cat("### **", abas[j], "**", "\n", sep = "")
   cat('\n\n<!-- -->\n\n')
   print(
-    kable(podcasts.list[[j]], align = c("l", rep("c", ncol(
+    knitr::kable(podcasts.list[[j]], align = c("l", rep("c", ncol(
       podcasts
-    ) - 2), "r"), escape = FALSE, col.names = NA) %>% kable_styling(
+    ) - 2), "r"), escape = FALSE, col.names = NA, format = "html") %>% kableExtra::kable_styling(
       bootstrap_options = c("hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
-    )
-  )
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+    ), results = 'asis')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>', "\n\n")
 }
 ```
 

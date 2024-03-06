@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
   webshot = "webshot",
   dev = "png"
 )
-source("Scripts/all-required-packages.R")
+source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
 <!--script for inserting LOGO ABOVE THE TOC-->
@@ -56,30 +56,30 @@ cat('<br>')
 ```
 
 ```{r dados-cadastrais-endereco, eval = has.dados.cadastrais}
-# read separate sheets
-endereco.raw <-
-  readxl::read_excel("PPG/Dados Cadastrais.xlsx",
-             sheet = "Endereço",
-             col_types = c("text"))
+# Read Excel data
+endereco.raw <- readxl::read_excel("PPG/Dados Cadastrais.xlsx", sheet = "Endereço", col_types = c("text"))
 colnames(endereco.raw) <- seq(1:dim(endereco.raw)[2])
 
-# resolve long URLs
+# Resolve long URLs
 for (i in 1:dim(endereco.raw)[1]) {
-  if (length(grep("https://", endereco.raw[i, 2])) != 0) {
+  if (length(grep('https://', endereco.raw[i, 2])) != 0) {
     endereco.raw[i, 2] <-
-      paste0('<a href="', endereco.raw[i,2],'" target="_blank"', '>', "↗️" ,"</a>")
+      paste0('<a href=\"',
+             endereco.raw[i, 2],
+             '\" target=\"_blank\"',
+             '>',
+             # fontawesome icon
+             fontawesome::fa("up-right-from-square"),
+             '</a>')
   }
 }
 
-# print tables
-table <-
-  unname(as.data.frame(endereco.raw))
+# Print tables
+table <- unname(as.data.frame(endereco.raw))
 
 print(
-  kable(table, align = c("l", rep("c", ncol(
-    table
-  ) - 2), "r"), escape = FALSE) %>%
-    kable_styling(
+  knitr::kable(table, align = c("l", rep("c", ncol(table) - 2), "r"), escape = FALSE, format = "html") %>%
+    kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
@@ -104,45 +104,36 @@ cat('<br>')
 ```
 
 ```{r coordenadores, eval = has.coordenacao}
-coordenadores <-
-  readxl::read_excel("PPG/Coordenação.xlsx", sheet = "Coordenação")
+# Import necessary libraries with `library::function` notation
+library(readxl)
+library(kableExtra)
 
-# recode
-coordenadores$'Credenciamento' <-
-  substr(as.Date(coordenadores$'Credenciamento', format = "%d/%m/%Y"), 1, 4)
-coordenadores$'Descredenciamento' <-
-  substr(as.Date(coordenadores$'Descredenciamento', format = "%d/%m/%Y"),
-         1,
-         4)
-coordenadores$'Descredenciamento'[is.na(coordenadores$'Descredenciamento')] <-
-  "Atual"
+# Read Excel data
+coordenadores <- readxl::read_excel("PPG/Coordenação.xlsx", sheet = "Coordenação")
 
+# Recode dates
+coordenadores$'Credenciamento' <- substr(as.Date(coordenadores$'Credenciamento', format = "%d/%m/%Y"), 1, 4)
+coordenadores$'Descredenciamento' <- substr(as.Date(coordenadores$'Descredenciamento', format = "%d/%m/%Y"), 1, 4)
+coordenadores$'Descredenciamento'[is.na(coordenadores$'Descredenciamento')] <- "Atual"
+
+# Initialize empty data frame
 table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 4))
+
+# Iterate through rows to construct table
 for (i in 1:dim(coordenadores)[1]) {
   table <- cbind(
-    paste(
-      '<a href=\"mailto:', coordenadores$"E-mail"[i], '\">',
-      coordenadores$'Nome'[i],
-      '</a>',
-      sep = ""
-    ),
+    paste0('<a href=\"mailto:', coordenadores$"E-mail"[i], '\">', coordenadores$'Nome'[i], '</a>'),
     coordenadores$Categoria[i],
-    paste(
-      coordenadores$'Credenciamento'[i],
-      "-",
-      coordenadores$'Descredenciamento'[i],
-      sep = ""
-    )
+    paste0(coordenadores$'Credenciamento'[i], "-", coordenadores$'Descredenciamento'[i])
   )
   table.2 <- rbind(table.2, table)
 }
-colnames(table.2) <-
-  c("Nome",
-    "Categoria",
-    "Vigência")
+
+# Set column and row names
+colnames(table.2) <- c("Nome", "Categoria", "Vigência")
 rownames(table.2) <- NULL
 
-# print tables
+# Print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.2, title = "Pessoas - Coordenação")
 
@@ -159,85 +150,93 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ### **Credenciados**
 
 ```{r docentes-credenciados, eval = has.sucupira.files, results = "hide"}
-# docentes
+# Import necessary libraries with `library::function` notation
+library(dplyr)
+library(knitr)
+
+# Read Excel data
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R")
 
+# Set the names of the Sucupira list
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
-# most recent Sucupira year
-most.recent <-
-  as.character(ifelse(!is.null(sucupira.list[[format(Sys.Date(), "%Y")]]), format(Sys.Date(), "%Y"), max(as.numeric(
-    names(sucupira.list)
-  ))))
+# Determine the most recent Sucupira year
+most.recent <- as.character(ifelse(!is.null(sucupira.list[[format(Sys.Date(), "%Y")]]), format(Sys.Date(), "%Y"), max(as.numeric(names(sucupira.list)))))
 
-# periodo
+# Define the periodo
 periodo <- most.recent
 
-# get docentes for the current period
-sucupira <- sucupira.list[as.character(periodo)] %>%
-  compact()
+# Get docentes for the current period
+sucupira <- sucupira.list[as.character(periodo)] %>% compact()
 sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
-names(sucupira) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+names(sucupira) <- names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
-# recode
-sucupira$'Data de Admissão' <-
-  substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
-sucupira$'Data de Desligamento' <-
-  substr(as.Date(sucupira$'Data de Desligamento', format = "%d/%m/%Y"),
-         1,
-         4)
-sucupira$'Data de Desligamento'[is.na(sucupira$'Data de Desligamento')] <-
-  "Atual"
+# Recode dates
+sucupira$'Data de Admissão' <- substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
+sucupira$'Data de Desligamento' <- substr(as.Date(sucupira$'Data de Desligamento', format = "%d/%m/%Y"), 1, 4)
+sucupira$'Data de Desligamento'[is.na(sucupira$'Data de Desligamento')] <- "Atual"
 
-# filter duplicated docentes (changes in details will we exhibited)
-docentes <-
-  sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]), ]
+# Filter duplicated docentes
+docentes <- sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]), ]
 docentes <- docentes[order(docentes$"Nome Docente"),]
 
+# Print sources
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 ```{r docentes-credenciados-tabela, eval = has.sucupira.files}
+# Initialize empty data frame
 table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 7))
+
+# Iterate through rows to construct table
 for (i in 1:dim(docentes)[1]) {
   table <- cbind(
-    paste(
-      '<a href=\"mailto:', docentes$"E-mail"[i], '\">',
+    paste0(
+      '<a href=\"mailto:',
+      docentes$"E-mail"[i],
+      '\">',
       docentes$'Nome Docente'[i],
-      '</a>',
-      sep = ""
+      '</a>'
     ),
     docentes$Categoria[i],
-    paste(
+    paste0(
       docentes$'Data de Admissão'[i],
       "-",
-      docentes$'Data de Desligamento'[i],
-      sep = ""
+      docentes$'Data de Desligamento'[i]
     ),
     ifelse(
       !is.na(docentes$'Número do currículo Lattes'[i]),
-      paste(
+      paste0(
         '<a href=\"http://lattes.cnpq.br/',
         docentes$'Número do currículo Lattes'[i],
         '\">',
         docentes$'Número do currículo Lattes'[i],
-        '</a>',
-        sep = ""
+        '</a>'
       ),
       docentes$'Número do currículo Lattes'[i]
     ),
     ifelse(
       !is.na(docentes$ORCID[i]),
-      paste(
+      paste0(
         '<a href=\"https://orcid.org/',
-        paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
+        paste0(sapply(seq(
+          from = 1,
+          to = nchar(docentes$ORCID[i]),
+          by = 4
+        ),
+        function(j)
+          substr(docentes$ORCID[i], j, j + 3)), collapse = "-"),
         '\">',
-        paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-        '</a>',
-        sep = ""
+        paste0(sapply(seq(
+          from = 1,
+          to = nchar(docentes$ORCID[i]),
+          by = 4
+        ),
+        function(j)
+          substr(docentes$ORCID[i], j, j + 3)), collapse = "-"),
+        '</a>'
       ),
       docentes$ORCID[i]
     ),
@@ -245,6 +244,8 @@ for (i in 1:dim(docentes)[1]) {
   )
   table.2 <- rbind(table.2, table)
 }
+
+# Set column and row names
 colnames(table.2) <-
   c("Nome",
     "Categoria",
@@ -254,9 +255,11 @@ colnames(table.2) <-
     "País")
 rownames(table.2) <- NULL
 
-# print tables
+# Order table
 ids <- order(table.2$'Nome', decreasing = FALSE)
-table <- table.2[ids, ]
+table <- table.2[ids,]
+
+# Print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Pessoas - Docentes - Credenciados")
 
@@ -266,10 +269,11 @@ cat('\n\n')
 <br>
 
 ```{r docentes-credenciados-grafico, eval = has.sucupira.files}
-# generate plot of docentes per information
+# Generate plot of docentes per information
 layout(matrix(seq(1:2), ncol = 2, byrow = TRUE))
 par(oma = c(2, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
 
+# Total by category
 total.categoria <- table(docentes$Categoria)
 pie(
   total.categoria,
@@ -287,6 +291,7 @@ legend(
   bg = NA
 )
 
+# Total by regime
 total.regime <- table(docentes$`Regime de Trabalho`)
 pie(
   total.regime,
@@ -303,6 +308,8 @@ legend(
   cex = 1,
   bg = NA
 )
+
+# Add title
 title("Descrição do Corpo Docente - Credenciados", outer = TRUE)
 
 cat('\n\n')
@@ -314,33 +321,30 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ### **Diretório CNPq** {#dgp-cnpq .tabset}
 
 ```{r dgp-cnpq, eval = has.sucupira.files}
-# projetos - membros
+# Read Excel data
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
+# Set the names of the Sucupira list
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
-# most recent Sucupira year
-most.recent <-
-  as.character(ifelse(!is.null(sucupira.list[[format(Sys.Date(), "%Y")]]), format(Sys.Date(), "%Y"), max(as.numeric(
-    names(sucupira.list)
-  ))))
+# Determine the most recent Sucupira year
+most.recent <- as.character(ifelse(!is.null(sucupira.list[[format(Sys.Date(), "%Y")]]), format(Sys.Date(), "%Y"), max(as.numeric(names(sucupira.list)))))
 
-# read separate sheets
+# Read separate sheets
 docentes.raw <- sucupira.list[[most.recent]]
-docentes <-
-  docentes.raw[is.na(docentes.raw$`Data de Desligamento`),]
+docentes <- docentes.raw[is.na(docentes.raw$`Data de Desligamento`),]
 
-# remove duplicates between docs and postdocs
+# Remove duplicates between docs and postdocs
 docentes <- docentes[!duplicated(docentes$`Nome Docente`),]
 
-ids <- seq(1:dim(docentes)[1])
+# Order docentes
 docentes <- docentes[order(docentes$`Nome Docente`), ]
 
+# Generate output for each docente
 for (i in 1:dim(docentes)[1]) {
   cat('\n\n<!-- -->\n\n')
-#  cat("### **", paste(docentes$`Nome Docente`[i], sep = ""), "**", "\n", sep = "")
   cat("#### **", as.character(i), "**", "\n", sep = "")
   cat('<center>\n')
   if (!is.na(docentes$`Número do currículo Lattes`[i])) {
@@ -348,7 +352,7 @@ for (i in 1:dim(docentes)[1]) {
       paste0(
         '<iframe src="https://dgp.cnpq.br/dgp/espelhorh/',
         gsub("http://lattes.cnpq.br/", "", docentes$`Número do currículo Lattes`[i]),
-        '\" style=\"width:100%; height:600px; border:2px solid black;"></iframe>'
+        '\" style=\"width:100%; height:600px; border:2px solid black;\"></iframe>'
       )
     )
   } else {
@@ -361,6 +365,7 @@ for (i in 1:dim(docentes)[1]) {
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
 }
 
+# Additional sources
 cat('\n\n')
 cat('*Fontes:* [**Diretório dos Grupos de Pesquisa no Brasil**](https://lattes.cnpq.br/web/dgp)')
 cat('\n\n')
@@ -372,27 +377,14 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ### **IDs** {.tabset}
 
 ```{r ids-externos-docentes, cache = TRUE, cache.path = "cache/external-ids/", eval = has.sucupira.files}
-# docentes
-sheet <- "Docentes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+# Keep active professors and remove duplicated data
+sucupira <- sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`),]
+sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupira$ORCID),]
 
-# keep active professors and remove duplicated data
-sucupira <-
-  sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`),]
-sucupira.unique <-
-  sucupira[!duplicated(sucupira$`Nome Docente`) &
-             !is.na(sucupira$ORCID), ]
+# Format ORCID
+my_orcid <- gsub("(.{14})(.*)$", "\\1-\\2", gsub("(.{9})(.*)$", "\\1-\\2", gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)))
 
-my_orcid <-
-  gsub("(.{14})(.*)$",
-       "\\1-\\2",
-       gsub(
-         "(.{9})(.*)$",
-         "\\1-\\2",
-         gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
-       ))
-
-# compile external identifiers
+# Compile external identifiers
 source("Scripts/external-identifiers.R", local = knitr::knit_global())
 ```
 
@@ -401,43 +393,56 @@ source("Scripts/external-identifiers.R", local = knitr::knit_global())
 <br>
 
 ```{r docentes-2024-2021-tabela, eval = has.2024.2021}
+# Initialize empty data frame
 table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 7))
+
+# Iterate through rows to construct table
 for (i in 1:dim(docentes)[1]) {
   table <- cbind(
-    paste(
-      '<a href=\"mailto:', docentes$"E-mail"[i], '\">',
+    paste0(
+      '<a href=\"mailto:',
+      docentes$"E-mail"[i],
+      '\">',
       docentes$'Nome Docente'[i],
-      '</a>',
-      sep = ""
+      '</a>'
     ),
     docentes$Categoria[i],
-    paste(
+    paste0(
       docentes$'Data de Admissão'[i],
       "-",
-      docentes$'Data de Desligamento'[i],
-      sep = ""
+      docentes$'Data de Desligamento'[i]
     ),
     ifelse(
       !is.na(docentes$'Número do currículo Lattes'[i]),
-      paste(
+      paste0(
         '<a href=\"http://lattes.cnpq.br/',
         docentes$'Número do currículo Lattes'[i],
         '\">',
         docentes$'Número do currículo Lattes'[i],
-        '</a>',
-        sep = ""
+        '</a>'
       ),
       docentes$'Número do currículo Lattes'[i]
     ),
     ifelse(
       !is.na(docentes$ORCID[i]),
-      paste(
+      paste0(
         '<a href=\"https://orcid.org/',
-        paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
+        paste0(sapply(seq(
+          from = 1,
+          to = nchar(docentes$ORCID[i]),
+          by = 4
+        ),
+        function(j)
+          substr(docentes$ORCID[i], j, j + 3)), collapse = "-"),
         '\">',
-        paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-        '</a>',
-        sep = ""
+        paste0(sapply(seq(
+          from = 1,
+          to = nchar(docentes$ORCID[i]),
+          by = 4
+        ),
+        function(j)
+          substr(docentes$ORCID[i], j, j + 3)), collapse = "-"),
+        '</a>'
       ),
       docentes$ORCID[i]
     ),
@@ -445,6 +450,8 @@ for (i in 1:dim(docentes)[1]) {
   )
   table.2 <- rbind(table.2, table)
 }
+
+# Set column names
 colnames(table.2) <-
   c("Nome",
     "Categoria",
@@ -452,11 +459,13 @@ colnames(table.2) <-
     "Lattes ID",
     "ORCID",
     "País")
-rownames(table) <- NULL
+rownames(table.2) <- NULL
 
-# print tables
+# Order table
 ids <- order(table.2$'Nome', decreasing = FALSE)
-table <- table.2[ids, ]
+table <- table.2[ids,]
+
+# Print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Pessoas - Docentes - 2024-2021")
 
@@ -466,10 +475,11 @@ cat('\n\n')
 <br>
 
 ```{r docentes-2024-2021-grafico, eval = has.2024.2021}
-# generate plot of docentes per information
+# Generate plot of docentes per information
 layout(matrix(seq(1:4), ncol = 2, byrow = TRUE))
 par(oma = c(2, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
 
+# Total by category
 total.categoria <- table(docentes$Categoria)
 pie(
   total.categoria,
@@ -487,6 +497,7 @@ legend(
   bg = NA
 )
 
+# Total by regime
 total.regime <- table(docentes$`Regime de Trabalho`)
 pie(
   total.regime,
@@ -504,39 +515,7 @@ legend(
   bg = NA
 )
 
-# total.dedicação <- table(docentes$Dedicação)
-# pie(
-#   total.dedicação,
-#   labels = NA,
-#   col = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
-#   init.angle = 90,
-#   main = names(docentes$Dedicação)
-# )
-# legend(
-#   "topleft",
-#   legend = names(total.dedicação),
-#   fill = RColorBrewer::brewer.pal(n = length(names(total.dedicação)), name = "Set3"),
-#   box.lwd = 0,
-#   cex = 1,
-#   bg = NA
-# )
-# 
-# total.graduação <- table(docentes$Graduação)
-# pie(
-#   total.graduação,
-#   labels = NA,
-#   col = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"),
-#   init.angle = 90,
-#   main = names(docentes$Graduação)
-# )
-# legend(
-#   "topleft",
-#   legend = names(total.graduação),
-#   fill = RColorBrewer::brewer.pal(n = length(names(total.graduação)), name = "Set3"),
-#   box.lwd = 0,
-#   cex = 1,
-#   bg = NA
-# )
+# Add title
 title("Descrição do Corpo Docente", outer = TRUE)
 
 cat('\n\n')
@@ -577,50 +556,63 @@ sucupira$'Data de Desligamento'[is.na(sucupira$'Data de Desligamento')] <-
 
 # filter duplicated docentes (changes in details will we exhibited)
 docentes <-
-  sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]), ]
-docentes <- docentes[order(docentes$"Nome Docente"),]
+  sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]),]
+docentes <- docentes[order(docentes$"Nome Docente"), ]
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 ```{r docentes-historico-tabela, eval = has.sucupira.files}
+# Initialize empty data frame
 table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 7))
+
+# Iterate through rows to construct table
 for (i in 1:dim(docentes)[1]) {
   table <- cbind(
-    paste(
-      '<a href=\"mailto:', docentes$"E-mail"[i], '\">',
+    paste0(
+      '<a href=\"mailto:',
+      docentes$"E-mail"[i],
+      '\">',
       docentes$'Nome Docente'[i],
-      '</a>',
-      sep = ""
+      '</a>'
     ),
     docentes$Categoria[i],
-    paste(
+    paste0(
       docentes$'Data de Admissão'[i],
       "-",
-      docentes$'Data de Desligamento'[i],
-      sep = ""
+      docentes$'Data de Desligamento'[i]
     ),
     ifelse(
       !is.na(docentes$'Número do currículo Lattes'[i]),
-      paste(
+      paste0(
         '<a href=\"http://lattes.cnpq.br/',
         docentes$'Número do currículo Lattes'[i],
         '\">',
         docentes$'Número do currículo Lattes'[i],
-        '</a>',
-        sep = ""
+        '</a>'
       ),
       docentes$'Número do currículo Lattes'[i]
     ),
     ifelse(
       !is.na(docentes$ORCID[i]),
-      paste(
+      paste0(
         '<a href=\"https://orcid.org/',
-        paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
+        paste0(sapply(seq(
+          from = 1,
+          to = nchar(docentes$ORCID[i]),
+          by = 4
+        ),
+        function(j)
+          substr(docentes$ORCID[i], j, j + 3)), collapse = "-"),
         '\">',
-        paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-        '</a>',
-        sep = ""
+        paste0(sapply(seq(
+          from = 1,
+          to = nchar(docentes$ORCID[i]),
+          by = 4
+        ),
+        function(j)
+          substr(docentes$ORCID[i], j, j + 3)), collapse = "-"),
+        '</a>'
       ),
       docentes$ORCID[i]
     ),
@@ -628,6 +620,8 @@ for (i in 1:dim(docentes)[1]) {
   )
   table.2 <- rbind(table.2, table)
 }
+
+# Set column names
 colnames(table.2) <-
   c("Nome",
     "Categoria",
@@ -637,9 +631,11 @@ colnames(table.2) <-
     "País")
 rownames(table.2) <- NULL
 
-# print tables
+# Order table
 ids <- order(table.2$'Nome', decreasing = FALSE)
-table <- table.2[ids, ]
+table <- table.2[ids,]
+
+# Print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes - Histórico")
 
@@ -649,10 +645,11 @@ cat('\n\n')
 <br>
 
 ```{r docentes-historico-grafico, eval = has.sucupira.files}
-# generate plot of docentes per information
+# Generate plot of docentes per information
 layout(matrix(seq(1:2), ncol = 2, byrow = TRUE))
 par(oma = c(2, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
 
+# Total by category
 total.categoria <- table(docentes$Categoria)
 pie(
   total.categoria,
@@ -670,6 +667,7 @@ legend(
   bg = NA
 )
 
+# Total by regime
 total.regime <- table(docentes$`Regime de Trabalho`)
 pie(
   total.regime,
@@ -686,6 +684,8 @@ legend(
   cex = 1,
   bg = NA
 )
+
+# Add title
 title("Corpo Docente - Histórico", outer = TRUE)
 
 cat('\n\n')
@@ -702,80 +702,64 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ### **Credenciados**
 
 ```{r pos-doc-credenciados, eval = has.sucupira.files}
-# pós-docs
+# Pós-docs
 sheet <- "Pós-Doc"
 source("Scripts/read-xlsx-sucupira.R")
 
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
-# most recent Sucupira year
-most.recent <-
-  as.character(ifelse(!is.null(sucupira.list[[format(Sys.Date(), "%Y")]]), format(Sys.Date(), "%Y"), max(as.numeric(
-    names(sucupira.list)
-  ))))
+# Most recent Sucupira year
+most.recent <- as.character(ifelse(!is.null(sucupira.list[[format(Sys.Date(), "%Y")]]), format(Sys.Date(), "%Y"), max(as.numeric(names(sucupira.list)))))
 
-# periodo
+# Period
 periodo <- most.recent
 
-# get docentes for the current period
+# Get pós-docs for the current period
 sucupira <- sucupira.list[as.character(periodo)] %>%
   compact()
 sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
-names(sucupira) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+names(sucupira) <- names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
-# recode
-sucupira$'Vínculo Início' <-
-  substr(as.Date(sucupira$'Vínculo Início', format = "%d/%m/%Y"), 1, 4)
-sucupira$'Vínculo Fim' <-
-  substr(as.Date(sucupira$'Vínculo Fim', format = "%d/%m/%Y"),
-         1,
-         4)
-sucupira$'Vínculo Fim'[is.na(sucupira$'Vínculo Fim')] <-
-  "Atual"
+# Recode
+sucupira$'Vínculo Início' <- substr(as.Date(sucupira$'Vínculo Início', format = "%d/%m/%Y"), 1, 4)
+sucupira$'Vínculo Fim' <- substr(as.Date(sucupira$'Vínculo Fim', format = "%d/%m/%Y"), 1, 4)
+sucupira$'Vínculo Fim'[is.na(sucupira$'Vínculo Fim')] <- "Atual"
 
-# filter duplicated docentes (changes in details will we exhibited)
-docentes <-
-  sucupira[
-    !duplicated(
-      sucupira[, 
-          match("Pós-Doc Nome", colnames(sucupira)):match("Vínculo Fim", colnames(sucupira))]
-      ), ]
+# Filter duplicated pós-docs (changes in details will be exhibited)
+docentes <- sucupira[
+  !duplicated(sucupira[, match("Pós-Doc Nome", colnames(sucupira)):match("Vínculo Fim", colnames(sucupira))]), ]
 docentes <- docentes[order(docentes$"Pós-Doc Nome"),]
 
 if (dim(docentes)[1] == 0) {
   cat("*Sem dados para exibir*")
 } else {
   docentes <- docentes[order(docentes$'Pós-Doc Nome'),]
-  
+
   table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 6))
   for (i in 1:dim(docentes)[1]) {
     table <- cbind(
-      paste(
+      paste0(
         '<a href=\"mailto:',
         docentes$"E-mail"[i],
         '\">',
         docentes$'Pós-Doc Nome'[i],
-        '</a>',
-        sep = ""
+        '</a>'
       ),
       docentes$'Origem IES Nome'[i],
-      paste(
+      paste0(
         docentes$'Vínculo Início'[i],
         "-",
-        docentes$'Vínculo Fim'[i],
-        sep = ""
+        docentes$'Vínculo Fim'[i]
       ),
       ifelse(
         !is.na(docentes$ORCID[i]),
-        paste(
+        paste0(
           '<a href=\"https://orcid.org/',
           paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
           '\">',
           paste0(sapply(seq(from=1, to=nchar(docentes$ORCID[i]), by=4), function(j) substr(docentes$ORCID[i], j, j+3)), collapse = "-"),
-          '</a>',
-          sep = ""
+          '</a>'
         ),
         docentes$ORCID[i]
       ),
@@ -790,12 +774,13 @@ if (dim(docentes)[1] == 0) {
       "ORCID",
       "País")
   rownames(table.2) <- NULL
-  # print tables
+
+  # Print tables
   ids <- order(table.2$'Nome', decreasing = FALSE)
   table <- table.2[ids, ]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   cat(knitr::knit_print(create_dt(table, title = "Pessoas - Pós-Docs - 2024-2021")))
-  
+
   source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 }
 ```
@@ -1012,13 +997,13 @@ if (dim(discentes)[1] != 0) {
   table <- discentes[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Pessoas - Datas e Prazos - Doutorado") %>%
-    formatStyle('Tempo em curso',
+    DT::formatStyle('Tempo em curso',
                 target = 'row',
-                backgroundColor = styleEqual(49:54, rep('lightyellow', length(49:54)))
+                backgroundColor = DT::styleEqual(49:54, rep('lightyellow', length(49:54)))
                 )  %>%
-    formatStyle('Tempo em curso',
+    DT::formatStyle('Tempo em curso',
                 target = 'row',
-                backgroundColor = styleEqual(55:1000, rep('#ffcccb', length(55:1000)))
+                backgroundColor = DT::styleEqual(55:1000, rep('#ffcccb', length(55:1000)))
                 )
 } else {
   cat("*Sem dados para exibir*")
@@ -1045,9 +1030,9 @@ if (dim(discentes)[1] != 0) {
   summ.table[summ.table == 0] <- ""
   # print table
   print(
-    kable(summ.table, align = c("l", rep(
+    knitr::kable(summ.table, align = c("l", rep(
       "c", ncol(summ.table) - 2
-    ), "r")) %>% kable_styling(
+    ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
@@ -1121,13 +1106,13 @@ if (dim(discentes)[1] != 0) {
   table <- discentes[ids,]
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table, title = "Pessoas - Datas e Prazos - Mestrado") %>%
-    formatStyle('Tempo em curso',
+    DT::formatStyle('Tempo em curso',
                 target = 'row',
-                backgroundColor = styleEqual(25:30, rep('lightyellow', length(25:30)))
+                backgroundColor = DT::styleEqual(25:30, rep('lightyellow', length(25:30)))
                 )  %>%
-    formatStyle('Tempo em curso',
+    DT::formatStyle('Tempo em curso',
                 target = 'row',
-                backgroundColor = styleEqual(31:1000, rep('#ffcccb', length(31:1000)))
+                backgroundColor = DT::styleEqual(31:1000, rep('#ffcccb', length(31:1000)))
                 )
 } else {
   cat("*Sem dados para exibir*")
@@ -1154,9 +1139,9 @@ if (dim(discentes)[1] != 0) {
   summ.table[summ.table == 0] <- ""
   # print table
   print(
-    kable(summ.table, align = c("l", rep(
+    knitr::kable(summ.table, align = c("l", rep(
       "c", ncol(summ.table) - 2
-    ), "r")) %>% kable_styling(
+    ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
@@ -1495,7 +1480,7 @@ for (j in 1:dim(periodos)[1]) {
       axis.text.x = element_blank(),
       axis.text.y = element_blank()
   ) +
-    labs(subtitle = paste(periodos[j, 1], "-", periodos[j, 2], sep = ""),
+    labs(subtitle = paste0(periodos[j, 1], "-", periodos[j, 2]),
          size = 12) +
     guides(fill = FALSE)
 }
@@ -1578,9 +1563,9 @@ grupos.raw <-
 
 # print tables
 print(
-  kable(grupos.raw, align = c("l", rep(
+  knitr::kable(grupos.raw, align = c("l", rep(
     "c", ncol(grupos.raw) - 2
-  ), "r")) %>% kable_styling(
+  ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
     position = "center"
@@ -1601,7 +1586,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 grupos.raw <- readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.inativos")
 
 # print tables
-print(kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+print(knitr::kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r"), escape = FALSE, format = "html") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
 
 cat('\n\n')
 cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
@@ -1619,9 +1604,9 @@ membros.raw <-
 
 # print tables
 print(
-  kable(membros.raw, align = c("l", rep(
+  knitr::kable(membros.raw, align = c("l", rep(
     "c", ncol(membros.raw) - 2
-  ), "r")) %>% kable_styling(
+  ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
     position = "center"
@@ -1644,9 +1629,9 @@ grupos.raw <-
 
 # print tables
 print(
-  kable(grupos.raw, align = c("l", rep(
+  knitr::kable(grupos.raw, align = c("l", rep(
     "c", ncol(grupos.raw) - 2
-  ), "r")) %>% kable_styling(
+  ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
     position = "center"
