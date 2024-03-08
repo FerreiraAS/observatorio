@@ -3,6 +3,7 @@ title: Impactos
 output:
   html_document:
     toc: true
+    toc_float: true
     css:
       - ./CSS/generic.css
       - ./CSS/logo-above-toc.css
@@ -26,7 +27,6 @@ knitr::opts_chunk$set(
   webshot = "webshot",
   dev = "png"
 )
-source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
 <!--script for inserting LOGO ABOVE THE TOC-->

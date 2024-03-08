@@ -1,31 +1,30 @@
 ---
 title: Autoavaliação
 
-geometry: "top=3cm,left=3cm,right=2cm,bottom=2cm"
 link-citations: yes
 always_allow_html: true
+
 documentclass: book
 papersize: a4
+geometry: "top=3cm,left=3cm,right=2cm,bottom=2cm"
 
 output:
   html_document:
     toc: true
+    toc_float: true
     css:
       - ./CSS/generic.css
       - ./CSS/logo-above-toc.css
       - ./CSS/main-color.css
       - ./CSS/narrow-margins.css
       - ./CSS/responsive.css
-  bookdown::pdf_book:
+  pdf_document:
     toc: true
-    lot: true
-    lof: true
-    number_sections: false
     includes:
       in_header: tex/preamble.tex
       before_body: [tex/cover-1.tex, tex/cover-2.tex]
     latex_engine: xelatex
-    keep_tex: no
+    keep_tex: false
 ---
 
 <!--install and/or load all R packages-->
@@ -43,7 +42,6 @@ knitr::opts_chunk$set(
   webshot = "webshot",
   dev = "png"
 )
-source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
 <!--script for inserting LOGO ABOVE THE TOC-->

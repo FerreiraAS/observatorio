@@ -3,6 +3,7 @@ title: OBSERVATÓRIO
 output:
   html_document:
     toc: false
+    toc_float: true
     css:
       - ./CSS/index.css
       - ./CSS/main-color.css
@@ -24,7 +25,6 @@ knitr::opts_chunk$set(
   webshot = "webshot",
   dev = "png"
 )
-source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
 ---
