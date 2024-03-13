@@ -444,9 +444,7 @@ cursos <- dplyr::select(cursos.raw, c("Nível", "Objetivos"))
 
 # print tables
 print(
-  knitr::kable(cursos, align = c("l", rep("c", ncol(
-    cursos
-  ) - 2), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+  knitr::kable(cursos, align = c("l"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
     position = "center"
@@ -468,9 +466,7 @@ cursos <- dplyr::select(cursos.raw, c("Nível", "Objetivos"))
 
 # print tables
 print(
-  knitr::kable(cursos, align = c("l", rep("c", ncol(
-    cursos
-  ) - 2), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+  knitr::kable(cursos, align = c("l"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
     position = "center"
@@ -749,7 +745,7 @@ table.ac.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Áreas", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Áreas", na.rm = TRUE), digits = 0)
 }
 
 # print tables
@@ -767,7 +763,7 @@ table.ac.gt <-
   gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
   gtsummary::modify_header(list(
     add_stat_1 ~ "**N (Quadriênio)**",
-    all_stat_cols() ~ "**{level}**"
+    gtsummary::all_stat_cols() ~ "**{level}**"
   )) %>%
   gtsummary::remove_row_type(
     variables = c('Área de Concentração'),
@@ -817,7 +813,7 @@ table.lp.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Linhas", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Linhas", na.rm = TRUE), digits = 0)
 }
 
 # print tables
@@ -885,7 +881,7 @@ table.pp.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Projetos", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Projetos", na.rm = TRUE), digits = 0)
 }
 
 colnames(table.pp.long) <- c("Ano", "Projetos de Pesquisa por Linha")
@@ -955,7 +951,7 @@ table.doc.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Membros", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Membros", na.rm = TRUE), digits = 0)
 }
 
 colnames(table.doc.long) <- c("Ano", "Projetos de pesquisa por Docente")
@@ -1025,7 +1021,7 @@ table.posdoc.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Membros", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Membros", na.rm = TRUE), digits = 0)
 }
 
 colnames(table.posdoc.long) <- c("Ano", "Projetos de pesquisa por Pós-Doc")
@@ -1254,7 +1250,7 @@ table.1.1.2 <-
     digits = list(everything() ~ 0)) %>%
   gtsummary::modify_header(
     label = "**Ano**",
-    all_stat_cols() ~ "**{level}**") %>%
+    gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(
     tidyselect::everything() ~ NA) %>%
   gtsummary::bold_labels()
@@ -1335,7 +1331,7 @@ table.doc.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Docentes", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Docentes", na.rm = TRUE), digits = 0)
 }
 
 table.1a <-
@@ -1352,7 +1348,7 @@ table.1a <-
   gtsummary::modify_header(
     list(
       add_stat_1 ~ "**N (Quadriênio)**",
-      all_stat_cols() ~ "**{level}**"
+      gtsummary::all_stat_cols() ~ "**{level}**"
     )
   ) %>%  
   gtsummary::remove_row_type(variables = c('Categoria'), 
@@ -1417,7 +1413,7 @@ table.doc.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Docentes", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Docentes", na.rm = TRUE), digits = 0)
 }
 
 table.1b <-
@@ -1434,7 +1430,7 @@ table.1b <-
   gtsummary::modify_header(
     list(
       add_stat_1 ~ "**N (Quadriênio)**",
-      all_stat_cols() ~ "**{level}**"
+      gtsummary::all_stat_cols() ~ "**{level}**"
     )
   ) %>%  
   gtsummary::remove_row_type(variables = c('Tipo vínculo'), 
@@ -1498,7 +1494,7 @@ table.doc.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Docentes", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Docentes", na.rm = TRUE), digits = 0)
 }
 
 table.1c <-
@@ -1579,7 +1575,7 @@ table.doc.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Docentes", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Docentes", na.rm = TRUE), digits = 0)
 }
 
 table.1d <-
@@ -1737,7 +1733,7 @@ table.doc.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Docentes", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Docentes", na.rm = TRUE), digits = 0)
 }
 
 # print tables
@@ -1825,23 +1821,33 @@ financiadores <- financiadores[order(financiadores$Proponente, decreasing = TRUE
 # Filter data for the current quadrennial period
 financiadores <- financiadores[financiadores$Ano %in% quadrienal.vigente, ]
 
-# Summarize data using tbl_summary from gtsummary
-table.2 <- gtsummary::tbl_summary(
-  financiadores,
-  by = "Ano",
-  type = list(gtsummary::all_continuous() ~ "continuous"),
-  statistic = list(gtsummary::all_continuous() ~ c("R$ {sum}")),
-  missing = "no",
-  digits = "Total" ~ 2,
-  sort = gtsummary::all_categorical() ~ "frequency"
-) %>%
-  gtsummary::add_overall(last = TRUE, col_label = "Total") %>%
-  gtsummary::modify_header(label = "**Ano**") %>%
-  gtsummary::modify_footnote(update = gtsummary::everything() ~ NA) %>%
-  gtsummary::bold_labels()
+# count number of unique "Docentes" in the data
+my_N <- function(data, ...) {
+  dplyr::n_distinct(data$Proponente)
+}
+
+# print tables
+financiadores.gt <-
+  gtsummary::tbl_summary(
+    financiadores,
+    by = "Ano",
+    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)", gtsummary::all_continuous() ~ c("R$ {sum}")),
+    missing = "no",
+    digits = list(gtsummary::everything() ~ 0, "Total" ~ 2),
+    sort = gtsummary::all_categorical() ~ "frequency"
+  ) %>%
+  gtsummary::modify_header(label = "Ano", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels() %>%
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+  gtsummary::modify_fmt_fun(update = add_stat_1 ~ function(x) gtsummary::style_number(x, digits = 0))  %>%
+  gtsummary::modify_header(list(
+    add_stat_1 ~ "**N (Quadriênio)**",
+    gtsummary::all_stat_cols() ~ "**{level}**"
+  ))
 
 # Print the summarized table
-print(table.2)
+print(financiadores.gt)
 
 # Print additional information
 cat('\n\n')
@@ -1849,7 +1855,6 @@ cat(
   "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
 )
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
-
 ```
 
 <br>
@@ -2274,7 +2279,7 @@ table.ac.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
 }
 
 colnames(table.ac.long) <- c("Ano", "Produção por Área de Concentração")
@@ -2344,7 +2349,7 @@ table.lp.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
 }
 
 colnames(table.lp.long) <- c("Ano", "Produção por Linha de Pesquisa")
@@ -2414,7 +2419,7 @@ table.prd.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
 }
 
 colnames(table.prd.long) <- c("Ano", "Produção por tipo")
@@ -2484,7 +2489,7 @@ table.aut.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
 }
 
 colnames(table.aut.long) <- c("Ano", "Categoria do Autor Principal")
@@ -2504,7 +2509,7 @@ table.aut.gt <- gtsummary::tbl_summary(
   gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
   gtsummary::modify_header(list(
     add_stat_1 ~ "**N (Quadriênio)**",
-    all_stat_cols() ~ "**{level}**"
+    gtsummary::all_stat_cols() ~ "**{level}**"
   )) %>%
   gtsummary::remove_row_type(
     variables = c('Categoria do Autor Principal'),
@@ -2554,7 +2559,7 @@ table.tcc.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
 }
 
 colnames(table.tcc.long) <- c("Ano", "Produção vinculada a TCC concluído")
@@ -2624,7 +2629,7 @@ table.bib.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
 }
 
 colnames(table.bib.long) <- c("Ano", "Produção bibliográfica")
@@ -2694,7 +2699,7 @@ table.tec.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
 }
 
 colnames(table.tec.long) <- c("Ano", "Produção técnica")
@@ -2927,7 +2932,7 @@ table.3.2.1 <-
     ) %>%
   gtsummary::modify_header(
     label = "**Ano**",
-    all_stat_cols() ~ "**{level}**") %>%
+    gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(
     tidyselect::everything() ~ NA) %>%
   gtsummary::bold_labels()

@@ -339,7 +339,7 @@ table.lp.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
 }
 
 colnames(table.lp.long) <- c("Ano", "Produção por Linha de Pesquisa")
@@ -360,7 +360,7 @@ table.lp.gt <-
   gtsummary::add_stat(fns = all_categorical() ~ my_N) %>%
   gtsummary::modify_header(list(
     add_stat_1 ~ "**N (Período)**",
-    all_stat_cols() ~ "**{level}**"
+    gtsummary::all_stat_cols() ~ "**{level}**"
   )) %>%
   remove_row_type(
     variables = c('Produção por Linha de Pesquisa'),
@@ -410,7 +410,7 @@ table.prd.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
 }
 
 colnames(table.prd.long) <- c("Ano", "Produção por tipo")
@@ -481,7 +481,7 @@ table.aut.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
 }
 
 colnames(table.aut.long) <- c("Ano", "Categoria do Autor Principal")
@@ -552,7 +552,7 @@ table.tcc.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
 }
 
 colnames(table.tcc.long) <- c("Ano", "Produção vinculada a TCC concluído")
@@ -573,7 +573,7 @@ table.tcc.gt <-
   gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
   gtsummary::modify_header(list(
     add_stat_1 ~ "**N (Período)**",
-    all_stat_cols() ~ "**{level}**"
+    gtsummary::all_stat_cols() ~ "**{level}**"
   )) %>%
   gtsummary::remove_row_type(
     variables = c('Produção vinculada a TCC concluído'),
@@ -623,7 +623,7 @@ table.bib.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
 }
 
 colnames(table.bib.long) <- c("Ano", "Produção bibliográfica")
@@ -644,7 +644,7 @@ table.bib.gt <-
   gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
   gtsummary::modify_header(list(
     add_stat_1 ~ "**N (Período)**",
-    all_stat_cols() ~ "**{level}**"
+    gtsummary::all_stat_cols() ~ "**{level}**"
   )) %>%
   gtsummary::remove_row_type(
     variables = c('Produção bibliográfica'),
@@ -694,7 +694,7 @@ table.tec.long <- rbind(
 )
 
 my_N <- function(data, ...) {
-  style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
+  gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
 }
 
 colnames(table.tec.long) <- c("Ano", "Produção técnica")
@@ -715,7 +715,7 @@ table.tec.gt <-
   gtsummary::add_stat(fns = all_categorical() ~ my_N) %>%
   gtsummary::modify_header(list(
     add_stat_1 ~ "**N (Período)**",
-    all_stat_cols() ~ "**{level}**"
+    gtsummary::all_stat_cols() ~ "**{level}**"
   )) %>%
   gtsummary::remove_row_type(
     variables = c('Produção técnica'),
@@ -795,7 +795,7 @@ table.3.2.1 <-
     ) %>%
   gtsummary::modify_header(
     label = "**Ano**",
-    all_stat_cols() ~ "**{level}**") %>%
+    gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(
     tidyselect::everything() ~ NA) %>%
   gtsummary::bold_labels()
