@@ -1844,7 +1844,8 @@ financiadores.gt <-
   gtsummary::modify_header(list(
     add_stat_1 ~ "**N (Quadriênio)**",
     gtsummary::all_stat_cols() ~ "**{level}**"
-  ))
+  )) %>%
+  gtsummary::remove_row_type(variables = c("Total"), type = "all")
 
 # Print the summarized table
 print(financiadores.gt)
