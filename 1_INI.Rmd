@@ -36,12 +36,13 @@ knitr::opts_chunk$set(
 source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
-```{r custom-yml, results = "hide"}
-source("Scripts/custom-yml.R", local = knitr::knit_global())
+```{r custom-yaml, results = "hide"}
+source("Scripts/custom-yaml.R", local = knitr::knit_global())
 ```
 
-```{r yaml-metadata, results = "hide"}
-metadata$repository_url <- rmarkdown::metadata$repository_url
+```{r yml-metadata, results = "hide"}
+metadata <- c()
+metadata$repository_url <- yaml::read_yaml("_site.yml")$repository_url
 ```
 
 ```{r update, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, results = "hide"}
