@@ -139,3 +139,6 @@ packs <- unique(c(packs.cran, packs.git))
 for (i in 1:length(packs)) {
   library(packs[i], character.only = TRUE)
 }
+
+# update all packages
+update.packages(checkBuilt = TRUE, ask = FALSE)

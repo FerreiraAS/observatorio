@@ -45,11 +45,6 @@ metadata <- c()
 metadata$repository_url <- yaml::read_yaml("_site.yml")$repository_url
 ```
 
-```{r update, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, results = "hide"}
-# update all packages
-update.packages(checkBuilt = TRUE, ask = FALSE)
-```
-
 ```{r nojekyll, results = "hide"}
 if(!file.exists(".nojekyll")) {
   file.create('.nojekyll')
