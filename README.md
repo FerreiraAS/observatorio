@@ -317,31 +317,34 @@ Para obter dados de métricas, as seguintes API são utilizadas:
 -   [**Scopus API**](https://dev.elsevier.com/sc_apis.html) Para acesso
     a dados da Scopus e SciVal
 
+-   [**CrossRef**](https://github.com/ropensci/rcrossref) Para acesso
+    a dados da CrossRef
+
 ## **Como usar**
 
-### [**1. Fazer o registro em uma conta do GitHub**](https://docs.github.com/pt/get-started/signing-up-for-github/signing-up-for-a-new-github-account)
+### [**1. Registre uma conta do GitHub**](https://docs.github.com/pt/get-started/signing-up-for-github/signing-up-for-a-new-github-account)
 
 *O GitHub oferece contas pessoais de indivíduos e organizações para que
 equipes de pessoas trabalhem juntas.*
 
-### [**2. Verificar endereço de e-mail**](https://docs.github.com/pt/get-started/signing-up-for-github/verifying-your-email-address)
+### [**2. Verifique o endereço de e-mail**](https://docs.github.com/pt/get-started/signing-up-for-github/verifying-your-email-address)
 
 *A verificação do endereço de e-mail principal garante segurança
 reforçada, permite que a equipe do GitHub auxilie melhor caso você
 esqueça sua senha e fornece acesso a mais recursos no GitHub.*
 
-### [**3. Criar um repositório**](https://docs.github.com/pt/get-started/quickstart/create-a-repo)
+### [**3. Crie um repositório**](https://docs.github.com/pt/get-started/quickstart/create-a-repo)
 
 *Para colocar seu projeto no GitHub, você precisará criar um repositório
 no qual ele residirá.*
 
-### [**4. Clonar um repositório**](https://docs.github.com/pt/repositories/creating-and-managing-repositories/cloning-a-repository)
+### [**4. Clone um repositório**](https://docs.github.com/pt/repositories/creating-and-managing-repositories/cloning-a-repository)
 
 *Ao criar um repositório no GitHub.com, ele existirá como um repositório
 remoto. É possível clonar o repositório para criar uma cópia local no
 seu computador e sincronizar entre os dois locais.*
 
-### [**5. Configurar uma fonte de publicação para o site do GitHub Pages**](https://docs.github.com/pt/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+### [**5. Configure uma fonte de publicação para o site do GitHub Pages**](https://docs.github.com/pt/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
 
 *Você pode configurar seu site do GitHub Pages para ser publicado quando
 alterações são enviadas por push a um branch específico ou pode escrever
