@@ -45,7 +45,7 @@ knitr::opts_chunk$set(
 ```
 
 <!--script for inserting LOGO ABOVE THE TOC-->
-```{js table-of-contents}
+```{js}
 $(document).ready(function() {
   $('#TOC').parent().prepend('<div id=\"nav_logo\"><img src="PPG/Images/logo-programa.png"></div>');
   });
@@ -58,6 +58,8 @@ home <- metadata$repository_url
 source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 ```
 </p>
+
+<br>
 
 ```{r quadrienal-vigente, results = "hide", echo = FALSE, include = FALSE, eval = has.sucupira.files}
 # get years
@@ -1278,9 +1280,9 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 ```{r categoria-corpo-docente, eval = all(has.sucupira.files, knitr::is_html_output())}
 sheet <- "Docentes"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
@@ -1360,9 +1362,9 @@ table.1a <-
 ```{r vinculacao-corpo-docente, eval = all(has.sucupira.files, knitr::is_html_output())}
 # docentes
 sheet <- "Docentes"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
@@ -1441,9 +1443,9 @@ table.1b <-
 ```{r regime-corpo-docente, eval = all(has.sucupira.files, knitr::is_html_output())}
 # docentes
 sheet <- "Docentes"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
@@ -1522,9 +1524,9 @@ table.1c <-
 ```{r carga-horaria-corpo-docente, eval = all(has.sucupira.files, knitr::is_html_output())}
 # docentes
 sheet <- "Docentes"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
@@ -1687,10 +1689,10 @@ print(
 ```{r coerencia-corpo-docente, eval = all(has.sucupira.files, knitr::is_html_output())}
 # docentes
 sheet <- "Docentes"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # get docentes for the current period

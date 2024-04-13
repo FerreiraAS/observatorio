@@ -40,7 +40,7 @@ $(document).ready(function() {
 <p align="right">
 ```{r share}
 home <- metadata$repository_url
-source("Scripts/social-media-sharing.R")
+source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 ```
 </p>
 
@@ -298,7 +298,7 @@ sheet <- "Produções - Autores"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
@@ -632,7 +632,7 @@ sheet <- "Produções - Autores"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
@@ -722,7 +722,7 @@ sheet <- "Produções - Autores"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
@@ -971,7 +971,7 @@ sheet <- "Produções - Autores"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
@@ -1135,7 +1135,7 @@ sheet <- "Produções - Autores"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
@@ -1225,7 +1225,7 @@ sheet <- "Produções - Autores"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
@@ -1315,7 +1315,7 @@ sheet <- "Produções - Autores"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
@@ -1405,7 +1405,7 @@ sheet <- "Produções - Autores"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
@@ -1495,7 +1495,7 @@ sheet <- "Produções - Autores"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
@@ -1585,7 +1585,7 @@ sheet <- "Produções - Autores"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # get data for the current period

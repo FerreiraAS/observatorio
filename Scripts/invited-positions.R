@@ -22,7 +22,7 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
   # get SJR from SCImago database
   SJR <- c()
   for (k in 1:dim(invited.pos)[1]){
-    SJR.i <- scimago[match(tolower(invited.pos[k, 1]), tolower(scimago$Title)), 6]
+    SJR.i <- scimago$SJR[match(tolower(invited.pos[k, 1]), tolower(scimago$Title))]
     SJR <- c(SJR, ifelse(length(SJR.i) != 0, SJR.i, NA))
   }
   # get CiteScore from SCOPUS database

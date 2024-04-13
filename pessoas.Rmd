@@ -40,7 +40,7 @@ $(document).ready(function() {
 <p align="right">
 ```{r share}
 home <- metadata$repository_url
-source("Scripts/social-media-sharing.R")
+source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 ```
 </p>
 
@@ -156,7 +156,7 @@ library(knitr)
 
 # Read Excel data
 sheet <- "Docentes"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # Set the names of the Sucupira list
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
@@ -529,7 +529,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ```{r docentes-historico, eval = has.sucupira.files, results = "hide"}
 # docentes
 sheet <- "Docentes"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
@@ -704,7 +704,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ```{r pos-doc-credenciados, eval = has.sucupira.files}
 # Pós-docs
 sheet <- "Pós-Doc"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
@@ -792,7 +792,7 @@ if (dim(docentes)[1] == 0) {
 ```{r pos-doc-historico, eval = has.sucupira.files}
 # pós-docs
 sheet <- "Pós-Doc"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
@@ -894,10 +894,10 @@ if (dim(docentes)[1] == 0) {
 ```{r discentes-inscritos, eval = has.sucupira.files}
 # discentes
 sheet <- "Discentes - Orientadores"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # get only last data available
@@ -947,10 +947,10 @@ course.level <- "Doutorado"
 
 # discentes
 sheet <- "Discentes - Orientadores"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # get only last data available
@@ -1056,10 +1056,10 @@ course.level <- "Mestrado"
 
 # discentes
 sheet <- "Discentes - Orientadores"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # get only last data available
@@ -1166,14 +1166,14 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 ```{r titulados, eval = has.sucupira.files}
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
 # periodo
 periodo <- min(max(as.numeric(format(Sys.Date(), "%Y"))), anos)
 
 # egressos
 sheet <- "Discentes - Orientadores"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # get egressos for the current period
@@ -1223,7 +1223,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 ```{r historico-egressos-5, eval = has.sucupira.files}
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
 # periodo
 n.anos <- 5
@@ -1231,7 +1231,7 @@ periodo <- (as.numeric(format(Sys.Date(), "%Y")) - n.anos):(as.numeric(format(Sy
 
 # egressos
 sheet <- "Discentes - Orientadores"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 names(sucupira.list) <- as.character(anos)
 
@@ -1282,7 +1282,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 ```{r historico-egressos-10, eval = has.sucupira.files}
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
 # periodo
 n.anos <- 10
@@ -1290,7 +1290,7 @@ periodo <- (as.numeric(format(Sys.Date(), "%Y")) - n.anos):(as.numeric(format(Sy
 
 # egressos
 sheet <- "Discentes - Orientadores"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 names(sucupira.list) <- as.character(anos)
 
@@ -1341,7 +1341,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 ```{r historico-egressos, eval = has.sucupira.files}
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
 # periodo
 n.anos <- 100
@@ -1349,7 +1349,7 @@ periodo <- (as.numeric(format(Sys.Date(), "%Y")) - n.anos):(as.numeric(format(Sy
 
 # egressos
 sheet <- "Discentes - Orientadores"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 names(sucupira.list) <- as.character(anos)
 
@@ -1507,11 +1507,11 @@ course.level <- "Bacharelado"
 
 # discentes
 sheet <- "Discentes - Orientadores"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 discentes <- sucupira.raw
 
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # filter students
@@ -1654,11 +1654,11 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 ```{r externos-nacionais, eval = has.sucupira.files}
 # participantes externos
 sheet <- "Participante Externo"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 externos <- sucupira.raw
 
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # filter students
@@ -1698,11 +1698,11 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```{r externos-internacionais, eval = has.sucupira.files}
 # participantes externos
 sheet <- "Participante Externo"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 externos <- sucupira.raw
 
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # filter students
@@ -1742,11 +1742,11 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```{r externos-ies-paises, eval = has.sucupira.files}
 # participantes externos
 sheet <- "Participante Externo"
-source("Scripts/read-xlsx-sucupira.R")
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 externos <- sucupira.raw
 
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # drop columns and remove duplicated entries

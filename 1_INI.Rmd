@@ -32,7 +32,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r install-packages, results = "hide"}
+```{r install-update-packages, results = "hide"}
 source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
@@ -107,7 +107,7 @@ has.posdocs <- FALSE
 
 ```{r try-periodos, results = "hide", eval = has.sucupira.files}
 # get years
-source("Scripts/years-sucupira.R")
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
 # periodo
 periodo <- 2021:min(as.numeric(format(Sys.Date(), "%Y")), 2024)
@@ -434,7 +434,7 @@ match.stopwords <-
   match(stringr::str_split_1(as.character(nome.PPG)[[1]], " "), tm::stopwords("portuguese"))
 nome.PPG.no.stopwords <-
   paste(nome.PPG.split[is.na(match.stopwords)], collapse = " ")
-source("Scripts/get-initials.R")
+source("Scripts/get-initials.R", local = knitr::knit_global())
 sigla.PPG <- initials(nome.PPG.no.stopwords)
 
 try(site.PPG <-
@@ -739,8 +739,7 @@ dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
 
 if(!sjmisc::is_empty(dois)) {
   # cria metadados para rastreio pelo Altmetric
-  source("Scripts/altmetric-meta-from-dois.R",
-         local = knitr::knit_global())
+  source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
   
   # get metrics from Altmetric and CrossRef
   source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
@@ -821,8 +820,7 @@ dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
 
 if (!sjmisc::is_empty(dois)) {
   # cria metadados para rastreio pelo Altmetric
-  source("Scripts/altmetric-meta-from-dois.R",
-         local = knitr::knit_global())
+  source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
   
   # get metrics from Altmetric and CrossRef
   source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
@@ -895,8 +893,7 @@ dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
 
 if (!sjmisc::is_empty(dois)) {
   # cria metadados para rastreio pelo Altmetric
-  source("Scripts/altmetric-meta-from-dois.R",
-         local = knitr::knit_global())
+  source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
   
   # get metrics from Altmetric and CrossRef
   source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
@@ -977,8 +974,7 @@ dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
 
 if (!sjmisc::is_empty(dois)) {
   # cria metadados para rastreio pelo Altmetric
-  source("Scripts/altmetric-meta-from-dois.R",
-         local = knitr::knit_global())
+  source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
   
   # get metrics from Altmetric and CrossRef
   source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
@@ -1051,8 +1047,7 @@ dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
 
 if (!sjmisc::is_empty(dois)) {
   # cria metadados para rastreio pelo Altmetric
-  source("Scripts/altmetric-meta-from-dois.R",
-         local = knitr::knit_global())
+  source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
   
   # get metrics from Altmetric and CrossRef
   source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
@@ -1133,8 +1128,7 @@ dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
 
 if (!sjmisc::is_empty(dois)) {
   # cria metadados para rastreio pelo Altmetric
-  source("Scripts/altmetric-meta-from-dois.R",
-         local = knitr::knit_global())
+  source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
   
   # get metrics from Altmetric and CrossRef
   source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())

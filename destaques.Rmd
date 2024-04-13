@@ -25,7 +25,6 @@ knitr::opts_chunk$set(
   knitr.kable.NA = '',
   knitr.table.format = "html",
   webshot = "webshot",
-  dev = "png",
   dev = "png"
 )
 ```
@@ -45,25 +44,14 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 ```
 </p>
 
-<br>
-
 <!--script for generating ALTMETRIC badges-->
-
-```{=html}
 <script type='text/javascript' src='https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js'></script>
-```
 
 <!--script for generating multiple DIMENSIONS badges-->
-
-```{=html}
 <script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
-```
 
 <!--script for generating multiple PLUMX badges-->
-
-```{=html}
 <script type="text/javascript" src="//cdn.plu.mx/widget-all.js"></script>
-```
 
 <br>
 

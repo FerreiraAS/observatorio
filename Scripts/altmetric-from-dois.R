@@ -209,7 +209,7 @@ for (i in 1:dim(doi_with_altmetric)[1]) {
   # search for alternative source of journal name
   if (sjmisc::is_empty(doi_with_altmetric$journal[i]) & !sjmisc::is_empty(doi_with_altmetric$issn[i])) {
     try({
-      journal <- scimago[grep(gsub("-", "", doi_with_altmetric$issn[i]), scimago$Issn), 3][1]
+      journal <- scimago$Title[grep(gsub("-", "", doi_with_altmetric$issn[i]), scimago$Issn)][1]
       if(!sjmisc::is_empty(journal)){
         doi_with_altmetric$journal[i] <- journal
       }
