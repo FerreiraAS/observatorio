@@ -105,6 +105,12 @@ shiny::HTML('<iframe id="scaled-frame" src="https://ppgdl-unisuam.github.io/obse
 
 cat('<br>')
 cat('<br>')
+
+shiny::HTML("<h1>IFRJ | PPGCTIS</h1>")
+shiny::HTML('<iframe id="scaled-frame" src="https://https://ppgctis.github.io/ObservatorioCTIS/" style="width:100%; height:600px; border:2px solid white;"></iframe>')
+
+cat('<br>')
+cat('<br>')
 ```
 
 ```{r sintese-coerencia, include = FALSE, eval = has.sucupira.files}
