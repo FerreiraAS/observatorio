@@ -58,7 +58,7 @@ if (exists("logo")) {
 }
 
 # IES name
-if (as.logical(has.dados.cadastrais)) {
+if (has.dados.cadastrais) {
   label.IES <- nome.IES
 } else {
   label.IES <- ""
@@ -73,7 +73,7 @@ text(
 )
 
 # book subtitle
-if (as.logical(has.dados.cadastrais)) {
+if (has.dados.cadastrais) {
   label.PPG <- nome.PPG
 } else {
   label.PPG <- ""
@@ -88,7 +88,7 @@ text(
 )
 
 # periodo
-if (as.logical(has.sucupira.files)) {
+if (has.sucupira.files) {
   label.quad <-
     paste0("Quadrienal ", as.character(min(quadrienal.vigente)), "-", as.character(max(quadrienal.vigente)))
 } else {

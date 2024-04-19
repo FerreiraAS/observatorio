@@ -904,8 +904,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 <center>
 
 ```{r logo-ies, eval = has.cep}
-if(file.exists("PPG/Images/logo-cep.png") &
-   has.cep) {
+if(file.exists("PPG/Images/logo-cep.png") & has.cep) {
   # read separate sheets
   link <-
     readxl::read_excel("PPG/Comitê de Ética em Pesquisa.xlsx",

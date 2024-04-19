@@ -17,9 +17,9 @@ par(family = 'ComputerModern')
 texto <- paste0(
   "Citação:",
   "\n\n",
-  if (as.logical(has.dados.cadastrais)) {nome.IES} else {""},
+  if (has.dados.cadastrais) {nome.IES} else {""},
   ". ",
-  if (as.logical(has.sucupira.files)) {paste0("Quadrienal ", as.character(min(quadrienal.vigente)), "-", as.character(max(quadrienal.vigente)))} else {""},
+  if (has.sucupira.files) {paste0("Quadrienal ", as.character(min(quadrienal.vigente)), "-", as.character(max(quadrienal.vigente)))} else {""},
   ". ",
   try(paste0(pdftools::pdf_info("docs/autoavaliacao.pdf")$pages, "p"), silent = TRUE),
   ". ",
