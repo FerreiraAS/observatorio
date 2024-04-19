@@ -1,3 +1,10 @@
+base
+methods
+datasets
+utils
+grDevices
+graphics
+stats
 alluvial
 anytime
 BBmisc
@@ -20,6 +27,7 @@ ggplot2
 ggpubr
 ggraph
 ggtext
+grid
 gridExtra
 gtsummary
 hrbrthemes
@@ -73,6 +81,7 @@ purrr
 forcats
 NLP
 tm
+tools
 units
 sm
 zoo
