@@ -89,9 +89,11 @@ source(file.path("Scripts", "get-metrics-from-sources.R"), local = knitr::knit_g
 <!--check Sucupira folder-->
 ```{r try-sucupira-files, results = "hide"}
 files.to.read <-
-  list.dirs(file.path(getwd(), "Sucupira"),
+  list.files(file.path(getwd(), "Sucupira"),
             full.names = TRUE,
-            recursive = FALSE)
+            recursive = FALSE,
+            pattern = "xlsx"
+)
 has.sucupira.files <- length(files.to.read) != 0
 has.artigos.completos.sucupira <- FALSE
 has.artigos.resumos.sucupira <- FALSE
@@ -130,9 +132,10 @@ has.2012.2010 <- any(!is.na(match(periodo, anos)))
 ```{r try-ppg-files, results = "hide"}
 # list all PPG files
 files.to.read <-
-  list.dirs(file.path(getwd(), "PPG"),
+  list.files(file.path(getwd(), "PPG"),
             full.names = TRUE,
-            recursive = FALSE)
+            recursive = FALSE,
+            pattern = "xlsx")
 has.ppg.files <- length(files.to.read) != 0
 has.artigos.completos.ppg <- FALSE
 has.artigos.resumos.ppg <- FALSE

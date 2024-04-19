@@ -25,6 +25,7 @@ packs.cran <-
     "details",
     "devtools",
     "do",
+    "evaluate",
     # plyr first, then dplyr
     "plyr",
     "dplyr",
