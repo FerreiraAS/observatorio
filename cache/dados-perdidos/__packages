@@ -11,6 +11,7 @@ details
 usethis
 devtools
 do
+evaluate
 plyr
 dplyr
 DT
@@ -85,4 +86,3 @@ packup
 rcrossref
 retractcheck
 textreadr
-evaluate

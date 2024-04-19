@@ -1,3 +1,10 @@
+base
+methods
+datasets
+utils
+grDevices
+graphics
+stats
 alluvial
 anytime
 BBmisc
@@ -11,6 +18,7 @@ details
 usethis
 devtools
 do
+evaluate
 plyr
 dplyr
 DT
@@ -20,6 +28,7 @@ ggplot2
 ggpubr
 ggraph
 ggtext
+grid
 gridExtra
 gtsummary
 hrbrthemes
@@ -73,6 +82,7 @@ purrr
 forcats
 NLP
 tm
+tools
 units
 sm
 zoo
@@ -85,4 +95,3 @@ packup
 rcrossref
 retractcheck
 textreadr
-evaluate
