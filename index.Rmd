@@ -37,9 +37,12 @@ title: "OBSERVATÓRIO `r ifelse(and(has.dados.cadastrais, has.sucupira.files), s
 
 <center>
 
-```{r logo-ies}
+```{r logo-ppg}
 if(file.exists("PPG/Images/logo-programa.png")) {
   cat('<img src=\"PPG/Images/logo-programa.png\" height="100px" align=\"center\"/>')
+  has.logo.ppg <- TRUE
+} else {
+  has.logo.ppg <- FALSE
 }
 ```
 
@@ -65,7 +68,7 @@ if (has.dados.cadastrais && has.sucupira.files) {
 
 </center>
 
-```{r meta-observatorio, eval = !any(has.sucupira.files, has.financiadores, has.producao.ppg, has.producao.sucupira, has.discentes, has.posdocs)}
+```{r meta-observatorio, eval = !any(has.logo.ppg, has.sucupira.files, has.financiadores, has.producao.ppg, has.producao.sucupira, has.discentes, has.posdocs)}
 # se não ná nada para exibir, mostre os observatórios existentes
 cat('<br>')
 cat('<br>')
