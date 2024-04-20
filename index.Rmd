@@ -65,7 +65,7 @@ if (has.dados.cadastrais && has.sucupira.files) {
 
 </center>
 
-```{r meta-observatorio, eval = all(has.sucupira.files, has.financiadores, has.producao.ppg, has.producao.sucupira, has.discentes, has.posdocs)}
+```{r meta-observatorio, eval = !any(has.sucupira.files, has.financiadores, has.producao.ppg, has.producao.sucupira, has.discentes, has.posdocs)}
 # se não ná nada para exibir, mostre os observatórios existentes
 cat('<br>')
 cat('<br>')
