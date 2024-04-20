@@ -402,9 +402,9 @@ seu repositório, siga os passos 6.1 e 6.2 acima.
 -   [**Observatório PPGPosReab**](https://ppgreab.github.io/Observatorio-PPGPosReab-USP/)
     \| Programa de Pós-graduação em Ciências da Reabilitação
 
-### [**IFRJ**](https://www.fm.usp.br/fofito/pos-graduacao/programa-de-ciencias-da-reabilitacao) **\| Instituto Federal do Rio de Janeiro**
+### [**IFRJ**](https://www.ifrj.edu.br/cursos-pos-graduacao/stricto-sensu/programa-pos-graduacao-ciencia-tecnologia-e-inovacao-saude-0) **\| Instituto Federal do Rio de Janeiro**
 
--   [**Observatório PPGCTIS**](https://www.ifrj.edu.br/cursos-pos-graduacao/stricto-sensu/programa-pos-graduacao-ciencia-tecnologia-e-inovacao-saude-0)
+-   [**Observatório PPGCTIS**](https://ppgctis.github.io/ObservatorioCTIS/)
     \| Programa de Pós-graduação em Ciência, Tecnologia e Inovação em Saúde
 
 ## **FAQ**
