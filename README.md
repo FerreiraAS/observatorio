@@ -377,36 +377,35 @@ seu repositório, siga os passos 6.1 e 6.2 acima.
 
 ### [**UNISUAM**](https://www.unisuam.edu.br) **\| Centro Universitário Augusto Motta**
 
--   [**Observatório
-    CR**](https://ppgcr-unisuam.github.io/observatoriocr) \| Programa de
+-   [**Observatório CR**](https://ppgcr-unisuam.github.io/observatoriocr) \| Programa de
     Pós-graduação em Ciências da Reabilitação
--   [**Observatório
-    DL**](https://ppgdl-unisuam.github.io/observatoriodl) \| Programa de
+-   [**Observatório DL**](https://ppgdl-unisuam.github.io/observatoriodl) \| Programa de
     Pós-graduação em Desenvolvimento Local
 
 ### [**UFC**](https://www.ufc.br) **\| Universidade Federal do Ceará**
 
--   [**Observatório
-    PPGFisio**](https://ppgfisioufc.github.io/PPGFisio_UFC/) \| Programa
+-   [**Observatório PPGFisio**](https://ppgfisioufc.github.io/PPGFisio_UFC/) \| Programa
     de Pós-graduação em Fisioterapia
 
 ### [**UFTM-UFU**](https://www.uftm.edu.br/stricto-sensu/ppgfisio) **\| Universidade Federal do Triângulo Mineiro - Universidade Federal de Uberlândia**
 
--   [**Observatório
-    PPGFisio**](https://ppgfisiouftmufu.github.io/ObservatorioUFTM_UFU/)
+-   [**Observatório PPGFisio**](https://ppgfisiouftmufu.github.io/ObservatorioUFTM_UFU/)
     \| Programa de Pós-graduação em Fisioterapia
 
 ### [**UFRN**](https://posgraduacao.ufrn.br/ppgfst) **\| Universidade Federal do Rio Grande do Norte**
 
--   [**Observatório
-    UFRN**](https://ppgfisioterapia.github.io/observatorioUFRN/) \|
+-   [**Observatório UFRN**](https://ppgfisioterapia.github.io/observatorioUFRN/) \|
     Programa de Pós-graduação em Ciências da Reabilitação
 
 ### [**USP**](https://www.fm.usp.br/fofito/pos-graduacao/programa-de-ciencias-da-reabilitacao) **\| Universidade de São Paulo**
 
--   [**Observatório
-    PPGPosReab-USP**](https://ppgreab.github.io/Observatorio-PPGPosReab-USP/)
+-   [**Observatório PPGPosReab**](https://ppgreab.github.io/Observatorio-PPGPosReab-USP/)
     \| Programa de Pós-graduação em Ciências da Reabilitação
+
+### [**IFRJ**](https://www.fm.usp.br/fofito/pos-graduacao/programa-de-ciencias-da-reabilitacao) **\| Instituto Federal do Rio de Janeiro**
+
+-   [**Observatório PPGCTIS**](https://www.ifrj.edu.br/cursos-pos-graduacao/stricto-sensu/programa-pos-graduacao-ciencia-tecnologia-e-inovacao-saude-0)
+    \| Programa de Pós-graduação em Ciência, Tecnologia e Inovação em Saúde
 
 ## **FAQ**
 

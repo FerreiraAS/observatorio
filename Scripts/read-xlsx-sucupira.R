@@ -50,8 +50,8 @@ if (length(files.to.read) != 0) {
       for (i in 1:dim(sucupira)[1]) {
         for (j in 1:dim(sucupira)[2]) {
           # duplicate entries based on "|"
-          has.change <- grep(' \\| ', as.character(sucupira[i, j]))
-          if (length(has.change) != 0) {
+          change <- grep(' \\| ', as.character(sucupira[i, j]))
+          if (length(change) != 0) {
             rows.to.change <- c(rows.to.change, i)
             cols.to.change <- c(cols.to.change, j)
             data.to.change <- rbind(data.to.change, sucupira[i, ])
