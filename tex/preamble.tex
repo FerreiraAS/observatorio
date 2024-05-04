@@ -1,19 +1,45 @@
 % Load packages
 \usepackage[brazilian]{babel}
 \usepackage{fontspec}
+\usepackage[T1]{fontenc} % Ensure font encoding is consistent
+\usepackage[utf8]{inputenc} % Ensure proper input encoding
+\usepackage{lmodern} % Use Latin Modern font
+\usepackage{amsmath} % For math functions
+\usepackage{academicons}
+\usepackage{fontawesome5}
+
+% from kable
 \usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
 \usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{tabularray}
+\usepackage{ltablex}
+\usepackage{tabularx}
+\keepXColumns % Keep X columns
 \usepackage{graphicx}
 \usepackage{letltxmacro}
-\usepackage{longtable}
 \usepackage{pdfpages}
 \usepackage[notransparent]{svg}
 \usepackage{tcolorbox}
 \usepackage{titlesec}
 \usepackage{tocloft}
 \usepackage{url}
-\usepackage{xcolor}
+\usepackage[hyphens]{url}
 \usepackage[linktoc=all]{hyperref}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+
+\setlength\extrarowheight{0.5mm}
 
 % Define color
 \definecolor{lightgray}{gray}{0.95}
@@ -54,10 +80,6 @@
 
 % Remove the title page
 \AtBeginDocument{\let\maketitle\relax}
-
-% Remove unnecessary packages
-\usepackage{academicons} % Consider removing if not needed
-\usepackage{fontawesome5} % Consider removing if not needed
 
 % Arabic page numbering for backmatter
 \pagenumbering{arabic}

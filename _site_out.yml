@@ -180,19 +180,12 @@ navbar:
     menu:
     - text: -Autoavaliação-
       href: autoavaliacao.html
-    - text: Metodologia
-      href: autoavaliacao.html#metodologia
-    - text: Resultados
-      href: autoavaliacao.html#resultados
-      menu:
-      - text: Síntese dos dados
-        href: autoavaliacao.html#sintese-dados
-      - text: Documentos
-        href: autoavaliacao.html#documentos
-      - text: Qualidade das disciplinas
-        href: autoavaliacao.html#qualidade-disciplinas
-      - text: Pesquisa do egresso
-        href: autoavaliacao.html#pesquisa-egresso
+    - text: Procedimentos
+      href: autoavaliacao.html#procedimentos
+    - text: Documentos
+      href: autoavaliacao.html#documentos
+    - text: Preenchimento do Coleta
+      href: autoavaliacao.html#coleta
     - text: Ficha de avaliação
       href: autoavaliacao.html#ficha-avaliacao
     - text: 1. Programa

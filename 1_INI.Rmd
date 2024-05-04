@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
-  knitr.table.format = "html",
+  knitr.table.format = ifelse(knitr::is_html_output(), "html", "latex"),
   webshot = "webshot",
   dev = "png"
 )

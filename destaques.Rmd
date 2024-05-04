@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
-  knitr.table.format = "html",
+  knitr.table.format = ifelse(knitr::is_html_output(), "html", "latex"),
   webshot = "webshot",
   dev = "png"
 )
@@ -104,14 +104,14 @@ for (j in 1:length(abas)) {
   print(
     kableExtra::kable(destaques.list[[j]], align = c("l", rep(
       "c", ncol(destaques.list[[j]]) - 2
-    ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+    ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
       bootstrap_options = c("hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
     )
   )
   cat('\n\n<!-- -->\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 
@@ -358,14 +358,14 @@ for (j in 1:length(abas)) {
   print(
     kableExtra::kable(premios.list[[j]], align = c("l", rep(
       "c", ncol(premios.list[[j]]) - 2
-    ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+    ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
       bootstrap_options = c("hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
     )
   )
   cat('\n\n<!-- -->\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 
@@ -423,7 +423,7 @@ for (j in 1:length(abas)) {
   }
   
   # Print end of tab rows
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 
@@ -467,7 +467,7 @@ for (id in 1:length(orcids)) {
   cat('\n\n<!-- -->\n\n')
   source("Scripts/memberships-services.R", local = knitr::knit_global())
   cat('\n\n<!-- -->\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 
@@ -503,7 +503,7 @@ for (id in 1:length(orcids)) {
   cat('\n\n<!-- -->\n\n')
   source("Scripts/invited-positions.R", local = knitr::knit_global())
   cat('\n\n<!-- -->\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 
@@ -541,7 +541,7 @@ for (id in 1:length(orcids)) {
     "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"
   )
   cat('\n\n<!-- -->\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 
@@ -601,14 +601,14 @@ for (j in 1:length(abas)) {
   cat("#### **", abas[j], "**", "\n", sep = "")
   cat('\n\n<!-- -->\n\n')
   print(
-    knitr::kable(news.list[[j]], align = c("l", rep("c", ncol(news) - 2), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+    knitr::kable(news.list[[j]], align = c("l", rep("c", ncol(news) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
       bootstrap_options = c("hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
     )
   )
   cat('\n\n<!-- -->\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 
@@ -657,14 +657,14 @@ for (j in 1:length(abas)) {
   cat("#### **", abas[j], "**", "\n", sep = "")
   cat('\n\n<!-- -->\n\n')
   print(
-    knitr::kable(news.list[[j]], align = c("l", rep("c", ncol(news) - 2), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+    knitr::kable(news.list[[j]], align = c("l", rep("c", ncol(news) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
       bootstrap_options = c("hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
     )
   )
   cat('\n\n<!-- -->\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 
 ```

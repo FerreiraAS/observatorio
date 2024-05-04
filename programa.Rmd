@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
-  knitr.table.format = "html",
+  knitr.table.format = ifelse(knitr::is_html_output(), "html", "latex"),
   webshot = "webshot",
   dev = "png"
 )
@@ -94,7 +94,7 @@ for (i in 1:length(abas)) {
   
   # print table
   print(
-    knitr::kable(historico.raw, align = "l", col.names = NULL, escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+    knitr::kable(historico.raw, align = "l", col.names = NULL, escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
@@ -105,7 +105,7 @@ for (i in 1:length(abas)) {
   cat('Fonte: **PPG**')
 
   # print end of tab rows
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 
@@ -316,11 +316,11 @@ table.projetos <- table.projetos[order(table.projetos[, 1]),]
 labels <- colnames(table.projetos)
 # print tables
 table.projetos[, 1] <-
-  as.vector(unlist(lapply(table.projetos[, 1], FUN = str_to_upper)))
+  as.vector(unlist(lapply(table.projetos[, 1], FUN = stringr::str_to_upper)))
 table.projetos[, 2] <-
-  as.vector(unlist(lapply(table.projetos[, 2], FUN = str_to_sentence)))
+  as.vector(unlist(lapply(table.projetos[, 2], FUN = stringr::str_to_sentence)))
 table.projetos[, 3] <-
-  as.vector(unlist(lapply(table.projetos[, 3], FUN = str_to_title)))
+  as.vector(unlist(lapply(table.projetos[, 3], FUN = stringr::str_to_title)))
 
 colnames(table.projetos) <-
   c("Área de Concentração",
@@ -370,11 +370,11 @@ table.projetos <- table.projetos[order(table.projetos[, 1]),]
 labels <- colnames(table.projetos)
 # print tables
 table.projetos[, 1] <-
-  as.vector(unlist(lapply(table.projetos[, 1], FUN = str_to_upper)))
+  as.vector(unlist(lapply(table.projetos[, 1], FUN = stringr::str_to_upper)))
 table.projetos[, 2] <-
-  as.vector(unlist(lapply(table.projetos[, 2], FUN = str_to_sentence)))
+  as.vector(unlist(lapply(table.projetos[, 2], FUN = stringr::str_to_sentence)))
 table.projetos[, 3] <-
-  as.vector(unlist(lapply(table.projetos[, 3], FUN = str_to_title)))
+  as.vector(unlist(lapply(table.projetos[, 3], FUN = stringr::str_to_title)))
 
 colnames(table.projetos) <-
   c("Área de Concentração",
@@ -424,7 +424,7 @@ for (i in 1:length(abas)) {
   )
   
   # print end of tab rows
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 
@@ -450,7 +450,7 @@ cursos <- dplyr::select(cursos.raw, c("Código", "Curso", "Nível"))
 print(
   knitr::kable(cursos, align = c("l", rep("c", ncol(
     cursos
-  ) - 2), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+  ) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
     position = "center"
@@ -475,7 +475,7 @@ creditos.raw <-
 print(
   knitr::kable(creditos.raw, align = c("l", rep(
     "c", ncol(creditos.raw) - 2
-  ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+  ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
     position = "center"
@@ -539,7 +539,7 @@ try(colnames(table.dsc) <-
     silent = TRUE)
 
 table <-
-  merge(table.msc,
+  base::merge(table.msc,
         table.dsc,
         by = "Disciplina",
         all.x = TRUE,
@@ -988,7 +988,7 @@ table.dsc <-
 colnames(table.dsc) <- c("Disciplina", "Obrigatória", "CR", "CH", "Início")
 
 table <-
-  merge(table.msc,
+  base::merge(table.msc,
         table.dsc,
         by = "Disciplina",
         all.x = TRUE,
@@ -1042,7 +1042,7 @@ iframe_code <- paste0(
 # Print the iframe code
 cat(iframe_code)
 
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -1095,7 +1095,7 @@ hist(
 title("Referências bibliográficas, por ano de publicação", outer = TRUE)
 
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -1151,7 +1151,7 @@ colnames(table.dsc) <-
   c("Disciplina", "Obrigatória", "CR", "CH", "Fim")
 
 table <-
-  merge(table.msc,
+  base::merge(table.msc,
         table.dsc,
         by = "Disciplina",
         all.x = TRUE,
@@ -1240,11 +1240,11 @@ if (dim(turmas.raw)[1] != 0) {
   print(
     knitr::kable(turmas.oferecidas, align = c("l", rep(
       "c",  max(0, ncol(turmas.oferecidas) - 2)
-    ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+    ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
-    ) %>% kableExtra::scroll_box(width = "100%")
+    )
   )
   
   # line break
@@ -1261,7 +1261,7 @@ if (dim(turmas.raw)[1] != 0) {
     "*",
     legenda.turma[, 1],
     ": ",
-    lapply(legenda.turma[, 2], str_to_title),
+    lapply(legenda.turma[, 2], stringr::str_to_title),
     "*",
     collapse = "; "
   ))
@@ -1323,11 +1323,11 @@ if (dim(turmas.raw)[1] != 0) {
   print(
     knitr::kable(turmas.oferecidas, align = c("l", rep(
       "c",  max(0, ncol(turmas.oferecidas) - 2)
-    ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+    ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
-    ) %>% kableExtra::scroll_box(width = "100%")
+    )
   )
   
   # line break
@@ -1344,7 +1344,7 @@ if (dim(turmas.raw)[1] != 0) {
     "*",
     legenda.turma[, 1],
     ": ",
-    lapply(legenda.turma[, 2], str_to_title),
+    lapply(legenda.turma[, 2], stringr::str_to_title),
     "*",
     collapse = "; "
   ))
@@ -1406,11 +1406,11 @@ if (dim(turmas.raw)[1] != 0) {
   print(
     knitr::kable(turmas.oferecidas, align = c("l", rep(
       "c",  max(0, ncol(turmas.oferecidas) - 2)
-    ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+    ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
-    ) %>% kableExtra::scroll_box(width = "100%")
+    )
   )
   
   # line break
@@ -1427,7 +1427,7 @@ if (dim(turmas.raw)[1] != 0) {
     "*",
     legenda.turma[, 1],
     ": ",
-    lapply(legenda.turma[, 2], str_to_title),
+    lapply(legenda.turma[, 2], stringr::str_to_title),
     "*",
     collapse = "; "
   ))
@@ -1489,11 +1489,11 @@ if (dim(turmas.raw)[1] != 0) {
   print(
     knitr::kable(turmas.oferecidas, align = c("l", rep(
       "c",  max(0, ncol(turmas.oferecidas) - 2)
-    ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+    ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
-    ) %>% kableExtra::scroll_box(width = "100%")
+    )
   )
   
   # line break
@@ -1510,7 +1510,7 @@ if (dim(turmas.raw)[1] != 0) {
     "*",
     legenda.turma[, 1],
     ": ",
-    lapply(legenda.turma[, 2], str_to_title),
+    lapply(legenda.turma[, 2], stringr::str_to_title),
     "*",
     collapse = "; "
   ))
@@ -1576,7 +1576,7 @@ for (j in 1:length(abas)) {
   # print end of tab rows
   cat('\n\n')
   cat('Fonte: **PPG**')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 
@@ -1637,7 +1637,7 @@ for (j in 1:length(abas)) {
   # print end of tab rows
   cat('\n\n')
   cat('Fonte: **PPG**')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 
@@ -1677,7 +1677,7 @@ for (j in 1:length(abas)) {
   # print end of tab rows
   cat('\n\n')
   cat('Fonte: **PPG**')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 
@@ -1729,7 +1729,7 @@ for (i in 1:length(abas)) {
   print(
     knitr::kable(lab, digits = 0, align = c("l", rep("c", ncol(
       lab
-    ) - 2), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+    ) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
@@ -1738,7 +1738,7 @@ for (i in 1:length(abas)) {
   cat('\n</center>')
   cat('</div></div>')
   
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 
@@ -1796,7 +1796,7 @@ for (j in 1:length(abas)) {
   # print end of tab rows
   cat('\n\n')
   cat('Fonte: **PPG**')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 
@@ -1856,7 +1856,7 @@ for (j in 1:length(abas)) {
   # print end of tab rows
   cat('\n\n')
   cat('Fonte: **PPG**')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 
@@ -1916,7 +1916,7 @@ for (j in 1:length(abas)) {
   # print end of tab rows
   cat('\n\n')
   cat('Fonte: **PPG**')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 
@@ -2142,7 +2142,7 @@ cat(
   "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
 )
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -2198,7 +2198,7 @@ for (j in 1:length(abas)) {
   
   # print end of tab rows
   cat('\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 

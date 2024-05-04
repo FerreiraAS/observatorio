@@ -404,6 +404,6 @@ table.with.badges <-
     cat('^7^ [**DOAJ**](https://doaj.org)', sep = "")
     cat('<br>')
     cat('<br>')
-    cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+    cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
   }
 cat('<br>')

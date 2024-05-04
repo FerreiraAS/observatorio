@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
-  knitr.table.format = "html",
+  knitr.table.format = ifelse(knitr::is_html_output(), "html", "latex"),
   webshot = "webshot",
   dev = "png"
 )
@@ -177,7 +177,7 @@ table.1.1.1 <-
     statistic = list(
       gtsummary::all_continuous() ~ c("{max}")),
     missing = "no",
-    digits = list(everything() ~ 0)) %>%
+    digits = list(gtsummary::everything() ~ 0)) %>%
   gtsummary::modify_header(label = "Ano", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels()
@@ -351,7 +351,7 @@ table.lp.gt <-
     by = "Ano",
     statistic = list(all_categorical() ~ "{n}"),
     missing = "no",
-    digits = everything() ~ 0,
+    digits = gtsummary::everything() ~ 0,
     sort = all_categorical() ~ "frequency"
   ) %>%
   gtsummary::modify_header(label = "Ano", gtsummary::all_stat_cols() ~ "**{level}**") %>%
@@ -797,7 +797,7 @@ table.3.2.1 <-
     label = "**Ano**",
     gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(
-    tidyselect::everything() ~ NA) %>%
+    gtsummary::everything() ~ NA) %>%
   gtsummary::bold_labels()
 
 # print table
@@ -810,25 +810,25 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 ### **Velocidade**
 
-*Em construção*
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b> `r fontawesome::fa("circle-arrow-up")` </a>
 
 <br>
 
 ### **Alcance**
 
-*Em construção*
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b> `r fontawesome::fa("circle-arrow-up")` </a>
 
 <br>
 
 ### **Conteúdo**
 
-*Em construção*
 
-<a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b> `r fontawesome::fa("circle-arrow-up")` </a>
 
 <br>
 
@@ -892,7 +892,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(periodicos, title = "Impactos - Períódicos institucionais")
 
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -913,7 +913,7 @@ if(file.exists("PPG/Images/logo-cep.png") & has.cep) {
   cat('[<img src=\"PPG/Images/logo-cep.png\" align=\"center\"/>](', link, ')')
 }
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 </center>
@@ -952,7 +952,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(cep.vigentes, title = "Impactos - Comitê de Ética em Pesquisa - Documentos vigentes")
 
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -989,7 +989,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(cep.revogados, title = "Impactos - Comitê de Ética em Pesquisa - Documentos revogados")
   
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -1134,7 +1134,7 @@ cat('\n\n')
 cat(
   "Fonte: [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/)"
 )
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -1168,7 +1168,7 @@ cat('\n\n')
 cat(
   "Fonte: [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/)"
 )
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 ```{r politicas-docentes, eval = has.politicas}
@@ -1198,7 +1198,7 @@ for (i in 1:length(abas)) {
   cat(
     "Fonte: [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/)"
   )
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 
@@ -1252,7 +1252,7 @@ cat('\n\n')
 cat(
   "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
 )
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -1292,7 +1292,7 @@ table.2 <-
   gtsummary::add_overall(last = TRUE,
               col_label = "Total") %>%
   gtsummary::modify_header(label = "**Agência**") %>%
-  gtsummary::modify_footnote(update = everything() ~ NA) %>%
+  gtsummary::modify_footnote(update = gtsummary::everything() ~ NA) %>%
   gtsummary::bold_labels()
 # print table
 print(table.2)
@@ -1302,7 +1302,7 @@ cat('\n\n')
 cat(
   "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
 )
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -1339,7 +1339,7 @@ table.2 <-
   gtsummary::add_overall(last = TRUE,
               col_label = "Total") %>%
   gtsummary::modify_header(label = "**Programa**") %>%
-  gtsummary::modify_footnote(update = everything() ~ NA) %>%
+  gtsummary::modify_footnote(update = gtsummary::everything() ~ NA) %>%
   gtsummary::bold_labels()
 # print table
 print(table.2)
@@ -1348,7 +1348,7 @@ cat('\n\n')
 cat(
   "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
 )
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -1558,11 +1558,11 @@ if (dim(projetos)[1] != 0) {
   labels <- colnames(table.projetos)
   # print tables
   table.projetos[, 1] <-
-    as.vector(unlist(lapply(table.projetos[, 1], FUN = str_to_upper)))
+    as.vector(unlist(lapply(table.projetos[, 1], FUN =  stringr::str_to_upper)))
   table.projetos[, 2] <-
-    as.vector(unlist(lapply(table.projetos[, 2], FUN = str_to_sentence)))
+    as.vector(unlist(lapply(table.projetos[, 2], FUN = stringr::str_to_sentence)))
   table.projetos[, 3] <-
-    as.vector(unlist(lapply(table.projetos[, 3], FUN = str_to_title)))
+    as.vector(unlist(lapply(table.projetos[, 3], FUN = stringr::str_to_title)))
   
   colnames(table.projetos) <-
     c(
@@ -1651,7 +1651,7 @@ cat(
   "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
 )
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -2346,7 +2346,7 @@ for (j in 1:length(abas)) {
   }
   
   # print end of tab rows
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
 

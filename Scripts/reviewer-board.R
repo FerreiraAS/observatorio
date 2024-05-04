@@ -43,7 +43,7 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
     knitr::kable(
       peer.review,
       align = "l",
-      format = "html",
+      format = ifelse(knitr::is_html_output(), "html", "latex"),
       escape = FALSE
     ) %>%
       kableExtra::kable_styling(

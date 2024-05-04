@@ -30,7 +30,7 @@ if (length(files.to.read) != 0) {
         sheet = sheet,
         col_types = c("text")
       )) %>%
-      dplyr::mutate(across(everything(), as.character))
+      dplyr::mutate(dplyr::across(tidyselect::everything(), as.character))
     
     # search for "|" (meaning there are changes within a given year)
     has.any.change <-

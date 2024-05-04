@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
-  knitr.table.format = "html",
+  knitr.table.format = ifelse(knitr::is_html_output(), "html", "latex"),
   webshot = "webshot",
   dev = "png"
 )
@@ -78,7 +78,7 @@ for (i in 1:dim(endereco.raw)[1]) {
 table <- unname(as.data.frame(endereco.raw))
 
 print(
-  knitr::kable(table, align = c("l", rep("c", ncol(table) - 2), "r"), escape = FALSE, format = "html") %>%
+  knitr::kable(table, align = c("l", rep("c", ncol(table) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>%
     kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
@@ -89,7 +89,7 @@ print(
 cat('\n\n')
 cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -313,7 +313,7 @@ legend(
 title("Descrição do Corpo Docente - Credenciados", outer = TRUE)
 
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -362,14 +362,14 @@ for (i in 1:dim(docentes)[1]) {
   cat('\n\n<!-- -->\n\n')
   cat(paste0('*Fontes:* [**Diretório dos Grupos de Pesquisa no Brasil**](https://dgp.cnpq.br/dgp/espelhorh/', docentes$`Número do currículo Lattes`[i]),')')
   cat('\n\n<!-- -->\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 
 # Additional sources
 cat('\n\n')
 cat('*Fontes:* [**Diretório dos Grupos de Pesquisa no Brasil**](https://lattes.cnpq.br/web/dgp)')
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -519,7 +519,7 @@ legend(
 title("Descrição do Corpo Docente", outer = TRUE)
 
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -689,7 +689,7 @@ legend(
 title("Corpo Docente - Histórico", outer = TRUE)
 
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -1032,7 +1032,7 @@ if (dim(discentes)[1] != 0) {
   print(
     knitr::kable(summ.table, align = c("l", rep(
       "c", ncol(summ.table) - 2
-    ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+    ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
@@ -1141,7 +1141,7 @@ if (dim(discentes)[1] != 0) {
   print(
     knitr::kable(summ.table, align = c("l", rep(
       "c", ncol(summ.table) - 2
-    ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+    ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
@@ -1487,7 +1487,7 @@ for (j in 1:dim(periodos)[1]) {
 multiplot(plotlist = maps, cols = dim(periodos)[1])
 
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -1565,7 +1565,7 @@ grupos.raw <-
 print(
   knitr::kable(grupos.raw, align = c("l", rep(
     "c", ncol(grupos.raw) - 2
-  ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+  ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
     position = "center"
@@ -1575,7 +1575,7 @@ print(
 cat('\n\n')
 cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -1586,12 +1586,12 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>'
 grupos.raw <- readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.inativos")
 
 # print tables
-print(knitr::kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r"), escape = FALSE, format = "html") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
+print(knitr::kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
 
 cat('\n\n')
 cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -1606,7 +1606,7 @@ membros.raw <-
 print(
   knitr::kable(membros.raw, align = c("l", rep(
     "c", ncol(membros.raw) - 2
-  ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+  ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
     position = "center"
@@ -1616,7 +1616,7 @@ print(
 cat('\n\n')
 cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -1631,7 +1631,7 @@ grupos.raw <-
 print(
   knitr::kable(grupos.raw, align = c("l", rep(
     "c", ncol(grupos.raw) - 2
-  ), "r"), escape = FALSE, format = "html") %>% kableExtra::kable_styling(
+  ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
     position = "center"
@@ -1639,7 +1639,7 @@ print(
 )
 
 cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>

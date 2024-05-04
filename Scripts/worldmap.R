@@ -8,7 +8,7 @@ paises_dataset <-
     sheet = 1,
     col_types = c("text")
   )) %>%
-  dplyr::mutate(across(everything(), as.character))
+  dplyr::mutate(dplyr::across(tidyselect::everything(), as.character))
 
 paises_alpha3  <-
   paises_dataset$`Código ISO ALPHA-3`[match(paises$Var1, paises_dataset$`Nome do país ou território`)]

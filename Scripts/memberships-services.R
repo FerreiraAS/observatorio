@@ -24,7 +24,7 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
     knitr::kable(
       member,
       align = "l",
-      format = "html",
+      format = ifelse(knitr::is_html_output(), "html", "latex"),
       escape = FALSE
     ) %>%
       kableExtra::kable_styling(
@@ -76,7 +76,7 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
     knitr::kable(
       services,
       align = "l",
-      format = "html",
+      format = ifelse(knitr::is_html_output(), "html", "latex"),
       escape = FALSE
     ) %>%
       kableExtra::kable_styling(

@@ -14,7 +14,7 @@ initials <- function(names) {
     names[j] <- gsub(" EM ", " ", names[j], fixed = TRUE)
     names.temp <-
       c(" ", (unlist(strsplit(
-        str_trim(str_trim(names[j], side = c("left")), side = c("right")), split = ""
+        stringr::str_trim(stringr::str_trim(names[j], side = c("left")), side = c("right")), split = ""
       ))))
     initials.temp <- c()
     for (i in 1:length(names.temp)) {

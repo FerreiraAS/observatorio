@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
-  knitr.table.format = "html",
+  knitr.table.format = ifelse(knitr::is_html_output(), "html", "latex"),
   webshot = "webshot",
   dev = "png"
 )
@@ -87,12 +87,12 @@ for (j in 1:length(abas)) {
   print(
     knitr::kable(videos.list[[j]][4], align = c("l", rep("c", ncol(
       videos
-    ) - 2), "r"), escape = FALSE, col.names = NA, format = "html") %>% kableExtra::kable_styling(
+    ) - 2), "r"), escape = FALSE, col.names = NA, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
       bootstrap_options = c("hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
     ), results = 'asis')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>', "\n\n")
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>', "\n\n")
 }
 ```
 
@@ -137,12 +137,12 @@ for (j in 1:length(abas)) {
   print(
     knitr::kable(podcasts.list[[j]], align = c("l", rep("c", ncol(
       podcasts
-    ) - 2), "r"), escape = FALSE, col.names = NA, format = "html") %>% kableExtra::kable_styling(
+    ) - 2), "r"), escape = FALSE, col.names = NA, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
       bootstrap_options = c("hover", "condensed", "responsive"),
       full_width = T,
       position = "center"
     ), results = 'asis')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>⬆️</a><br>', "\n\n")
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>', "\n\n")
 }
 ```
 

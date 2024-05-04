@@ -45,7 +45,7 @@ if(!sjmisc::is_empty(res.all)){
     knitr::kable(
       res.all[order(res.all[, 1]), ],
       align = "l",
-      format = "html",
+      format = ifelse(knitr::is_html_output(), "html", "latex"),
       escape = FALSE,
       row.names = FALSE
     ) %>%
