@@ -2026,7 +2026,7 @@ cat('</details>')
 ```{r 1-2-2, eval = knitr::is_html_output()}
 cat("### **1.2.2**")
 cat('\n\n')
-cat("#### **Coerência acadêmica do Corpo Docente à proposta do PPG* {.tabset}")
+cat("#### **Coerência acadêmica do Corpo Docente à proposta do PPG** {.tabset}")
 cat('\n\n')
 ```
 
@@ -2168,7 +2168,7 @@ cat('</details>')
 ```{r 1-2-3, eval = knitr::is_html_output()}
 cat("### **1.2.3**")
 cat('\n\n')
-cat("#### **Estabilidade do corpo docente permanente* {.tabset}")
+cat("#### **Estabilidade do corpo docente permanente** {.tabset}")
 cat('\n\n')
 ```
 
@@ -2190,7 +2190,7 @@ cat('<br>')
 ```{r 1-2-4, eval = knitr::is_html_output()}
 cat("### **1.2.4**")
 cat('\n\n')
-cat("#### **Percentual de docentes permanentes com dedicação exclusiva ao PPG* {.tabset}")
+cat("#### **Percentual de docentes permanentes com dedicação exclusiva ao PPG** {.tabset}")
 cat('\n\n')
 ```
 
@@ -2212,7 +2212,7 @@ cat('<br>')
 ```{r 1-2-5, eval = knitr::is_html_output()}
 cat("### **1.2.5**")
 cat('\n\n')
-cat("#### **Capacidade de captação de recursos* {.tabset}")
+cat("#### **Capacidade de captação de recursos** {.tabset}")
 cat('\n\n')
 ```
 
@@ -2302,7 +2302,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 ```{r 1-3-1, eval = knitr::is_html_output()}
 cat("### **1.3.1**")
 cat('\n\n')
-cat("#### **Adequação da proposta ao Plano Institucional da IES* {.tabset}")
+cat("#### **Adequação da proposta ao Plano Institucional da IES** {.tabset}")
 cat('\n\n')
 ```
 
@@ -2349,7 +2349,7 @@ for (i in 1:length(abas)) {
 ```{r 1-3-2, eval = knitr::is_html_output()}
 cat("### **1.3.1**")
 cat('\n\n')
-cat("#### **Adequação do planejamento* {.tabset}")
+cat("#### **Adequação do planejamento** {.tabset}")
 cat('\n\n')
 ```
 
@@ -2371,7 +2371,7 @@ cat('<br>')
 ```{r 1-4-1, eval = knitr::is_html_output()}
 cat("### **1.4.1**")
 cat('\n\n')
-cat("#### **Adequação dos processos e procedimentos utilizados para a autoavaliação do Programa* {.tabset}")
+cat("#### **Adequação dos processos e procedimentos utilizados para a autoavaliação do Programa** {.tabset}")
 cat('\n\n')
 ```
 
