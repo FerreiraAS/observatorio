@@ -382,49 +382,34 @@ cat('<br>')
 ```
 
 ```{r premio-capes, eval = has.premio.capes}
-# Initialize all sheets
-abas <- readxl::excel_sheets("PPG/Prêmio CAPES de Tese.xlsx")
+premio.capes <-
+  readxl::read_excel("PPG/Prêmio CAPES de Tese.xlsx",
+             sheet = "CAPES",
+             col_types = c("text"))
 
-# Display each sheet in a tab
-for (j in 1:length(abas)) {
-  cat('\n\n<!-- -->\n\n')
-  cat(paste0('### **', abas[j], '**'))
-  cat('\n\n<!-- -->\n\n')
-  premios.raw <-
-    readxl::read_excel(
-      "PPG/Prêmio CAPES de Tese.xlsx",
-      sheet = abas[j],
-      col_types = c("text")
-    )
-
-  # Print table
-  if (dim(premios.raw)[1] != 0) {
-    cat('<div class="row">') # Open row div
-    cat('<div class="col-md-6">') # Open first column div
-    cat('<center>\n')
-    cat('\n\n<!-- -->\n\n')
-    link.tese <- premios.raw[j, 1]
-    cat(paste0('<iframe src=\"', link.tese, '\" style=\"width:100%; height:600px; border:2px solid black;\"></iframe>', "\n"))
-    cat('\n\n<!-- -->\n\n')
-    cat('\n</center>')
-    cat('</div>') # Close first column div
-    
-    cat('<div class="col-md-6">') # Open second column div
-    cat('<center>\n')
-    cat('\n\n<!-- -->\n\n')
-    link.mencao <- premios.raw[j, 2]
-    cat(paste0('<iframe src=\"', link.mencao, '/preview\" style=\"width:100%; height:600px; border:2px solid black;\"></iframe>', "\n"))
-    cat('\n</center>')
-    cat('</div>') # Close second column div
-    
-    cat('</div>') # Close row div
-  } else {
-    cat("*Sem dados para exibir*")
+Abrir <- matrix(NA, nrow = dim(premio.capes)[1])
+colnames(Abrir) <- "Abrir"
+# add hyperlinks
+for (i in 1:dim(premio.capes)[1]) {
+  if (!is.na(premio.capes[i, 2])) {
+    Abrir[i] <-
+      paste0('<a href="',
+             premio.capes[i, 2],
+             '" target="_blank"',
+             '>',
+             # fontawesome icon
+             fontawesome::fa("up-right-from-square"),
+             '</a>')
   }
-  
-  # Print end of tab rows
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
+premio.capes <- cbind(premio.capes[,-ncol(premio.capes)], Abrir)
+
+# print tables
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(premio.capes, title = "Programa - Área CAPES")
+
+# Print end of tab rows
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
