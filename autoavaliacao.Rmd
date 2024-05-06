@@ -363,8 +363,6 @@ cat("## **Preenchimento do Coleta** {-}")
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-<br>
-
 ```{r, eval = knitr::is_html_output()}
 cat("### **Dados completos**")
 ```
@@ -483,8 +481,6 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 \newpage
 ```
 
-<br>
-
 ```{r, eval = knitr::is_html_output()}
 cat("### **Dados omissos**")
 ```
@@ -492,8 +488,6 @@ cat("### **Dados omissos**")
 ```{r, eval = !knitr::is_html_output()}
 cat("### **Dados omissos** {-}")
 ```
-
-<br>
 
 ```{r descritivo-nao-preenchidos, eval = has.sucupira.files, cache = TRUE, cache.path = "cache/missing/"}
 # print tables
@@ -3395,9 +3389,6 @@ table.tec.gt <- gtsummary::tbl_summary(
     level_value = ("Produção")
   ) %>%
   gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
-
-# Add source information
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 ```{r 3-1-2-list-tables, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
