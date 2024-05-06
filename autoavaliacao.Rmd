@@ -24,7 +24,6 @@ geometry: "top=3cm,left=3cm,right=2cm,bottom=2cm"
 link-citations: true
 always_allow_html: true
 tables: true
-lot: true
 ---
 
 ```{r, results = "hide", include = FALSE}
@@ -251,6 +250,10 @@ for (j in 1:length(abas)) {
     cat('\\newpage')
   }
 }
+```
+
+```{=latex}
+\newpage
 ```
 
 <br>
@@ -1433,15 +1436,12 @@ cat("### **1.1.2 Proposta Curricular do Programa**")
 cat('<br>')
 ```
 
-##### *Qualitativa*
-
-<!-- EM CONSTRUÇÃO -->
-
-<br>
-
-##### *Quantitativa*
-
 ```{r 1-1-2-quanti, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
+if(knitr::is_html_output()) {
+  cat('##### *Quantitativa*')
+  cat('\n\n')
+}
+
 # disciplinas
 sheet <- "Disciplinas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
