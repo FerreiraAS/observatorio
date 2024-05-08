@@ -281,7 +281,7 @@ Para análise das métricas, as seguintes fontes são utilizadas:
 │   ├── Qualis
 │   │   └── classificações_publicadas_todas_as_areas_avaliacao1672761192111.xlsx
 │   └── SJR
-│       └── scimagojr 2022.csv
+│       └── scimagojr 2023.csv
 ```
 
 ### **Impacto**

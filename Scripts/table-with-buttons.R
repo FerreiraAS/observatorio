@@ -5,7 +5,7 @@ create_dt <- function(x, title, pageLength = 4) {
     rownames = FALSE,
     extensions = c('Buttons', 'ColReorder', 'Responsive'),
     options = list(
-      colReorder = TRUE,
+      colReorder = FALSE,
       pageLength = pageLength,
       scrolX = F,
       dom = 'Bftip',
@@ -28,12 +28,20 @@ create_dt <- function(x, title, pageLength = 4) {
           filename = title
         )
       ),
-      language = list(paginate =
-                        list(
-                          'next' = "Próximo",
-                          'previous' = "Anterior"
-                        ))
+      language = list(
+        'info' = "Mostrando de _START_ até _END_ de _TOTAL_",
+        'zeroRecords' = "Nenhum registro encontrado",
+        'search' = "Pesquisar",
+        paginate =
+          list(
+            'next' = "Próximo",
+            'previous' = "Anterior"
+          )
+      )
     ),
     escape = FALSE
   )
 }
+
+# source
+# https://github.com/DataTables/Plugins/blob/master/i18n/pt-BR.json

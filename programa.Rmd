@@ -1693,51 +1693,33 @@ cat('<br>')
 ```
 
 ```{r laboratorios-equipamentos, eval = has.laboratorios}
-# read data
+# initialize all sheets
 abas <- readxl::excel_sheets("PPG/Laboratórios.xlsx")
 
-for (i in 1:length(abas)) {
-  lab <-
-    readxl::read_excel("PPG/Laboratórios.xlsx",
-               sheet = paste0("Lab", i))
-  name <- names(lab[1])
-  
+# display each sheet in a tab
+for (j in 1:length(abas)) {
   cat('\n\n<!-- -->\n\n')
-  name <- names(lab[1])
-  colnames(lab) <- lab[1, ]
-  
+  cat("### **", as.character(j), "**", "\n", sep = "")
   cat('\n\n<!-- -->\n\n')
-  cat("### **", paste0("Lab. ", i), "**", "\n", sep = "")
-  cat('\n\n<!-- -->\n\n')
-  cat('<center>\n')
-  cat("**", name, "**", sep = "")
-  cat('\n\n<!-- -->\n\n')
-  cat('\n</center>')
-  
-  cat('<div class = "row"><div class = "col-md-6">')
-  cat('<center>\n')
-  cat('\n\n<!-- -->\n\n')
-  lab <- lab[-1,]
-  cat(paste0("![](", getwd(), "/PPG/Labs/Lab-", i, ".jpg)"), "\n")
-  cat('\n\n<!-- -->\n\n')
-  cat('\n</center>')
-  cat('</div>')
-  
-  cat('<div class = "col-md-6">')
-  cat('<center>\n')
-  cat('\n\n<!-- -->\n\n')
-  print(
-    knitr::kable(lab, digits = 0, align = c("l", rep("c", ncol(
-      lab
-    ) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )  %>% kableExtra::scroll_box(width = "100%", height = "250px")
-  )
-  cat('\n</center>')
-  cat('</div></div>')
-  
+  laboratorios.raw <-
+    readxl::read_excel(
+      "PPG/Laboratórios.xlsx",
+      sheet = abas[j],
+      col_types = c("text")
+    )
+  name <- names(laboratorios.raw[1])
+  names(laboratorios.raw) <- laboratorios.raw[1,]
+  lab.data <- laboratorios.raw[-1,]
+
+  # print table
+  if (dim(lab.data)[1] != 0) {
+    print(paste0("**", name, "**"))
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    cat(knitr::knit_print(create_dt(lab.data, title = paste0("Programa - Laboratórios - ", name))))
+  } else {
+    cat("*Sem dados para exibir*")
+  }
+    # print end of tab rows
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```

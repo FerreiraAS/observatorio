@@ -1742,10 +1742,6 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
     )
   }
 }
-
-# print end of tab rows
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-cat('\n\n')
 ```
 
 <br>

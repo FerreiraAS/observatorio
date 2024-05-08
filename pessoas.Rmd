@@ -1555,91 +1555,51 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Ativos** {.tabset}
+```{r grupos-pesquisa, eval = has.grupos.pesquisa}
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Grupos de Pesquisa.xlsx")
 
-```{r grupos-de-pesquisa-ativos, eval = has.grupos.pesquisa}
-grupos.raw <-
-  readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.ativos")
-
-# print tables
-print(
-  knitr::kable(grupos.raw, align = c("l", rep(
-    "c", ncol(grupos.raw) - 2
-  ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
-
-cat('\n\n')
-cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-```
-
-<br>
-
-### **Inativos** {.tabset}
-
-```{r grupos-de-pesquisa-inativos, eval = has.grupos.pesquisa}
-grupos.raw <- readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.inativos")
-
-# print tables
-print(knitr::kable(grupos.raw, align = c("l", rep("c", ncol(grupos.raw)-2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, position = "center"))
-
-cat('\n\n')
-cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-```
-
-<br>
-
-### **Membros**
-
-```{r grupos-de-pesquisa-membros, eval = has.grupos.pesquisa}
-membros.raw <-
-  readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "Membros")
-
-# print tables
-print(
-  knitr::kable(membros.raw, align = c("l", rep(
-    "c", ncol(membros.raw) - 2
-  ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
-
-cat('\n\n')
-cat('*Fontes:* [**CNPq**](http://lattes.cnpq.br/web/dgp)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-```
-
-<br>
-
-### **Externos** {#grupos-externos .tabset}
-
-```{r grupos-de-pesquisa-externos, eval = has.grupos.pesquisa}
-grupos.raw <-
-  readxl::read_excel("PPG/Grupos de Pesquisa.xlsx", sheet = "GP.externos")
-
-# print tables
-print(
-  knitr::kable(grupos.raw, align = c("l", rep(
-    "c", ncol(grupos.raw) - 2
-  ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
-
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+# display each sheet in a tab
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('### **', abas[j], '**'))
+  cat('\n\n<!-- -->\n\n')
+  grupos.raw <-
+    readxl::read_excel("PPG/Grupos de Pesquisa.xlsx",
+                       sheet = abas[j],
+                       col_types = c("text"))
+  
+  # replace the link by a tag
+  Abrir <- matrix(NA, nrow = dim(grupos.raw)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(grupos.raw)[1]) {
+    if (!is.na(grupos.raw[i, ncol(grupos.raw)])) {
+      Abrir[i] <-
+        paste0('<a href="',
+               grupos.raw[i, ncol(grupos.raw)],
+               '" target="_blank"',
+               '>',
+               # fontawesome icon
+               fontawesome::fa("up-right-from-square"),
+               '</a>')
+    }
+  }
+  grupos <- cbind(grupos.raw[, -ncol(grupos.raw)], Abrir)
+  
+  # print table
+  if (dim(grupos)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    cat(knitr::knit_print(create_dt(grupos, title = paste0("Pessoas - Grupos de Pesquisa - ", abas[j]))))
+  } else {
+    cat("*Sem dados para exibir*")
+  }
+  
+  # print end of tab rows
+  cat('\n\n')
+  cat('Fonte: **PPG**')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+}
 ```
 
 <br>

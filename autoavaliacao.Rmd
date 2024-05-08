@@ -1492,8 +1492,7 @@ table.1.1.2 <-
       "Carga horária total (M)" ~ "continuous",
       "Carga horária total (D)" ~ "continuous"
       ),
-    statistic = list(
-      gtsummary::all_continuous() ~ c("{max}")),
+    statistic = list(gtsummary::all_continuous() ~ "{max}"),
     missing = "no",
     digits = list(gtsummary::everything() ~ 0)) %>%
   gtsummary::modify_header(
@@ -2262,7 +2261,7 @@ table.1.2.5 <-
   gtsummary::tbl_summary(
     financiadores,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)", gtsummary::all_continuous() ~ c("R$ {sum}")),
+    statistic = list(gtsummary::all_categorical() ~ "{n})"),
     missing = "no",
     digits = list(gtsummary::everything() ~ 0, "Total" ~ 2),
     sort = gtsummary::all_categorical() ~ "frequency"
@@ -3564,12 +3563,13 @@ cat('<br>')
 ```
 
 ```{r 3-2-1-data, eval = any(has.producao.ppg, has.producao.sucupira), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
-
 síntese.ano <- dplyr::bind_cols(
       Ano = as.numeric(doi_all$published_on),
       CiteScore = as.numeric(doi_all$CiteScore),
       SJR = as.numeric(doi_all$SJR),
-      WebQualis = factor(doi_all$WebQualis)
+      WebQualis = factor(doi_all$WebQualis),
+      Altmetric = as.numeric(doi_all$altmetric_score),
+      Citações = as.numeric(doi_all$citations)
           )
 
 # Data selection
@@ -3578,7 +3578,9 @@ síntese.ano <- síntese.ano %>%
     "Ano",
     "CiteScore",
     "SJR",
-    "WebQualis"
+    "WebQualis",
+    "Altmetric",
+    "Citações"
     ))
 
 # filter data in quadrineal.vigente
@@ -3596,10 +3598,13 @@ table.3.2.1 <-
     type = list(
       "CiteScore" ~ "continuous",
       "SJR" ~ "continuous",
-      "WebQualis" ~ "categorical"),
+      "WebQualis" ~ "categorical",
+      "Altmetric" ~ "continuous",
+      "Citações" ~ "continuous"
+      ),
     statistic = list(
       gtsummary::all_continuous() ~ "{median} ({p25}, {p75})",
-      gtsummary::all_categorical() ~ "{n} ({p}%)"
+      gtsummary::all_categorical() ~ "{n}"
       ),
     missing = "no",
     digits = list(
