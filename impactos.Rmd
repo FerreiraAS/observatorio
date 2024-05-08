@@ -354,19 +354,19 @@ table.lp.gt <-
     sort = gtsummary::all_categorical() ~ "frequency"
   ) %>%
   gtsummary::modify_header(label = "Ano", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(all_stat_cols() ~ NA) %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels() %>%
-  gtsummary::add_stat(fns = all_categorical() ~ my_N) %>%
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
   gtsummary::modify_header(list(
     add_stat_1 ~ "**N (Período)**",
     gtsummary::all_stat_cols() ~ "**{level}**"
   )) %>%
-  remove_row_type(
+  gtsummary::remove_row_type(
     variables = c('Produção por Linha de Pesquisa'),
     type = "level",
     level_value = ("Produção")
   ) %>%
-  modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1)))
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1)))
 ```
 
 ```{r 3-1-2-producao, eval = has.sucupira.files}
@@ -709,9 +709,9 @@ table.tec.gt <-
     sort = gtsummary::all_categorical() ~ "frequency"
   ) %>%
   gtsummary::modify_header(label = "Ano", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(all_stat_cols() ~ NA) %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels() %>%
-  gtsummary::add_stat(fns = all_categorical() ~ my_N) %>%
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
   gtsummary::modify_header(list(
     add_stat_1 ~ "**N (Período)**",
     gtsummary::all_stat_cols() ~ "**{level}**"
@@ -783,7 +783,7 @@ table.3.2.1 <-
       "SJR" ~ "continuous",
       "WebQualis" ~ "categorical"),
     statistic = list(
-      gtsummary::all_continuous() ~ "{median} ({p25}, {p75})",
+      gtsummary::all_continuous() ~ "{median} ({min} - {max})",
       gtsummary::all_categorical() ~ "{n}"
       ),
     missing = "no",
@@ -795,8 +795,7 @@ table.3.2.1 <-
   gtsummary::modify_header(
     label = "**Ano**",
     gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(
-    gtsummary::everything() ~ NA) %>%
+  gtsummary::modify_footnote(gtsummary::everything() ~ NA) %>%
   gtsummary::bold_labels()
 
 # print table

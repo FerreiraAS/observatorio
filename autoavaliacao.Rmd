@@ -845,11 +845,11 @@ table.doc <-
 
 # add row totals
 table.doc <- cbind(table.doc, rowSums(table.doc))
-colnames(table.doc) <- stringr::str_to_title(c(head(colnames(table.doc), -1), "N"))
+colnames(table.doc) <- stringr::str_to_title(c(head(colnames(table.doc), -1), "N (Quadriênio)"))
 
 # add column totals
 table.doc <- rbind(table.doc, colSums(table.doc))
-rownames(table.doc) <- stringr::str_to_title(c(head(rownames(table.doc), -1), "N"))
+rownames(table.doc) <- stringr::str_to_title(c(head(rownames(table.doc), -1), "N (Quadriênio)"))
 
 # print tables
 knitr::kable(
@@ -893,11 +893,11 @@ if (any(table.all$`Categoria do Membro do Projeto` == "Pós-Doc")) {
 
   # add row totals
   table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
-  colnames(table.posdoc) <- stringr::str_to_title(c(head(colnames(table.posdoc), -1), "N"))
+  colnames(table.posdoc) <- stringr::str_to_title(c(head(colnames(table.posdoc), -1), "N (Quadriênio)"))
 
   # add column totals
   table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
-  rownames(table.posdoc) <- stringr::str_to_title(c(head(rownames(table.posdoc), -1), "N"))
+  rownames(table.posdoc) <- stringr::str_to_title(c(head(rownames(table.posdoc), -1), "N (Quadriênio)"))
 
   # print tables
   knitr::kable(
@@ -1498,8 +1498,7 @@ table.1.1.2 <-
   gtsummary::modify_header(
     label = "**Ano**",
     gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(
-    gtsummary::everything() ~ NA) %>%
+  gtsummary::modify_footnote(gtsummary::everything() ~ NA) %>%
   gtsummary::bold_labels()
 
 # Print HTML table
@@ -2261,7 +2260,7 @@ table.1.2.5 <-
   gtsummary::tbl_summary(
     financiadores,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n})"),
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = list(gtsummary::everything() ~ 0, "Total" ~ 2),
     sort = gtsummary::all_categorical() ~ "frequency"
@@ -3603,7 +3602,7 @@ table.3.2.1 <-
       "Citações" ~ "continuous"
       ),
     statistic = list(
-      gtsummary::all_continuous() ~ "{median} ({p25}, {p75})",
+      gtsummary::all_continuous() ~ "{median} ({min} - {max})",
       gtsummary::all_categorical() ~ "{n}"
       ),
     missing = "no",
@@ -3615,8 +3614,7 @@ table.3.2.1 <-
   gtsummary::modify_header(
     label = "**Ano**",
     gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(
-    gtsummary::everything() ~ NA) %>%
+  gtsummary::modify_footnote(gtsummary::everything() ~ NA) %>%
   gtsummary::bold_labels()
 
 # Print HTML table
