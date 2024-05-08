@@ -754,7 +754,20 @@ síntese.ano <- dplyr::bind_cols(
       Ano = as.numeric(doi_all$published_on),
       CiteScore = as.numeric(doi_all$CiteScore),
       SJR = as.numeric(doi_all$SJR),
-      WebQualis = factor(doi_all$WebQualis)
+      WebQualis = factor(doi_all$WebQualis),
+      Altmetric = as.numeric(doi_all$altmetric_score),
+      Citações = as.numeric(doi_all$citations),
+      Facebook = as.numeric(doi_all$cited_by_fbwalls_count),
+      Blogs = as.numeric(doi_all$cited_by_feeds_count),
+      'Google+' = as.numeric(doi_all$cited_by_gplus_count),
+      Notícias = as.numeric(doi_all$cited_by_msm_count),
+      Posts = as.numeric(doi_all$cited_by_posts_count),
+      Reddit = as.numeric(doi_all$cited_by_rdts_count),
+      X = as.numeric(doi_all$cited_by_tweeters_count),
+      'YouTube/Vimeo' = as.numeric(doi_all$cited_by_videos_count),
+      Patentes = as.numeric(doi_all$cited_by_patents_count),
+      Mendeley = as.numeric(doi_all$mendeley),
+      'Acesso aberto' = as.numeric(doi_all$is_oa)
           )
 
 # Data selection
@@ -763,7 +776,20 @@ síntese.ano <- síntese.ano %>%
     "Ano",
     "CiteScore",
     "SJR",
-    "WebQualis"
+    "WebQualis",
+    "Altmetric",
+    "Citações",
+    "Facebook",
+    "Blogs",
+    "Google+",
+    "Notícias",
+    "Posts",
+    "Reddit",
+    "X",
+    "YouTube/Vimeo",
+    "Patentes",
+    "Mendeley",
+    "Acesso aberto"
     ))
 
 # filter data in quadrineal.vigente
@@ -781,7 +807,21 @@ table.3.2.1 <-
     type = list(
       "CiteScore" ~ "continuous",
       "SJR" ~ "continuous",
-      "WebQualis" ~ "categorical"),
+      "WebQualis" ~ "categorical",
+      "Altmetric" ~ "continuous",
+      "Citações" ~ "continuous",
+      "Facebook" ~ "continuous",
+      "Blogs" ~ "continuous",
+      "Google+" ~ "continuous",
+      "Notícias" ~ "continuous",
+      "Posts" ~ "continuous",
+      "Reddit" ~ "continuous",
+      "X" ~ "continuous",
+      "YouTube/Vimeo" ~ "continuous",
+      "Patentes" ~ "continuous",
+      "Mendeley" ~ "continuous",
+      "Acesso aberto" ~ "categorical"
+      ),
     statistic = list(
       gtsummary::all_continuous() ~ "{median} ({min} - {max})",
       gtsummary::all_categorical() ~ "{n}"

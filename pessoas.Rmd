@@ -1597,7 +1597,7 @@ for (j in 1:length(abas)) {
   
   # print end of tab rows
   cat('\n\n')
-  cat('Fonte: **PPG**')
+  cat('Fonte: [**Diretório de Grupos de Pesquisa**](https://lattes.cnpq.br/web/dgp)')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
