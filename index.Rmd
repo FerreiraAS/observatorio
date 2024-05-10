@@ -10,7 +10,7 @@ output:
       - ./CSS/responsive.css
 ---
 
-<!--install and/or load all R packages-->
+<!--set up-->
 ```{r setup, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%", results = "hide"}
 knitr::opts_chunk$set(
   echo = FALSE,

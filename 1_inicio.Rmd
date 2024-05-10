@@ -12,11 +12,8 @@ output:
       - ./CSS/responsive.css
 ---
 
-<!--install and/or load all R packages-->
-```{r setup, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%"}
-# restart all variables
-rm(list = ls(all = TRUE))
-
+<!--set up-->
+```{r setup, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%", results = "hide"}
 knitr::opts_chunk$set(
   echo = FALSE,
   warning = FALSE,
@@ -32,6 +29,13 @@ knitr::opts_chunk$set(
 )
 ```
 
+<!--start-->
+```{r start, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%"}
+# restart all variables
+rm(list = ls(all = TRUE))
+```
+
+<!--install and/or load all packages-->
 ```{r install-update-packages, echo = FALSE, include = FALSE}
 source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
@@ -433,10 +437,8 @@ docentes.raw <- sucupira.list[[most.recent]]
 nome.PPG <- unique(docentes.raw$'Nome do PPG')
 
 nome.PPG.split <- stringr::str_split_1(as.character(nome.PPG)[[1]], " ")
-match.stopwords <-
-  match(stringr::str_split_1(as.character(nome.PPG)[[1]], " "), tm::stopwords("portuguese"))
-nome.PPG.no.stopwords <-
-  paste(nome.PPG.split[is.na(match.stopwords)], collapse = " ")
+match.stopwords <- match(stringr::str_split_1(as.character(nome.PPG)[[1]], " "), tm::stopwords("portuguese"))
+nome.PPG.no.stopwords <- paste(nome.PPG.split[is.na(match.stopwords)], collapse = " ")
 source("Scripts/get-initials.R", local = knitr::knit_global())
 sigla.PPG <- initials(nome.PPG.no.stopwords)
 
@@ -1229,7 +1231,8 @@ references_all <-
 doi_with_altmetric_retracted <- c()
 if (!sjmisc::is_empty(doi_with_altmetric_all)) {
   for (i in 1:dim(doi_with_altmetric_all)[1]) {
-    has.retraction <- retractcheck::query_or(doi_with_altmetric_all$doi[i])
+    has.retraction <- data.frame(retracted = NA)
+    try(has.retraction <- retractcheck::query_or(doi_with_altmetric_all$doi[i]), silent = TRUE)
     if (!is.na(has.retraction$retracted)) {
       doi_with_altmetric_retracted <-
         rbind(doi_with_altmetric_retracted,
@@ -1241,7 +1244,8 @@ if (!sjmisc::is_empty(doi_with_altmetric_all)) {
 doi_without_altmetric_retracted <- c()
 if (!sjmisc::is_empty(doi_without_altmetric_all)) {
   for (i in 1:dim(doi_without_altmetric_all)[1]) {
-    has.retraction <- retractcheck::query_or(doi_without_altmetric_all$doi[i])
+    has.retraction <- data.frame(retracted = NA)
+    try(has.retraction <- retractcheck::query_or(doi_without_altmetric_all$doi[i]), silent = TRUE)
     if (!is.na(has.retraction$retracted)) {
       doi_without_altmetric_retracted <-
         rbind(doi_without_altmetric_retracted,
