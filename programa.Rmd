@@ -1713,7 +1713,7 @@ for (j in 1:length(abas)) {
 
   # print table
   if (dim(lab.data)[1] != 0) {
-    cat(paste0("**", unlist(name), "**"), quote = FALSE)
+    cat(paste0("**", unlist(name), "**"))
     source("Scripts/table-with-buttons.R", local = knitr::knit_global())
     cat(knitr::knit_print(create_dt(lab.data, title = paste0("Programa - Laboratórios - ", name))))
   } else {

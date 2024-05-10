@@ -627,8 +627,8 @@ table.tcc.gt <- gtsummary::tbl_summary(
 ```
 
 ```{r 3-1-2-bibliografica, eval = has.sucupira.files}
-# filter sucupira.df by "Tipo de Produção" == "BIBLIOGRÁFICA"
-sucupira.df.bib <- unique(sucupira.df[sucupira.df$`Tipo de Produção` == "BIBLIOGRÁFICA", ])
+# filter sucupira.df by "Tipo de Produção" == "Bibliográfica"
+sucupira.df.bib <- unique(sucupira.df[sucupira.df$`Tipo de Produção` == "Bibliográfica", ])
 
 table.bib <- data.frame(matrix(
   NA,
@@ -712,8 +712,8 @@ table.bib.gt <- gtsummary::tbl_summary(
 ```
 
 ```{r 3-1-2-tecnica, eval = has.sucupira.files}
-# filter sucupira.df by "Tipo de Produção" == "TÉCNICA"
-sucupira.df.tec <- unique(sucupira.df[sucupira.df$`Tipo de Produção` == "TÉCNICA", ])
+# filter sucupira.df by "Tipo de Produção" == "Técnica"
+sucupira.df.tec <- unique(sucupira.df[sucupira.df$`Tipo de Produção` == "Técnica", ])
 
 table.tec <- data.frame(matrix(
   NA,
@@ -827,8 +827,8 @@ síntese.ano <- dplyr::bind_cols(
       CiteScore = as.numeric(doi_all$CiteScore),
       SJR = as.numeric(doi_all$SJR),
       WebQualis = factor(doi_all$WebQualis),
-      Altmetric = as.numeric(doi_all$altmetric_score),
       Citações = as.numeric(doi_all$citations),
+      Altmetric = as.numeric(doi_all$altmetric_score),
       Facebook = as.numeric(doi_all$cited_by_fbwalls_count),
       Blogs = as.numeric(doi_all$cited_by_feeds_count),
       'Google+' = as.numeric(doi_all$cited_by_gplus_count),
@@ -849,8 +849,8 @@ síntese.ano <- síntese.ano %>%
     "CiteScore",
     "SJR",
     "WebQualis",
-    "Altmetric",
     "Citações",
+    "Altmetric",
     "Facebook",
     "Blogs",
     "Google+",
@@ -880,8 +880,8 @@ table.3.2.1 <-
       "CiteScore" ~ "continuous",
       "SJR" ~ "continuous",
       "WebQualis" ~ "categorical",
-      "Altmetric" ~ "continuous",
       "Citações" ~ "continuous",
+      "Altmetric" ~ "continuous",
       "Facebook" ~ "continuous",
       "Blogs" ~ "continuous",
       "Google+" ~ "continuous",
@@ -903,8 +903,8 @@ table.3.2.1 <-
       "CiteScore" ~ 2,
       "SJR" ~ 2,
       "WebQualis" ~ 0,
-      "Altmetric" ~ 0,
       "Citações" ~ 0,
+      "Altmetric" ~ 0,
       "Facebook" ~ 0,
       "Blogs" ~ 0,
       "Google+" ~ 0,
