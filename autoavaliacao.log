@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.5.2)  10 MAY 2024 03:18
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.5.2)  10 MAY 2024 08:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -119,9 +119,9 @@ Package: xparse 2024-03-14 L3 Experimental document command parser
 y
 Package: l3keys2e 2024-03-14 LaTeX2e option processing using LaTeX3 keys
 ) (/usr/local/texlive/2024/texmf-dist/tex/latex/fontspec/fontspec.sty
-Package: fontspec 2024/05/03 v2.9c Font selection for XeLaTeX and LuaLaTeX
+Package: fontspec 2024/05/07 v2.9d Font selection for XeLaTeX and LuaLaTeX
 (/usr/local/texlive/2024/texmf-dist/tex/latex/fontspec/fontspec-xetex.sty
-Package: fontspec-xetex 2024/05/03 v2.9c Font selection for XeLaTeX and LuaLaTe
+Package: fontspec-xetex 2024/05/07 v2.9d Font selection for XeLaTeX and LuaLaTe
 X
 \l__fontspec_script_int=\count275
 \l__fontspec_language_int=\count276
@@ -1344,10 +1344,10 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 37268 strings out of 474706
- 722258 string characters out of 5756289
+ 37263 strings out of 474706
+ 722042 string characters out of 5756289
  1931403 words of memory out of 5000000
- 58912 multiletter control sequences out of 15000+600000
+ 58907 multiletter control sequences out of 15000+600000
  597567 words of font info for 72 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  94i,19n,120p,1202b,492s stack positions out of 10000i,1000n,20000p,200000b,200000s
