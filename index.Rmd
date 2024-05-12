@@ -820,7 +820,7 @@ bsplus::bs_carousel(id = "financiadores-carousel",
 
 cat('\n\n')
 cat(
-  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **PPG**"
+  "**Fontes**: [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **PPG**"
 )
 ```
 
@@ -1188,7 +1188,7 @@ bsplus::bs_carousel(id = "producao-carousel",
 
 cat('\n\n')
 cat(
-  "*Fontes:* [**WebQualis**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf), [**SJR**](https://www.scimagojr.com), [**Scopus**](https://www.scopus.com/home.uri), **PPG**"
+  "**Fontes**: [**WebQualis**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf), [**SJR**](https://www.scimagojr.com), [**Scopus**](https://www.scopus.com/home.uri), **PPG**"
 )
 ```
 
@@ -1387,7 +1387,7 @@ bsplus::bs_carousel(id = "visibilidade-carousel",
 
 cat('\n\n')
 cat(
-  "*Fontes:* [**Altmetric**](https://www.altmetric.com), [**CrossRef**](https://www.crossref.org), **PPG**"
+  "**Fontes**: [**Altmetric**](https://www.altmetric.com), [**CrossRef**](https://www.crossref.org), **PPG**"
 )
 ```
 
@@ -1773,7 +1773,7 @@ bsplus::bs_carousel(id = "pessoal-carousel",
 
 cat('\n\n')
 cat(
-  "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), **PPG**"
+  "**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), **PPG**"
 )
 ```
 

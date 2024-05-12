@@ -108,7 +108,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 ## **Dissertações/Teses** {#TCC-destaque .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
-
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r, eval = !has.sucupira.files}
@@ -120,7 +119,6 @@ cat('<br>')
 ## **Produções: Visibilidade** {#destaque-visibilidade .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
-
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r, eval = !any(has.producao.sucupira, has.producao.ppg)}
@@ -354,7 +352,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 ## **Prêmio CAPES de Tese** {#premio-capes .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
-
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r, eval = !has.premio.capes}
@@ -402,10 +399,9 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 
 <br>
 
-## **Representatividade** {#representatividade}
+## **Representatividade** {#representatividade .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
-
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r, eval = !has.sucupira.files}
@@ -444,10 +440,6 @@ for (id in 1:length(orcids)) {
 }
 ```
 
-```{r, eval = !has.sucupira.files}
-cat('<br>')
-```
-
 ### **Corpo editorial de periódicos** {.tabset}
 
 ```{r corpo-editorial, cache = TRUE, cache.path = "cache/corpo-editorial/", eval = has.sucupira.files}
@@ -480,8 +472,6 @@ for (id in 1:length(orcids)) {
 }
 ```
 
-<br>
-
 ### **Revisor de periódicos** {.tabset}
 
 ```{r revisores, cache = TRUE, cache.path = "cache/revisores/", eval = has.sucupira.files}
@@ -511,7 +501,7 @@ for (id in 1:length(orcids)) {
   source("Scripts/reviewer-board.R", local = knitr::knit_global())
   cat('\n\n<!-- -->\n\n')
   cat(
-    "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"
+    "**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"
   )
   cat('\n\n<!-- -->\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
@@ -520,10 +510,9 @@ for (id in 1:length(orcids)) {
 
 <br>
 
-## **Divulgação** {#divulgacao}
+## **Divulgação científica** {#divulgacao .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
-
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r, eval = !any(has.blog.ies, has.blogs.externos)}
@@ -571,8 +560,6 @@ create_dt(blog.ies, title = "Destaques - Blog institucional")
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
-<br>
-
 ### **Blogs externos** {.tabset}
 
 ```{r blogs-externos, eval = has.blogs.externos}
@@ -613,5 +600,3 @@ create_dt(blog.externos, title = "Destaques - Blogs externos")
 # Print end of tab rows
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
-
-<br>

@@ -102,7 +102,7 @@ for (i in 1:length(abas)) {
   )
   
   cat('\n\n')
-  cat('Fonte: **PPG**')
+  cat('**Fontes**: **PPG**')
 
   # print end of tab rows
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
@@ -424,6 +424,314 @@ for (i in 1:length(abas)) {
   )
   
   # print end of tab rows
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+}
+```
+
+<br>
+
+## **Financiadores** {#financiadores .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+### **Projetos de pesquisa** {#financiadores-projetos .tabset}
+
+#### **Auxílio financeiro** {#auxilio-financeiro}
+
+```{r financiadores-sucupira-pp-auxilios, eval = has.sucupira.files}
+# projetos - membros
+sheet <- "Projetos - Financiadores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)
+financiadores.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+financiadores.all <- unique(financiadores.all)
+
+if (dim(financiadores.all)[1] != 0) {
+  # dplyr::select data
+  table.financiadores <- dplyr::select(financiadores.all,
+                                      c("Nome do Financiador",
+                                        "Natureza do Financiador",
+                                        "Data Início Financiador",
+                                        "Data Fim Financiador"))
+  table.financiadores <- table.financiadores[order(financiadores.all[, 1]), ]
+  # print tables
+  table.financiadores[, 1] <-
+    as.vector(unlist(lapply(table.financiadores[, 1], FUN = stringr::str_to_upper)))
+  table.financiadores[, 2] <-
+    as.vector(unlist(lapply(table.financiadores[, 2], FUN = stringr::str_to_sentence)))
+
+  # remove duplicated entries
+  table.financiadores <- table.financiadores[!duplicated(table.financiadores),]
+  
+  # select only outros auxílios
+  table.financiadores <- table.financiadores[table.financiadores$`Natureza do Financiador` != "Bolsa", ]
+  
+  colnames(table.financiadores) <-
+    c("Agência",
+      "Natureza",
+      "Início",
+      "Fim")
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table.financiadores, title = "Programa - Financiadores - Projetos de Pesquisa - Auxílios")
+} else {
+  cat('\n\n')
+  cat('*Sem produção para exibir no período*')
+  cat('\n\n')
+}
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+<br>
+
+#### **Bolsas** {#bolsas}
+
+```{r financiadores-sucupira-pp-bolsas, eval = has.sucupira.files}
+# projetos - membros
+sheet <- "Projetos - Financiadores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)
+financiadores.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+financiadores.all <- unique(financiadores.all)
+
+if (dim(financiadores.all)[1] != 0) {
+  # dplyr::select data
+  table.financiadores <- dplyr::select(financiadores.all,
+                                      c("Nome do Financiador",
+                                        "Natureza do Financiador",
+                                        "Data Início Financiador",
+                                        "Data Fim Financiador"))
+  table.financiadores <- table.financiadores[order(financiadores.all[, 1]), ]
+  # print tables
+  table.financiadores[, 1] <-
+    as.vector(unlist(lapply(table.financiadores[, 1], FUN = stringr::str_to_upper)))
+  table.financiadores[, 2] <-
+    as.vector(unlist(lapply(table.financiadores[, 2], FUN = stringr::str_to_sentence)))
+
+  # remove duplicated entries
+  table.financiadores <- table.financiadores[!duplicated(table.financiadores),]
+  
+  # select only outros auxílios
+  table.financiadores <- table.financiadores[table.financiadores$`Natureza do Financiador` == "Bolsa", ]
+  
+  colnames(table.financiadores) <-
+    c("Agência",
+      "Natureza",
+      "Início",
+      "Fim")
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table.financiadores, title = "Programa - Financiadores - Projetos de Pesquisa - Bolsas")
+} else {
+  cat('\n\n')
+  cat('*Sem produção para exibir no período*')
+  cat('\n\n')
+}
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+<br>
+
+### **Trabalhos de conclusão de curso**
+
+```{r financiadores-sucupira-tcc, eval = has.sucupira.files}
+# projetos - membros
+sheet <- "TCC - Financiadores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+periodos <- names(sucupira.list)
+financiadores.all <- do.call(rbind.data.frame, sucupira.list[periodos])
+financiadores.all <- unique(financiadores.all)
+
+if (dim(financiadores.all)[1] != 0) {
+  # dplyr::select data
+  table.financiadores <- dplyr::select(financiadores.all,
+                                      c("Nome do Financiador",
+                                        "Nome do Programa de Fomento",
+                                        "Data início da orientação",
+                                        "Data fim da orientação"))
+  table.financiadores <- table.financiadores[order(financiadores.all[, 1]), ]
+  # print tables
+  table.financiadores[, 1] <-
+    as.vector(unlist(lapply(table.financiadores[, 1], FUN = stringr::str_to_upper)))
+  table.financiadores[, 2] <-
+    as.vector(unlist(lapply(table.financiadores[, 2], FUN = stringr::str_to_sentence)))
+
+  # remove duplicated entries
+  table.financiadores <- table.financiadores[!duplicated(table.financiadores),]
+  
+  # remove empty rows
+  table.financiadores <- table.financiadores[!is.na(table.financiadores$`Nome do Financiador`),]
+  
+  colnames(table.financiadores) <-
+    c("Agência",
+      "Natureza",
+      "Início",
+      "Fim")
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  create_dt(table.financiadores, title = "Financiadores - Trabalhos de Conclusão de Curso")
+} else {
+  cat('\n\n')
+  cat('*Sem produção para exibir no período*')
+  cat('\n\n')
+}
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+<br>
+
+### **Detalhamento**
+
+```{r financiadores-ppg, eval = has.financiadores}
+financiadores.raw <-
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+financiadores.sub <-
+  financiadores.raw %>% dplyr::select("Ano",
+                               "Agência",
+                               "Edital",
+                               "Processo No.",
+                               "Título do projeto",
+                               "Programa")
+fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
+
+financiadores <-
+  financiadores.sub[complete.cases(financiadores.sub), ]
+fonte <- fonte.sub[complete.cases(financiadores.sub), ]
+
+if (dim(financiadores)[1] != 0) {
+  Abrir <- matrix(NA, nrow = dim(financiadores)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(fonte)[1])
+  {
+    if (!is.na(fonte[i, 1]))
+    {
+      Abrir[i] <-
+        paste0('<a href="',
+               fonte[i, 1],
+               '" target="_blank"',
+               '>',
+               # fontawesome icon
+               fontawesome::fa("up-right-from-square"),
+               '</a>')
+    }
+  }
+  financiadores <- cbind(financiadores, Abrir)
+  financiadores <-
+    financiadores[order(financiadores$Ano, decreasing = TRUE), ]
+} else {
+  cat('\n\n')
+  cat('*Sem dados para exibir*')
+  cat('\n\n')
+}
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+try(create_dt(financiadores, title = "Programa - Financiadores - 2024-2021"),
+    silent = TRUE)
+
+cat('\n\n')
+cat(
+  '**Fontes**: [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**'
+)
+cat('\n\n')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+```
+
+<br>
+
+## **Infraestrutura** {#infraestrutura .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !has.infraestrutura}
+cat('<br>')
+```
+
+```{r infraestrutura, eval = has.infraestrutura}
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Infraestrutura.xlsx")
+
+# display each sheet in a tab
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('### **', abas[j], '**'))
+  cat('\n\n<!-- -->\n\n')
+  infraestrutura.raw <-
+    readxl::read_excel("PPG/Infraestrutura.xlsx",
+                       sheet = abas[j],
+                       col_types = c("text"))
+  
+  # print table
+  if (dim(infraestrutura.raw)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    cat(knitr::knit_print(create_dt(infraestrutura.raw, title = "Programa - Infraestrutura")))
+  } else {
+    cat("*Sem dados para exibir*")
+  }
+  
+  # print end of tab rows
+  cat('\n\n')
+  cat('**Fontes**: **PPG**')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+}
+```
+
+<br>
+
+## **Laboratórios de pesquisa** {#laboratorios-pesquisa .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !has.laboratorios}
+cat('<br>')
+```
+
+```{r laboratorios-equipamentos, eval = has.laboratorios}
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Laboratórios.xlsx")
+
+# display each sheet in a tab
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat("### **", as.character(j), "**", "\n", sep = "")
+  cat('\n\n<!-- -->\n\n')
+  laboratorios.raw <-
+    readxl::read_excel(
+      "PPG/Laboratórios.xlsx",
+      sheet = abas[j],
+      col_types = c("text")
+    )
+  name <- names(laboratorios.raw[1])
+  names(laboratorios.raw) <- laboratorios.raw[1,]
+  lab.data <- laboratorios.raw[-1,]
+
+  # print table
+  if (dim(lab.data)[1] != 0) {
+    cat(paste0("**", unlist(name), "**"))
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    cat(knitr::knit_print(create_dt(lab.data, title = paste0("Programa - Laboratórios - ", name))))
+  } else {
+    cat("*Sem dados para exibir*")
+  }
+    # print end of tab rows
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
@@ -1184,6 +1492,185 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
+## **Processo seletivo para ingresso** {#editais .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !has.calendarios}
+cat('<br>')
+```
+
+```{r editais, eval = has.calendarios}
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Editais.xlsx")
+
+# display each sheet in a tab
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('### **', abas[j], '**'))
+  cat('\n\n<!-- -->\n\n')
+  editais.raw <-
+    readxl::read_excel("PPG/Editais.xlsx",
+                       sheet = abas[j],
+                       col_types = c("text"))
+  
+  # replace the link by a tag
+  Abrir <- matrix(NA, nrow = dim(editais.raw)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(editais.raw)[1]) {
+    if (!is.na(editais.raw[i, 3])) {
+      Abrir[i] <-
+        paste0('<a href="',
+               editais.raw[i, 3],
+               '" target="_blank"',
+               '>',
+               # fontawesome icon
+               fontawesome::fa("up-right-from-square"),
+               '</a>')
+    }
+  }
+  editais <- cbind(editais.raw[, -3], Abrir)
+  
+  ids <- order(editais[, 1], decreasing = TRUE)
+  editais <- editais[ids,]
+
+  # print table
+  if (dim(editais)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    cat(knitr::knit_print(create_dt(editais, title = "Programa - Editais")))
+  } else {
+    cat("*Sem dados para exibir*")
+  }
+  
+  # print end of tab rows
+  cat('\n\n')
+  cat('**Fontes**: **PPG**')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+}
+```
+
+<br>
+
+## **Bolsas de estudo** {#bolsas .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !has.bolsas}
+cat('<br>')
+```
+
+```{r bolsas, eval = has.bolsas}
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Bolsas.xlsx")
+
+# display each sheet in a tab
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('### **', abas[j], '**'))
+  cat('\n\n<!-- -->\n\n')
+  bolsas.raw <-
+    readxl::read_excel("PPG/Bolsas.xlsx",
+                       sheet = abas[j],
+                       col_types = c("text"))
+  
+  # replace the link by a tag
+  Abrir <- matrix(NA, nrow = dim(bolsas.raw)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(bolsas.raw)[1]) {
+    if (!is.na(bolsas.raw[i, 3])) {
+      Abrir[i] <-
+        paste0('<a href="',
+               bolsas.raw[i, 3],
+               '" target="_blank"',
+               '>',
+               # fontawesome icon
+               fontawesome::fa("up-right-from-square"),
+               '</a>')
+    }
+  }
+  bolsas.raw <- cbind(bolsas.raw[, -3], Abrir)
+  
+  # print table
+  if (dim(bolsas.raw)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    cat(knitr::knit_print(create_dt(bolsas.raw, title = "Programa - Bolsas de estudo")))
+  } else {
+    cat("*Sem dados para exibir*")
+  }
+  
+  # print end of tab rows
+  cat('\n\n')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+}
+```
+
+<br>
+
+## **Calendários** {#calendarios .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !has.calendarios}
+cat('<br>')
+```
+
+```{r calendarios, eval = has.calendarios}
+# initialize all sheets
+abas <- readxl::excel_sheets("PPG/Calendários.xlsx")
+
+# display each sheet in a tab
+for (j in 1:length(abas)) {
+  cat('\n\n<!-- -->\n\n')
+  cat(paste0('### **', abas[j], '**'))
+  cat('\n\n<!-- -->\n\n')
+  calendarios.raw <-
+    readxl::read_excel("PPG/Calendários.xlsx",
+                       sheet = abas[j],
+                       col_types = c("text"))
+  
+  # replace the link by a tag
+  Abrir <- matrix(NA, nrow = dim(calendarios.raw)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(calendarios.raw)[1]) {
+    if (!is.na(calendarios.raw[i, 3])) {
+      Abrir[i] <-
+        paste0('<a href="',
+               calendarios.raw[i, 3],
+               '" target="_blank"',
+               '>',
+               # fontawesome icon
+               fontawesome::fa("up-right-from-square"),
+               '</a>')
+    }
+  }
+  calendarios <- cbind(calendarios.raw[, -3], Abrir)
+  
+  ids <- order(calendarios[, 1], decreasing = TRUE)
+  calendarios <- calendarios[ids,]
+
+  # print table
+  if (dim(calendarios)[1] != 0) {
+    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+    cat(knitr::knit_print(create_dt(calendarios, title = "Programa - Calendários")))
+  } else {
+    cat("*Sem dados para exibir*")
+  }
+  
+  # print end of tab rows
+  cat('\n\n')
+  cat('**Fontes**: **PPG**')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+}
+```
+
+<br>
+
 ## **Turmas** {#turmas .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -1521,211 +2008,6 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-## **Calendários** {#calendarios .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !has.calendarios}
-cat('<br>')
-```
-
-```{r calendarios, eval = has.calendarios}
-# initialize all sheets
-abas <- readxl::excel_sheets("PPG/Calendários.xlsx")
-
-# display each sheet in a tab
-for (j in 1:length(abas)) {
-  cat('\n\n<!-- -->\n\n')
-  cat(paste0('### **', abas[j], '**'))
-  cat('\n\n<!-- -->\n\n')
-  calendarios.raw <-
-    readxl::read_excel("PPG/Calendários.xlsx",
-                       sheet = abas[j],
-                       col_types = c("text"))
-  
-  # replace the link by a tag
-  Abrir <- matrix(NA, nrow = dim(calendarios.raw)[1])
-  colnames(Abrir) <- "Abrir"
-  # add hyperlinks
-  for (i in 1:dim(calendarios.raw)[1]) {
-    if (!is.na(calendarios.raw[i, 3])) {
-      Abrir[i] <-
-        paste0('<a href="',
-               calendarios.raw[i, 3],
-               '" target="_blank"',
-               '>',
-               # fontawesome icon
-               fontawesome::fa("up-right-from-square"),
-               '</a>')
-    }
-  }
-  calendarios <- cbind(calendarios.raw[, -3], Abrir)
-  
-  ids <- order(calendarios[, 1], decreasing = TRUE)
-  calendarios <- calendarios[ids,]
-
-  # print table
-  if (dim(calendarios)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(calendarios, title = "Programa - Calendários")))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
-  
-  # print end of tab rows
-  cat('\n\n')
-  cat('Fonte: **PPG**')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-}
-```
-
-<br>
-
-## **Editais de processo seletivo** {#editais .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !has.calendarios}
-cat('<br>')
-```
-
-```{r editais, eval = has.calendarios}
-# initialize all sheets
-abas <- readxl::excel_sheets("PPG/Editais.xlsx")
-
-# display each sheet in a tab
-for (j in 1:length(abas)) {
-  cat('\n\n<!-- -->\n\n')
-  cat(paste0('### **', abas[j], '**'))
-  cat('\n\n<!-- -->\n\n')
-  editais.raw <-
-    readxl::read_excel("PPG/Editais.xlsx",
-                       sheet = abas[j],
-                       col_types = c("text"))
-  
-  # replace the link by a tag
-  Abrir <- matrix(NA, nrow = dim(editais.raw)[1])
-  colnames(Abrir) <- "Abrir"
-  # add hyperlinks
-  for (i in 1:dim(editais.raw)[1]) {
-    if (!is.na(editais.raw[i, 3])) {
-      Abrir[i] <-
-        paste0('<a href="',
-               editais.raw[i, 3],
-               '" target="_blank"',
-               '>',
-               # fontawesome icon
-               fontawesome::fa("up-right-from-square"),
-               '</a>')
-    }
-  }
-  editais <- cbind(editais.raw[, -3], Abrir)
-  
-  ids <- order(editais[, 1], decreasing = TRUE)
-  editais <- editais[ids,]
-
-  # print table
-  if (dim(editais)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(editais, title = "Programa - Editais")))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
-  
-  # print end of tab rows
-  cat('\n\n')
-  cat('Fonte: **PPG**')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-}
-```
-
-<br>
-
-## **Infraestrutura** {#infraestrutura .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !has.infraestrutura}
-cat('<br>')
-```
-
-```{r infraestrutura, eval = has.infraestrutura}
-# initialize all sheets
-abas <- readxl::excel_sheets("PPG/Infraestrutura.xlsx")
-
-# display each sheet in a tab
-for (j in 1:length(abas)) {
-  cat('\n\n<!-- -->\n\n')
-  cat(paste0('### **', abas[j], '**'))
-  cat('\n\n<!-- -->\n\n')
-  infraestrutura.raw <-
-    readxl::read_excel("PPG/Infraestrutura.xlsx",
-                       sheet = abas[j],
-                       col_types = c("text"))
-  
-  # print table
-  if (dim(infraestrutura.raw)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(infraestrutura.raw, title = "Programa - Infraestrutura")))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
-  
-  # print end of tab rows
-  cat('\n\n')
-  cat('Fonte: **PPG**')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-}
-```
-
-<br>
-
-## **Laboratórios de pesquisa** {#laboratorios-pesquisa .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !has.laboratorios}
-cat('<br>')
-```
-
-```{r laboratorios-equipamentos, eval = has.laboratorios}
-# initialize all sheets
-abas <- readxl::excel_sheets("PPG/Laboratórios.xlsx")
-
-# display each sheet in a tab
-for (j in 1:length(abas)) {
-  cat('\n\n<!-- -->\n\n')
-  cat("### **", as.character(j), "**", "\n", sep = "")
-  cat('\n\n<!-- -->\n\n')
-  laboratorios.raw <-
-    readxl::read_excel(
-      "PPG/Laboratórios.xlsx",
-      sheet = abas[j],
-      col_types = c("text")
-    )
-  name <- names(laboratorios.raw[1])
-  names(laboratorios.raw) <- laboratorios.raw[1,]
-  lab.data <- laboratorios.raw[-1,]
-
-  # print table
-  if (dim(lab.data)[1] != 0) {
-    cat(paste0("**", unlist(name), "**"))
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(lab.data, title = paste0("Programa - Laboratórios - ", name))))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
-    # print end of tab rows
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-}
-```
-
-<br>
-
 ## **Convênios institucionais** {#convenios .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -1777,7 +2059,7 @@ for (j in 1:length(abas)) {
   
   # print end of tab rows
   cat('\n\n')
-  cat('Fonte: **PPG**')
+  cat('**Fontes**: **PPG**')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
@@ -1837,7 +2119,7 @@ for (j in 1:length(abas)) {
   
   # print end of tab rows
   cat('\n\n')
-  cat('Fonte: **PPG**')
+  cat('**Fontes**: **PPG**')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
@@ -1897,289 +2179,7 @@ for (j in 1:length(abas)) {
   
   # print end of tab rows
   cat('\n\n')
-  cat('Fonte: **PPG**')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-}
-```
-
-<br>
-
-## **Financiadores** {#financiadores .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-### **Projetos de pesquisa** {#financiadores-projetos .tabset}
-
-#### **Auxílio financeiro** {#auxilio-financeiro}
-
-```{r financiadores-sucupira-pp-auxilios, eval = has.sucupira.files}
-# projetos - membros
-sheet <- "Projetos - Financiadores"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-periodos <- names(sucupira.list)
-financiadores.all <- do.call(rbind.data.frame, sucupira.list[periodos])
-financiadores.all <- unique(financiadores.all)
-
-if (dim(financiadores.all)[1] != 0) {
-  # dplyr::select data
-  table.financiadores <- dplyr::select(financiadores.all,
-                                      c("Nome do Financiador",
-                                        "Natureza do Financiador",
-                                        "Data Início Financiador",
-                                        "Data Fim Financiador"))
-  table.financiadores <- table.financiadores[order(financiadores.all[, 1]), ]
-  # print tables
-  table.financiadores[, 1] <-
-    as.vector(unlist(lapply(table.financiadores[, 1], FUN = stringr::str_to_upper)))
-  table.financiadores[, 2] <-
-    as.vector(unlist(lapply(table.financiadores[, 2], FUN = stringr::str_to_sentence)))
-
-  # remove duplicated entries
-  table.financiadores <- table.financiadores[!duplicated(table.financiadores),]
-  
-  # select only outros auxílios
-  table.financiadores <- table.financiadores[table.financiadores$`Natureza do Financiador` != "Bolsa", ]
-  
-  colnames(table.financiadores) <-
-    c("Agência",
-      "Natureza",
-      "Início",
-      "Fim")
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table.financiadores, title = "Programa - Financiadores - Projetos de Pesquisa - Auxílios")
-} else {
-  cat('\n\n')
-  cat('*Sem produção para exibir no período*')
-  cat('\n\n')
-}
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-#### **Bolsas** {#bolsas}
-
-```{r financiadores-sucupira-pp-bolsas, eval = has.sucupira.files}
-# projetos - membros
-sheet <- "Projetos - Financiadores"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-periodos <- names(sucupira.list)
-financiadores.all <- do.call(rbind.data.frame, sucupira.list[periodos])
-financiadores.all <- unique(financiadores.all)
-
-if (dim(financiadores.all)[1] != 0) {
-  # dplyr::select data
-  table.financiadores <- dplyr::select(financiadores.all,
-                                      c("Nome do Financiador",
-                                        "Natureza do Financiador",
-                                        "Data Início Financiador",
-                                        "Data Fim Financiador"))
-  table.financiadores <- table.financiadores[order(financiadores.all[, 1]), ]
-  # print tables
-  table.financiadores[, 1] <-
-    as.vector(unlist(lapply(table.financiadores[, 1], FUN = stringr::str_to_upper)))
-  table.financiadores[, 2] <-
-    as.vector(unlist(lapply(table.financiadores[, 2], FUN = stringr::str_to_sentence)))
-
-  # remove duplicated entries
-  table.financiadores <- table.financiadores[!duplicated(table.financiadores),]
-  
-  # select only outros auxílios
-  table.financiadores <- table.financiadores[table.financiadores$`Natureza do Financiador` == "Bolsa", ]
-  
-  colnames(table.financiadores) <-
-    c("Agência",
-      "Natureza",
-      "Início",
-      "Fim")
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table.financiadores, title = "Programa - Financiadores - Projetos de Pesquisa - Bolsas")
-} else {
-  cat('\n\n')
-  cat('*Sem produção para exibir no período*')
-  cat('\n\n')
-}
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-### **Trabalhos de conclusão de curso**
-
-```{r financiadores-sucupira-tcc, eval = has.sucupira.files}
-# projetos - membros
-sheet <- "TCC - Financiadores"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-periodos <- names(sucupira.list)
-financiadores.all <- do.call(rbind.data.frame, sucupira.list[periodos])
-financiadores.all <- unique(financiadores.all)
-
-if (dim(financiadores.all)[1] != 0) {
-  # dplyr::select data
-  table.financiadores <- dplyr::select(financiadores.all,
-                                      c("Nome do Financiador",
-                                        "Nome do Programa de Fomento",
-                                        "Data início da orientação",
-                                        "Data fim da orientação"))
-  table.financiadores <- table.financiadores[order(financiadores.all[, 1]), ]
-  # print tables
-  table.financiadores[, 1] <-
-    as.vector(unlist(lapply(table.financiadores[, 1], FUN = stringr::str_to_upper)))
-  table.financiadores[, 2] <-
-    as.vector(unlist(lapply(table.financiadores[, 2], FUN = stringr::str_to_sentence)))
-
-  # remove duplicated entries
-  table.financiadores <- table.financiadores[!duplicated(table.financiadores),]
-  
-  # remove empty rows
-  table.financiadores <- table.financiadores[!is.na(table.financiadores$`Nome do Financiador`),]
-  
-  colnames(table.financiadores) <-
-    c("Agência",
-      "Natureza",
-      "Início",
-      "Fim")
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table.financiadores, title = "Financiadores - Trabalhos de Conclusão de Curso")
-} else {
-  cat('\n\n')
-  cat('*Sem produção para exibir no período*')
-  cat('\n\n')
-}
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-### **Detalhamento**
-
-```{r financiadores-ppg, eval = has.financiadores}
-financiadores.raw <-
-  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
-
-financiadores.sub <-
-  financiadores.raw %>% dplyr::select("Ano",
-                               "Agência",
-                               "Edital",
-                               "Processo No.",
-                               "Título do projeto",
-                               "Programa")
-fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
-
-financiadores <-
-  financiadores.sub[complete.cases(financiadores.sub), ]
-fonte <- fonte.sub[complete.cases(financiadores.sub), ]
-
-if (dim(financiadores)[1] != 0) {
-  Abrir <- matrix(NA, nrow = dim(financiadores)[1])
-  colnames(Abrir) <- "Abrir"
-  # add hyperlinks
-  for (i in 1:dim(fonte)[1])
-  {
-    if (!is.na(fonte[i, 1]))
-    {
-      Abrir[i] <-
-        paste0('<a href="',
-               fonte[i, 1],
-               '" target="_blank"',
-               '>',
-               # fontawesome icon
-               fontawesome::fa("up-right-from-square"),
-               '</a>')
-    }
-  }
-  financiadores <- cbind(financiadores, Abrir)
-  financiadores <-
-    financiadores[order(financiadores$Ano, decreasing = TRUE), ]
-} else {
-  cat('\n\n')
-  cat('*Sem dados para exibir*')
-  cat('\n\n')
-}
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-try(create_dt(financiadores, title = "Programa - Financiadores - 2024-2021"),
-    silent = TRUE)
-
-cat('\n\n')
-cat(
-  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
-)
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-```
-
-<br>
-
-## **Bolsas de estudo** {#bolsas .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !has.bolsas}
-cat('<br>')
-```
-
-```{r bolsas, eval = has.bolsas}
-# initialize all sheets
-abas <- readxl::excel_sheets("PPG/Bolsas.xlsx")
-
-# display each sheet in a tab
-for (j in 1:length(abas)) {
-  cat('\n\n<!-- -->\n\n')
-  cat(paste0('### **', abas[j], '**'))
-  cat('\n\n<!-- -->\n\n')
-  bolsas.raw <-
-    readxl::read_excel("PPG/Bolsas.xlsx",
-                       sheet = abas[j],
-                       col_types = c("text"))
-  
-  # replace the link by a tag
-  Abrir <- matrix(NA, nrow = dim(bolsas.raw)[1])
-  colnames(Abrir) <- "Abrir"
-  # add hyperlinks
-  for (i in 1:dim(bolsas.raw)[1]) {
-    if (!is.na(bolsas.raw[i, 3])) {
-      Abrir[i] <-
-        paste0('<a href="',
-               bolsas.raw[i, 3],
-               '" target="_blank"',
-               '>',
-               # fontawesome icon
-               fontawesome::fa("up-right-from-square"),
-               '</a>')
-    }
-  }
-  bolsas.raw <- cbind(bolsas.raw[, -3], Abrir)
-  
-  # print table
-  if (dim(bolsas.raw)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(bolsas.raw, title = "Programa - Bolsas de estudo")))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
-  
-  # print end of tab rows
-  cat('\n\n')
+  cat('**Fontes**: **PPG**')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```

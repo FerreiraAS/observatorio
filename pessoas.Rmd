@@ -87,7 +87,7 @@ print(
 )
 
 cat('\n\n')
-cat('*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
+cat('**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
@@ -268,52 +268,26 @@ cat('\n\n')
 
 <br>
 
-```{r docentes-credenciados-grafico, eval = has.sucupira.files}
-# Generate plot of docentes per information
-layout(matrix(seq(1:2), ncol = 2, byrow = TRUE))
-par(oma = c(2, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
+### **IDs** {.tabset}
 
-# Total by category
-total.categoria <- table(docentes$Categoria)
-pie(
-  total.categoria,
-  labels = NA,
-  col = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
-  init.angle = 90,
-  main = names(docentes$Categoria)
-)
-legend(
-  "topleft",
-  legend = names(total.categoria),
-  fill = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
-  box.lwd = 0,
-  cex = 1,
-  bg = NA
-)
+```{r ids-externos-docentes, cache = TRUE, cache.path = "cache/external-ids/", eval = has.sucupira.files}
+# Keep active professors and remove duplicated data
+sucupira <- sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`),]
+sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupira$ORCID),]
 
-# Total by regime
-total.regime <- table(docentes$`Regime de Trabalho`)
-pie(
-  total.regime,
-  labels = NA,
-  col = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
-  init.angle = 90,
-  main = names(docentes$`Regime de Trabalho`)
-)
-legend(
-  "topleft",
-  legend = names(total.regime),
-  fill = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
-  box.lwd = 0,
-  cex = 1,
-  bg = NA
-)
+# Format ORCID
+my_orcid <- gsub("(.{14})(.*)$", "\\1-\\2", gsub("(.{9})(.*)$", "\\1-\\2", gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)))
 
-# Add title
-title("Descrição do Corpo Docente - Credenciados", outer = TRUE)
+# Compile external identifiers
+source("Scripts/external-identifiers.R", local = knitr::knit_global())
 
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+# Print tables
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(external.ids, title = "Pessoas - IDs externos")
+
+cat('<br>')
+cat('**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)')
+cat('<br>')
 ```
 
 <br>
@@ -360,164 +334,14 @@ for (i in 1:dim(docentes)[1]) {
   }
   cat('\n</center>')
   cat('\n\n<!-- -->\n\n')
-  cat(paste0('*Fontes:* [**Diretório dos Grupos de Pesquisa no Brasil**](https://dgp.cnpq.br/dgp/espelhorh/', docentes$`Número do currículo Lattes`[i]),')')
+  cat(paste0('**Fontes**: [**Diretório dos Grupos de Pesquisa no Brasil**](https://dgp.cnpq.br/dgp/espelhorh/', docentes$`Número do currículo Lattes`[i]),')')
   cat('\n\n<!-- -->\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 
 # Additional sources
 cat('\n\n')
-cat('*Fontes:* [**Diretório dos Grupos de Pesquisa no Brasil**](https://lattes.cnpq.br/web/dgp)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-```
-
-<br>
-
-### **IDs** {.tabset}
-
-```{r ids-externos-docentes, cache = TRUE, cache.path = "cache/external-ids/", eval = has.sucupira.files}
-# Keep active professors and remove duplicated data
-sucupira <- sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`),]
-sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupira$ORCID),]
-
-# Format ORCID
-my_orcid <- gsub("(.{14})(.*)$", "\\1-\\2", gsub("(.{9})(.*)$", "\\1-\\2", gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)))
-
-# Compile external identifiers
-source("Scripts/external-identifiers.R", local = knitr::knit_global())
-```
-
-<br>
-
-<br>
-
-```{r docentes-2024-2021-tabela, eval = has.2024.2021}
-# Initialize empty data frame
-table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 7))
-
-# Iterate through rows to construct table
-for (i in 1:dim(docentes)[1]) {
-  table <- cbind(
-    paste0(
-      '<a href=\"mailto:',
-      docentes$"E-mail"[i],
-      '\">',
-      docentes$'Nome Docente'[i],
-      '</a>'
-    ),
-    docentes$Categoria[i],
-    paste0(
-      docentes$'Data de Admissão'[i],
-      "-",
-      docentes$'Data de Desligamento'[i]
-    ),
-    ifelse(
-      !is.na(docentes$'Número do currículo Lattes'[i]),
-      paste0(
-        '<a href=\"http://lattes.cnpq.br/',
-        docentes$'Número do currículo Lattes'[i],
-        '\">',
-        docentes$'Número do currículo Lattes'[i],
-        '</a>'
-      ),
-      docentes$'Número do currículo Lattes'[i]
-    ),
-    ifelse(
-      !is.na(docentes$ORCID[i]),
-      paste0(
-        '<a href=\"https://orcid.org/',
-        paste0(sapply(seq(
-          from = 1,
-          to = nchar(docentes$ORCID[i]),
-          by = 4
-        ),
-        function(j)
-          substr(docentes$ORCID[i], j, j + 3)), collapse = "-"),
-        '\">',
-        paste0(sapply(seq(
-          from = 1,
-          to = nchar(docentes$ORCID[i]),
-          by = 4
-        ),
-        function(j)
-          substr(docentes$ORCID[i], j, j + 3)), collapse = "-"),
-        '</a>'
-      ),
-      docentes$ORCID[i]
-    ),
-    docentes$País[i]
-  )
-  table.2 <- rbind(table.2, table)
-}
-
-# Set column names
-colnames(table.2) <-
-  c("Nome",
-    "Categoria",
-    "Credenciamento",
-    "Lattes ID",
-    "ORCID",
-    "País")
-rownames(table.2) <- NULL
-
-# Order table
-ids <- order(table.2$'Nome', decreasing = FALSE)
-table <- table.2[ids,]
-
-# Print tables
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table, title = "Pessoas - Docentes - 2024-2021")
-
-cat('\n\n')
-```
-
-<br>
-
-```{r docentes-2024-2021-grafico, eval = has.2024.2021}
-# Generate plot of docentes per information
-layout(matrix(seq(1:4), ncol = 2, byrow = TRUE))
-par(oma = c(2, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
-
-# Total by category
-total.categoria <- table(docentes$Categoria)
-pie(
-  total.categoria,
-  labels = NA,
-  col = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
-  init.angle = 90,
-  main = names(docentes$Categoria)
-)
-legend(
-  "topleft",
-  legend = names(total.categoria),
-  fill = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
-  box.lwd = 0,
-  cex = 1,
-  bg = NA
-)
-
-# Total by regime
-total.regime <- table(docentes$`Regime de Trabalho`)
-pie(
-  total.regime,
-  labels = NA,
-  col = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
-  init.angle = 90,
-  main = names(docentes$`Regime de Trabalho`)
-)
-legend(
-  "topleft",
-  legend = names(total.regime),
-  fill = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
-  box.lwd = 0,
-  cex = 1,
-  bg = NA
-)
-
-# Add title
-title("Descrição do Corpo Docente", outer = TRUE)
-
+cat('**Fontes**: [**Diretório dos Grupos de Pesquisa**](https://lattes.cnpq.br/web/dgp)')
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
@@ -640,56 +464,6 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Docentes - Histórico")
 
 cat('\n\n')
-```
-
-<br>
-
-```{r docentes-historico-grafico, eval = has.sucupira.files}
-# Generate plot of docentes per information
-layout(matrix(seq(1:2), ncol = 2, byrow = TRUE))
-par(oma = c(2, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
-
-# Total by category
-total.categoria <- table(docentes$Categoria)
-pie(
-  total.categoria,
-  labels = NA,
-  col = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
-  init.angle = 90,
-  main = names(docentes$Categoria)
-)
-legend(
-  "topleft",
-  legend = names(total.categoria),
-  fill = RColorBrewer::brewer.pal(n = length(names(total.categoria)), name = "Set3"),
-  box.lwd = 0,
-  cex = 1,
-  bg = NA
-)
-
-# Total by regime
-total.regime <- table(docentes$`Regime de Trabalho`)
-pie(
-  total.regime,
-  labels = NA,
-  col = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
-  init.angle = 90,
-  main = names(docentes$`Regime de Trabalho`)
-)
-legend(
-  "topleft",
-  legend = names(total.regime),
-  fill = RColorBrewer::brewer.pal(n = length(names(total.regime)), name = "Set3"),
-  box.lwd = 0,
-  cex = 1,
-  bg = NA
-)
-
-# Add title
-title("Corpo Docente - Histórico", outer = TRUE)
-
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -1555,6 +1329,10 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = !has.grupos.pesquisa}
+cat('<br>')
+```
+
 ```{r grupos-pesquisa, eval = has.grupos.pesquisa}
 # initialize all sheets
 abas <- readxl::excel_sheets("PPG/Grupos de Pesquisa.xlsx")
@@ -1597,7 +1375,7 @@ for (j in 1:length(abas)) {
   
   # print end of tab rows
   cat('\n\n')
-  cat('Fonte: [**Diretório de Grupos de Pesquisa**](https://lattes.cnpq.br/web/dgp)')
+  cat('**Fontes**: [**Diretório de Grupos de Pesquisa**](https://lattes.cnpq.br/web/dgp)')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```

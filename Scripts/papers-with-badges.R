@@ -385,21 +385,20 @@ table.with.badges <-
     # end table
     cat("</table>")
     cat('<br>')
-    cat('*Fontes:*', sep = "")
+    
+    # add footnotes
+    cat('**Fontes**:', sep = "")
     cat('^1^ [**Altmetric**](https://www.altmetric.com)', sep = "")
     cat(', ', sep = "")
     cat('^2^ [**Dimensions**](https://www.dimensions.ai)', sep = "")
     cat(', ', sep = "")
     cat('^3^ [**PlumX**](https://plu.mx)', sep = "")
     cat(', ', sep = "")
-    cat('^4^ [**CiteScore**](https://www.scopus.com/sources)',
-        sep = "")
+    cat('^4^ [**CiteScore**](https://www.scopus.com/sources)',sep = "")
     cat(', ', sep = "")
     cat('^5^ [**SJR**](https://www.scimagojr.com)', sep = "")
     cat(', ', sep = "")
-    cat(
-      '^6^ [**WebQualis**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)',
-      sep = "")
+    cat('^6^ [**WebQualis**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)', sep = "")
     cat(', ', sep = "")
     cat('^7^ [**DOAJ**](https://doaj.org)', sep = "")
     cat('<br>')

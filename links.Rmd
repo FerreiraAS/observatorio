@@ -69,7 +69,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**Good Reporting**](https://www.goodreports.org/)
+**Fontes**: [**Good Reporting**](https://www.goodreports.org/)
 
 <br>
 
@@ -88,7 +88,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**ClinicalTrials.gov**](https://clinicaltrials.gov)
+**Fontes**: [**ClinicalTrials.gov**](https://clinicaltrials.gov)
 
 <br>
 
@@ -102,7 +102,26 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**PROSPERO**](https://www.crd.york.ac.uk/prospero/)
+**Fontes**: [**PROSPERO**](https://www.crd.york.ac.uk/prospero/)
+
+<br>
+
+<a style="float:right" href="#top"><b>Início &nbsp;</b> `r fontawesome::fa("circle-arrow-up")` </a>
+
+<br>
+
+## **Equidade, diversidade e inclusão** {#equidade-diversidade-inclusao .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+### **PRO EDI** {#pro-edi}
+
+<iframe src="https://www.trialforge.org/trial-diversity/pro-edi-improving-how-equity-diversity-and-inclusion-is-handled-in-evidence-synthesis/" style="width:100%; height:600px; border:2px solid black;"></iframe>
+
+<br>
+
+**Fontes**: [**Trial Forge**](https://www.trialforge.org/trial-diversity/pro-edi-improving-how-equity-diversity-and-inclusion-is-handled-in-evidence-synthesis/)
 
 <br>
 
@@ -121,7 +140,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**CNPq**](https://www.gov.br/cnpq/pt-br/composicao/comissao-de-integridade)
+**Fontes**: [**CNPq**](https://www.gov.br/cnpq/pt-br/composicao/comissao-de-integridade)
 
 <br>
 
@@ -135,7 +154,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**CAPES**](https://www.capes.gov.br/images/stories/download/diversos/OrientacoesCapes_CombateAoPlagio.pdf)
+**Fontes**: [**CAPES**](https://www.capes.gov.br/images/stories/download/diversos/OrientacoesCapes_CombateAoPlagio.pdf)
 
 <br>
 
@@ -149,7 +168,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**COPE**](https://publicationethics.org)
+**Fontes**: [**COPE**](https://publicationethics.org)
 
 <br>
 
@@ -168,7 +187,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**Crossref**](https://citation.crosscite.org)
+**Fontes**: [**Crossref**](https://citation.crosscite.org)
 
 <br>
 
@@ -187,7 +206,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**FAIR**](https://www.go-fair.org/go-fair-initiative/)
+**Fontes**: [**FAIR**](https://www.go-fair.org/go-fair-initiative/)
 
 <br>
 
@@ -206,7 +225,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**ICMJR**](https://www.icmje.org)
+**Fontes**: [**ICMJR**](https://www.icmje.org)
 
 <br>
 
@@ -220,7 +239,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**COPE**](https://publicationethics.org)
+**Fontes**: [**COPE**](https://publicationethics.org)
 
 <br>
 
@@ -234,7 +253,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**CRT**](https://credit.niso.org)
+**Fontes**: [**CRT**](https://credit.niso.org)
 
 <br>
 
@@ -248,7 +267,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**Institute of Physics**](https://www.fgu.cas.cz/en/articles/833-credit-generator)
+**Fontes**: [**Institute of Physics**](https://www.fgu.cas.cz/en/articles/833-credit-generator)
 
 <br>
 
@@ -267,7 +286,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**COPE**](https://publicationethics.org)
+**Fontes**: [**COPE**](https://publicationethics.org)
 
 <br>
 
@@ -281,7 +300,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**Think-Check-Submit**](https://thinkchecksubmit.org)
+**Fontes**: [**Think-Check-Submit**](https://thinkchecksubmit.org)
 
 <br>
 
@@ -300,7 +319,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**DORA**](https://sfdora.org)
+**Fontes**: [**DORA**](https://sfdora.org)
 
 <br>
 
@@ -314,7 +333,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**Leiden Manifesto**](http://www.leidenmanifesto.org)
+**Fontes**: [**Leiden Manifesto**](http://www.leidenmanifesto.org)
 
 <br>
 
@@ -333,7 +352,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**Metrics Toolkit**](http://www.metrics-toolkit.org)
+**Fontes**: [**Metrics Toolkit**](http://www.metrics-toolkit.org)
 
 <br>
 
@@ -347,7 +366,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**Alternative Metric**](https://www.altmetric.com)
+**Fontes**: [**Alternative Metric**](https://www.altmetric.com)
 
 <br>
 
@@ -361,7 +380,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**Digital Science & Research Solutions Inc.**](https://www.dimensions.ai)
+**Fontes**: [**Digital Science & Research Solutions Inc.**](https://www.dimensions.ai)
 
 <br>
 
@@ -375,7 +394,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**Elsevier**](https://plumanalytics.com)
+**Fontes**: [**Elsevier**](https://plumanalytics.com)
 
 <br>
 
@@ -389,7 +408,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**Scopus**](https://www.scopus.com/sources)
+**Fontes**: [**Scopus**](https://www.scopus.com/sources)
 
 <br>
 
@@ -403,7 +422,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**Scientific Journal Ranking**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)
+**Fontes**: [**Scientific Journal Ranking**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)
 
 <br>
 
@@ -417,7 +436,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)
+**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)
 
 <br>
 
@@ -436,7 +455,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**CNS**](http://conselho.saude.gov.br/o-que-e-rss/92-comissoes/conep/normativas-conep/642-lista-de-resolucoes-conep)
+**Fontes**: [**CNS**](http://conselho.saude.gov.br/o-que-e-rss/92-comissoes/conep/normativas-conep/642-lista-de-resolucoes-conep)
 
 <br>
 
@@ -450,7 +469,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**CONEP**](https://plataformabrasil.saude.gov.br/login.jsf)
+**Fontes**: [**CONEP**](https://plataformabrasil.saude.gov.br/login.jsf)
 
 <br>
 
@@ -464,7 +483,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**CONEP**](https://edx.hospitalmoinhos.org.br/project/cep)
+**Fontes**: [**CONEP**](https://edx.hospitalmoinhos.org.br/project/cep)
 
 <br>
 
@@ -481,7 +500,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**MCTI**](https://pnipe.mcti.gov.br/)
+**Fontes**: [**MCTI**](https://pnipe.mcti.gov.br/)
 
 <br>
 
@@ -500,7 +519,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**CAPES**](https://catalogodeteses.capes.gov.br/catalogo-teses)
+**Fontes**: [**CAPES**](https://catalogodeteses.capes.gov.br/catalogo-teses)
 
 <br>
 
@@ -514,7 +533,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/trabalhoConclusao/listaTrabalhoConclusao.xhtml)
+**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/trabalhoConclusao/listaTrabalhoConclusao.xhtml)
 
 <br>
 

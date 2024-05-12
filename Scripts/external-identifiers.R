@@ -1,5 +1,3 @@
-external_ids <- c()
-
 # get IDs data
 res <- rorcid::orcid_external_identifiers(my_orcid)
 res.all <- c()
@@ -39,34 +37,4 @@ for(i in 1:100){
 
 res.all <- res.all[ , !names(res.all) %in% mult.ids]
 
-if(!sjmisc::is_empty(res.all)){
-  # print table (external IDs)
-  print(
-    knitr::kable(
-      res.all[order(res.all[, 1]), ],
-      align = "l",
-      format = ifelse(knitr::is_html_output(), "html", "latex"),
-      escape = FALSE,
-      row.names = FALSE
-    ) %>%
-      kableExtra::kable_styling(
-        bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-        full_width = T,
-        position = "center"
-      ) %>%
-      kableExtra::row_spec(
-        0,
-        background = main.color,
-        bold = TRUE,
-        color = "white"
-      ),
-    row.names = NULL
-  )
-  
-  cat('<br>')
-  cat(
-    "*Fontes:* [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"
-  )
-  cat('<br>')
-}
-  
+external.ids <- res.all[order(res.all[, 1]), ]

@@ -1185,6 +1185,14 @@ if (!sjmisc::is_empty(dois)) {
 ```
 
 ```{r bind-all, cache = TRUE, cache.path = "cache/bind-all/", eval = any(has.producao.sucupira, has.producao.ppg)}
+# recall for cache
+doi_with_altmetric_artigos
+doi_with_altmetric_resumos
+doi_with_altmetric_preprints
+doi_with_altmetric_livros
+doi_with_altmetric_capitulos
+doi_with_altmetric_anais
+
 # bind sources
 doi_with_altmetric_all <-
   dplyr::bind_rows(
@@ -1196,6 +1204,14 @@ doi_with_altmetric_all <-
     doi_with_altmetric_anais
   ) %>%
   as.data.frame()
+
+# recall for cache
+doi_without_altmetric_artigos
+doi_without_altmetric_resumos
+doi_without_altmetric_preprints
+doi_without_altmetric_livros
+doi_without_altmetric_capitulos
+doi_without_altmetric_anais
 
 # bind sources
 doi_without_altmetric_all <-
@@ -1215,6 +1231,7 @@ doi_all <-
                    doi_without_altmetric_all) %>%
   as.data.frame()
 
+# bind common data
 references_all <-
   dplyr::bind_rows(
     references_artigos,

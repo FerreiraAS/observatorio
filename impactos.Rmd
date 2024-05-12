@@ -70,7 +70,6 @@ periodo.vigente <- anos
 
 ```{r, eval = !has.sucupira.files}
 cat('<br>')
-cat('<br>')
 ```
 
 ### **Formação discente** {.tabset}
@@ -82,40 +81,95 @@ source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 turmas.raw <- sucupira.raw
 
-# build a cross table DISCIPLINA vs. ANO
-turmas.raw <-
-  turmas.raw[turmas.raw$`Indicador de responsável principal` == "Sim", ]
 turmas.raw$`Período/Ano` <-
   paste(
     sub(".*/", "", turmas.raw$`Período/Ano`),
     sub("/.*", "", turmas.raw$`Período/Ano`),
     sep = "/"
   )
-cross.table.turmas <-
-  as.matrix(table(turmas.raw$`Nível do curso`, turmas.raw$`Período/Ano`))
 
-# generate plot of total per year
-par(
-  oma = c(2, 0.1, 2, 0.1),
-  mar = c(5, 4, 2, 2)
-)
-# generate plot of turmas per year
+# select variables
+turmas <- turmas.raw %>%
+  dplyr::select(c(
+    "Período/Ano",
+    "Nível do curso",
+    "Nome da Disciplina",
+    "Categoria do responsável",
+    "Nome do responsável",
+    "Indicador de responsável principal"
+  ))
 
-barplot(
-  cross.table.turmas,
-  las = 2,
-  ylab = "Turmas",
-  main = "Quantidade de turmas",
-  col = c("darkblue", "lightblue"),
-  beside = TRUE,
-  bty = "n"
+# change to title case
+turmas$`Nome da Disciplina` <- tools::toTitleCase(tolower(turmas$`Nome da Disciplina`))
+turmas$`Nome do responsável` <- tools::toTitleCase(tolower(turmas$`Nome do responsável`))
+
+# rename
+colnames(turmas) <- c(
+  "Período/Ano",
+  "Disciplinas por curso",
+  "Disciplina",
+  "Categoria",
+  "Docente responsável",
+  "Responsável"
 )
-legend(
-  "topleft",
-  legend = levels(as.factor(turmas.raw$`Nível do curso`)),
-  fill = c("darkblue", "lightblue"),
-  box.lty = 0
+
+# generate table (total by year)
+table.part1 <-
+  gtsummary::tbl_summary(
+    turmas %>% dplyr::select(
+      "Período/Ano",
+      "Disciplinas por curso",
+      "Categoria",
+      "Disciplina"
+    ),
+    by = "Período/Ano",
+    type = list(
+      "Disciplinas por curso" ~ "categorical",
+      "Categoria" ~ "categorical",
+      "Disciplina" ~ "categorical"
+    ),
+    statistic = list(
+      "Disciplinas por curso" ~ "{n}",
+      "Categoria" ~ "{n}",
+      "Disciplina" ~ "{n}"
+      ),
+    missing = "no",
+    digits = list(gtsummary::everything() ~ 0)) %>%
+  gtsummary::modify_header(label = "Período/Ano", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels()
+
+# filter by responsável and categoria
+turmas.doc <- turmas %>%
+  dplyr::filter(Responsável == "Sim") %>%
+  dplyr::filter(Categoria == "Docente")
+
+table.part2 <- 
+gtsummary::tbl_summary(
+    turmas.doc %>% dplyr::select(
+      "Período/Ano",
+      "Docente responsável"
+    ),
+    by = "Período/Ano",
+    type = list(
+      "Docente responsável" ~ "categorical"
+    ),
+    statistic = list(
+      "Docente responsável" ~ "{n}"
+      ),
+    missing = "no",
+    digits = list(gtsummary::everything() ~ 0)) %>%
+  gtsummary::modify_header(label = "Período/Ano", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels()
+
+# stack tables
+table.2.5.1 <- gtsummary::tbl_stack(
+  list(table.part1, table.part2)
 )
+
+# print table
+print(table.2.5.1)
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -128,7 +182,6 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r, eval = !any(has.periodicos, has.cep)}
-cat('<br>')
 cat('<br>')
 ```
 
@@ -1125,13 +1178,160 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 
 <br>
 
+## **Impacto tecnológico/econômico** {#impacto-tecnologico-economico}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !has.financiadores}
+cat('<br>')
+```
+
+### **Agência-Edital**
+
+```{r auto-financiadores-agencia-programa, eval = has.financiadores}
+financiadores.raw <-
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+options(scipen = 10)
+
+# dplyr::select variables to display, by AGENCIA & PROGRAMA
+financiadores <-
+  financiadores.raw %>% dplyr::select("Agência", "Programa")
+
+# drop rows with empty cells
+financiadores <-
+  financiadores[complete.cases(financiadores),]
+
+# generate table (total per edital, per agency)
+table.1 <-
+  gtsummary::tbl_summary(
+    financiadores,
+    by = "Agência",
+    statistic = gtsummary::all_categorical() ~ c("{n}"),
+    missing = "no",
+    sort = gtsummary::all_categorical() ~ "frequency"
+  ) %>%
+  gtsummary::add_overall(last = TRUE,
+              col_label = "Total") %>%
+  gtsummary::modify_header(label = "**Agência**") %>%
+  gtsummary::modify_footnote(update = gtsummary::everything() ~ NA) %>%
+  gtsummary::bold_labels()
+# print table
+print(table.1)
+
+cat('\n\n')
+
+cat(
+  "**Fontes**: [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
+)
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+```
+
+<br>
+
+### **Agência-Ano**
+
+```{r auto-financiadores-agencia-ano, eval = has.financiadores}
+financiadores.raw <-
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+options(scipen = 10)
+
+financiadores.raw <-
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+# dplyr::select variables to display, by AGENCIA & ANO
+financiadores <-
+  financiadores.raw %>% dplyr::select("Ano", "Agência", "Total")
+
+# drop rows with empty cells
+financiadores <- financiadores[complete.cases(financiadores),]
+
+financiadores <-
+  financiadores[order(financiadores$Ano, decreasing = TRUE),]
+financiadores$Ano <- as.factor(financiadores$Ano)
+
+# generate table (total per year, per agency)
+table.2 <-
+  gtsummary::tbl_summary(
+    financiadores,
+    by = "Agência",
+    type = list(gtsummary::all_continuous() ~ "continuous"),
+    statistic = list(gtsummary::all_continuous() ~ "R$ {sum}"),
+    missing = "no",
+    digits = "Total" ~ 2
+  ) %>%
+  gtsummary::add_overall(last = TRUE,
+              col_label = "Total") %>%
+  gtsummary::modify_header(label = "**Agência**") %>%
+  gtsummary::modify_footnote(update = gtsummary::everything() ~ NA) %>%
+  gtsummary::bold_labels()
+# print table
+print(table.2)
+
+cat('\n\n')
+
+cat(
+  "**Fontes**: [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
+)
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+```
+
+<br>
+
+### **Edital-Ano**
+
+```{r auto-financiadores-docente-programa, eval = has.financiadores}
+options(scipen = 10)
+
+financiadores.raw <-
+  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+
+# dplyr::select variables to display, by AGENCIA & ANO
+financiadores <-
+  financiadores.raw %>% dplyr::select("Ano", "Programa", "Total")
+
+# drop rows with empty cells
+financiadores <- financiadores[complete.cases(financiadores),]
+
+financiadores <-
+  financiadores[order(financiadores$Programa, decreasing = TRUE),]
+
+# generate table (total per year, per docente)
+table.2 <-
+  gtsummary::tbl_summary(
+    financiadores,
+    by = "Programa",
+    type = list(gtsummary::all_continuous() ~ "continuous"),
+    statistic = list(gtsummary::all_continuous() ~ "R$ {sum}"),
+    missing = "no",
+    digits = "Total" ~ 2,
+    sort = gtsummary::all_categorical() ~ "frequency"
+  ) %>%
+  gtsummary::add_overall(last = TRUE,
+              col_label = "Total") %>%
+  gtsummary::modify_header(label = "**Programa**") %>%
+  gtsummary::modify_footnote(update = gtsummary::everything() ~ NA) %>%
+  gtsummary::bold_labels()
+# print table
+print(table.2)
+
+cat('\n\n')
+cat(
+  "**Fontes**: [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
+)
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+```
+
+<br>
+
 ## **Impacto sociocultural** {#impacto-sociocultural}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r, eval = !has.politicas}
-cat('<br>')
 cat('<br>')
 ```
 
@@ -1263,44 +1463,12 @@ create_dt(sage.profiles, title = "Impactos - Produção citada em diretrizes e p
 
 cat('\n\n')
 cat(
-  "Fonte: [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/)"
+  "**Fontes**: [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/)"
 )
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
-
-#### **Gráficos**
-
-```{r politicas-graficos, eval = has.impacto.sage.files}
-cross.table.politicas <-
-  as.matrix(table(format(as.Date(sage.profiles.raw$Published.on, "%Y-%m-%d"), "%Y")))
-colnames(cross.table.politicas) <- "Quantidade"
-
-# generate plot of total per year
-par(
-  oma = c(2, 0.1, 2, 0.1),
-  mar = c(5, 4, 2, 2)
-)
-# generate plot of turmas per year
-
-barplot(
-  cross.table.politicas,
-  las = 2,
-  ylab = "Políticas",
-  main = "Quantidade de documentos",
-  col = c("darkblue"),
-  beside = TRUE,
-  bty = "n"
-)
-axis(1, at = 1:length(cross.table.politicas), labels = rownames(cross.table.politicas), las = 2)
-
-cat('\n\n')
-cat(
-  "Fonte: [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/)"
-)
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-```
 
 ```{r politicas-docentes, eval = has.politicas}
 # initialize all sheets
@@ -1327,159 +1495,10 @@ for (i in 1:length(abas)) {
   cat('\n\n')
   
   cat(
-    "Fonte: [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/)"
+    "**Fontes**: [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/)"
   )
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
-```
-
-<br>
-
-## **Impacto tecnológico/econômico** {#impacto-tecnologico-economico}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !has.financiadores}
-cat('<br>')
-cat('<br>')
-```
-
-### **Agência-Edital**
-
-```{r auto-financiadores-agencia-programa, eval = has.financiadores}
-financiadores.raw <-
-  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
-
-options(scipen = 10)
-
-# dplyr::select variables to display, by AGENCIA & PROGRAMA
-financiadores <-
-  financiadores.raw %>% dplyr::select("Agência", "Programa")
-
-# drop rows with empty cells
-financiadores <-
-  financiadores[complete.cases(financiadores),]
-
-# generate table (total per edital, per agency)
-table.1 <-
-  gtsummary::tbl_summary(
-    financiadores,
-    by = "Agência",
-    statistic = gtsummary::all_categorical() ~ c("{n}"),
-    missing = "no",
-    sort = gtsummary::all_categorical() ~ "frequency"
-  ) %>%
-  gtsummary::add_overall(last = TRUE,
-              col_label = "Total") %>%
-  gtsummary::modify_header(label = "**Agência**") %>%
-  gtsummary::modify_footnote(update = gtsummary::everything() ~ NA) %>%
-  gtsummary::bold_labels()
-# print table
-print(table.1)
-
-cat('\n\n')
-
-cat(
-  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
-)
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-```
-
-<br>
-
-### **Agência-Ano**
-
-```{r auto-financiadores-agencia-ano, eval = has.financiadores}
-financiadores.raw <-
-  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
-
-options(scipen = 10)
-
-financiadores.raw <-
-  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
-
-# dplyr::select variables to display, by AGENCIA & ANO
-financiadores <-
-  financiadores.raw %>% dplyr::select("Ano", "Agência", "Total")
-
-# drop rows with empty cells
-financiadores <- financiadores[complete.cases(financiadores),]
-
-financiadores <-
-  financiadores[order(financiadores$Ano, decreasing = TRUE),]
-financiadores$Ano <- as.factor(financiadores$Ano)
-
-# generate table (total per year, per agency)
-table.2 <-
-  gtsummary::tbl_summary(
-    financiadores,
-    by = "Agência",
-    type = list(gtsummary::all_continuous() ~ "continuous"),
-    statistic = list(gtsummary::all_continuous() ~ "R$ {sum}"),
-    missing = "no",
-    digits = "Total" ~ 2
-  ) %>%
-  gtsummary::add_overall(last = TRUE,
-              col_label = "Total") %>%
-  gtsummary::modify_header(label = "**Agência**") %>%
-  gtsummary::modify_footnote(update = gtsummary::everything() ~ NA) %>%
-  gtsummary::bold_labels()
-# print table
-print(table.2)
-
-cat('\n\n')
-
-cat(
-  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
-)
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-```
-
-<br>
-
-### **Edital-Ano**
-
-```{r auto-financiadores-docente-programa, eval = has.financiadores}
-options(scipen = 10)
-
-financiadores.raw <-
-  readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
-
-# dplyr::select variables to display, by AGENCIA & ANO
-financiadores <-
-  financiadores.raw %>% dplyr::select("Ano", "Programa", "Total")
-
-# drop rows with empty cells
-financiadores <- financiadores[complete.cases(financiadores),]
-
-financiadores <-
-  financiadores[order(financiadores$Programa, decreasing = TRUE),]
-
-# generate table (total per year, per docente)
-table.2 <-
-  gtsummary::tbl_summary(
-    financiadores,
-    by = "Programa",
-    type = list(gtsummary::all_continuous() ~ "continuous"),
-    statistic = list(gtsummary::all_continuous() ~ "R$ {sum}"),
-    missing = "no",
-    digits = "Total" ~ 2,
-    sort = gtsummary::all_categorical() ~ "frequency"
-  ) %>%
-  gtsummary::add_overall(last = TRUE,
-              col_label = "Total") %>%
-  gtsummary::modify_header(label = "**Programa**") %>%
-  gtsummary::modify_footnote(update = gtsummary::everything() ~ NA) %>%
-  gtsummary::bold_labels()
-# print table
-print(table.2)
-
-cat('\n\n')
-cat(
-  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
-)
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -1655,6 +1674,10 @@ try(references_anais_impacto <-
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = !any(has.sucupira.files)}
+cat('<br>')
+```
+
 ```{r pandemia-projetos, eval = has.sucupira.files}
 # projetos - membros
 sheet <- "Projetos - Membros"
@@ -1676,6 +1699,7 @@ projetos <-
   projetos.all[grep(paste(tolower(pandemia), collapse = "|"),
                     tolower(projetos.all$`Nome do Projeto de Pesquisa`)),]
 
+table.projetos <- data.frame()
 if (dim(projetos)[1] != 0) {
   table.projetos <-
     data.frame(
@@ -1703,13 +1727,9 @@ if (dim(projetos)[1] != 0) {
       "Membro Responsável",
       "Início"
     )
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table.projetos, title = "Impactos - Ações durante a Pandemia - Projetos de Pesquisa")
-} else {
-  cat('\n\n')
-  cat('*Sem produção para exibir no período*')
-  cat('\n\n')
 }
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(table.projetos, title = "Impactos - Ações durante a Pandemia - Projetos de Pesquisa")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1721,6 +1741,10 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = !any(has.financiadores)}
+cat('<br>')
+```
+
 ```{r pandemia-financiadores, eval = has.financiadores}
 financiadores.sub <-
   financiadores.raw %>% dplyr::select("Ano",
@@ -1731,27 +1755,21 @@ financiadores.sub <-
                                       "Programa")
 fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
 
-financiadores <-
-  financiadores.sub[complete.cases(financiadores.sub),]
+financiadores <- financiadores.sub[complete.cases(financiadores.sub),]
 fonte <- fonte.sub[complete.cases(financiadores.sub),]
 
 # dplyr::selecting those with COVID in the title
-financiadores <-
-  financiadores[grep(paste(tolower(pandemia), collapse = "|"),
+financiadores <- financiadores[grep(paste(tolower(pandemia), collapse = "|"),
                      tolower(financiadores$`Título do projeto`)),]
-fonte <-
-  fonte[grep(paste(tolower(pandemia), collapse = "|"),
+fonte <- fonte[grep(paste(tolower(pandemia), collapse = "|"),
              tolower(financiadores$`Título do projeto`)),]
 
-if (dim(financiadores)[1] != 0)
-{
+if (dim(financiadores)[1] != 0){
   Abrir <- matrix(NA, nrow = dim(financiadores)[1])
   colnames(Abrir) <- "Abrir"
   # add hyperlinks
-  for (i in 1:dim(fonte)[1])
-  {
-    if (!is.na(fonte[i, 1]))
-    {
+  for (i in 1:dim(fonte)[1]){
+    if (!is.na(fonte[i, 1])) {
       Abrir[i] <-
         paste0('<a href="',
                fonte[i, 1],
@@ -1762,25 +1780,15 @@ if (dim(financiadores)[1] != 0)
                '</a>')
     }
   }
-  
   financiadores <- data.frame(financiadores, Abrir)
-  financiadores <-
-    financiadores[order(financiadores$Ano, decreasing = TRUE), ]
-} else {
-  cat('\n\n')
-  cat('*Sem dados para exibir*')
-  cat('\n\n')
+  financiadores <- financiadores[order(financiadores$Ano, decreasing = TRUE), ]
 }
-cat('\n\n')
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-try(create_dt(financiadores, title = "Impactos - Ações durante a Pandemia - Financiadores"),
-    silent = TRUE)
+create_dt(financiadores, title = "Impactos - Ações durante a Pandemia - Financiadores")
 
 cat('\n\n')
-cat(
-  "*Fontes:* [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
-)
+cat("**Fontes**: [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**")
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
@@ -1791,6 +1799,10 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !any(has.sucupira.files)}
+cat('<br>')
+```
 
 ```{r pandemia-tese, eval = has.sucupira.files}
 # tcc
@@ -1813,6 +1825,7 @@ tcc <-
   tcc.all[grep(paste(tolower(pandemia), collapse = "|"),
                tolower(tcc.all$`Nome do Trabalho de Conclusão`)),]
 
+table.tcc <- data.frame()
 if (dim(tcc)[1] != 0) {
   # select data
   table.tcc <-
@@ -1843,19 +1856,14 @@ if (dim(tcc)[1] != 0) {
   
   colnames(table.tcc) <-
     c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador", "Financiador")
-} else {
-  table.tcc <- data.frame()
+
+  # drop duplicated entries
+  table.tcc <- table.tcc[!duplicated(table.tcc), ]
+  
+  table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(table.tcc$'Ano'), table.tcc$'Autor')
+  
+  table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano')), table.tcc$'Título')
 }
-
-# drop duplicated entries
-table.tcc <- table.tcc[!duplicated(table.tcc),]
-
-table.tcc <- table.tcc %>% dplyr::arrange(
-  dplyr::desc(table.tcc$'Ano'),
-  table.tcc$'Autor'
-)
-table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano')),
-                                        table.tcc$'Título')
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.tcc, title = "Impactos - Ações durante a Pandemia - Teses")
@@ -1869,6 +1877,10 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !any(has.sucupira.files)}
+cat('<br>')
+```
 
 ```{r pandemia-dissertacao, eval = has.sucupira.files}
 # tcc
@@ -1891,6 +1903,7 @@ tcc <-
   tcc.all[grep(paste(tolower(pandemia), collapse = "|"),
                tolower(tcc.all$`Nome do Trabalho de Conclusão`)),]
 
+table.tcc <- data.frame()
 if (dim(tcc)[1] != 0) {
   # select data
   table.tcc <-
@@ -1921,19 +1934,14 @@ if (dim(tcc)[1] != 0) {
   
   colnames(table.tcc) <-
     c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador", "Financiador")
-} else {
-  table.tcc <- data.frame()
+
+  # drop duplicated entries
+  table.tcc <- table.tcc[!duplicated(table.tcc), ]
+  
+  table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(table.tcc$'Ano'), table.tcc$'Autor')
+  
+  table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano')), table.tcc$'Título')
 }
-
-# drop duplicated entries
-table.tcc <- table.tcc[!duplicated(table.tcc),]
-
-table.tcc <- table.tcc %>% dplyr::arrange(
-  dplyr::desc(table.tcc$'Ano'),
-  table.tcc$'Autor'
-)
-table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano')),
-                                        table.tcc$'Título')
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.tcc, title = "Impactos - Ações durante a Pandemia - Dissertações")
@@ -1943,16 +1951,20 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **Artigo completo em periódico** {.tabset}
+### **Artigo em periódico** {.tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r pandemia-artigos-completos, eval = any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
+```{r, eval = !any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
+cat('<br>')
+```
+
+```{r pandemia-artigos-periodicos-icon, eval = any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
 # bind sources
-try(doi_with_altmetric <- doi_with_altmetric_artigos_impacto, silent = TRUE)
-try(doi_without_altmetric <- doi_without_altmetric_artigos_impacto, silent = TRUE)
-try(references <- references_artigos_impacto, silent = TRUE)
+try(doi_with_altmetric <- c(doi_with_altmetric_artigos_impacto, doi_with_altmetric_resumos_impacto), silent = TRUE)
+try(doi_without_altmetric <- c(doi_without_altmetric_artigos_impacto, doi_without_altmetric_resumos_impacto), silent = TRUE)
+try(references <- c(references_artigos_impacto, references_resumos_impacto), silent = TRUE)
 
 # available years of publication
 try(years <-
@@ -2024,93 +2036,16 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-### **Artigo resumo em periódico** {.tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r pandemia-artigos-resumos, eval = any(has.artigos.resumos.ppg, has.artigos.resumos.sucupira)}
-# bind sources
-try(doi_with_altmetric <- doi_with_altmetric_resumos_impacto, silent = TRUE)
-try(doi_without_altmetric <- doi_without_altmetric_resumos_impacto, silent = TRUE)
-try(references <- references_resumos_impacto, silent = TRUE)
-
-# available years of publication
-try(years <-
-  na.omit(sort(unique(
-    c(doi_with_altmetric$published_on, doi_without_altmetric$published_on)
-  ), decreasing = TRUE)), silent = TRUE)
-
-# Verifica se há DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-} else {
-  # print export buttons
-  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
-  print_buttons_dt(references, title = "Ações durante a Pandemia - Artigos resumos em periódicos")
-}
-
-# Verifica se há DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-  cat('*Sem produção para exibir*')
-  cat('\n')
-} else {
-  # section header
-  cat('\n\n<!-- -->\n\n')
-  cat(
-    paste0(
-      "*Produtos (n = ",
-      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n"
-    )
-  )
-  cat('<br>')
-  
-  for (year in 1:length(years)) {
-    # print tab header
-    cat('\n\n<!-- -->\n\n')
-    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
-    
-    # print table of papers with/without badges
-    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
-    table.with.badges(
-      show.Altmetric = TRUE,
-      show.Dimensions = TRUE,
-      show.PlumX = TRUE,
-      show.CiteScore = TRUE,
-      show.SJR = TRUE,
-      show.Qualis = TRUE,
-      doi_with_altmetric = tryCatch(
-        doi_with_altmetric[doi_with_altmetric$published_on == years[year], ],
-        error = function(e) {
-          doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
-        }
-      ),
-      doi_without_altmetric = tryCatch(
-        doi_without_altmetric[doi_without_altmetric$published_on == years[year], ],
-        error = function(e) {
-          doi_without_altmetric <- list()
-        }
-      ),
-      citescore = citescore,
-      scimago = scimago,
-      qualis = qualis
-    )
-  }
-}
-```
-
-<br>
-
 ### **Preprint** {.tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r pandemia-preprints, eval = has.preprints.ppg}
+```{r, eval = !any(has.preprints.ppg)}
+cat('<br>')
+```
+
+```{r pandemia-preprints-icon, eval = has.preprints.ppg}
 # bind sources
 try(doi_with_altmetric <- doi_with_altmetric_preprints_impacto, silent = TRUE)
 try(doi_without_altmetric <- doi_without_altmetric_preprints_impacto, silent = TRUE)
@@ -2191,7 +2126,11 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r pandemia-Livros, eval = has.livros.ppg}
+```{r, eval = !any(has.livros.ppg)}
+cat('<br>')
+```
+
+```{r pandemia-livros-icon, eval = has.livros.ppg}
 # bind sources
 try(doi_with_altmetric <- doi_with_altmetric_livros_impacto, silent = TRUE)
 try(doi_without_altmetric <- doi_without_altmetric_livros_impacto, silent = TRUE)
@@ -2272,7 +2211,11 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r pandemia-capitulos, eval = has.capitulos.ppg}
+```{r, eval = !any(has.capitulos.ppg)}
+cat('<br>')
+```
+
+```{r pandemia-capitulos-icon, eval = has.capitulos.ppg}
 # bind sources
 try(doi_with_altmetric <- doi_with_altmetric_capitulos_impacto, silent = TRUE)
 try(doi_without_altmetric <- doi_without_altmetric_capitulos_impacto, silent = TRUE)
@@ -2348,12 +2291,16 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-### **Trabalho em Anais** {.tabset}
+### **Trabalho em anais** {.tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r pandemia-resumos-anais, eval = has.anais.ppg}
+```{r, eval = !any(has.anais.ppg)}
+cat('<br>')
+```
+
+```{r pandemia-trabalhos-anais-icon, eval = has.anais.ppg}
 # bind sources
 try(doi_with_altmetric <- doi_with_altmetric_anais_impacto, silent = TRUE)
 try(doi_without_altmetric <- doi_without_altmetric_anais_impacto, silent = TRUE)
@@ -2429,56 +2376,45 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-### **Prêmio** {#premios .tabset}
+### **Apresentação de trabalho** {.tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r pandemia-premios, eval = has.premios}
-# initialize all sheets
-abas <- readxl::excel_sheets("PPG/Prêmios.xlsx")
 
-# display each sheet in a tab
-for (j in 1:length(abas)) {
-  cat('\n\n<!-- -->\n\n')
-  cat(paste0('#### **', abas[j], '**'))
-  cat('\n\n<!-- -->\n\n')
-  premios.raw <-
-    readxl::read_excel(
-      "PPG/Prêmios.xlsx",
-      sheet = abas[j],
-      col_types = c("text")
-    )
-  
-  # replace the link by a tag
-  Abrir <- matrix(NA, nrow = dim(premios.raw)[1])
-  colnames(Abrir) <- "Abrir"
-  # add hyperlinks
-  for (i in 1:dim(premios.raw)[1]) {
-    if (!is.na(premios.raw[i, 3])) {
-      Abrir[i] <-
-        paste0('<a href="',
-               premios.raw[i, 3],
-               '" target="_blank"',
-               '>',
-               # fontawesome icon
-               fontawesome::fa("up-right-from-square"),
-               '</a>')
-    }
-  }
-  premios <- cbind(premios.raw[, -3], Abrir)
-  
-  # print table
-  if (dim(premios)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(premios, title = "Impactos - Ações durante a Pandemia - Prêmios")))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
-  
-  # print end of tab rows
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-}
-```
+<br>
+
+### **Organização de evento** {#organizacao-evento .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+<br>
+
+### **Curso de curta duração** {#curso-curta-duracao .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+<br>
+
+### **Material didático e instrucional** {#didatico-instrucional .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+<br>
+
+### **Patente** {#patente .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+<br>
+
+### **Aplicativo** {#aplicativo .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>

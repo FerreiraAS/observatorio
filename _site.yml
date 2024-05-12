@@ -43,30 +43,30 @@ navbar:
           href: [programa.html#projeto-pesquisa]
         - text: "Agendas de pesquisa"
           href: [programa.html#agendas-pesquisa]
-        - text: "Cursos"
-          href: [programa.html#cursos]
-        - text: "Estrutura curricular"
-          href: [programa.html#estrutura-curricular]
-        - text: "Turmas"
-          href: [programa.html#turmas]
-        - text: "Calendários"
-          href: [programa.html#calendarios]
-        - text: "Editais de processo seletivo"
-          href: [programa.html#editais]
+        - text: "Financiadores"
+          href: [programa.html#financiadores]
         - text: "Infraestrutura"
           href: [programa.html#infraestrutura]
         - text: "Laboratórios de pesquisa"
           href: [programa.html#laboratorios-pesquisa]
+        - text: "Cursos"
+          href: [programa.html#cursos]
+        - text: "Estrutura curricular"
+          href: [programa.html#estrutura-curricular]
+        - text: "Processo seletivo para ingresso"
+          href: [programa.html#editais]
+        - text: "Bolsas de estudo"
+          href: [programa.html#bolsas]
+        - text: "Calendários"
+          href: [programa.html#calendarios]
+        - text: "Turmas"
+          href: [programa.html#turmas]
         - text: "Convênios institucionais"
           href: [programa.html#convenios]
         - text: "Cooperação entre instituições"
           href: [programa.html#cooperacao]
         - text: "Internacionalização"
           href: [programa.html#internacional]
-        - text: "Financiadores"
-          href: [programa.html#financiadores]
-        - text: "Bolsas de estudo"
-          href: [programa.html#bolsas]
     - text: "Pessoas"
       href: [pessoas.html]
       menu:
@@ -95,20 +95,16 @@ navbar:
       menu:
         - text: "-Produções-"
           href: [producoes.html]
+        - text: "Repositório"
+          href: [producoes.html#repositorio]
         - text: "Tese"
           href: [producoes.html#tese]
         - text: "Dissertação"
           href: [producoes.html#dissertacao]
-        - text: "Repositório"
-          href: [producoes.html#repositorio]
-        - text: "Artigo completo"
-          href: [producoes.html#artigo-completo]
-        - text: "Artigo resumo"
-          href: [producoes.html#artigo-resumo]
+        - text: "Artigo em periódico"
+          href: [producoes.html#artigo-periodico]
         - text: "Preprint"
           href: [producoes.html#preprint]
-        - text: "Retratação"
-          href: [producoes.html#retratacao]
         - text: "Editoria"
           href: [producoes.html#editoria]
         - text: "Livro"
@@ -129,6 +125,8 @@ navbar:
           href: [producoes.html#patente]
         - text: "Aplicativo"
           href: [producoes.html#aplicativo]
+        - text: "Retratação"
+          href: [producoes.html#retratacao]
     - text: "Destaques"
       href: [destaques.html]
       menu:
@@ -148,21 +146,21 @@ navbar:
           href: [destaques.html#premio-capes]
         - text: "Representatividade"
           href: [destaques.html#representatividade]
-        - text: "Divulgação"
+        - text: "Divulgação científica"
           href: [destaques.html#divulgacao]
     - text: "Impactos"
       href: [impactos.html]
       menu:
         - text: "-Impactos-"
           href: [impactos.html]
-        - text: "Educacional"
+        - text: "Impacto educacional"
           href: [impactos.html#impacto-educacional]
-        - text: "Científico"
+        - text: "Impacto científico"
           href: [impactos.html#impacto-cientifico]
-        - text: "Sociocultural"
-          href: [impactos.html#impacto-sociocultural]
-        - text: "Tecnológico/Econômico"
+        - text: "Impacto tecnológico/econômico"
           href: [impactos.html#impacto-tecnologico]
+        - text: "Impacto sociocultural"
+          href: [impactos.html#impacto-sociocultural]
         - text: "Ações durante a pandemia"
           href: [impactos.html#acoes-pandemia]
     - text: "Galeria"
@@ -181,11 +179,13 @@ navbar:
       menu:
         - text: "-Autoavaliação-"
           href: [autoavaliacao.html]
-        - text: "Procedimentos"
-          href: [autoavaliacao.html#procedimentos]
-        - text: "Documentos"
-          href: [autoavaliacao.html#documentos]
-        - text: "Preenchimento do Coleta"
+        - text: "Metodologia"
+          href: [autoavaliacao.html#metodologia]
+        - text: "Autoavaliação PPG"
+          href: [autoavaliacao.html#autoavaliacao-ppg]
+        - text: "Avaliação CAPES"
+          href: [autoavaliacao.html#avaliacao-capes]
+        - text: "Dados do Coleta"
           href: [autoavaliacao.html#coleta]
         - text: "Ficha de avaliação"
           href: [autoavaliacao.html#ficha-avaliacao]
