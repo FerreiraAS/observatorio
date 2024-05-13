@@ -1638,7 +1638,9 @@ table <-
   base::merge(table.msc, table.dsc,
         by = "Disciplina",
         all.x = TRUE,
-        all.y = TRUE)
+        all.y = TRUE) %>% 
+  data.frame()
+
 colnames(table) <-
   c(
     "Disciplina",
@@ -1654,7 +1656,10 @@ colnames(table) <-
     "Fim"
   )
 
-ids <- order(table$'Disciplina', decreasing = FALSE)
+# Escape ampersand in table data
+try(table <- apply(table, 2, function(x) gsub("&", "e", x)), silent = TRUE)
+
+ids <- order(table[, 1], decreasing = FALSE)
 table <- table[ids,]
 
 # print tables
