@@ -8,7 +8,7 @@
 
 Copyright © 2021 Arthur de Sá Ferreira, DSc. Todos os direitos reservados.
 
-<img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/circle-exclamation.svg"> <strong>Observatório</strong> é um software gratuito e NÃO vem com ABSOLUTAMENTE NENHUMA GARANTIA.
+<img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/circle-exclamation.svg" width="1em" height="1em"> <strong>Observatório</strong> é um software gratuito e NÃO vem com ABSOLUTAMENTE NENHUMA GARANTIA.
 
 </div>
 
