@@ -12,10 +12,17 @@ includes:
   - google-translate.html
   - footer.html
 excludes:
+  - CITATION.bib
+  - LICENSE (Apache).txt
+  - repository-open-graph-observatorio.png
+  - 1_inicio.html
+  - 2_caches.html
+  - autoavaliacao.log
   - cache
   - Metrics
   - Scripts
   - Sucupira
+  - tex
 search: true
 navbar:
   left:
@@ -247,9 +254,9 @@ output:
     toc_float: true
     edit: null
     sharing:
-      facebook: yes
-      twitter: yes
-      google: yes
+      facebook: true
+      twitter: true
+      google: true
       all:
         - facebook
         - twitter

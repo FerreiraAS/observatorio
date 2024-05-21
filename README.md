@@ -242,24 +242,6 @@ seguintes planilhas podem ser complementadas:
 -   [Repositórios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Reposit%C3%B3rios.xlsx)
 -   [Videos.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Videos.xlsx)
 
-### **Agencias**
-
-Logotipos das principais agências de fomento estão disponíveis:
-
--   [**CAPES**](https://www.gov.br/capes/pt-br/centrais-de-conteudo/logomarca)
--   [**CNPq**](http://memoria.cnpq.br/marca-cnpq)
--   [**FAPERJ**](https://www.faperj.br/?id=26.5.2)
--   [**ODS**](http://www4.planalto.gov.br/ods/publicacoes/manual-de-identidade-visual-ods-pnud.pdf/view)
-
-``` bash
-├── PPG
-│   └── Agencias
-│       ├── logo-capes.png
-│       ├── logo-cnpq.png
-│       ├── logo-fap.png
-│       └── logo-ods.png
-```
-
 ### **Metricas**
 
 Para análise das métricas, as seguintes fontes são utilizadas:

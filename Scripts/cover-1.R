@@ -140,3 +140,6 @@ par(
 )
 plot(img)
 grDevices::dev.off()
+
+# delete png file
+unlink("PPG/Images/Cover-1.png")

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.5.2)  13 MAY 2024 07:50
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.5.20)  20 MAY 2024 22:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -119,9 +119,9 @@ Package: xparse 2024-03-14 L3 Experimental document command parser
 y
 Package: l3keys2e 2024-03-14 LaTeX2e option processing using LaTeX3 keys
 ) (/usr/local/texlive/2024/texmf-dist/tex/latex/fontspec/fontspec.sty
-Package: fontspec 2024/05/07 v2.9d Font selection for XeLaTeX and LuaLaTeX
+Package: fontspec 2024/05/11 v2.9e Font selection for XeLaTeX and LuaLaTeX
 (/usr/local/texlive/2024/texmf-dist/tex/latex/fontspec/fontspec-xetex.sty
-Package: fontspec-xetex 2024/05/07 v2.9d Font selection for XeLaTeX and LuaLaTe
+Package: fontspec-xetex 2024/05/11 v2.9e Font selection for XeLaTeX and LuaLaTe
 X
 \l__fontspec_script_int=\count275
 \l__fontspec_language_int=\count276
@@ -337,7 +337,7 @@ Package graphics Info: Driver file: xetex.def on input line 107.
 \Gin@req@height=\dimen181
 \Gin@req@width=\dimen182
 ) (/usr/local/texlive/2024/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2024/04/20 v24.4 The Babel package
+Package: babel 2024/05/18 v24.5 The Babel package
 \babel@savecnt=\count307
 \U@D=\dimen183
 \l@unhyphenated=\language89
@@ -1116,11 +1116,9 @@ allCapsFont={},Script=Math,BoldFont={latinmodern-math.otf}].
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
 (fontspec)             <->s*[0.9989520677190833]"[latinmodern-math.otf]/OT:scri
 pt=math;language=dflt;"
-(fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 (fontspec)             - 'bold' (b/n) with NFSS spec.:
 (fontspec)             <->s*[0.9989520677190833]"[latinmodern-math.otf]/OT:scri
 pt=math;language=dflt;"
-(fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
 
 LaTeX Font Info:    Trying to load font information for T1+latinmodern-math.otf
 (0) on input line 169.
@@ -1174,11 +1172,9 @@ ript}},BoldFont={latinmodern-math.otf}].
 ipt=math;language=dflt;"<0-0>s*[0.9989520677190833]"[latinmodern-math.otf]/OT:s
 cript=math;language=dflt;+ssty=0;"<-0>s*[0.9989520677190833]"[latinmodern-math.
 otf]/OT:script=math;language=dflt;+ssty=1;"
-(fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 (fontspec)             - 'bold' (b/n) with NFSS spec.:
 (fontspec)             <->s*[0.9989520677190833]"[latinmodern-math.otf]/OT:scri
 pt=math;language=dflt;"
-(fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
 
 LaTeX Font Info:    Trying to load font information for T1+latinmodern-math.otf
 (1) on input line 169.
@@ -1344,12 +1340,12 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 37289 strings out of 474706
- 722673 string characters out of 5756289
+ 37290 strings out of 474706
+ 722717 string characters out of 5756288
  1932403 words of memory out of 5000000
- 58930 multiletter control sequences out of 15000+600000
+ 58931 multiletter control sequences out of 15000+600000
  594537 words of font info for 71 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 94i,19n,120p,1202b,492s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 94i,19n,118p,1202b,492s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on autoavaliacao.pdf (37 pages).
