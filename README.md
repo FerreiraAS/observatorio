@@ -369,6 +369,12 @@ O Observatório é atualizado periodicamente. Para receber atualizações no seu
 
 -   [**Observatório PPGCTIS**](https://ppgctis.github.io/ObservatorioCTIS/) \| Programa de Pós-graduação em Ciência, Tecnologia e Inovação em Saúde
 
+### [**UPE**](https://www.upe.br/petrolina/ppgrdf/) **\| Universidade de Pernambuco**
+
+-   [**Observatório PPGRDF**](https://ppgrdf-upe.github.io/Observatorio_PPGRDF/) \| Programa de Pós-graduação em Reabilitação e Desempenho Funcional
+
+
+
 ## **FAQ**
 
 *Como posso contribuir para este projeto?*

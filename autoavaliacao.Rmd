@@ -395,15 +395,6 @@ cat('\n\n')
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = knitr::is_html_output()}
-cat("### **Dados completos**")
-```
-
-```{r, eval = !knitr::is_html_output()}
-cat("### **Dados completos**")
-cat('\n\n')
-```
-
 ```{r descritivo-dados, eval = has.sucupira.files, cache = TRUE, cache.path = "cache/missing/"}
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
@@ -416,6 +407,7 @@ summ.df <- data.frame(
   "Aba" = rep(NA, length(quadrienal.vigente) * length(sucupira.sheets)),
   "Quantidade de dados" = rep(NA, length(quadrienal.vigente) * length(sucupira.sheets)),
   "Dados perdidos" = rep(NA, length(quadrienal.vigente) * length(sucupira.sheets)),
+  "Dados duplicados" = rep(NA, length(quadrienal.vigente) * length(sucupira.sheets)),
   check.names = FALSE
 )
 
@@ -432,6 +424,7 @@ if (has.sucupira.files) {
       summ.df$Aba[COL + length(quadrienal.vigente)*(ROW - 1)] <- sheet
       summ.df$`Quantidade de dados`[COL + length(quadrienal.vigente)*(ROW - 1)] <- sum(!is.na(unlist(sucupira.list[[as.character(ano)]])))
       summ.df$`Dados perdidos`[COL + length(quadrienal.vigente)*(ROW - 1)] <- sum(is.na(unlist(sucupira.list[[as.character(ano)]])))
+      summ.df$`Dados duplicados`[COL + length(quadrienal.vigente)*(ROW - 1)] <- sum(duplicated(sucupira.list[[as.character(ano)]]))
     }
   }
 }
@@ -450,9 +443,25 @@ summ.missing.wider <- tidyr::pivot_wider(
   values_from = `Dados perdidos`
 )
 
+summ.duplicates.wider <- tidyr::pivot_wider(
+  summ.df,
+  id_cols = Ano,
+  names_from = Aba,
+  values_from = `Dados duplicados`
+)
+
 # percent of missing data
 summ.missing.wider <- summ.missing.wider / (summ.data.wider + summ.data.wider) * 100
 summ.missing.wider$Ano <- quadrienal.vigente
+```
+
+```{r, eval = knitr::is_html_output()}
+cat("### **Dados completos**")
+```
+
+```{r, eval = !knitr::is_html_output()}
+cat("### **Dados completos**")
+cat('\n\n')
 ```
 
 ```{r descritivo-completos, eval = has.sucupira.files, cache = TRUE, cache.path = "cache/missing/"}
@@ -492,7 +501,6 @@ if (knitr::is_latex_output()) {
   kable_table
 }
 
-
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
@@ -512,7 +520,7 @@ cat("### **Dados omissos**")
 cat('\n\n')
 ```
 
-```{r descritivo-nao-preenchidos, eval = has.sucupira.files, cache = TRUE, cache.path = "cache/missing/"}
+```{r descritivo-omissos, eval = has.sucupira.files, cache = TRUE, cache.path = "cache/missing/"}
 # print tables
 table.missing.gt <-
   gtsummary::tbl_summary(
@@ -549,6 +557,61 @@ if (knitr::is_latex_output()) {
   kable_table
 }
 
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+```{=latex}
+\newpage
+\FloatBarrier
+```
+
+<br>
+
+```{r, eval = knitr::is_html_output()}
+cat("### **Dados duplicados**")
+```
+
+```{r, eval = !knitr::is_html_output()}
+cat("### **Dados duplicados**")
+cat('\n\n')
+```
+
+```{r descritivo-duplicados, eval = has.sucupira.files, cache = TRUE, cache.path = "cache/missing/"}
+# print tables
+table.duplicates.gt <-
+  gtsummary::tbl_summary(
+    summ.duplicates.wider,
+    type = list(gtsummary::everything() ~ "continuous"),
+    by = "Ano",
+    statistic = list(gtsummary::everything() ~ "{sum}%"),
+    missing = "no",
+    digits = gtsummary::everything() ~ 1
+  ) %>%
+  gtsummary::modify_header(label = "Ano", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels()
+
+# Print HTML table
+if (knitr::is_html_output()) {
+  print(table.duplicates.gt)
+}
+# Print LaTeX table
+
+if (knitr::is_latex_output()) {
+  # Convert gtsummary object to kableExtra object
+  kable_table <- gtsummary::as_kable_extra(
+    x = table.duplicates.gt,
+    escape = FALSE,
+    format = ifelse(knitr::is_html_output(), "html", "latex"),
+    booktabs = TRUE,
+    linesep = "",
+    caption = ifelse(knitr::is_html_output(), "", "Dados duplicados por ano e aba da planilha"),
+    bootstrap_options = c("basic", "hover", "condensed", "responsive"),
+    latex_options = c("basic", "scale_down", "HOLD_position"),
+    full_width = TRUE
+  )
+  kable_table
+}
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```

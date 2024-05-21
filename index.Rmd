@@ -114,6 +114,12 @@ shiny::HTML('<iframe id="scaled-frame" src="https://ppgctis.github.io/Observator
 
 cat('<br>')
 cat('<br>')
+
+shiny::HTML("<h1>UPE | PPGRDF</h1>")
+shiny::HTML('<iframe id="scaled-frame" src="https://ppgrdf-upe.github.io/Observatorio_PPGRDF/" style="width:100%; height:600px; border:2px solid white;"></iframe>')
+
+cat('<br>')
+cat('<br>')
 ```
 
 ```{r sintese-coerencia, include = FALSE, eval = has.sucupira.files}
