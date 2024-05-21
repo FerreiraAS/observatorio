@@ -6,10 +6,9 @@
 
 <div style="text-align: center; font-size:14px">
 
-<p>
+Copyright © 2021 Arthur de Sá Ferreira, DSc. Todos os direitos reservados.
 
-Copyright © 2021 Arthur de Sá Ferreira, DSc. Todos os direitos
-reservados.
+<strong>Observatório</strong> é um software gratuito e NÃO vem com ABSOLUTAMENTE NENHUMA GARANTIA.
 
 </div>
 
