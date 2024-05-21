@@ -1218,7 +1218,7 @@ title(main = "Atenção e visibilidade (Altmetric)",
 # add Altmetric logo and summary
 par(new = TRUE)
 my_image <-
-  readPNG("Metrics/Altmetric/cropped-altmetric-symbol.png")
+  png::readPNG("Metrics/Altmetric/cropped-altmetric-symbol.png")
 img <- as.raster(my_image)
 lm <- par("usr")
 r <- (lm[2] - lm[1]) / (lm[4] - lm[3])
@@ -1561,7 +1561,7 @@ data <-
   ))))
 colnames(data) <- c("Regiões", "N")
 
-p2 <- ggplot2::ggplot(data, aes(x = "", y = N, fill = Regiões)) +
+p2 <- ggplot2::ggplot(data, ggplot2::aes(x = "", y = N, fill = Regiões)) +
   ggplot2::scale_fill_manual(values = c("darkblue", "lightblue")) +
   ggplot2::geom_bar(stat = "identity") +
   ggplot2::coord_polar("y", start = 0) +
@@ -1580,7 +1580,7 @@ p2 <- ggplot2::ggplot(data, aes(x = "", y = N, fill = Regiões)) +
 data <- as.data.frame(table(discentes$Curso))
 colnames(data) <- c("Cursos", "N")
 
-p3 <- ggplot2::ggplot(data, aes(x = "", y = N, fill = Cursos)) +
+p3 <- ggplot2::ggplot(data, ggplot2::aes(x = "", y = N, fill = Cursos)) +
   ggplot2::scale_fill_manual(values = c("darkblue", "lightblue")) +
   ggplot2::geom_bar(stat = "identity") +
   ggplot2::coord_polar("y", start = 0) +
@@ -1653,7 +1653,7 @@ data <-
   ))))
 colnames(data) <- c("Regiões", "N")
 
-p2 <- ggplot2::ggplot(data, aes(x = "", y = N, fill = Regiões)) +
+p2 <- ggplot2::ggplot(data, ggplot2::aes(x = "", y = N, fill = Regiões)) +
   ggplot2::scale_fill_manual(values = c("darkblue", "lightblue")) +
   ggplot2::geom_bar(stat = "identity") +
   ggplot2::coord_polar("y", start = 0) +
@@ -1672,7 +1672,7 @@ p2 <- ggplot2::ggplot(data, aes(x = "", y = N, fill = Regiões)) +
 data <- as.data.frame(table(egressos$Curso))
 colnames(data) <- c("Cursos", "N")
 
-p3 <- ggplot2::ggplot(data, aes(x = "", y = N, fill = Cursos)) +
+p3 <- ggplot2::ggplot(data, ggplot2::aes(x = "", y = N, fill = Cursos)) +
   ggplot2::scale_fill_manual(values = c("darkblue", "lightblue")) +
   ggplot2::geom_bar(stat = "identity") +
   ggplot2::coord_polar("y", start = 0) +
@@ -1995,13 +1995,13 @@ network <- igraph::graph_from_edgelist(edge.matrix, directed = FALSE)
 
 # set member category and color
 colrs <- RColorBrewer::brewer.pal(n = n.categ, name = "Set3")
-for (i in 1:length(V(network))) {
+for (i in 1:length(igraph::V(network))) {
   categ.id <-
-    match(V(network)[[i]]$name, sucupira.raw$`Nome do Membro do Projeto`)
-  V(network)[[i]]$categ <-
+    match(igraph::V(network)[[i]]$name, sucupira.raw$`Nome do Membro do Projeto`)
+  igraph::V(network)[[i]]$categ <-
     sucupira.raw$`Categoria do Membro do Projeto`[categ.id]
-  col.id <- match(V(network)[[i]]$categ, levels(categ))
-  V(network)[i]$color <- colrs[col.id]
+  col.id <- match(igraph::V(network)[[i]]$categ, levels(categ))
+  igraph::V(network)[i]$color <- colrs[col.id]
 }
 
 # plot area setup
@@ -2015,10 +2015,10 @@ plot(
   arrow.mode = 0,
   vertex.label = NA,
   vertex.frame.color = "darkgrey",
-  vertex.size = log(degree(network, mode = "all")) * 1.2,
+  vertex.size = log(igraph::degree(network, mode = "all")) * 1.2,
   edge.color = "lightgrey",
   edge.lty = "solid",
-  edge.size = edge.betweenness(network),
+  edge.size = igraph::edge.betweenness(network),
   edge.curved = .2
 )
 legend(
@@ -2035,6 +2035,7 @@ title(main = "Membros de projetos de pesquisa",
       outer = TRUE,
       cex.main = 1.7)
 
+
 # file path to save the wordclouds
 dir.path <- file.path(getwd(), "index_files", "figure-html")
 dir.create(dir.path, recursive = TRUE)
@@ -2045,43 +2046,40 @@ source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 sucupira.raw <- sucupira.raw[!duplicated(sucupira.raw),]
 IES <- sucupira.raw$`Instituição de Origem`
 IES <- IES[!is.na(IES)]
-países <- na.omit(sucupira.raw$`País da Instituição de Origem`)
-mundo <-
-  na.omit(sucupira.raw$`País da Instituição de Origem`[sucupira.raw$`País da Instituição de Origem` != "Brasil"])
+países <- sucupira.raw$`País da Instituição de Origem`
+países <- países[!is.na(países)]
+mundo <- sucupira.raw$`País da Instituição de Origem`[sucupira.raw$`País da Instituição de Origem` != "Brasil"]
+mundo <- mundo[!is.na(mundo)]
 
-part.ext.nac <-
-  na.omit(sucupira.raw$`Nome do Participante`[sucupira.raw$`País da Instituição de Origem` == "Brasil"])
-part.ext.inter <-
-  na.omit(sucupira.raw$`Nome do Participante`[sucupira.raw$`País da Instituição de Origem` != "Brasil"])
-
-IES.nac <-
-  na.omit(sucupira.raw$`Instituição de Origem`[sucupira.raw$`País da Instituição de Origem` == "Brasil"])
-IES.inter <-
-  na.omit(sucupira.raw$`Instituição de Origem`[sucupira.raw$`País da Instituição de Origem` != "Brasil"])
+part.ext.nac <- sucupira.raw$`Nome do Participante`[sucupira.raw$`País da Instituição de Origem` == "Brasil"]
+part.ext.nac <- part.ext.nac[!is.na(part.ext.nac)]
+part.ext.inter <- sucupira.raw$`Nome do Participante`[sucupira.raw$`País da Instituição de Origem` != "Brasil"]
+part.ext.inter <- part.ext.inter[!is.na(part.ext.inter)]
+IES.nac <- sucupira.raw$`Instituição de Origem`[sucupira.raw$`País da Instituição de Origem` == "Brasil"]
+IES.nac <- IES.nac[!is.na(IES.nac)]
+IES.inter <- sucupira.raw$`Instituição de Origem`[sucupira.raw$`País da Instituição de Origem` != "Brasil"]
+IES.inter <- IES.inter[!is.na(IES.inter)]
 
 # get initials
 data.to.abbrev <- IES
 source("Scripts/get-abbrev.R", local = knitr::knit_global())
 
 ranked.ies <- c()
-rank <- 1
 for (i in 1:length(sort(table(abbrev), decreasing = FALSE))) {
   ranked.ies <-
-    c(ranked.ies,
-      rep(names(sort(table(
-        abbrev
-      ))[i]), match(sort(table(
-        abbrev
-      ))[i][[1]], unique(sort(
-        table(abbrev)
-      )))))
+    c(ranked.ies, rep(names(sort(table(
+      abbrev
+    ))[i]), match(sort(table(
+      abbrev
+    ))[i][[1]], unique(sort(
+      table(abbrev)
+    )))))
 }
 data.to.cloud <- ranked.ies
 cloud.title <- "Instituições"
 source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
 
 # plot 3
-
 # plot area setup
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
@@ -2089,34 +2087,44 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 # plot area setup
 par(mar = c(1.5, 15, 1, 1))
 
-top <- min(length(IES.nac), 10)
-data.nac <-
-  na.omit(data.frame(name = names(sort(
-    table(IES.nac), decreasing = TRUE
-  )[1:top]),
-  value = as.numeric(sort(
-    table(IES.nac), decreasing = TRUE
-  )[1:top])))
-
-# break vector names in 2 lines
-text.2.break <- data.nac$name
-source("Scripts/line-2-break.R", local = knitr::knit_global())
-data.nac$name <- broken_text
-
-barplot(
-  height = rev(data.nac$value),
-  names = rev(data.nac$name),
-  xlab = "N",
-  col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
-  horiz = T,
-  las = 1,
-  cex.names = 0.7
-)
-title(
-  main = paste0("Top-", top, " nacionais"),
-  outer = TRUE,
-  cex.main = 1.7
-)
+# check if there are IES
+if (length(IES.nac) > 0) {
+  top <- min(length(IES.nac), 10)
+  data.nac <-
+    na.omit(data.frame(name = names(sort(
+      table(IES.nac), decreasing = TRUE
+    )[1:top]), value = as.numeric(sort(
+      table(IES.nac), decreasing = TRUE
+    )[1:top])))
+  
+  # break vector names in 2 lines
+  text.2.break <- data.nac$name
+  source("Scripts/line-2-break.R", local = knitr::knit_global())
+  data.nac$name <- broken_text
+  
+  barplot(
+    height = rev(data.nac$value),
+    names = rev(data.nac$name),
+    xlab = "N",
+    col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
+    horiz = T,
+    las = 1,
+    cex.names = 0.7
+  )
+  title(
+    main = paste0("Top-", top, " nacionais"),
+    outer = TRUE,
+    cex.main = 1.7
+  )
+} else {
+  # plot empty plot
+  plot.new()
+  title(
+    main = "Top-10 nacionais",
+    outer = TRUE,
+    cex.main = 1.7
+  )
+}
 
 # plot 4
 
@@ -2127,37 +2135,46 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 # plot area setup
 par(mar = c(1.5, 15, 1, 1))
 
-top <- min(length(IES.inter), 10)
-data.inter <-
-  na.omit(data.frame(name = names(sort(
-    table(IES.inter), decreasing = TRUE
-  )[1:top]),
-  value = as.numeric(sort(
-    table(IES.inter), decreasing = TRUE
-  )[1:top])))
-
-# break vector names in 2 lines
-text.2.break <- data.inter$name
-source("Scripts/line-2-break.R", local = knitr::knit_global())
-data.inter$name <- broken_text
-
-barplot(
-  height = rev(data.inter$value),
-  names = rev(data.inter$name),
-  xlab = "N",
-  col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
-  horiz = T,
-  las = 1,
-  cex.names = 0.7
-)
-title(
-  main = paste0("Top-", top, " internacionais"),
-  outer = TRUE,
-  cex.main = 1.7
-)
+# check if there are IES
+if (length(IES.inter) > 0) {
+  top <- min(length(IES.inter), 10)
+  data.inter <-
+    na.omit(data.frame(name = names(sort(
+      table(IES.inter), decreasing = TRUE
+    )[1:top]), value = as.numeric(sort(
+      table(IES.inter), decreasing = TRUE
+    )[1:top])))
+  
+  # break vector names in 2 lines
+  text.2.break <- data.inter$name
+  source("Scripts/line-2-break.R", local = knitr::knit_global())
+  data.inter$name <- broken_text
+  
+  barplot(
+    height = rev(data.inter$value),
+    names = rev(data.inter$name),
+    xlab = "N",
+    col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
+    horiz = T,
+    las = 1,
+    cex.names = 0.7
+  )
+  title(
+    main = paste0("Top-", top, " internacionais"),
+    outer = TRUE,
+    cex.main = 1.7
+  )
+} else {
+  # plot empty plot
+  plot.new()
+  title(
+    main = "Top-10 internacionais",
+    outer = TRUE,
+    cex.main = 1.7
+  )
+}
 
 # plot 5
-
 # plot area setup
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
@@ -2165,94 +2182,110 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 # plot area setup
 par(mar = c(1.5, 15, 1, 1))
 
-top <- min(length(mundo), 10)
-data.pais <-
-  na.omit(data.frame(name = names(sort(
-    table(mundo), decreasing = TRUE
-  )[1:top]),
-  value = as.numeric(sort(
-    table(mundo), decreasing = TRUE
-  )[1:top])))
-
-# break vector names in 2 lines
-text.2.break <- data.pais$name
-source("Scripts/line-2-break.R", local = knitr::knit_global())
-data.pais$name <- broken_text
-
-barplot(
-  height = rev(data.pais$value),
-  names = rev(data.pais$name),
-  xlab = "N",
-  col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
-  horiz = T,
-  las = 1,
-  cex.names = 0.7
-)
-title(
-  main = paste0("Top-", top, " países"),
-  outer = TRUE,
-  cex.main = 1.7
-)
-
-# plot 6 (geospatial plot of participantes externos)
-paises <- as.data.frame(table(as.character(mundo)))
-source("Scripts/worldmap.R", local = knitr::knit_global())
-
-ggplot2::ggplot() +
-  ggplot2::geom_polygon(data = worldmap,
-                        aes(
-                          x = long,
-                          y = lat,
-                          group = group,
-                          fill = Freq
-                        )) +
-  cowplot::theme_map() +
-  ggplot2::scale_fill_distiller(
-    palette = "Spectral",
-    name = "Pesquisadores, n",
-    limits = c(min(0, paises$Freq), max(paises$Freq)),
-    na.value = "grey"
-  ) +
-  ggplot2::theme_minimal() +
-  ggplot2::theme(
-    legend.position = 'bottom',
-    legend.title = ggplot2::element_text(color = "white"),
-    legend.text = ggplot2::element_text(color = "white"),
-    axis.title.x = ggplot2::element_blank(),
-    axis.text.x = ggplot2::element_blank(),
-    axis.ticks.x = ggplot2::element_blank(),
-    axis.title.y = ggplot2::element_blank(),
-    axis.text.y = ggplot2::element_blank(),
-    axis.ticks.y = ggplot2::element_blank()
-  ) +
-  ggplot2::theme(
-    plot.margin = ggplot2::unit(c(0, 0, 0, 0), "cm"),
-    panel.background = ggplot2::element_rect(fill = main.color,  color = main.color),
-    plot.background = ggplot2::element_rect(fill = main.color,  color = main.color),
-    panel.grid.major = ggplot2::element_line(color = "transparent"),
-    panel.grid.minor = ggplot2::element_line(color = "transparent"),
-    axis.text.x = ggplot2::element_blank(),
-    axis.text.y = ggplot2::element_blank(),
-    plot.title = ggplot2::element_text(
-      size = 15,
-      color = "white",
-      face = "bold",
-      hjust = 0.5
-    )
-  ) +
-  ggplot2::ggtitle("Distribuição global de Participantes Externos")
+# check if there are mundo
+if (length(mundo) > 0) {
+  top <- min(length(mundo), 10)
+  data.pais <-
+    na.omit(data.frame(name = names(sort(
+      table(mundo), decreasing = TRUE
+    )[1:top]), value = as.numeric(sort(
+      table(mundo), decreasing = TRUE
+    )[1:top])))
+  
+  # break vector names in 2 lines
+  text.2.break <- data.pais$name
+  source("Scripts/line-2-break.R", local = knitr::knit_global())
+  data.pais$name <- broken_text
+  
+  barplot(
+    height = rev(data.pais$value),
+    names = rev(data.pais$name),
+    xlab = "N",
+    col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
+    horiz = T,
+    las = 1,
+    cex.names = 0.7
+  )
+  title(
+    main = paste0("Top-", top, " países"),
+    outer = TRUE,
+    cex.main = 1.7
+  )
+} else {
+  # plot empty plot
+  plot.new()
+  title(main = "Top-10 países",
+        outer = TRUE,
+        cex.main = 1.7)
+}
+  
+# check if there are mundo
+if (length(mundo) > 0) {
+  # plot 6 (geospatial plot of participantes externos)
+  paises <- as.data.frame(table(as.character(mundo)))
+  source("Scripts/worldmap.R", local = knitr::knit_global())
+  
+  ggplot2::ggplot() +
+    ggplot2::geom_polygon(data = worldmap, aes(
+      x = long,
+      y = lat,
+      group = group,
+      fill = Freq
+    )) +
+    cowplot::theme_map() +
+    ggplot2::scale_fill_distiller(
+      palette = "Spectral",
+      name = "Pesquisadores, n",
+      limits = c(min(0, paises$Freq), max(paises$Freq)),
+      na.value = "grey"
+    ) +
+    ggplot2::theme_minimal() +
+    ggplot2::theme(
+      legend.position = 'bottom',
+      legend.title = ggplot2::element_text(color = "white"),
+      legend.text = ggplot2::element_text(color = "white"),
+      axis.title.x = ggplot2::element_blank(),
+      axis.text.x = ggplot2::element_blank(),
+      axis.ticks.x = ggplot2::element_blank(),
+      axis.title.y = ggplot2::element_blank(),
+      axis.text.y = ggplot2::element_blank(),
+      axis.ticks.y = ggplot2::element_blank()
+    ) +
+    ggplot2::theme(
+      plot.margin = ggplot2::unit(c(0, 0, 0, 0), "cm"),
+      panel.background = ggplot2::element_rect(fill = main.color, color = main.color),
+      plot.background = ggplot2::element_rect(fill = main.color, color = main.color),
+      panel.grid.major = ggplot2::element_line(color = "transparent"),
+      panel.grid.minor = ggplot2::element_line(color = "transparent"),
+      axis.text.x = ggplot2::element_blank(),
+      axis.text.y = ggplot2::element_blank(),
+      plot.title = ggplot2::element_text(
+        size = 15,
+        color = "white",
+        face = "bold",
+        hjust = 0.5
+      )
+    ) +
+    ggplot2::ggtitle("Distribuição global de Participantes Externos")
+} else {
+  # plot empty plot
+  plot.new()
+  title(main = "Distribuição global de Participantes Externos",
+        outer = TRUE,
+        cex.main = 1.7)
+}
 
 # plot 7 (summary table in plot)
 
 # calculate summary statistics for IES
 summ.table.ies <-
-  cbind(
-    length(unique(na.omit(IES.nac))) + length(unique(na.omit(IES.inter))),
-    length(unique(na.omit(IES.nac))),
-    length(unique(na.omit(IES.inter))),
-    length(unique(na.omit(part.ext.nac))) + length(unique(na.omit(part.ext.inter))),
-    length(unique(na.omit(part.ext.nac))),
-    length(unique(na.omit(part.ext.inter)))
+  c(
+    length(unique(IES.nac)) + length(unique(IES.inter)),
+    length(unique(IES.nac)),
+    length(unique(IES.inter)),
+    length(unique(part.ext.nac)) + length(unique(part.ext.inter)),
+    length(unique(part.ext.nac)),
+    length(unique(part.ext.inter))
   )
 
 names(summ.table.ies) <-

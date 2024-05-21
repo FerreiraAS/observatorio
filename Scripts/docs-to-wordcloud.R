@@ -74,9 +74,18 @@ if (length(df) != 0) {
   # Restore old defaults
   chromote::set_chrome_args(old_chrome_args)
 } else {
+  source("Scripts/plot-margins.R", local = knitr::knit_global())
+  # plot area setup
+  par(mar = c(1.5, 15, 1, 1))
+  
   layout.m <- c(1)
   png(file.path(dir.path, paste0(sheet, ".png")), width = round(1344 * 0.7), height = round(960 * 0.7))
   source("Scripts/plot-margins.R", local = knitr::knit_global())
   plot(0, type = 'n', axes = FALSE)
+  title(
+    main = sheet,
+    outer = TRUE,
+    cex.main = 3
+  )
   dev.off()
 }

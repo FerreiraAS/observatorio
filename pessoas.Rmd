@@ -1232,33 +1232,33 @@ for (j in 1:dim(periodos)[1]) {
   for (i in 1:length(UF$Var1)) {
     states$egressos[states$abbrev_state == UF$Var1[i]] <- UF$Freq[i]
   }
-  maps[[j]] <- ggplot() +
-    geom_sf(
+  maps[[j]] <- ggplot2::ggplot() +
+    ggplot2::geom_sf(
       data = states,
-      aes(fill = egressos),
+      ggplot2::aes(fill = egressos),
       color = NA,
       size = .15
     ) +
-    scale_fill_distiller(
+    ggplot2::scale_fill_distiller(
       palette = "Spectral",
       name = "Egressos, n",
       limits = c(min(0, UF$Freq), max(UF$Freq)),
       na.value = "grey"
     ) +
-    theme_minimal() +
-    theme(
+    ggplot2::theme_minimal() +
+    ggplot2::theme(
       plot.margin = unit(c(0, 0, 0, 0), "cm"),
-      panel.background = element_rect(fill = "transparent",  color = "transparent"),
-      plot.background = element_rect(fill = "transparent",  color = "transparent"),
-      panel.grid.major = element_line(color = "transparent"),
-      axis.text.x = element_blank(),
-      axis.text.y = element_blank()
+      panel.background = ggplot2::element_rect(fill = "transparent",  color = "transparent"),
+      plot.background = ggplot2::element_rect(fill = "transparent",  color = "transparent"),
+      panel.grid.major = ggplot2::element_line(color = "transparent"),
+      axis.text.x = ggplot2::element_blank(),
+      axis.text.y = ggplot2::element_blank()
   ) +
-    labs(subtitle = paste0(periodos[j, 1], "-", periodos[j, 2]),
+    ggplot2::labs(subtitle = paste0(periodos[j, 1], "-", periodos[j, 2]),
          size = 12) +
-    guides(fill = FALSE)
+    ggplot2::guides(fill = FALSE)
 }
-multiplot(plotlist = maps, cols = dim(periodos)[1])
+Rmisc::multiplot(plotlist = maps, cols = dim(periodos)[1])
 
 cat('\n\n')
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
