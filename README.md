@@ -96,20 +96,24 @@ Ao completar esta etapa, a estrutura dos diretórios será esta:
 3.  Clique no ícone "Coordenador de PPG" para acesse o conteúdo
 4.  No menu "Relatórios", clique no ícone "Conferência de Programa"
 
-Para cada ano de atividade do Programa, repita os seguintes passos: 1.
-No item "Categoria", mantenha a opção padrão "-- SELECIONE --" 2.
-Selecione o ano que deseja exportar os dados 3. Clique em "Gerar excel
-único com os dados do programa" 4. Na nova aba aberta, aparecerá a
-mensagem "Por favor, aguarde enquanto o relatório está sendo gerado".
-Após a compilação dos dados, clique em "Clique aqui para realizar o
-download" 5. Feche a nova aba e retorne à página principal da Plataforma
-Sucupira 6. Abra o arquivo "conferencia_programa.xls" e salve em formato
-XLSX (ex.: "conferencia_programa.xlsx") 7. Mova o arquivo
-"conferencia_programa.xlsx" para a pasta do ano correspondente 8. Delete
-o arquivo original "conferencia_programa.xls"
+Para cada ano de atividade do Programa, repita os seguintes passos:
+1. No item "Categoria", mantenha a opção padrão "-- SELECIONE --"
 
-Ao completar esta etapa, a estrutura dos diretórios e arquivos será
-esta:
+2. Selecione o ano que deseja exportar os dados
+
+3. Clique em "Gerar excel único com os dados do programa"
+
+4. Na nova aba aberta, aparecerá a mensagem "Por favor, aguarde enquanto o relatório está sendo gerado". Após a compilação dos dados, clique em "Clique aqui para realizar o download"
+
+5. Feche a nova aba e retorne à página principal da Plataforma Sucupira
+
+6. Abra o arquivo "conferencia_programa.xls" e salve em formato XLSX (ex.: "conferencia_programa.xlsx")
+
+7. Mova o arquivo "conferencia_programa.xlsx" para a pasta do ano correspondente
+
+8. Delete o arquivo original "conferencia_programa.xls"
+
+Ao completar esta etapa, a estrutura dos diretórios e arquivos será esta:
 
 ``` bash
 ├── Sucupira
@@ -143,9 +147,7 @@ esta:
 
 ### **Programa**
 
-O **Observatório** pode exibir informações complementares, não
-disponíveis na Plataforma Sucupira, desde que organizadas em planilhas
-XLSX.
+O **Observatório** pode exibir informações complementares, não disponíveis na Plataforma Sucupira, desde que organizadas em planilhas XLSX.
 
 ``` bash
 ├── PPG
@@ -187,56 +189,42 @@ XLSX.
 │   └── Videos.xlsx
 ```
 
-Um arquivo-modelo de cada planilha está disponível no [repositório do
-Observatório
-CR](https://github.com/ppgcr-unisuam/observatoriocr/tree/76185c88ea0ead961c03c0a09f6c5fb9eb104e39/PPG).
+Um arquivo-modelo de cada planilha está disponível no [repositório do Observatório CR](https://github.com/ppgcr-unisuam/observatoriocr/tree/76185c88ea0ead961c03c0a09f6c5fb9eb104e39/PPG).
 
-*Importante*: Os modelos são disponibilizados com dados do
-PPGCR-UNISUAM, os quais devem ser substituídos pelos dados do PPG. As
-seguintes planilhas podem ser complementadas:
+*Importante*: Os modelos são disponibilizados com dados do PPGCR-UNISUAM, os quais devem ser substituídos pelos dados do PPG. As seguintes planilhas podem ser complementadas:
 
--   [Agendas de
-    Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Agendas%20de%20Pesquisa.xlsx)
+-   [Agendas de Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Agendas%20de%20Pesquisa.xlsx)
 -   [Apresentação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Apresenta%C3%A7%C3%A3o.xlsx)
--   [Área
-    CAPES.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/%C3%81rea%20CAPES.xlsx)
+-   [Área CAPES.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/%C3%81rea%20CAPES.xlsx)
 -   [Autoavaliação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Autoavalia%C3%A7%C3%A3o.xlsx)
 -   [Avaliação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Avalia%C3%A7%C3%A3o.xlsx)
 -   [Bibliografia.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Bibliografia.xlsx)
--   [Blog
-    institucional.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Blog%20institucional.xlsx)
--   [Blogs
-    externos.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Blogs%20externos.xlsx)
+-   [Blog institucional.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Blog%20institucional.xlsx)
+-   [Blogs externos.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Blogs%20externos.xlsx)
 -   [Bolsas.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Bolsas.xlsx)
 -   [Calendários.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Calend%C3%A1rios.xlsx)
--   [Comitê de Ética em
-    Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Comit%C3%AA%20de%20%C3%89tica%20em%20Pesquisa.xlsx)
+-   [Comitê de Ética em Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Comit%C3%AA%20de%20%C3%89tica%20em%20Pesquisa.xlsx)
 -   [Convênios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Conv%C3%AAnios.xlsx)
 -   [Cooperações.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Coopera%C3%A7%C3%B5es.xlsx)
 -   [Coordenação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Coordena%C3%A7%C3%A3o.xlsx)
--   [Dados
-    Cadastrais.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Dados%20Cadastrais.xlsx)
+-   [Dados Cadastrais.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Dados%20Cadastrais.xlsx)
 -   [Destaques.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Destaques.xlsx)
 -   [Discentes.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Discentes.xlsx)
 -   [Downloads.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Downloads.xlsx)
 -   [Editais.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Editais.xlsx)
 -   [Financiadores.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Financiadores.xlsx)
--   [Grupos de
-    Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Grupos%20de%20Pesquisa.xlsx)
+-   [Grupos de  Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Grupos%20de%20Pesquisa.xlsx)
 -   [Histórico.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Hist%C3%B3rico.xlsx)
 -   [Infraestrutura.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Infraestrutura.xlsx)
 -   [Internacionalização.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Internacionaliza%C3%A7%C3%A3o.xlsx)
 -   [Laboratórios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Laborat%C3%B3rios.xlsx)
 -   [Metodologia.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Metodologia.xlsx)
 -   [Notas.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Notas.xlsx)
--   [Periódicos
-    institucionais.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Peri%C3%B3dicos%20institucionais.xlsx)
--   [Planejamento
-    estratégico.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Planejamento%20estrat%C3%A9gico.xlsx)
+-   [Periódicos institucionais.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Peri%C3%B3dicos%20institucionais.xlsx)
+-   [Planejamento estratégico.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Planejamento%20estrat%C3%A9gico.xlsx)
 -   [Podcasts.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Podcasts.xlsx)
 -   [Políticas.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/cd7e88477169e474befd583e89574711c877e4c1/PPG/Pol%C3%ADticas.xlsx)
--   [Prêmio CAPES de
-    Tese.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Pr%C3%AAmio%20CAPES%20de%20Tese.xlsx)
+-   [Prêmio CAPES de Tese.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Pr%C3%AAmio%20CAPES%20de%20Tese.xlsx)
 -   [Prêmios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Pr%C3%AAmios.xlsx)
 -   [Produção.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Produ%C3%A7%C3%A3o.xlsx)
 -   [Repositórios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Reposit%C3%B3rios.xlsx)
@@ -250,8 +238,7 @@ Para análise das métricas, as seguintes fontes são utilizadas:
 -   [**Dimensions**](https://www.dimensions.ai)
 -   [**PlumX**](https://plu.mx)
 -   CiteScore da [**Scopus**](https://www.scopus.com/sources)
--   Webqualis da
-    [**CAPES**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)
+-   Webqualis 2021 da [**CAPES**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)
 -   SJR da [**SCImago**](https://www.scimagojr.com)
 
 ``` bash
@@ -302,106 +289,95 @@ Para obter dados de métricas, as seguintes API são utilizadas:
 -   [**CrossRef**](https://github.com/ropensci/rcrossref) Para acesso
     a dados da CrossRef
 
+*Você pode configurar chaves de acesso para usar as APIs e obter as métricas. Acesse os sites acima para configurar o TOKEN, KEY e EMAIL.*
+
+1.  No console do RStudio, digite "file.edit("~/.Renviron")".
+2.  Copie e cole as chaves conforme a seguir:
+ORCID_TOKEN="TOKEN"
+OPENAI_API_KEY="KEY"
+crossref_email="EMAIL"
+3.  Substitua TOKEN, KEY e EMAIL pelos respectivos dados.
+4. Salve e feche o arquivo .Renviron.
+5. Reinicie o RStudio.
+
+
 ## **Como usar**
 
 ### [**1. Registre uma conta do GitHub**](https://docs.github.com/pt/get-started/signing-up-for-github/signing-up-for-a-new-github-account)
 
-*O GitHub oferece contas pessoais de indivíduos e organizações para que
-equipes de pessoas trabalhem juntas.*
+*O GitHub oferece contas pessoais de indivíduos e organizações para que equipes de pessoas trabalhem juntas.*
 
 ### [**2. Verifique o endereço de e-mail**](https://docs.github.com/pt/get-started/signing-up-for-github/verifying-your-email-address)
 
-*A verificação do endereço de e-mail principal garante segurança
-reforçada, permite que a equipe do GitHub auxilie melhor caso você
-esqueça sua senha e fornece acesso a mais recursos no GitHub.*
+*A verificação do endereço de e-mail principal garante segurança reforçada, permite que a equipe do GitHub auxilie melhor caso você esqueça sua senha e fornece acesso a mais recursos no GitHub.*
 
 ### [**3. Crie um repositório**](https://docs.github.com/pt/get-started/quickstart/create-a-repo)
 
-*Para colocar seu projeto no GitHub, você precisará criar um repositório
-no qual ele residirá.*
+*Para colocar seu projeto no GitHub, você precisará criar um repositório público no qual ele residirá.*
 
 ### [**4. Clone um repositório**](https://docs.github.com/pt/repositories/creating-and-managing-repositories/cloning-a-repository)
 
-*Ao criar um repositório no GitHub.com, ele existirá como um repositório
-remoto. É possível clonar o repositório para criar uma cópia local no
-seu computador e sincronizar entre os dois locais.*
+*Ao criar um repositório no GitHub.com, ele existirá como um repositório remoto. É possível clonar o repositório para criar uma cópia local no seu computador e sincronizar entre os dois locais.*
 
 ### [**5. Configure uma fonte de publicação para o site do GitHub Pages**](https://docs.github.com/pt/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
 
-*Você pode configurar seu site do GitHub Pages para ser publicado quando
-alterações são enviadas por push a um branch específico ou pode escrever
-um fluxo de trabalho do GitHub Actions para publicar seu site.*
+*Você pode configurar seu site do GitHub Pages para ser publicado quando alterações são enviadas por push a um branch específico ou pode escrever um fluxo de trabalho do GitHub Actions para publicar seu site.*
 
 1.  Acesse o repositório clicando no link.
 2.  Clique em “Settings”.
 3.  Na barra lateral esquerda, clique em “Pages”.
-4.  No item “Build and deployment”, selecione branch -\> “main” e folder
-    -\> “/docs”.
+4.  No item “Build and deployment”, selecione branch -\> “main” e folder -\> “/docs”.
 5.  Aguarde alguns instantes e atualize a página.
 6.  Copie o link de acesso ao Observatório.
 
 ### [**Tutorial**](https://resources.github.com/github-and-rstudio/)
 
-*This tutorial teaches you to create R Markdown documents with RStudio
-and publish them via GitHub, using GitHub Pages.*
+*This tutorial teaches you to create R Markdown documents with RStudio and publish them via GitHub, using GitHub Pages.*
 
 ## **Atualizacoes**
 
-O Observatório é atualizado semanalmente. Para receber atualizações no
-seu repositório, siga os passos 6.1 e 6.2 acima.
+O Observatório é atualizado periodicamente. Para receber atualizações no seu repositório, siga os passos 6.1 e 6.2 acima.
 
 ## **Observatorios publicados**
 
 ### **Modelo**
 
--   [**Observatório**](https://ferreiraas.github.io/observatorio) \|
-    Modelo para PPGs
+-   [**Observatório**](https://ferreiraas.github.io/observatorio) \| Modelo para PPGs
 
 ### [**UNISUAM**](https://www.unisuam.edu.br) **\| Centro Universitário Augusto Motta**
 
--   [**Observatório CR**](https://ppgcr-unisuam.github.io/observatoriocr) \| Programa de
-    Pós-graduação em Ciências da Reabilitação
--   [**Observatório DL**](https://ppgdl-unisuam.github.io/observatoriodl) \| Programa de
-    Pós-graduação em Desenvolvimento Local
+-   [**Observatório CR**](https://ppgcr-unisuam.github.io/observatoriocr) \| Programa de Pós-graduação em Ciências da Reabilitação
+-   [**Observatório DL**](https://ppgdl-unisuam.github.io/observatoriodl) \| Programa de Pós-graduação em Desenvolvimento Local
 
 ### [**UFC**](https://www.ufc.br) **\| Universidade Federal do Ceará**
 
--   [**Observatório PPGFisio**](https://ppgfisioufc.github.io/PPGFisio_UFC/) \| Programa
-    de Pós-graduação em Fisioterapia
+-   [**Observatório PPGFisio**](https://ppgfisioufc.github.io/PPGFisio_UFC/) \| Programa de Pós-graduação em Fisioterapia
 
 ### [**UFTM-UFU**](https://www.uftm.edu.br/stricto-sensu/ppgfisio) **\| Universidade Federal do Triângulo Mineiro - Universidade Federal de Uberlândia**
 
--   [**Observatório PPGFisio**](https://ppgfisiouftmufu.github.io/ObservatorioUFTM_UFU/)
-    \| Programa de Pós-graduação em Fisioterapia
+-   [**Observatório PPGFisio**](https://ppgfisiouftmufu.github.io/ObservatorioUFTM_UFU/) \| Programa de Pós-graduação em Fisioterapia
 
 ### [**UFRN**](https://posgraduacao.ufrn.br/ppgfst) **\| Universidade Federal do Rio Grande do Norte**
 
--   [**Observatório UFRN**](https://ppgfisioterapia.github.io/observatorioUFRN/) \|
-    Programa de Pós-graduação em Ciências da Reabilitação
+-   [**Observatório UFRN**](https://ppgfisioterapia.github.io/observatorioUFRN/) \| Programa de Pós-graduação em Ciências da Reabilitação
 
 ### [**USP**](https://www.fm.usp.br/fofito/pos-graduacao/programa-de-ciencias-da-reabilitacao) **\| Universidade de São Paulo**
 
--   [**Observatório PPGPosReab**](https://ppgreab.github.io/Observatorio-PPGPosReab-USP/)
-    \| Programa de Pós-graduação em Ciências da Reabilitação
+-   [**Observatório PPGPosReab**](https://ppgreab.github.io/Observatorio-PPGPosReab-USP/) \| Programa de Pós-graduação em Ciências da Reabilitação
 
 ### [**IFRJ**](https://www.ifrj.edu.br/cursos-pos-graduacao/stricto-sensu/programa-pos-graduacao-ciencia-tecnologia-e-inovacao-saude-0/) **\| Instituto Federal do Rio de Janeiro**
 
--   [**Observatório PPGCTIS**](https://ppgctis.github.io/ObservatorioCTIS/)
-    \| Programa de Pós-graduação em Ciência, Tecnologia e Inovação em Saúde
+-   [**Observatório PPGCTIS**](https://ppgctis.github.io/ObservatorioCTIS/) \| Programa de Pós-graduação em Ciência, Tecnologia e Inovação em Saúde
 
 ## **FAQ**
 
 *Como posso contribuir para este projeto?*
 
--   Você pode [criar um
-    problema](https://docs.github.com/pt/issues/tracking-your-work-with-issues/creating-an-issue)
-    ou [clonar o
-    repositório](https://docs.github.com/pt/repositories/creating-and-managing-repositories/cloning-a-repository)
-    e me enviar uma [solicitação de
-    pull](https://docs.github.com/pt/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
+-   Você pode [criar um problema](https://docs.github.com/pt/issues/tracking-your-work-with-issues/creating-an-issue)
+    ou [clonar o repositório](https://docs.github.com/pt/repositories/creating-and-managing-repositories/cloning-a-repository)
+    e me enviar uma [solicitação de pull](https://docs.github.com/pt/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
 
--   Envie um [e-mail](mailto:arthur_sf@icloud.com) para mim com
-    sugestões.
+-   Envie um [e-mail](mailto:arthur_sf@icloud.com) para mim com sugestões.
 
 ## **Licença**
 

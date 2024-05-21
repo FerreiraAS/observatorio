@@ -1379,3 +1379,9 @@ try(
   silent = TRUE
 )
 ```
+
+```{r session-info}
+sessioninfo::session_info() %>%
+  details::details(summary = 'Current session info',
+                   open = FALSE)
+```

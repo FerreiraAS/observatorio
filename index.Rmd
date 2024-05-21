@@ -2289,20 +2289,3 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
-
-<br>
-
-<center><img width="5%" height="5%" src="https://raw.githubusercontent.com/rstudio/hex-stickers/main/thumbs/RStudio.png"> Esta página foi desenvolvida em [**`r R.version$version.string`**](https://www.rstudio.com) usando [**R markdown**](https://rmarkdown.rstudio.com)
-</center>
-
-<br>
-
-<br>
-
-```{r session-info}
-sessioninfo::session_info() %>%
-  details::details(summary = 'Current session info',
-                   open = FALSE)
-```
-
-<br>
