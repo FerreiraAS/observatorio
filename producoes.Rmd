@@ -303,7 +303,7 @@ names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
 produtos <- sucupira.list[as.character(anos)] %>%
-  compact()
+  plyr::compact()
 produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
 names(produtos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
@@ -314,7 +314,7 @@ produtos <- produtos[produtos$`Subtipo de Produção` == "ARTIGO EM PERIÓDICO",
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
-# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
+# drop columns
 produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
 
 # format names
@@ -362,6 +362,7 @@ table <- produtos.df %>% dplyr::arrange(
   dplyr::desc(as.numeric(produtos.df$'Ano')),
   produtos.df$'Título'
 )
+
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Artigo em Periódico (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
@@ -371,9 +372,10 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 ```{r artigos-completos-icons, eval = any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
 # bind sources
-doi_with_altmetric <- c(doi_with_altmetric_artigos, doi_with_altmetric_resumos)
-doi_without_altmetric <- c(doi_without_altmetric_artigos, doi_without_altmetric_resumos)
-references <- c(references_artigos, references_resumos)
+doi_with_altmetric <-  dplyr::bind_rows(doi_with_altmetric_artigos, doi_with_altmetric_resumos)
+doi_without_altmetric <- dplyr::bind_rows(doi_without_altmetric_artigos,
+                                          doi_without_altmetric_resumos)
+references <- dplyr::bind_rows(references_artigos, references_resumos)
 
 # available years of publication
 years <-
@@ -550,7 +552,7 @@ names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
 produtos <- sucupira.list[as.character(anos)] %>%
-  compact()
+  plyr::compact()
 produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
 names(produtos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
@@ -637,7 +639,7 @@ names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
 produtos <- sucupira.list[as.character(anos)] %>%
-  compact()
+  plyr::compact()
 produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
 names(produtos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
@@ -702,7 +704,7 @@ cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
-```{r livros-icon, eval = any(has.livros.ppg, has.livros.sucupira)}
+```{r livros-icons, eval = any(has.livros.ppg, has.livros.sucupira)}
 # bind sources
 doi_with_altmetric <- doi_with_altmetric_livros
 doi_without_altmetric <- doi_without_altmetric_livros
@@ -787,7 +789,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 cat('<br>')
 ```
 
-```{r capitulo-icon, eval = has.capitulos.ppg}
+```{r capitulo-icons, eval = has.capitulos.ppg}
 # bind sources
 doi_with_altmetric <- doi_with_altmetric_capitulos
 doi_without_altmetric <- doi_without_altmetric_capitulos
@@ -883,7 +885,7 @@ names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
 produtos <- sucupira.list[as.character(anos)] %>%
-  compact()
+  plyr::compact()
 produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
 names(produtos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
@@ -1044,7 +1046,7 @@ names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
 produtos <- sucupira.list[as.character(anos)] %>%
-  compact()
+  plyr::compact()
 produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
 names(produtos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
@@ -1131,7 +1133,7 @@ names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
 produtos <- sucupira.list[as.character(anos)] %>%
-  compact()
+  plyr::compact()
 produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
 names(produtos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
@@ -1218,7 +1220,7 @@ names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
 produtos <- sucupira.list[as.character(anos)] %>%
-  compact()
+  plyr::compact()
 produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
 names(produtos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
@@ -1305,7 +1307,7 @@ names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
 produtos <- sucupira.list[as.character(anos)] %>%
-  compact()
+  plyr::compact()
 produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
 names(produtos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
@@ -1392,7 +1394,7 @@ names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
 produtos <- sucupira.list[as.character(anos)] %>%
-  compact()
+  plyr::compact()
 produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
 names(produtos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
@@ -1479,7 +1481,7 @@ names(sucupira.list) <- as.character(anos)
 
 # get data for the current period
 produtos <- sucupira.list[as.character(anos)] %>%
-  compact()
+  plyr::compact()
 produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
 names(produtos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])

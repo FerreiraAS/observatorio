@@ -903,8 +903,13 @@ colnames(table.projetos) <-
   )
 rownames(table.projetos) <- NULL
 
-# Escape ampersand in table data
+# Escape characters in table data & % $ # _ { } ~ ^ \
 try(table.projetos <- apply(table.projetos, 2, function(x) gsub("&", "e", x)), silent = TRUE)
+try(table.projetos <- apply(table.projetos, 2, function(x) gsub("%", "", x)), silent = TRUE)
+try(table.projetos <- apply(table.projetos, 2, function(x) gsub("$", "", x)), silent = TRUE)
+try(table.projetos <- apply(table.projetos, 2, function(x) gsub("$", "", x)), silent = TRUE)
+try(table.projetos <- apply(table.projetos, 2, function(x) gsub("#", "", x)), silent = TRUE)
+try(table.projetos <- apply(table.projetos, 2, function(x) gsub("_", "-", x)), silent = TRUE)
 
 # print tables
 
@@ -1719,8 +1724,14 @@ colnames(table) <-
     "Fim"
   )
 
-# Escape ampersand in table data
-try(table <- apply(table, 2, function(x) gsub("&", "e", x)), silent = TRUE)
+# Escape characters in table data & % $ # _ { } ~ ^ \
+try(table.projetos <- apply(table.projetos, 2, function(x) gsub("&", "e", x)), silent = TRUE)
+try(table.projetos <- apply(table.projetos, 2, function(x) gsub("%", "", x)), silent = TRUE)
+try(table.projetos <- apply(table.projetos, 2, function(x) gsub("$", "", x)), silent = TRUE)
+try(table.projetos <- apply(table.projetos, 2, function(x) gsub("$", "", x)), silent = TRUE)
+try(table.projetos <- apply(table.projetos, 2, function(x) gsub("#", "", x)), silent = TRUE)
+try(table.projetos <- apply(table.projetos, 2, function(x) gsub("_", "-", x)), silent = TRUE)
+
 
 ids <- order(table[, 1], decreasing = FALSE)
 table <- table[ids,]

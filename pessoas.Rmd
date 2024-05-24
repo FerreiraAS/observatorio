@@ -363,7 +363,7 @@ periodo <- anos
 
 # get docentes for the current period
 sucupira <- sucupira.list[as.character(periodo)] %>%
-  compact()
+  plyr::compact()
 sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
 names(sucupira) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
@@ -491,7 +491,7 @@ periodo <- most.recent
 
 # Get pós-docs for the current period
 sucupira <- sucupira.list[as.character(periodo)] %>%
-  compact()
+  plyr::compact()
 sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
 names(sucupira) <- names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
@@ -576,7 +576,7 @@ periodo <- anos
 
 # get docentes for the current period
 sucupira <- sucupira.list[as.character(periodo)] %>%
-  compact()
+  plyr::compact()
 sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
 names(sucupira) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
@@ -952,7 +952,7 @@ names(sucupira.list) <- as.character(anos)
 
 # get egressos for the current period
 egressos <- sucupira.list[as.character(periodo)] %>%
-  compact()
+  plyr::compact()
 egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
 names(egressos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
@@ -1011,7 +1011,7 @@ names(sucupira.list) <- as.character(anos)
 
 # get egressos for the current period
 egressos <- sucupira.list[as.character(periodo)] %>%
-  compact()
+  plyr::compact()
 egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
 names(egressos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
@@ -1070,7 +1070,7 @@ names(sucupira.list) <- as.character(anos)
 
 # get egressos for the current period
 egressos <- sucupira.list[as.character(periodo)] %>%
-  compact()
+  plyr::compact()
 egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
 names(egressos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
@@ -1129,7 +1129,7 @@ names(sucupira.list) <- as.character(anos)
 
 # get egressos for the current period
 egressos <- sucupira.list[as.character(periodo)] %>%
-  compact()
+  plyr::compact()
 egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
 names(egressos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
