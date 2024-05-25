@@ -905,13 +905,13 @@ rownames(table.projetos) <- NULL
 
 # Escape characters in table data & % $ # _ { }
 if(knitr::is_latex_output()) {
-  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("&", "\&", x)), silent = TRUE)
-  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("%", "\%", x)), silent = TRUE)
-  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("$", "\$", x)), silent = TRUE)
-  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("#", "\#", x)), silent = TRUE)
-  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("_", "\_", x)), silent = TRUE)
-  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("{", "\{", x)), silent = TRUE)
-  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("}", "\}", x)), silent = TRUE)
+  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\&", "\\\\&", x)), silent = TRUE)
+  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\%", "\\\\%", x)), silent = TRUE)
+  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\$", "\\\\$", x)), silent = TRUE)
+  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\#", "\\\\#", x)), silent = TRUE)
+  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\_", "\\\\_", x)), silent = TRUE)
+  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\{", "\\\\{", x)), silent = TRUE)
+  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\}", "\\\\}", x)), silent = TRUE)
 }
 
 # print tables
@@ -1729,13 +1729,13 @@ colnames(table) <-
 
 # Escape characters in table data & % $ # _ { }
 if(knitr::is_latex_output()) {
-  try(table <- apply(table, 2, function(x) gsub("&", "\&", x)), silent = TRUE)
-  try(table <- apply(table, 2, function(x) gsub("%", "\%", x)), silent = TRUE)
-  try(table <- apply(table, 2, function(x) gsub("$", "\$", x)), silent = TRUE)
-  try(table <- apply(table, 2, function(x) gsub("#", "\#", x)), silent = TRUE)
-  try(table <- apply(table, 2, function(x) gsub("_", "\_", x)), silent = TRUE)
-  try(table <- apply(table, 2, function(x) gsub("{", "\{", x)), silent = TRUE)
-  try(table <- apply(table, 2, function(x) gsub("}", "\}", x)), silent = TRUE)
+  try(table <- apply(table, 2, function(x) gsub("\\&", "\\\\&", x)), silent = TRUE)
+  try(table <- apply(table, 2, function(x) gsub("\\%", "\\\\%", x)), silent = TRUE)
+  try(table <- apply(table, 2, function(x) gsub("\\$", "\\\\$", x)), silent = TRUE)
+  try(table <- apply(table, 2, function(x) gsub("\\#", "\\\\#", x)), silent = TRUE)
+  try(table <- apply(table, 2, function(x) gsub("\\_", "\\\\_", x)), silent = TRUE)
+  try(table <- apply(table, 2, function(x) gsub("\\{", "\\\\{", x)), silent = TRUE)
+  try(table <- apply(table, 2, function(x) gsub("\\}", "\\\\}", x)), silent = TRUE)
 }
 
 ids <- order(table[, 1], decreasing = FALSE)
