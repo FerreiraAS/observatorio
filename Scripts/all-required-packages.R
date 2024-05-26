@@ -119,6 +119,11 @@ if (!require("rcrossref", character.only = TRUE, quietly = TRUE)) {
   devtools::install_github("ropensci/rcrossref")
 }
 
+if (!require("pacman")) {
+  install.packages("pacman")
+  pacman::p_load_gh("trinker/textreadr")
+}
+
 if (!require("retractcheck",
              character.only = TRUE,
              quietly = TRUE)) {
@@ -127,11 +132,6 @@ if (!require("retractcheck",
 
 if (!require("sf", character.only = TRUE, quietly = TRUE)) {
   remotes::install_github("r-spatial/sf")
-}
-
-if (!require("pacman")) {
-  install.packages("pacman")
-  pacman::p_load_gh("trinker/textreadr")
 }
 
 # load all libraries
