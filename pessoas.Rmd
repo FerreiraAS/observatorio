@@ -505,12 +505,10 @@ docentes <- sucupira[
   !duplicated(sucupira[, match("Pós-Doc Nome", colnames(sucupira)):match("Vínculo Fim", colnames(sucupira))]), ]
 docentes <- docentes[order(docentes$"Pós-Doc Nome"),]
 
-if (dim(docentes)[1] == 0) {
-  cat("*Sem dados para exibir*")
-} else {
+table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 6))
+if (dim(docentes)[1] != 0) {
   docentes <- docentes[order(docentes$'Pós-Doc Nome'),]
 
-  table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 6))
   for (i in 1:dim(docentes)[1]) {
     table <- cbind(
       paste0(
@@ -549,14 +547,14 @@ if (dim(docentes)[1] == 0) {
       "País")
   rownames(table.2) <- NULL
 
-  # Print tables
   ids <- order(table.2$'Nome', decreasing = FALSE)
-  table <- table.2[ids, ]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  cat(knitr::knit_print(create_dt(table, title = "Pessoas - Pós-Docs - 2024-2021")))
-
-  source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+  table.2 <- table.2[ids, ]
 }
+
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+cat(knitr::knit_print(create_dt(table.2, title = "Pessoas - Pós-Docs - Credenciados")))
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -600,12 +598,10 @@ docentes <-
       ), ]
 docentes <- docentes[order(docentes$"Pós-Doc Nome"),]
 
-if (dim(docentes)[1] == 0) {
-  cat("*Sem dados para exibir*")
-} else {
+table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 6))
+if (dim(docentes)[1] != 0) {
   docentes <- docentes[order(docentes$'Pós-Doc Nome'),]
   
-  table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 6))
   for (i in 1:dim(docentes)[1]) {
     table <- cbind(
       paste(
@@ -646,14 +642,15 @@ if (dim(docentes)[1] == 0) {
       "ORCID",
       "País")
   rownames(table.2) <- NULL
-  # print tables
-  ids <- order(table.2$'Nome', decreasing = FALSE)
-  table <- table.2[ids, ]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  cat(knitr::knit_print(create_dt(table, title = "Pessoas - Pós-Docs - 2024-2021")))
   
-  source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+  ids <- order(table.2$'Nome', decreasing = FALSE)
+  table.2 <- table.2[ids, ]
 }
+
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+cat(knitr::knit_print(create_dt(table.2, title = "Pessoas - Pós-Docs - Histórico")))
+  
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -699,12 +696,10 @@ discentes <- unique(discentes)
 
 if (dim(discentes)[1] != 0) {
   ids <- order(discentes$'Ano de Matrícula', decreasing = TRUE)
-  table <- discentes[ids,]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pessoas - Discentes - Doutorado")
-} else {
-  cat("*Sem dados para exibir*")
+  discentes <- discentes[ids,]
 }
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(discentes, title = "Pessoas - Discentes - Matriculados")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -811,7 +806,7 @@ if (dim(discentes)[1] != 0) {
       full_width = T,
       position = "center"
     ) %>%
-  add_header_above(c(" ", "Meses de curso" = dim(summ.table)[2]))
+  kableExtra::add_header_above(c(" ", "Meses de curso" = dim(summ.table)[2]))
   )
 } else {
   cat("*Sem dados para exibir*")
@@ -920,7 +915,7 @@ if (dim(discentes)[1] != 0) {
       full_width = T,
       position = "center"
     ) %>%
-  add_header_above(c(" ", "Meses de curso" = dim(summ.table)[2]))
+  kableExtra::add_header_above(c(" ", "Meses de curso" = dim(summ.table)[2]))
   )
 } else {
   cat("*Sem dados para exibir*")
@@ -978,15 +973,13 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  table <- egressos %>% dplyr::arrange(
+  egressos <- egressos %>% dplyr::arrange(
     dplyr::desc(egressos$'Data Situação'),
     egressos$'Nome Discente'
     )
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pessoas - Egressos - Titulados")
-} else {
-  cat("*Sem dados para exibir*")
 }
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(egressos, title = "Pessoas - Egressos - Titulados")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1037,15 +1030,13 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  table <- egressos %>% dplyr::arrange(
+  egressos <- egressos %>% dplyr::arrange(
     dplyr::desc(egressos$'Data Situação'),
     egressos$'Nome Discente'
     )
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pessoas - Egressos - 5 anos")
-} else {
-  cat("*Sem dados para exibir*")
 }
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(egressos, title = "Pessoas - Egressos - 5 anos")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1096,22 +1087,20 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  table <- egressos %>% dplyr::arrange(
+  egressos <- egressos %>% dplyr::arrange(
     dplyr::desc(egressos$'Data Situação'),
     egressos$'Nome Discente'
     )
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pessoas - Egressos - 10 anos")
-} else {
-  cat("*Sem dados para exibir*")
 }
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(egressos, title = "Pessoas - Egressos - 10 anos")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
 
-### **Todos**
+### **Histórico**
 
 ```{r historico-egressos, eval = has.sucupira.files}
 # get years
@@ -1155,15 +1144,13 @@ egressos <- unique(egressos)
 colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 if (dim(egressos)[1] != 0) {
-  table <- egressos %>% dplyr::arrange(
+  egressos <- egressos %>% dplyr::arrange(
     dplyr::desc(egressos$'Data Situação'),
     egressos$'Nome Discente'
     )
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pessoas - Egressos - Histórico")
-} else {
-  cat("*Sem dados para exibir*")
 }
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(egressos, title = "Pessoas - Egressos - Histórico")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1312,12 +1299,10 @@ discentes <- discentes %>% dplyr::select("Ano de Matrícula", "Nome Discente")
 
 if (dim(discentes)[1] != 0) {
   ids <- order(discentes$'Ano de Matrícula', decreasing = TRUE)
-  table <- discentes[ids,]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pessoas - Discentes - Graduação")
-} else {
-  cat("*Sem dados para exibir*")
+  discentes <- discentes[ids,]
 }
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(discentes, title = "Pessoas - Discentes - Graduação")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1366,13 +1351,9 @@ for (j in 1:length(abas)) {
   grupos <- cbind(grupos.raw[, -ncol(grupos.raw)], Abrir)
   
   # print table
-  if (dim(grupos)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(grupos, title = paste0("Pessoas - Grupos de Pesquisa - ", abas[j]))))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
-  
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  cat(knitr::knit_print(create_dt(grupos, title = paste0("Pessoas - Grupos de Pesquisa - ", abas[j]))))
+
   # print end of tab rows
   cat('\n\n')
   cat('**Fontes**: [**Diretório de Grupos de Pesquisa**](https://lattes.cnpq.br/web/dgp)')
@@ -1419,12 +1400,10 @@ externos$`Instituição de Origem` <- toupper(externos$`Instituição de Origem`
 
 if (dim(externos)[1] != 0) {
   ids <- order(externos$'Nome do Participante', decreasing = FALSE)
-  table <- externos[ids,]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pessoas - Participantes externos - Nacionais")
-} else {
-  cat("*Sem dados para exibir*")
+  externos <- externos[ids,]
 }
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(externos, title = "Pessoas - Participantes externos - Nacionais")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1463,12 +1442,10 @@ externos$`Instituição de Origem` <- toupper(externos$`Instituição de Origem`
 
 if (dim(externos)[1] != 0) {
   ids <- order(externos$'Nome do Participante', decreasing = FALSE)
-  table <- externos[ids,]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pessoas - Participantes externos - Internacionais")
-} else {
-  cat("*Sem dados para exibir*")
+  externos <- externos[ids,]
 }
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(externos, title = "Pessoas - Participantes externos - Internacionais")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1499,12 +1476,10 @@ externos$`Instituição de Origem` <- toupper(externos$`Instituição de Origem`
 
 if (dim(externos)[1] != 0) {
   ids <- order(externos$'Instituição de Origem', decreasing = FALSE)
-  table <- externos[ids,]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pessoas - Participantes externos - Instituições")
-} else {
-  cat("*Sem dados para exibir*")
+  externos <- externos[ids,]
 }
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(externos, title = "Pessoas - Participantes externos - Instituições e Países")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```

@@ -679,13 +679,9 @@ for (j in 1:length(abas)) {
                        col_types = c("text"))
   
   # print table
-  if (dim(infraestrutura.raw)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(infraestrutura.raw, title = "Programa - Infraestrutura")))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
-  
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  cat(knitr::knit_print(create_dt(infraestrutura.raw, title = paste0("Programa - Infraestrutura - ", abas[j]))))
+
   # print end of tab rows
   cat('\n\n')
   cat('**Fontes**: **PPG**')
@@ -724,14 +720,10 @@ for (j in 1:length(abas)) {
   lab.data <- laboratorios.raw[-1,]
 
   # print table
-  if (dim(lab.data)[1] != 0) {
-    cat(paste0("**", unlist(name), "**"))
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(lab.data, title = paste0("Programa - Laboratórios - ", name))))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
-    # print end of tab rows
+  cat(paste0("**", unlist(name), "**"))
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  cat(knitr::knit_print(create_dt(lab.data, title = paste0("Programa - Laboratórios - ", name))))
+  # print end of tab rows
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
@@ -755,15 +747,8 @@ cursos.raw <-
 cursos <- dplyr::select(cursos.raw, c("Código", "Curso", "Nível"))
 
 # print tables
-print(
-  knitr::kable(cursos, align = c("l", rep("c", ncol(
-    cursos
-  ) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(cursos, title = "Programa - Cursos - Níveis")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -780,136 +765,8 @@ creditos.raw <-
                      col_types = c("text"))
 
 # print tables
-print(
-  knitr::kable(creditos.raw, align = c("l", rep(
-    "c", ncol(creditos.raw) - 2
-  ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = T,
-    position = "center"
-  )
-)
-```
-
-```{r estrutura-academica-atual-grafico, eval = has.sucupira.files}
-# load custom function
-source("Scripts/get-initials.R", local = knitr::knit_global())
-
-# disciplinas
-sheet <- "Disciplinas"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# most recent Sucupira year
-most.recent <-
-  as.character(ifelse(
-    !is.null(sucupira.list[[format(Sys.Date(), "%Y")]]),
-    format(Sys.Date(), "%Y"),
-    max(as.numeric(names(sucupira.list)))
-  ))
-
-# read separate sheets
-disciplinas.raw <- sucupira.list[[most.recent]]
-disciplinas.raw <-
-  disciplinas.raw[is.na(disciplinas.raw$`Data de fim`), ]
-
-# select level
-course.level <- "Mestrado"
-disciplinas.msc <-
-  disciplinas.raw[stringr::str_detect(disciplinas.raw$`Nível do Curso`, course.level), ]
-
-table.msc <-
-  data.frame(
-    disciplinas.msc$`Nome da Disciplina`,
-    disciplinas.msc$`Indicadora de disciplina obrigatória`,
-    disciplinas.msc$`Quantidade de créditos`,
-    disciplinas.msc$`Carga Horária`
-  )
-try(colnames(table.msc) <-
-      c("Disciplina", "Obrigatória", "CR", "CH"),
-    silent = TRUE)
-
-# select level
-course.level <- "Doutorado"
-disciplinas.dsc <-
-  disciplinas.raw[stringr::str_detect(disciplinas.raw$`Nível do Curso`, course.level), ]
-table.dsc <-
-  data.frame(
-    disciplinas.dsc$`Nome da Disciplina`,
-    disciplinas.dsc$`Indicadora de disciplina obrigatória`,
-    disciplinas.dsc$`Quantidade de créditos`,
-    disciplinas.dsc$`Carga Horária`
-  )
-try(colnames(table.dsc) <-
-      c("Disciplina", "Obrigatória", "CR", "CH"),
-    silent = TRUE)
-
-table <-
-  base::merge(table.msc,
-        table.dsc,
-        by = "Disciplina",
-        all.x = TRUE,
-        all.y = TRUE)
-try(colnames(table) <-
-      c(
-        "Disciplina",
-        "Obrigatória (MA)",
-        "CR (MA)",
-        "CH (MA)",
-        "Obrigatória (DA)",
-        "CR (DA)",
-        "CH (DA)"
-      ),
-    silent = TRUE)
-
-if (!is.null(table)) {
-  layout(matrix(
-    c(1, 2, 3, 3),
-    nrow = 2,
-    ncol = 2,
-    byrow = TRUE
-  ), heights = c(0.7, 0.3))
-  par(oma = c(0.1, 0.1, 2, 0.1), mar = c(1, 1, 1, 1))
-  # generate plot of total per course
-  if (dim(table.msc)[1] != 0) {
-    pie(
-      table(table.msc[, which(colnames(table.msc) == "Obrigatória")]),
-      labels = NA,
-      col = RColorBrewer::brewer.pal(n = min(unique(
-        colnames(table.msc)
-      ), 3), name = "Set3"),
-      init.angle = 90,
-      main = "Mestrado"
-    )
-  }
-  if (dim(table.dsc)[1] != 0) {
-    pie(
-      table(table.dsc[, which(colnames(table.dsc) == "Obrigatória")]),
-      labels = NA,
-      col = RColorBrewer::brewer.pal(n = min(unique(
-        colnames(table.dsc)
-      ), 3), name = "Set3"),
-      init.angle = 90,
-      main = "Doutorado"
-    )
-  }
-  plot(0, type = 'n', axes = FALSE)
-  obrigatoria <-
-    unique(disciplinas.raw$`Indicadora de disciplina obrigatória`)
-  obrigatoria[which(obrigatoria == "Sim")] <- "Obrigatória"
-  obrigatoria[which(obrigatoria == "Não")] <- "Eletiva"
-  legend(
-    "center",
-    legend = obrigatoria,
-    fill = RColorBrewer::brewer.pal(n = length(obrigatoria), name = "Set3"),
-    box.lwd = 0,
-    cex = 1
-  )
-} else {
-  cat("*Sem dados para exibir*")
-}
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(creditos.raw, title = "Programa - Cursos - Créditos")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1537,13 +1394,9 @@ for (j in 1:length(abas)) {
   editais <- editais[ids,]
 
   # print table
-  if (dim(editais)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(editais, title = "Programa - Editais")))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
-  
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  cat(knitr::knit_print(create_dt(editais, title = paste0("Programa - Editais - ", abas[j]))))
+
   # print end of tab rows
   cat('\n\n')
   cat('**Fontes**: **PPG**')
@@ -1595,13 +1448,9 @@ for (j in 1:length(abas)) {
   bolsas.raw <- cbind(bolsas.raw[, -3], Abrir)
   
   # print table
-  if (dim(bolsas.raw)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(bolsas.raw, title = "Programa - Bolsas de estudo")))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
-  
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  cat(knitr::knit_print(create_dt(bolsas.raw, title = paste0("Programa - Bolsas de estudo - ", abas[j]))))
+
   # print end of tab rows
   cat('\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
@@ -1655,13 +1504,9 @@ for (j in 1:length(abas)) {
   calendarios <- calendarios[ids,]
 
   # print table
-  if (dim(calendarios)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(calendarios, title = "Programa - Calendários")))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
-  
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  cat(knitr::knit_print(create_dt(calendarios, title = paste0("Programa - Calendários - ", abas[j]))))
+
   # print end of tab rows
   cat('\n\n')
   cat('**Fontes**: **PPG**')
@@ -2050,13 +1895,9 @@ for (j in 1:length(abas)) {
   convenios <- cbind(convenios.raw[, -3], Abrir)
   
   # print table
-  if (dim(convenios)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(convenios, title = "Programa - Convênios institucionais")))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
-  
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  cat(knitr::knit_print(create_dt(convenios, title = paste0("Programa - Convênios institucionais - ", abas[j]))))
+
   # print end of tab rows
   cat('\n\n')
   cat('**Fontes**: **PPG**')
@@ -2108,15 +1949,11 @@ for (j in 1:length(abas)) {
   cooperacoes <- cbind(cooperacoes.raw[, -3], Abrir)
   
   # print table
-  if (dim(cooperacoes)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(
-      create_dt(cooperacoes, title = "Programa - Cooperação interinstitucional")
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  cat(knitr::knit_print(
+    create_dt(cooperacoes, title = paste0("Programa - Cooperação interinstitucional - ", abas[j]))
     ))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
-  
+
   # print end of tab rows
   cat('\n\n')
   cat('**Fontes**: **PPG**')
@@ -2136,52 +1973,41 @@ cat('<br>')
 ```
 
 ```{r internacional, eval = has.internacionalizacao}
-# initialize all sheets
-abas <- readxl::excel_sheets("PPG/Internacionalização.xlsx")
+# read separate sheets
+internacional.raw <-
+  readxl::read_excel("PPG/Internacionalização.xlsx",
+                     sheet = "Internacionalização",
+                     col_types = c("text"))
 
-# display each sheet in a tab
-for (j in 1:length(abas)) {
-  cat('\n\n<!-- -->\n\n')
-  cat(paste0('### **', abas[j], '**'))
-  cat('\n\n<!-- -->\n\n')
-  internacional.raw <-
-    readxl::read_excel(
-      "PPG/Internacionalização.xlsx",
-      sheet = abas[j],
-      col_types = c("text")
-    )
-  
-  # replace the link by a tag
-  Abrir <- matrix(NA, nrow = dim(internacional.raw)[1])
-  colnames(Abrir) <- "Abrir"
-  # add hyperlinks
-  for (i in 1:dim(internacional.raw)[1]) {
-    if (!is.na(internacional.raw[i, 4])) {
-      Abrir[i] <-
-        paste0('<a href="',
-               internacional.raw[i, 4],
-               '" target="_blank"',
-               '>',
-               # fontawesome icon
-               fontawesome::fa("up-right-from-square"),
-               '</a>')
-    }
+Abrir <- matrix(NA, nrow = dim(internacional.raw)[1])
+colnames(Abrir) <- "Abrir"
+# add hyperlinks
+for (i in 1:dim(internacional.raw)[1]) {
+  if (!is.na(internacional.raw[i, ncol(internacional.raw)])) {
+    Abrir[i] <-
+      paste0('<a href="',
+             internacional.raw[i, ncol(internacional.raw)],
+             '" target="_blank"',
+             '>',
+             # fontawesome icon
+             fontawesome::fa("up-right-from-square"),
+             '</a>')
   }
-  internacional <- cbind(internacional.raw[, -4], Abrir)
-  
-  # print table
-  if (dim(internacional)[1] != 0) {
-    source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-    cat(knitr::knit_print(create_dt(internacional, title = "Programa - Internacionalização")))
-  } else {
-    cat("*Sem dados para exibir*")
-  }
-  
-  # print end of tab rows
-  cat('\n\n')
-  cat('**Fontes**: **PPG**')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
+internacional <- cbind(internacional.raw[,-ncol(internacional.raw)], Abrir)
+
+# print tables
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(internacional, title = "Programa - Internacionalização")
+
+# print end of tab rows
+cat('\n\n')
+cat('**Fontes**: **PPG**')
+cat(
+  '<br><a style="float:right" href="#top"><b>Início &nbsp;</b>',
+  fontawesome::fa("circle-arrow-up"),
+  '</a><br>'
+)
 ```
 
 <br>
