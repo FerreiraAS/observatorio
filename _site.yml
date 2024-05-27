@@ -211,22 +211,22 @@ navbar:
       href: [links.html]
     - text: ""
       icon: "fa-binoculars"
-      href: [https://sucupira-beta.capes.gov.br/sucupira4/observatorio/detalhamento/programas/]
+      href: [https://sucupira-beta.capes.gov.br/sucupira4/observatorio/detalhamento/programas/798]
     - text: ""
       icon: "fa-share-nodes"
       menu:
         - text: "E-mail"
           icon: "fa-envelope"
-          href: [mailto:arthur_sf@icloud.com]
+          href: [mailto:coordenacaoppgcr@gmail.com]
         - text: "Site institucional"
           icon: "fa-globe"
-          href: [https://orcid.org/0000-0001-7014-2002]
+          href: [http://www.eeffto.ufmg.br/eeffto/]
         - text: "Instagram"
           icon: "fa-instagram"
-          href: [https://www.instagram.com/arthur.sa.ferreira]
+          href: [https://www.instagram.com/ppgcr.ufmg/]
         - text: "Facebook"
           icon: "fa-facebook"
-          href: [https://pt-br.facebook.com/arthur.sa.ferreira]
+          href: [https://www.facebook.com/cienciasdareabilitacaoufmg/]
   right:
     - text: ""
       icon: "fa-github"

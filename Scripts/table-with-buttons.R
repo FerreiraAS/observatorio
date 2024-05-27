@@ -3,7 +3,7 @@ create_dt <- function(x, title, pageLength = 4) {
     x,
     caption = format(Sys.Date(), "%d/%m/%Y"),
     rownames = FALSE,
-    extensions = c('Buttons', 'ColReorder', 'Responsive'),
+    extensions = c('Buttons', 'Responsive'),
     options = list(
       colReorder = FALSE,
       pageLength = pageLength,

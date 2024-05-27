@@ -1960,11 +1960,16 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 cat('<br>')
 ```
 
-```{r pandemia-artigos-periodicos-icon, eval = any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
+```{r pandemia-artigos-periodicos-icons, eval = any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
 # bind sources
-try(doi_with_altmetric <- c(doi_with_altmetric_artigos_impacto, doi_with_altmetric_resumos_impacto), silent = TRUE)
-try(doi_without_altmetric <- c(doi_without_altmetric_artigos_impacto, doi_without_altmetric_resumos_impacto), silent = TRUE)
-try(references <- c(references_artigos_impacto, references_resumos_impacto), silent = TRUE)
+try(doi_with_altmetric <- dplyr::bind_rows(doi_with_altmetric_artigos_impacto,
+                                           doi_with_altmetric_resumos_impacto),
+    silent = TRUE)
+try(doi_without_altmetric <- dplyr::bind_rows(doi_without_altmetric_artigos_impacto,
+                                              doi_without_altmetric_resumos_impacto),
+    silent = TRUE)
+try(references <- dplyr::bind_rows(references_artigos_impacto, references_resumos_impacto),
+    silent = TRUE)
 
 # available years of publication
 try(years <-
@@ -2045,7 +2050,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 cat('<br>')
 ```
 
-```{r pandemia-preprints-icon, eval = has.preprints.ppg}
+```{r pandemia-preprints-icons, eval = has.preprints.ppg}
 # bind sources
 try(doi_with_altmetric <- doi_with_altmetric_preprints_impacto, silent = TRUE)
 try(doi_without_altmetric <- doi_without_altmetric_preprints_impacto, silent = TRUE)
@@ -2130,7 +2135,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 cat('<br>')
 ```
 
-```{r pandemia-livros-icon, eval = has.livros.ppg}
+```{r pandemia-livros-icons, eval = has.livros.ppg}
 # bind sources
 try(doi_with_altmetric <- doi_with_altmetric_livros_impacto, silent = TRUE)
 try(doi_without_altmetric <- doi_without_altmetric_livros_impacto, silent = TRUE)
@@ -2215,7 +2220,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 cat('<br>')
 ```
 
-```{r pandemia-capitulos-icon, eval = has.capitulos.ppg}
+```{r pandemia-capitulos-icons, eval = has.capitulos.ppg}
 # bind sources
 try(doi_with_altmetric <- doi_with_altmetric_capitulos_impacto, silent = TRUE)
 try(doi_without_altmetric <- doi_without_altmetric_capitulos_impacto, silent = TRUE)
@@ -2300,7 +2305,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 cat('<br>')
 ```
 
-```{r pandemia-trabalhos-anais-icon, eval = has.anais.ppg}
+```{r pandemia-trabalhos-anais-icons, eval = has.anais.ppg}
 # bind sources
 try(doi_with_altmetric <- doi_with_altmetric_anais_impacto, silent = TRUE)
 try(doi_without_altmetric <- doi_without_altmetric_anais_impacto, silent = TRUE)

@@ -391,7 +391,7 @@ premio.capes <-
 
 # print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(premio.capes, title = "Programa - Área CAPES")
+create_dt(premio.capes, title = "Destaques - Prêmio CAPES de Tese")
 
 # Print end of tab rows
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')

@@ -576,7 +576,7 @@ if (dim(produtos)[1] != 0) {
     idx2 <- produtos$`Item de Detalhamento` %in% item.detalhamento
     idx <- and(idx1, idx2)
     doi_anais_sucupira <- rbind(
-      doi_artigos_resumos_sucupira,
+      doi_anais_sucupira,
       produtos$`Valor do Item de Detalhamento`[which(idx == TRUE)]
     )
   }
@@ -617,7 +617,7 @@ if (dim(produtos)[1] != 0) {
     idx2 <- produtos$`Item de Detalhamento` %in% item.detalhamento
     idx <- and(idx1, idx2)
     doi_livros_sucupira <- rbind(
-      doi_artigos_resumos_sucupira,
+      doi_livros_sucupira,
       produtos$`Valor do Item de Detalhamento`[which(idx == TRUE)]
     )
   }
@@ -1186,12 +1186,12 @@ if (!sjmisc::is_empty(dois)) {
 
 ```{r bind-all, cache = TRUE, cache.path = "cache/bind-all/", eval = any(has.producao.sucupira, has.producao.ppg)}
 # recall for cache
-doi_with_altmetric_artigos
-doi_with_altmetric_resumos
-doi_with_altmetric_preprints
-doi_with_altmetric_livros
-doi_with_altmetric_capitulos
-doi_with_altmetric_anais
+doi_with_altmetric_artigos <- doi_with_altmetric_artigos
+doi_with_altmetric_resumos <- doi_with_altmetric_resumos
+doi_with_altmetric_preprints <- doi_with_altmetric_preprints
+doi_with_altmetric_livros <- doi_with_altmetric_livros
+doi_with_altmetric_capitulos <- doi_with_altmetric_capitulos
+doi_with_altmetric_anais <- doi_with_altmetric_anais
 
 # bind sources
 doi_with_altmetric_all <-
@@ -1206,12 +1206,12 @@ doi_with_altmetric_all <-
   as.data.frame()
 
 # recall for cache
-doi_without_altmetric_artigos
-doi_without_altmetric_resumos
-doi_without_altmetric_preprints
-doi_without_altmetric_livros
-doi_without_altmetric_capitulos
-doi_without_altmetric_anais
+doi_without_altmetric_artigos <- doi_without_altmetric_artigos
+doi_without_altmetric_resumos <- doi_without_altmetric_resumos
+doi_without_altmetric_preprints <- doi_without_altmetric_preprints
+doi_without_altmetric_livros <- doi_without_altmetric_livros
+doi_without_altmetric_capitulos <- doi_without_altmetric_capitulos
+doi_without_altmetric_anais <- doi_without_altmetric_anais
 
 # bind sources
 doi_without_altmetric_all <-
