@@ -3,7 +3,7 @@ print_buttons_dt <- function(x, title) {
     x,
     caption = format(Sys.Date(), "%d/%m/%Y"),
     rownames = FALSE,
-    extensions = 'Buttons',
+    extensions = c('Buttons'),
     options = list(
       colReorder = FALSE,
       pageLength = 0,

@@ -1046,9 +1046,9 @@ for (i in 1:dim(periodicos.raw)[1]) {
 periodicos <- cbind(periodicos.raw[, -3], Abrir)
 
 # add metrics
-source(file.path("Scripts", "get_citescore.R"), local = knitr::knit_global())
-source(file.path("Scripts", "get_sjr.R"), local = knitr::knit_global())
-source(file.path("Scripts", "get_webqualis.R"), local = knitr::knit_global())
+source(file.path("Scripts", "get-citescore.R"), local = knitr::knit_global())
+source(file.path("Scripts", "get-sjr.R"), local = knitr::knit_global())
+source(file.path("Scripts", "get-webqualis.R"), local = knitr::knit_global())
 periodicos$WebQualis <- rep('-', dim(periodicos)[1])
 periodicos$SJR <- rep('-', dim(periodicos)[1])
 periodicos$CiteScore <- rep('-', dim(periodicos)[1])
@@ -1590,35 +1590,18 @@ try(references_artigos_impacto <-
 )
 ```
 
-```{r pandemia-filtro-resumos, eval = any(has.artigos.resumos.ppg, has.artigos.resumos.sucupira)}
+```{r pandemia-filtro-resumos, eval = any(has.editoria.ppg, has.editoria.sucupira)}
 # dplyr::selecting those with COVID in the title
-try(doi_with_altmetric_resumos_impacto <-
-      doi_with_altmetric_resumos[grep(paste(tolower(pandemia), collapse = "|"),
-                              tolower(doi_with_altmetric_resumos$title)),], silent = TRUE)
-try(doi_without_altmetric_resumos_impacto <-
-      doi_without_altmetric_resumos[grep(paste(tolower(pandemia), collapse = "|"),
-                                 tolower(doi_without_altmetric_resumos$title)),],
+try(doi_with_altmetric_editoria_impacto <-
+      doi_with_altmetric_editoria[grep(paste(tolower(pandemia), collapse = "|"),
+                              tolower(doi_with_altmetric_editoria$title)),], silent = TRUE)
+try(doi_without_altmetric_editoria_impacto <-
+      doi_without_altmetric_editoria[grep(paste(tolower(pandemia), collapse = "|"),
+                                 tolower(doi_without_altmetric_editoria$title)),],
     silent = TRUE)
-try(references_resumos_impacto <-
-      references_resumos[grep(paste(tolower(pandemia), collapse = "|"), tolower(references_resumos)[, 2]),]
+try(references_editoria_impacto <-
+      references_editoria[grep(paste(tolower(pandemia), collapse = "|"), tolower(references_editoria)[, 2]),]
     , silent = TRUE
-)
-```
-
-```{r pandemia-filtro-preprints, eval = has.preprints.ppg}
-# dplyr::selecting those with COVID in the title
-try(doi_with_altmetric_preprints_impacto <-
-      doi_with_altmetric_preprints[grep(paste(tolower(pandemia), collapse = "|"),
-                                tolower(doi_with_altmetric_preprints$title)),],
-    silent = TRUE)
-try(doi_without_altmetric_preprints_impacto <-
-      doi_without_altmetric_preprints[grep(paste(tolower(pandemia), collapse = "|"),
-                                   tolower(doi_without_altmetric_preprints$title)),],
-    silent = TRUE)
-try(references_preprints_impacto <-
-      references_preprints[grep(paste(tolower(pandemia), collapse = "|"),
-                                tolower(references_preprints)[, 2]),],
-    silent = TRUE
 )
 ```
 
@@ -1633,23 +1616,6 @@ try(doi_without_altmetric_livros_impacto <-
     silent = TRUE)
 try(references_livros_impacto <-
       references_livros[grep(paste(tolower(pandemia), collapse = "|"), tolower(references_livros)[, 2]), ], silent = TRUE
-)
-```
-
-```{r pandemia-filtro-capitulos, eval = has.capitulos.ppg}
-# dplyr::selecting those with COVID in the title
-try(doi_with_altmetric_capitulos_impacto <-
-      doi_with_altmetric_capitulos[grep(paste(tolower(pandemia), collapse = "|"),
-                                tolower(doi_with_altmetric_capitulos$title)), ],
-    silent = TRUE)
-try(doi_without_altmetric_capitulos_impacto <-
-      doi_without_altmetric_capitulos[grep(paste(tolower(pandemia), collapse = "|"),
-                                   tolower(doi_without_altmetric_capitulos$title)), ],
-    silent = TRUE)
-try(references_capitulos_impacto <-
-      references_capitulos[grep(paste(tolower(pandemia), collapse = "|"),
-                                tolower(references_capitulos)[, 2]), ],
-    silent = TRUE
 )
 ```
 
@@ -1963,12 +1929,12 @@ cat('<br>')
 ```{r pandemia-artigos-periodicos-icons, eval = any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
 # bind sources
 try(doi_with_altmetric <- dplyr::bind_rows(doi_with_altmetric_artigos_impacto,
-                                           doi_with_altmetric_resumos_impacto),
+                                           doi_with_altmetric_editoria_impacto),
     silent = TRUE)
 try(doi_without_altmetric <- dplyr::bind_rows(doi_without_altmetric_artigos_impacto,
-                                              doi_without_altmetric_resumos_impacto),
+                                              doi_without_altmetric_editoria_impacto),
     silent = TRUE)
-try(references <- dplyr::bind_rows(references_artigos_impacto, references_resumos_impacto),
+try(references <- dplyr::bind_rows(references_artigos_impacto, references_editoria_impacto),
     silent = TRUE)
 
 # available years of publication
@@ -2041,91 +2007,6 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 
 <br>
 
-### **Preprint** {.tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !any(has.preprints.ppg)}
-cat('<br>')
-```
-
-```{r pandemia-preprints-icons, eval = has.preprints.ppg}
-# bind sources
-try(doi_with_altmetric <- doi_with_altmetric_preprints_impacto, silent = TRUE)
-try(doi_without_altmetric <- doi_without_altmetric_preprints_impacto, silent = TRUE)
-try(references <- references_preprints_impacto, silent = TRUE)
-
-# available years of publication
-try(years <-
-  na.omit(sort(unique(
-    c(doi_with_altmetric$published_on, doi_without_altmetric$published_on)
-  ), decreasing = TRUE)), silent = TRUE)
-
-# Verifica se há DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-} else {
-  # print export buttons
-  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
-  print_buttons_dt(references, title = "Ações durante a Pandemia - Preprints")
-}
-
-# Verifica se há DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-  cat('*Sem produção para exibir*')
-  cat('\n')
-} else {
-  # section header
-  cat('\n\n<!-- -->\n\n')
-  cat(
-    paste0(
-      "*Produtos (n = ",
-      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n"
-    )
-  )
-  cat('<br>')
-  
-  for (year in 1:length(years)) {
-    # print tab header
-    cat('\n\n<!-- -->\n\n')
-    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
-    
-    # print table of papers with/without badges
-    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
-    table.with.badges(
-      show.Altmetric = TRUE,
-      show.Dimensions = TRUE,
-      show.PlumX = TRUE,
-      show.CiteScore = FALSE,
-      show.SJR = FALSE,
-      show.Qualis = FALSE,
-      doi_with_altmetric = tryCatch(
-        doi_with_altmetric[doi_with_altmetric$published_on == years[year], ],
-        error = function(e) {
-          doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
-        }
-      ),
-      doi_without_altmetric = tryCatch(
-        doi_without_altmetric[doi_without_altmetric$published_on == years[year], ],
-        error = function(e) {
-          doi_without_altmetric <- list()
-        }
-      ),
-      citescore = citescore,
-      scimago = scimago,
-      qualis = qualis
-    )
-  }
-}
-```
-
-<br>
-
 ### **Livro** {.tabset}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -2155,91 +2036,6 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
   # print export buttons
   source("Scripts/print-only-buttons.R", local = knitr::knit_global())
   print_buttons_dt(references, title = "Ações durante a Pandemia - Livros")
-}
-
-# Verifica se há DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-  cat('*Sem produção para exibir*')
-  cat('\n')
-} else {
-  # section header
-  cat('\n\n<!-- -->\n\n')
-  cat(
-    paste0(
-      "*Produtos (n = ",
-      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n"
-    )
-  )
-  cat('<br>')
-  
-  for (year in 1:length(years)) {
-    # print tab header
-    cat('\n\n<!-- -->\n\n')
-    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
-    
-    # print table of papers with/without badges
-    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
-    table.with.badges(
-      show.Altmetric = TRUE,
-      show.Dimensions = TRUE,
-      show.PlumX = TRUE,
-      show.CiteScore = FALSE,
-      show.SJR = FALSE,
-      show.Qualis = FALSE,
-      doi_with_altmetric = tryCatch(
-        doi_with_altmetric[doi_with_altmetric$published_on == years[year], ],
-        error = function(e) {
-          doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
-        }
-      ),
-      doi_without_altmetric = tryCatch(
-        doi_without_altmetric[doi_without_altmetric$published_on == years[year], ],
-        error = function(e) {
-          doi_without_altmetric <- list()
-        }
-      ),
-      citescore = citescore,
-      scimago = scimago,
-      qualis = qualis
-    )
-  }
-}
-```
-
-<br>
-
-### **Capítulo** {.tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !any(has.capitulos.ppg)}
-cat('<br>')
-```
-
-```{r pandemia-capitulos-icons, eval = has.capitulos.ppg}
-# bind sources
-try(doi_with_altmetric <- doi_with_altmetric_capitulos_impacto, silent = TRUE)
-try(doi_without_altmetric <- doi_without_altmetric_capitulos_impacto, silent = TRUE)
-try(references <- references_capitulos_impacto, silent = TRUE)
-
-# available years of publication
-try(years <-
-  na.omit(sort(unique(
-    c(doi_with_altmetric$published_on, doi_without_altmetric$published_on)
-  ), decreasing = TRUE)), silent = TRUE)
-
-# Verifica se há DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-} else {
-  # print export buttons
-  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
-  print_buttons_dt(references, title = "Ações durante a Pandemia - Capítulos")
 }
 
 # Verifica se há DOIs
