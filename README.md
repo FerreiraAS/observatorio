@@ -372,7 +372,9 @@ O Observatório é atualizado periodicamente. Para receber atualizações no seu
 
 -   [**Observatório PPGRDF**](https://ppgrdf-upe.github.io/Observatorio_PPGRDF/) \| Programa de Pós-graduação em Reabilitação e Desempenho Funcional
 
+### [**UFMG**](http://www.eeffto.ufmg.br/eeffto/) **\| Universidade Federal de Minas Gerais**
 
+-   [**Observatório PPGCR**]() \| Programa de Pós-graduação em Ciências da Reabilitação
 
 ## **FAQ**
 
