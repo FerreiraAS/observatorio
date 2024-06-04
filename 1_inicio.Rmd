@@ -40,7 +40,7 @@ rm(list = ls(all = TRUE))
 source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
-```{r custom-yaml}
+```{r custom-yaml, eval = FALSE}
 source("Scripts/custom-yaml.R", local = knitr::knit_global())
 ```
 

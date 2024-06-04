@@ -1,6 +1,15 @@
-/* script for narrow margins */
-div.main-container {
-  max-width: 1280px;
+/* wide container HEADER */
+.container {
+  width: 99%;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0px 15px 0px 15px;
+}
+
+/* wide container BODY */
+div.container-fluid.main-container{
+  width: 99%;
   margin-left: auto;
   margin-right: auto;
+  padding: 0px 15px 0px 15px;
 }

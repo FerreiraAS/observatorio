@@ -97,43 +97,71 @@ navbar:
           href: [pessoas.html#grupos-pesquisa]
         - text: "Participantes externos"
           href: [pessoas.html#participantes-externos]
-    - text: "Produções"
-      href: [producoes.html]
+    - text: "Teses e dissertações"
+      href: [repositorio.html]
       menu:
-        - text: "-Produções-"
-          href: [producoes.html]
-        - text: "Repositório"
-          href: [producoes.html#repositorio]
+        - text: "-Teses e dissertações-"
+          href: [repositorio.html]
         - text: "Tese"
-          href: [producoes.html#tese]
+          href: [repositorio.html#tese]
         - text: "Dissertação"
-          href: [producoes.html#dissertacao]
+          href: [repositorio.html#dissertacao]
+        - text: "Repositório"
+          href: [repositorio.html#repositorio]
+    - text: "Bibliográfica"
+      href: [bibliografica.html]
+      menu:
+        - text: "Artigo em jornal ou revista"
+          href: [bibliografica.html#jornal-revista]
         - text: "Artigo em periódico"
-          href: [producoes.html#artigo-periodico]
-        - text: "Preprint"
-          href: [producoes.html#preprint]
-        - text: "Editoria"
-          href: [producoes.html#editoria]
-        - text: "Livro"
-          href: [producoes.html#livro]
-        - text: "Capítulo"
-          href: [producoes.html#capitulo]
-        - text: "Trabalho em anais"
-          href: [producoes.html#trabalho-em-anais]
-        - text: "Apresentação de trabalho"
-          href: [producoes.html#apresentacao-trabalho]
-        - text: "Organização de evento"
-          href: [producoes.html#organizacao-evento]
-        - text: "Curso de curta duração"
-          href: [producoes.html#curso-curta-duracao]
-        - text: "Material didático e instrucional"
-          href: [producoes.html#didatico-instrucional]
-        - text: "Patente"
-          href: [producoes.html#patente]
-        - text: "Aplicativo"
-          href: [producoes.html#aplicativo]
+          href: [bibliografica.html#artigo-periodico]
         - text: "Retratação"
-          href: [producoes.html#retratacao]
+          href: [bibliografica.html#retratacao]
+        - text: "Livro"
+          href: [bibliografica.html#livro]
+        - text: "Partitura"
+          href: [bibliografica.html#partitura]
+        - text: "Trabalho em anais"
+          href: [bibliografica.html#trabalho-em-anais]
+        - text: "Tradução"
+          href: [bibliografica.html#traducao]
+        - text: "Outro"
+          href: [bibliografica.html#outro]
+    - text: "Técnica"
+      href: [tecnica.html]
+      menu:
+        - text: "Apresentação de trabalho"
+          href: [tecnica.html#apresentacao-trabalho]
+        - text: "Cartas, mapas ou similares"
+          href: [tecnica.html#cartas-mapas]
+        - text: "Curso de curta duração"
+          href: [tecnica.html#curso-curta-duracao]
+        - text: "Desenvolvimento de aplicativo"
+          href: [tecnica.html#aplicativo]
+        - text: "Desenvolvimento de material didático e instrucional"
+          href: [tecnica.html#didatico-instrucional]
+        - text: "Desenvolvimento de produto"
+          href: [tecnica.html#produto]
+        - text: "Desenvolvimento de técnica"
+          href: [tecnica.html#tecnica]
+        - text: "Editoria"
+          href: [tecnica.html#editoria]
+        - text: "Manutenção de obra artística"
+          href: [tecnica.html#manutencao-obra]
+        - text: "Maquete"
+          href: [tecnica.html#maquete]
+        - text: "Organização de evento"
+          href: [tecnica.html#organizacao-evento]
+        - text: "Patente"
+          href: [tecnica.html#patente]
+        - text: "Programa de rádio ou TV"
+          href: [tecnica.html#radio-tv]
+        - text: "Relatório de pesquisa"
+          href: [tecnica.html#relatorio-pesquisa]
+        - text: "Serviço técnico"
+          href: [tecnica.html#servico-tecnico]
+        - text: "Outro"
+          href: [tecnica.html#outro]
     - text: "Destaques"
       href: [destaques.html]
       menu:
@@ -172,13 +200,6 @@ navbar:
           href: [impactos.html#acoes-pandemia]
     - text: "Galeria"
       href: [galeria.html]
-      menu:
-        - text: "-Galeria-"
-          href: [galeria.html]
-        - text: "Videos"
-          href: [galeria.html#videos]
-        - text: "Podcasts"
-          href: [galeria.html#podcasts]
     - text: "Downloads"
       href: [downloads.html]
     - text: "Autoavaliação"
@@ -207,18 +228,14 @@ navbar:
         - text: "Relatório quadrienal"
           icon: "fa-file-pdf"
           href: [autoavaliacao.pdf]
-    - text: "Links"
-      href: [links.html]
-    - text: ""
-      icon: "fa-binoculars"
-      href: [https://sucupira-beta.capes.gov.br/sucupira4/observatorio/detalhamento/programas/]
+  right:
     - text: ""
       icon: "fa-share-nodes"
       menu:
         - text: "E-mail"
           icon: "fa-envelope"
           href: [mailto:arthur_sf@icloud.com]
-        - text: "Site institucional"
+        - text: "Site"
           icon: "fa-globe"
           href: [https://orcid.org/0000-0001-7014-2002]
         - text: "Instagram"
@@ -227,7 +244,9 @@ navbar:
         - text: "Facebook"
           icon: "fa-facebook"
           href: [https://pt-br.facebook.com/arthur.sa.ferreira]
-  right:
+    - text: ""
+      icon: "fa-binoculars"
+      href: [https://sucupira-beta.capes.gov.br/sucupira4/observatorio/detalhamento/programas/]
     - text: ""
       icon: "fa-github"
       href: [https://github.com/FerreiraAS/observatorio]
