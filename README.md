@@ -39,13 +39,14 @@ Copyright © 2021 Arthur de Sá Ferreira, DSc. Todos os direitos reservados.
 -   [x] Home
 -   [x] Programa
 -   [x] Pessoas
--   [x] Produções
+-   [x] Teses e Dissertações
+-   [x] Produção Bibliográfica
+-   [x] Produção técnica
 -   [x] Destaques
 -   [x] Impactos
 -   [x] Galeria
 -   [x] Downloads
 -   [x] Autoavaliação
--   [x] Links
 -   [x] Observatório CAPES
 -   [x] Redes sociais
 
