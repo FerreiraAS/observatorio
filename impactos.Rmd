@@ -63,7 +63,7 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 periodo.vigente <- anos
 ```
 
-## **Impacto educacional** {#impacto-educacional}
+## **Impacto educacional** {#impacto-educacional .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -72,7 +72,7 @@ periodo.vigente <- anos
 cat('<br>')
 ```
 
-### **Formação discente** {.tabset}
+### **Formação discente**
 
 ```{r turmas-tabela, eval = has.sucupira.files}
 # turmas
@@ -176,7 +176,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-## **Impacto científico** {#impacto-cientifico}
+## **Impacto científico** {#impacto-cientifico .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -1178,7 +1178,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 
 <br>
 
-## **Impacto tecnológico/econômico** {#impacto-tecnologico-economico}
+## **Impacto tecnológico/econômico** {#impacto-tecnologico-economico .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -1326,7 +1326,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 
 <br>
 
-## **Impacto sociocultural** {#impacto-sociocultural}
+## **Impacto sociocultural** {#impacto-sociocultural .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -1672,6 +1672,7 @@ if (dim(projetos)[1] != 0) {
       projetos$`Área de Concentração`,
       projetos$`Linha de Pesquisa`,
       projetos$`Nome do Projeto de Pesquisa`,
+      projetos$`Natureza do Projeto de Pesquisa`,
       projetos$`Nome do Membro do Projeto`,
       projetos$`Data de Início`
     )
@@ -1684,13 +1685,16 @@ if (dim(projetos)[1] != 0) {
     as.vector(unlist(lapply(table.projetos[, 2], FUN = stringr::str_to_sentence)))
   table.projetos[, 3] <-
     as.vector(unlist(lapply(table.projetos[, 3], FUN = stringr::str_to_title)))
+  table.projetos[, 4] <-
+    as.vector(unlist(lapply(table.projetos[, 4], FUN = stringr::str_to_title)))
   
   colnames(table.projetos) <-
     c(
       "Área de Concentração",
       "Linha de Pesquisa",
-      "Projeto de Pesquisa",
-      "Membro Responsável",
+      "Projeto",
+      "Natureza",
+      "Responsável",
       "Início"
     )
 }
@@ -2182,6 +2186,9 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = !any(has.sucupira.files)}
+cat('<br>')
+```
 
 <br>
 
@@ -2190,12 +2197,20 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = !any(has.sucupira.files)}
+cat('<br>')
+```
+
 <br>
 
 ### **Curso de curta duração** {#curso-curta-duracao .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !any(has.sucupira.files)}
+cat('<br>')
+```
 
 <br>
 
@@ -2204,6 +2219,10 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = !any(has.sucupira.files)}
+cat('<br>')
+```
+
 <br>
 
 ### **Patente** {#patente .tabset}
@@ -2211,9 +2230,17 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = !any(has.sucupira.files)}
+cat('<br>')
+```
+
 <br>
 
 ### **Aplicativo** {#aplicativo .tabset}
+
+```{r, eval = !any(has.sucupira.files)}
+cat('<br>')
+```
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">

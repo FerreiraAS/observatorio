@@ -309,6 +309,7 @@ table.projetos <-
     projetos$`Área de Concentração`,
     projetos$`Linha de Pesquisa`,
     projetos$`Nome do Projeto de Pesquisa`,
+    projetos$`Natureza do Projeto de Pesquisa`,
     projetos$`Nome do Membro do Projeto`,
     projetos$`Data de Início`
   )
@@ -321,16 +322,19 @@ table.projetos[, 2] <-
   as.vector(unlist(lapply(table.projetos[, 2], FUN = stringr::str_to_sentence)))
 table.projetos[, 3] <-
   as.vector(unlist(lapply(table.projetos[, 3], FUN = stringr::str_to_title)))
+table.projetos[, 4] <-
+  as.vector(unlist(lapply(table.projetos[, 4], FUN = stringr::str_to_sentence)))
 
 colnames(table.projetos) <-
   c("Área de Concentração",
     "Linha de Pesquisa",
-    "Projeto de Pesquisa",
-    "Membro Responsável",
+    "Projeto",
+    "Natureza",
+    "Responsável",
     "Início")
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.projetos, title = "Programa - Projetos de Pesquisa - Em andamento")
+create_dt(table.projetos, title = "Programa - Projetos - Em andamento")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -362,6 +366,7 @@ table.projetos <-
     projetos$`Área de Concentração`,
     projetos$`Linha de Pesquisa`,
     projetos$`Nome do Projeto de Pesquisa`,
+    projetos$`Natureza do Projeto de Pesquisa`,
     projetos$`Nome do Membro do Projeto`,
     projetos$`Data de Início`,
     projetos$`Data da Situação`
@@ -375,12 +380,15 @@ table.projetos[, 2] <-
   as.vector(unlist(lapply(table.projetos[, 2], FUN = stringr::str_to_sentence)))
 table.projetos[, 3] <-
   as.vector(unlist(lapply(table.projetos[, 3], FUN = stringr::str_to_title)))
+table.projetos[, 4] <-
+  as.vector(unlist(lapply(table.projetos[, 4], FUN = stringr::str_to_sentence)))
 
 colnames(table.projetos) <-
   c("Área de Concentração",
     "Linha de Pesquisa",
-    "Projeto de Pesquisa",
-    "Membro Responsável",
+    "Projeto",
+    "Natureza",
+    "Responsável",
     "Início",
     "Fim")
 

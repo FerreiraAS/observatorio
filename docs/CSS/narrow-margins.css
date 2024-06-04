@@ -1,15 +1,19 @@
 /* wide container HEADER */
 .container {
-  width: 99%;
-  margin-left: 0;
-  margin-right: 0;
-  padding: 0px 15px 0px 15px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* wide container BODY */
 div.container-fluid.main-container{
-  width: 99%;
+  width: 90%;
   margin-left: auto;
   margin-right: auto;
-  padding: 0px 15px 0px 15px;
+}
+
+.main-container {
+  max-width: 90% !important;
+  margin-left: auto;
+  margin-right: auto;
 }

@@ -857,6 +857,7 @@ sucupira.df <-
     "Área de Concentração",
     "Linha de Pesquisa",
     "Nome do Projeto de Pesquisa",
+    "Natureza do Projeto de Pesquisa",
     "Nome do Membro do Projeto",
     "Categoria do Membro do Projeto",
     "Data de Início",
@@ -866,6 +867,7 @@ sucupira.df <-
 sucupira.df$`Área de Concentração` <- tools::toTitleCase(tolower(sucupira.df$`Área de Concentração`))
 sucupira.df$`Linha de Pesquisa` <- tools::toTitleCase(tolower(sucupira.df$`Linha de Pesquisa`))
 sucupira.df$`Nome do Projeto de Pesquisa` <- tools::toTitleCase(tolower(sucupira.df$`Nome do Projeto de Pesquisa`))
+sucupira.df$`Natureza do Projeto de Pesquisa` <- tools::toTitleCase(tolower(sucupira.df$`Natureza do Projeto de Pesquisa`))
 sucupira.df$`Nome do Membro do Projeto` <- tools::toTitleCase(tolower(sucupira.df$`Nome do Membro do Projeto`))
 sucupira.df$`Categoria do Membro do Projeto` <- tools::toTitleCase(tolower(sucupira.df$`Categoria do Membro do Projeto`))
 sucupira.df$`Situação` <- tools::toTitleCase(tolower(sucupira.df$`Situação`))
@@ -877,6 +879,7 @@ table.projetos <-
     sucupira.df$`Área de Concentração`,
     sucupira.df$`Linha de Pesquisa`,
     sucupira.df$`Nome do Projeto de Pesquisa`,
+    sucupira.df$`Natureza do Projeto de Pesquisa`,
     sucupira.df$`Nome do Membro do Projeto`,
     sucupira.df$`Situação`
   )
@@ -897,8 +900,9 @@ colnames(table.projetos) <-
     "ID",
     "Área de Concentração",
     "Linha de Pesquisa",
-    "Projeto de Pesquisa",
-    "Membro Responsável",
+    "Projeto",
+    "Natureza",
+    "Responsável",
     "Situação"
   )
 rownames(table.projetos) <- NULL
@@ -980,7 +984,6 @@ knitr::kable(
   full_width = TRUE,
   position = "center"
 )
-
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1448,7 +1451,6 @@ if (knitr::is_latex_output()) {
   )
   kable_table
 }
-
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
