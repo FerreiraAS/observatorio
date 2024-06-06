@@ -198,8 +198,6 @@ navbar:
           href: [impactos.html#impacto-sociocultural]
         - text: "Ações durante a pandemia"
           href: [impactos.html#acoes-pandemia]
-    - text: "Galeria"
-      href: [galeria.html]
     - text: "Downloads"
       href: [downloads.html]
     - text: "Autoavaliação"
@@ -244,9 +242,9 @@ navbar:
         - text: "Facebook"
           icon: "fa-facebook"
           href: [https://pt-br.facebook.com/arthur.sa.ferreira]
-    - text: ""
-      icon: "fa-binoculars"
-      href: [https://sucupira-beta.capes.gov.br/sucupira4/observatorio/detalhamento/programas/]
+        - text: "Observatório CAPES"
+          icon: "fa-binoculars"
+          href: [https://sucupira-beta.capes.gov.br/sucupira4/observatorio/detalhamento/programas/]
     - text: ""
       icon: "fa-github"
       href: [https://github.com/FerreiraAS/observatorio]

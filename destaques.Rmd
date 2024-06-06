@@ -29,6 +29,14 @@ knitr::opts_chunk$set(
 )
 ```
 
+<!--load caches-->
+```{r load-caches, echo = FALSE, include = FALSE}
+folders <- list.dirs(file.path("cache/"), full.names = FALSE, recursive = FALSE)
+for(folder in folders){
+    knitr::load_cache(label = folder, path = paste0(file.path("cache", folder), "/"))
+}
+```
+
 <!--script for inserting LOGO ABOVE THE TOC-->
 ```{js}
 $(document).ready(function() {

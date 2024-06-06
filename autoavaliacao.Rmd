@@ -45,6 +45,14 @@ knitr::opts_chunk$set(
 )
 ```
 
+<!--load caches-->
+```{r load-caches, echo = FALSE, include = FALSE}
+folders <- list.dirs(file.path("cache/"), full.names = FALSE, recursive = FALSE)
+for(folder in folders){
+    knitr::load_cache(label = folder, path = paste0(file.path("cache", folder), "/"))
+}
+```
+
 <!--script for inserting LOGO ABOVE THE TOC-->
 ```{js}
 $(document).ready(function() {
@@ -1189,7 +1197,7 @@ table.lp.gt <-
   gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 ```
 
-```{r 1-1-1-pp, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
+```{r 1-1-1-pp-lp, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
 table.pp <-
   data.frame(matrix(
     NA,
@@ -1236,7 +1244,7 @@ my_N <- function(data, ...) {
 }
 
 colnames(table.pp.long) <-
-  c("Ano", "Projetos de Pesquisa por Linha")
+  c("Ano", "Projeto por Linha")
 
 # print tables
 table.pp.gt <-
@@ -1256,7 +1264,81 @@ table.pp.gt <-
     gtsummary::all_stat_cols() ~ "**{level}**"
   )) %>%
   gtsummary::remove_row_type(
-    variables = c('Projetos de Pesquisa por Linha'),
+    variables = c('Projeto por Linha'),
+    type = "level",
+    level_value = ("Projetos")
+  ) %>%
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+```
+
+```{r 1-1-1-pp-natureza, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
+table.pp.nt <-
+  data.frame(matrix(
+    NA,
+    nrow = length(unique(sucupira.df$`Nome do Projeto de Pesquisa`)),
+    ncol = length(quadrienal.vigente)
+  ))
+rownames(table.pp.nt) <- NULL
+table.pp.nt <-
+  cbind(unique(sucupira.df$`Nome do Projeto de Pesquisa`), table.pp.nt)
+colnames(table.pp.nt) <-
+  c("Nome do Projeto de Pesquisa", as.character(quadrienal.vigente))
+for (i in 1:dim(table.pp.nt)[1]) {
+  for (j in 1:length(quadrienal.vigente)) {
+    data <- sucupira.df[sucupira.df$Anos == quadrienal.vigente[j],]
+    table.pp.nt[i, j + 1] <-
+      try(data$`Natureza do Projeto de Pesquisa`[match(table.pp.nt$`Nome do Projeto de Pesquisa`[i],
+                                         data$`Nome do Projeto de Pesquisa`)], silent = TRUE)
+  }
+}
+
+table.pp.nt.long <-
+  tidyr::gather(table.pp.nt[, -1],
+                "Ano",
+                "Nome do Projeto de Pesquisa",
+                colnames(table.pp.nt)[-1],
+                factor_key = TRUE)
+
+# to title case
+table.pp.nt.long$`Nome do Projeto de Pesquisa` <- tools::toTitleCase(tolower(table.pp.nt.long$`Nome do Projeto de Pesquisa`))
+
+table.pp.nt.long <- rbind(
+  table.pp.nt.long,
+  data.frame(
+    "Ano" = rep(paste0(
+      min(quadrienal.vigente), "-", max(quadrienal.vigente)
+    ), times = dim(table.pp.nt)[1]),
+    "Nome do Projeto de Pesquisa" = rep("Projetos", times = dim(table.pp.nt)[1]),
+    check.names = FALSE
+  )
+)
+
+my_N <- function(data, ...) {
+  gtsummary::style_number(sum(data == "Projetos", na.rm = TRUE), digits = 0)
+}
+
+colnames(table.pp.nt.long) <-
+  c("Ano", "Natureza do projeto")
+
+# print tables
+table.pp.nt.gt <-
+  gtsummary::tbl_summary(
+    table.pp.nt.long,
+    by = "Ano",
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
+    missing = "no",
+    digits = gtsummary::everything() ~ 0
+  ) %>%
+  gtsummary::modify_header(label = "Ano", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels() %>%
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(list(
+    add_stat_1 ~ "**Quadriênio**",
+    gtsummary::all_stat_cols() ~ "**{level}**"
+  )) %>%
+  gtsummary::remove_row_type(
+    variables = c('Natureza do projeto'),
     type = "level",
     level_value = ("Projetos")
   ) %>%
@@ -1421,6 +1503,7 @@ table.all <-
   list(table.ac.gt,
        table.lp.gt,
        table.pp.gt,
+       table.pp.nt.gt,
        table.doc.gt,
        table.posdoc.gt
        )
@@ -1493,6 +1576,21 @@ cat('<summary>Projetos de pesquisa | Dados individuais</summary>')
 options(knitr.kable.NA = '')
 print(
   knitr::kable(table.pp, align = c("l", rep("c", ncol(table.pp) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>%
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+cat('</details>')
+```
+
+```{r pp-natureza-detalhes, eval = all(has.sucupira.files, knitr::is_html_output()), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
+cat('<details>')
+cat('<summary>Natureza do projeto | Dados individuais</summary>')
+options(knitr.kable.NA = '')
+print(
+  knitr::kable(table.pp.nt, align = c("l", rep("c", ncol(table.pp.nt) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>%
   kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,

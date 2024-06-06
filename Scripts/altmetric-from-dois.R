@@ -1,4 +1,4 @@
-# Getting Altmetrics Data Using API and R
+# Getting Altmetric Data Using API and R
 # by Arthur de Sá Ferreira
 
 # sources:

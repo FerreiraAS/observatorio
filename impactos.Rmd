@@ -29,6 +29,14 @@ knitr::opts_chunk$set(
 )
 ```
 
+<!--load caches-->
+```{r load-caches, echo = FALSE, include = FALSE}
+folders <- list.dirs(file.path("cache/"), full.names = FALSE, recursive = FALSE)
+for(folder in folders){
+    knitr::load_cache(label = folder, path = paste0(file.path("cache", folder), "/"))
+}
+```
+
 <!--script for inserting LOGO ABOVE THE TOC-->
 ```{js}
 $(document).ready(function() {
@@ -185,7 +193,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 cat('<br>')
 ```
 
-### **Projetos de pesquisa**
+### **Projetos**
 
 ```{r impacto-projetos, eval = has.sucupira.files}
 # read each tab content
@@ -215,7 +223,7 @@ síntese.ano <- síntese.ano %>%
     "Ano",
     "Áreas de concentração",
     "Linhas de pesquisa",
-    "Projetos de pesquisa"
+    "Projetos"
     ))
 
 # generate table (total by year)
@@ -226,7 +234,7 @@ table.1.1.1 <-
     type = list(
       "Áreas de concentração" ~ "continuous",
       "Linhas de pesquisa" ~ "continuous",
-      "Projetos de pesquisa" ~ "continuous"),
+      "Projetos" ~ "continuous"),
     statistic = list(gtsummary::all_continuous() ~ "{max}"),
     missing = "no",
     digits = list(gtsummary::everything() ~ 0)) %>%
@@ -242,7 +250,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **Produção do Programa**
+### **Produção**
 
 ```{r 3-1-2-data, eval = has.sucupira.files}
 # Produções - Detalhes
@@ -1635,7 +1643,7 @@ try(references_anais_impacto <-
 
 <br>
 
-### **Projetos de pesquisa**
+### **Projetos**
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -1921,328 +1929,231 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **Artigo em periódico** {.tabset}
+### **Produção bibliográfica** {#producao-bibliografica}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = !any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
+```{r, eval = !has.sucupira.files}
 cat('<br>')
 ```
 
-```{r pandemia-artigos-periodicos-icons, eval = any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
-# bind sources
-try(doi_with_altmetric <- dplyr::bind_rows(doi_with_altmetric_artigos_impacto,
-                                           doi_with_altmetric_editoria_impacto),
-    silent = TRUE)
-try(doi_without_altmetric <- dplyr::bind_rows(doi_without_altmetric_artigos_impacto,
-                                              doi_without_altmetric_editoria_impacto),
-    silent = TRUE)
-try(references <- dplyr::bind_rows(references_artigos_impacto, references_editoria_impacto),
-    silent = TRUE)
+```{r producao-bibliografica-tabela, eval = has.sucupira.files}
+# produção
+sheet <- "Produções - Autores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-# available years of publication
-try(years <-
-  na.omit(sort(unique(
-    c(doi_with_altmetric$published_on, doi_without_altmetric$published_on)
-  ), decreasing = TRUE)), silent = TRUE)
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
 
-# Verifica se há DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-} else {
-  # print export buttons
-  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
-  print_buttons_dt(references, title = "Ações durante a Pandemia - Artigos completos em periódicos")
-}
+# get data for the current period
+produtos <- sucupira.list[as.character(anos)] %>%
+  plyr::compact()
+produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
+names(produtos) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
-# Verifica se há DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-  cat('*Sem produção para exibir*')
-  cat('\n')
-} else {
-  # section header
-  cat('\n\n<!-- -->\n\n')
-  cat(
-    paste0(
-      "*Produtos (n = ",
-      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n"
-    )
-  )
-  cat('<br>')
-  
-  for (year in 1:length(years)) {
-    # print tab header
-    cat('\n\n<!-- -->\n\n')
-    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
-    
-    # print table of papers with/without badges
-    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
-    table.with.badges(
-      show.Altmetric = TRUE,
-      show.Dimensions = TRUE,
-      show.PlumX = TRUE,
-      show.CiteScore = TRUE,
-      show.SJR = TRUE,
-      show.Qualis = TRUE,
-      doi_with_altmetric = tryCatch(
-        doi_with_altmetric[doi_with_altmetric$published_on == years[year], ],
-        error = function(e) {
-          doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
-        }
+# select products
+produtos <- produtos[produtos$`Tipo de Produção` == "BIBLIOGRÁFICA", ]
+
+# get years
+produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
+
+# dplyr::selecting those with COVID in the title
+produtos <-
+  produtos[grep(paste(tolower(pandemia), collapse = "|"),
+                    tolower(produtos$`Nome da Produção`)),]
+
+# drop columns
+produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Subtipo de Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
+
+# format names
+produtos$`Subtipo de Produção` <- tools::toTitleCase(tolower(produtos$`Subtipo de Produção`))
+produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
+produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
+produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
+
+# produção detalhes
+sheet <- "Produções - Detalhes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# get data for the current period
+produtos.detalhes <- sucupira.list[as.character(anos)] %>%
+  plyr::compact()
+produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
+names(produtos.detalhes) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# loop
+produtos.list <- list()
+if (dim(produtos)[1] != 0) {
+  for (i in 1:length(unique(produtos$"ID da Produção"))) {
+    id <- unique(produtos$"ID da Produção")[i]
+    produtos.id <- produtos[produtos$"ID da Produção" == id,]
+    for (j in 1:length(produtos.id$"Nome do Autor")) {
+      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+        produtos.id$"Nome do Autor"[j] <-
+          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
+      }, silent = TRUE)
+      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+        produtos.id$"Nome do Autor"[j] <-
+          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
+      }, silent = TRUE)
+      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+        produtos.id$"Nome do Autor"[j] <-
+          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
+      }, silent = TRUE)
+    }
+    # get product metadata
+    source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
+    metadata <- get_id_metadata(id = id, subtipo = produtos$`Subtipo de Produção`[i], produtos.detalhes = produtos.detalhes)
+    produtos.list[[i]] <- data.frame(
+      "Ano" = produtos.id$"Ano da Produção"[1],
+      "Tipo" = produtos.id$"Subtipo de Produção"[1],
+      "Título" = produtos.id$"Nome da Produção"[1],
+      "Autores" = paste0(
+        # remove NA values from Nome do Autor
+        produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
+        collapse = "; "
       ),
-      doi_without_altmetric = tryCatch(
-        doi_without_altmetric[doi_without_altmetric$published_on == years[year], ],
-        error = function(e) {
-          doi_without_altmetric <- list()
-        }
-      ),
-      citescore = citescore,
-      scimago = scimago,
-      qualis = qualis
-    )
-  }
-}
-```
-
-<br>
-
-### **Livro** {.tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !any(has.livros.ppg)}
-cat('<br>')
-```
-
-```{r pandemia-livros-icons, eval = has.livros.ppg}
-# bind sources
-try(doi_with_altmetric <- doi_with_altmetric_livros_impacto, silent = TRUE)
-try(doi_without_altmetric <- doi_without_altmetric_livros_impacto, silent = TRUE)
-try(references <- references_livros_impacto, silent = TRUE)
-
-# available years of publication
-try(years <-
-  na.omit(sort(unique(
-    c(doi_with_altmetric$published_on, doi_without_altmetric$published_on)
-  ), decreasing = TRUE)), silent = TRUE)
-
-# Verifica se há DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-} else {
-  # print export buttons
-  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
-  print_buttons_dt(references, title = "Ações durante a Pandemia - Livros")
-}
-
-# Verifica se há DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-  cat('*Sem produção para exibir*')
-  cat('\n')
-} else {
-  # section header
-  cat('\n\n<!-- -->\n\n')
-  cat(
-    paste0(
-      "*Produtos (n = ",
-      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n"
-    )
-  )
-  cat('<br>')
-  
-  for (year in 1:length(years)) {
-    # print tab header
-    cat('\n\n<!-- -->\n\n')
-    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
-    
-    # print table of papers with/without badges
-    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
-    table.with.badges(
-      show.Altmetric = TRUE,
-      show.Dimensions = TRUE,
-      show.PlumX = TRUE,
-      show.CiteScore = FALSE,
-      show.SJR = FALSE,
-      show.Qualis = FALSE,
-      doi_with_altmetric = tryCatch(
-        doi_with_altmetric[doi_with_altmetric$published_on == years[year], ],
-        error = function(e) {
-          doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
-        }
-      ),
-      doi_without_altmetric = tryCatch(
-        doi_without_altmetric[doi_without_altmetric$published_on == years[year], ],
-        error = function(e) {
-          doi_without_altmetric <- list()
-        }
-      ),
-      citescore = citescore,
-      scimago = scimago,
-      qualis = qualis
+      "Detalhamento" = metadata$detalhamento[1]
     )
   }
 }
+produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+
+# remove duplicates
+produtos.df <- unique(produtos.df)
+
+table <- produtos.df %>% dplyr::arrange(
+  dplyr::desc(as.numeric(produtos.df$'Ano')),
+  produtos.df$'Título'
+)
+
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(table, title = "Impacto - Ações durante a pandemia - Produções bibliográficas (¹Discente, ²Egresso, ³Docente)")
+cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
 
-### **Trabalho em anais** {.tabset}
+### **Produção técnica** {#producao-bibliografica}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = !any(has.anais.ppg)}
+```{r, eval = !has.sucupira.files}
 cat('<br>')
 ```
 
-```{r pandemia-trabalhos-anais-icons, eval = has.anais.ppg}
-# bind sources
-try(doi_with_altmetric <- doi_with_altmetric_anais_impacto, silent = TRUE)
-try(doi_without_altmetric <- doi_without_altmetric_anais_impacto, silent = TRUE)
-try(references <- references_anais_impacto, silent = TRUE)
+```{r producao-tecnica-tabela, eval = has.sucupira.files}
+# produção
+sheet <- "Produções - Autores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-# available years of publication
-try(years <-
-  na.omit(sort(unique(
-    c(doi_with_altmetric$published_on, doi_without_altmetric$published_on)
-  ), decreasing = TRUE)), silent = TRUE)
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
 
-# Verifica se há DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-} else {
-  # print export buttons
-  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
-  print_buttons_dt(references, title = "Ações durante a Pandemia - Trabalhos em anais de eventos científicos")
-}
+# get data for the current period
+produtos <- sucupira.list[as.character(anos)] %>%
+  plyr::compact()
+produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
+names(produtos) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
-# Verifica se há DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-  cat('*Sem produção para exibir*')
-  cat('\n')
-} else {
-  # section header
-  cat('\n\n<!-- -->\n\n')
-  cat(
-    paste0(
-      "*Produtos (n = ",
-      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-    ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)* \n\n"
-    )
-  )
-  cat('<br>')
-  
-  for (year in 1:length(years)) {
-    # print tab header
-    cat('\n\n<!-- -->\n\n')
-    cat("#### **", as.character(years[year]), "**", "\n", sep = "")
-    
-    # print table of papers with/without badges
-    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
-    table.with.badges(
-      show.Altmetric = TRUE,
-      show.Dimensions = TRUE,
-      show.PlumX = TRUE,
-      show.CiteScore = TRUE,
-      show.SJR = TRUE,
-      show.Qualis = TRUE,
-      doi_with_altmetric = tryCatch(
-        doi_with_altmetric[doi_with_altmetric$published_on == years[year], ],
-        error = function(e) {
-          doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
-        }
+# select products
+produtos <- produtos[produtos$`Tipo de Produção` == "TÉCNICA", ]
+
+# get years
+produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
+
+# dplyr::selecting those with COVID in the title
+produtos <-
+  produtos[grep(paste(tolower(pandemia), collapse = "|"),
+                    tolower(produtos$`Nome da Produção`)),]
+# drop columns
+produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Subtipo de Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
+
+# format names
+produtos$`Subtipo de Produção` <- tools::toTitleCase(tolower(produtos$`Subtipo de Produção`))
+produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
+produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
+produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
+
+# produção detalhes
+sheet <- "Produções - Detalhes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# get data for the current period
+produtos.detalhes <- sucupira.list[as.character(anos)] %>%
+  plyr::compact()
+produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
+names(produtos.detalhes) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# loop
+produtos.list <- list()
+if (dim(produtos)[1] != 0) {
+  for (i in 1:length(unique(produtos$"ID da Produção"))) {
+    id <- unique(produtos$"ID da Produção")[i]
+    produtos.id <- produtos[produtos$"ID da Produção" == id,]
+    for (j in 1:length(produtos.id$"Nome do Autor")) {
+      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+        produtos.id$"Nome do Autor"[j] <-
+          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
+      }, silent = TRUE)
+      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+        produtos.id$"Nome do Autor"[j] <-
+          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
+      }, silent = TRUE)
+      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+        produtos.id$"Nome do Autor"[j] <-
+          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
+      }, silent = TRUE)
+    }
+    # get product metadata
+    source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
+    metadata <- get_id_metadata(id = id, subtipo = produtos$`Subtipo de Produção`[i], produtos.detalhes = produtos.detalhes)
+    produtos.list[[i]] <- data.frame(
+      "Ano" = produtos.id$"Ano da Produção"[1],
+      "Tipo" = produtos.id$"Subtipo de Produção"[1],
+      "Título" = produtos.id$"Nome da Produção"[1],
+      "Autores" = paste0(
+        # remove NA values from Nome do Autor
+        produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
+        collapse = "; "
       ),
-      doi_without_altmetric = tryCatch(
-        doi_without_altmetric[doi_without_altmetric$published_on == years[year], ],
-        error = function(e) {
-          doi_without_altmetric <- list()
-        }
-      ),
-      citescore = citescore,
-      scimago = scimago,
-      qualis = qualis
+      "Detalhamento" = metadata$detalhamento[1]
     )
   }
 }
+produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+
+# remove duplicates
+produtos.df <- unique(produtos.df)
+
+table <- produtos.df %>% dplyr::arrange(
+  dplyr::desc(as.numeric(produtos.df$'Ano')),
+  produtos.df$'Título'
+)
+
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(table, title = "Impacto - Ações durante a pandemia - Produções técnicas (¹Discente, ²Egresso, ³Docente)")
+cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
-
-<br>
-
-### **Apresentação de trabalho** {.tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !any(has.sucupira.files)}
-cat('<br>')
-```
-
-<br>
-
-### **Organização de evento** {#organizacao-evento .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !any(has.sucupira.files)}
-cat('<br>')
-```
-
-<br>
-
-### **Curso de curta duração** {#curso-curta-duracao .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !any(has.sucupira.files)}
-cat('<br>')
-```
-
-<br>
-
-### **Material didático e instrucional** {#didatico-instrucional .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !any(has.sucupira.files)}
-cat('<br>')
-```
-
-<br>
-
-### **Patente** {#patente .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !any(has.sucupira.files)}
-cat('<br>')
-```
-
-<br>
-
-### **Aplicativo** {#aplicativo .tabset}
-
-```{r, eval = !any(has.sucupira.files)}
-cat('<br>')
-```
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 <br>

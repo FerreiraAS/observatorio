@@ -5,7 +5,7 @@ sintese <- function(sucupira.list = NULL, ano = NULL) {
     'Ano',
     'Áreas de concentração', # OK
     'Linhas de pesquisa', # OK
-    'Projetos de pesquisa', # OK
+    'Projetos', # OK
     # 1.1.2
     'Níveis de curso', # OK
     'Mestrado', # OK
@@ -52,9 +52,9 @@ sintese <- function(sucupira.list = NULL, ano = NULL) {
     nlevels(as.factor(sucupira$'Área de Concentração')), silent = TRUE)
   try(resultados$'Linhas de pesquisa' <-
     nlevels(as.factor(sucupira$'Linha de Pesquisa')), silent = TRUE)
-  try(resultados$'Projetos de pesquisa' <-
+  try(resultados$'Projetos' <-
     nlevels(as.factor(sucupira$'Nome do Projeto de Pesquisa')), silent = TRUE)
-  
+
   # sintese 1.1.2 proposta curricular
   try(resultados$'Níveis de curso' <-
         nlevels(as.factor(sucupira$'Nível do Curso')), silent = TRUE)

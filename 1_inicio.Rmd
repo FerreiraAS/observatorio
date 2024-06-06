@@ -29,6 +29,14 @@ knitr::opts_chunk$set(
 )
 ```
 
+<!--load caches-->
+```{r load-caches, echo = FALSE, include = FALSE}
+folders <- list.dirs(file.path("cache/"), full.names = FALSE, recursive = FALSE)
+for(folder in folders){
+    knitr::load_cache(label = folder, path = paste0(file.path("cache", folder), "/"))
+}
+```
+
 <!--start-->
 ```{r start, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%"}
 # restart all variables
@@ -44,7 +52,7 @@ source("Scripts/all-required-packages.R", local = knitr::knit_global())
 source("Scripts/custom-yaml.R", local = knitr::knit_global())
 ```
 
-```{r yml-metadata}
+```{r yml-metadata, cache = TRUE, cache.path = "cache/metadata/"}
 metadata <- c()
 metadata$repository_url <- yaml::read_yaml("_site.yml")$repository_url
 ```
@@ -55,7 +63,7 @@ if(!file.exists(".nojekyll")) {
 }
 ```
 
-```{r main-color}
+```{r main-color, cache = TRUE, cache.path = "cache/color/"}
 # read css color for this page
 css <- cssparser::read_css("./CSS/main-color.css")
 main.color <- css$`:root`$`--mybackgroundcolor`
