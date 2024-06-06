@@ -44,10 +44,8 @@ Copyright © 2021 Arthur de Sá Ferreira, DSc. Todos os direitos reservados.
 -   [x] Produção técnica
 -   [x] Destaques
 -   [x] Impactos
--   [x] Galeria
 -   [x] Downloads
 -   [x] Autoavaliação
--   [x] Observatório CAPES
 -   [x] Redes sociais
 
 ## **Recursos computacionais**
