@@ -276,25 +276,27 @@ Ao completar esta etapa, a estrutura dos diretórios será esta:
 
 Para obter dados de métricas, as seguintes API são utilizadas:
 
--   [**ORCID
-    API**](https://info.orcid.org/documentation/features/public-api/)
-    Para acesso a dados de *Invited positions*, *Membership*,
-    *Services*, *Reviewer board*
+-   [**ORCID API**](https://info.orcid.org/documentation/features/public-api/)
+    Para acesso a dados de *Invited positions*, *Membership*, *Services*, *Reviewer board*
 
--   [**Scopus API**](https://dev.elsevier.com/sc_apis.html) Para acesso
-    a dados da Scopus e SciVal
+-   [**Scopus API**](https://dev.elsevier.com/sc_apis.html) Para acesso a dados da Scopus e SciVal
 
--   [**CrossRef**](https://github.com/ropensci/rcrossref) Para acesso
-    a dados da CrossRef
+-   [**CrossRef API**](https://github.com/ropensci/rcrossref) Para acesso a dados da CrossRef
 
 *Você pode configurar chaves de acesso para usar as APIs e obter as métricas. Acesse os sites acima para configurar o TOKEN, KEY e EMAIL.*
 
 1.  No console do RStudio, digite "file.edit("~/.Renviron")".
 2.  Copie e cole as chaves conforme a seguir:
+
 ORCID_TOKEN="TOKEN"
-OPENAI_API_KEY="KEY"
+
 crossref_email="EMAIL"
-3.  Substitua TOKEN, KEY e EMAIL pelos respectivos dados.
+
+OPENAI_API_KEY="KEY"
+
+Elsevier_API="KEY"
+
+3. Substitua TOKEN, KEY e EMAIL pelos respectivos dados.
 4. Salve e feche o arquivo .Renviron.
 5. Reinicie o RStudio.
 
