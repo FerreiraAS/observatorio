@@ -100,7 +100,9 @@ packs.git <-
     "packup",
     "rcrossref",
     "retractcheck",
+    "rscopus",
     "sf",
+    "pacman",
     "textreadr")
 
 if (!require("cssparser", character.only = TRUE, quietly = TRUE)) {
@@ -119,19 +121,23 @@ if (!require("rcrossref", character.only = TRUE, quietly = TRUE)) {
   devtools::install_github("ropensci/rcrossref")
 }
 
-if (!require("pacman")) {
-  install.packages("pacman")
-  pacman::p_load_gh("trinker/textreadr")
-}
-
 if (!require("retractcheck",
              character.only = TRUE,
              quietly = TRUE)) {
   remotes::install_github("libscie/retractcheck")
 }
 
+if (!require("rscopus", character.only = TRUE, quietly = TRUE)) {
+  devtools::install_github("muschellij2/rscopus")
+}
+
 if (!require("sf", character.only = TRUE, quietly = TRUE)) {
   remotes::install_github("r-spatial/sf")
+}
+
+if (!require("pacman")) {
+  install.packages("pacman")
+  pacman::p_load_gh("trinker/textreadr")
 }
 
 # load all libraries
