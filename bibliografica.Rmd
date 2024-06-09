@@ -352,7 +352,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 cat('<br>')
 ```
 
-```{r retratacao-icons, eval = has.sucupira.files}
+```{r retratacao-icons, eval = FALSE}
 # bind sources
 doi_with_altmetric <- doi_with_altmetric_retracted
 doi_without_altmetric <- doi_without_altmetric_retracted
