@@ -327,11 +327,13 @@ labels <- colnames(table.projetos)
 table.projetos[, 1] <-
   as.vector(unlist(lapply(table.projetos[, 1], FUN = stringr::str_to_upper)))
 table.projetos[, 2] <-
-  as.vector(unlist(lapply(table.projetos[, 2], FUN = stringr::str_to_sentence)))
+  as.vector(unlist(lapply(table.projetos[, 2], FUN = stringr::str_to_upper)))
 table.projetos[, 3] <-
-  as.vector(unlist(lapply(table.projetos[, 3], FUN = stringr::str_to_title)))
+  as.vector(unlist(lapply(table.projetos[, 3], FUN = stringr::str_to_sentence)))
 table.projetos[, 4] <-
   as.vector(unlist(lapply(table.projetos[, 4], FUN = stringr::str_to_sentence)))
+table.projetos[, 5] <- 
+  as.vector(unlist(lapply(table.projetos[, 5], FUN = stringr::str_to_sentence)))
 
 colnames(table.projetos) <-
   c("Área de Concentração",
@@ -385,11 +387,13 @@ labels <- colnames(table.projetos)
 table.projetos[, 1] <-
   as.vector(unlist(lapply(table.projetos[, 1], FUN = stringr::str_to_upper)))
 table.projetos[, 2] <-
-  as.vector(unlist(lapply(table.projetos[, 2], FUN = stringr::str_to_sentence)))
+  as.vector(unlist(lapply(table.projetos[, 2], FUN = stringr::str_to_upper)))
 table.projetos[, 3] <-
-  as.vector(unlist(lapply(table.projetos[, 3], FUN = stringr::str_to_title)))
+  as.vector(unlist(lapply(table.projetos[, 3], FUN = stringr::str_to_sentence)))
 table.projetos[, 4] <-
   as.vector(unlist(lapply(table.projetos[, 4], FUN = stringr::str_to_sentence)))
+table.projetos[, 5] <- 
+  as.vector(unlist(lapply(table.projetos[, 5], FUN = stringr::str_to_sentence)))
 
 colnames(table.projetos) <-
   c("Área de Concentração",
@@ -493,6 +497,8 @@ if (dim(financiadores.all)[1] != 0) {
       "Natureza",
       "Início",
       "Fim")
+  table.financiadores <- table.financiadores[order(table.financiadores$Início, table.financiadores$Fim, table.financiadores$Agência, decreasing = FALSE), ]
+  
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table.financiadores, title = "Programa - Financiadores - Projetos de Pesquisa - Auxílios")
 } else {
@@ -546,6 +552,8 @@ if (dim(financiadores.all)[1] != 0) {
       "Natureza",
       "Início",
       "Fim")
+  table.financiadores <- table.financiadores[order(table.financiadores$Início, table.financiadores$Fim, table.financiadores$Agência, decreasing = FALSE), ]
+  
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table.financiadores, title = "Programa - Financiadores - Projetos de Pesquisa - Bolsas")
 } else {
@@ -599,6 +607,9 @@ if (dim(financiadores.all)[1] != 0) {
       "Natureza",
       "Início",
       "Fim")
+  
+  table.financiadores <- table.financiadores[order(table.financiadores$Início, table.financiadores$Fim, table.financiadores$Agência, decreasing = FALSE), ]
+  
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table.financiadores, title = "Financiadores - Trabalhos de Conclusão de Curso")
 } else {
@@ -652,14 +663,9 @@ if (dim(financiadores)[1] != 0) {
   financiadores <- cbind(financiadores, Abrir)
   financiadores <-
     financiadores[order(financiadores$Ano, decreasing = TRUE), ]
-} else {
-  cat('\n\n')
-  cat('*Sem dados para exibir*')
-  cat('\n\n')
 }
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-try(create_dt(financiadores, title = "Programa - Financiadores - 2024-2021"),
-    silent = TRUE)
+create_dt(financiadores, title = "Programa - Financiadores - 2024-2021")
 
 cat('\n\n')
 cat(
@@ -719,6 +725,7 @@ cat('<br>')
 ```{r laboratorios-equipamentos, eval = has.laboratorios}
 # initialize all sheets
 abas <- readxl::excel_sheets("PPG/Laboratórios.xlsx")
+abas <- abas[order(abas, decreasing = FALSE)]
 
 # display each sheet in a tab
 for (j in 1:length(abas)) {
@@ -1237,8 +1244,10 @@ bibliografia.raw <-
                      sheet = "Bibliografia",
                      col_types = c("text"))
 
-ids <- order(bibliografia.raw$'Disciplina', decreasing = FALSE)
-bibliografia.raw <- bibliografia.raw[ids, ]
+# caps lock
+bibliografia.raw$Disciplina <- toupper(bibliografia.raw$Disciplina)
+
+bibliografia.raw <- bibliografia.raw[order(bibliografia.raw$'Disciplina', decreasing = FALSE), ]
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(bibliografia.raw, title = "Programa - Bibliografia")
@@ -1406,8 +1415,7 @@ for (j in 1:length(abas)) {
   }
   editais <- cbind(editais.raw[, -3], Abrir)
   
-  ids <- order(editais[, 1], decreasing = TRUE)
-  editais <- editais[ids,]
+  editais <- editais[order(editais[, 1], decreasing = TRUE),]
 
   # print table
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -1463,6 +1471,8 @@ for (j in 1:length(abas)) {
   }
   bolsas.raw <- cbind(bolsas.raw[, -3], Abrir)
   
+  bolsas.raw <- bolsas.raw[order(bolsas.raw[, 1], decreasing = TRUE),]
+  
   # print table
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   cat(knitr::knit_print(create_dt(bolsas.raw, title = paste0("Programa - Bolsas de estudo - ", abas[j]))))
@@ -1516,8 +1526,7 @@ for (j in 1:length(abas)) {
   }
   calendarios <- cbind(calendarios.raw[, -3], Abrir)
   
-  ids <- order(calendarios[, 1], decreasing = TRUE)
-  calendarios <- calendarios[ids,]
+  calendarios <- calendarios[order(calendarios[, 1], decreasing = TRUE),]
 
   # print table
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -1988,7 +1997,7 @@ for (j in 1:length(abas)) {
 cat('<br>')
 ```
 
-```{r internacional, eval = has.internacionalizacao}
+```{r internacionalizacao, eval = has.internacionalizacao}
 # read separate sheets
 internacional.raw <-
   readxl::read_excel("PPG/Internacionalização.xlsx",
@@ -2011,6 +2020,8 @@ for (i in 1:dim(internacional.raw)[1]) {
   }
 }
 internacional <- cbind(internacional.raw[,-ncol(internacional.raw)], Abrir)
+
+internacional <- internacional[order(internacional$`Publicação`, decreasing = TRUE),]
 
 # print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())

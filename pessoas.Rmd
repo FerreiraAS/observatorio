@@ -158,10 +158,6 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ### **Credenciados**
 
 ```{r docentes-credenciados, eval = has.sucupira.files, results = "hide"}
-# Import necessary libraries with `library::function` notation
-library(dplyr)
-library(knitr)
-
 # Read Excel data
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -282,6 +278,9 @@ cat('\n\n')
 # Keep active professors and remove duplicated data
 sucupira <- sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`),]
 sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupira$ORCID),]
+
+# order by name
+sucupira.unique <- sucupira.unique[order(sucupira.unique$`Nome Docente`, decreasing = FALSE),]
 
 # Format ORCID
 my_orcid <- gsub("(.{14})(.*)$", "\\1-\\2", gsub("(.{9})(.*)$", "\\1-\\2", gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)))
@@ -555,8 +554,7 @@ if (dim(docentes)[1] != 0) {
       "País")
   rownames(table.2) <- NULL
 
-  ids <- order(table.2$'Nome', decreasing = FALSE)
-  table.2 <- table.2[ids, ]
+  table.2 <- table.2[order(table.2$'Nome', decreasing = FALSE), ]
 }
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -651,8 +649,7 @@ if (dim(docentes)[1] != 0) {
       "País")
   rownames(table.2) <- NULL
   
-  ids <- order(table.2$'Nome', decreasing = FALSE)
-  table.2 <- table.2[ids, ]
+  table.2 <- table.2[order(table.2$'Nome', decreasing = FALSE), ]
 }
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -688,6 +685,14 @@ discentes <- discentes[discentes$`Situação Discente` == "MATRICULADO", ]
 # dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
 discentes <- discentes[discentes$`Orientador Principal?` == "Sim", ]
 
+# calculate deadlines
+discentes$'Tempo em curso' <-
+  lubridate::interval(start = lubridate::dmy(gsub("/", "", discentes$`Data Matrícula`)), end = lubridate::today()) %/% months(1)
+discentes$'Defesa até' <-
+  format(as.Date(discentes$`Data Matrícula`, format = "%d/%m/%Y") + 365 *
+           ifelse(tolower(discentes$`Nível Discente`) == "doutorado", 4, 2),
+         format = "%d/%m/%Y")
+
 # get years
 discentes$'Ano de Matrícula' <- substr(as.Date(discentes$`Data Matrícula`, format = "%d/%m/%Y"), 1, 4)
 
@@ -696,14 +701,15 @@ discentes$`Nível Discente` <- tools::toTitleCase(tolower(discentes$`Nível Disc
 discentes$`Nome Discente` <- tools::toTitleCase(tolower(discentes$`Nome Discente`))
 discentes$`Nome do Orientador` <- tools::toTitleCase(tolower(discentes$`Nome do Orientador`))
 
-# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-discentes <- discentes %>% dplyr::select("Nível Discente", "Ano de Matrícula", "Nome Discente", "Nome do Orientador")
+# drop columns
+discentes <- discentes %>% dplyr::select("Nível Discente", "Ano de Matrícula", "Data Matrícula", "Nome Discente", "Nome do Orientador", "Tempo em curso", "Defesa até")
 
-# remove duplicates
+# remove duplicates and empty rows
 discentes <- unique(discentes)
+discentes <- discentes[complete.cases(discentes), ]
 
 if (dim(discentes)[1] != 0) {
-  ids <- order(discentes$'Ano de Matrícula', decreasing = TRUE)
+  ids <- order(discentes$'Ano de Matrícula', discentes$'Tempo em curso', discentes$'Nome Discente', decreasing = TRUE)
   discentes <- discentes[ids,]
 }
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -714,199 +720,9 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **Datas e prazos** {#datas-prazos .tabset}
+### **Prazos** {#prazos .tabset}
 
-#### **Doutorado**
-
-```{r discentes-dsc-prazos, eval = has.sucupira.files}
-# dplyr::select level
-course.level <- "Doutorado"
-
-# discentes
-sheet <- "Discentes - Orientadores"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get only last data available
-discentes <- sucupira.list[[length(anos)]]
-
-# filter students
-discentes <- discentes[stringr::str_detect(discentes$`Nível Discente`, course.level), ]
-
-# dplyr::select active students
-discentes <-
-  discentes[discentes$`Situação Discente` == "MATRICULADO",]
-
-# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
-discentes <- discentes[discentes$`Orientador Principal?` == "Sim",]
-
-# format names
-discentes$`Nome Discente` <-
-  tools::toTitleCase(tolower(discentes$`Nome Discente`))
-
-# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-discentes <- discentes %>% dplyr::select("Nome Discente", "Data Matrícula")
-
-# calculate hard deadlines
-discentes$'Defesa até' <-
-  format(as.Date(discentes$'Data Matrícula', format = "%d/%m/%Y") + 365 *
-           4,
-         format = "%d/%m/%Y")
-discentes$'Jubilação a partir de' <-
-  format(as.Date(discentes$'Data Matrícula', format = "%d/%m/%Y") + 365 *
-           4.5,
-         format = "%d/%m/%Y")
-discentes$'Tempo em curso' <-
-  lubridate::interval(start = dmy(gsub("/", "", discentes$'Data Matrícula')), end = today()) %/% months(1)
-
-# remove duplicates and empty rows
-discentes <- unique(discentes)
-discentes <- discentes[complete.cases(discentes), ]
-
-if (dim(discentes)[1] != 0) {
-  ids <-
-    order(discentes$'Tempo em curso',
-          discentes$'Nome Discente',
-          decreasing = FALSE)
-  table <- discentes[ids,]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pessoas - Datas e Prazos - Doutorado") %>%
-    DT::formatStyle('Tempo em curso',
-                target = 'row',
-                backgroundColor = DT::styleEqual(49:54, rep('lightyellow', length(49:54)))
-                )  %>%
-    DT::formatStyle('Tempo em curso',
-                target = 'row',
-                backgroundColor = DT::styleEqual(55:1000, rep('#ffcccb', length(55:1000)))
-                )
-} else {
-  cat("*Sem dados para exibir*")
-}
-```
-
-<br>
-
-<table width="100%" border="0">
-  <tr>
-    <td style="text-align:center" bgcolor="white">Prazo regular</td>
-    <td style="text-align:center" bgcolor="lightyellow">Prazo estendido</td>
-    <td style="text-align:center" bgcolor="#ffcccb">Prazos ultrapassados</td>
-  </tr>
-</table>
-
-```{r discentes-dsc-prazos-sintese, eval = has.sucupira.files}
-discentes$'Ano de matrícula' <-
-  format(as.Date(discentes$'Data Matrícula', format = "%d/%m/%Y"), format = "%Y")
-
-if (dim(discentes)[1] != 0) {
-  summ.table <- table(discentes$'Ano de matrícula',
-                      discentes$'Tempo em curso')
-  summ.table[summ.table == 0] <- ""
-  # print table
-  print(
-    knitr::kable(summ.table, align = c("l", rep(
-      "c", ncol(summ.table) - 2
-    ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    ) %>%
-  kableExtra::add_header_above(c(" ", "Meses de curso" = dim(summ.table)[2]))
-  )
-} else {
-  cat("*Sem dados para exibir*")
-}
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-#### **Mestrado**
-
-```{r discentes-msc-prazos, eval = has.sucupira.files}
-# dplyr::select level
-course.level <- "Mestrado"
-
-# discentes
-sheet <- "Discentes - Orientadores"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get only last data available
-discentes <- sucupira.list[[length(anos)]]
-
-# filter students
-discentes <- discentes[stringr::str_detect(discentes$`Nível Discente`, course.level), ]
-
-# dplyr::select active students
-discentes <-
-  discentes[discentes$`Situação Discente` == "MATRICULADO",]
-
-# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
-discentes <- discentes[discentes$`Orientador Principal?` == "Sim",]
-
-# format names
-discentes$`Nome Discente` <-
-  tools::toTitleCase(tolower(discentes$`Nome Discente`))
-
-# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-discentes <- discentes %>% dplyr::select("Nome Discente", "Data Matrícula")
-
-# calculate hard deadlines
-discentes$'Defesa até' <-
-  format(as.Date(discentes$'Data Matrícula', format = "%d/%m/%Y") + 365 *
-           2,
-         format = "%d/%m/%Y")
-discentes$'Jubilação a partir de' <-
-  format(as.Date(discentes$'Data Matrícula', format = "%d/%m/%Y") + 365 *
-           2.5,
-         format = "%d/%m/%Y")
-discentes$'Tempo em curso' <-
-  lubridate::interval(start = dmy(gsub("/", "", discentes$'Data Matrícula')), end = today()) %/% months(1)
-
-# remove duplicates and empty rows
-discentes <- unique(discentes)
-discentes <- discentes[complete.cases(discentes), ]
-
-if (dim(discentes)[1] != 0) {
-  ids <-
-    order(discentes$'Tempo em curso',
-          discentes$'Nome Discente',
-          decreasing = FALSE)
-  table <- discentes[ids,]
-  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-  create_dt(table, title = "Pessoas - Datas e Prazos - Mestrado") %>%
-    DT::formatStyle('Tempo em curso',
-                target = 'row',
-                backgroundColor = DT::styleEqual(25:30, rep('lightyellow', length(25:30)))
-                )  %>%
-    DT::formatStyle('Tempo em curso',
-                target = 'row',
-                backgroundColor = DT::styleEqual(31:1000, rep('#ffcccb', length(31:1000)))
-                )
-} else {
-  cat("*Sem dados para exibir*")
-}
-```
-
-<br>
-
-<table width="100%" border="0">
-  <tr>
-    <td style="text-align:center" bgcolor="white">Prazo regular</td>
-    <td style="text-align:center" bgcolor="lightyellow">Prazo estendido</td>
-    <td style="text-align:center" bgcolor="#ffcccb">Prazos ultrapassados</td>
-  </tr>
-</table>
-
-```{r discentes-msc-prazos-sintese, eval = has.sucupira.files}
+```{r discentes-prazos-sintese, eval = has.sucupira.files}
 discentes$'Ano de matrícula' <-
   format(as.Date(discentes$'Data Matrícula', format = "%d/%m/%Y"), format = "%Y")
 
@@ -1266,10 +1082,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = !has.sucupira.files}
-cat('<br>')
-```
-
 ```{r discentes-ic, eval = has.sucupira.files}
 # dplyr::select level
 course.level <- "Bacharelado"
@@ -1306,7 +1118,7 @@ discentes$`Nome Discente` <- tools::toTitleCase(tolower(discentes$`Nome Discente
 discentes <- discentes %>% dplyr::select("Ano de Matrícula", "Nome Discente")
 
 if (dim(discentes)[1] != 0) {
-  ids <- order(discentes$'Ano de Matrícula', decreasing = TRUE)
+  ids <- order(discentes$'Ano de Matrícula', discentes$'Nome Discente', decreasing = TRUE)
   discentes <- discentes[ids,]
 }
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -1321,10 +1133,6 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !has.grupos.pesquisa}
-cat('<br>')
-```
 
 ```{r grupos-pesquisa, eval = has.grupos.pesquisa}
 # initialize all sheets
@@ -1358,6 +1166,9 @@ for (j in 1:length(abas)) {
   }
   grupos <- cbind(grupos.raw[, -ncol(grupos.raw)], Abrir)
   
+  # order
+  grupos <- grupos[order(grupos[, 1]), ]
+  
   # print table
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   cat(knitr::knit_print(create_dt(grupos, title = paste0("Pessoas - Grupos de Pesquisa - ", abas[j]))))
@@ -1366,10 +1177,9 @@ for (j in 1:length(abas)) {
   cat('\n\n')
   cat('**Fontes**: [**Diretório de Grupos de Pesquisa**](https://lattes.cnpq.br/web/dgp)')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+  cat('<br>')
 }
 ```
-
-<br>
 
 ## **Participantes externos** {#participantes-externos .tabset}
 
@@ -1407,8 +1217,7 @@ colnames(externos)[which(names(externos) == "Tipos de Participação")] <- "Part
 externos$`Instituição de Origem` <- toupper(externos$`Instituição de Origem`)
 
 if (dim(externos)[1] != 0) {
-  ids <- order(externos$'Nome do Participante', decreasing = FALSE)
-  externos <- externos[ids,]
+  externos <- externos[order(externos$'Nome do Participante', decreasing = FALSE),]
 }
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(externos, title = "Pessoas - Participantes externos - Nacionais")
@@ -1449,8 +1258,7 @@ colnames(externos)[which(names(externos) == "Tipos de Participação")] <- "Part
 externos$`Instituição de Origem` <- toupper(externos$`Instituição de Origem`)
 
 if (dim(externos)[1] != 0) {
-  ids <- order(externos$'Nome do Participante', decreasing = FALSE)
-  externos <- externos[ids,]
+  externos <- externos[order(externos$'Nome do Participante', decreasing = FALSE),]
 }
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(externos, title = "Pessoas - Participantes externos - Internacionais")
@@ -1460,7 +1268,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **Instituições e países**
+### **Instituições**
 
 ```{r externos-ies-paises, eval = has.sucupira.files}
 # participantes externos
@@ -1483,11 +1291,10 @@ externos <- externos[complete.cases(externos), ]
 externos$`Instituição de Origem` <- toupper(externos$`Instituição de Origem`)
 
 if (dim(externos)[1] != 0) {
-  ids <- order(externos$'Instituição de Origem', decreasing = FALSE)
-  externos <- externos[ids,]
+  externos <- externos[order(externos$'Instituição de Origem', decreasing = FALSE),]
 }
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(externos, title = "Pessoas - Participantes externos - Instituições e Países")
+create_dt(externos, title = "Pessoas - Participantes externos - Instituições")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
