@@ -20,7 +20,7 @@ rm(list = ls(all = TRUE))
 # initialize variables
 has.metricas.doi.sucupira <- FALSE
 has.metricas.doi.ppg <- FALSE
-
+has.posdocs <- FALSE
 ```
 
 ## **Set up**

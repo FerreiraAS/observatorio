@@ -1798,157 +1798,161 @@ sheet <- "Pós-Doc"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 posdoc.raw <- sucupira.raw
-posdoc.raw$`Vínculo Início` <-
-  as.Date(posdoc.raw$`Vínculo Início`, format = "%d/%m/%Y")
-posdoc.raw$`Vínculo Fim` <-
-  substr(as.Date(posdoc.raw$`Vínculo Fim`, format = "%d/%m/%Y"), 1, 4)
-posdoc.raw$'Ano Matrícula' <-
-  substr(as.Date(posdoc.raw$`Vínculo Início`, format = "%d/%m/%Y"), 1, 4)
 
-posdocs <- posdoc.raw[!is.na(posdoc.raw$`Vínculo Fim`), ]
-posdocs <- posdocs[!is.na(posdocs$`Pós-Doc Nome`), ]
-posdocs <- posdocs[!duplicated(posdocs), ]
+# check if posdoc data is empty
+has.posdocs <- nrow(posdoc.raw) != 0
 
-posdocs.atuais <- posdoc.raw[is.na(posdoc.raw$`Vínculo Fim`), ]
-posdocs.atuais <- posdocs.atuais[!is.na(posdocs.atuais$`Pós-Doc Nome`), ]
-posdocs.atuais <- posdocs.atuais[!duplicated(posdocs.atuais), ]
-
-# plot area setup
-layout.m <- c(1)
-source("Scripts/plot-margins.R", local = knitr::knit_global())
-
-# generate plot of posdocs per year
-table.1 <- table(posdocs$Nacionalidade, posdocs$'Ano Matrícula')
-table.2 <- table(posdocs.atuais$Nacionalidade, posdocs.atuais$'Ano Matrícula')
-
-# all posdocs
-posdoc.years <- min(posdocs$'Ano Matrícula', posdocs.atuais$'Ano Matrícula'):max(posdocs$'Ano Matrícula', posdocs.atuais$'Ano Matrícula')
-
-table.3 <- matrix(0, nrow = length(unique(posdoc.raw$Nacionalidade)), ncol = length(posdoc.years))
-rownames(table.3) <- unique(posdoc.raw$Nacionalidade)
-colnames(table.3) <- posdoc.years
-
-table.3a <- table.3
-table.3b <- table.3
-
-if(sum(table.1) != 0) {
-  for (i in 1:dim(table.1)[1]) {
-    for (j in 1:dim(table.1)[2]) {
-      table.3a[match(rownames(table.1)[i], rownames(table.3)),
-               match(colnames(table.1)[j], colnames(table.3))] <-
-        table.1[i, j]
+if (has.posdocs) {
+  posdoc.raw$`Vínculo Início` <-
+    as.Date(posdoc.raw$`Vínculo Início`, format = "%d/%m/%Y")
+  posdoc.raw$`Vínculo Fim` <-
+    substr(as.Date(posdoc.raw$`Vínculo Fim`, format = "%d/%m/%Y"), 1, 4)
+  posdoc.raw$'Ano Matrícula' <-
+    substr(as.Date(posdoc.raw$`Vínculo Início`, format = "%d/%m/%Y"),
+           1,
+           4)
+  
+  posdocs <- posdoc.raw[!is.na(posdoc.raw$`Vínculo Fim`), ]
+  posdocs <- posdocs[!is.na(posdocs$`Pós-Doc Nome`), ]
+  posdocs <- posdocs[!duplicated(posdocs), ]
+  
+  posdocs.atuais <- posdoc.raw[is.na(posdoc.raw$`Vínculo Fim`), ]
+  posdocs.atuais <- posdocs.atuais[!is.na(posdocs.atuais$`Pós-Doc Nome`), ]
+  posdocs.atuais <- posdocs.atuais[!duplicated(posdocs.atuais), ]
+  
+  # plot area setup
+  layout.m <- c(1)
+  source("Scripts/plot-margins.R", local = knitr::knit_global())
+  
+  # generate plot of posdocs per year
+  table.1 <- table(posdocs$Nacionalidade, posdocs$'Ano Matrícula')
+  table.2 <- table(posdocs.atuais$Nacionalidade,
+                   posdocs.atuais$'Ano Matrícula')
+  
+  # all posdocs
+  posdoc.years <- min(posdocs$'Ano Matrícula', posdocs.atuais$'Ano Matrícula'):max(posdocs$'Ano Matrícula', posdocs.atuais$'Ano Matrícula')
+  
+  table.3 <- matrix(0, nrow = length(unique(posdoc.raw$Nacionalidade)), ncol = length(posdoc.years))
+  rownames(table.3) <- unique(posdoc.raw$Nacionalidade)
+  colnames(table.3) <- posdoc.years
+  
+  table.3a <- table.3
+  table.3b <- table.3
+  
+  if (sum(table.1) != 0) {
+    for (i in 1:dim(table.1)[1]) {
+      for (j in 1:dim(table.1)[2]) {
+        table.3a[match(rownames(table.1)[i], rownames(table.3)), match(colnames(table.1)[j], colnames(table.3))] <-
+          table.1[i, j]
+      }
     }
   }
-}
-if (sum(table.2) != 0) {
-  for (i in 1:dim(table.2)[1]) {
-    for (j in 1:dim(table.2)[2]) {
-      table.3b[match(rownames(table.2)[i], rownames(table.3)),
-               match(colnames(table.2)[j], colnames(table.3))] <-
-        table.2[i, j]
+  if (sum(table.2) != 0) {
+    for (i in 1:dim(table.2)[1]) {
+      for (j in 1:dim(table.2)[2]) {
+        table.3b[match(rownames(table.2)[i], rownames(table.3)), match(colnames(table.2)[j], colnames(table.3))] <-
+          table.2[i, j]
+      }
     }
   }
-}
-table.3 <- as.matrix(table.3a) + as.matrix(table.3b)
-
-# plot 1 (posdocs titulados)
-barplot(as.matrix(table.3),
-        ylab = "Pós-docs",
-        col = RColorBrewer::brewer.pal(n = 9, name = "Set3"))
-title(main = "Estágio Pós-Doutoral",
-      outer = TRUE,
-      cex.main = 1.7)
-legend(
-  "topleft",
-  legend = unique(posdoc.raw$Nacionalidade),
-  fill = RColorBrewer::brewer.pal(n = 9, name = "Set3"),
-  text.col = "white",
-  box.lwd = 0,
-  bty = "n",
-  horiz = FALSE,
-  cex = 1
-)
-
-# plot 2 (geospatial plot of posdocs)
-paises <- as.data.frame(table(c(posdocs$País, posdocs.atuais$País)))
-source("Scripts/worldmap.R", local = knitr::knit_global())
-
-ggplot2::ggplot() +
-  ggplot2::geom_polygon(data = worldmap,
-                        ggplot2::aes(
-                          x = long,
-                          y = lat,
-                          group = group,
-                          fill = Freq
-                        )) +
-  cowplot::theme_map() +
-  ggplot2::scale_fill_distiller(
-    palette = "Spectral",
-    name = "Pós-Docs, n",
-    limits = c(min(0, paises$Freq), max(paises$Freq)),
-    na.value = "grey"
-  ) +
-  ggplot2::theme_minimal() +
-  ggplot2::theme(
-    legend.position = 'bottom',
-    legend.title = ggplot2::element_text(color = "white"),
-    legend.text = ggplot2::element_text(color = "white"),
-    axis.title.x = ggplot2::element_blank(),
-    axis.text.x = ggplot2::element_blank(),
-    axis.ticks.x = ggplot2::element_blank(),
-    axis.title.y = ggplot2::element_blank(),
-    axis.text.y = ggplot2::element_blank(),
-    axis.ticks.y = ggplot2::element_blank()
-  ) +
-  ggplot2::theme(
-    plot.margin = ggplot2::unit(c(0, 0, 0, 0), "cm"),
-    panel.background = ggplot2::element_rect(fill = main.color,  color = main.color),
-    plot.background = ggplot2::element_rect(fill = main.color,  color = main.color),
-    panel.grid.major = ggplot2::element_line(color = "transparent"),
-    panel.grid.minor = ggplot2::element_line(color = "transparent"),
-    axis.text.x = ggplot2::element_blank(),
-    axis.text.y = ggplot2::element_blank(),
-    plot.title = ggplot2::element_text(
-      size = 18,
-      color = "white",
-      face = "bold",
-      hjust = 0.5
+  table.3 <- as.matrix(table.3a) + as.matrix(table.3b)
+  
+  # plot 1 (posdocs titulados)
+  barplot(
+    as.matrix(table.3),
+    ylab = "Pós-docs",
+    col = RColorBrewer::brewer.pal(n = 9, name = "Set3")
+  )
+  title(main = "Estágio Pós-Doutoral",
+        outer = TRUE,
+        cex.main = 1.7)
+  legend(
+    "topleft",
+    legend = unique(posdoc.raw$Nacionalidade),
+    fill = RColorBrewer::brewer.pal(n = 9, name = "Set3"),
+    text.col = "white",
+    box.lwd = 0,
+    bty = "n",
+    horiz = FALSE,
+    cex = 1
+  )
+  
+  # plot 2 (geospatial plot of posdocs)
+  paises <- as.data.frame(table(c(posdocs$País, posdocs.atuais$País)))
+  source("Scripts/worldmap.R", local = knitr::knit_global())
+  
+  ggplot2::ggplot() +
+    ggplot2::geom_polygon(data = worldmap, ggplot2::aes(
+      x = long,
+      y = lat,
+      group = group,
+      fill = Freq
+    )) +
+    cowplot::theme_map() +
+    ggplot2::scale_fill_distiller(
+      palette = "Spectral",
+      name = "Pós-Docs, n",
+      limits = c(min(0, paises$Freq), max(paises$Freq)),
+      na.value = "grey"
+    ) +
+    ggplot2::theme_minimal() +
+    ggplot2::theme(
+      legend.position = 'bottom',
+      legend.title = ggplot2::element_text(color = "white"),
+      legend.text = ggplot2::element_text(color = "white"),
+      axis.title.x = ggplot2::element_blank(),
+      axis.text.x = ggplot2::element_blank(),
+      axis.ticks.x = ggplot2::element_blank(),
+      axis.title.y = ggplot2::element_blank(),
+      axis.text.y = ggplot2::element_blank(),
+      axis.ticks.y = ggplot2::element_blank()
+    ) +
+    ggplot2::theme(
+      plot.margin = ggplot2::unit(c(0, 0, 0, 0), "cm"),
+      panel.background = ggplot2::element_rect(fill = main.color, color = main.color),
+      plot.background = ggplot2::element_rect(fill = main.color, color = main.color),
+      panel.grid.major = ggplot2::element_line(color = "transparent"),
+      panel.grid.minor = ggplot2::element_line(color = "transparent"),
+      axis.text.x = ggplot2::element_blank(),
+      axis.text.y = ggplot2::element_blank(),
+      plot.title = ggplot2::element_text(
+        size = 18,
+        color = "white",
+        face = "bold",
+        hjust = 0.5
+      )
+    ) +
+    ggplot2::ggtitle("Distribuição global de Pós-Docs")
+  
+  # plot 3 (summary table in plot)
+  
+  # calculate summary statistics for posdocs
+  summ.table.posdoc <-
+    c(
+      sum(table.3),
+      sum(table.1),
+      as.numeric(rowSums(table.1)),
+      sum(table.2),
+      as.numeric(rowSums(table.2))
     )
-  ) +
-  ggplot2::ggtitle("Distribuição global de Pós-Docs")
-
-# plot 3 (summary table in plot)
-
-# calculate summary statistics for posdocs
-summ.table.posdoc <-
-  c(
-    sum(table.3),
-    sum(table.1),
-    as.numeric(rowSums(table.1)),
-    sum(table.2),
-    as.numeric(rowSums(table.2))
-  )
-
-names(summ.table.posdoc) <-
-  c(
-    "Pós-Docs total",
-    "Concluídos",
-    names(rowSums(table.1)),
-    "Em andamento",
-    names(rowSums(table.2))
-  )
-
-# plot area setup
-layout.m <- matrix(c(1,1,1,2,3,4,5,6,7),
-                   ncol = 3,
-                   byrow = TRUE)
-source("Scripts/plot-margins.R", local = knitr::knit_global())
-
-summ.data <- summ.table.posdoc
-source("Scripts/plot-summaries.R", local = knitr::knit_global())
+  
+  names(summ.table.posdoc) <-
+    c("Pós-Docs total",
+      "Concluídos",
+      names(rowSums(table.1)),
+      "Em andamento",
+      names(rowSums(table.2)))
+  
+  # plot area setup
+  layout.m <- matrix(c(1, 1, 1, 2, 3, 4, 5, 6, 7), ncol = 3, byrow = TRUE)
+  source("Scripts/plot-margins.R", local = knitr::knit_global())
+  
+  summ.data <- summ.table.posdoc
+  source("Scripts/plot-summaries.R", local = knitr::knit_global())
+}
 ```
 
-```{r sintese-posdoc-carousel, eval = has.sucupira.files}
+```{r sintese-posdoc-carousel, eval = and(has.sucupira.files, has.posdocs)}
 cat('<br>')
 cat('<br>')
 
