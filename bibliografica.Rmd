@@ -289,73 +289,9 @@ cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
-```{r artigos-completos-icons, eval = any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
-# bind sources
-doi_with_altmetric <-  doi_with_altmetric_artigos
-doi_without_altmetric <- doi_without_altmetric_artigos
-
-# available years of publication
-years <-
-  na.omit(sort(unique(
-    c(doi_with_altmetric$published_on, doi_without_altmetric$published_on)
-  ), decreasing = TRUE))
-
-# Verifica se há DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-  cat('*Sem produção para exibir*')
-  cat('\n')
-} else {
-  for (year in 1:length(years)) {
-    # print tab header
-    cat('\n\n<!-- -->\n\n')
-    cat("### **", as.character(years[year]), "**", "\n", sep = "")
-    
-    # print table of papers with/without badges
-    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
-    table.with.badges(
-      show.Altmetric = TRUE,
-      show.Dimensions = TRUE,
-      show.PlumX = TRUE,
-      show.CiteScore = TRUE,
-      show.SJR = TRUE,
-      show.Qualis = TRUE,
-      doi_with_altmetric = tryCatch(
-        doi_with_altmetric[doi_with_altmetric$published_on == years[year], ],
-        error = function(e) {
-          doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
-        }
-      ),
-      doi_without_altmetric = tryCatch(
-        doi_without_altmetric[doi_without_altmetric$published_on == years[year], ],
-        error = function(e) {
-          doi_without_altmetric <- list()
-        }
-      ),
-      citescore = citescore,
-      scimago = scimago,
-      qualis = qualis
-    )
-  }
-}
-```
-
-<br>
-
-## **Retratação** {#retratacao .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !has.sucupira.files}
-cat('<br>')
-```
-
-```{r retratacao-icons, eval = FALSE}
-# bind sources
-doi_with_altmetric <- doi_with_altmetric_retracted
-doi_without_altmetric <- doi_without_altmetric_retracted
+```{r artigos-periodicos-icons, eval = FALSE}
+doi_with_altmetric <- doi_with_altmetric_all
+doi_without_altmetric <- doi_without_altmetric_all
 
 # available years of publication
 years <-
@@ -518,10 +454,9 @@ cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
-```{r livros-icons, eval = any(has.livros.ppg, has.livros.sucupira)}
-# bind sources
-doi_with_altmetric <-  doi_with_altmetric_livros
-doi_without_altmetric <- doi_without_altmetric_livros
+```{r livros-icons, eval = FALSE}
+doi_with_altmetric <- doi_with_altmetric_all
+doi_without_altmetric <- doi_without_altmetric_all
 
 # available years of publication
 years <-
@@ -798,10 +733,9 @@ cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
-```{r trabalho-anais-icons, eval = any(has.anais.ppg, has.anais.sucupira)}
-# bind sources
-doi_with_altmetric <-  doi_with_altmetric_anais
-doi_without_altmetric <- doi_without_altmetric_anais
+```{r trabalho-anais-icons, eval = FALSE}
+doi_with_altmetric <- doi_with_altmetric_all
+doi_without_altmetric <- doi_without_altmetric_all
 
 # available years of publication
 years <-

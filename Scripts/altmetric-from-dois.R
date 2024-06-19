@@ -43,12 +43,12 @@ doi_with_altmetric <-
   ))
 
 # loop for all DOI in the list
-for (input in 1:dim(dois_df)[1]) {
+for (input in 1:dim(dois)[1]) {
   tryCatch(
     expr = {
       # open Altmetric url
       url <- paste0("https://api.altmetric.com/v1/doi/",
-                    dois_df$DOI[input],
+                    dois$DOI[input],
                     collapse = "")
       raw_data <- read.csv(url,
                            sep = ",",
@@ -130,6 +130,9 @@ for (input in 1:dim(dois_df)[1]) {
   )
 }
 
+# rename doi to DOI
+colnames(doi_with_altmetric)[colnames(doi_with_altmetric) == "doi"] <- "DOI"
+
 # The Unix epoch is 00:00:00 UTC on 1 January 1970 (an arbitrary date)
 # https://en.wikipedia.org/wiki/Unix_time
 if (!is.null(doi_with_altmetric$published_on)) {
@@ -177,24 +180,24 @@ doi_with_altmetric$cited_by_patents_count[doi_with_altmetric$mendeley == ""] <-
 
 # split and remove NA rows
 doi_with_altmetric <-
-  doi_with_altmetric[complete.cases(doi_with_altmetric),]
+  doi_with_altmetric[complete.cases(doi_with_altmetric$altmetric_score),]
 
 # remove duplicate entries
 doi_with_altmetric <-
-  doi_with_altmetric[!duplicated(doi_with_altmetric$doi),]
+  doi_with_altmetric[!duplicated(doi_with_altmetric$DOI),]
 
 # sort columns by title
 doi_with_altmetric <-
   doi_with_altmetric[order(doi_with_altmetric$title),]
 
 # replace is_oa from Crossref
-for (i in 1:length(doi_with_altmetric$doi)) {
-  my_doi_oa <-
-    roadoi::oadoi_fetch(dois = doi_with_altmetric$doi[i], email = "cienciasdareabilitacao@souunisuam.com.br")
-  doi_with_altmetric$is_oa[i] <-
-    ifelse(length(my_doi_oa) != 0,
-           toupper(as.character(my_doi_oa$is_oa)),
-           "FALSE")
+for (i in 1:length(doi_with_altmetric$DOI)) {
+  try({
+    my_doi_oa <-
+      roadoi::oadoi_fetch(dois = doi_with_altmetric$DOI[i], email = "cienciasdareabilitacao@souunisuam.com.br")
+    doi_with_altmetric$is_oa[i] <-
+      ifelse(length(my_doi_oa) != 0, toupper(as.character(my_doi_oa$is_oa)), "FALSE")
+  })
 }
 
 doi_with_altmetric$citations <- rep(0, dim(doi_with_altmetric)[1])
@@ -202,7 +205,7 @@ for (i in 1:dim(doi_with_altmetric)[1]) {
   # add citation counts
   try({
     citations <-
-      rcrossref::cr_citation_count(doi = as.character(doi_with_altmetric$doi[i]), key = "cienciasdareabilitacao@souunisuam.com.br")
+      rcrossref::cr_citation_count(doi = as.character(doi_with_altmetric$DOI[i]), key = "cienciasdareabilitacao@souunisuam.com.br")
     doi_with_altmetric$citations[i] <- citations$count
   },
   silent = TRUE)
@@ -220,5 +223,5 @@ for (i in 1:dim(doi_with_altmetric)[1]) {
 # collect DOIs without Altmetric data
 doi_without_altmetric <- c()
 doi_without_altmetric <-
-  data.frame(DOI = setdiff(tolower(dois_df$DOI),
-                           tolower(doi_with_altmetric$doi)))
+  data.frame(DOI = setdiff(tolower(dois$DOI),
+                           tolower(doi_with_altmetric$DOI)))

@@ -472,7 +472,7 @@ cat("### **Dados completos**")
 cat('\n\n')
 ```
 
-```{r descritivo-completos, eval = has.sucupira.files, cache = TRUE, cache.path = "cache/missing/"}
+```{r descritivo-dados-completos, eval = has.sucupira.files, cache = TRUE, cache.path = "cache/missing/"}
 # print tables
 table.dados.gt <-
   gtsummary::tbl_summary(
@@ -528,7 +528,7 @@ cat("### **Dados omissos**")
 cat('\n\n')
 ```
 
-```{r descritivo-omissos, eval = has.sucupira.files, cache = TRUE, cache.path = "cache/missing/"}
+```{r descritivo-dados-omissos, eval = has.sucupira.files, cache = TRUE, cache.path = "cache/missing/"}
 # print tables
 table.missing.gt <-
   gtsummary::tbl_summary(
@@ -584,7 +584,7 @@ cat("### **Dados duplicados**")
 cat('\n\n')
 ```
 
-```{r descritivo-duplicados, eval = has.sucupira.files, cache = TRUE, cache.path = "cache/missing/"}
+```{r descritivo-dados-duplicados, eval = has.sucupira.files, cache = TRUE, cache.path = "cache/missing/"}
 # print tables
 table.duplicates.gt <-
   gtsummary::tbl_summary(
@@ -3987,7 +3987,7 @@ cat("### **3.2.1 Avaliação quantitativa dos impactos do PPG**")
 cat('\n\n')
 ```
 
-```{r 3-2-1-data, eval = any(has.producao.ppg, has.producao.sucupira), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
+```{r 3-2-1-data, eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
 síntese.ano <- dplyr::bind_cols(
       Ano = as.numeric(doi_all$published_on),
       CiteScore = as.numeric(doi_all$CiteScore),

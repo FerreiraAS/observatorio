@@ -91,7 +91,7 @@ table.with.badges <-
         if (show.Altmetric == TRUE) {
           cat(
             "<a style=\"display: inline-block; float: left; margin:0.1em 0.3em 0.1em 0.3em;\" class=\"altmetric-embed\" data-badge-type=\"donut\" data-badge-popover=\"right\" data-doi=\"",
-            doi_with_altmetric$doi[ix],
+            doi_with_altmetric$DOI[ix],
             "\"></a>",
             sep = ""
           )
@@ -101,7 +101,7 @@ table.with.badges <-
         if (show.Dimensions == TRUE) {
           cat(
             "<a style=\"display: inline-block; float: left; margin:0.1em 0.3em 0.1em 0.3em;\" data-legend=\"hover-right\" class=\"__dimensions_badge_embed__\" data-doi=\"",
-            doi_with_altmetric$doi[ix],
+            doi_with_altmetric$DOI[ix],
             "\" data-style=\"small_circle\"></a>",
             sep = ""
           )
@@ -111,7 +111,7 @@ table.with.badges <-
         if (show.PlumX == TRUE) {
           cat(
             "<a style=\"display: inline-block; float: left; margin:0.1em 0.3em 0.1em 0.3em; padding:0.5em 0.3em 0.5em 0.3em;\" class=\"plumx-plum-print-popup\" href=\"https://plu.mx/plum/a/?doi=",
-            doi_with_altmetric$doi[ix],
+            doi_with_altmetric$DOI[ix],
             "\" data-popup=\"right\" data-size=\"medium\" data-site=\"plum\"></a>",
             sep = ""
           )
@@ -234,7 +234,7 @@ table.with.badges <-
             "[**",
             doi_without_altmetric$title[ix],
             "**](https://doi.org/",
-            doi_without_altmetric$doi[ix],
+            doi_without_altmetric$DOI[ix],
             "){target=\"_blank\"}",
             "<br>"
           )
@@ -278,7 +278,7 @@ table.with.badges <-
         if (show.Dimensions == TRUE) {
           cat(
             "<a style=\"display: inline-block; float: left; margin:0.1em 0.3em 0.1em 0.3em;\" data-legend=\"hover-right\" class=\"__dimensions_badge_embed__\" data-doi=\"",
-            doi_without_altmetric$doi[ix],
+            doi_without_altmetric$DOI[ix],
             "\" data-style=\"small_circle\"></a>",
             sep = ""
           )
@@ -288,7 +288,7 @@ table.with.badges <-
         if (show.PlumX == TRUE) {
           cat(
             "<a style=\"display: inline-block; float: left; margin:0.1em 0.3em 0.1em 0.3em; padding:0.4em 0.3em 0.4em 0.3em;\" class=\"plumx-plum-print-popup\" href=\"https://plu.mx/plum/a/?doi=",
-            doi_without_altmetric$doi[ix],
+            doi_without_altmetric$DOI[ix],
             "\" data-popup=\"right\" data-size=\"medium\" data-site=\"plum\"></a>",
             sep = ""
           )

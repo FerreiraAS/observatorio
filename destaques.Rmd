@@ -129,15 +129,14 @@ cat('<br>')
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = !any(has.producao.sucupira, has.producao.ppg)}
+```{r, eval = !any(has.metricas.doi.sucupira, has.metricas.doi.ppg)}
 cat('<br>')
 ```
 
-```{r destaque-visibilidade, eval = any(has.producao.sucupira, has.producao.ppg)}
+```{r destaque-visibilidade, eval = any(has.metricas.doi.sucupira, has.metricas.doi.ppg)}
 # Sources
 doi_with_altmetric <- doi_with_altmetric_all
 doi_without_altmetric <- data.frame() # do not have Altmetric score anyway
-references <- references_all
 
 # Sort columns by Altmetric then year
 ordering <-
@@ -147,22 +146,10 @@ ordering <-
     decreasing = TRUE
   )
 doi_with_altmetric <- doi_with_altmetric[ordering, ]
-references <- references[ordering, ]
 
 # TOP (removing papers with no Altmetric)
 top <- min(dim(doi_with_altmetric)[1], 20)
 doi_with_altmetric <- doi_with_altmetric[1:top, ]
-references <- references[1:top, ]
-
-# Check if there are DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-} else {
-  # Print export buttons
-  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
-  print_buttons_dt(references, title = "Produção de destaque - Atenção e visibilidade")
-}
 
 # Check if there are DOIs
 if (max(dim(doi_with_altmetric)[1], 0) == 0 &
@@ -220,11 +207,11 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = !any(has.producao.sucupira, has.producao.ppg)}
+```{r, eval = !any(has.metricas.doi.sucupira, has.metricas.doi.ppg)}
 cat('<br>')
 ```
 
-```{r destaque-prestigio, eval = any(has.producao.sucupira, has.producao.ppg)}
+```{r destaque-prestigio, eval = any(has.metricas.doi.sucupira, has.metricas.doi.ppg)}
 # Sources
 doi_all_sorted <- doi_all[!is.na(doi_all$CiteScore), ]
 
@@ -235,26 +222,14 @@ ordering <- order(
   )
 
 doi_all_sorted <- doi_all_sorted[ordering, ]
-references_all <- references_all[ordering, ]
 
 # TOP CiteScore
 top <- min(dim(doi_all_sorted)[1], 20)
 doi_all_sorted <- doi_all_sorted[1:top, ]
-references <- references_all[1:top, ]
 
 # Split into papers with/without Altmetric
 doi_with_altmetric <- doi_all_sorted[!is.na(doi_all_sorted$altmetric_score),]
 doi_without_altmetric <- doi_all_sorted[is.na(doi_all_sorted$altmetric_score),]
-
-# Check if there are DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-} else {
-  # Print export buttons
-  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
-  print_buttons_dt(references, title = "Produção de destaque - Prestígio do peridódico")
-}
 
 # Check if there are DOIs
 if (max(dim(doi_with_altmetric)[1], 0) == 0 &

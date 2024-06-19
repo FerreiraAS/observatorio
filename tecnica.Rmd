@@ -970,10 +970,9 @@ cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
-```{r editoria-icons, eval = any(has.editoria.ppg, has.editoria.sucupira)}
-# bind sources
-doi_with_altmetric <-  doi_with_altmetric_editoria
-doi_without_altmetric <- doi_without_altmetric_editoria
+```{r editoria-icons, eval = FALSE}
+doi_with_altmetric <- doi_with_altmetric_all
+doi_without_altmetric <- doi_without_altmetric_all
 
 # available years of publication
 years <-

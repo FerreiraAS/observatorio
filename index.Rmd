@@ -77,7 +77,7 @@ if (has.dados.cadastrais && has.sucupira.files) {
 
 </center>
 
-```{r meta-observatorio, eval = !any(has.logo.ppg, has.sucupira.files, has.financiadores, has.producao.ppg, has.producao.sucupira, has.discentes, has.posdocs)}
+```{r meta-observatorio, eval = !any(has.logo.ppg, has.sucupira.files, has.financiadores, has.metricas.doi.ppg, has.metricas.doi.sucupira, has.discentes)}
 # se não ná nada para exibir, mostre os observatórios existentes
 cat('<br>')
 cat('<br>')
@@ -839,7 +839,7 @@ cat(
 )
 ```
 
-```{r sintese-producao, include = FALSE, eval = any(has.producao.ppg, has.producao.sucupira)}
+```{r sintese-producao, include = FALSE, eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira)}
 # Qualis
 qualis.PPG <- c()
 for (i in 1:length(estratos)) {
@@ -1185,7 +1185,7 @@ summ.data <- summ.table.producao
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-producao-carousel, eval = any(has.producao.ppg, has.producao.sucupira)}
+```{r sintese-producao-carousel, eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira)}
 cat('<br>')
 cat('<br>')
 
@@ -1207,7 +1207,7 @@ cat(
 )
 ```
 
-```{r sintese-visibilidade, include = FALSE, eval = any(has.producao.ppg, has.producao.sucupira)}
+```{r sintese-visibilidade, include = FALSE, eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira)}
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
@@ -1387,7 +1387,7 @@ summ.data <- summ.table.visibilidade
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-visibilidade-carousel, eval = any(has.producao.ppg, has.producao.sucupira)}
+```{r sintese-visibilidade-carousel, eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira)}
 cat('<br>')
 cat('<br>')
 
@@ -1792,7 +1792,7 @@ cat(
 )
 ```
 
-```{r sintese-posdoc, include = FALSE, eval = has.posdocs}
+```{r sintese-posdoc, include = FALSE, eval = has.sucupira.files}
 # posdocs
 sheet <- "Pós-Doc"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -1948,7 +1948,7 @@ summ.data <- summ.table.posdoc
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-posdoc-carousel, eval = has.posdocs}
+```{r sintese-posdoc-carousel, eval = has.sucupira.files}
 cat('<br>')
 cat('<br>')
 

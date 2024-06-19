@@ -3,7 +3,6 @@ if (sjmisc::is_empty(dois)) {
   doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
   doi_without_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
 } else {
-  dois_df <- dois
   # roda o script para obter dados do Altmetric
   source("Scripts/altmetric-from-dois.R", local = knitr::knit_global())
   # doi_with_altmetric output
@@ -74,17 +73,19 @@ if (sjmisc::is_empty(doi_without_altmetric)) {
       rep(0, dim(doi_without_altmetric)[1])
     
     for (ix in 1:dim(doi_without_altmetric)[1]) {
-      # replace is_oa from Crossref
-      my_doi_oa <-
-        roadoi::oadoi_fetch(dois = doi_without_altmetric$doi[ix], email = "cienciasdareabilitacao@souunisuam.com.br")
-      doi_without_altmetric$is_oa[ix] <-
-        ifelse(length(my_doi_oa$is_oa) != 0,
-               toupper(as.character(my_doi_oa$is_oa)),
-               "FALSE")
+      try({
+        # replace is_oa from Crossref
+        my_doi_oa <-
+          roadoi::oadoi_fetch(dois = doi_without_altmetric$DOI[ix], email = "cienciasdareabilitacao@souunisuam.com.br")
+        doi_without_altmetric$is_oa[ix] <-
+          ifelse(length(my_doi_oa$is_oa) != 0,
+                 toupper(as.character(my_doi_oa$is_oa)),
+                 "FALSE")
+      })
       # add citation counts
       try ({
         citations <-
-          rcrossref::cr_citation_count(doi = as.character(doi_without_altmetric$doi[ix]),
+          rcrossref::cr_citation_count(doi = as.character(doi_without_altmetric$DOI[ix]),
                                        key = "cienciasdareabilitacao@souunisuam.com.br")
         doi_without_altmetric$citations[ix] <- citations$count
       },
