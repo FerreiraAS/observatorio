@@ -849,8 +849,8 @@ metricas_artigos <- metricas_artigos[metricas_artigos$`Item de Detalhamento` == 
 # remove duplicated ID rows
 metricas_artigos <- metricas_artigos[!duplicated(metricas_artigos$`ID da Produção`), ]
 
-# convert NA values in "Sem classificação"
-metricas_artigos$Qualis[is.na(metricas_artigos$Qualis)] <- "Sem classificação"
+# convert NA values in "Indefinido"
+metricas_artigos$Qualis[is.na(metricas_artigos$Qualis)] <- "Indefinido"
 
 # Qualis
 estratos <- sort(unique(na.omit(metricas_artigos$Qualis)))
@@ -865,6 +865,9 @@ qualis.PPG <- table(metricas_artigos$Qualis)
 
 qualis.PPG.up <- names(qualis.PPG[1])
 qualis.PPG.lr <- names(qualis.PPG[length(qualis.PPG)])
+
+# remove Indefinidos
+qualis.PPG.plot <- qualis.PPG[names(qualis.PPG) != "Indefinido"]
 
 # generate cross tables of artigos per year
 table.1 <- table(metricas_artigos$"Ano da Produção")
@@ -994,12 +997,12 @@ layout.m <- matrix(c(1, 2, 3),
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 
 barplot(
-  rev(qualis.PPG),
+  rev(qualis.PPG.plot),
   horiz = TRUE,
   xlab = "%",
   ylab = "Estrato",
-  xlim = c(0, max(qualis.PPG)),
-  ylim = c(0, length(unique(qualis.PPG)) + 3),
+  xlim = c(0, max(qualis.PPG.plot)),
+  ylim = c(0, length(unique(qualis.PPG.plot)) + 3),
   col = mycolors[2],
   sub = "Programa",
   cex.names = 0.7,
@@ -1007,9 +1010,9 @@ barplot(
   ann = FALSE
 )
 axis(1, at = round(c(
-  0, max(qualis.PPG)
+  0, max(qualis.PPG.plot)
 )), labels = round(c(
-  0, max(qualis.PPG)
+  0, max(qualis.PPG.plot)
 )))
 title(main = "Distribuição (Qualis, SJR, CiteScore)",
       outer = TRUE,
@@ -1066,7 +1069,7 @@ vioplot::vioplot(
 # calculate summary statistics for producao
 summ.table.producao <-
   cbind(
-    sum(table.1),
+    sum(table.1, na.rm = FALSE),
     formatC(
       min(table.1, na.rm = TRUE),
       format = "d",
@@ -1105,7 +1108,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        100 - round((sum(table.2[match(rownames(table.2), c("A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "B5")),]) / sum(table.2) * 100), 0),
+        100 - round((sum(table.2[na.omit(match(rownames(table.2), c("A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "B5"))),], na.rm = FALSE) / sum(table.2, na.rm = FALSE) * 100), 0),
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1114,7 +1117,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[match(rownames(table.2), c("B1", "B2", "B3", "B4", "B5")),]) / sum(table.2) * 100,
+        sum(table.2[na.omit(match(rownames(table.2), c("B1", "B2", "B3", "B4", "B5"))),], na.rm = FALSE) / sum(table.2, na.rm = FALSE) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1123,7 +1126,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[match(rownames(table.2), c("A1", "A2", "A3", "A4")),]) / sum(table.2) * 100,
+        sum(table.2[na.omit(match(rownames(table.2), c("A1", "A2", "A3", "A4"))),], na.rm = FALSE) / sum(table.2, na.rm = FALSE) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1142,8 +1145,8 @@ names(summ.table.producao) <-
     "Mediana SJR",
     "Maior",
     "Outros",
-    "B1-B4",
-    "A1-A4"
+    "Estrato B",
+    "Estrato A"
   )
 
 # plot area setup
