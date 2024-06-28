@@ -308,7 +308,7 @@ edges1 <-
 vertices <- NULL
 
 # Then we have to make a 'graph' object using the igraph library
-mygraph <- graph_from_data_frame(edges1[, 1:2], vertices = vertices)
+mygraph <- igraph::graph_from_data_frame(edges1[, 1:2], vertices = vertices)
 
 # plot 1
 par(
@@ -322,20 +322,20 @@ par(
 )
 
 # Make the plot
-ggraph(mygraph, layout = "circlepack", weight = c(0, edges1[, 3])) +
-  geom_node_circle(aes(fill = as.factor(depth))) +
-  scale_colour_brewer(RColorBrewer::brewer.pal(n = 9, name = "Set3")) +
-  scale_fill_discrete(labels = c("Áreas de concentração", "Linhas de pesquisa")) +
-  theme_void() +
-  theme(
-    panel.border = element_blank(),
-    panel.background = element_rect(fill = main.color, color = main.color),
-    plot.background = element_rect(fill = main.color, color = main.color),
-    legend.background = element_rect(fill = main.color,  color = main.color),
-    legend.box.background = element_rect(fill = main.color,  color = main.color),
+ggraph::ggraph(mygraph, layout = "circlepack", weight = c(0, edges1[, 3])) +
+  ggraph::geom_node_circle(ggplot2::aes(fill = as.factor(depth))) +
+  ggplot2::scale_colour_brewer(RColorBrewer::brewer.pal(n = 9, name = "Set3")) +
+  ggplot2::scale_fill_discrete(labels = c("Áreas de concentração", "Linhas de pesquisa")) +
+  ggplot2::theme_void() +
+  ggplot2::theme(
+    panel.border = ggplot2::element_blank(),
+    panel.background = ggplot2::element_rect(fill = main.color, color = main.color),
+    plot.background = ggplot2::element_rect(fill = main.color, color = main.color),
+    legend.background = ggplot2::element_rect(fill = main.color,  color = main.color),
+    legend.box.background = ggplot2::element_rect(fill = main.color,  color = main.color),
     legend.position = "top",
-    legend.title = element_blank(),
-    legend.text = element_text(color = "white", size = 14)
+    legend.title = ggplot2::element_blank(),
+    legend.text = ggplot2::element_text(color = "white", size = 14)
   )
 
 # plot 2
@@ -1034,9 +1034,9 @@ vioplot::vioplot(
   xlab = NA,
   side = "both",
   ylim = c(min(
-    as.numeric(SJR.PPG)
+    as.numeric(SJR.PPG), na.rm = TRUE
   ), max(
-    as.numeric(SJR.PPG)
+    as.numeric(SJR.PPG), na.rm = TRUE
   )),
   ylab = "SJR",
   xaxt = 'n',
