@@ -840,35 +840,53 @@ cat(
 ```
 
 ```{r sintese-producao, include = FALSE, eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira)}
+# select products
+metricas_artigos <- metricas_all[metricas_all$`Subtipo de Produção` == "ARTIGO EM PERIÓDICO", ]
+
+# keep journal titles
+metricas_artigos <- metricas_artigos[metricas_artigos$`Item de Detalhamento` == "ISSN / Título do periódico", ]
+
+# remove duplicated ID rows
+metricas_artigos <- metricas_artigos[!duplicated(metricas_artigos$`ID da Produção`), ]
+
+# convert NA values in "Sem classificação"
+metricas_artigos$Qualis[is.na(metricas_artigos$Qualis)] <- "NA"
+
 # Qualis
+estratos <- sort(unique(na.omit(metricas_artigos$Qualis)))
 qualis.PPG <- c()
-for (i in 1:length(estratos)) {
+for (i in 1:length(metricas_artigos$Qualis)) {
   qualis.PPG[i] <-
-    sum(doi_all$WebQualis == estratos[i], na.rm = TRUE) / length(doi_all$WebQualis) * 100
+    sum(metricas_artigos$Qualis == estratos[i], na.rm = TRUE) / length(metricas_artigos$Qualis) * 100
 }
+
+# drop NA values
+qualis.PPG <- qualis.PPG[qualis.PPG != "NA"]
+
 names(qualis.PPG) <- estratos
+qualis.PPG <- table(metricas_artigos$Qualis)
 
 qualis.PPG.up <- names(qualis.PPG[1])
 qualis.PPG.lr <- names(qualis.PPG[length(qualis.PPG)])
 
 # generate cross tables of artigos per year
-table.1 <- table(doi_all$published_on)
+table.1 <- table(metricas_artigos$"Ano da Produção")
 
 table.2 <-
-  matrix(0, ncol = length(unique(doi_all$published_on)), nrow = length(estratos))
-colnames(table.2) <- sort(unique(doi_all$published_on))
+  matrix(0, ncol = length(unique(metricas_artigos$"Ano da Produção")), nrow = length(estratos))
+colnames(table.2) <- sort(unique(metricas_artigos$"Ano da Produção"))
 rownames(table.2) <- estratos
 
-for (i in 1:length(doi_all$WebQualis)) {
-    table.2[match(doi_all$WebQualis[i], rownames(table.2)), match(doi_all$published_on[i], colnames(table.2))] <-
-      table.2[match(doi_all$WebQualis[i], rownames(table.2)), match(doi_all$published_on[i], colnames(table.2))] + 1
+for (i in 1:length(metricas_artigos$Qualis)) {
+    table.2[match(metricas_artigos$Qualis[i], rownames(table.2)), match(metricas_artigos$"Ano da Produção"[i], colnames(table.2))] <-
+      table.2[match(metricas_artigos$Qualis[i], rownames(table.2)), match(metricas_artigos$"Ano da Produção"[i], colnames(table.2))] + 1
 }
 
-table.3 <- data.frame(doi_all$published_on, doi_all$SJR)
+table.3 <- data.frame(metricas_artigos$"Ano da Produção", metricas_artigos$SJR)
 
-table.4 <- data.frame(doi_all$published_on, doi_all$CiteScore)
+table.4 <- data.frame(metricas_artigos$"Ano da Produção", metricas_artigos$CiteScore)
 
-table.5 <- data.frame(doi_all$journal, doi_all$SJR)
+table.5 <- data.frame(metricas_artigos$`Valor do Item de Detalhamento`, metricas_artigos$SJR)
 
 # plot area setup
 layout.m <- c(1)
@@ -926,6 +944,8 @@ title(main = "Qualidade da produção (CiteScore)",
 
 # plot 6 (top-10 journals)
 journals.SJR <- unique(table.5)
+#rename columns
+colnames(journals.SJR) <- c("metricas_artigos.journal", "metricas_artigos.SJR")
 
 # plot area setup
 layout.m <- c(1)
@@ -937,8 +957,8 @@ par(mar = c(1.5, 15, 1, 1))
 top <- min((as.numeric(journals.SJR$SJR)), 10)
 data.journals <-
   data.frame(
-    name = journals.SJR$doi_all.journal[order(as.numeric(journals.SJR$doi_all.SJR), decreasing = TRUE)][1:top],
-    value = as.numeric(sort(as.numeric(journals.SJR$doi_all.SJR), decreasing = TRUE
+    name = journals.SJR$metricas_artigos.journal[order(as.numeric(journals.SJR$metricas_artigos.SJR), decreasing = TRUE)][1:top],
+    value = as.numeric(sort(as.numeric(journals.SJR$metricas_artigos.SJR), decreasing = TRUE
              )[1:top])
     )
 
@@ -977,25 +997,12 @@ layout.m <- matrix(c(1, 2, 3),
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 
 barplot(
-  -rev(qualis.base),
-  horiz = TRUE,
-  xlab = "%",
-  ylab = "Estratos",
-  xlim = c(-max(qualis.base, qualis.PPG), max(qualis.base, qualis.PPG)),
-  ylim = c(0, length(unique(qualis.base)) + 3),
-  col = mycolors[1],
-  sub = "Base",
-  cex.names = 0.7,
-  xaxt = 'n',
-  ann = FALSE
-)
-barplot(
   rev(qualis.PPG),
   horiz = TRUE,
   xlab = "%",
-  ylab = "Estratos",
-  xlim = c(-max(qualis.base, qualis.PPG), max(qualis.base, qualis.PPG)),
-  ylim = c(0, length(unique(qualis.base)) + 3),
+  ylab = "Estrato",
+  xlim = c(0, max(qualis.PPG)),
+  ylim = c(0, length(unique(qualis.PPG)) + 3),
   col = mycolors[2],
   sub = "Programa",
   cex.names = 0.7,
@@ -1004,16 +1011,16 @@ barplot(
   add = TRUE
 )
 axis(1, at = round(c(
-  -max(qualis.base, qualis.PPG), 0, max(qualis.base, qualis.PPG)
+  -max(qualis.PPG), 0, max(qualis.PPG)
 )), labels = round(c(
-  max(qualis.base, qualis.PPG), 0, max(qualis.base, qualis.PPG)
+  max(qualis.PPG), 0, max(qualis.PPG)
 )))
-title(main = "Distribuição Bases vs. Programa (Qualis, SJR, CiteScore)",
+title(main = "Distribuição (Qualis, SJR, CiteScore)",
       outer = TRUE,
       cex.main = 1.7)
 legend(
   "topleft",
-  legend = c("Base", "Programa"),
+  legend = c("Programa"),
   fill = mycolors[1:2],
   text.col = "white",
   box.lwd = 0,
@@ -1022,33 +1029,18 @@ legend(
   cex = 1
 )
 
-# hist SJR base e PPG
-SJR.base <- scimago$SJR[!is.na(scimago$SJR)]
-SJR.PPG <- doi_all$SJR[!is.na(doi_all$SJR)]
+# hist SJR PPG
+SJR.PPG <- metricas_artigos$SJR[!is.na(metricas_artigos$SJR)]
 
-vioplot::vioplot(
-  as.numeric(SJR.base),
-  col = mycolors[1],
-  xlab = NA,
-  side = "left",
-  ylim = c(min(
-    as.numeric(SJR.base), as.numeric(SJR.PPG)
-  ), max(
-    as.numeric(SJR.base), as.numeric(SJR.PPG)
-  )),
-  ylab = "SJR",
-  xaxt = 'n',
-  ann = FALSE
-)
 vioplot::vioplot(
   as.numeric(SJR.PPG),
   col = mycolors[2],
   xlab = NA,
-  side = "right",
+  side = "both",
   ylim = c(min(
-    as.numeric(SJR.base), as.numeric(SJR.PPG)
+    as.numeric(SJR.PPG)
   ), max(
-    as.numeric(SJR.base), as.numeric(SJR.PPG)
+    as.numeric(SJR.PPG)
   )),
   ylab = "SJR",
   xaxt = 'n',
@@ -1056,38 +1048,22 @@ vioplot::vioplot(
   add = TRUE
 )
 
-# hist CiteScore base e PPG
-CITESCORE.base <- citescore$CiteScore[!is.na(citescore$CiteScore)]
-CITESCORE.PPG <- doi_all$CiteScore[!is.na(doi_all$CiteScore)]
+# hist CiteScore PPG
+CITESCORE.PPG <- metricas_artigos$CiteScore[!is.na(metricas_artigos$CiteScore)]
 
-vioplot::vioplot(
-  as.numeric(CITESCORE.base),
-  col = mycolors[1],
-  xlab = NA,
-  side = "left",
-  ylim = c(min(
-    as.numeric(CITESCORE.base), as.numeric(CITESCORE.PPG)
-  ), max(
-    as.numeric(CITESCORE.base), as.numeric(CITESCORE.PPG)
-  )),
-  ylab = "SJR",
-  xaxt = 'n',
-  ann = FALSE
-)
 vioplot::vioplot(
   as.numeric(CITESCORE.PPG),
   col = mycolors[2],
   xlab = NA,
-  side = "right",
+  side = "both",
   ylim = c(min(
-    as.numeric(CITESCORE.base), as.numeric(CITESCORE.PPG)
+    as.numeric(CITESCORE.PPG), na.rm = TRUE
   ), max(
-    as.numeric(CITESCORE.base), as.numeric(CITESCORE.PPG)
+    as.numeric(CITESCORE.PPG), na.rm = TRUE
   )),
-  ylab = "SJR",
+  ylab = "CiteScore",
   xaxt = 'n',
-  ann = FALSE,
-  add = TRUE
+  ann = FALSE
 )
 
 # plot 8 (summary table in plot)
@@ -1115,26 +1091,26 @@ summ.table.producao <-
       big.mark = "."
     ),
     formatC(
-      min(doi_all$SJR, na.rm = TRUE),
+      min(as.numeric(metricas_artigos$SJR), na.rm = TRUE),
       format = "f",
       digits = 3,
       big.mark = "."
     ),
     formatC(
-      median(doi_all$SJR, na.rm = TRUE),
+      median(as.numeric(metricas_artigos$SJR), na.rm = TRUE),
       format = "f",
       digits = 3,
       big.mark = "."
     ),
     formatC(
-      max(doi_all$SJR, na.rm = TRUE),
+      max(as.numeric(metricas_artigos$SJR), na.rm = TRUE),
       format = "f",
       digits = 3,
       big.mark = "."
     ),
     paste0(
       formatC(
-        100 - round((sum(table.2[1:8,]) / sum(table.2) * 100), 0),
+        round((sum(table.2[which(rownames(table.2) != c("A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "B5")),]) / sum(table.2) * 100), 0),
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1143,7 +1119,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[5:8,]) / sum(table.2) * 100,
+        sum(table.2[which(rownames(table.2) == c("B1", "B2", "B3", "B4")),]) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1152,7 +1128,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[1:4,]) / sum(table.2) * 100,
+        sum(table.2[which(rownames(table.2) == c("A1", "A2", "A3", "A4")),]) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1208,10 +1184,19 @@ cat(
 ```
 
 ```{r sintese-visibilidade, include = FALSE, eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira)}
+# select products
+metricas_artigos <- metricas_all[metricas_all$`Subtipo de Produção` == "ARTIGO EM PERIÓDICO", ]
+
+# keep journal titles
+metricas_artigos <- metricas_artigos[metricas_artigos$`Item de Detalhamento` == "ISSN / Título do periódico", ]
+
+# remove duplicated ID rows
+metricas_artigos <- metricas_artigos[!duplicated(metricas_artigos$`ID da Produção`), ]
+
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
-table.1 <- data.frame(doi_all$published_on, doi_all$altmetric_score)
+table.1 <- data.frame(metricas_artigos$"Ano da Produção", metricas_artigos$altmetric_score)
 
 # plot area setup
 layout.m <- c(1)
@@ -1253,8 +1238,8 @@ text(
 
 # generate cross tables of IS_OA artigos per year
 table.2 <-
-  t(table(doi_all$published_on,
-          as.logical(doi_all$is_oa)))
+  t(table(metricas_artigos$"Ano da Produção",
+          as.logical(metricas_artigos$is_oa)))
 table.2 <- table.2[order(rownames(table.2)), ]
 rownames(table.2) <- c("Open access", "Paywall")
 # swap lines
@@ -1293,13 +1278,13 @@ legend(
   cex = 1,
 )
 
-if (sjmisc::is_empty(doi_all$citations)) {
+if (sjmisc::is_empty(metricas_artigos$citations)) {
   table.3 <- as.matrix(rep(0, length(max(anos) - min(anos) + 1)))
 } else {
   # generate cross tables of citations per year
   table.3 <-
-    t(table(doi_all$published_on,
-            doi_all$citations))
+    t(table(metricas_artigos$"Ano da Produção",
+            metricas_artigos$citations))
   table.3 <- table.3[order(rownames(table.3)),]
   table.3 <- colSums(table.3)
 }

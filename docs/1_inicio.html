@@ -789,10 +789,6 @@ function googleTranslateElementInit() {
 <h2><strong>Diretórios</strong></h2>
 <!--create (if non existent) all required folders-->
 </div>
-<div id="source-scripts-de-métricas" class="section level2">
-<h2><strong>Source scripts de métricas</strong></h2>
-<!--read METRIC files-->
-</div>
 <div id="check-arquivos-impacto" class="section level2">
 <h2><strong>Check arquivos Impacto</strong></h2>
 <!--check Impacto/Sage folder-->
@@ -812,8 +808,24 @@ function googleTranslateElementInit() {
 <div id="check-dados-cadastrais-ppg" class="section level2">
 <h2><strong>Check dados cadastrais PPG</strong></h2>
 </div>
-<div id="check-doi-produção-sucupira" class="section level2">
-<h2><strong>Check DOI produção Sucupira</strong></h2>
+<div id="check-metricas-pelo-doi-da-produção-sucupira"
+class="section level2">
+<h2><strong>Check metricas pelo DOI da produção Sucupira</strong></h2>
+<div id="altmetric-score" class="section level3">
+<h3><strong>Altmetric (score)</strong></h3>
+</div>
+<div id="crossref-open-access-citations" class="section level3">
+<h3><strong>CrossRef (Open Access, Citations)</strong></h3>
+</div>
+<div id="scopus-sjr-citescore" class="section level3">
+<h3><strong>Scopus (SJR, CiteScore)</strong></h3>
+</div>
+<div id="plumx-score" class="section level3">
+<h3><strong>PlumX (score)</strong></h3>
+</div>
+<div id="dimensions-score" class="section level3">
+<h3><strong>Dimensions (score)</strong></h3>
+</div>
 </div>
 <div id="check-doi-produção-ppg" class="section level2">
 <h2><strong>Check DOI produção PPG</strong></h2>
@@ -824,11 +836,8 @@ function googleTranslateElementInit() {
 <div id="agregar-dados-de-produção" class="section level2">
 <h2><strong>Agregar dados de produção</strong></h2>
 </div>
-<div id="salva-arquivos-.tsv" class="section level2">
-<h2><strong>Salva arquivos .TSV</strong></h2>
-</div>
-<div id="sessio-info" class="section level2">
-<h2><strong>Sessio info</strong></h2>
+<div id="session-info" class="section level2">
+<h2><strong>Session info</strong></h2>
 <details closed>
 <summary>
 <span title="Click to Expand"> Current session info </span>
@@ -844,7 +853,7 @@ function googleTranslateElementInit() {
  collate  en_US.UTF-8
  ctype    en_US.UTF-8
  tz       America/Sao_Paulo
- date     2024-06-19
+ date     2024-06-28
  pandoc   3.1.11 @ /Applications/RStudio.app/Contents/Resources/app/quarto/bin/tools/x86_64/ (via rmarkdown)
 
 ─ Packages ──────────────────────────────────────────────────────────────────────────────────────
@@ -868,12 +877,12 @@ function googleTranslateElementInit() {
  chromote          * 0.2.0   2024-02-12 [1] CRAN (R 4.4.0)
  class               7.3-22  2023-05-03 [1] CRAN (R 4.4.0)
  classInt            0.4-10  2023-09-05 [1] CRAN (R 4.4.0)
- cli                 3.6.2   2023-12-11 [1] CRAN (R 4.4.0)
+ cli                 3.6.3   2024-06-21 [1] CRAN (R 4.4.0)
  clipr               0.8.0   2022-02-22 [1] CRAN (R 4.4.0)
  codetools           0.2-20  2024-03-31 [1] CRAN (R 4.4.0)
  colorspace          2.1-0   2023-01-23 [1] CRAN (R 4.4.0)
  cowplot           * 1.1.3   2024-01-22 [1] CRAN (R 4.4.0)
- crayon              1.5.2   2022-09-29 [1] CRAN (R 4.4.0)
+ crayon              1.5.3   2024-06-20 [1] CRAN (R 4.4.0)
  crul                1.4.2   2024-04-09 [1] CRAN (R 4.4.0)
  cssparser         * 0.1.1   2024-05-26 [1] Github (coolbutuseless/cssparser@a5a3765)
  curl              * 5.2.1   2024-03-01 [1] CRAN (R 4.4.0)
@@ -884,7 +893,7 @@ function googleTranslateElementInit() {
  desc                1.4.3   2023-12-10 [1] CRAN (R 4.4.0)
  details           * 0.3.0   2022-03-27 [1] CRAN (R 4.4.0)
  devtools          * 2.4.5   2022-10-11 [1] CRAN (R 4.4.0)
- digest              0.6.35  2024-03-11 [1] CRAN (R 4.4.0)
+ digest              0.6.36  2024-06-23 [1] CRAN (R 4.4.0)
  do                * 2.0.0.0 2021-08-03 [1] CRAN (R 4.4.0)
  dplyr             * 1.1.4   2023-11-17 [1] CRAN (R 4.4.0)
  DT                * 0.33    2024-04-04 [1] CRAN (R 4.4.0)
@@ -1009,13 +1018,13 @@ function googleTranslateElementInit() {
  sm                * 2.2-6.0 2024-02-17 [1] CRAN (R 4.4.0)
  snakecase           0.11.1  2023-08-27 [1] CRAN (R 4.4.0)
  sp                * 2.1-4   2024-04-30 [1] CRAN (R 4.4.0)
- spatstat.data     * 3.0-4   2024-01-15 [1] CRAN (R 4.4.0)
+ spatstat.data     * 3.1-2   2024-06-21 [1] CRAN (R 4.4.0)
  spatstat.explore  * 3.2-7   2024-03-21 [1] CRAN (R 4.4.0)
  spatstat.geom     * 3.2-9   2024-02-28 [1] CRAN (R 4.4.0)
  spatstat.linnet   * 3.1-5   2024-03-25 [1] CRAN (R 4.4.0)
  spatstat.model    * 3.2-11  2024-03-22 [1] CRAN (R 4.4.0)
  spatstat.random   * 3.2-3   2024-02-29 [1] CRAN (R 4.4.0)
- spatstat.sparse     3.0-3   2023-10-24 [1] CRAN (R 4.4.0)
+ spatstat.sparse     3.1-0   2024-06-21 [1] CRAN (R 4.4.0)
  spatstat.utils      3.0-5   2024-06-17 [1] CRAN (R 4.4.0)
  stringi             1.8.4   2024-05-06 [1] CRAN (R 4.4.0)
  stringr           * 1.5.1   2023-11-14 [1] CRAN (R 4.4.0)

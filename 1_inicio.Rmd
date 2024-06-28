@@ -105,22 +105,6 @@ for (i in 1:length(paths)) {
 }
 ```
 
-## **Source scripts de métricas**
-
-<!--read METRIC files-->
-```{r source-metrics-scripts}
-source(file.path("Scripts", "citescore.R"), local = knitr::knit_global())
-source(file.path("Scripts", "sjr.R"), local = knitr::knit_global())
-source(file.path("Scripts", "webqualis.R"), local = knitr::knit_global())
-
-source(file.path("Scripts", "doi-cleaner.R"), local = knitr::knit_global())
-
-source(file.path("Scripts", "get-citescore.R"), local = knitr::knit_global())
-source(file.path("Scripts", "get-sjr.R"), local = knitr::knit_global())
-source(file.path("Scripts", "get-webqualis.R"), local = knitr::knit_global())
-source(file.path("Scripts", "get-metrics-from-sources.R"), local = knitr::knit_global())
-```
-
 ## **Check arquivos Impacto**
 
 <!--check Impacto/Sage folder-->
@@ -145,8 +129,6 @@ files.to.read <-
             pattern = "xlsx"
 )
 has.sucupira.files <- length(files.to.read) != 0
-doi_with_altmetric_sucupira <- data.frame()
-doi_without_altmetric_sucupira <- data.frame()
 ```
 
 ## **Check diretório PPG**
@@ -458,92 +440,245 @@ nome.IES <- tools::toTitleCase(as.character(nome.IES))
 sigla.IES <- unique(sucupira.raw$`IES Sigla`)
 ```
 
-## **Check DOI produção Sucupira**
+## **Check metricas pelo DOI da produção Sucupira**
 
 ```{r metricas-doi-sucupira, cache = TRUE, cache.path = "cache/metricas-doi-sucupira/", eval = has.sucupira.files}
-# produção detalhes
-sheet <- "Produções - Detalhes"
+# produção
+sheet <- "Produções"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
+# retrieve produções to search for ISSN
+produtos.sucupira <- sucupira.raw
+
+# produção detalhes
+sheet <- "Produções - Detalhes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
 # get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
+produtos.detalhes.sucupira <- sucupira.raw %>%
   plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
-# filter by Valor do Item de Detalhamento
-produtos.detalhes <- produtos.detalhes %>%
-  dplyr::filter(`Item de Detalhamento` == "Número do DOI" | `Item de Detalhamento` == "URL do DOI" | `Item de Detalhamento` == "URL")
+# reorder columns (ano first)
+produtos.detalhes.sucupira <- produtos.detalhes.sucupira %>%
+  dplyr::select('Ano da Produção', tidyselect::everything())
 
-# to lower case
-produtos.detalhes$`Valor do Item de Detalhamento` <-
-  tolower(produtos.detalhes$`Valor do Item de Detalhamento`)
-
-# remove NA values from Valor do Item de Detalhamento
-produtos.detalhes <- produtos.detalhes %>%
-  dplyr::filter(!is.na(`Valor do Item de Detalhamento`))
-
-# limpa as entradas de DOI
-produtos.detalhes <- cbind(
-  produtos.detalhes,
-  doi_cleaner(data.frame(DOI = produtos.detalhes$`Valor do Item de Detalhamento`))
+# add columns for metrics and details from Altmetric, CrossRef, Scopus and CAPES
+produtos.detalhes.sucupira <- produtos.detalhes.sucupira %>%
+  dplyr::mutate(
+    # from CAPES
+    Qualis = NA,
+    ISSN = NA,
+    DOI = NA,
+    # from Altmetric
+    cited_by_fbwalls_count = NA,
+    cited_by_feeds_count = NA,
+    cited_by_gplus_count = NA,
+    cited_by_msm_count = NA,
+    cited_by_posts_count = NA,
+    cited_by_rdts_count = NA,
+    cited_by_tweeters_count = NA,
+    cited_by_videos_count = NA,
+    cited_by_accounts_count = NA,
+    cited_by_patents_count = NA,
+    mendeley = NA,
+    score = NA,
+    # from Altmetric and CrossRef
+    is_oa = NA,
+    # from CrossRef
+    citations = NA,
+    # from Scopus
+    source_id = NA,
+    SJR = NA,
+    SJR_year = NA,
+    CiteScore = NA,
+    CiteScore_year = NA,
+    PlumX = NA
   )
 
-# remove NA values from DOI
-produtos.detalhes <- produtos.detalhes %>%
-  dplyr::filter(!is.na(DOI))
-
-# create unique ID using ID da Produção e DOI
-produtos.detalhes$ID <- 
-  paste(produtos.detalhes$`ID da Produção`, produtos.detalhes$DOI, sep = "_")
-
-# remove duplicates based on unique ID
-produtos.detalhes <- produtos.detalhes %>%
-  dplyr::distinct(ID, .keep_all = TRUE)
-
-# loop across IDs
-dois <- data.frame(DOI = produtos.detalhes$DOI)
-if (!sjmisc::is_empty(dois)) {
-  # cria metadados para rastreio pelo Altmetric
-  source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
-  
-  # get metrics from Altmetric and CrossRef
-  source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
-  
-  # store to use downstream
-  doi_with_altmetric_sucupira <-
-    get_metrics(
-      doi_with_altmetric = doi_with_altmetric,
-      doi_without_altmetric = NULL,
-      citescore,
-      scimago,
-      qualis
-    )
-  doi_without_altmetric_sucupira <-
-    get_metrics(
-      doi_with_altmetric = NULL,
-      doi_without_altmetric = doi_without_altmetric,
-      citescore,
-      scimago,
-      qualis
-    )
-} else {
-  doi_with_altmetric_sucupira = data.frame()
-  doi_without_altmetric_sucupira = data.frame()
+# iterate item-wise
+for (item in 1:nrow(produtos.sucupira)) {
+  # match ID da Produção entre produtos.sucupira e produtos.detalhes.sucupira
+  matches <- which(produtos.detalhes.sucupira$`ID da Produção` == produtos.sucupira$`ID da Produção`[item], arr.ind = TRUE)
+  # get and replace Qualis values
+  produtos.detalhes.sucupira$Qualis[matches] <- produtos.sucupira$Estrato[item]
+  # get and replace ISSN values
+  produtos.detalhes.sucupira$ISSN[matches] <- produtos.sucupira$ISSN[item]
 }
 
-has.metricas.doi.sucupira <- 
-  !sjmisc::is_empty(doi_with_altmetric_sucupira) | !sjmisc::is_empty(doi_without_altmetric_sucupira)
+# clean DOI that are "Número do DOI", "URL do DOI" or "URL" in Item de Detalhamento
+source("Scripts/doi-cleaner.R", local = knitr::knit_global())
+clean_dois <- ifelse(
+  grepl("Número do DOI|URL do DOI|URL", produtos.detalhes.sucupira$`Item de Detalhamento`),
+  doi_cleaner(data.frame(DOI = produtos.detalhes.sucupira$`Valor do Item de Detalhamento`))$DOI,
+  produtos.detalhes.sucupira$DOI
+)
+
+# fill rows that are "Número do DOI", "URL do DOI" or "URL" in Item de Detalhamento
+produtos.detalhes.sucupira$DOI <- ifelse(
+  grepl("Número do DOI|URL do DOI|URL", produtos.detalhes.sucupira$`Item de Detalhamento`),
+  clean_dois,
+  produtos.detalhes.sucupira$DOI
+)
+
+has.metricas.doi.sucupira <- !sjmisc::is_empty(produtos.detalhes.sucupira)
+
+doi_with_error <- c()
+source_with_error <- c()
+```
+
+### **Altmetric (score)**
+
+```{r altmetric-doi-sucupira, cache = TRUE, cache.path = "cache/altmetric-doi-sucupira/", eval = has.metricas.doi.sucupira}
+# iterate item-wise
+for (item in 1:nrow(produtos.sucupira)) {
+  # match ID da Produção entre produtos.sucupira e produtos.detalhes.sucupira
+  matches <- which(
+    produtos.detalhes.sucupira$`ID da Produção` == produtos.sucupira$`ID da Produção`[item],
+    arr.ind = TRUE
+  )
+  
+  # get DOI values
+  dois <- data.frame(DOI = unique(na.omit(produtos.detalhes.sucupira$DOI[matches]))[1])
+  
+  # check if DOI is not NA
+  if (!sjmisc::is_empty(dois$DOI)) {
+    # cria metadados para rastreio pelo Altmetric
+    source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
+    
+    # get Altmetric from DOI
+    source("Scripts/altmetric-from-dois.R", local = knitr::knit_global())
+    produtos.detalhes.sucupira$cited_by_fbwalls_count[matches] <-
+      doi_with_metrics$cited_by_fbwalls_count
+    produtos.detalhes.sucupira$cited_by_feeds_count[matches] <-
+      doi_with_metrics$cited_by_feeds_count
+    produtos.detalhes.sucupira$cited_by_gplus_count[matches] <-
+      doi_with_metrics$cited_by_gplus_count
+    produtos.detalhes.sucupira$cited_by_msm_count[matches] <-
+      doi_with_metrics$cited_by_msm_count
+    produtos.detalhes.sucupira$cited_by_posts_count[matches] <-
+      doi_with_metrics$cited_by_posts_count
+    produtos.detalhes.sucupira$cited_by_rdts_count[matches] <-
+      doi_with_metrics$cited_by_rdts_count
+    produtos.detalhes.sucupira$cited_by_tweeters_count[matches] <-
+      doi_with_metrics$cited_by_tweeters_count
+    produtos.detalhes.sucupira$cited_by_videos_count[matches] <-
+      doi_with_metrics$cited_by_videos_count
+    produtos.detalhes.sucupira$cited_by_accounts_count[matches] <-
+      doi_with_metrics$cited_by_accounts_count
+    produtos.detalhes.sucupira$cited_by_patents_count[matches] <-
+      doi_with_metrics$cited_by_patents_count
+    produtos.detalhes.sucupira$mendeley[matches] <-
+      doi_with_metrics$mendeley
+    produtos.detalhes.sucupira$score[matches] <-
+      doi_with_metrics$score
+    
+    # wait to respect API rate limit (polite request)
+    Sys.sleep(1)
+    # beep to alert
+    beepr::beep("coin")
+  }
+}
+
+# rename column
+data.table::setnames(produtos.detalhes.sucupira, 'score', 'altmetric_score')
+```
+
+### **CrossRef (Open Access, Citations)**
+
+```{r crossref-doi-sucupira, cache = TRUE, cache.path = "cache/crossref-doi-sucupira/", eval = has.metricas.doi.sucupira}
+# continue from previous chunk
+
+# iterate item-wise
+for (item in 1:nrow(produtos.sucupira)) {
+  # match ID da Produção entre produtos.sucupira e produtos.detalhes.sucupira
+  matches <- which(
+    produtos.detalhes.sucupira$`ID da Produção` == produtos.sucupira$`ID da Produção`[item],
+    arr.ind = TRUE
+  )
+  
+  # get DOI values
+  dois <- data.frame(DOI = unique(na.omit(produtos.detalhes.sucupira$DOI[matches]))[1])
+  
+  # check if DOI is not NA
+  if (!sjmisc::is_empty(dois$DOI)) {
+    # get OA and citations from DOI after Altmetric
+    source("Scripts/crossref-from-dois.R", local = knitr::knit_global())
+    produtos.detalhes.sucupira$is_oa[matches] <-
+      doi_with_metrics$is_oa
+    produtos.detalhes.sucupira$citations[matches] <-
+      doi_with_metrics$citations
+
+    # wait to respect API rate limit (polite request)
+    Sys.sleep(1)
+    # beep to alert
+    beepr::beep("coin")
+  }
+}
+```
+
+### **Scopus (SJR, CiteScore)**
+
+```{r scopus-issn-sucupira, cache = TRUE, cache.path = "cache/scopus-issn-sucupira/", eval = has.metricas.doi.sucupira}
+# continue from previous chunk
+
+# get unique ISSN
+issn.unique <- data.frame(ISSN = as.character(unique(na.omit(produtos.detalhes.sucupira$ISSN))))
+
+# iterate item-wise
+for (item in 1:nrow(issn.unique)) {
+  # match ID da Produção entre produtos.sucupira e produtos.detalhes.sucupira
+  matches <- which(
+    produtos.detalhes.sucupira$ISSN == issn.unique$ISSN[item],
+    arr.ind = TRUE
+  )
+  
+  # get ISSN values
+  df_scopus <- data.frame(issn = issn.unique$ISSN[item])
+  
+  # remove - from ISSN
+  df_scopus$issn <- gsub("-", "", df_scopus$issn)
+  
+  # check if df_scopus is empty
+  if (!sjmisc::is_empty(df_scopus)) {
+    source("Scripts/scopus-from-issn.R", local = knitr::knit_global())
+    produtos.detalhes.sucupira$source_id[matches] <-
+      doi_with_metrics$source_id
+    produtos.detalhes.sucupira$SJR[matches] <-
+      doi_with_metrics$SJR
+    produtos.detalhes.sucupira$SJR_year[matches] <-
+      doi_with_metrics$SJR_year
+    produtos.detalhes.sucupira$CiteScore[matches] <-
+      doi_with_metrics$CiteScore
+    produtos.detalhes.sucupira$CiteScore_year[matches] <-
+      doi_with_metrics$CiteScore_year
+    
+    # wait to respect API rate limit (polite request)
+    Sys.sleep(1)
+    # beep to alert
+    beepr::beep("coin")
+  }
+}
+```
+
+### **PlumX (score)**
+
+```{r plumx-doi-sucupira, cache = TRUE, cache.path = "cache/plumx-doi-sucupira/", eval = has.metricas.doi.sucupira}
+# add to data.frame
+```
+
+### **Dimensions (score)**
+
+```{r dimensions-doi-sucupira, cache = TRUE, cache.path = "cache/dimensions-doi-sucupira/", eval = has.metricas.doi.sucupira}
+# add to data.frame
 ```
 
 ## **Check DOI produção PPG**
 
-```{r metricas-doi-ppg, cache = TRUE, cache.path = "cache/metricas-doi-ppg/"}
+```{r metricas-doi-ppg, cache = TRUE, cache.path = "cache/metricas-doi-ppg/", eval = FALSE}
 
 ```
 
@@ -602,71 +737,45 @@ has.metricas.doi.ppg <- as.logical(has.metricas.doi.ppg)
 ## **Agregar dados de produção**
 
 ```{r bind-all, cache = TRUE, cache.path = "cache/bind-all/", eval = any(has.sucupira.files, has.ppg.files)}
-# bind sources
-doi_with_altmetric_all <-
-  dplyr::bind_rows(
-    doi_with_altmetric_sucupira
-  ) %>%
-  as.data.frame()
+# drop lines with empty ID or Ano de publicação
+produtos.detalhes.sucupira <-
+  produtos.detalhes.sucupira %>%
+  dplyr::filter(
+    !is.na(`ID da Produção`) | !is.na(`Ano da Produção`)
+  )
 
 # bind sources
-doi_without_altmetric_all <-
+metricas_all <-
   dplyr::bind_rows(
-    doi_without_altmetric_sucupira
+    produtos.detalhes.sucupira
   ) %>%
-  as.data.frame()
-
-# bind common data
-doi_all <-
-  dplyr::bind_rows(doi_with_altmetric_all,
-                   doi_without_altmetric_all) %>%
   as.data.frame()
 ```
 
-## **Salva arquivos .TSV**
+```{r save}
+# Write data to TSV file
+try(write.table(
+  metricas_all,
+  "metricas_all.tsv",
+  quote = FALSE,
+  sep = "\t",
+  row.names = FALSE,
+  col.names = TRUE
+),
+silent = TRUE)
 
-```{r save, eval = TRUE}
-# Write doi_with_altmetric_all to TSV file
-try(
-  write.table(
-    doi_with_altmetric_all,
-    "doi_with_altmetric_all.tsv",
-    quote = FALSE,
-    sep = "\t",
-    row.names = FALSE,
-    col.names = TRUE
-  ),
-  silent = TRUE
-)
-
-# Write doi_without_altmetric_all to TSV file
-try(
-  write.table(
-    doi_without_altmetric_all,
-    "doi_without_altmetric_all.tsv",
-    quote = FALSE,
-    sep = "\t",
-    row.names = FALSE,
-    col.names = TRUE
-  ),
-  silent = TRUE
-)
-
-# Write doi_all to TSV file
-try(
-  write.table(
-    doi_all,
-    "doi_all.tsv",
-    quote = FALSE,
-    sep = "\t",
-    row.names = FALSE,
-    col.names = TRUE
-  ),
-  silent = TRUE
-)
+try(write.table(
+  doi_with_error,
+  "doi_with_error.tsv",
+  quote = FALSE,
+  sep = "\t",
+  row.names = FALSE,
+  col.names = TRUE
+),
+silent = TRUE)
 ```
 
-## **Sessio info**
+## **Session info**
 
 ```{r session-info}
 sessioninfo::session_info() %>%

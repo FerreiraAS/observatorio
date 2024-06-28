@@ -133,7 +133,7 @@ cat('<br>')
 cat('<br>')
 ```
 
-```{r destaque-visibilidade, eval = any(has.metricas.doi.sucupira, has.metricas.doi.ppg)}
+```{r destaque-visibilidade, eval = FALSE}
 # Sources
 doi_with_altmetric <- doi_with_altmetric_all
 doi_without_altmetric <- data.frame() # do not have Altmetric score anyway
@@ -142,7 +142,7 @@ doi_without_altmetric <- data.frame() # do not have Altmetric score anyway
 ordering <-
   order(
     as.numeric(doi_with_altmetric$altmetric_score),
-    as.numeric(doi_with_altmetric$published_on),
+    as.numeric(doi_with_altmetric$"Ano da Produção"),
     decreasing = TRUE
   )
 doi_with_altmetric <- doi_with_altmetric[ordering, ]
@@ -211,13 +211,13 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
 cat('<br>')
 ```
 
-```{r destaque-prestigio, eval = any(has.metricas.doi.sucupira, has.metricas.doi.ppg)}
+```{r destaque-prestigio, eval = FALSE}
 # Sources
-doi_all_sorted <- doi_all[!is.na(doi_all$CiteScore), ]
+doi_all_sorted <- metricas_all[!is.na(metricas_all$CiteScore), ]
 
 ordering <- order(
   as.numeric(doi_all_sorted$CiteScore),
-  as.numeric(doi_all_sorted$published_on),
+  as.numeric(doi_all_sorted$"Ano da Produção"),
   decreasing = TRUE
   )
 
@@ -417,7 +417,7 @@ for (id in 1:length(orcids)) {
   cat('\n\n<!-- -->\n\n')
   cat('##### **', assoc.name, '**', sep = "")
   cat('\n\n<!-- -->\n\n')
-  source("Scripts/memberships-services.R", local = knitr::knit_global())
+  source("Scripts/orcid-memberships-services.R", local = knitr::knit_global())
   cat('\n\n<!-- -->\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
@@ -449,7 +449,7 @@ for (id in 1:length(orcids)) {
   cat('\n\n<!-- -->\n\n')
   cat('##### **', editor.name, '**', sep = "")
   cat('\n\n<!-- -->\n\n')
-  source("Scripts/invited-positions.R", local = knitr::knit_global())
+  source("Scripts/orcid-invited-positions.R", local = knitr::knit_global())
   cat('\n\n<!-- -->\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
@@ -481,7 +481,7 @@ for (id in 1:length(orcids)) {
   cat('\n\n<!-- -->\n\n')
   cat('##### **', reviewer.name, '**', sep = "")
   cat('\n\n<!-- -->\n\n')
-  source("Scripts/reviewer-board.R", local = knitr::knit_global())
+  source("Scripts/orcid-reviewer-board.R", local = knitr::knit_global())
   cat('\n\n<!-- -->\n\n')
   cat(
     "**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"

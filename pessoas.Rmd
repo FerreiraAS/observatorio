@@ -286,7 +286,7 @@ sucupira.unique <- sucupira.unique[order(sucupira.unique$`Nome Docente`, decreas
 my_orcid <- gsub("(.{14})(.*)$", "\\1-\\2", gsub("(.{9})(.*)$", "\\1-\\2", gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)))
 
 # Compile external identifiers
-source("Scripts/external-identifiers.R", local = knitr::knit_global())
+source("Scripts/orcid-external-identifiers.R", local = knitr::knit_global())
 
 # Print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())

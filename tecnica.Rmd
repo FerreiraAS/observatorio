@@ -97,28 +97,13 @@ produtos <- produtos[produtos$`Subtipo de Produção` == "APRESENTAÇÃO DE TRAB
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
-# drop columns
-produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
-
 # format names
 produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
 produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
 produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
 
 # produção detalhes
-sheet <- "Produções - Detalhes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
-  plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+produtos.detalhes <- metricas_all
 
 # loop
 produtos.list <- list()
@@ -211,28 +196,13 @@ produtos <- produtos[produtos$`Subtipo de Produção` == "CARTAS, MAPAS E SIMILA
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
-# drop columns
-produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
-
 # format names
 produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
 produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
 produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
 
 # produção detalhes
-sheet <- "Produções - Detalhes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
-  plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+produtos.detalhes <- metricas_all
 
 # loop
 produtos.list <- list()
@@ -325,28 +295,13 @@ produtos <- produtos[produtos$`Subtipo de Produção` == "CURSO DE CURTA DURAÇ�
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
-# drop columns
-produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
-
 # format names
 produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
 produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
 produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
 
 # produção detalhes
-sheet <- "Produções - Detalhes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
-  plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+produtos.detalhes <- metricas_all
 
 # loop
 produtos.list <- list()
@@ -439,28 +394,13 @@ produtos <- produtos[produtos$`Subtipo de Produção` == "DESENVOLVIMENTO DE APL
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
-# drop columns
-produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
-
 # format names
 produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
 produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
 produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
 
 # produção detalhes
-sheet <- "Produções - Detalhes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
-  plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+produtos.detalhes <- metricas_all
 
 # loop
 produtos.list <- list()
@@ -553,28 +493,13 @@ produtos <- produtos[produtos$`Subtipo de Produção` == "DESENVOLVIMENTO DE MAT
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
-# drop columns
-produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
-
 # format names
 produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
 produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
 produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
 
 # produção detalhes
-sheet <- "Produções - Detalhes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
-  plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+produtos.detalhes <- metricas_all
 
 # loop
 produtos.list <- list()
@@ -667,28 +592,13 @@ produtos <- produtos[produtos$`Subtipo de Produção` == "DESENVOLVIMENTO DE PRO
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
-# drop columns
-produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
-
 # format names
 produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
 produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
 produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
 
 # produção detalhes
-sheet <- "Produções - Detalhes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
-  plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+produtos.detalhes <- metricas_all
 
 # loop
 produtos.list <- list()
@@ -781,28 +691,13 @@ produtos <- produtos[produtos$`Subtipo de Produção` == "DESENVOLVIMENTO DE TÉ
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
-# drop columns
-produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
-
 # format names
 produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
 produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
 produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
 
 # produção detalhes
-sheet <- "Produções - Detalhes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
-  plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+produtos.detalhes <- metricas_all
 
 # loop
 produtos.list <- list()
@@ -892,28 +787,13 @@ produtos <- produtos[produtos$`Subtipo de Produção` == "EDITORIA", ]
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
-# drop columns
-produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
-
 # format names
 produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
 produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
 produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
 
 # produção detalhes
-sheet <- "Produções - Detalhes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
-  plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+produtos.detalhes <- metricas_all
 
 # loop
 produtos.list <- list()
@@ -977,7 +857,7 @@ doi_without_altmetric <- doi_without_altmetric_all
 # available years of publication
 years <-
   na.omit(sort(unique(
-    c(doi_with_altmetric$published_on, doi_without_altmetric$published_on)
+    c(doi_with_altmetric$"Ano da Produção", doi_without_altmetric$"Ano da Produção")
   ), decreasing = TRUE))
 
 # Verifica se há DOIs
@@ -1002,13 +882,13 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
       show.SJR = TRUE,
       show.Qualis = TRUE,
       doi_with_altmetric = tryCatch(
-        doi_with_altmetric[doi_with_altmetric$published_on == years[year], ],
+        doi_with_altmetric[doi_with_altmetric$"Ano da Produção" == years[year], ],
         error = function(e) {
           doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
         }
       ),
       doi_without_altmetric = tryCatch(
-        doi_without_altmetric[doi_without_altmetric$published_on == years[year], ],
+        doi_without_altmetric[doi_without_altmetric$"Ano da Produção" == years[year], ],
         error = function(e) {
           doi_without_altmetric <- list()
         }
@@ -1057,28 +937,13 @@ produtos <- produtos[produtos$`Subtipo de Produção` == "MANUTENÇÃO DE OBRA A
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
-# drop columns
-produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
-
 # format names
 produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
 produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
 produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
 
 # produção detalhes
-sheet <- "Produções - Detalhes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
-  plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+produtos.detalhes <- metricas_all
 
 # loop
 produtos.list <- list()
@@ -1171,28 +1036,13 @@ produtos <- produtos[produtos$`Subtipo de Produção` == "MAQUETE", ]
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
-# drop columns
-produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
-
 # format names
 produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
 produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
 produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
 
 # produção detalhes
-sheet <- "Produções - Detalhes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
-  plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+produtos.detalhes <- metricas_all
 
 # loop
 produtos.list <- list()
@@ -1285,28 +1135,13 @@ produtos <- produtos[produtos$`Subtipo de Produção` == "ORGANIZAÇÃO DE EVENT
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
-# drop columns
-produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
-
 # format names
 produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
 produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
 produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
 
 # produção detalhes
-sheet <- "Produções - Detalhes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
-  plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+produtos.detalhes <- metricas_all
 
 # loop
 produtos.list <- list()
@@ -1399,28 +1234,13 @@ produtos <- produtos[produtos$`Subtipo de Produção` == "PATENTE", ]
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
-# drop columns
-produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
-
 # format names
 produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
 produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
 produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
 
 # produção detalhes
-sheet <- "Produções - Detalhes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
-  plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+produtos.detalhes <- metricas_all
 
 # loop
 produtos.list <- list()
@@ -1513,28 +1333,13 @@ produtos <- produtos[produtos$`Subtipo de Produção` == "PROGRAMA DE RÁDIO OU 
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
-# drop columns
-produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
-
 # format names
 produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
 produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
 produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
 
 # produção detalhes
-sheet <- "Produções - Detalhes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
-  plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+produtos.detalhes <- metricas_all
 
 # loop
 produtos.list <- list()
@@ -1627,28 +1432,13 @@ produtos <- produtos[produtos$`Subtipo de Produção` == "RELATÓRIO DE PESQUISA
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
-# drop columns
-produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
-
 # format names
 produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
 produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
 produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
 
 # produção detalhes
-sheet <- "Produções - Detalhes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
-  plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+produtos.detalhes <- metricas_all
 
 # loop
 produtos.list <- list()
@@ -1741,28 +1531,13 @@ produtos <- produtos[produtos$`Subtipo de Produção` == "SERVIÇOS TÉCNICOS", 
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
-# drop columns
-produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
-
 # format names
 produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
 produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
 produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
 
 # produção detalhes
-sheet <- "Produções - Detalhes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
-  plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+produtos.detalhes <- metricas_all
 
 # loop
 produtos.list <- list()
@@ -1855,28 +1630,13 @@ produtos <- produtos[produtos$`Subtipo de Produção` == "OUTRO", ]
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
-# drop columns
-produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
-
 # format names
 produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
 produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
 produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
 
 # produção detalhes
-sheet <- "Produções - Detalhes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
-  plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+produtos.detalhes <- metricas_all
 
 # loop
 produtos.list <- list()

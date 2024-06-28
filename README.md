@@ -235,20 +235,14 @@ Para análise das métricas, as seguintes fontes são utilizadas:
 -   [**Altmetric**](https://www.altmetric.com)
 -   [**Dimensions**](https://www.dimensions.ai)
 -   [**PlumX**](https://plu.mx)
--   CiteScore da [**Scopus**](https://www.scopus.com/sources)
--   Webqualis 2021 da [**CAPES**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)
 -   SJR da [**SCImago**](https://www.scimagojr.com)
+-   CiteScore da [**Scopus**](https://www.scopus.com/sources)
+-   Webqualis da [**CAPES**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)
 
 ``` bash
 ├── Metrics
 │   ├── Altmetric
 │   │   └── cropped-altmetric-symbol.png
-│   ├── CiteScore
-│   │   └── extlistMarch2023.xlsx
-│   ├── Qualis
-│   │   └── classificações_publicadas_todas_as_areas_avaliacao1672761192111.xlsx
-│   └── SJR
-│       └── scimagojr 2023.csv
 ```
 
 ### **Impacto**

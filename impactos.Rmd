@@ -883,24 +883,27 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ### **Métricas**
 
 ```{r impacto-metricas, eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira)}
+# remove duplicated IDs
+metricas_all_ID <- metricas_all[!duplicated(metricas_all$"ID da Produção"),]
+
 síntese.ano <- dplyr::bind_cols(
-      Ano = as.numeric(doi_all$published_on),
-      CiteScore = as.numeric(doi_all$CiteScore),
-      SJR = as.numeric(doi_all$SJR),
-      WebQualis = factor(doi_all$WebQualis),
-      Citações = as.numeric(doi_all$citations),
-      Altmetric = as.numeric(doi_all$altmetric_score),
-      Facebook = as.numeric(doi_all$cited_by_fbwalls_count),
-      Blogs = as.numeric(doi_all$cited_by_feeds_count),
-      'Google+' = as.numeric(doi_all$cited_by_gplus_count),
-      Notícias = as.numeric(doi_all$cited_by_msm_count),
-      Posts = as.numeric(doi_all$cited_by_posts_count),
-      Reddit = as.numeric(doi_all$cited_by_rdts_count),
-      X = as.numeric(doi_all$cited_by_tweeters_count),
-      'YouTube/Vimeo' = as.numeric(doi_all$cited_by_videos_count),
-      Patentes = as.numeric(doi_all$cited_by_patents_count),
-      Mendeley = as.numeric(doi_all$mendeley),
-      'Acesso aberto' = factor(as.logical(doi_all$is_oa), levels = c(TRUE, FALSE), labels = c("Sim", "Não"))
+      Ano = as.numeric(metricas_all_ID$"Ano da Produção"),
+      CiteScore = as.numeric(metricas_all_ID$CiteScore),
+      SJR = as.numeric(metricas_all_ID$SJR),
+      Qualis = factor(metricas_all_ID$Qualis),
+      Citações = as.numeric(metricas_all_ID$citations),
+      Altmetric = as.numeric(metricas_all_ID$altmetric_score),
+      Facebook = as.numeric(metricas_all_ID$cited_by_fbwalls_count),
+      Blogs = as.numeric(metricas_all_ID$cited_by_feeds_count),
+      'Google+' = as.numeric(metricas_all_ID$cited_by_gplus_count),
+      Notícias = as.numeric(metricas_all_ID$cited_by_msm_count),
+      Posts = as.numeric(metricas_all_ID$cited_by_posts_count),
+      Reddit = as.numeric(metricas_all_ID$cited_by_rdts_count),
+      X = as.numeric(metricas_all_ID$cited_by_tweeters_count),
+      'YouTube/Vimeo' = as.numeric(metricas_all_ID$cited_by_videos_count),
+      Patentes = as.numeric(metricas_all_ID$cited_by_patents_count),
+      Mendeley = as.numeric(metricas_all_ID$mendeley),
+      'Acesso aberto' = factor(as.logical(metricas_all_ID$is_oa), levels = c(TRUE, FALSE), labels = c("Sim", "Não"))
           )
 
 # Data selection
@@ -909,7 +912,7 @@ síntese.ano <- síntese.ano %>%
     "Ano",
     "CiteScore",
     "SJR",
-    "WebQualis",
+    "Qualis",
     "Citações",
     "Altmetric",
     "Facebook",
@@ -940,7 +943,7 @@ table.3.2.1 <-
     type = list(
       "CiteScore" ~ "continuous",
       "SJR" ~ "continuous",
-      "WebQualis" ~ "categorical",
+      "Qualis" ~ "categorical",
       "Citações" ~ "continuous",
       "Altmetric" ~ "continuous",
       "Facebook" ~ "continuous",
@@ -963,7 +966,7 @@ table.3.2.1 <-
     digits = list(
       "CiteScore" ~ 2,
       "SJR" ~ 2,
-      "WebQualis" ~ 0,
+      "Qualis" ~ 0,
       "Citações" ~ 0,
       "Altmetric" ~ 0,
       "Facebook" ~ 0,
@@ -1026,7 +1029,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 ### **Periódicos institucionais**
 
-```{r periodicos-institucionais, eval = has.periodicos}
+```{r periodicos-ies, cache = TRUE, cache.path = "cache/periodicos-ies/", eval = has.periodicos}
 # read separate sheets
 periodicos.raw <-
   readxl::read_excel(
@@ -1054,30 +1057,29 @@ for (i in 1:dim(periodicos.raw)[1]) {
 periodicos <- cbind(periodicos.raw[, -3], Abrir)
 
 # add metrics
-source(file.path("Scripts", "get-citescore.R"), local = knitr::knit_global())
-source(file.path("Scripts", "get-sjr.R"), local = knitr::knit_global())
-source(file.path("Scripts", "get-webqualis.R"), local = knitr::knit_global())
-periodicos$WebQualis <- rep('-', dim(periodicos)[1])
 periodicos$SJR <- rep('-', dim(periodicos)[1])
 periodicos$CiteScore <- rep('-', dim(periodicos)[1])
-periodicos.df <- data.frame(
-  'issns' = periodicos$ISSN,
-  'issn' = periodicos$ISSN,
-  'journal' = periodicos$Nome
-)
 
-for (i in 1:dim(periodicos)[1]) {
-  periodicos$WebQualis[i] <-
-    get_webqualis(
-      qualis = qualis,
-      scimago = scimago,
-      doi_with_altmetric = periodicos.df[i, ]
-    )$WebQualis_value
-  periodicos$SJR[i] <-
-    get_sjr(scimago = scimago, doi_with_altmetric = periodicos.df[i, ])$SJR_value
-  periodicos$CiteScore[i] <-
-    get_citescore(citescore = citescore, doi_with_altmetric = periodicos.df[i, ])$citescore_value
+# get SJR and CiteScore from database
+for (i in 1:length(periodicos$ISSN)) {
+  # get ISSN values
+  df_scopus <- data.frame(issn = periodicos$ISSN[i])
+  # remove - from ISSN
+  df_scopus$issn <- gsub("-", "", df_scopus$issn)
+  # get metrics
+  source("Scripts/scopus-from-issn.R", local = knitr::knit_global())
+  periodicos$SJR[i] <- ifelse(length(doi_with_metrics$SJR) != 0, doi_with_metrics$SJR, "")
+  periodicos$CiteScore[i] <- ifelse(length(doi_with_metrics$CiteScore) != 0,
+                                    doi_with_metrics$CiteScore,
+                                    "")
+  # wait to respect API rate limit (polite request)
+  Sys.sleep(1)
+  # beep to alert
+  beepr::beep("coin")
 }
+
+periodicos$SJR <- format(round(as.numeric(periodicos$SJR), 3), nsmall = 3)
+periodicos$CiteScore <- format(round(as.numeric(periodicos$CiteScore), 1), nsmall = 1)
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -1347,7 +1349,7 @@ cat('<br>')
 
 #### **Tabela**
 
-```{r politicas-sintese, eval = has.sage.files}
+```{r politicas-citacao, cache = TRUE, cache.path = "cache/politicas-citacao/", eval = has.sage.files}
 # list all Sage Profiles
 files.to.read <-
   list.files(file.path(getwd(), "Impacto", "Sage Policy Profiles"),
@@ -1400,45 +1402,25 @@ sage.profiles$Source.title <-
          sage.profiles$Source.title,
          '</a>')
 
+# create Fontes
+sage.profiles$Fontes <- NA
+
 # loop for all entries to bind Cited.research.titles with respective Cited.research.DOIs
-bib.data.out <- c()
 for (i in 1:nrow(sage.profiles)) {
-  bib.data.in <- c()
   dois.data <-
     stringr::str_split_1(string = sage.profiles$Cited.research.DOIs[i],
                          pattern = "  ，")
   # try to retrieve data from the cache file
-  for (j in 1:length(dois.data)) {
-    indexes <- match(tolower(dois.data[j]), tolower(doi_all$DOI))
-    if(sjmisc::is_empty(indexes)){
-      bib.data.in <- NA
-    } else {
-    bib.data.in <-
-        paste0(
-          bib.data.in,
-          ifelse(length(bib.data.in) > 1, "\n\n", ""),
-          doi_all$author.names[indexes[j]],
-          ". ",
-          "(", doi_all$published_on[indexes[j]], ")",
-          ". ",
-          "<strong>", doi_all$title[indexes[j]],"</strong>", 
-          ". ",
-          "<i>", doi_all$journal[indexes[j]], "</i>", 
-          ". ",
-          paste0(
-            '<a href="https://doi.org/',
-            doi_all$DOI[indexes[j]],
-            '" target="_blank"',
-            '>',
-            doi_all$DOI[indexes[j]],
-            '</a>'
-          )
-        )
-    }
+  if (!sjmisc::is_empty(dois.data)) {
+      bib.data <- rcrossref::cr_cn(dois = dois.data, format = "text", style = "apa-cv")
+      # wait to respect API rate limit (polite request)
+      Sys.sleep(1)
+      # beep to alert
+      beepr::beep("coin")
   }
-  bib.data.out <- c(bib.data.out, bib.data.in)
+  # convert bib.data from list to vector
+  sage.profiles$Fontes[i] <- paste(bib.data, collapse = "<br><br>")
 }
-sage.profiles$Fontes <- bib.data.out
 
 # drop columns
 sage.profiles$Document.URL <- NULL
@@ -1465,13 +1447,15 @@ sage.profiles <-
 sage.profiles.raw <-
   sage.profiles.raw[order(sage.profiles$Ano, decreasing = TRUE), ]
 
+cat('\n\n<!-- -->\n\n')
+
 # create DT table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(sage.profiles, title = "Impactos - Produção citada em diretrizes e políticas")
 
 cat('\n\n')
 cat(
-  "**Fontes**: [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/)"
+  "**Fontes**: [**SAGE Profile Policies**](https://www.socialsciencespace.com/sagepolicyprofiles/), [**CrossRef**](https://www.crossref.org)"
 )
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
@@ -1591,7 +1575,7 @@ pandemia <-
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = !any(has.sucupira.files)}
+```{r, eval = !has.sucupira.files}
 cat('<br>')
 ```
 
@@ -1649,8 +1633,12 @@ if (dim(projetos)[1] != 0) {
       "Início"
     )
 }
+
+cat('\n\n<!-- -->\n\n')
+
+# create DT table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.projetos, title = "Impactos - Ações durante a Pandemia - Projetos de Pesquisa")
+create_dt(table.projetos, title = "Impactos - Ações durante a Pandemia - Projetos")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1662,7 +1650,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = !any(has.financiadores)}
+```{r, eval = !has.financiadores}
 cat('<br>')
 ```
 
@@ -1705,6 +1693,8 @@ if (dim(financiadores)[1] != 0){
   financiadores <- financiadores[order(financiadores$Ano, decreasing = TRUE), ]
 }
 
+cat('\n\n<!-- -->\n\n')
+
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(financiadores, title = "Impactos - Ações durante a Pandemia - Financiadores")
 
@@ -1721,7 +1711,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = !any(has.sucupira.files)}
+```{r, eval = !has.sucupira.files}
 cat('<br>')
 ```
 
@@ -1785,6 +1775,9 @@ if (dim(tcc)[1] != 0) {
   
   table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano')), table.tcc$'Título')
 }
+
+cat('\n\n<!-- -->\n\n')
+
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.tcc, title = "Impactos - Ações durante a Pandemia - Teses")
@@ -1799,7 +1792,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = !any(has.sucupira.files)}
+```{r, eval = !has.sucupira.files}
 cat('<br>')
 ```
 
@@ -1863,6 +1856,9 @@ if (dim(tcc)[1] != 0) {
   
   table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano')), table.tcc$'Título')
 }
+
+cat('\n\n<!-- -->\n\n')
+
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.tcc, title = "Impactos - Ações durante a Pandemia - Dissertações")
@@ -1908,29 +1904,13 @@ produtos <-
   produtos[grep(paste(tolower(pandemia), collapse = "|"),
                     tolower(produtos$`Nome da Produção`)),]
 
-# drop columns
-produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Subtipo de Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
-
 # format names
-produtos$`Subtipo de Produção` <- tools::toTitleCase(tolower(produtos$`Subtipo de Produção`))
 produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
 produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
 produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
 
 # produção detalhes
-sheet <- "Produções - Detalhes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
-  plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+produtos.detalhes <- metricas_all
 
 # loop
 produtos.list <- list()
@@ -1954,10 +1934,9 @@ if (dim(produtos)[1] != 0) {
     }
     # get product metadata
     source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = produtos$`Subtipo de Produção`[i], produtos.detalhes = produtos.detalhes)
+    metadata <- get_id_metadata(id = id, subtipo = unique(produtos.id$`Subtipo de Produção`), produtos.detalhes = produtos.detalhes)
     produtos.list[[i]] <- data.frame(
       "Ano" = produtos.id$"Ano da Produção"[1],
-      "Tipo" = produtos.id$"Subtipo de Produção"[1],
       "Título" = produtos.id$"Nome da Produção"[1],
       "Autores" = paste0(
         # remove NA values from Nome do Autor
@@ -1978,6 +1957,8 @@ table <- produtos.df %>% dplyr::arrange(
   produtos.df$'Título'
 )
 
+cat('\n\n<!-- -->\n\n')
+
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Impacto - Ações durante a pandemia - Produções bibliográficas (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
@@ -1987,7 +1968,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **Produção técnica** {#producao-bibliografica}
+### **Produção técnica** {#producao-tecnica}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -2022,29 +2003,14 @@ produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1
 produtos <-
   produtos[grep(paste(tolower(pandemia), collapse = "|"),
                     tolower(produtos$`Nome da Produção`)),]
-# drop columns
-produtos <- produtos %>% dplyr::select("ID da Produção", "Ano da Produção", "Subtipo de Produção", "Nome da Produção", "Nome do Autor", "Número de Ordem do Autor", "Categoria do Autor")
 
 # format names
-produtos$`Subtipo de Produção` <- tools::toTitleCase(tolower(produtos$`Subtipo de Produção`))
 produtos$`Nome da Produção` <- tools::toTitleCase(tolower(produtos$`Nome da Produção`))
 produtos$`Nome do Autor` <- tools::toTitleCase(tolower(produtos$`Nome do Autor`))
 produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria do Autor`))
 
 # produção detalhes
-sheet <- "Produções - Detalhes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# get data for the current period
-produtos.detalhes <- sucupira.list[as.character(anos)] %>%
-  plyr::compact()
-produtos.detalhes <- data.frame(do.call(dplyr::bind_rows, produtos.detalhes))
-names(produtos.detalhes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+produtos.detalhes <- metricas_all
 
 # loop
 produtos.list <- list()
@@ -2068,10 +2034,9 @@ if (dim(produtos)[1] != 0) {
     }
     # get product metadata
     source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = produtos$`Subtipo de Produção`[i], produtos.detalhes = produtos.detalhes)
+    metadata <- get_id_metadata(id = id, subtipo = unique(produtos.id$`Subtipo de Produção`), produtos.detalhes = produtos.detalhes)
     produtos.list[[i]] <- data.frame(
       "Ano" = produtos.id$"Ano da Produção"[1],
-      "Tipo" = produtos.id$"Subtipo de Produção"[1],
       "Título" = produtos.id$"Nome da Produção"[1],
       "Autores" = paste0(
         # remove NA values from Nome do Autor
@@ -2091,6 +2056,8 @@ table <- produtos.df %>% dplyr::arrange(
   dplyr::desc(as.numeric(produtos.df$'Ano')),
   produtos.df$'Título'
 )
+
+cat('\n\n<!-- -->\n\n')
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Impacto - Ações durante a pandemia - Produções técnicas (¹Discente, ²Egresso, ³Docente)")
