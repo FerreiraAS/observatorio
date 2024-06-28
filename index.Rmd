@@ -363,8 +363,8 @@ cat('<br>')
 bsplus::bs_carousel(id = "coerencia-carousel",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-1.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-2.png"))
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-1.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-2.png", width = "70%"))
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -396,7 +396,7 @@ cloud.title <- "Temas de Produção"
 source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
 ```
 
-```{r sintese-temas-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", out.width = "100%", eval = has.sucupira.files}
+```{r sintese-temas-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = has.sucupira.files}
 cat('<br>')
 cat('<br>')
 
@@ -404,9 +404,9 @@ cat('<br>')
 bsplus::bs_carousel(id = "temas-carousel",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/Projetos.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/TCC.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/Produções.png"))
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/Projetos.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/TCC.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/Produções.png", width = "70%"))
 
 cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
@@ -548,9 +548,9 @@ cat('<br>')
 bsplus::bs_carousel(id = "projetos-carousel",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-projetos-1.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-projetos-2.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-projetos-3.png"))
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-projetos-1.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-projetos-2.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-projetos-3.png", width = "70%"))
 
 cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
@@ -810,27 +810,27 @@ bsplus::bs_carousel(id = "financiadores-carousel",
             use_controls = TRUE) %>%
   bsplus::bs_append(
     id = "financiadores-carousel",
-    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-1.png")
+    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-1.png", width = "70%")
   ) %>%
   bsplus::bs_append(
     id = "financiadores-carousel",
-    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-2.png")
+    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-2.png", width = "70%")
   ) %>%
   bsplus::bs_append(
     id = "financiadores-carousel",
-    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-3.png")
+    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-3.png", width = "70%")
   ) %>%
   bsplus::bs_append(
     id = "financiadores-carousel",
-    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-4.png")
+    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-4.png", width = "70%")
   ) %>%
   bsplus::bs_append(
     id = "financiadores-carousel",
-    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-5.png")
+    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-5.png", width = "70%")
   ) %>%
   bsplus::bs_append(
     id = "financiadores-carousel",
-    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-6.png")
+    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-6.png", width = "70%")
   )
 
 cat('\n\n')
@@ -850,18 +850,15 @@ metricas_artigos <- metricas_artigos[metricas_artigos$`Item de Detalhamento` == 
 metricas_artigos <- metricas_artigos[!duplicated(metricas_artigos$`ID da Produção`), ]
 
 # convert NA values in "Sem classificação"
-metricas_artigos$Qualis[is.na(metricas_artigos$Qualis)] <- "NA"
+metricas_artigos$Qualis[is.na(metricas_artigos$Qualis)] <- "Sem classificação"
 
 # Qualis
 estratos <- sort(unique(na.omit(metricas_artigos$Qualis)))
 qualis.PPG <- c()
-for (i in 1:length(metricas_artigos$Qualis)) {
+for (i in 1:length(estratos)) {
   qualis.PPG[i] <-
     sum(metricas_artigos$Qualis == estratos[i], na.rm = TRUE) / length(metricas_artigos$Qualis) * 100
 }
-
-# drop NA values
-qualis.PPG <- qualis.PPG[qualis.PPG != "NA"]
 
 names(qualis.PPG) <- estratos
 qualis.PPG <- table(metricas_artigos$Qualis)
@@ -1007,13 +1004,12 @@ barplot(
   sub = "Programa",
   cex.names = 0.7,
   xaxt = 'n',
-  ann = FALSE,
-  add = TRUE
+  ann = FALSE
 )
 axis(1, at = round(c(
-  -max(qualis.PPG), 0, max(qualis.PPG)
+  0, max(qualis.PPG)
 )), labels = round(c(
-  max(qualis.PPG), 0, max(qualis.PPG)
+  0, max(qualis.PPG)
 )))
 title(main = "Distribuição (Qualis, SJR, CiteScore)",
       outer = TRUE,
@@ -1044,8 +1040,7 @@ vioplot::vioplot(
   )),
   ylab = "SJR",
   xaxt = 'n',
-  ann = FALSE,
-  add = TRUE
+  ann = FALSE
 )
 
 # hist CiteScore PPG
@@ -1110,7 +1105,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        round((sum(table.2[which(rownames(table.2) != c("A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "B5")),]) / sum(table.2) * 100), 0),
+        100 - round((sum(table.2[match(rownames(table.2), c("A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "B5")),]) / sum(table.2) * 100), 0),
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1119,7 +1114,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[which(rownames(table.2) == c("B1", "B2", "B3", "B4")),]) / sum(table.2) * 100,
+        sum(table.2[match(rownames(table.2), c("B1", "B2", "B3", "B4", "B5")),]) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1128,7 +1123,7 @@ summ.table.producao <-
     ),
     paste0(
       formatC(
-        sum(table.2[which(rownames(table.2) == c("A1", "A2", "A3", "A4")),]) / sum(table.2) * 100,
+        sum(table.2[match(rownames(table.2), c("A1", "A2", "A3", "A4")),]) / sum(table.2) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1169,13 +1164,13 @@ cat('<br>')
 bsplus::bs_carousel(id = "producao-carousel",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-1.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-2.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-3.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-4.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-5.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-6.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-7.png"))
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-1.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-2.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-3.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-4.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-5.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-6.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-7.png", width = "70%"))
 
 cat('\n\n')
 cat(
@@ -1380,10 +1375,10 @@ cat('<br>')
 bsplus::bs_carousel(id = "visibilidade-carousel",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-1.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-2.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-3.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-4.png"))
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-1.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-2.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-3.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-4.png", width = "70%"))
 
 cat('\n\n')
 cat(
@@ -1765,11 +1760,11 @@ cat('<br>')
 bsplus::bs_carousel(id = "pessoal-carousel",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-1.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-2.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-3.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-4.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-5.png"))
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-1.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-2.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-3.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-4.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-5.png", width = "70%"))
 
 cat('\n\n')
 cat(
@@ -1945,9 +1940,9 @@ cat('<br>')
 bsplus::bs_carousel(id = "posdoc-carousel",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-1.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-2.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-3.png"))
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-1.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-2.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-3.png", width = "70%"))
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -2306,7 +2301,7 @@ summ.data <- summ.table.ies
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-rede-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", out.width = "100%", eval = has.sucupira.files}
+```{r sintese-rede-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = has.sucupira.files}
 cat('<br>')
 cat('<br>')
 
@@ -2314,13 +2309,13 @@ cat('<br>')
 bsplus::bs_carousel(id = "rede-carousel",
             use_indicators = FALSE,
             use_controls = TRUE) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-1.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/Participante Externo.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-2.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-3.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-4.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-5.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-6.png"))
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-1.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/Participante Externo.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-2.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-3.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-4.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-5.png", width = "70%")) %>%
+  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-6.png", width = "70%"))
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```

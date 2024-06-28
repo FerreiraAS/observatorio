@@ -76,10 +76,6 @@ periodo.vigente <- anos
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = !has.sucupira.files}
-cat('<br>')
-```
-
 ### **Formação discente**
 
 ```{r turmas-tabela, eval = has.sucupira.files}
@@ -188,10 +184,6 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !any(has.periodicos, has.cep)}
-cat('<br>')
-```
 
 ### **Projetos**
 
@@ -1193,10 +1185,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = !has.financiadores}
-cat('<br>')
-```
-
 ### **Agência-Edital**
 
 ```{r auto-financiadores-agencia-programa, eval = has.financiadores}
@@ -1340,10 +1328,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !has.politicas}
-cat('<br>')
-```
 
 ### **Políticas** {#politicas .tabset}
 

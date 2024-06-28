@@ -720,7 +720,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **Prazos** {#prazos .tabset}
+### **Prazos** {#prazos}
 
 ```{r discentes-prazos-sintese, eval = has.sucupira.files}
 discentes$'Ano de matrícula' <-
@@ -981,7 +981,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **Distribuição nacional** {.tabset}
+### **Distribuição nacional**
 
 ```{r egressos-periodo, eval = has.discentes}
 egressos.raw <-
@@ -1178,8 +1178,11 @@ for (j in 1:length(abas)) {
   cat('**Fontes**: [**Diretório de Grupos de Pesquisa**](https://lattes.cnpq.br/web/dgp)')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
   cat('<br>')
+  cat('<br>')
 }
 ```
+
+<br>
 
 ## **Participantes externos** {#participantes-externos .tabset}
 
