@@ -355,7 +355,7 @@ summ.data <- c(summ.coerencia.1)
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-coerencia-carousel, eval = has.sucupira.files}
+```{r sintese-coerencia-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = has.sucupira.files}
 cat('<br>')
 cat('<br>')
 
@@ -567,7 +567,7 @@ summ.data <- summ.table.projetos
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-projetos-carousel, eval = has.sucupira.files}
+```{r sintese-projetos-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = has.sucupira.files}
 cat('<br>')
 cat('<br>')
 
@@ -827,7 +827,7 @@ summ.data <- summ.table.financiadores
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-financiadores-carousel, eval = has.financiadores}
+```{r sintese-financiadores-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = has.financiadores}
 cat('<br>')
 cat('<br>')
 
@@ -1177,7 +1177,7 @@ summ.data <- summ.table.producao
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-producao-carousel, eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira)}
+```{r sintese-producao-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira)}
 cat('<br>')
 cat('<br>')
 
@@ -1388,7 +1388,7 @@ summ.data <- summ.table.visibilidade
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-visibilidade-carousel, eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira)}
+```{r sintese-visibilidade-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira)}
 cat('<br>')
 cat('<br>')
 
@@ -1773,7 +1773,7 @@ summ.data <- summ.table.pessoal
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-pessoal-carousel, eval = has.discentes}
+```{r sintese-pessoal-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = has.discentes}
 cat('<br>')
 cat('<br>')
 
@@ -1943,7 +1943,7 @@ summ.data <- summ.table.posdoc
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-posdoc-carousel, eval = and(has.sucupira.files, has.posdoc)}
+```{r sintese-posdoc-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = and(has.sucupira.files, has.posdoc)}
 cat('<br>')
 cat('<br>')
 

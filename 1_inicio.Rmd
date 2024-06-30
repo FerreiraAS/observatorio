@@ -133,7 +133,7 @@ has.sucupira.files <- length(files.to.read) != 0
 sheet <- "Pós-Doc"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 posdoc.raw <- sucupira.raw
-has.posdoc <- nrow(posdoc.raw) != 0
+has.posdoc <- !sjmisc::is_empty(posdoc.raw)
 ```
 
 ## **Check diretório PPG**
