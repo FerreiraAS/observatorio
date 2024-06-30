@@ -1025,7 +1025,7 @@ barplot(
   horiz = TRUE,
   xlab = "%",
   ylab = "Estrato",
-  xlim = c(0, max(qualis.PPG.plot)),
+  xlim = c(0, max(0, qualis.PPG.plot)),
   ylim = c(0, length(unique(estratos.capes)) + 3),
   col = mycolors[2],
   cex.names = 0.7,
