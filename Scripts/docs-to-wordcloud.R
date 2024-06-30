@@ -3,23 +3,29 @@ set.seed(0)
 
 # create a corpus
 docs <- tm::Corpus(tm::VectorSource(data.to.cloud))
-
-# cleaning text
 docs <- tm::tm_map(docs, tm::content_transformer(tolower))
-docs <- tm::tm_map(docs, tm::removeWords, tm::stopwords("portuguese"))
-docs <- tm::tm_map(docs, tm::removeWords, tm::stopwords("english"))
-docs <- tm::tm_map(docs, tm::removePunctuation)
-docs <- tm::tm_map(docs, tm::removeNumbers)
-docs <- tm::tm_map(docs, tm::stripWhitespace)
-
-# create a document-term matrix
-dtm <- tm::TermDocumentMatrix(docs)
-matrix <- as.matrix(dtm)
-words <- sort(rowSums(matrix), decreasing = TRUE)
-df <- data.frame(word = names(words), freq = words)
-
-# set minimum word frequency
-df <- df[df$freq >= 1, ]
+if (clean.text == TRUE) {
+  # cleaning text
+  docs <- tm::tm_map(docs, tm::removeWords, tm::stopwords("portuguese"))
+  docs <- tm::tm_map(docs, tm::removeWords, tm::stopwords("english"))
+  docs <- tm::tm_map(docs, tm::removePunctuation)
+  docs <- tm::tm_map(docs, tm::removeNumbers)
+  docs <- tm::tm_map(docs, tm::stripWhitespace)
+  # create a document-term matrix
+  dtm <- tm::TermDocumentMatrix(docs)
+  matrix <- as.matrix(dtm)
+  words <- sort(rowSums(matrix), decreasing = TRUE)
+  df <- data.frame(word = names(words), freq = words)
+  # set minimum word frequency
+  df <- df[df$freq >= 1, ]
+} else {
+  # count the frequency of each term
+  words <- sort(table(tolower(data.to.cloud)), decreasing = TRUE)
+  df <- data.frame(word = names(words), freq = as.numeric(words))
+  rownames(df) <- names(words)
+  # replace frequencies by rank order
+  df$freq <- rank(df$freq, ties.method = "first")
+}
 
 # set plot area
 par(
