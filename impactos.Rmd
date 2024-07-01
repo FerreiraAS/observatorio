@@ -1927,7 +1927,11 @@ if (dim(produtos)[1] != 0) {
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
-      "Detalhamento" = metadata$detalhamento[1]
+      "Detalhamento" = metadata$detalhamento[1],
+      "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -2027,7 +2031,11 @@ if (dim(produtos)[1] != 0) {
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
-      "Detalhamento" = metadata$detalhamento[1]
+      "Detalhamento" = metadata$detalhamento[1],
+      "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }

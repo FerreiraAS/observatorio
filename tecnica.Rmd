@@ -136,7 +136,11 @@ if (dim(produtos)[1] != 0) {
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
-      "Detalhamento" = metadata$detalhamento[1]
+      "Detalhamento" = metadata$detalhamento[1],
+      "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -157,7 +161,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Apresentação de Trabalho (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -235,7 +239,11 @@ if (dim(produtos)[1] != 0) {
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
-      "Detalhamento" = metadata$detalhamento[1]
+      "Detalhamento" = metadata$detalhamento[1],
+      "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -256,7 +264,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Cartas, Mapas e Similares (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -334,7 +342,11 @@ if (dim(produtos)[1] != 0) {
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
-      "Detalhamento" = metadata$detalhamento[1]
+      "Detalhamento" = metadata$detalhamento[1],
+      "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -355,7 +367,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Curso de Curta Duração (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -433,7 +445,11 @@ if (dim(produtos)[1] != 0) {
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
-      "Detalhamento" = metadata$detalhamento[1]
+      "Detalhamento" = metadata$detalhamento[1],
+      "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -454,7 +470,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Desenvolvimento de Aplicativo (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -532,7 +548,11 @@ if (dim(produtos)[1] != 0) {
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
-      "Detalhamento" = metadata$detalhamento[1]
+      "Detalhamento" = metadata$detalhamento[1],
+      "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -553,7 +573,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Desenvolvimento de Material Didático e Instrucional (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -631,7 +651,11 @@ if (dim(produtos)[1] != 0) {
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
-      "Detalhamento" = metadata$detalhamento[1]
+      "Detalhamento" = metadata$detalhamento[1],
+      "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -652,7 +676,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Desenvolvimento de Produto (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -730,7 +754,11 @@ if (dim(produtos)[1] != 0) {
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
-      "Detalhamento" = metadata$detalhamento[1]
+      "Detalhamento" = metadata$detalhamento[1],
+      "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -751,7 +779,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Desenvolvimento de Técnica (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -826,7 +854,11 @@ if (dim(produtos)[1] != 0) {
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
-      "Detalhamento" = metadata$detalhamento[1]
+      "Detalhamento" = metadata$detalhamento[1],
+      "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -847,7 +879,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Editoria (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 ```{r editoria-icons, eval = FALSE}
@@ -976,7 +1008,11 @@ if (dim(produtos)[1] != 0) {
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
-      "Detalhamento" = metadata$detalhamento[1]
+      "Detalhamento" = metadata$detalhamento[1],
+      "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -997,7 +1033,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Manutenção de Obra Artística (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1075,7 +1111,11 @@ if (dim(produtos)[1] != 0) {
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
-      "Detalhamento" = metadata$detalhamento[1]
+      "Detalhamento" = metadata$detalhamento[1],
+      "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -1096,7 +1136,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Maquete (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1174,7 +1214,11 @@ if (dim(produtos)[1] != 0) {
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
-      "Detalhamento" = metadata$detalhamento[1]
+      "Detalhamento" = metadata$detalhamento[1],
+      "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -1195,7 +1239,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Organização de Evento (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1273,7 +1317,11 @@ if (dim(produtos)[1] != 0) {
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
-      "Detalhamento" = metadata$detalhamento[1]
+      "Detalhamento" = metadata$detalhamento[1],
+      "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -1294,7 +1342,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Patente (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1372,7 +1420,11 @@ if (dim(produtos)[1] != 0) {
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
-      "Detalhamento" = metadata$detalhamento[1]
+      "Detalhamento" = metadata$detalhamento[1],
+      "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -1393,7 +1445,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Programa de Rádio ou TV (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1471,7 +1523,11 @@ if (dim(produtos)[1] != 0) {
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
-      "Detalhamento" = metadata$detalhamento[1]
+      "Detalhamento" = metadata$detalhamento[1],
+      "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -1492,7 +1548,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Relatório de Pesquisa (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1570,7 +1626,11 @@ if (dim(produtos)[1] != 0) {
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
-      "Detalhamento" = metadata$detalhamento[1]
+      "Detalhamento" = metadata$detalhamento[1],
+      "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -1591,7 +1651,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Serviços Técnicos (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1669,7 +1729,11 @@ if (dim(produtos)[1] != 0) {
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
-      "Detalhamento" = metadata$detalhamento[1]
+      "Detalhamento" = metadata$detalhamento[1],
+      "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -1690,7 +1754,7 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Tradução (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 <br>

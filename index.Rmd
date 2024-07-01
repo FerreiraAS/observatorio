@@ -366,6 +366,7 @@ bsplus::bs_carousel(id = "coerencia-carousel",
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-1.png", width = "70%")) %>%
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-2.png", width = "70%"))
 
+cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
@@ -1194,9 +1195,7 @@ bsplus::bs_carousel(id = "producao-carousel",
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-7.png", width = "70%"))
 
 cat('\n\n')
-cat(
-  "**Fontes**: [**WebQualis**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf), [**SJR**](https://www.scimagojr.com), [**Scopus**](https://www.scopus.com/home.uri), **PPG**"
-)
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-visibilidade, include = FALSE, eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira)}
@@ -1402,9 +1401,7 @@ bsplus::bs_carousel(id = "visibilidade-carousel",
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-4.png", width = "70%"))
 
 cat('\n\n')
-cat(
-  "**Fontes**: [**Altmetric**](https://www.altmetric.com), [**CrossRef**](https://www.crossref.org), **PPG**"
-)
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-pessoal, include = FALSE, eval = has.discentes}
@@ -1788,9 +1785,7 @@ bsplus::bs_carousel(id = "pessoal-carousel",
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-5.png", width = "70%"))
 
 cat('\n\n')
-cat(
-  "**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), **PPG**"
-)
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-posdoc, include = FALSE, eval = all(has.sucupira.files, has.posdoc)}
@@ -2329,6 +2324,7 @@ bsplus::bs_carousel(id = "rede-carousel",
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-5.png", width = "70%")) %>%
   bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-6.png", width = "70%"))
 
+cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
