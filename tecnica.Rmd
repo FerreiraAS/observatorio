@@ -880,25 +880,12 @@ create_dt(table, title = "Produções - Editoria (¹Discente, ²Egresso, ³Docen
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
-```
-
-```{r editoria-icons, eval = FALSE}
-doi_with_altmetric <- doi_with_altmetric_all
-doi_without_altmetric <- doi_without_altmetric_all
 
 # available years of publication
-years <-
-  na.omit(sort(unique(
-    c(doi_with_altmetric$"Ano da Produção", doi_without_altmetric$"Ano da Produção")
-  ), decreasing = TRUE))
+years <- sort(unique(na.omit(metricas_all_produtos$Ano)), decreasing = TRUE)
 
 # Verifica se há DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-  cat('*Sem produção para exibir*')
-  cat('\n')
-} else {
+if (!sjmisc::is_empty(metricas_all_produtos)) {
   for (year in 1:length(years)) {
     # print tab header
     cat('\n\n<!-- -->\n\n')
@@ -913,21 +900,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
       show.CiteScore = TRUE,
       show.SJR = TRUE,
       show.Qualis = TRUE,
-      doi_with_altmetric = tryCatch(
-        doi_with_altmetric[doi_with_altmetric$"Ano da Produção" == years[year], ],
-        error = function(e) {
-          doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
-        }
-      ),
-      doi_without_altmetric = tryCatch(
-        doi_without_altmetric[doi_without_altmetric$"Ano da Produção" == years[year], ],
-        error = function(e) {
-          doi_without_altmetric <- list()
-        }
-      ),
-      citescore = citescore,
-      scimago = scimago,
-      qualis = qualis
+      metricas_all_produtos = metricas_all_produtos[metricas_all_produtos$"Ano" == years[year], ]
     )
   }
 }
@@ -1751,7 +1724,7 @@ cat('\n\n<!-- -->\n\n')
 cat("### **Tabela**", "\n", sep = "")
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table, title = "Produções - Tradução (¹Discente, ²Egresso, ³Docente)")
+create_dt(table, title = "Produções - Outra produção técnica (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())

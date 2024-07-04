@@ -164,7 +164,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
     paste0(
       "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-      ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n"
+      ") e Métricas (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n"
     )
   )
   cat('<br>')
@@ -244,7 +244,7 @@ if (max(dim(doi_with_altmetric)[1], 0) == 0 &
     paste0(
       "**Produtos (n = ",
       max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-      ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n"
+      ") e Métricas (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n"
     )
   )
   cat('<br>')

@@ -87,6 +87,23 @@ css <- cssparser::read_css("./CSS/main-color.css")
 main.color <- css$`:root`$`--mybackgroundcolor`
 ```
 
+## **GeoBR data**
+
+```{r geobr-data, cache = TRUE, cache.path = "cache/geobr-data/"}
+# reading BR geospatial data from IPEA
+geoBRdata <- geobr::list_geobr()$years[3]
+# reading BR geospatial data from IPEA
+last.update <-
+  as.numeric(strsplit(geoBRdata, ", ")[[1]][length(strsplit(geoBRdata, ", ")[[1]]) - 1])
+states <-
+  geobr::read_state(
+    code_state = "all",
+    year = last.update,
+    simplified = TRUE,
+    showProgress = FALSE
+  )
+```
+
 ## **Diretórios**
 
 <!--create (if non existent) all required folders-->

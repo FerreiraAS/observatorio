@@ -1001,17 +1001,6 @@ UF <- as.data.frame(table(egressos$UF))
 cursos <- levels(as.factor(c(egressos.raw$Curso)))
 
 # reading BR geospatial data from IPEA
-datasets <- geobr::list_geobr()$years[3]
-last.update <-
-  as.numeric(strsplit(datasets, ", ")[[1]][length(strsplit(datasets, ", ")[[1]]) - 1])
-states <-
-  read_state(
-    code_state = "all",
-    year = last.update,
-    simplified = TRUE,
-    showProgress = FALSE
-  )
-
 states$egressos <- rep(NA, dim(states)[1])
 for (i in 1:length(UF$Var1)) {
   states$egressos[states$abbrev_state == UF$Var1[i]] <- UF$Freq[i]

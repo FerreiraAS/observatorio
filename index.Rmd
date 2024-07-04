@@ -1422,8 +1422,8 @@ discentes.raw$'Ano Titulação' <-
 discentes.raw$`Tempo de Curso (meses)` <-
   lubridate::interval(start = ymd(gsub("-", "", discentes.raw$'Data Matrícula')), end = ymd(gsub("-", "", discentes.raw$'Data Situação'))) %/% months(1)
 discentes.raw %>%
-  mutate(`Tempo de Curso (meses)` = as.numeric(`Tempo de Curso (meses)`)) %>%
-  mutate(`Ano Titulação` = as.numeric(`Ano Titulação`))
+  dplyr::mutate(`Tempo de Curso (meses)` = as.numeric(`Tempo de Curso (meses)`)) %>%
+  dplyr::mutate(`Ano Titulação` = as.numeric(`Ano Titulação`))
 discentes.raw$Curso[grepl("Mestrado", discentes.raw$Curso)] <- "Mestrado"
 discentes.raw$Curso[grepl("Doutorado", discentes.raw$Curso)] <-"Doutorado"
 
@@ -1438,18 +1438,6 @@ doutores <- egressos[grepl("doutorado", tolower(egressos$Curso)), ]
 
 # identifying available courses
 cursos <- levels(as.factor(c(discentes$Curso, egressos$Curso)))
-
-# reading BR geospatial data from IPEA
-datasets <- geobr::list_geobr()$years[3]
-last.update <-
-  as.numeric(strsplit(datasets, ", ")[[1]][length(strsplit(datasets, ", ")[[1]]) - 1])
-states <-
-  geobr::read_state(
-    code_state = "all",
-    year = last.update,
-    simplified = TRUE,
-    showProgress = FALSE
-  )
 
 # plot area setup
 layout.m <- c(1)
@@ -1527,6 +1515,7 @@ legend(
 )
 
 # plot 3 (geospatial plot of candidates)
+# reading BR geospatial data from IPEA
 states$discentes <- rep(NA, dim(states)[1])
 UF <- as.data.frame(table(discentes$UF))
 for (i in 1:length(UF$Var1)) {
