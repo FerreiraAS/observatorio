@@ -124,159 +124,178 @@ cat('<br>')
 
 <br>
 
-## **Produções: Visibilidade** {#destaque-visibilidade .tabset}
+## **Engajamento com a produção** {#destaque-altmetric .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = !any(has.metricas.doi.sucupira, has.metricas.doi.ppg)}
+```{r, eval = !has.sucupira.files}
 cat('<br>')
 ```
 
-```{r destaque-visibilidade, eval = FALSE}
-# Sources
-doi_with_altmetric <- doi_with_altmetric_all
-doi_without_altmetric <- data.frame() # do not have Altmetric score anyway
-
-# Sort columns by Altmetric then year
-ordering <-
-  order(
-    as.numeric(doi_with_altmetric$altmetric_score),
-    as.numeric(doi_with_altmetric$"Ano da Produção"),
-    decreasing = TRUE
-  )
-doi_with_altmetric <- doi_with_altmetric[ordering, ]
-
-# TOP (removing papers with no Altmetric)
-top <- min(dim(doi_with_altmetric)[1], 20)
-doi_with_altmetric <- doi_with_altmetric[1:top, ]
-
+```{r destaque-altmetric, eval = has.sucupira.files}
 # Check if there are DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
+if (sjmisc::is_empty(metricas_all)) {
   cat('\n')
   cat('*Sem produção para exibir*')
   cat('\n')
 } else {
-  # Section header
-  cat('\n\n<!-- -->\n\n')
-  cat(
-    paste0(
-      "**Produtos (n = ",
-      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-      ") e Métricas (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n"
-    )
-  )
-  cat('<br>')
-  
-  # Print tab header
-  cat('\n\n<!-- -->\n\n')
-  
-  # Print table of papers with/without badges
-  source("Scripts/papers-with-badges.R", local = knitr::knit_global())
-  table.with.badges(
-    show.Altmetric = TRUE,
-    show.Dimensions = TRUE,
-    show.PlumX = TRUE,
-    show.CiteScore = TRUE,
-    show.SJR = TRUE,
-    show.Qualis = TRUE,
-    doi_with_altmetric = tryCatch(
-      doi_with_altmetric,
-      error = function(e) {
-        doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
-      }
-    ),
-    doi_without_altmetric = tryCatch(
-      doi_without_altmetric,
-      error = function(e) {
-        doi_without_altmetric <- list()
-      }
-    ),
-    citescore = citescore,
-    scimago = scimago,
-    qualis = qualis
-  )
+  # available years of publication
+  years <- sort(unique(na.omit(metricas_all$"Ano da Produção")), decreasing = TRUE)
+  for (year in 1:length(years)) {
+    metricas_all_sort <- metricas_all[metricas_all$"Ano da Produção" == years[year], ]
+    
+    # Sort columns by Altmetric
+    ordering <-
+      order(as.numeric(metricas_all_sort$altmetric_score),
+            decreasing = TRUE)
+    metricas_all_sort <- metricas_all_sort[ordering, ]
+    # drop rows with NA in Altmetric
+    metricas_all_sort <- metricas_all_sort[!is.na(metricas_all_sort$altmetric_score), ]
+    
+    # get top 10 unique IDs
+    uniqueID <- unique(metricas_all_sort$"ID da Produção")
+    top <- min(length(uniqueID), 10, na.rm = TRUE)
+    uniqueID_top <- uniqueID[1:top]
+    metricas_all_sort_top <- metricas_all_sort[metricas_all_sort$"ID da Produção" %in% uniqueID_top, ]
+    
+    # Check for empty data
+    if (!sjmisc::is_empty(metricas_all_sort_top)) {
+      # print tab header
+      cat('\n\n<!-- -->\n\n')
+      cat("### **", as.character(years[year]), "**", "\n", sep = "")
+      
+      # print table of papers with/without badges
+      source("Scripts/table-with-badges.R", local = knitr::knit_global())
+      table.with.badges(
+        show.Altmetric = TRUE,
+        show.Dimensions = TRUE,
+        show.PlumX = TRUE,
+        show.CiteScore = TRUE,
+        show.SJR = TRUE,
+        show.Qualis = TRUE,
+        metricas_all_produtos = metricas_all_sort_top
+      )
+    }
+  }
 }
 ```
 
 <br>
 
-## **Produções: Prestígio** {#destaque-prestigio .tabset}
+## **Citações recentes do periódico** {#destaque-citescore .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = !any(has.metricas.doi.sucupira, has.metricas.doi.ppg)}
+```{r, eval = !has.sucupira.files}
 cat('<br>')
 ```
 
-```{r destaque-prestigio, eval = FALSE}
-# Sources
-doi_all_sorted <- metricas_all[!is.na(metricas_all$CiteScore), ]
-
-ordering <- order(
-  as.numeric(doi_all_sorted$CiteScore),
-  as.numeric(doi_all_sorted$"Ano da Produção"),
-  decreasing = TRUE
-  )
-
-doi_all_sorted <- doi_all_sorted[ordering, ]
-
-# TOP CiteScore
-top <- min(dim(doi_all_sorted)[1], 20)
-doi_all_sorted <- doi_all_sorted[1:top, ]
-
-# Split into papers with/without Altmetric
-doi_with_altmetric <- doi_all_sorted[!is.na(doi_all_sorted$altmetric_score),]
-doi_without_altmetric <- doi_all_sorted[is.na(doi_all_sorted$altmetric_score),]
-
+```{r destaque-citescore, eval = has.sucupira.files}
 # Check if there are DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
+if (sjmisc::is_empty(metricas_all)) {
   cat('\n')
   cat('*Sem produção para exibir*')
   cat('\n')
 } else {
-  # Section header
-  cat('\n\n<!-- -->\n\n')
-  cat(
-    paste0(
-      "**Produtos (n = ",
-      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-      ") e Métricas (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n"
-    )
-  )
-  cat('<br>')
-  
-  # Print tab header
-  cat('\n\n<!-- -->\n\n')
-  
-  # Print table of papers with/without badges
-  source("Scripts/papers-with-badges.R", local = knitr::knit_global())
-  table.with.badges(
-    show.Altmetric = TRUE,
-    show.Dimensions = TRUE,
-    show.PlumX = TRUE,
-    show.CiteScore = TRUE,
-    show.SJR = TRUE,
-    show.Qualis = TRUE,
-    doi_with_altmetric = tryCatch(
-      doi_with_altmetric,
-      error = function(e) {
-        doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
-      }
-    ),
-    doi_without_altmetric = tryCatch(
-      doi_without_altmetric,
-      error = function(e) {
-        doi_without_altmetric <- list()
-      }
-    ),
-    citescore = citescore,
-    scimago = scimago,
-    qualis = qualis
-  )
+  # available years of publication
+  years <- sort(unique(na.omit(metricas_all$"Ano da Produção")), decreasing = TRUE)
+  for (year in 1:length(years)) {
+    metricas_all_sort <- metricas_all[metricas_all$"Ano da Produção" == years[year], ]
+    
+    # Sort columns by CiteScore
+    ordering <-
+      order(as.numeric(metricas_all_sort$CiteScore),
+            decreasing = TRUE)
+    metricas_all_sort <- metricas_all_sort[ordering, ]
+    # drop rows with NA in CiteScore
+    metricas_all_sort <- metricas_all_sort[!is.na(metricas_all_sort$CiteScore), ]
+    
+    # get top 10 unique IDs
+    uniqueID <- unique(metricas_all_sort$"ID da Produção")
+    top <- min(length(uniqueID), 10, na.rm = TRUE)
+    uniqueID_top <- uniqueID[1:top]
+    metricas_all_sort_top <- metricas_all_sort[metricas_all_sort$"ID da Produção" %in% uniqueID_top, ]
+    
+    # Check for empty data
+    if (!sjmisc::is_empty(metricas_all_sort_top)) {
+      # print tab header
+      cat('\n\n<!-- -->\n\n')
+      cat("### **", as.character(years[year]), "**", "\n", sep = "")
+      
+      # print table of papers with/without badges
+      source("Scripts/table-with-badges.R", local = knitr::knit_global())
+      table.with.badges(
+        show.Altmetric = TRUE,
+        show.Dimensions = TRUE,
+        show.PlumX = TRUE,
+        show.CiteScore = TRUE,
+        show.SJR = TRUE,
+        show.Qualis = TRUE,
+        metricas_all_produtos = metricas_all_sort_top
+      )
+    }
+  }
+}
+```
+
+<br>
+
+## **Prestígio do periódico** {#destaque-sjr .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !has.sucupira.files}
+cat('<br>')
+```
+
+```{r destaque-sjr, eval = has.sucupira.files}
+# Check if there are DOIs
+if (sjmisc::is_empty(metricas_all)) {
+  cat('\n')
+  cat('*Sem produção para exibir*')
+  cat('\n')
+} else {
+  # available years of publication
+  years <- sort(unique(na.omit(metricas_all$"Ano da Produção")), decreasing = TRUE)
+  for (year in 1:length(years)) {
+    metricas_all_sort <- metricas_all[metricas_all$"Ano da Produção" == years[year], ]
+    
+    # Sort columns by SJR
+    ordering <-
+      order(as.numeric(metricas_all_sort$SJR),
+            decreasing = TRUE)
+    metricas_all_sort <- metricas_all_sort[ordering, ]
+    # drop rows with NA in SJR
+    metricas_all_sort <- metricas_all_sort[!is.na(metricas_all_sort$SJR), ]
+    
+    # get top 10 unique IDs
+    uniqueID <- unique(metricas_all_sort$"ID da Produção")
+    top <- min(length(uniqueID), 10, na.rm = TRUE)
+    uniqueID_top <- uniqueID[1:top]
+    metricas_all_sort_top <- metricas_all_sort[metricas_all_sort$"ID da Produção" %in% uniqueID_top, ]
+    
+    # Check for empty data
+    if (!sjmisc::is_empty(metricas_all_sort_top)) {
+      # print tab header
+      cat('\n\n<!-- -->\n\n')
+      cat("### **", as.character(years[year]), "**", "\n", sep = "")
+      
+      # print table of papers with/without badges
+      source("Scripts/table-with-badges.R", local = knitr::knit_global())
+      table.with.badges(
+        show.Altmetric = TRUE,
+        show.Dimensions = TRUE,
+        show.PlumX = TRUE,
+        show.CiteScore = TRUE,
+        show.SJR = TRUE,
+        show.Qualis = TRUE,
+        metricas_all_produtos = metricas_all_sort_top
+      )
+    }
+  }
 }
 ```
 

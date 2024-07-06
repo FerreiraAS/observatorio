@@ -95,6 +95,8 @@ navbar:
           href: [pessoas.html#iniciacao-cientifica]
         - text: "Grupos de pesquisa"
           href: [pessoas.html#grupos-pesquisa]
+        - text: "Bancas examinadoras"
+          href: [pessoas.html#bancas-examinadoras]
         - text: "Participantes externos"
           href: [pessoas.html#participantes-externos]
     - text: "Teses e dissertações"
@@ -169,10 +171,12 @@ navbar:
           href: [destaques.html#egressos-destaque]
         - text: "Dissertações/Teses"
           href: [destaques.html#TCC-destaque]
-        - text: "Produções: Visibilidade"
-          href: [destaques.html#destaque-visibilidade]
-        - text: "Produções: Prestígio"
-          href: [destaques.html#destaque-prestigio]
+        - text: "Engajamento com a produção"
+          href: [destaques.html#destaque-altmetric]
+        - text: "Citações recentes do periódico"
+          href: [destaques.html#destaque-citescore]
+        - text: "Prestígio do periódico"
+          href: [destaques.html#destaque-sjr]
         - text: "Prêmios"
           href: [destaques.html#premios]
         - text: "Prêmio CAPES de Tese"

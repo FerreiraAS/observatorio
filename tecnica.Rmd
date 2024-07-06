@@ -880,30 +880,6 @@ create_dt(table, title = "Produções - Editoria (¹Discente, ²Egresso, ³Docen
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
-
-# available years of publication
-years <- sort(unique(na.omit(metricas_all_produtos$Ano)), decreasing = TRUE)
-
-# Verifica se há DOIs
-if (!sjmisc::is_empty(metricas_all_produtos)) {
-  for (year in 1:length(years)) {
-    # print tab header
-    cat('\n\n<!-- -->\n\n')
-    cat("### **", as.character(years[year]), "**", "\n", sep = "")
-    
-    # print table of papers with/without badges
-    source("Scripts/papers-with-badges.R", local = knitr::knit_global())
-    table.with.badges(
-      show.Altmetric = TRUE,
-      show.Dimensions = TRUE,
-      show.PlumX = TRUE,
-      show.CiteScore = TRUE,
-      show.SJR = TRUE,
-      show.Qualis = TRUE,
-      metricas_all_produtos = metricas_all_produtos[metricas_all_produtos$"Ano" == years[year], ]
-    )
-  }
-}
 ```
 
 <br>

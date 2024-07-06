@@ -1173,6 +1173,17 @@ for (j in 1:length(abas)) {
 
 <br>
 
+## **Bancas examinadoras** {#bancas-examinadoras .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r bancas-examinadoras, eval = has.sucupira.files}
+
+```
+
+<br>
+
 ## **Participantes externos** {#participantes-externos .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
