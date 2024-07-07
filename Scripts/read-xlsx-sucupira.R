@@ -1,3 +1,5 @@
+library(dplyr)
+
 # list all directories to extract Sucupira (yearly) data
 dirs <-
   list.dirs(file.path(getwd(), "Sucupira"),
