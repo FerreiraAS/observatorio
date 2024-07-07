@@ -63,7 +63,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Apresentação de trabalho** {#apresentacao-trabalho .tabset}
+## **Apresentação de trabalho** {#apresentacao-trabalho}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -155,8 +155,6 @@ table <- produtos.df %>% dplyr::arrange(
 )
 
 cat('\n\n<!-- -->\n\n')
-cat("### **Tabela**", "\n", sep = "")
-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Apresentação de Trabalho (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
@@ -166,7 +164,7 @@ source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 <br>
 
-## **Cartas, mapas e similares** {#cartas-mapas .tabset}
+## **Cartas, mapas e similares** {#cartas-mapas}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -258,8 +256,6 @@ table <- produtos.df %>% dplyr::arrange(
 )
 
 cat('\n\n<!-- -->\n\n')
-cat("### **Tabela**", "\n", sep = "")
-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Cartas, Mapas e Similares (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
@@ -269,7 +265,7 @@ source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 <br>
 
-## **Curso de curta duração** {#curso-curta-duracao .tabset}
+## **Curso de curta duração** {#curso-curta-duracao}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -361,8 +357,6 @@ table <- produtos.df %>% dplyr::arrange(
 )
 
 cat('\n\n<!-- -->\n\n')
-cat("### **Tabela**", "\n", sep = "")
-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Curso de Curta Duração (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
@@ -372,7 +366,7 @@ source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 <br>
 
-## **Desenvolvimento de aplicativo** {#aplicativo .tabset}
+## **Desenvolvimento de aplicativo** {#aplicativo}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -464,8 +458,6 @@ table <- produtos.df %>% dplyr::arrange(
 )
 
 cat('\n\n<!-- -->\n\n')
-cat("### **Tabela**", "\n", sep = "")
-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Desenvolvimento de Aplicativo (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
@@ -475,7 +467,7 @@ source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 <br>
 
-## **Desenvolvimento de material didático e instrucional** {#didatico-instrucional .tabset}
+## **Desenvolvimento de material didático e instrucional** {#didatico-instrucional}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -567,8 +559,6 @@ table <- produtos.df %>% dplyr::arrange(
 )
 
 cat('\n\n<!-- -->\n\n')
-cat("### **Tabela**", "\n", sep = "")
-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Desenvolvimento de Material Didático e Instrucional (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
@@ -578,7 +568,7 @@ source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 <br>
 
-## **Desenvolvimento de produto** {#produto .tabset}
+## **Desenvolvimento de produto** {#produto}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -670,8 +660,6 @@ table <- produtos.df %>% dplyr::arrange(
 )
 
 cat('\n\n<!-- -->\n\n')
-cat("### **Tabela**", "\n", sep = "")
-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Desenvolvimento de Produto (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
@@ -681,7 +669,7 @@ source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 <br>
 
-## **Desenvolvimento de técnica** {#tecnica .tabset}
+## **Desenvolvimento de técnica** {#tecnica}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -773,8 +761,6 @@ table <- produtos.df %>% dplyr::arrange(
 )
 
 cat('\n\n<!-- -->\n\n')
-cat("### **Tabela**", "\n", sep = "")
-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Desenvolvimento de Técnica (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
@@ -784,7 +770,7 @@ source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 <br>
 
-## **Editoria**  {#editoria .tabset}
+## **Editoria**  {#editoria}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -873,8 +859,6 @@ table <- produtos.df %>% dplyr::arrange(
 )
 
 cat('\n\n<!-- -->\n\n')
-cat("### **Tabela**", "\n", sep = "")
-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Editoria (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
@@ -884,7 +868,7 @@ source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 <br>
 
-## **Manutenção de obra artística** {#manutencao-obra .tabset}
+## **Manutenção de obra artística** {#manutencao-obrat}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -976,8 +960,6 @@ table <- produtos.df %>% dplyr::arrange(
 )
 
 cat('\n\n<!-- -->\n\n')
-cat("### **Tabela**", "\n", sep = "")
-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Manutenção de Obra Artística (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
@@ -987,7 +969,7 @@ source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 <br>
 
-## **Maquete** {#maquete .tabset}
+## **Maquete** {#maquete}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -1079,8 +1061,6 @@ table <- produtos.df %>% dplyr::arrange(
 )
 
 cat('\n\n<!-- -->\n\n')
-cat("### **Tabela**", "\n", sep = "")
-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Maquete (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
@@ -1090,7 +1070,7 @@ source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 <br>
 
-## **Organização de evento** {#organizacao-evento .tabset}
+## **Organização de evento** {#organizacao-evento}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -1182,8 +1162,6 @@ table <- produtos.df %>% dplyr::arrange(
 )
 
 cat('\n\n<!-- -->\n\n')
-cat("### **Tabela**", "\n", sep = "")
-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Organização de Evento (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
@@ -1193,7 +1171,7 @@ source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 <br>
 
-## **Patente** {#patente .tabset}
+## **Patente** {#patente}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -1285,8 +1263,6 @@ table <- produtos.df %>% dplyr::arrange(
 )
 
 cat('\n\n<!-- -->\n\n')
-cat("### **Tabela**", "\n", sep = "")
-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Patente (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
@@ -1296,7 +1272,7 @@ source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 <br>
 
-## **Programa de rádio ou TV** {#radio-tv .tabset}
+## **Programa de rádio ou TV** {#radio-tv}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -1388,8 +1364,6 @@ table <- produtos.df %>% dplyr::arrange(
 )
 
 cat('\n\n<!-- -->\n\n')
-cat("### **Tabela**", "\n", sep = "")
-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Programa de Rádio ou TV (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
@@ -1399,7 +1373,7 @@ source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 <br>
 
-## **Relatório de pesquisa** {#relatorio-pesquisa .tabset}
+## **Relatório de pesquisa** {#relatorio-pesquisa}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -1491,8 +1465,6 @@ table <- produtos.df %>% dplyr::arrange(
 )
 
 cat('\n\n<!-- -->\n\n')
-cat("### **Tabela**", "\n", sep = "")
-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Relatório de Pesquisa (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
@@ -1502,7 +1474,7 @@ source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 <br>
 
-## **Serviço técnico** {#servico-tecnico .tabset}
+## **Serviço técnico** {#servico-tecnico}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -1594,8 +1566,6 @@ table <- produtos.df %>% dplyr::arrange(
 )
 
 cat('\n\n<!-- -->\n\n')
-cat("### **Tabela**", "\n", sep = "")
-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Serviços Técnicos (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
@@ -1605,7 +1575,7 @@ source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 <br>
 
-## **Outro** {#outro .tabset}
+## **Outro** {#outro}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -1697,8 +1667,6 @@ table <- produtos.df %>% dplyr::arrange(
 )
 
 cat('\n\n<!-- -->\n\n')
-cat("### **Tabela**", "\n", sep = "")
-
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table, title = "Produções - Outra produção técnica (¹Discente, ²Egresso, ³Docente)")
 cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
