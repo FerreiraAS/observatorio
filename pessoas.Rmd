@@ -1173,60 +1173,6 @@ for (j in 1:length(abas)) {
 
 <br>
 
-## **Bancas examinadoras** {#bancas-examinadoras .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r bancas-examinadoras, eval = has.sucupira.files}
-# TCC - Banca
-sheet <- "TCC - Banca"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# make unique ID
-id.TCC <- sucupira.raw$"Identificador do Trabalho de Conclusão"
-id.TCC <- unique(id.TCC)
-
-bancas <- data.frame(
-  "Data da Defesa" = rep(NA, length(id.TCC)),
-  "Tipo de Trabalho de Conclusão" = rep(NA, length(id.TCC)),
-  "Título" = rep(NA, length(id.TCC)),
-  "Autor" = rep(NA, length(id.TCC)),
-  "Orientadores" = rep(NA, length(id.TCC)),
-  "Examinadores" = rep(NA, length(id.TCC)),
-  "IES externas" = rep(NA, length(id.TCC)),
-  "Internacionalização" = rep(NA, length(id.TCC)),
-  check.names = FALSE
-)
-# loop over each ID
-for (i in 1:length(id.TCC)) {
-  # select current ID
-  banca <- sucupira.raw[sucupira.raw$"Identificador do Trabalho de Conclusão" == id.TCC[i], ]
-  
-  # get unique values
-  bancas$`Data da Defesa`[i] <- substr(as.Date(unique(banca$"Data da Defesa"), format = "%d/%m/%Y"), 1, 4)
-  bancas$`Tipo de Trabalho de Conclusão`[i] <- stringr::str_to_sentence(unique(banca$"Tipo de Trabalho de Conclusão"))
-  bancas$Título[i] <- stringr::str_to_sentence(unique(banca$"Nome do Trabalho de Conclusão"))
-  bancas$Autor[i] <- stringr::str_to_title(unique(banca$"Nome do Autor"))
-  bancas$Orientadores[i] <- paste0(stringr::str_to_title(unique(banca$"Nome do Orientador")), collapse = ", ")
-  bancas$Examinadores[i] <- paste0(unique(
-    paste0(stringr::str_to_title(banca$"Nome da Pessoa da Banca"), " (", banca$"Sigla da IES da Pessoa da Banca", ")")
-    ), collapse = ", ")
-  # check proportion of same IES between autor and examinadores
-  ies.autor <- unique(banca$"IES Nome Autor")
-  bancas$`IES externas` <- ifelse(sum(unique(banca$"Sigla da IES da Pessoa da Banca") != ies.autor, na.rm = TRUE) > 0, "Sim", "Não")
-  # check if there are country others than Brasil among examinadores
-  bancas$Internacionalização[i] <- ifelse(sum(unique(banca$"País da Pessoa da Banca") != "Brasil", na.rm = TRUE) > 0, paste0(unique(banca$"País da Pessoa da Banca")[banca$"País da Pessoa da Banca" != "Brasil"], collapse = ", "), "Não")
-}
-
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(bancas, title = "Pessoas - Bancas Examinadoras")
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
 ## **Participantes externos** {#participantes-externos .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
