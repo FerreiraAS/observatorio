@@ -774,7 +774,9 @@ metricas_all <-
   as.data.frame()
 ```
 
-```{r save}
+## **Gravar .TSV**
+
+```{r save-tsv, eval = FALSE}
 # Write data to TSV file
 try(write.table(
   metricas_all,

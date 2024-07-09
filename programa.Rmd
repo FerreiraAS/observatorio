@@ -314,15 +314,60 @@ projetos <-
 
 table.projetos <-
   data.frame(
+    projetos$`Identificador da Pessoa do Membro`,
     projetos$`Área de Concentração`,
     projetos$`Linha de Pesquisa`,
     projetos$`Nome do Projeto de Pesquisa`,
     projetos$`Natureza do Projeto de Pesquisa`,
-    projetos$`Nome do Membro do Projeto`,
-    projetos$`Data de Início`
+    projetos$`Data de Início`,
+    projetos$`Nome do Membro do Projeto`
   )
 table.projetos <- table.projetos[order(table.projetos[, 1]),]
-labels <- colnames(table.projetos)
+
+colnames(table.projetos) <-
+  c("Identificador da Pessoa do Membro",
+    "Área de Concentração",
+    "Linha de Pesquisa",
+    "Projeto",
+    "Natureza",
+    "Início",
+    "Responsável"
+    )
+
+# docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+docentes <- data.frame(
+  sucupira.raw$`Identificador da Pessoa`,
+  sucupira.raw$`País`
+)
+colnames(docentes) <- c("Identificador", "País")
+docentes <- unique(docentes)
+
+# posdocs
+sheet <- "Pós-Doc"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+posdocs <- data.frame(
+  sucupira.raw$`Identificador da Pessoa`,
+  sucupira.raw$`País`
+)
+colnames(posdocs) <- c("Identificador", "País")
+posdocs <- unique(posdocs)
+
+# bind docentes and posdocs
+responsaveis <- rbind(docentes, posdocs)
+
+# get País based on the docente's ID
+table.projetos$País <- rep(NA, nrow(table.projetos))
+for (i in 1:nrow(table.projetos)) {
+  table.projetos$País[i] <- unique(na.omit(
+    responsaveis$País[table.projetos$`Identificador da Pessoa do Membro`[i] == responsaveis$Identificador]
+    ))
+}
+
+# drop 1st column
+table.projetos$'Identificador da Pessoa do Membro' <- NULL
+
 # print tables
 table.projetos[, 1] <-
   as.vector(unlist(lapply(table.projetos[, 1], FUN = stringr::str_to_upper)))
@@ -332,16 +377,8 @@ table.projetos[, 3] <-
   as.vector(unlist(lapply(table.projetos[, 3], FUN = stringr::str_to_sentence)))
 table.projetos[, 4] <-
   as.vector(unlist(lapply(table.projetos[, 4], FUN = stringr::str_to_sentence)))
-table.projetos[, 5] <- 
-  as.vector(unlist(lapply(table.projetos[, 5], FUN = stringr::str_to_sentence)))
-
-colnames(table.projetos) <-
-  c("Área de Concentração",
-    "Linha de Pesquisa",
-    "Projeto",
-    "Natureza",
-    "Responsável",
-    "Início")
+table.projetos[, 6] <-
+  as.vector(unlist(lapply(table.projetos[, 6], FUN = stringr::str_to_sentence)))
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.projetos, title = "Programa - Projetos - Em andamento")
@@ -362,27 +399,73 @@ source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
-# get data from all Sucupira years available
+# get data from all Sucupira year available
 projetos.all <-
   do.call(rbind.data.frame, sucupira.list)
 
-# filter closed projects only
+# filter CONCLUIDOS projects only
 projetos <-
   unique(projetos.all[projetos.all$`Membro Responsável` == "Sim" &
                  projetos.all$Situação != "EM ANDAMENTO", ])
 
 table.projetos <-
   data.frame(
+    projetos$`Identificador da Pessoa do Membro`,
     projetos$`Área de Concentração`,
     projetos$`Linha de Pesquisa`,
     projetos$`Nome do Projeto de Pesquisa`,
     projetos$`Natureza do Projeto de Pesquisa`,
-    projetos$`Nome do Membro do Projeto`,
     projetos$`Data de Início`,
-    projetos$`Data da Situação`
+    projetos$`Data da Situação`,
+    projetos$`Nome do Membro do Projeto`
   )
 table.projetos <- table.projetos[order(table.projetos[, 1]),]
-labels <- colnames(table.projetos)
+
+colnames(table.projetos) <-
+  c("Identificador da Pessoa do Membro",
+    "Área de Concentração",
+    "Linha de Pesquisa",
+    "Projeto",
+    "Natureza",
+    "Início",
+    "Fim",
+    "Responsável"
+    )
+
+# docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+docentes <- data.frame(
+  sucupira.raw$`Identificador da Pessoa`,
+  sucupira.raw$`País`
+)
+colnames(docentes) <- c("Identificador", "País")
+docentes <- unique(docentes)
+
+# posdocs
+sheet <- "Pós-Doc"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+posdocs <- data.frame(
+  sucupira.raw$`Identificador da Pessoa`,
+  sucupira.raw$`País`
+)
+colnames(posdocs) <- c("Identificador", "País")
+posdocs <- unique(posdocs)
+
+# bind docentes and posdocs
+responsaveis <- rbind(docentes, posdocs)
+
+# get País based on the docente's ID
+table.projetos$País <- rep(NA, nrow(table.projetos))
+for (i in 1:nrow(table.projetos)) {
+  table.projetos$País[i] <- unique(na.omit(
+    responsaveis$País[table.projetos$`Identificador da Pessoa do Membro`[i] == responsaveis$Identificador]
+    ))
+}
+
+# drop 1st column
+table.projetos$'Identificador da Pessoa do Membro' <- NULL
+
 # print tables
 table.projetos[, 1] <-
   as.vector(unlist(lapply(table.projetos[, 1], FUN = stringr::str_to_upper)))
@@ -392,17 +475,8 @@ table.projetos[, 3] <-
   as.vector(unlist(lapply(table.projetos[, 3], FUN = stringr::str_to_sentence)))
 table.projetos[, 4] <-
   as.vector(unlist(lapply(table.projetos[, 4], FUN = stringr::str_to_sentence)))
-table.projetos[, 5] <- 
-  as.vector(unlist(lapply(table.projetos[, 5], FUN = stringr::str_to_sentence)))
-
-colnames(table.projetos) <-
-  c("Área de Concentração",
-    "Linha de Pesquisa",
-    "Projeto",
-    "Natureza",
-    "Responsável",
-    "Início",
-    "Fim")
+table.projetos[, 7] <- 
+  as.vector(unlist(lapply(table.projetos[, 7], FUN = stringr::str_to_title)))
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.projetos, title = "Programa - Projetos de Pesquisa - Encerrados")

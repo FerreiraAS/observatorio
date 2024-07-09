@@ -89,7 +89,7 @@ bancas <- data.frame(
   "Orientadores" = rep(NA, length(id.TCC)),
   "Examinadores" = rep(NA, length(id.TCC)),
   "IES externas" = rep(NA, length(id.TCC)),
-  "Internacionalização" = rep(NA, length(id.TCC)),
+  "País" = rep(NA, length(id.TCC)),
   check.names = FALSE
 )
 # loop over each ID
@@ -110,7 +110,7 @@ for (i in 1:length(id.TCC)) {
   ies.autor <- unique(banca$"IES Nome Autor")
   bancas$`IES externas` <- ifelse(sum(unique(banca$"Sigla da IES da Pessoa da Banca") != ies.autor, na.rm = TRUE) > 0, "Sim", "Não")
   # check if there are country others than Brasil among examinadores
-  bancas$Internacionalização[i] <- ifelse(sum(unique(banca$"País da Pessoa da Banca") != "Brasil", na.rm = TRUE) > 0, paste0(unique(banca$"País da Pessoa da Banca")[banca$"País da Pessoa da Banca" != "Brasil"], collapse = ", "), "Não")
+  bancas$País[i] <- paste0(unique(banca$"País da Pessoa da Banca"), collapse = ", ")
 }
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
