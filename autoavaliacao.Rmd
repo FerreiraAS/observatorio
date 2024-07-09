@@ -1231,6 +1231,80 @@ table.pp.nt.gt <-
   gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 ```
 
+```{r 1-1-1-pp-membro, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
+table.pp.membro <-
+  data.frame(matrix(
+    NA,
+    nrow = length(unique(sucupira.df$`Nome do Projeto de Pesquisa`)),
+    ncol = length(quadrienal.vigente)
+  ))
+rownames(table.pp.membro) <- NULL
+table.pp.membro <-
+  cbind(unique(sucupira.df$`Nome do Projeto de Pesquisa`), table.pp.membro)
+colnames(table.pp.membro) <-
+  c("Nome do Projeto de Pesquisa", as.character(quadrienal.vigente))
+for (i in 1:dim(table.pp.membro)[1]) {
+  for (j in 1:length(quadrienal.vigente)) {
+    data <- sucupira.df[sucupira.df$Anos == quadrienal.vigente[j],]
+    table.pp.membro[i, j + 1] <-
+      try(data$`Categoria do Membro do Projeto`[match(table.pp.membro$`Nome do Projeto de Pesquisa`[i],
+                                         data$`Nome do Projeto de Pesquisa`)], silent = TRUE)
+  }
+}
+
+table.pp.membro.long <-
+  tidyr::gather(table.pp.membro[, -1],
+                "Ano",
+                "Nome do Projeto de Pesquisa",
+                colnames(table.pp.membro)[-1],
+                factor_key = TRUE)
+
+# to title case
+table.pp.membro.long$`Nome do Projeto de Pesquisa` <- tools::toTitleCase(tolower(table.pp.membro.long$`Nome do Projeto de Pesquisa`))
+
+table.pp.membro.long <- rbind(
+  table.pp.membro.long,
+  data.frame(
+    "Ano" = rep(paste0(
+      min(quadrienal.vigente), "-", max(quadrienal.vigente)
+    ), times = dim(table.pp.membro)[1]),
+    "Nome do Projeto de Pesquisa" = rep("Responsável", times = dim(table.pp.membro)[1]),
+    check.names = FALSE
+  )
+)
+
+my_N <- function(data, ...) {
+  gtsummary::style_number(sum(data == "Responsável", na.rm = TRUE), digits = 0)
+}
+
+colnames(table.pp.membro.long) <-
+  c("Ano", "Categoria do responsável")
+
+# print tables
+table.pp.membro.gt <-
+  gtsummary::tbl_summary(
+    table.pp.membro.long,
+    by = "Ano",
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
+    missing = "no",
+    digits = gtsummary::everything() ~ 0
+  ) %>%
+  gtsummary::modify_header(label = "Ano", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels() %>%
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(list(
+    add_stat_1 ~ "**Quadriênio**",
+    gtsummary::all_stat_cols() ~ "**{level}**"
+  )) %>%
+  gtsummary::remove_row_type(
+    variables = c('Categoria do responsável'),
+    type = "level",
+    level_value = ("Responsável")
+  ) %>%
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+```
+
 ```{r 1-1-1-PP-DP, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
 if(knitr::is_html_output()) {
   cat("##### **PP** {#descricao-pp}")
@@ -1240,7 +1314,8 @@ if(knitr::is_html_output()) {
 # list all tables
 table.all <-
   list(table.pp.gt,
-       table.pp.nt.gt
+       table.pp.nt.gt,
+       table.pp.membro.gt
        )
 
 # drop empty elements from list

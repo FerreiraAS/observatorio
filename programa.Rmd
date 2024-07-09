@@ -354,8 +354,18 @@ posdocs <- data.frame(
 colnames(posdocs) <- c("Identificador", "País")
 posdocs <- unique(posdocs)
 
-# bind docentes and posdocs
-responsaveis <- rbind(docentes, posdocs)
+# participantes externos
+sheet <- "Participante Externo"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+externos <- data.frame(
+  sucupira.raw$`Identificador da Pessoa`,
+  sucupira.raw$`País`
+)
+colnames(externos) <- c("Identificador", "País")
+externos <- unique(externos)
+
+# bind all
+responsaveis <- rbind(docentes, posdocs, externos)
 
 # get País based on the docente's ID
 table.projetos$País <- rep(NA, nrow(table.projetos))
@@ -378,7 +388,7 @@ table.projetos[, 3] <-
 table.projetos[, 4] <-
   as.vector(unlist(lapply(table.projetos[, 4], FUN = stringr::str_to_sentence)))
 table.projetos[, 6] <-
-  as.vector(unlist(lapply(table.projetos[, 6], FUN = stringr::str_to_sentence)))
+  as.vector(unlist(lapply(table.projetos[, 6], FUN = stringr::str_to_title)))
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.projetos, title = "Programa - Projetos - Em andamento")
@@ -452,8 +462,18 @@ posdocs <- data.frame(
 colnames(posdocs) <- c("Identificador", "País")
 posdocs <- unique(posdocs)
 
-# bind docentes and posdocs
-responsaveis <- rbind(docentes, posdocs)
+# participantes externos
+sheet <- "Participante Externo"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+externos <- data.frame(
+  sucupira.raw$`Identificador da Pessoa`,
+  sucupira.raw$`País`
+)
+colnames(externos) <- c("Identificador", "País")
+externos <- unique(externos)
+
+# bind all
+responsaveis <- rbind(docentes, posdocs, externos)
 
 # get País based on the docente's ID
 table.projetos$País <- rep(NA, nrow(table.projetos))
