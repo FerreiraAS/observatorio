@@ -82,7 +82,7 @@ id.TCC <- sucupira.raw$"Identificador do Trabalho de Conclusão"
 id.TCC <- unique(id.TCC)
 
 bancas <- data.frame(
-  "Data da Defesa" = rep(NA, length(id.TCC)),
+  "Ano" = rep(NA, length(id.TCC)),
   "Tipo de Trabalho de Conclusão" = rep(NA, length(id.TCC)),
   "Título" = rep(NA, length(id.TCC)),
   "Autor" = rep(NA, length(id.TCC)),
@@ -98,7 +98,7 @@ for (i in 1:length(id.TCC)) {
   banca <- sucupira.raw[sucupira.raw$"Identificador do Trabalho de Conclusão" == id.TCC[i], ]
   
   # get unique values
-  bancas$`Data da Defesa`[i] <- substr(as.Date(unique(banca$"Data da Defesa"), format = "%d/%m/%Y"), 1, 4)
+  bancas$Ano[i] <- substr(as.Date(unique(banca$Ano), format = "%d/%m/%Y"), 1, 4)
   bancas$`Tipo de Trabalho de Conclusão`[i] <- stringr::str_to_sentence(unique(banca$"Tipo de Trabalho de Conclusão"))
   bancas$Título[i] <- stringr::str_to_sentence(unique(banca$"Nome do Trabalho de Conclusão"))
   bancas$Autor[i] <- stringr::str_to_title(unique(banca$"Nome do Autor"))
