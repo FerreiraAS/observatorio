@@ -1811,18 +1811,18 @@ if (dim(tcc)[1] != 0) {
     as.vector(unlist(lapply(table.tcc[, 5], FUN = stringr::str_to_title)))
   table.tcc[, 6] <-
     as.vector(unlist(lapply(table.tcc[, 6], FUN = stringr::str_to_title)))
-
+  
+  # drop duplicated entries
+  table.tcc <- table.tcc[!duplicated(table.tcc), ]
+  
+  # sort by Ano and Titulo
+  table.tcc <- table.tcc[order(table.tcc$Ano, table.tcc$Título), ]
+  
   colnames(table.tcc) <-
     c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador", "Financiador", "País")
 } else {
   table.tcc <- data.frame()
 }
-
-# drop duplicated entries
-table.tcc <- table.tcc[!duplicated(table.tcc),]
-
-# sort by Ano and Titulo
-table.tcc <- table.tcc[order(table.tcc$Ano, table.tcc$Título),]
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -1902,17 +1902,17 @@ if (dim(tcc)[1] != 0) {
   table.tcc[, 6] <-
     as.vector(unlist(lapply(table.tcc[, 6], FUN = stringr::str_to_title)))
 
+  # drop duplicated entries
+  table.tcc <- table.tcc[!duplicated(table.tcc), ]
+  
+  # sort by Ano and Titulo
+  table.tcc <- table.tcc[order(table.tcc$Ano, table.tcc$Título), ]
+  
   colnames(table.tcc) <-
     c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador", "Financiador", "País")
 } else {
   table.tcc <- data.frame()
 }
-
-# drop duplicated entries
-table.tcc <- table.tcc[!duplicated(table.tcc),]
-
-# sort by Ano and Titulo
-table.tcc <- table.tcc[order(table.tcc$Ano, table.tcc$Título),]
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
