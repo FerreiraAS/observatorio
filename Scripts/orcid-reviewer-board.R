@@ -15,7 +15,7 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
   # list journals
   journals <- rorcid::issn_title[issn]
   
-  # get SJR and CiteScore
+  # get SJR and CiteScore from database
   SJR <- c()
   CiteScore <- c()
   for (i in 1:length(issn)) {

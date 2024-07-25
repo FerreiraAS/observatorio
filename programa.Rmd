@@ -729,7 +729,8 @@ financiadores.sub <-
                                "Edital",
                                "Processo No.",
                                "Título do projeto",
-                               "Programa")
+                               "Programa",
+                               "País")
 fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
 
 financiadores <-
@@ -2000,10 +2001,10 @@ for (j in 1:length(abas)) {
   colnames(Abrir) <- "Abrir"
   # add hyperlinks
   for (i in 1:dim(convenios.raw)[1]) {
-    if (!is.na(convenios.raw[i, 3])) {
+    if (!is.na(convenios.raw[i, ncol(convenios.raw)])) {
       Abrir[i] <-
         paste0('<a href="',
-               convenios.raw[i, 3],
+               convenios.raw[i, ncol(convenios.raw)],
                '" target="_blank"',
                '>',
                # fontawesome icon
@@ -2011,7 +2012,7 @@ for (j in 1:length(abas)) {
                '</a>')
     }
   }
-  convenios <- cbind(convenios.raw[, -3], Abrir)
+  convenios <- cbind(convenios.raw[, -ncol(convenios.raw)], Abrir)
   
   # print table
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -2054,10 +2055,10 @@ for (j in 1:length(abas)) {
   colnames(Abrir) <- "Abrir"
   # add hyperlinks
   for (i in 1:dim(cooperacoes.raw)[1]) {
-    if (!is.na(cooperacoes.raw[i, 3])) {
+    if (!is.na(cooperacoes.raw[i, ncol(cooperacoes.raw)])) {
       Abrir[i] <-
         paste0('<a href="',
-               cooperacoes.raw[i, 3],
+               cooperacoes.raw[i, ncol(cooperacoes.raw)],
                '" target="_blank"',
                '>',
                # fontawesome icon
@@ -2065,7 +2066,7 @@ for (j in 1:length(abas)) {
                '</a>')
     }
   }
-  cooperacoes <- cbind(cooperacoes.raw[, -3], Abrir)
+  cooperacoes <- cbind(cooperacoes.raw[, -ncol(cooperacoes.raw)], Abrir)
   
   # print table
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())

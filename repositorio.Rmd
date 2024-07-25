@@ -113,6 +113,9 @@ for (i in 1:length(id.TCC)) {
   bancas$País[i] <- paste0(unique(banca$"País da Pessoa da Banca"), collapse = ", ")
 }
 
+# rename Tipo de trabalho de conclusão para Tipo
+bancas <- dplyr::rename(bancas, Tipo = `Tipo de Trabalho de Conclusão`)
+
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(bancas, title = "Pessoas - Bancas Examinadoras")
 
@@ -130,7 +133,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 cat('<br>')
 ```
 
-```{r tcc-dsc, eval = has.sucupira.files}
+```{r tcc-tese, eval = has.sucupira.files}
 # tcc
 sheet <- "TCC - Financiadores"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -143,8 +146,20 @@ periodos <- names(sucupira.list)
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
+# dplyr::selecting those with COVID in the title
 tcc <-
-  tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "TESE",]
+  tcc.all[grep(paste(tolower(pandemia), collapse = "|"),
+               tolower(tcc.all$`Nome do Trabalho de Conclusão`)),]
+
+# make unique ID
+id.TCC <- tcc$"Identificador do Trabalho de Conclusão"
+id.TCC <- unique(id.TCC)
+for (i in 1:length(id.TCC)) {
+  # select current ID
+  banca <- tcc[tcc$"Identificador do Trabalho de Conclusão" == id.TCC[i], ]
+  paises <- paste0(unique(banca$"País da Pessoa da Banca"), collapse = ", ")
+  tcc$`País da Pessoa da Banca`[match(id.TCC[i], tcc$"Identificador do Trabalho de Conclusão")] <- paises
+}
 
 if (dim(tcc)[1] != 0) {
   # select data
@@ -157,7 +172,8 @@ if (dim(tcc)[1] != 0) {
       tcc$`Nome do Trabalho de Conclusão`,
       tcc$`Nome do Autor`,
       tcc$`Nome do Orientador`,
-      tcc$`Nome do Financiador`
+      tcc$`Nome do Financiador`,
+      tcc$`País da Pessoa da Banca`
     )
   
   table.tcc <-
@@ -173,9 +189,9 @@ if (dim(tcc)[1] != 0) {
     as.vector(unlist(lapply(table.tcc[, 5], FUN = stringr::str_to_title)))
   table.tcc[, 6] <-
     as.vector(unlist(lapply(table.tcc[, 6], FUN = stringr::str_to_title)))
-  
+
   colnames(table.tcc) <-
-    c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador", "Financiador")
+    c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador", "Financiador", "País")
 } else {
   table.tcc <- data.frame()
 }
@@ -183,12 +199,9 @@ if (dim(tcc)[1] != 0) {
 # drop duplicated entries
 table.tcc <- table.tcc[!duplicated(table.tcc),]
 
-table.tcc <- table.tcc %>% dplyr::arrange(
-  dplyr::desc(table.tcc$'Ano'),
-  table.tcc$'Autor'
-)
-table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano')),
-                                        table.tcc$'Título')
+# sort by Ano and Titulo
+table.tcc <- table.tcc[order(table.tcc$Ano, table.tcc$Título),]
+
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.tcc, title = "Produções - Teses")
@@ -207,7 +220,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 cat('<br>')
 ```
 
-```{r tcc-msc, eval = has.sucupira.files}
+```{r tcc-dissertacao, eval = has.sucupira.files}
 # tcc
 sheet <- "TCC - Financiadores"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -223,6 +236,21 @@ tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 tcc <-
   tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "DISSERTAÇÃO",]
 
+# dplyr::selecting those with COVID in the title
+tcc <-
+  tcc.all[grep(paste(tolower(pandemia), collapse = "|"),
+               tolower(tcc.all$`Nome do Trabalho de Conclusão`)),]
+
+# make unique ID
+id.TCC <- tcc$"Identificador do Trabalho de Conclusão"
+id.TCC <- unique(id.TCC)
+for (i in 1:length(id.TCC)) {
+  # select current ID
+  banca <- tcc[tcc$"Identificador do Trabalho de Conclusão" == id.TCC[i], ]
+  paises <- paste0(unique(banca$"País da Pessoa da Banca"), collapse = ", ")
+  tcc$`País da Pessoa da Banca`[match(id.TCC[i], tcc$"Identificador do Trabalho de Conclusão")] <- paises
+}
+
 if (dim(tcc)[1] != 0) {
   # select data
   table.tcc <-
@@ -234,7 +262,8 @@ if (dim(tcc)[1] != 0) {
       tcc$`Nome do Trabalho de Conclusão`,
       tcc$`Nome do Autor`,
       tcc$`Nome do Orientador`,
-      tcc$`Nome do Financiador`
+      tcc$`Nome do Financiador`,
+      tcc$`País da Pessoa da Banca`
     )
   
   table.tcc <-
@@ -250,9 +279,9 @@ if (dim(tcc)[1] != 0) {
     as.vector(unlist(lapply(table.tcc[, 5], FUN = stringr::str_to_title)))
   table.tcc[, 6] <-
     as.vector(unlist(lapply(table.tcc[, 6], FUN = stringr::str_to_title)))
-  
+
   colnames(table.tcc) <-
-    c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador", "Financiador")
+    c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador", "Financiador", "País")
 } else {
   table.tcc <- data.frame()
 }
@@ -260,12 +289,8 @@ if (dim(tcc)[1] != 0) {
 # drop duplicated entries
 table.tcc <- table.tcc[!duplicated(table.tcc),]
 
-table.tcc <- table.tcc %>% dplyr::arrange(
-  dplyr::desc(table.tcc$'Ano'),
-  table.tcc$'Autor'
-)
-table.tcc <- table.tcc %>% dplyr::arrange(dplyr::desc(as.numeric(table.tcc$'Ano')),
-                                        table.tcc$'Título')
+# sort by Ano and Titulo
+table.tcc <- table.tcc[order(table.tcc$Ano, table.tcc$Título),]
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())

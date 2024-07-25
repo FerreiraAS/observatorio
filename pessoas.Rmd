@@ -272,7 +272,7 @@ cat('\n\n')
 
 <br>
 
-### **IDs** {.tabset}
+### **IDs**
 
 ```{r ids-externos-docentes, cache = TRUE, cache.path = "cache/external-ids/", eval = has.sucupira.files}
 # Keep active professors and remove duplicated data
@@ -702,7 +702,7 @@ discentes$`Nome Discente` <- tools::toTitleCase(tolower(discentes$`Nome Discente
 discentes$`Nome do Orientador` <- tools::toTitleCase(tolower(discentes$`Nome do Orientador`))
 
 # drop columns
-discentes <- discentes %>% dplyr::select("Nível Discente", "Ano de Matrícula", "Data Matrícula", "Nome Discente", "Nome do Orientador", "Tempo em curso", "Defesa até", "País")
+discentes <- discentes %>% dplyr::select("Nível Discente", "Ano de Matrícula", "Nome Discente", "Nome do Orientador", "Data Matrícula", "Tempo em curso", "Defesa até", "País")
 
 # remove duplicates and empty rows
 discentes <- unique(discentes)
@@ -1099,15 +1099,18 @@ discentes <- unique(discentes)
 # get years
 discentes$'Ano de Matrícula' <- substr(as.Date(discentes$`Data Matrícula`, format = "%d/%m/%Y"), 1, 4)
 
+# rename Ano de Matricula as Ano
+discentes <- discentes %>% dplyr::rename("Ano" = "Ano de Matrícula")
+
 # format names (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
 discentes$`Nome Discente` <- tools::toTitleCase(tolower(discentes$`Nome Discente`))
 # discentes$`Nome do Orientador` <- tools::toTitleCase(tolower(discentes$`Nome do Orientador`))
 
 # drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-discentes <- discentes %>% dplyr::select("Ano de Matrícula", "Nome Discente", "País")
+discentes <- discentes %>% dplyr::select("Ano", "Nome Discente", "País")
 
 if (dim(discentes)[1] != 0) {
-  ids <- order(discentes$'Ano de Matrícula', discentes$'Nome Discente', decreasing = TRUE)
+  ids <- order(discentes$'Ano', discentes$'Nome Discente', decreasing = TRUE)
   discentes <- discentes[ids,]
 }
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -1178,7 +1181,7 @@ for (j in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Nacionais**
+### **Participantes**
 
 ```{r externos-nacionais, eval = has.sucupira.files}
 # participantes externos
@@ -1189,9 +1192,6 @@ externos <- sucupira.raw
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
-
-# filter students
-externos <- externos[externos$`País` == "Brasil", ]
 
 # remove duplicates
 externos <- unique(externos)
@@ -1213,47 +1213,6 @@ if (dim(externos)[1] != 0) {
 }
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(externos, title = "Pessoas - Participantes externos - Nacionais")
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-### **Internacionais**
-
-```{r externos-internacionais, eval = has.sucupira.files}
-# participantes externos
-sheet <- "Participante Externo"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-externos <- sucupira.raw
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# filter students
-externos <- externos[externos$`País` != "Brasil", ]
-
-# remove duplicates
-externos <- unique(externos)
-
-# drop columns
-externos <- externos %>% dplyr::select("Nome do Participante", "Tipos de Participação", "Instituição de Origem", "País")
-
-# complete cases only
-externos <- externos[complete.cases(externos), ]
-
-# format names
-externos$`Nome do Participante` <- tools::toTitleCase(tolower(externos$`Nome do Participante`))
-externos$`Tipos de Participação` <- tools::toTitleCase(tolower(externos$`Tipos de Participação`))
-colnames(externos)[which(names(externos) == "Tipos de Participação")] <- "Participação"
-externos$`Instituição de Origem` <- toupper(externos$`Instituição de Origem`)
-
-if (dim(externos)[1] != 0) {
-  externos <- externos[order(externos$'Nome do Participante', decreasing = FALSE),]
-}
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(externos, title = "Pessoas - Participantes externos - Internacionais")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```

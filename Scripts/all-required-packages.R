@@ -32,6 +32,7 @@ packs.cran <-
     "DT",
     "fontawesome",
     "geobr",
+    "glue",
     "ggplot2",
     "ggpubr",
     "ggraph",
