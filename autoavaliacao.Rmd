@@ -834,7 +834,7 @@ my_N <- function(data, ...) {
 
 # change all column types to factors
 table.ac.long <- table.ac.long %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # print tables
 table.ac.gt <-
@@ -843,7 +843,8 @@ table.ac.gt <-
     by = "Ano",
     statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
-    digits = gtsummary::everything() ~ 0
+    digits = gtsummary::everything() ~ 0,
+    sort = gtsummary::all_categorical() ~ "frequency"
   ) %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
@@ -985,7 +986,7 @@ my_N <- function(data, ...) {
 
 # change all column types to factors
 table.lp.long <- table.lp.long %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # print tables
 table.lp.gt <-
@@ -1142,7 +1143,7 @@ colnames(table.pp.long) <-
 
 # change all column types to factors
 table.pp.long <- table.pp.long %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # print tables
 table.pp.gt <-
@@ -1151,7 +1152,8 @@ table.pp.gt <-
     by = "Ano",
     statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
-    digits = gtsummary::everything() ~ 0
+    digits = gtsummary::everything() ~ 0,
+    sort = gtsummary::all_categorical() ~ "frequency"
   ) %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
@@ -1294,7 +1296,7 @@ colnames(table.pp.membro.long) <-
 
 # change all column types to factors
 table.pp.membro <- table.pp.membro %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # print tables
 table.pp.membro.gt <-
@@ -1481,7 +1483,7 @@ colnames(table.doc.long) <-
 
 # change all column types to factors
 table.doc.long <- table.doc.long %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # print tables
 table.doc.gt <-
@@ -1661,7 +1663,7 @@ colnames(table.posdoc.long) <-
 
 # change all column types to factors
 table.posdoc.long <- table.posdoc.long %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # print tables
 table.posdoc.gt <-
@@ -2215,7 +2217,7 @@ my_N <- function(data, ...) {
 
 # change all column types to factors
 table.doc.long <- table.doc.long %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 table.1a <-
   gtsummary::tbl_summary(
@@ -2223,7 +2225,9 @@ table.1a <-
     by = "Ano",
     statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
-    digits = gtsummary::everything() ~ 0) %>%
+    digits = gtsummary::everything() ~ 0,
+    sort = gtsummary::all_categorical() ~ "frequency"
+  ) %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels() %>%
@@ -2311,7 +2315,7 @@ my_N <- function(data, ...) {
 
 # change all column types to factors
 table.doc.long <- table.doc.long %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 table.1b <-
   gtsummary::tbl_summary(
@@ -2319,7 +2323,9 @@ table.1b <-
     by = "Ano",
     statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
-    digits = gtsummary::everything() ~ 0) %>%
+    digits = gtsummary::everything() ~ 0,
+    sort = gtsummary::all_categorical() ~ "frequency"
+  ) %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels() %>%
@@ -2412,7 +2418,7 @@ my_N <- function(data, ...) {
 
 # change all column types to factors
 table.doc.long <- table.doc.long %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 table.1c <-
   gtsummary::tbl_summary(
@@ -2420,7 +2426,9 @@ table.1c <-
     by = "Ano",
     statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
-    digits = gtsummary::everything() ~ 0) %>%
+    digits = gtsummary::everything() ~ 0,
+    sort = gtsummary::all_categorical() ~ "frequency"
+  ) %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels() %>%
@@ -2503,7 +2511,7 @@ my_N <- function(data, ...) {
 
 # change all column types to factors
 table.doc.long <- table.doc.long %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 table.1d <-
   gtsummary::tbl_summary(
@@ -2511,7 +2519,9 @@ table.1d <-
     by = "Ano",
     statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
-    digits = gtsummary::everything() ~ 0) %>%
+    digits = gtsummary::everything() ~ 0,
+    sort = gtsummary::all_categorical() ~ "frequency"
+  ) %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels() %>%
@@ -2709,7 +2719,7 @@ my_N <- function(data, ...) {
 
 # change all column types to factors
 table.doc.long <- table.doc.long %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # print tables
 table.1.2.2 <- gtsummary::tbl_summary(
@@ -2717,8 +2727,9 @@ table.1.2.2 <- gtsummary::tbl_summary(
   by = "Ano",
   statistic = list(gtsummary::all_categorical() ~ "{n}"),
   missing = "no",
-  digits = gtsummary::everything() ~ 0
-) %>%
+  digits = gtsummary::everything() ~ 0,
+    sort = gtsummary::all_categorical() ~ "frequency"
+  ) %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels() %>%
@@ -2861,7 +2872,7 @@ my_N <- function(data, ...) {
 
 # change all column types to factors
 financiadores <- financiadores %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # print tables
 table.1.2.5 <-
@@ -3240,7 +3251,7 @@ colnames(turmas) <- c(
 
 # change all column types to factors
 turmas <- turmas %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # generate table (total by year)
 table.part1 <-
@@ -3558,7 +3569,7 @@ colnames(table.ac.long) <- c("Ano", "Área de Concentração")
 
 # change all column types to factors
 table.ac.long <- table.ac.long %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # Print tables
 table.ac.gt <- gtsummary::tbl_summary(
@@ -3572,7 +3583,7 @@ table.ac.gt <- gtsummary::tbl_summary(
   gtsummary::add_overall(
     last = TRUE,
     col_label = "**Subtotal**",
-    statistic = ~"{n}"
+    statistic = gtsummary::everything() ~ "{n}"
   ) %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
@@ -3641,7 +3652,7 @@ colnames(table.lp.long) <- c("Ano", "Linha de Pesquisa")
 
 # change all column types to factors
 table.lp.long <- table.lp.long %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # Print tables
 table.lp.gt <- gtsummary::tbl_summary(
@@ -3655,7 +3666,7 @@ table.lp.gt <- gtsummary::tbl_summary(
   gtsummary::add_overall(
     last = TRUE,
     col_label = "**Subtotal**",
-    statistic = ~"{n}"
+    statistic = gtsummary::everything() ~ "{n}"
   ) %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
@@ -3724,7 +3735,7 @@ colnames(table.prd.long) <- c("Ano", "Tipo de Produção")
 
 # change all column types to factors
 table.prd.long <- table.prd.long %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # Print tables
 table.prd.gt <- gtsummary::tbl_summary(
@@ -3738,7 +3749,7 @@ table.prd.gt <- gtsummary::tbl_summary(
   gtsummary::add_overall(
     last = TRUE,
     col_label = "**Subtotal**",
-    statistic = ~"{n}"
+    statistic = gtsummary::everything() ~ "{n}"
   ) %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
@@ -3807,7 +3818,7 @@ colnames(table.aut.long) <- c("Ano", "Categoria do Autor Principal")
 
 # change all column types to factors
 table.aut.long <- table.aut.long %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # Print tables
 table.aut.gt <- gtsummary::tbl_summary(
@@ -3821,7 +3832,7 @@ table.aut.gt <- gtsummary::tbl_summary(
   gtsummary::add_overall(
     last = TRUE,
     col_label = "**Subtotal**",
-    statistic = ~"{n}"
+    statistic = gtsummary::everything() ~ "{n}"
   ) %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
@@ -3890,7 +3901,7 @@ colnames(table.tcc.long) <- c("Ano", "Produção vinculada a TCC concluído")
 
 # change all column types to factors
 table.tcc.long <- table.tcc.long %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # Print tables
 table.tcc.gt <- gtsummary::tbl_summary(
@@ -3904,7 +3915,7 @@ table.tcc.gt <- gtsummary::tbl_summary(
   gtsummary::add_overall(
     last = TRUE,
     col_label = "**Subtotal**",
-    statistic = ~"{n}"
+    statistic = gtsummary::everything() ~ "{n}"
   ) %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
@@ -3979,7 +3990,7 @@ colnames(table.bib.long) <- c("Ano", "Produção bibliográfica")
 
 # change all column types to factors
 table.bib.long <- table.bib.long %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # Print tables
 table.bib.gt <- gtsummary::tbl_summary(
@@ -3993,7 +4004,7 @@ table.bib.gt <- gtsummary::tbl_summary(
   gtsummary::add_overall(
     last = TRUE,
     col_label = "**Subtotal**",
-    statistic = ~"{n}"
+    statistic = gtsummary::everything() ~ "{n}"
   ) %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
@@ -4068,7 +4079,7 @@ colnames(table.tec.long) <- c("Ano", "Produção técnica")
 
 # change all column types to factors
 table.tec.long <- table.tec.long %>%
-  dplyr::mutate(across(everything(), as.factor))
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # Print tables
 table.tec.gt <- gtsummary::tbl_summary(
@@ -4082,7 +4093,7 @@ table.tec.gt <- gtsummary::tbl_summary(
   gtsummary::add_overall(
     last = TRUE,
     col_label = "**Subtotal**",
-    statistic = ~"{n}"
+    statistic = gtsummary::everything() ~ "{n}"
   ) %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
@@ -4276,6 +4287,8 @@ cat('\n\n')
 
 ```{r 3-2-1-data, eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
 metricas_all_ID <- metricas_all[!duplicated(metricas_all$"ID da Produção"),]
+
+metricas_all_ID$Qualis[is.na(metricas_all_ID$Qualis)] <- "Não classificado"
 
 síntese.ano <- dplyr::bind_cols(
       Ano = as.numeric(metricas_all_ID$"Ano da Produção"),
