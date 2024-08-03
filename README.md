@@ -371,6 +371,11 @@ O Observatório é atualizado periodicamente. Para receber atualizações no seu
 
 -   [**Observatório PPGCR**]() \| Programa de Pós-graduação em Ciências da Reabilitação
 
+### [**UNIEVANGÉLICA**](https://www4.unievangelica.edu.br) **\| Universidade Evangélica de Goiás**
+
+-   [**Observatório PPGMHR**]() \| Programa de Pós-graduação em Ciências do Movimento Humano e Reabilitação
+
+
 ## **FAQ**
 
 *Como posso contribuir para este projeto?*

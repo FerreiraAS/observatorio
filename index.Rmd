@@ -37,7 +37,7 @@ for(folder in folders){
 ```
 
 ---
-title: "OBSERVATÓRIO `r ifelse(and(has.dados.cadastrais, has.sucupira.files), sigla.PPG, "")`"
+title: "OBSERVATÓRIO `r ifelse(magrittr::and(has.dados.cadastrais, has.sucupira.files), sigla.PPG, "")`"
 ---
 
 <br>
@@ -165,74 +165,74 @@ sucupira.raw <- sucupira
 # structure the alluvial plot
 alluv.data <-
   data.frame(
-    sucupira.raw$`Área de Concentração`,
-    sucupira.raw$`Linha de Pesquisa`,
-    sucupira.raw$`Nome do Projeto de Pesquisa`,
-    sucupira.raw$`Data de Início da Linha`,
-    sucupira.raw$`Data de Fim da Linha`
+    `Área de Concentração` = toupper(tolower(sucupira.raw$`Área de Concentração`)),
+    `Linha de Pesquisa` = tools::toTitleCase(tolower(sucupira.raw$`Linha de Pesquisa`)),
+    `Nome do Projeto de Pesquisa` = sucupira.raw$`Nome do Projeto de Pesquisa`,
+    `Data de Início da Linha` = sucupira.raw$`Data de Início da Linha`,
+    `Data de Fim da Linha` = sucupira.raw$`Data de Fim da Linha`,
+    check.names = FALSE
   )
 
 # replace full date by year only
-alluv.data$sucupira.raw..Data.de.Início.da.Linha. <-
+alluv.data$`Data de Início da Linha` <-
   format(as.Date(
-    alluv.data$sucupira.raw..Data.de.Início.da.Linha.,
+    alluv.data$`Data de Início da Linha`,
     "%d/%m/%Y"
   ),
   format = "%Y")
-alluv.data$sucupira.raw..Data.de.Fim.da.Linha. <-
-  format(as.Date(alluv.data$sucupira.raw..Data.de.Fim.da.Linha., "%d/%m/%Y"),
+alluv.data$`Data de Fim da Linha` <-
+  format(as.Date(alluv.data$`Data de Fim da Linha`, "%d/%m/%Y"),
          format = "%Y")
 
 # replace NA values by current year
-alluv.data$sucupira.raw..Data.de.Fim.da.Linha.[is.na(alluv.data$sucupira.raw..Data.de.Fim.da.Linha.)] <-
+alluv.data$`Data de Fim da Linha`[is.na(alluv.data$`Data de Fim da Linha`)] <-
   format(Sys.Date(), format = "%Y")
 
 # remove data without AC or LP
 alluv.data <-
-  alluv.data[!is.na(alluv.data$sucupira.raw..Área.de.Concentração.) &
-               !is.na(alluv.data$sucupira.raw..Linha.de.Pesquisa.), ]
+  alluv.data[!is.na(alluv.data$`Área de Concentração`) &
+               !is.na(alluv.data$`Linha de Pesquisa`), ]
 
 # ordering by dates
 alluv.data <-
   alluv.data[order(
-    alluv.data$sucupira.raw..Data.de.Início.,
-    alluv.data$sucupira.raw..Data.de.Fim.da.Linha.,
-    alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa.,
+    alluv.data$`Data de Início da Linha`,
+    alluv.data$`Data de Fim da Linha`,
+    alluv.data$`Nome do Projeto de Pesquisa`,
     decreasing = FALSE
   ),]
 
+# remove dupicates
+alluv.data <- unique(alluv.data)
+
 # summary data for plot table
 current.AC <-
-  unique(alluv.data$sucupira.raw..Área.de.Concentração.[alluv.data$sucupira.raw..Data.de.Fim.da.Linha. == format(Sys.Date(), format = "%Y")])
+  unique(alluv.data$`Área de Concentração`[alluv.data$`Data de Fim da Linha` == format(Sys.Date(), format = "%Y")])
 
 old.AC <-
-  unique(alluv.data$sucupira.raw..Área.de.Concentração.[alluv.data$sucupira.raw..Data.de.Fim.da.Linha. == format(Sys.Date(), format = "%Y")])
+  unique(alluv.data$`Área de Concentração`[alluv.data$`Data de Fim da Linha` == format(Sys.Date(), format = "%Y")])
 old.AC <- old.AC[!old.AC %in% c(current.AC, NA)]
 
 old.LP <-
-  unique(alluv.data$sucupira.raw..Linha.de.Pesquisa.[alluv.data$sucupira.raw..Data.de.Fim.da.Linha. != format(Sys.Date(), format = "%Y")])
+  unique(alluv.data$`Linha de Pesquisa`[alluv.data$`Data de Fim da Linha` != format(Sys.Date(), format = "%Y")])
 
 current.LP <-
-  unique(alluv.data$sucupira.raw..Linha.de.Pesquisa.)
+  unique(alluv.data$`Linha de Pesquisa`)
 current.LP <- current.LP[!current.LP %in% c(old.LP, NA)]
 
 # remove data from inactive LP
 if (length(old.LP) != 0) {
   alluv.data <-
-    alluv.data[!(alluv.data$sucupira.raw..Linha.de.Pesquisa. == old.LP),]
-  # alluv.data <-
-  #   alluv.data[!(
-  #     alluv.data$sucupira.raw..Data.de.Fim.da.Linha. == format(Sys.Date(), format = "%Y")
-  #   ), ]
+    alluv.data[!(alluv.data$`Linha de Pesquisa` == old.LP),]
 }
 
 summ.AC.LP <-
   as.data.frame(
     table(
-      alluv.data$sucupira.raw..Área.de.Concentração.,
-      alluv.data$sucupira.raw..Linha.de.Pesquisa.,
-      alluv.data$sucupira.raw..Data.de.Início.da.Linha.,
-      alluv.data$sucupira.raw..Data.de.Fim.da.Linha.
+      alluv.data$`Área de Concentração`,
+      alluv.data$`Linha de Pesquisa`,
+      alluv.data$`Data de Início da Linha`,
+      alluv.data$`Data de Fim da Linha`
     )
   )
 
@@ -261,59 +261,56 @@ try(colnames(extra) <- c("AC", "LP", "Inicio", "Fim", "Freq"), silent = TRUE)
 
 summ.AC.LP <- rbind(summ.AC.LP, extra)
 
-# code PP names for display
-alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa. <-
-  as.numeric(as.factor(alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa.))
+text.2.break <- as.character(summ.AC.LP$AC)
+source("Scripts/line-2-break.R", local = TRUE)
+summ.AC.LP$AC <- as.factor(broken_text)
+  
+text.2.break <- as.character(summ.AC.LP$LP)
+source("Scripts/line-2-break.R", local = TRUE)
+summ.AC.LP$LP <- as.factor(broken_text)
 
-# drop names columns
-summ.AC.LP <- summ.AC.LP[, -(1:2)]
+data <- summ.AC.LP %>%
+  dplyr::group_by(AC, LP) %>%
+  dplyr::summarise(Freq = sum(Freq)) %>%
+  dplyr::ungroup()
 
-# rename cols
-colnames(summ.AC.LP) <- c("source", "target", "value")
+# Supondo que 'data' já tenha sido criado como mostrado
+# Criar uma tabela de nós com identificadores únicos
+nodes <- data %>%
+  dplyr::select(AC, LP) %>%
+  tidyr::pivot_longer(cols = c(AC, LP), names_to = "type", values_to = "label") %>%
+  dplyr::distinct() %>%
+  dplyr::mutate(id = as.character(row_number())) %>%
+  dplyr::select(id, label, type)
 
-summ.LP.PP <-
-  as.data.frame(
-    table(
-      alluv.data$sucupira.raw..Linha.de.Pesquisa.,
-      alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa.
-    )
-  )
-colnames(summ.LP.PP) <- c("source", "target", "value")
+# Calcular a frequência total para cada nó
+node_freq <- data %>%
+  tidyr::pivot_longer(cols = c(AC, LP), names_to = "type", values_to = "label") %>%
+  dplyr::group_by(label) %>%
+  dplyr::summarise(Freq = sum(Freq)) %>%
+  dplyr::ungroup()
 
-# count projects only once
-summ.LP.PP$value[summ.LP.PP$value != 0] <- 1
+# Adicionar a frequência dos nós ao dataframe 'nodes'
+nodes <- nodes %>%
+  dplyr::left_join(node_freq, by = c("label" = "label")) %>%
+  dplyr::mutate(size = Freq / max(Freq) * 50)  # Ajuste o fator de escala (50) conforme necessário
 
-# remove zeroed-value data
-summ.AC.LP <- summ.AC.LP[summ.AC.LP$value != 0,]
+# Criar uma tabela de arestas
+edges <- data %>%
+  dplyr::left_join(nodes %>% dplyr::select(label, id), by = c("AC" = "label")) %>%
+  dplyr::rename(from = id) %>%
+  dplyr::left_join(nodes %>% dplyr::select(label, id), by = c("LP" = "label")) %>%
+  dplyr::rename(to = id) %>%
+  dplyr::mutate(label = paste("Freq:", Freq)) %>%
+  dplyr::select(from, to, label)
 
-# A connection data frame is a list of flows with intensity for each flow
-links <- summ.AC.LP
-
-# From these flows we need to create a node data frame: it lists every entities involved in the flow
-nodes <- data.frame(name = c(as.character(links$source),
-                             as.character(links$target)) %>% unique())
-
-# We need a data frame giving a hierarchical structure. Lets consider the flare dataset
-edges1 <-
-  stats::aggregate(
-    alluv.data$sucupira.raw..Linha.de.Pesquisa.,
-    by = list(
-      alluv.data$sucupira.raw..Área.de.Concentração.,
-      alluv.data$sucupira.raw..Linha.de.Pesquisa.
-    ),
-    FUN = length
-  )
-
-# Usually we associate another dataset that give information about each node of the dataset
-vertices <- NULL
-
-# Then we have to make a 'graph' object using the igraph library
-mygraph <- igraph::graph_from_data_frame(edges1[, 1:2], vertices = vertices)
+# Criar o grafo
+g <- igraph::graph_from_data_frame(d = edges, vertices = nodes, directed = FALSE)
 
 # plot 1
 par(
   oma = c(0, 0, 0, 0),
-  mar = c(0, 0, 0, 0),
+  mar = c(1, 1, 2, 1),
   bg = main.color,
   col.lab = "white",
   col.axis = "white",
@@ -321,22 +318,20 @@ par(
   col.main = "white"
 )
 
-# Make the plot
-ggraph::ggraph(mygraph, layout = "circlepack", weight = c(0, edges1[, 3])) +
-  ggraph::geom_node_circle(ggplot2::aes(fill = as.factor(depth))) +
-  ggplot2::scale_colour_brewer(RColorBrewer::brewer.pal(n = 9, name = "Set3")) +
-  ggplot2::scale_fill_discrete(labels = c("Áreas de concentração", "Linhas de pesquisa")) +
-  ggplot2::theme_void() +
-  ggplot2::theme(
-    panel.border = ggplot2::element_blank(),
-    panel.background = ggplot2::element_rect(fill = main.color, color = main.color),
-    plot.background = ggplot2::element_rect(fill = main.color, color = main.color),
-    legend.background = ggplot2::element_rect(fill = main.color,  color = main.color),
-    legend.box.background = ggplot2::element_rect(fill = main.color,  color = main.color),
-    legend.position = "top",
-    legend.title = ggplot2::element_blank(),
-    legend.text = ggplot2::element_text(color = "white", size = 14)
-  )
+# Visualizar o grafo
+plot(
+  g,
+  vertex.size = igraph::V(g)$size,  # Tamanho dos vértices baseado na frequência
+  vertex.label.cex = 0.8,
+  vertex.label.color = "white",
+  vertex.frame.color = ifelse(igraph::V(g)$type == "AC", RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], RColorBrewer::brewer.pal(n = 9, name = "Set3")[2]),
+  vertex.color = ifelse(igraph::V(g)$type == "AC", main.color, main.color),
+  edge.label = NA,
+  edge.label.cex = 0.8,
+  edge.label.color = "white",
+  layout = layout.fruchterman.reingold,
+  main = "Áreas de Concentração e Linhas de Pesquisa"
+)
 
 # plot 2
 

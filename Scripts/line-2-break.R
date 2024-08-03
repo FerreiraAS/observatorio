@@ -16,3 +16,4 @@ for (j in 1:length(text.2.break)) {
              paste(strsplit(text.2.break[j], split = " ")[[1]][(index + 1):length(strsplit(text.2.break[j], split = " ")[[1]])], collapse = " "))
   }
 }
+
