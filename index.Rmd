@@ -271,7 +271,7 @@ summ.AC.LP$LP <- as.factor(broken_text)
 
 data <- summ.AC.LP %>%
   dplyr::group_by(AC, LP) %>%
-  dplyr::summarise(Freq = sum(Freq)) %>%
+  dplyr::summarise(Freq = sum(as.numeric(Freq))) %>%
   dplyr::ungroup()
 
 # Supondo que 'data' já tenha sido criado como mostrado
@@ -287,7 +287,7 @@ nodes <- data %>%
 node_freq <- data %>%
   tidyr::pivot_longer(cols = c(AC, LP), names_to = "type", values_to = "label") %>%
   dplyr::group_by(label) %>%
-  dplyr::summarise(Freq = sum(Freq)) %>%
+  dplyr::summarise(Freq = sum(as.numeric(Freq))) %>%
   dplyr::ungroup()
 
 # Adicionar a frequência dos nós ao dataframe 'nodes'
@@ -329,7 +329,7 @@ plot(
   edge.label = NA,
   edge.label.cex = 0.8,
   edge.label.color = "white",
-  layout = layout.fruchterman.reingold,
+  layout = igraph::layout.fruchterman.reingold,
   main = "Áreas de Concentração e Linhas de Pesquisa"
 )
 
@@ -1972,6 +1972,9 @@ for (i in 1:n.proj) {
     }
   }
 }
+
+# complete cases only
+edge.matrix <- edge.matrix[complete.cases(edge.matrix), ]
 
 # build the graph object
 network <- igraph::graph_from_edgelist(edge.matrix, directed = FALSE)
