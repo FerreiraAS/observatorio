@@ -312,6 +312,9 @@ projetos <-
   unique(projetos.all[projetos.all$`Membro Responsável` == "Sim" &
                  projetos.all$Situação == "EM ANDAMENTO", ])
 
+# remove rows with all missing values
+projetos <- projetos[rowSums(is.na(projetos)) < ncol(projetos), ]
+
 table.projetos <-
   data.frame(
     projetos$`Identificador da Pessoa do Membro`,
@@ -417,6 +420,9 @@ projetos.all <-
 projetos <-
   unique(projetos.all[projetos.all$`Membro Responsável` == "Sim" &
                  projetos.all$Situação != "EM ANDAMENTO", ])
+
+# remove rows with all missing values
+projetos <- projetos[rowSums(is.na(projetos)) < ncol(projetos), ]
 
 table.projetos <-
   data.frame(
