@@ -192,6 +192,209 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
+### **Formação continuada**
+
+```{r formacao-continuada, eval = has.sucupira.files}
+# Discentes
+sheet <- "Discentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+# get data
+discentes <- dplyr::select(
+  sucupira.raw,
+  `Identificador da Pessoa`,
+  `Nome Discente`,
+  `Nível Discente`,
+  `Situação Discente`,
+  `Data Matrícula`,
+  `Data Situação`
+)
+colnames(discentes)[2] <- "Nome"
+colnames(discentes)[3] <- "Nível"
+colnames(discentes)[4] <- "Situação"
+
+# Egressos
+sheet <- "Egressos"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+# get data
+egressos <- dplyr::select(
+  sucupira.raw,
+  `Identificador da Pessoa do Egresso`,
+  `Nome do Egresso`,
+  `Nível Titulação`,
+  `Ano Titulação`
+)
+colnames(egressos)[1] <- "Identificador da Pessoa"
+colnames(egressos)[2] <- "Nome"
+colnames(egressos)[3] <- "Nível"
+egressos$Situação <- "EGRESSO"
+
+# Pós-Doc
+sheet <- "Pós-Doc"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+# get data
+posdoc <- dplyr::select(
+  sucupira.raw,
+  `Identificador da Pessoa`,
+  `Pós-Doc Nome`,
+  `Vínculo Início`,
+  `Vínculo Fim`
+)
+colnames(posdoc)[2] <- "Nome"
+posdoc$Situação <- "PÓS-DOC"
+
+# Docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+# get data
+docentes <- dplyr::select(
+  sucupira.raw,
+  `Identificador da Pessoa`,
+  `Nome Docente`,
+  `Data de Admissão`,
+  `Data de Desligamento`
+)
+colnames(docentes)[2] <- "Nome"
+docentes$Situação <- "DOCENTE"
+
+# bind all data by "Identificador da Pessoa"
+formacao.continuada <- dplyr::bind_rows(
+  discentes,
+  egressos,
+  posdoc,
+  docentes
+)
+
+# remove duplicates
+formacao.continuada <- formacao.continuada %>%
+  dplyr::distinct()
+
+# sort by "Identificador da Pessoa"
+formacao.continuada <- formacao.continuada %>%
+  dplyr::arrange(`Identificador da Pessoa`)
+
+# create table to fill with start-end year for each situation
+table <- data.frame(
+  "Nome" = NA,
+  "Iniciação científica" = NA,
+  "Mestrado" = NA,
+  "Doutorado" = NA,
+  "Pós-Doc" = NA,
+  "Docente" = NA,
+  check.names = FALSE
+)
+
+ID <- unique(formacao.continuada$`Identificador da Pessoa`)
+for (i in 1:length(ID)) {
+  # select data by ID
+  data <- formacao.continuada %>%
+    dplyr::filter(`Identificador da Pessoa` == ID[i])
+  # get name
+  table[i, "Nome"] <- data$Nome[1]
+  # get year of start and end for discentes equal to bacharelado
+  table[i, "Iniciação científica"] <- min(data$`Data Matrícula`[data$Nível == "Bacharelado"], na.rm = TRUE)
+  table[i, "Iniciação científica"] <- format(as.Date(table[i, "Iniciação científica"], format = "%d/%m/%Y"), "%Y")
+  # get year of start and end for discentes equal to mestrado
+  table[i, "Mestrado"] <- min(data$`Data Matrícula`[data$Nível == "Mestrado"], na.rm = TRUE)
+  table[i, "Mestrado"] <- format(as.Date(table[i, "Mestrado"], format = "%d/%m/%Y"), "%Y")
+  # get year of start and end for discentes equal to doutorado
+  table[i, "Doutorado"] <- min(data$`Data Matrícula`[data$Nível == "Doutorado"], na.rm = TRUE)
+  table[i, "Doutorado"] <- format(as.Date(table[i, "Doutorado"], format = "%d/%m/%Y"), "%Y")
+  # get year of start and end for pós-doc
+  table[i, "Pós-Doc"] <- min(data$`Vínculo Início`, na.rm = TRUE)
+  table[i, "Pós-Doc"] <- format(as.Date(table[i, "Pós-Doc"], format = "%d/%m/%Y"), "%Y")
+  # get year of start and end for docentes
+  table[i, "Docente"] <- min(data$`Data de Admissão`, na.rm = TRUE)
+  table[i, "Docente"] <- format(as.Date(table[i, "Docente"], format = "%d/%m/%Y"), "%Y")
+}
+
+# add last colum with total number of years
+table$Atuações <- apply(table, 1, function(x) {
+  sum(!is.na(x)) - 1
+})
+
+# add last column with the lowest and higher levels of education. Paste levels
+table$Formação <- apply(table, 1, function(x) {
+  # drop first and last columns
+  x <- x[-c(1, length(x))]
+  # get lower column with data
+  lower <- which(!is.na(x))[1]
+  # get higher column with data
+  higher <- which(!is.na(x))[length(which(!is.na(x)))]
+  if(length(which(!is.na(x))) == 1) {
+    return(names(x)[lower])
+  } else {
+    return(paste(names(x)[lower], names(x)[higher], sep = " - "))
+  }
+})
+
+# sort by iniciacao científica, mestrado, doutorado, pós-doc, docente e nome
+table.continuada <- table %>%
+  dplyr::arrange(
+    `Iniciação científica`,
+    `Mestrado`,
+    `Doutorado`,
+    `Pós-Doc`,
+    `Docente`,
+    Nome
+  )
+
+# add column with first first atuação date available
+table.continuada$Ano <- apply(table.continuada, 1, function(x) {
+  as.numeric(min(x[2:6], na.rm = TRUE))
+})
+
+# select columns to print
+table.continuada.part <- table.continuada %>%
+  dplyr::select(Atuações, Formação, Ano)
+
+# sort by Ano
+table.continuada.part <- table.continuada.part %>%
+  dplyr::arrange(Ano, Atuações, Formação)
+
+# bug report
+# https://stackoverflow.com/questions/78811916/gtsummary-tbl-summary-sorting-of-stratify-variable/78812588
+tbl_fix_order <- function(x) {
+  nms <- names(x$table_body)
+  is_stat_cols <- grepl("^stat_", nms)
+  non_stat_cols <- nms[!is_stat_cols]
+  stat_cols <- nms[is_stat_cols]
+  stat_cols <- stat_cols[
+    order(as.integer(gsub("^.*?(\\d+)$", "\\1", stat_cols)))
+  ]
+  x$table_body <- x$table_body[c(non_stat_cols, stat_cols)]
+  
+  x  
+}
+
+# select Formação with " - " in Formação
+table.continuada.part <- table.continuada.part %>%
+  dplyr::filter(grepl(" - ", Formação))
+
+# Print tables
+table.continuada.gt <- gtsummary::tbl_summary(
+  table.continuada.part,
+  by = "Ano",
+  statistic = list(gtsummary::all_categorical() ~ "{n}"),
+  missing = "no",
+  digits = gtsummary::everything() ~ 0,
+  sort = gtsummary::all_categorical() ~ "frequency"
+) %>%
+  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::bold_labels() %>%
+  tbl_fix_order() %>%
+  gtsummary::add_overall(
+    last = TRUE,
+    col_label = "**Subtotal**",
+    statistic = gtsummary::everything() ~ "{n}"
+ ) %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA)
+
+# Print table
+print(table.continuada.gt)
+```
+
+<br>
+
 ## **Impacto científico** {#impacto-cientifico .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
