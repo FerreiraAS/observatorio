@@ -94,10 +94,8 @@ print(
     )
 )
 
-cat('\n\n')
-cat('**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+# Print sources
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -125,7 +123,7 @@ coordenadores$'Descredenciamento' <- substr(as.Date(coordenadores$'Descredenciam
 coordenadores$'Descredenciamento'[is.na(coordenadores$'Descredenciamento')] <- "Atual"
 
 # Initialize empty data frame
-table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 4))
+table.coord <- data.frame(matrix(NA, nrow = 0, ncol = 4))
 
 # Iterate through rows to construct table
 for (i in 1:dim(coordenadores)[1]) {
@@ -134,16 +132,16 @@ for (i in 1:dim(coordenadores)[1]) {
     coordenadores$Categoria[i],
     paste0(coordenadores$'Credenciamento'[i], "-", coordenadores$'Descredenciamento'[i])
   )
-  table.2 <- rbind(table.2, table)
+  table.coord <- rbind(table.coord, table)
 }
 
 # Set column and row names
-colnames(table.2) <- c("Nome", "Categoria", "Vigência")
-rownames(table.2) <- NULL
+colnames(table.coord) <- c("Nome", "Categoria", "Vigência")
+rownames(table.coord) <- NULL
 
 # Print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.2, title = "Pessoas - Coordenação")
+create_dt(table.coord, title = "Pessoas - Coordenação")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -155,7 +153,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Credenciados**
+### **Credenciados** {#credenciados .tabset}
 
 ```{r docentes-credenciados, eval = has.sucupira.files, results = "hide"}
 # Read Excel data
@@ -185,14 +183,11 @@ sucupira$'Data de Desligamento'[is.na(sucupira$'Data de Desligamento')] <- "Atua
 # Filter duplicated docentes
 docentes <- sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]), ]
 docentes <- docentes[order(docentes$"Nome Docente"),]
-
-# Print sources
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 ```{r docentes-credenciados-tabela, eval = has.sucupira.files}
 # Initialize empty data frame
-table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 7))
+table.doc.cred <- data.frame(matrix(NA, nrow = 0, ncol = 7))
 
 # Iterate through rows to construct table
 for (i in 1:dim(docentes)[1]) {
@@ -246,55 +241,148 @@ for (i in 1:dim(docentes)[1]) {
     ),
     docentes$País[i]
   )
-  table.2 <- rbind(table.2, table)
+  table.doc.cred <- rbind(table.doc.cred, table)
 }
 
 # Set column and row names
-colnames(table.2) <-
+colnames(table.doc.cred) <-
   c("Nome",
     "Categoria",
     "Credenciamento",
     "Lattes ID",
     "ORCID",
     "País")
-rownames(table.2) <- NULL
+rownames(table.doc.cred) <- NULL
 
 # Order table
-ids <- order(table.2$'Nome', decreasing = FALSE)
-table <- table.2[ids,]
+ids <- order(table.doc.cred$'Nome', decreasing = FALSE)
+table.doc.cred <- table.doc.cred[ids,]
 
 # Print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table, title = "Pessoas - Docentes - Credenciados")
+create_dt(table.doc.cred, title = "Pessoas - Docentes - Credenciados")
 
-cat('\n\n')
+# Print sources
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
 
-### **IDs**
+### **Histórico** {#historico .tabset}
 
-```{r ids-externos-docentes, cache = TRUE, cache.path = "cache/external-ids/", eval = has.sucupira.files}
-# Keep active professors and remove duplicated data
-sucupira <- sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`),]
-sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupira$ORCID),]
+```{r docentes-historico, eval = has.sucupira.files, results = "hide"}
+# docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-# order by name
-sucupira.unique <- sucupira.unique[order(sucupira.unique$`Nome Docente`, decreasing = FALSE),]
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
 
-# Format ORCID
-my_orcid <- gsub("(.{14})(.*)$", "\\1-\\2", gsub("(.{9})(.*)$", "\\1-\\2", gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)))
+# periodo
+periodo <- anos
 
-# Compile external identifiers
-source("Scripts/orcid-external-identifiers.R", local = knitr::knit_global())
+# get docentes for the current period
+sucupira <- sucupira.list[as.character(periodo)] %>%
+  plyr::compact()
+sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
+names(sucupira) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# recode
+sucupira$'Data de Admissão' <-
+  substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
+sucupira$'Data de Desligamento' <-
+  substr(as.Date(sucupira$'Data de Desligamento', format = "%d/%m/%Y"),
+         1,
+         4)
+sucupira$'Data de Desligamento'[is.na(sucupira$'Data de Desligamento')] <-
+  "Atual"
+
+# filter duplicated docentes (changes in details will we exhibited)
+docentes <-
+  sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]),]
+docentes <- docentes[order(docentes$"Nome Docente"), ]
+```
+
+```{r docentes-historico-tabela, eval = has.sucupira.files}
+# Initialize empty data frame
+table.doc.hist <- data.frame(matrix(NA, nrow = 0, ncol = 7))
+
+# Iterate through rows to construct table
+for (i in 1:dim(docentes)[1]) {
+  table <- cbind(
+    paste0(
+      '<a href=\"mailto:',
+      docentes$"E-mail"[i],
+      '\">',
+      docentes$'Nome Docente'[i],
+      '</a>'
+    ),
+    docentes$Categoria[i],
+    paste0(
+      docentes$'Data de Admissão'[i],
+      "-",
+      docentes$'Data de Desligamento'[i]
+    ),
+    ifelse(
+      !is.na(docentes$'Número do currículo Lattes'[i]),
+      paste0(
+        '<a href=\"http://lattes.cnpq.br/',
+        docentes$'Número do currículo Lattes'[i],
+        '\">',
+        docentes$'Número do currículo Lattes'[i],
+        '</a>'
+      ),
+      docentes$'Número do currículo Lattes'[i]
+    ),
+    ifelse(
+      !is.na(docentes$ORCID[i]),
+      paste0(
+        '<a href=\"https://orcid.org/',
+        paste0(sapply(seq(
+          from = 1,
+          to = nchar(docentes$ORCID[i]),
+          by = 4
+        ),
+        function(j)
+          substr(docentes$ORCID[i], j, j + 3)), collapse = "-"),
+        '\">',
+        paste0(sapply(seq(
+          from = 1,
+          to = nchar(docentes$ORCID[i]),
+          by = 4
+        ),
+        function(j)
+          substr(docentes$ORCID[i], j, j + 3)), collapse = "-"),
+        '</a>'
+      ),
+      docentes$ORCID[i]
+    ),
+    docentes$País[i]
+  )
+  table.doc.hist <- rbind(table.doc.hist, table)
+}
+
+# Set column names
+colnames(table.doc.hist) <-
+  c("Nome",
+    "Categoria",
+    "Credenciamento",
+    "Lattes ID",
+    "ORCID",
+    "País")
+rownames(table.doc.hist) <- NULL
+
+# Order table
+ids <- order(table.doc.hist$'Nome', decreasing = FALSE)
+table.doc.hist <- table.doc.hist[ids,]
 
 # Print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(external.ids, title = "Pessoas - IDs externos")
+create_dt(table.doc.hist, title = "Docentes - Histórico")
 
-cat('<br>')
-cat('**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)')
-cat('<br>')
+# Print sources
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -355,122 +443,51 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 
 <br>
 
-### **Histórico**
+### **ID Externo** {#id .tabset}
 
-```{r docentes-historico, eval = has.sucupira.files, results = "hide"}
-# docentes
+```{r ids-externos-docentes, cache = TRUE, cache.path = "cache/external-ids/", eval = has.sucupira.files}
+# Read Excel data
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
+# Set the names of the Sucupira list
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
-# periodo
-periodo <- anos
+# Determine the most recent Sucupira year
+most.recent <- as.character(ifelse(!is.null(sucupira.list[[format(Sys.Date(), "%Y")]]), format(Sys.Date(), "%Y"), max(as.numeric(names(sucupira.list)))))
 
-# get docentes for the current period
-sucupira <- sucupira.list[as.character(periodo)] %>%
-  plyr::compact()
+# Define the periodo
+periodo <- most.recent
+
+# Get docentes for the current period
+sucupira <- sucupira.list[as.character(periodo)] %>% compact()
 sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
-names(sucupira) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+names(sucupira) <- names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
-# recode
-sucupira$'Data de Admissão' <-
-  substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
-sucupira$'Data de Desligamento' <-
-  substr(as.Date(sucupira$'Data de Desligamento', format = "%d/%m/%Y"),
-         1,
-         4)
-sucupira$'Data de Desligamento'[is.na(sucupira$'Data de Desligamento')] <-
-  "Atual"
+# Keep active professors and remove duplicated data
+sucupira <- sucupira[is.na(sucupira.raw$`Data de Desligamento`),]
+sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupira$ORCID),]
 
-# filter duplicated docentes (changes in details will we exhibited)
-docentes <-
-  sucupira[!duplicated(sucupira[, match("Nome Docente", colnames(sucupira)):match("Carga Horária PG (Semanal)", colnames(sucupira))]),]
-docentes <- docentes[order(docentes$"Nome Docente"), ]
+# order by name
+sucupira.unique <- sucupira.unique[order(sucupira.unique$`Nome Docente`, decreasing = FALSE),]
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-```
+# Format ORCID
+my_orcid <- gsub("(.{14})(.*)$", "\\1-\\2", gsub("(.{9})(.*)$", "\\1-\\2", gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)))
 
-```{r docentes-historico-tabela, eval = has.sucupira.files}
-# Initialize empty data frame
-table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 7))
-
-# Iterate through rows to construct table
-for (i in 1:dim(docentes)[1]) {
-  table <- cbind(
-    paste0(
-      '<a href=\"mailto:',
-      docentes$"E-mail"[i],
-      '\">',
-      docentes$'Nome Docente'[i],
-      '</a>'
-    ),
-    docentes$Categoria[i],
-    paste0(
-      docentes$'Data de Admissão'[i],
-      "-",
-      docentes$'Data de Desligamento'[i]
-    ),
-    ifelse(
-      !is.na(docentes$'Número do currículo Lattes'[i]),
-      paste0(
-        '<a href=\"http://lattes.cnpq.br/',
-        docentes$'Número do currículo Lattes'[i],
-        '\">',
-        docentes$'Número do currículo Lattes'[i],
-        '</a>'
-      ),
-      docentes$'Número do currículo Lattes'[i]
-    ),
-    ifelse(
-      !is.na(docentes$ORCID[i]),
-      paste0(
-        '<a href=\"https://orcid.org/',
-        paste0(sapply(seq(
-          from = 1,
-          to = nchar(docentes$ORCID[i]),
-          by = 4
-        ),
-        function(j)
-          substr(docentes$ORCID[i], j, j + 3)), collapse = "-"),
-        '\">',
-        paste0(sapply(seq(
-          from = 1,
-          to = nchar(docentes$ORCID[i]),
-          by = 4
-        ),
-        function(j)
-          substr(docentes$ORCID[i], j, j + 3)), collapse = "-"),
-        '</a>'
-      ),
-      docentes$ORCID[i]
-    ),
-    docentes$País[i]
-  )
-  table.2 <- rbind(table.2, table)
-}
-
-# Set column names
-colnames(table.2) <-
-  c("Nome",
-    "Categoria",
-    "Credenciamento",
-    "Lattes ID",
-    "ORCID",
-    "País")
-rownames(table.2) <- NULL
-
-# Order table
-ids <- order(table.2$'Nome', decreasing = FALSE)
-table <- table.2[ids,]
+# Compile external identifiers
+source("Scripts/orcid-external-identifiers.R", local = knitr::knit_global())
 
 # Print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table, title = "Docentes - Histórico")
+create_dt(external.ids, title = "Pessoas - IDs externos")
 
 cat('\n\n')
+cat('**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)')
+cat('\n\n')
+if (knitr::is_html_output()) {
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+}
 ```
 
 <br>
@@ -480,7 +497,7 @@ cat('\n\n')
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Credenciados**
+### **Credenciados** {#posdocs-credenciados .tabset}
 
 ```{r pos-doc-credenciados, eval = has.sucupira.files}
 # Pós-docs
@@ -512,8 +529,8 @@ docentes <- sucupira[
   !duplicated(sucupira[, match("Pós-Doc Nome", colnames(sucupira)):match("Vínculo Fim", colnames(sucupira))]), ]
 docentes <- docentes[order(docentes$"Pós-Doc Nome"),]
 
-table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 6))
-if (dim(docentes)[1] != 0) {
+table.posdoc.cred <- data.frame(matrix(NA, nrow = 0, ncol = 5))
+if (!sjmisc::is_empty(docentes)) {
   docentes <- docentes[order(docentes$'Pós-Doc Nome'),]
 
   for (i in 1:dim(docentes)[1]) {
@@ -544,28 +561,25 @@ if (dim(docentes)[1] != 0) {
       ),
       docentes$País[i]
     )
-    table.2 <- rbind(table.2, table)
+    table.posdoc.cred <- rbind(table.posdoc.cred, table)
   }
-  colnames(table.2) <-
-    c("Nome",
-      "Instituição de origem",
-      "Vigência",
-      "ORCID",
-      "País")
-  rownames(table.2) <- NULL
-
-  table.2 <- table.2[order(table.2$'Nome', decreasing = FALSE), ]
 }
 
+colnames(table.posdoc.cred) <-
+  c("Nome", "Instituição de origem", "Vigência", "ORCID", "País")
+rownames(table.posdoc.cred) <- NULL
+
+table.posdoc.cred <- table.posdoc.cred[order(table.posdoc.cred$'Nome', decreasing = FALSE), ]
+
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-cat(knitr::knit_print(create_dt(table.2, title = "Pessoas - Pós-Docs - Credenciados")))
+cat(knitr::knit_print(create_dt(table.posdoc.cred, title = "Pessoas - Pós-Docs - Credenciados")))
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
 
-### **Histórico**
+### **Histórico** {#posdocs-historico}
 
 ```{r pos-doc-historico, eval = has.sucupira.files}
 # pós-docs
@@ -604,7 +618,7 @@ docentes <-
       ), ]
 docentes <- docentes[order(docentes$"Pós-Doc Nome"),]
 
-table.2 <- data.frame(matrix(NA, nrow = 0, ncol = 6))
+table.posdoc.hist <- data.frame(matrix(NA, nrow = 0, ncol = 5))
 if (dim(docentes)[1] != 0) {
   docentes <- docentes[order(docentes$'Pós-Doc Nome'),]
   
@@ -639,21 +653,17 @@ if (dim(docentes)[1] != 0) {
       ),
       docentes$País[i]
     )
-    table.2 <- rbind(table.2, table)
+    table.posdoc.hist <- rbind(table.posdoc.hist, table)
   }
-  colnames(table.2) <-
-    c("Nome",
-      "Instituição de origem",
-      "Vigência",
-      "ORCID",
-      "País")
-  rownames(table.2) <- NULL
-  
-  table.2 <- table.2[order(table.2$'Nome', decreasing = FALSE), ]
 }
+colnames(table.posdoc.hist) <-
+  c("Nome", "Instituição de origem", "Vigência", "ORCID", "País")
+rownames(table.posdoc.hist) <- NULL
+
+table.posdoc.hist <- table.posdoc.hist[order(table.posdoc.hist$'Nome', decreasing = FALSE), ]
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-cat(knitr::knit_print(create_dt(table.2, title = "Pessoas - Pós-Docs - Histórico")))
+cat(knitr::knit_print(create_dt(table.posdoc.hist, title = "Pessoas - Pós-Docs - Histórico")))
   
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -755,7 +765,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Titulados**
+### **Titulados** {#titulados}
 
 ```{r titulados, eval = has.sucupira.files}
 # get years
@@ -810,7 +820,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **5 anos**
+### **5 anos** {#egressos-5}
 
 ```{r historico-egressos-5, eval = has.sucupira.files}
 # get years
@@ -867,7 +877,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **10 anos**
+### **10 anos** {#egressos-10}
 
 ```{r historico-egressos-10, eval = has.sucupira.files}
 # get years
@@ -924,7 +934,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **Histórico**
+### **Histórico** {#egressos-historico}
 
 ```{r historico-egressos, eval = has.sucupira.files}
 # get years
@@ -981,7 +991,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **Distribuição nacional**
+### **Distribuição nacional** {#egressos-nacional}
 
 ```{r egressos-periodo, eval = has.discentes}
 egressos.raw <-
@@ -1168,6 +1178,7 @@ for (j in 1:length(abas)) {
   # print end of tab rows
   cat('\n\n')
   cat('**Fontes**: [**Diretório de Grupos de Pesquisa**](https://lattes.cnpq.br/web/dgp)')
+  cat('\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
   cat('<br>')
   cat('<br>')
@@ -1181,7 +1192,7 @@ for (j in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Participantes**
+### **Participantes** {#participantes .tabset}
 
 ```{r externos-nacionais, eval = has.sucupira.files}
 # participantes externos
@@ -1219,7 +1230,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **Instituições**
+### **Instituições** {#instituicoes .tabset}
 
 ```{r externos-ies-paises, eval = has.sucupira.files}
 # participantes externos

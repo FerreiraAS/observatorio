@@ -113,6 +113,8 @@ navbar:
     - text: "Bibliográfica"
       href: [bibliografica.html]
       menu:
+        - text: "-Bibliográfica-"
+          href: [bibliografica.html]
         - text: "Artigo em jornal ou revista"
           href: [bibliografica.html#jornal-revista]
         - text: "Artigo em periódico"
@@ -130,6 +132,8 @@ navbar:
     - text: "Técnica"
       href: [tecnica.html]
       menu:
+        - text: "-Técnica-"
+          href: [tecnica.html]
         - text: "Apresentação de trabalho"
           href: [tecnica.html#apresentacao-trabalho]
         - text: "Cartas, mapas ou similares"

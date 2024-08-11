@@ -92,32 +92,36 @@ bancas <- data.frame(
   "País" = rep(NA, length(id.TCC)),
   check.names = FALSE
 )
-# loop over each ID
-for (i in 1:length(id.TCC)) {
-  # select current ID
-  banca <- sucupira.raw[sucupira.raw$"Identificador do Trabalho de Conclusão" == id.TCC[i], ]
-  
-  # get unique values
-  bancas$Ano[i] <- substr(as.Date(unique(banca$"Data da Defesa"), format = "%d/%m/%Y"), 1, 4)
-  bancas$`Tipo de Trabalho de Conclusão`[i] <- stringr::str_to_sentence(unique(banca$"Tipo de Trabalho de Conclusão"))
-  bancas$Título[i] <- stringr::str_to_sentence(unique(banca$"Nome do Trabalho de Conclusão"))
-  bancas$Autor[i] <- stringr::str_to_title(unique(banca$"Nome do Autor"))
-  bancas$Orientadores[i] <- paste0(stringr::str_to_title(unique(banca$"Nome do Orientador")), collapse = ", ")
-  bancas$Examinadores[i] <- paste0(unique(
-    paste0(stringr::str_to_title(banca$"Nome da Pessoa da Banca"), " (", banca$"Sigla da IES da Pessoa da Banca", ")")
-    ), collapse = ", ")
-  # check proportion of same IES between autor and examinadores
-  ies.autor <- unique(banca$"IES Nome Autor")
-  bancas$`IES externas` <- ifelse(sum(unique(banca$"Sigla da IES da Pessoa da Banca") != ies.autor, na.rm = TRUE) > 0, "Sim", "Não")
-  # check if there are country others than Brasil among examinadores
-  bancas$País[i] <- paste0(unique(banca$"País da Pessoa da Banca"), collapse = ", ")
-}
 
+if (!sjmisc::is_empty(id.TCC)) {
+  # loop over each ID
+  for (i in 1:length(id.TCC)) {
+    # select current ID
+    banca <- sucupira.raw[sucupira.raw$"Identificador do Trabalho de Conclusão" == id.TCC[i], ]
+    
+    # get unique values
+    bancas$Ano[i] <- substr(as.Date(unique(banca$"Data da Defesa"), format = "%d/%m/%Y"), 1, 4)
+    bancas$`Tipo de Trabalho de Conclusão`[i] <- stringr::str_to_sentence(unique(banca$"Tipo de Trabalho de Conclusão"))
+    bancas$Título[i] <- stringr::str_to_sentence(unique(banca$"Nome do Trabalho de Conclusão"))
+    bancas$Autor[i] <- stringr::str_to_title(unique(banca$"Nome do Autor"))
+    bancas$Orientadores[i] <- paste0(stringr::str_to_title(unique(banca$"Nome do Orientador")), collapse = ", ")
+    bancas$Examinadores[i] <- paste0(unique(
+      paste0(stringr::str_to_title(banca$"Nome da Pessoa da Banca"), " (", banca$"Sigla da IES da Pessoa da Banca", ")")
+    ), collapse = ", ")
+    # check proportion of same IES between autor and examinadores
+    ies.autor <- unique(banca$"IES Nome Autor")
+    bancas$`IES externas` <- ifelse(sum(unique(banca$"Sigla da IES da Pessoa da Banca") != ies.autor, na.rm = TRUE) > 0, "Sim", "Não")
+    # check if there are country others than Brasil among examinadores
+    bancas$País[i] <- paste0(unique(banca$"País da Pessoa da Banca"), collapse = ", ")
+  }
+  # sort by Ano and Titulo
+  bancas <- dplyr::arrange(bancas, dplyr::desc(Ano), Título)
+}
 # rename Tipo de trabalho de conclusão para Tipo
 bancas <- dplyr::rename(bancas, Tipo = `Tipo de Trabalho de Conclusão`)
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(bancas, title = "Pessoas - Bancas Examinadoras")
+create_dt(bancas, title = "Repositório - Bancas Examinadoras")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -146,10 +150,8 @@ periodos <- names(sucupira.list)
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
-# dplyr::selecting those with COVID in the title
 tcc <-
-  tcc.all[grep(paste(tolower(pandemia), collapse = "|"),
-               tolower(tcc.all$`Nome do Trabalho de Conclusão`)),]
+  tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "TESE",]
 
 # make unique ID
 id.TCC <- tcc$"Identificador do Trabalho de Conclusão"
@@ -161,50 +163,52 @@ for (i in 1:length(id.TCC)) {
   tcc$`País da Pessoa da Banca`[match(id.TCC[i], tcc$"Identificador do Trabalho de Conclusão")] <- paises
 }
 
-if (dim(tcc)[1] != 0) {
+table.tese <- data.frame(
+  "Ano" = rep(NA, length(id.TCC)),
+  "Linha de Pesquisa" = rep(NA, length(id.TCC)),
+  "Título" = rep(NA, length(id.TCC)),
+  "Autor" = rep(NA, length(id.TCC)),
+  "Orientadores" = rep(NA, length(id.TCC)),
+  "Financiadores" = rep(NA, length(id.TCC)),
+  "País" = rep(NA, length(id.TCC)),
+  check.names = FALSE
+)
+  
+if (!sjmisc::is_empty(id.TCC)) {
   # select data
-  table.tcc <-
+  table.tese <-
     data.frame(
-      format((as.Date(
-        gsub("/", "-", tcc$'Data da Defesa'), "%d-%m-%Y"
-      )), "%Y"),
-      tcc$`Linha de Pesquisa`,
-      tcc$`Nome do Trabalho de Conclusão`,
-      tcc$`Nome do Autor`,
-      tcc$`Nome do Orientador`,
-      tcc$`Nome do Financiador`,
-      tcc$`País da Pessoa da Banca`
+      "Ano" = format((as.Date(gsub("/", "-", tcc$'Data da Defesa'), "%d-%m-%Y")), "%Y"),
+      "Linha de Pesquisa" = tcc$`Linha de Pesquisa`,
+      "Título" = tcc$`Nome do Trabalho de Conclusão`,
+      "Autor" = tcc$`Nome do Autor`,
+      "Orientadores" = tcc$`Nome do Orientador`,
+      "Financiadores" = tcc$`Nome do Financiador`,
+      "País" = tcc$`País da Pessoa da Banca`,
+      check.names = FALSE
     )
   
-  table.tcc <-
-    table.tcc[order(table.tcc[, 1], table.tcc[, 2], table.tcc[, 3]), ]
-  
-  table.tcc[, 2] <-
-    as.vector(unlist(lapply(table.tcc[, 2], FUN = stringr::str_to_title)))
-  table.tcc[, 3] <-
-    as.vector(unlist(lapply(table.tcc[, 3], FUN = stringr::str_to_title)))
-  table.tcc[, 4] <-
-    as.vector(unlist(lapply(table.tcc[, 4], FUN = stringr::str_to_title)))
-  table.tcc[, 5] <-
-    as.vector(unlist(lapply(table.tcc[, 5], FUN = stringr::str_to_title)))
-  table.tcc[, 6] <-
-    as.vector(unlist(lapply(table.tcc[, 6], FUN = stringr::str_to_title)))
+  table.tese[, 2] <-
+    as.vector(unlist(lapply(table.tese[, 2], FUN = stringr::str_to_title)))
+  table.tese[, 3] <-
+    as.vector(unlist(lapply(table.tese[, 3], FUN = stringr::str_to_sentence)))
+  table.tese[, 4] <-
+    as.vector(unlist(lapply(table.tese[, 4], FUN = stringr::str_to_title)))
+  table.tese[, 5] <-
+    as.vector(unlist(lapply(table.tese[, 5], FUN = stringr::str_to_title)))
+  table.tese[, 6] <-
+    as.vector(unlist(lapply(table.tese[, 6], FUN = stringr::str_to_title)))
 
-  colnames(table.tcc) <-
-    c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador", "Financiador", "País")
-  
   # drop duplicated entries
-  table.tcc <- table.tcc[!duplicated(table.tcc), ]
+  table.tese <- table.tese[!duplicated(table.tese), ]
   
   # sort by Ano and Titulo
-  table.tcc <- table.tcc[order(table.tcc$Ano, table.tcc$Título), ]
-} else {
-  table.tcc <- data.frame()
+  table.tese <- dplyr::arrange(table.tese, dplyr::desc(Ano), Título)
 }
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.tcc, title = "Produções - Teses")
+create_dt(table.tese, title = "Repositório - Teses")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -236,11 +240,6 @@ tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 tcc <-
   tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "DISSERTAÇÃO",]
 
-# dplyr::selecting those with COVID in the title
-tcc <-
-  tcc.all[grep(paste(tolower(pandemia), collapse = "|"),
-               tolower(tcc.all$`Nome do Trabalho de Conclusão`)),]
-
 # make unique ID
 id.TCC <- tcc$"Identificador do Trabalho de Conclusão"
 id.TCC <- unique(id.TCC)
@@ -251,50 +250,52 @@ for (i in 1:length(id.TCC)) {
   tcc$`País da Pessoa da Banca`[match(id.TCC[i], tcc$"Identificador do Trabalho de Conclusão")] <- paises
 }
 
-if (dim(tcc)[1] != 0) {
+table.dissert <- data.frame(
+  "Ano" = rep(NA, length(id.TCC)),
+  "Linha de Pesquisa" = rep(NA, length(id.TCC)),
+  "Título" = rep(NA, length(id.TCC)),
+  "Autor" = rep(NA, length(id.TCC)),
+  "Orientadores" = rep(NA, length(id.TCC)),
+  "Financiadores" = rep(NA, length(id.TCC)),
+  "País" = rep(NA, length(id.TCC)),
+  check.names = FALSE
+)
+
+if (!sjmisc::is_empty(id.TCC)) {
   # select data
-  table.tcc <-
+  table.dissert <-
     data.frame(
-      format((as.Date(
-        gsub("/", "-", tcc$'Data da Defesa'), "%d-%m-%Y"
-      )), "%Y"),
-      tcc$`Linha de Pesquisa`,
-      tcc$`Nome do Trabalho de Conclusão`,
-      tcc$`Nome do Autor`,
-      tcc$`Nome do Orientador`,
-      tcc$`Nome do Financiador`,
-      tcc$`País da Pessoa da Banca`
+      "Ano" = format((as.Date(gsub("/", "-", tcc$'Data da Defesa'), "%d-%m-%Y")), "%Y"),
+      "Linha de Pesquisa" = tcc$`Linha de Pesquisa`,
+      "Título" = tcc$`Nome do Trabalho de Conclusão`,
+      "Autor" = tcc$`Nome do Autor`,
+      "Orientadores" = tcc$`Nome do Orientador`,
+      "Financiadores" = tcc$`Nome do Financiador`,
+      "País" = tcc$`País da Pessoa da Banca`,
+      check.names = FALSE
     )
   
-  table.tcc <-
-    table.tcc[order(table.tcc[, 1], table.tcc[, 2], table.tcc[, 3]), ]
-  
-  table.tcc[, 2] <-
-    as.vector(unlist(lapply(table.tcc[, 2], FUN = stringr::str_to_title)))
-  table.tcc[, 3] <-
-    as.vector(unlist(lapply(table.tcc[, 3], FUN = stringr::str_to_title)))
-  table.tcc[, 4] <-
-    as.vector(unlist(lapply(table.tcc[, 4], FUN = stringr::str_to_title)))
-  table.tcc[, 5] <-
-    as.vector(unlist(lapply(table.tcc[, 5], FUN = stringr::str_to_title)))
-  table.tcc[, 6] <-
-    as.vector(unlist(lapply(table.tcc[, 6], FUN = stringr::str_to_title)))
+  table.dissert[, 2] <-
+    as.vector(unlist(lapply(table.dissert[, 2], FUN = stringr::str_to_title)))
+  table.dissert[, 3] <-
+    as.vector(unlist(lapply(table.dissert[, 3], FUN = stringr::str_to_sentence)))
+  table.dissert[, 4] <-
+    as.vector(unlist(lapply(table.dissert[, 4], FUN = stringr::str_to_title)))
+  table.dissert[, 5] <-
+    as.vector(unlist(lapply(table.dissert[, 5], FUN = stringr::str_to_title)))
+  table.dissert[, 6] <-
+    as.vector(unlist(lapply(table.dissert[, 6], FUN = stringr::str_to_title)))
 
-  colnames(table.tcc) <-
-    c("Ano", "Linha de Pesquisa", "Título", "Autor", "Orientador", "Financiador", "País")
-  
   # drop duplicated entries
-  table.tcc <- table.tcc[!duplicated(table.tcc), ]
+  table.dissert <- table.dissert[!duplicated(table.dissert), ]
   
   # sort by Ano and Titulo
-  table.tcc <- table.tcc[order(table.tcc$Ano, table.tcc$Título), ]
-} else {
-  table.tcc <- data.frame()
+  table.dissert <- dplyr::arrange(table.dissert, dplyr::desc(Ano), Título)
 }
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.tcc, title = "Produções - Dissertações")
+create_dt(table.dissert, title = "Repositório - Dissertações")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```

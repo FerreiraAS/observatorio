@@ -1981,7 +1981,6 @@ if (knitr::is_latex_output()) {
   kable_table
 }
 
-
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
