@@ -149,17 +149,10 @@ for (j in 1:length(abas)) {
   metodologia <- cbind(metodologia.raw[, -ncol(metodologia.raw)], Abrir)
   table <- metodologia
   
-  if(knitr::is_html_output()) {
-    alignment <- c("l", rep("c", ncol(table) - 2), "r")
-  } else {
-    alignment <- c("X")
-  }
-  
-  
   cat(knitr::knit_print(
     knitr::kable(
       x = table,
-      align = alignment,
+      align = "l",
       escape = FALSE,
       format = ifelse(knitr::is_html_output(), "html", "latex"),
       booktabs = TRUE,
@@ -173,7 +166,6 @@ for (j in 1:length(abas)) {
       position = "center"
     )
   ))
-  
   
   if (knitr::is_html_output()) {
     # print end of tab rows
@@ -247,17 +239,10 @@ for (j in 1:length(abas)) {
   autoavaliacao <- cbind(autoavaliacao.raw[, -ncol(autoavaliacao.raw)], Abrir)
   table <- autoavaliacao
 
-  if(knitr::is_html_output()) {
-    alignment <- c("l", rep("c", ncol(table) - 2), "r")
-  } else {
-    alignment <- c("X")
-  }
-
-  
   cat(knitr::knit_print(
     knitr::kable(
       x = table,
-      align = alignment,
+      align = "l",
       escape = FALSE,
       format = ifelse(knitr::is_html_output(), "html", "latex"),
       booktabs = TRUE,
@@ -271,7 +256,6 @@ for (j in 1:length(abas)) {
       position = "center"
     )
   ))
-  
   
   if (knitr::is_html_output()) {
     # print end of tab rows
@@ -345,17 +329,10 @@ for (j in 1:length(abas)) {
   avaliacao <- cbind(avaliacao.raw[, -ncol(avaliacao.raw)], Abrir)
   table <- avaliacao
   
-  if(knitr::is_html_output()) {
-    alignment <- c("l", rep("c", ncol(table) - 2), "r")
-  } else {
-    alignment <- c("X")
-  }
-
-  
   cat(knitr::knit_print(
     knitr::kable(
       x = table,
-      align = alignment,
+      align = "l",
       escape = FALSE,
       format = ifelse(knitr::is_html_output(), "html", "latex"),
       booktabs = TRUE,
@@ -669,22 +646,33 @@ cursos.raw <-
 cursos <- dplyr::select(cursos.raw, c("Nível", "Objetivos"))
 
 # print tables
-
-knitr::kable(
-  cursos,
-  align = "l",
-  escape = FALSE,
-  format = ifelse(knitr::is_html_output(), "html", "latex"),
-  booktabs = TRUE,
-  linesep = "",
-  caption = ifelse(knitr::is_html_output(), "", "Objetivos do curso")
-) %>% kableExtra::kable_styling(
-  bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-  latex_options = c("striped", "repeat_header", "HOLD_position"),
-  latex_table_env = "tabularx",
-  full_width = TRUE,
-  position = "center"
-)
+if (knitr::is_html_output()) {
+  # use kable for HTML output
+  knitr::kable(
+    cursos,
+    align = "l",
+    escape = FALSE,
+    format = "html",
+    linesep = "",
+    caption = "Objetivos do Curso"
+  ) %>% kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = TRUE,
+    position = "center"
+  )
+} else {
+  # use tinytable for LaTeX output
+  cursos <- data.frame(cursos, check.names = FALSE)
+  options(tinytable_print_output = "latex")
+  tinytable::tt(
+    cursos,
+    width = 1,
+    style = "bootstrap",
+    align = "l",
+    caption = ifelse(knitr::is_html_output(), "", "Objetivos do Curso")
+  ) %>%
+    tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H")
+}
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -708,22 +696,33 @@ cursos.raw <-
 cursos <- dplyr::select(cursos.raw, c("Nível", "Objetivos"))
 
 # print tables
-
-knitr::kable(
-  cursos,
-  align = "l",
-  escape = FALSE,
-  format = ifelse(knitr::is_html_output(), "html", "latex"),
-  booktabs = TRUE,
-  linesep = "",
-  caption = ifelse(knitr::is_html_output(), "", "Perfil do egresso")
-) %>% kableExtra::kable_styling(
-  bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-  latex_options = c("striped", "repeat_header", "HOLD_position"),
-  latex_table_env = "tabularx",
-  full_width = TRUE,
-  position = "center"
-)
+if (knitr::is_html_output()) {
+  # use kable for HTML output
+  knitr::kable(
+    cursos,
+    align = "l",
+    escape = FALSE,
+    format = "html",
+    linesep = "",
+    caption = "Perfil do Egresso"
+  ) %>% kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = TRUE,
+    position = "center"
+  )
+} else {
+  # use tinytable for LaTeX output
+  cursos <- data.frame(cursos, check.names = FALSE)
+  options(tinytable_print_output = "latex")
+  tinytable::tt(
+    cursos,
+    width = 1,
+    style = "bootstrap",
+    align = "l",
+    caption = ifelse(knitr::is_html_output(), "", "Perfil do Egresso")
+  ) %>%
+    tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H")
+}
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -917,21 +916,33 @@ colnames(area.ativas) <-
 rownames(area.ativas) <- NULL
 
 # print tables
-knitr::kable(
-  area.ativas,
-  align = c("l", rep("c", ncol(area.ativas) - 2), "r"),
-  escape = FALSE,
-  format = ifelse(knitr::is_html_output(), "html", "latex"),
-  booktabs = TRUE,
-  linesep = "",
-  caption = ifelse(knitr::is_html_output(), "", "Áreas de Concentração")
-) %>% kableExtra::kable_styling(
-  bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-  latex_options = c("striped", "repeat_header", "HOLD_position"),
-  latex_table_env = "tabularx",
-  full_width = TRUE,
-  position = "center"
-)
+if (knitr::is_html_output()) {
+  # use kable for HTML output
+  knitr::kable(
+    area.ativas,
+    align = "l",
+    escape = FALSE,
+    format = "html",
+    linesep = "",
+    caption = "Áreas de Concentração"
+  ) %>% kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = TRUE,
+    position = "center"
+  )
+} else {
+  # use tinytable for LaTeX output
+  area.ativas <- data.frame(area.ativas, check.names = FALSE)
+  options(tinytable_print_output = "latex")
+  tinytable::tt(
+    area.ativas,
+    width = 1,
+    style = "bootstrap",
+    align = "l",
+    caption = ifelse(knitr::is_html_output(), "", "Áreas de Concentração")
+  ) %>%
+    tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H")
+}
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1068,21 +1079,33 @@ colnames(linhas.atual) <-
 rownames(linhas.atual) <- NULL
 
 # print tables
-knitr::kable(
-  linhas.atual,
-  align = c("l", rep("c", ncol(linhas.atual) - 2), "r"),
-  escape = FALSE,
-  format = ifelse(knitr::is_html_output(), "html", "latex"),
-  booktabs = TRUE,
-  linesep = "",
-  caption = ifelse(knitr::is_html_output(), "", "Linhas de Pesquisa")
-) %>% kableExtra::kable_styling(
-  bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-  latex_options = c("striped", "repeat_header", "HOLD_position"),
-  latex_table_env = "tabularx",
-  full_width = TRUE,
-  position = "center"
-)
+if (knitr::is_html_output()) {
+  # use kable for HTML output
+  knitr::kable(
+    linhas.atual,
+    align = "l",
+    escape = FALSE,
+    format = "html",
+    linesep = "",
+    caption = "Linhas de pesquisa"
+  ) %>% kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = TRUE,
+    position = "center"
+  )
+} else {
+  # use tinytable for LaTeX output
+  linhas.atual <- data.frame(linhas.atual, check.names = FALSE)
+  options(tinytable_print_output = "latex")
+  tinytable::tt(
+    linhas.atual,
+    width = 1,
+    style = "bootstrap",
+    align = "l",
+    caption = ifelse(knitr::is_html_output(), "", "Linhas de pesquisa")
+  ) %>%
+    tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H")
+}
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1408,21 +1431,33 @@ if(knitr::is_latex_output()) {
 }
 
 # print tables
-knitr::kable(
-  table.projetos,
-  align = c("l", rep("c", ncol(table.projetos) - 2), "r"),
-  escape = FALSE,
-  format = ifelse(knitr::is_html_output(), "html", "latex"),
-  booktabs = TRUE,
-  linesep = "",
-  caption = ifelse(knitr::is_html_output(), "", "Projeto de pesquisa")
-) %>% kableExtra::kable_styling(
-  bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-  latex_options = c("striped", "repeat_header", "HOLD_position"),
-  latex_table_env = "tabularx",
-  full_width = TRUE,
-  position = "center"
-)
+if (knitr::is_html_output()) {
+  # use kable for HTML output
+  knitr::kable(
+    table.projetos,
+    align = "l",
+    escape = FALSE,
+    format = "html",
+    linesep = "",
+    caption = "Projetos de pesquisa"
+  ) %>% kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = TRUE,
+    position = "center"
+  )
+} else {
+  # use tinytable for LaTeX output
+  table.projetos <- data.frame(table.projetos, check.names = FALSE)
+  options(tinytable_print_output = "latex")
+  tinytable::tt(
+    table.projetos,
+    width = 1,
+    style = "bootstrap",
+    align = "l",
+    caption = ifelse(knitr::is_html_output(), "", "Projetos de pesquisa")
+  ) %>%
+    tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H")
+}
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1584,21 +1619,33 @@ colnames(table.doc) <-
 rownames(table.doc) <- NULL
 
 # print tables
-knitr::kable(
-  table.doc,
-  align = c(rep("c", ncol(table.doc) - 1), "r"),
-  escape = FALSE,
-  format = ifelse(knitr::is_html_output(), "html", "latex"),
-  booktabs = TRUE,
-  linesep = "",
-  caption = ifelse(knitr::is_html_output(), "", "Docentes")
-) %>% kableExtra::kable_styling(
-  bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-  latex_options = c("striped", "repeat_header", "HOLD_position"),
-  latex_table_env = "tabularx",
-  full_width = TRUE,
-  position = "center"
-)
+if (knitr::is_html_output()) {
+  # use kable for HTML output
+  knitr::kable(
+    table.doc,
+    align = "l",
+    escape = FALSE,
+    format = "html",
+    linesep = "",
+    caption = "Docentes"
+  ) %>% kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = TRUE,
+    position = "center"
+  )
+} else {
+  # use tinytable for LaTeX output
+  table.doc <- data.frame(table.doc, check.names = FALSE)
+  options(tinytable_print_output = "latex")
+  tinytable::tt(
+    table.doc,
+    width = 1,
+    style = "bootstrap",
+    align = "l",
+    caption = ifelse(knitr::is_html_output(), "", "Docentes")
+  ) %>%
+    tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H")
+}
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1764,21 +1811,33 @@ colnames(table.posdoc) <-
 rownames(table.posdoc) <- NULL
 
 # print tables
-knitr::kable(
-  table.posdoc,
-  align = c(rep("c", ncol(table.posdoc) - 1), "r"),
-  escape = FALSE,
-  format = ifelse(knitr::is_html_output(), "html", "latex"),
-  booktabs = TRUE,
-  linesep = "",
-  caption = ifelse(knitr::is_html_output(), "", "Pós-doutorandos")
-) %>% kableExtra::kable_styling(
-  bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-  latex_options = c("striped", "repeat_header", "HOLD_position"),
-  latex_table_env = "tabularx",
-  full_width = TRUE,
-  position = "center"
-)
+if (knitr::is_html_output()) {
+  # use kable for HTML output
+  knitr::kable(
+    table.posdoc,
+    align = "l",
+    escape = FALSE,
+    format = "html",
+    linesep = "",
+    caption = "Pós-docs"
+  ) %>% kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = TRUE,
+    position = "center"
+  )
+} else {
+  # use tinytable for LaTeX output
+  table.posdoc <- data.frame(table.posdoc, check.names = FALSE)
+  options(tinytable_print_output = "latex")
+  tinytable::tt(
+    table.posdoc,
+    width = 1,
+    style = "bootstrap",
+    align = "l",
+    caption = ifelse(knitr::is_html_output(), "", "Pós-Docs")
+  ) %>%
+    tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H")
+}
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1794,7 +1853,7 @@ cat('<details>')
 cat('<summary>Área de Concentração | Dados individuais</summary>')
 options(knitr.kable.NA = '')
 print(
-  knitr::kable(table.ac, align = c("l", rep("c", ncol(table.ac) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>%
+  knitr::kable(table.ac, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>%
   kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
@@ -1807,7 +1866,7 @@ cat('<details>')
 cat('<summary>Linhas de pesquisa | Dados individuais</summary>')
 options(knitr.kable.NA = '')
 print(
-  knitr::kable(table.lp, align = c("l", rep("c", ncol(table.lp) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>%
+  knitr::kable(table.lp, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>%
   kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
@@ -1820,7 +1879,7 @@ cat('<details>')
 cat('<summary>Projetos de pesquisa | Dados individuais</summary>')
 options(knitr.kable.NA = '')
 print(
-  knitr::kable(table.pp, align = c("l", rep("c", ncol(table.pp) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>%
+  knitr::kable(table.pp, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>%
   kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
@@ -1833,7 +1892,7 @@ cat('<details>')
 cat('<summary>Natureza do projeto | Dados individuais</summary>')
 options(knitr.kable.NA = '')
 print(
-  knitr::kable(table.pp.nt, align = c("l", rep("c", ncol(table.pp.nt) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>%
+  knitr::kable(table.pp.nt, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>%
   kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
@@ -1846,7 +1905,7 @@ cat('<details>')
 cat('<summary>Docentes | Dados individuais</summary>')
 options(knitr.kable.NA = '')
 print(
-  knitr::kable(table.projetos.doc, align = c("l", rep("c", ncol(table.projetos.doc) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>%
+  knitr::kable(table.projetos.doc, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>%
   kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
@@ -1859,7 +1918,7 @@ cat('<details>')
 cat('<summary>Pós-Docs | Dados individuais</summary>')
 options(knitr.kable.NA = '')
 print(
-  knitr::kable(table.projetos.posdoc, align = c("l", rep("c", ncol(table.projetos.posdoc) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>%
+  knitr::kable(table.projetos.posdoc, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>%
   kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
@@ -2075,26 +2134,36 @@ if(knitr::is_latex_output()) {
 }
 
 ids <- order(table[, 1], decreasing = FALSE)
-table <- table[ids,]
+table.curricular <- table[ids,]
 
 # print tables
-
-knitr::kable(
-  table,
-  align = "l",
-  escape = FALSE,
-  format = ifelse(knitr::is_html_output(), "html", "latex"),
-  booktabs = TRUE,
-  linesep = "",
-  caption = ifelse(knitr::is_html_output(), "", "2.5.1 Estrutura curricular")
-) %>% kableExtra::kable_styling(
-  bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-  latex_options = c("striped", "repeat_header", "HOLD_position"),
-  latex_table_env = "tabularx",
-  full_width = TRUE,
-  position = "center"
-)
-
+if (knitr::is_html_output()) {
+  # use kable for HTML output
+  knitr::kable(
+    table.curricular,
+    align = "l",
+    escape = FALSE,
+    format = "html",
+    linesep = "",
+    caption = "1.1.2 Estrutura curricular"
+  ) %>% kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = TRUE,
+    position = "center"
+  )
+} else {
+  # use tinytable for LaTeX output
+  table.curricular <- data.frame(table.curricular, check.names = FALSE)
+  options(tinytable_print_output = "latex")
+  tinytable::tt(
+    table.curricular,
+    width = 1,
+    style = "bootstrap",
+    align = "l",
+    caption = ifelse(knitr::is_html_output(), "", "1.1.2 Estrutura curricular")
+  ) %>%
+    tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H")
+}
 
 # Load source
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
@@ -2579,7 +2648,7 @@ cat('<details>')
 cat('<summary>Dimensão | Dados individuais</summary>')
 options(knitr.kable.NA = '')
 print(
-  knitr::kable(table.doc.1, align = c("l", rep("c", ncol(table.doc.1) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
+  knitr::kable(table.doc.1, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
     position = "center"
@@ -2593,9 +2662,7 @@ cat('<details>')
 cat('<summary>Vínculo | Dados individuais</summary>')
 options(knitr.kable.NA = '')
 print(
-  knitr::kable(table.doc.2, align = c("l", rep(
-    "c", ncol(table.doc.2) - 2
-  ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
+  knitr::kable(table.doc.2, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
     position = "center"
@@ -2609,7 +2676,7 @@ cat('<details>')
 cat('<summary>Regime de trabalho | Dados individuais</summary>')
 options(knitr.kable.NA = '')
 print(
-  knitr::kable(table.doc.3, align = c("l", rep("c", ncol(table.doc.3) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
+  knitr::kable(table.doc.3, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
     position = "center"
@@ -2623,9 +2690,7 @@ cat('<details>')
 cat('<summary>Carga horária PG | Dados individuais</summary>')
 options(knitr.kable.NA = '')
 print(
-  knitr::kable(table.doc.4, align = c("l", rep(
-    "c", ncol(table.doc.4) - 2
-  ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
+  knitr::kable(table.doc.4, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
     position = "center"
@@ -2773,7 +2838,7 @@ cat('<details>')
 cat('<summary>Área de conhecimento titulação | Dados individuais</summary>')
 options(knitr.kable.NA = '')
 print(
-  knitr::kable(table.doc.5, align = c("l", rep("c", ncol(table.doc.5) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
+  knitr::kable(table.doc.5, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = T,
     position = "center"
@@ -4486,7 +4551,7 @@ cat('<details>')
 cat('<summary>Produção por Área de Concentração | Dados individuais</summary>')
 options(knitr.kable.NA = '')
 print(
-  knitr::kable(table.ac, align = c("l", rep("c", ncol(table.ac) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% 
+  knitr::kable(table.ac, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% 
     kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = TRUE,
@@ -4502,7 +4567,7 @@ cat('<details>')
 cat('<summary>Produção por Linha de Pesquisa | Dados individuais</summary>')
 options(knitr.kable.NA = '')
 print(
-  knitr::kable(table.lp, align = c("l", rep("c", ncol(table.lp) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% 
+  knitr::kable(table.lp, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% 
     kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = TRUE,
@@ -4518,7 +4583,7 @@ cat('<details>')
 cat('<summary>Produção por tipo | Dados individuais</summary>')
 options(nitr.kable.NA = '')
 print(
-  knitr::kable(table.prd, align = c("l", rep("c", ncol(table.prd) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% 
+  knitr::kable(table.prd, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% 
     kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = TRUE,
@@ -4534,7 +4599,7 @@ cat('<details>')
 cat('<summary>Categoria do Autor Principal | Dados individuais</summary>')
 options(nitr.kable.NA = '')
 print(
-  knitr::kable(table.aut, align = c("l", rep("c", ncol(table.aut) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% 
+  knitr::kable(table.aut, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% 
     kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = TRUE,
@@ -4550,7 +4615,7 @@ cat('<details>')
 cat('<summary>Produção vinculada à TCC | Dados individuais</summary>')
 options(nitr.kable.NA = '')
 print(
-  knitr::kable(table.tcc, align = c("l", rep("c", ncol(table.tcc) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% 
+  knitr::kable(table.tcc, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% 
     kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = TRUE,
@@ -4566,7 +4631,7 @@ cat('<details>')
 cat('<summary>Produção bibliográfica | Dados individuais</summary>')
 options(nitr.kable.NA = '')
 print(
-  knitr::kable(table.bib, align = c("l", rep("c", ncol(table.bib) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% 
+  knitr::kable(table.bib, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% 
     kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = TRUE,
@@ -4582,7 +4647,7 @@ cat('<details>')
 cat('<summary>Produção técnica | Dados individuais</summary>')
 options(nitr.kable.NA = '')
 print(
-  knitr::kable(table.tec, align = c("l", rep("c", ncol(table.tec) - 2), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% 
+  knitr::kable(table.tec, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% 
     kableExtra::kable_styling(
       bootstrap_options = c("striped", "hover", "condensed", "responsive"),
       full_width = TRUE,

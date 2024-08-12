@@ -76,6 +76,7 @@ packs.cran <-
     "tau",
     "terra",
     "tidyverse",
+    "tinytable",
     "tm",
     "tools",
     "units",
