@@ -1647,8 +1647,6 @@ for (j in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **2024-2021**
-
 ```{r turmas-2024-2021, eval = has.sucupira.files}
 # turmas
 sheet <- "Turmas"
@@ -1656,323 +1654,68 @@ source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
+periodos <- as.character(anos)
 
-# bind all sheets
-periodos <-
-  names(sucupira.list)[na.omit(match(c(2021:2024), names(sucupira.list)))]
+turmas <- dplyr::select(
+  sucupira.raw,
+  "Identificador da Turma",
+  "Período/Ano",
+  "Nome da Disciplina",
+  "Nível do curso",
+  "Nome do responsável",
+  "Categoria do responsável",
+  "Indicador de responsável principal"
+)
 
-has.avaliacao <- as.logical(length(periodos) != 0)
-```
+# unique ID de turma
+turmas.ID <- unique(turmas$`Identificador da Turma`)
 
-```{r turmas-2024, eval = all(has.sucupira.files, has.avaliacao)}
-# load custom function
-source("Scripts/get-initials.R", local = knitr::knit_global())
+table.turmas <- data.frame(
+  "Ano" = rep(NA, length(turmas.ID)),
+  "Período" = rep(NA, length(turmas.ID)),
+  "Disciplina" = rep(NA, length(turmas.ID)),
+  "Nível" = rep(NA, length(turmas.ID)),
+  "Responsável" = rep(NA, length(turmas.ID)),
+  "Colaboradores" = rep(NA, length(turmas.ID)),
+  check.names = FALSE
+)
 
-periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
-turmas.raw <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
-
-if (dim(turmas.raw)[1] != 0) {
-  # build a cross table DISCIPLINA vs. ANO
-  turmas.raw$`Período/Ano` <-
-    paste(
-      sub(".*/", "", turmas.raw$`Período/Ano`),
-      sub("/.*", "", turmas.raw$`Período/Ano`),
-      sep = "/"
-    )
-  cross.table.turmas <-
-    as.matrix(table(
-      initials(turmas.raw$`Nome da Disciplina`),
-      turmas.raw$`Período/Ano`
-    ))
-  Oferecida <- colSums(cross.table.turmas)
-  Oferecida[Oferecida > 0] <- "✅"
-  Oferecida[Oferecida == 0] <- ""
-  turmas.oferecidas <- rbind(Oferecida, cross.table.turmas)
-  turmas.oferecidas[turmas.oferecidas > 0] <- "✔"
-  turmas.oferecidas[turmas.oferecidas == 0] <- ""
-  if (length(colnames(turmas.oferecidas)) > 1) {
-    turmas.oferecidas <-
-      turmas.oferecidas[, order(colnames(turmas.oferecidas), decreasing = TRUE)]
-  }
-  print(
-    knitr::kable(turmas.oferecidas, align = c("l", rep(
-      "c",  max(0, ncol(turmas.oferecidas) - 2)
-    ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
+# create table of unique turmas
+for(i in 1:length(turmas.ID)) {
+  # get turma data
+  turma <- turmas[turmas$`Identificador da Turma` == turmas.ID[i],]
+  # get turma ano e periodo
+  table.turmas$Ano[i] <- as.numeric(unlist(strsplit(unique(turma$`Período/Ano`), "/"))[2])
+  table.turmas$Período[i] <- as.numeric(unlist(strsplit(unique(turma$`Período/Ano`), "/"))[1])
+  # get turma disciplina
+  table.turmas$`Disciplina`[i] <- unique(turma$`Nome da Disciplina`)
+  # get turma nível
+  table.turmas$`Nível`[i] <- unique(turma$`Nível do curso`)
+  # get turma responsável
+  table.turmas$`Responsável`[i] <- paste0(
+    stringr::str_to_title(unique(turma$`Nome do responsável`[turma$`Indicador de responsável principal` == "Sim"])),
+    " (",
+    unique(turma$`Categoria do responsável`[turma$`Indicador de responsável principal` == "Sim"]),
+    ")"
   )
-  
-  # line break
-  cat("  \n")
-  cat("  \n")
-  
-  legenda.turma <-
-    unique(cbind(
-      initials(turmas.raw$`Nome da Disciplina`),
-      turmas.raw$`Nome da Disciplina`
-    ))
-  legenda.turma <- legenda.turma[order(legenda.turma[, 1]),]
-  cat(paste0(
-    "*",
-    legenda.turma[, 1],
-    ": ",
-    lapply(legenda.turma[, 2], stringr::str_to_title),
-    "*",
-    collapse = "; "
-  ))
+  # get turma colaboradores if existent
+  if(sum(turma$`Indicador de responsável principal` == "Não") > 0){
+    table.turmas$`Colaboradores`[i] <- paste0(
+      stringr::str_to_title(turma$`Nome do responsável`[turma$`Indicador de responsável principal` == "Não"]),
+      " (",
+      turma$`Categoria do responsável`[turma$`Indicador de responsável principal` == "Não"],
+      ")",
+      collapse = ", "
+    )
+  }
 }
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-```
+# sort by Ano, Período, Disciplina, Nivel
+table.turmas <- table.turmas[order(-table.turmas$Ano, -table.turmas$Período, table.turmas$Disciplina, table.turmas$Nível),]
 
-<br>
-
-### **2020-2017**
-
-```{r turmas-2020-2017, eval = has.sucupira.files}
-# turmas
-sheet <- "Turmas"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# bind all sheets
-periodos <-
-  names(sucupira.list)[na.omit(match(c(2017:2020), names(sucupira.list)))]
-
-has.avaliacao <- as.logical(length(periodos) != 0)
-```
-
-```{r turmas-2020, eval = all(has.sucupira.files, has.avaliacao)}
-# load custom function
-source("Scripts/get-initials.R", local = knitr::knit_global())
-
-periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
-turmas.raw <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
-
-if (dim(turmas.raw)[1] != 0) {
-  # build a cross table DISCIPLINA vs. ANO
-  turmas.raw$`Período/Ano` <-
-    paste(
-      sub(".*/", "", turmas.raw$`Período/Ano`),
-      sub("/.*", "", turmas.raw$`Período/Ano`),
-      sep = "/"
-    )
-  cross.table.turmas <-
-    as.matrix(table(
-      initials(turmas.raw$`Nome da Disciplina`),
-      turmas.raw$`Período/Ano`
-    ))
-  Oferecida <- colSums(cross.table.turmas)
-  Oferecida[Oferecida > 0] <- "✅"
-  Oferecida[Oferecida == 0] <- ""
-  turmas.oferecidas <- rbind(Oferecida, cross.table.turmas)
-  turmas.oferecidas[turmas.oferecidas > 0] <- "✔"
-  turmas.oferecidas[turmas.oferecidas == 0] <- ""
-  if (length(colnames(turmas.oferecidas)) > 1) {
-    turmas.oferecidas <-
-      turmas.oferecidas[, order(colnames(turmas.oferecidas), decreasing = TRUE)]
-  }
-  print(
-    knitr::kable(turmas.oferecidas, align = c("l", rep(
-      "c",  max(0, ncol(turmas.oferecidas) - 2)
-    ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
-  
-  # line break
-  cat("  \n")
-  cat("  \n")
-  
-  legenda.turma <-
-    unique(cbind(
-      initials(turmas.raw$`Nome da Disciplina`),
-      turmas.raw$`Nome da Disciplina`
-    ))
-  legenda.turma <- legenda.turma[order(legenda.turma[, 1]),]
-  cat(paste0(
-    "*",
-    legenda.turma[, 1],
-    ": ",
-    lapply(legenda.turma[, 2], stringr::str_to_title),
-    "*",
-    collapse = "; "
-  ))
-}
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-### **2016-2013**
-
-```{r turmas-2016-2013, eval = has.sucupira.files}
-# turmas
-sheet <- "Turmas"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# bind all sheets
-periodos <-
-  names(sucupira.list)[na.omit(match(c(2013:2016), names(sucupira.list)))]
-
-has.avaliacao <- as.logical(length(periodos) != 0)
-```
-
-```{r turmas-2016, eval = all(has.sucupira.files, has.avaliacao)}
-# load custom function
-source("Scripts/get-initials.R", local = knitr::knit_global())
-
-periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
-turmas.raw <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
-
-if (dim(turmas.raw)[1] != 0) {
-  # build a cross table DISCIPLINA vs. ANO
-  turmas.raw$`Período/Ano` <-
-    paste(
-      sub(".*/", "", turmas.raw$`Período/Ano`),
-      sub("/.*", "", turmas.raw$`Período/Ano`),
-      sep = "/"
-    )
-  cross.table.turmas <-
-    as.matrix(table(
-      initials(turmas.raw$`Nome da Disciplina`),
-      turmas.raw$`Período/Ano`
-    ))
-  Oferecida <- colSums(cross.table.turmas)
-  Oferecida[Oferecida > 0] <- "✅"
-  Oferecida[Oferecida == 0] <- ""
-  turmas.oferecidas <- rbind(Oferecida, cross.table.turmas)
-  turmas.oferecidas[turmas.oferecidas > 0] <- "✔"
-  turmas.oferecidas[turmas.oferecidas == 0] <- ""
-  if (length(colnames(turmas.oferecidas)) > 1) {
-    turmas.oferecidas <-
-      turmas.oferecidas[, order(colnames(turmas.oferecidas), decreasing = TRUE)]
-  }
-  print(
-    knitr::kable(turmas.oferecidas, align = c("l", rep(
-      "c",  max(0, ncol(turmas.oferecidas) - 2)
-    ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
-  
-  # line break
-  cat("  \n")
-  cat("  \n")
-  
-  legenda.turma <-
-    unique(cbind(
-      initials(turmas.raw$`Nome da Disciplina`),
-      turmas.raw$`Nome da Disciplina`
-    ))
-  legenda.turma <- legenda.turma[order(legenda.turma[, 1]),]
-  cat(paste0(
-    "*",
-    legenda.turma[, 1],
-    ": ",
-    lapply(legenda.turma[, 2], stringr::str_to_title),
-    "*",
-    collapse = "; "
-  ))
-}
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-### **2012-2010**
-
-```{r turmas-2012-2010, eval = has.sucupira.files}
-# turmas
-sheet <- "Turmas"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# bind all sheets
-periodos <-
-  names(sucupira.list)[na.omit(match(c(2010:2012), names(sucupira.list)))]
-
-has.avaliacao <- as.logical(length(periodos) != 0)
-```
-
-```{r turmas-2012, eval = all(has.sucupira.files, has.avaliacao)}
-# load custom function
-source("Scripts/get-initials.R", local = knitr::knit_global())
-
-periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
-turmas.raw <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
-
-if (dim(turmas.raw)[1] != 0) {
-  # build a cross table DISCIPLINA vs. ANO
-  turmas.raw$`Período/Ano` <-
-    paste(
-      sub(".*/", "", turmas.raw$`Período/Ano`),
-      sub("/.*", "", turmas.raw$`Período/Ano`),
-      sep = "/"
-    )
-  cross.table.turmas <-
-    as.matrix(table(
-      initials(turmas.raw$`Nome da Disciplina`),
-      turmas.raw$`Período/Ano`
-    ))
-  Oferecida <- colSums(cross.table.turmas)
-  Oferecida[Oferecida > 0] <- "✅"
-  Oferecida[Oferecida == 0] <- ""
-  turmas.oferecidas <- rbind(Oferecida, cross.table.turmas)
-  turmas.oferecidas[turmas.oferecidas > 0] <- "✔"
-  turmas.oferecidas[turmas.oferecidas == 0] <- ""
-  if (length(colnames(turmas.oferecidas)) > 1) {
-    turmas.oferecidas <-
-      turmas.oferecidas[, order(colnames(turmas.oferecidas), decreasing = TRUE)]
-  }
-  print(
-    knitr::kable(turmas.oferecidas, align = c("l", rep(
-      "c",  max(0, ncol(turmas.oferecidas) - 2)
-    ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
-  
-  # line break
-  cat("  \n")
-  cat("  \n")
-  
-  legenda.turma <-
-    unique(cbind(
-      initials(turmas.raw$`Nome da Disciplina`),
-      turmas.raw$`Nome da Disciplina`
-    ))
-  legenda.turma <- legenda.turma[order(legenda.turma[, 1]),]
-  cat(paste0(
-    "*",
-    legenda.turma[, 1],
-    ": ",
-    lapply(legenda.turma[, 2], stringr::str_to_title),
-    "*",
-    collapse = "; "
-  ))
-}
+# print table
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(table.turmas, title = "Programa - Turmas")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```

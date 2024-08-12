@@ -76,14 +76,20 @@ periodo.vigente <- anos
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Formação discente**
+### **Turmas por nível**
 
-```{r turmas-tabela, eval = has.sucupira.files}
+```{r turmas-nivel, eval = has.sucupira.files}
 # turmas
 sheet <- "Turmas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-turmas.raw <- sucupira.raw
+# Load years data
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# Bind all sheets for disciplines
+periodos <- names(sucupira.list)[na.omit(match(periodo.vigente, names(sucupira.list)))]
+turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
 
 turmas.raw$`Período/Ano` <-
   paste(
@@ -96,95 +102,132 @@ turmas.raw$`Período/Ano` <-
 turmas <- turmas.raw %>%
   dplyr::select(c(
     "Período/Ano",
-    "Nível do curso",
-    "Nome da Disciplina",
-    "Categoria do responsável",
-    "Nome do responsável",
-    "Indicador de responsável principal"
+    "Nível do curso"
   ))
 
-# change to title case
-turmas$`Nome da Disciplina` <- tools::toTitleCase(tolower(turmas$`Nome da Disciplina`))
-turmas$`Nome do responsável` <- tools::toTitleCase(tolower(turmas$`Nome do responsável`))
-
-# rename
-colnames(turmas) <- c(
-  "Período/Ano",
-  "Disciplinas por curso",
-  "Disciplina",
-  "Categoria",
-  "Docente responsável",
-  "Responsável"
-)
-
-# change all column types to factors
-turmas <- turmas %>%
-  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
+# bug report
+# https://stackoverflow.com/questions/78811916/gtsummary-tbl-summary-sorting-of-stratify-variable/78812588
+tbl_fix_order <- function(x) {
+  nms <- names(x$table_body)
+  is_stat_cols <- grepl("^stat_", nms)
+  non_stat_cols <- nms[!is_stat_cols]
+  stat_cols <- nms[is_stat_cols]
+  stat_cols <- stat_cols[
+    order(as.integer(gsub("^.*?(\\d+)$", "\\1", stat_cols)))
+  ]
+  x$table_body <- x$table_body[c(non_stat_cols, stat_cols)]
+  
+  x  
+}
 
 # generate table (total by year)
 table.part1 <-
   gtsummary::tbl_summary(
     turmas %>% dplyr::select(
       "Período/Ano",
-      "Disciplinas por curso",
-      "Categoria",
+      "Nível do curso"
+    ),
+    by = "Período/Ano",
+    type = list(
+      "Nível do curso" ~ "categorical"
+    ),
+    statistic = list(
+      "Nível do curso" ~ "{n}"
+      ),
+    missing = "no",
+    digits = list(gtsummary::everything() ~ 0)) %>%
+  tbl_fix_order() %>%
+  gtsummary::modify_header(label = "**Período/Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels()
+
+# Print HTML table
+if (knitr::is_html_output()) {
+  print(table.part1)
+}
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+<br>
+
+### **Disciplinas**
+
+```{r turmas-disciplinas, eval = has.sucupira.files}
+# turmas
+sheet <- "Turmas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# Load years data
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# Bind all sheets for disciplines
+periodos <- names(sucupira.list)[na.omit(match(periodo.vigente, names(sucupira.list)))]
+turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
+
+turmas.raw$`Período/Ano` <-
+  paste(
+    sub(".*/", "", turmas.raw$`Período/Ano`),
+    sub("/.*", "", turmas.raw$`Período/Ano`),
+    sep = "/"
+  )
+
+# select variables
+turmas <- turmas.raw %>%
+  dplyr::select(c(
+    "Período/Ano",
+    "Nome da Disciplina"
+  ))
+
+# change to title case
+turmas$`Nome da Disciplina` <- tools::toTitleCase(tolower(turmas$`Nome da Disciplina`))
+
+# rename
+colnames(turmas) <- c(
+  "Período/Ano",
+  "Disciplina"
+)
+
+# bug report
+# https://stackoverflow.com/questions/78811916/gtsummary-tbl-summary-sorting-of-stratify-variable/78812588
+tbl_fix_order <- function(x) {
+  nms <- names(x$table_body)
+  is_stat_cols <- grepl("^stat_", nms)
+  non_stat_cols <- nms[!is_stat_cols]
+  stat_cols <- nms[is_stat_cols]
+  stat_cols <- stat_cols[
+    order(as.integer(gsub("^.*?(\\d+)$", "\\1", stat_cols)))
+  ]
+  x$table_body <- x$table_body[c(non_stat_cols, stat_cols)]
+  
+  x  
+}
+
+# generate table (total by year)
+table.part1 <-
+  gtsummary::tbl_summary(
+    turmas %>% dplyr::select(
+      "Período/Ano",
       "Disciplina"
     ),
     by = "Período/Ano",
     type = list(
-      "Disciplinas por curso" ~ "categorical",
-      "Categoria" ~ "categorical",
       "Disciplina" ~ "categorical"
     ),
     statistic = list(
-      "Disciplinas por curso" ~ "{n}",
-      "Categoria" ~ "{n}",
       "Disciplina" ~ "{n}"
       ),
     missing = "no",
     digits = list(gtsummary::everything() ~ 0)) %>%
+  tbl_fix_order() %>%
   gtsummary::modify_header(label = "**Período/Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels()
-
-# filter by responsável and categoria
-turmas.doc <- turmas %>%
-  dplyr::filter(Responsável == "Sim") %>%
-  dplyr::filter(Categoria == "Docente")
-
-table.part2 <- 
-gtsummary::tbl_summary(
-    turmas.doc %>% dplyr::select(
-      "Período/Ano",
-      "Docente responsável"
-    ),
-    by = "Período/Ano",
-    type = list(
-      "Docente responsável" ~ "categorical"
-    ),
-    statistic = list(
-      "Docente responsável" ~ "{n}"
-      ),
-    missing = "no",
-    digits = list(gtsummary::everything() ~ 0)) %>%
-  gtsummary::modify_header(label = "**Período/Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels()
-
-# list all tables
-table.all <-
-  list(table.part1,
-       table.part2
-       )
-
-# drop empty elements from list
-table.all <- table.all[lapply(table.all, length) > 0]
-
-table.2.5.1 <- gtsummary::tbl_stack(table.all)
 
 # Print HTML table
 if (knitr::is_html_output()) {
-  print(table.2.5.1)
+  print(table.part1)
 }
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())

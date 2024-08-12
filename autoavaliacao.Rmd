@@ -3478,28 +3478,65 @@ colnames(turmas) <- c(
   "Responsável"
 )
 
-# change all column types to factors
-turmas <- turmas %>%
-  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
-
 # generate table (total by year)
 table.part1 <-
   gtsummary::tbl_summary(
     turmas %>% dplyr::select(
       "Período/Ano",
       "Disciplinas por curso",
-      "Categoria",
-      "Disciplina"
+      "Categoria"
     ),
     by = "Período/Ano",
     type = list(
       "Disciplinas por curso" ~ "categorical",
-      "Categoria" ~ "categorical",
-      "Disciplina" ~ "categorical"
+      "Categoria" ~ "categorical"
     ),
     statistic = list(
       "Disciplinas por curso" ~ "{n}",
-      "Categoria" ~ "{n}",
+      "Categoria" ~ "{n}"
+      ),
+    missing = "no",
+    digits = list(gtsummary::everything() ~ 0)) %>%
+  gtsummary::modify_header(label = "**Período/Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels()
+
+# Print HTML table
+if (knitr::is_html_output()) {
+  print(table.part1)
+}
+# Print LaTeX table
+if (knitr::is_latex_output()) {
+  # Convert gtsummary object to kableExtra object
+  kable_table <- gtsummary::as_kable_extra(
+    x = table.part1,
+    escape = FALSE,
+    format = ifelse(knitr::is_html_output(), "html", "latex"),
+    booktabs = TRUE,
+    linesep = "",
+    caption = ifelse(knitr::is_html_output(), "", "2.5.1 Turmas oferecidas"),
+    bootstrap_options = c("basic", "hover", "condensed", "responsive"),
+    latex_options = c("basic", "scale_down", "HOLD_position"),
+    full_width = TRUE
+  )
+  kable_table
+}
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+
+# generate table (total by year)
+table.part1 <-
+  gtsummary::tbl_summary(
+    turmas %>% dplyr::select(
+      "Período/Ano",
+      "Disciplina"
+    ),
+    by = "Período/Ano",
+    type = list(
+      "Disciplina" ~ "categorical"
+    ),
+    statistic = list(
       "Disciplina" ~ "{n}"
       ),
     missing = "no",
@@ -3508,11 +3545,33 @@ table.part1 <-
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels()
 
-# filter by responsável and categoria
-turmas.doc <- turmas %>%
-  dplyr::filter(Responsável == "Sim") %>%
-  dplyr::filter(Categoria == "Docente")
+# Print HTML table
+if (knitr::is_html_output()) {
+  print(table.part1)
+}
+# Print LaTeX table
+if (knitr::is_latex_output()) {
+  # Convert gtsummary object to kableExtra object
+  kable_table <- gtsummary::as_kable_extra(
+    x = table.part1,
+    escape = FALSE,
+    format = ifelse(knitr::is_html_output(), "html", "latex"),
+    booktabs = TRUE,
+    linesep = "",
+    caption = ifelse(knitr::is_html_output(), "", "2.5.1 Disciplinas oferecidas"),
+    bootstrap_options = c("basic", "hover", "condensed", "responsive"),
+    latex_options = c("basic", "scale_down", "HOLD_position"),
+    full_width = TRUE
+  )
+  kable_table
+}
 
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+
+# get turmas by responsável and categoria DOcente
+turmas.doc <- turmas[turmas$Responsável == "Sim" & turmas$Categoria == "Docente", ]
+  
 table.part2 <- 
 gtsummary::tbl_summary(
     turmas.doc %>% dplyr::select(
@@ -3532,31 +3591,66 @@ gtsummary::tbl_summary(
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels()
 
-# list all tables
-table.all <-
-  list(table.part1,
-       table.part2
-       )
-
-# drop empty elements from list
-table.all <- table.all[lapply(table.all, length) > 0]
-
-table.2.5.1 <- gtsummary::tbl_stack(table.all)
-
 # Print HTML table
 if (knitr::is_html_output()) {
-  print(table.2.5.1)
+  print(table.part2)
 }
 # Print LaTeX table
 if (knitr::is_latex_output()) {
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
-    x = table.2.5.1,
+    x = table.part2,
     escape = FALSE,
     format = ifelse(knitr::is_html_output(), "html", "latex"),
     booktabs = TRUE,
     linesep = "",
-    caption = ifelse(knitr::is_html_output(), "", "2.5.1 Turmas oferecidas"),
+    caption = ifelse(knitr::is_html_output(), "", "2.5.1 Docente responsável pela turma"),
+    bootstrap_options = c("basic", "hover", "condensed", "responsive"),
+    latex_options = c("basic", "scale_down", "HOLD_position"),
+    full_width = TRUE
+  )
+  kable_table
+}
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+
+# get turmas by responsável and categoria Pós-Doc
+turmas.posdoc <- turmas[turmas$Responsável == "Sim" & turmas$Categoria == "Pós-Doc", ]
+  
+table.part3 <- 
+gtsummary::tbl_summary(
+    turmas.posdoc %>% dplyr::select(
+      "Período/Ano",
+      "Docente responsável"
+    ),
+    by = "Período/Ano",
+    type = list(
+      "Docente responsável" ~ "categorical"
+    ),
+    statistic = list(
+      "Docente responsável" ~ "{n}"
+      ),
+    missing = "no",
+    digits = list(gtsummary::everything() ~ 0)) %>%
+  gtsummary::modify_header(label = "**Período/Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels()
+
+# Print HTML table
+if (knitr::is_html_output()) {
+  print(table.part3)
+}
+# Print LaTeX table
+if (knitr::is_latex_output()) {
+  # Convert gtsummary object to kableExtra object
+  kable_table <- gtsummary::as_kable_extra(
+    x = table.part3,
+    escape = FALSE,
+    format = ifelse(knitr::is_html_output(), "html", "latex"),
+    booktabs = TRUE,
+    linesep = "",
+    caption = ifelse(knitr::is_html_output(), "", "2.5.1 Pós-Doc responsável pela turma"),
     bootstrap_options = c("basic", "hover", "condensed", "responsive"),
     latex_options = c("basic", "scale_down", "HOLD_position"),
     full_width = TRUE
