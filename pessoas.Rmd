@@ -1176,7 +1176,7 @@ egressos <- dplyr::select(
 colnames(egressos)[1] <- "Identificador da Pessoa"
 colnames(egressos)[2] <- "Nome"
 colnames(egressos)[3] <- "Nível"
-egressos$Situação <- "EGRESSO"
+try(egressos$Situação <- "EGRESSO", silent = TRUE)
 
 # Pós-Doc
 sheet <- "Pós-Doc"
@@ -1190,7 +1190,7 @@ posdoc <- dplyr::select(
   `Vínculo Fim`
 )
 colnames(posdoc)[2] <- "Nome"
-posdoc$Situação <- "PÓS-DOC"
+try(posdoc$Situação <- "PÓS-DOC", silent = TRUE)
 
 # Docentes
 sheet <- "Docentes"
@@ -1204,7 +1204,7 @@ docentes <- dplyr::select(
   `Data de Desligamento`
 )
 colnames(docentes)[2] <- "Nome"
-docentes$Situação <- "DOCENTE"
+try(docentes$Situação <- "DOCENTE", silent = TRUE)
 
 # bind all data by "Identificador da Pessoa"
 formacao.continuada <- dplyr::bind_rows(
