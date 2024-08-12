@@ -3215,7 +3215,7 @@ formacao.continuada <- formacao.continuada %>%
 # create table to fill with start-end year for each situation
 table <- data.frame(
   "Nome" = NA,
-  "Iniciação científica" = NA,
+  "Bacharelado" = NA,
   "Mestrado" = NA,
   "Doutorado" = NA,
   "Pós-Doc" = NA,
@@ -3231,8 +3231,8 @@ for (i in 1:length(ID)) {
   # get name
   table[i, "Nome"] <- data$Nome[1]
   # get year of start and end for discentes equal to bacharelado
-  table[i, "Iniciação científica"] <- min(data$`Data Matrícula`[data$Nível == "Bacharelado"], na.rm = TRUE)
-  table[i, "Iniciação científica"] <- format(as.Date(table[i, "Iniciação científica"], format = "%d/%m/%Y"), "%Y")
+  table[i, "Bacharelado"] <- min(data$`Data Matrícula`[data$Nível == "Bacharelado"], na.rm = TRUE)
+  table[i, "Bacharelado"] <- format(as.Date(table[i, "Bacharelado"], format = "%d/%m/%Y"), "%Y")
   # get year of start and end for discentes equal to mestrado
   table[i, "Mestrado"] <- min(data$`Data Matrícula`[data$Nível == "Mestrado"], na.rm = TRUE)
   table[i, "Mestrado"] <- format(as.Date(table[i, "Mestrado"], format = "%d/%m/%Y"), "%Y")
@@ -3270,7 +3270,7 @@ table$Formação <- apply(table, 1, function(x) {
 # sort by iniciacao científica, mestrado, doutorado, pós-doc, docente e nome
 table.continuada <- table %>%
   dplyr::arrange(
-    `Iniciação científica`,
+    `Bacharelado`,
     `Mestrado`,
     `Doutorado`,
     `Pós-Doc`,
@@ -3286,7 +3286,7 @@ table.continuada$Ano <- apply(table.continuada, 1, function(x) {
 # select data to print with Ano in quadrienal.vigente
 table.continuada <- table.continuada %>%
   dplyr::filter(
-    table.continuada$`Iniciação científica` == quadrienal.vigente |
+    table.continuada$`Bacharelado` == quadrienal.vigente |
       table.continuada$`Mestrado` == quadrienal.vigente |
       table.continuada$`Doutorado` == quadrienal.vigente |
       table.continuada$`Pós-Doc` == quadrienal.vigente |
