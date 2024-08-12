@@ -3617,32 +3617,34 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 # get turmas by responsável and categoria Pós-Doc
 turmas.posdoc <- turmas[turmas$Responsável == "Sim" & turmas$Categoria == "Pós-Doc", ]
-  
-table.part3 <- 
-gtsummary::tbl_summary(
-    turmas.posdoc %>% dplyr::select(
-      "Período/Ano",
-      "Docente responsável"
-    ),
-    by = "Período/Ano",
-    type = list(
-      "Docente responsável" ~ "categorical"
-    ),
-    statistic = list(
-      "Docente responsável" ~ "{n}"
+
+if(!sjmisc::is_empty(turmas.posdoc)){
+  table.part3 <- 
+    gtsummary::tbl_summary(
+      turmas.posdoc %>% dplyr::select(
+        "Período/Ano",
+        "Docente responsável"
       ),
-    missing = "no",
-    digits = list(gtsummary::everything() ~ 0)) %>%
-  gtsummary::modify_header(label = "**Período/Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels()
+      by = "Período/Ano",
+      type = list(
+        "Docente responsável" ~ "categorical"
+      ),
+      statistic = list(
+        "Docente responsável" ~ "{n}"
+      ),
+      missing = "no",
+      digits = list(gtsummary::everything() ~ 0)) %>%
+    gtsummary::modify_header(label = "**Período/Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+    gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+    gtsummary::bold_labels()
+}
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(turmas.posdoc)) {
   print(table.part3)
 }
 # Print LaTeX table
-if (knitr::is_latex_output()) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(turmas.posdoc)) {
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
     x = table.part3,
