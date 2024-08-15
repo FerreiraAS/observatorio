@@ -2866,9 +2866,200 @@ cat("### **1.2.3 Estabilidade do corpo docente permanente**")
 cat('\n\n')
 ```
 
+```{r estabilidade-corpo-docente, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
+# docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-<!-- EM CONSTRUÇÃO -->
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
 
+# get data for the quadrienio.vigente
+sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
+  plyr::compact()
+
+# filter docentes permanentes
+sucupira <- lapply(sucupira, function(x) {
+  x <- x %>%
+    dplyr::filter(`Categoria` == "PERMANENTE")
+  return(x)
+})
+
+# loop for across the list to get docente, data de admissão e data de desligamento 
+table.doc <- lapply(sucupira, function(x) {
+  x <- x %>%
+    dplyr::select("Nome Docente", "Data de Admissão", "Data de Desligamento")
+  return(x)
+})
+
+# convert date dd/mm/yyy to yyyy
+for(i in 1:length(table.doc)) {
+  table.doc[[i]]$"Data de Admissão" <- as.numeric(format(as.Date(table.doc[[i]]$"Data de Admissão", format = "%d/%m/%Y"), "%Y"))
+  table.doc[[i]]$"Data de Desligamento" <- as.numeric(format(as.Date(table.doc[[i]]$"Data de Desligamento", format = "%d/%m/%Y"), "%Y"))
+}
+
+# name list elements by ano
+names(table.doc) <- quadrienal.vigente
+
+# add a new column with ano as value to each element in the data.frame
+for(i in 1:length(table.doc)) {
+  table.doc[[i]]$"Ano" <- quadrienal.vigente[i]
+}
+table.doc.6 <- table.doc
+
+# rbind the list elements
+table.doc.long <- do.call(rbind, table.doc)
+
+# get docentes with Data Admissão within the quadrienio.vigente
+credenciados <- table.doc.long %>%
+  dplyr::filter(`Data de Admissão` %in% quadrienal.vigente) %>%
+  dplyr::distinct(`Nome Docente`, .keep_all = TRUE)
+
+descredenciados <- table.doc.long %>%
+  dplyr::filter(`Data de Desligamento` %in% quadrienal.vigente) %>%
+  dplyr::distinct(`Nome Docente`, .keep_all = TRUE)
+
+# to title case
+table.doc.long$"Nome Docente" <- tools::toTitleCase(tolower(table.doc.long$"Nome Docente"))
+table.doc.long$Estabilidade <- NA
+
+# calculate number of docentes per year
+table.doc.7 <- table.doc.long %>%
+  dplyr::group_by(Ano) %>%
+  dplyr::summarise(n = dplyr::n_distinct(`Nome Docente`))
+
+table.doc.long <- dplyr::select(table.doc.long, "Ano", "Nome Docente", "Estabilidade")
+
+table.doc.long <- rbind(
+  table.doc.long,
+  data.frame(
+    "Ano" = rep(paste0("Z", min(quadrienal.vigente), "-", max(quadrienal.vigente)), times = length(unique(table.doc.long$"Nome Docente"))),
+    "Nome Docente" = rep("Docentes", times = length(unique(table.doc.long$"Nome Docente"))),
+    "Estabilidade" = rep(NA, times = length(unique(table.doc.long$"Nome Docente"))),
+    check.names = FALSE
+  )
+)
+
+# create a new row total for each year
+for(i in 1:dim(table.doc.7)[1]){
+  table.doc.long <- rbind(
+    table.doc.long,
+    data.frame(
+      "Ano" = rep(table.doc.7$Ano[i], times = table.doc.7$n[i]),
+      "Nome Docente" = rep(NA, times = table.doc.7$n[i]),
+      "Estabilidade" = rep("Total", times = table.doc.7$n[i]),
+      check.names = FALSE
+    )
+  )
+}
+
+# create a new row total for credenciados for each year
+table.doc.long <- rbind(
+  table.doc.long,
+  data.frame(
+    "Ano" = rep(credenciados$Ano),
+    "Nome Docente" = rep(NA, times = nrow(credenciados)),
+    "Estabilidade" = rep("Credenciados", times = nrow(credenciados)),
+    check.names = FALSE
+  )
+)
+
+# create a new row total for descredenciados for each year
+table.doc.long <- rbind(
+  table.doc.long,
+  data.frame(
+    "Ano" = rep(descredenciados$Ano),
+    "Nome Docente" = rep(NA, times = nrow(descredenciados)),
+    "Estabilidade" = rep("Descredenciados", times = nrow(descredenciados)),
+    check.names = FALSE
+  )
+)
+
+# reorder columns
+table.doc.long <- table.doc.long %>%
+  dplyr::select("Ano", "Estabilidade", "Nome Docente")
+
+my_N <- function(data, ...) {
+  gtsummary::style_number(sum(data == "Docentes", na.rm = TRUE), digits = 0)
+}
+
+# bug report
+# https://stackoverflow.com/questions/78811916/gtsummary-tbl-summary-sorting-of-stratify-variable/78812588
+tbl_fix_order <- function(x) {
+  nms <- names(x$table_body)
+  is_stat_cols <- grepl("^stat_", nms)
+  non_stat_cols <- nms[!is_stat_cols]
+  stat_cols <- nms[is_stat_cols]
+  stat_cols <- stat_cols[
+    order(as.integer(gsub("^.*?(\\d+)$", "\\1", stat_cols)))
+  ]
+  x$table_body <- x$table_body[c(non_stat_cols, stat_cols)]
+  
+  x  
+}
+
+# print tables
+table.1.2.3 <- gtsummary::tbl_summary(
+  table.doc.long,
+  by = "Ano",
+  statistic = list(gtsummary::all_categorical() ~ "{n}"),
+  missing = "no",
+  digits = gtsummary::everything() ~ 0,
+    sort = gtsummary::all_categorical() ~ "alphanumeric"
+  ) %>%
+  tbl_fix_order() %>%
+  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels() %>%
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(
+    list(
+      add_stat_1 ~ "**Quadriênio**",
+      gtsummary::all_stat_cols() ~ "**{level}**"
+    )
+  ) %>%
+  gtsummary::remove_row_type(variables = c('Nome Docente'), type = "level", level_value = ("Docentes")) %>%
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+
+# Print HTML table
+if (knitr::is_html_output()) {
+  print(table.1.2.3)
+}
+# Print LaTeX table
+if (knitr::is_latex_output()) {
+  # Convert gtsummary object to kableExtra object
+  kable_table <- gtsummary::as_kable_extra(
+    x = table.1.2.3,
+    escape = FALSE,
+    format = ifelse(knitr::is_html_output(), "html", "latex"),
+    booktabs = TRUE,
+    linesep = "",
+    caption = ifelse(knitr::is_html_output(), "", "1.2.3 Estabilidade do corpo docente permanente"),
+    bootstrap_options = c("basic", "hover", "condensed", "responsive"),
+    latex_options = c("basic", "scale_down", "HOLD_position"),
+    full_width = TRUE
+  )
+  kable_table
+}
+
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+```{r estabilidade-corpo-docente-detalhes, eval = all(has.sucupira.files, knitr::is_html_output())}
+cat('<details>')
+cat('<summary>Estabilidade docente | Dados individuais</summary>')
+options(knitr.kable.NA = '')
+print(
+  knitr::kable(table.doc.5, align = "l", escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = T,
+    position = "center"
+  )
+)
+cat('</details>')
+```
 
 ```{=latex}
 \newpage
