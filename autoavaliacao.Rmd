@@ -1833,13 +1833,11 @@ if(knitr::is_latex_output()) {
   try(table.msc <- apply(table.msc, 2, function(x) gsub("\\}", "\\\\}", x)), silent = TRUE)
 }
 
-table.msc <- as.data.frame(table.msc, check.names = FALSE)
-
 if(!sjmisc::is_empty(table.msc)) {
   ids <- order(table.msc[, 1], decreasing = FALSE)
   table.msc <- table.msc[ids,]
   # Print HTML table
-  if (knitr::is_html_output()) {
+  if (knitr::is_html_output()) { 
     knitr::kable(
       table.msc,
       align = "l",
@@ -1852,23 +1850,18 @@ if(!sjmisc::is_empty(table.msc)) {
       full_width = TRUE,
       position = "center"
     )
-  }
-
-  # Print LaTeX table
-  if (knitr::is_latex_output()) {
-    # Convert gtsummary object to kableExtra object
-    kable_table <- gtsummary::as_kable_extra(
-      x = table.msc,
-      escape = FALSE,
-      format = ifelse(knitr::is_html_output(), "html", "latex"),
-      booktabs = TRUE,
-      linesep = "",
-      caption = ifelse(knitr::is_html_output(), "", "1.1.2 Disciplinas do Mestrado"),
-      bootstrap_options = c("basic", "hover", "condensed", "responsive"),
-      latex_options = c("basic", "scale_down", "HOLD_position"),
-      full_width = TRUE
-    )
-    print(kable_table)
+  } else {
+    # use tinytable for LaTeX output
+    table.msc <- data.frame(table.msc, check.names = FALSE)
+    options(tinytable_print_output = "latex")
+    tinytable::tt(
+      table.msc,
+      width = 1,
+      style = "bootstrap",
+      align = "l",
+      caption = ifelse(knitr::is_html_output(), "", "1.1.2 Disciplinas do Mestrado")
+    ) %>%
+      tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H")
     # Add LaTeX commands for new page and float barrier
     cat("\\newpage\n")
     cat("\\FloatBarrier\n")
@@ -1940,13 +1933,11 @@ if(knitr::is_latex_output()) {
   try(table.dsc <- apply(table.dsc, 2, function(x) gsub("\\}", "\\\\}", x)), silent = TRUE)
 }
 
-table.dsc <- as.data.frame(table.dsc, check.names = FALSE)
-
 if(!sjmisc::is_empty(table.dsc)) {
   ids <- order(table.dsc[, 1], decreasing = FALSE)
   table.dsc <- table.dsc[ids,]
   # Print HTML table
-  if (knitr::is_html_output()) {
+  if (knitr::is_html_output()) { 
     knitr::kable(
       table.dsc,
       align = "l",
@@ -1959,23 +1950,18 @@ if(!sjmisc::is_empty(table.dsc)) {
       full_width = TRUE,
       position = "center"
     )
-  }
-
-  # Print LaTeX table
-  if (knitr::is_latex_output()) {
-    # Convert gtsummary object to kableExtra object
-    kable_table <- gtsummary::as_kable_extra(
-      x = table.dsc,
-      escape = FALSE,
-      format = ifelse(knitr::is_html_output(), "html", "latex"),
-      booktabs = TRUE,
-      linesep = "",
-      caption = ifelse(knitr::is_html_output(), "", "1.1.2 Disciplinas do Doutorado"),
-      bootstrap_options = c("basic", "hover", "condensed", "responsive"),
-      latex_options = c("basic", "scale_down", "HOLD_position"),
-      full_width = TRUE
-    )
-    print(kable_table)
+  } else {
+    # use tinytable for LaTeX output
+    table.dsc <- data.frame(table.dsc, check.names = FALSE)
+    options(tinytable_print_output = "latex")
+    tinytable::tt(
+      table.dsc,
+      width = 1,
+      style = "bootstrap",
+      align = "l",
+      caption = ifelse(knitr::is_html_output(), "", "1.1.2 Disciplinas do Doutorado")
+    ) %>%
+      tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H")
     # Add LaTeX commands for new page and float barrier
     cat("\\newpage\n")
     cat("\\FloatBarrier\n")
