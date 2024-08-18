@@ -213,10 +213,6 @@ navbar:
       menu:
         - text: "-Autoavaliação-"
           href: [autoavaliacao.html]
-        - text: "Metodologia"
-          href: [autoavaliacao.html#metodologia]
-        - text: "Autoavaliação PPG"
-          href: [autoavaliacao.html#autoavaliacao-ppg]
         - text: "Avaliação CAPES"
           href: [autoavaliacao.html#avaliacao-capes]
         - text: "Dados do Coleta"
