@@ -1790,13 +1790,14 @@ names(sucupira.list) <- as.character(anos)
 periodos <- names(sucupira.list)[na.omit(match(quadrienal.vigente, names(sucupira.list)))]
 disciplinas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
 
-# remove duplicates
-disciplinas.raw <- disciplinas.raw[!duplicated(disciplinas.raw),]
-
 # select level
 course.level <- "Mestrado"
 disciplinas.msc <-
   disciplinas.raw[stringr::str_detect(disciplinas.raw$`Nível do Curso`, course.level),]
+
+# remove duplicates
+disciplinas.msc <- disciplinas.msc[!duplicated(disciplinas.msc),]
+
 table.msc <-
   data.frame(
     disciplinas.msc$`Nome da Disciplina`,
@@ -1807,6 +1808,19 @@ table.msc <-
     substr(as.Date(disciplinas.msc$`Data de fim`, format = "%d/%m/%Y"), 1, 4)
   )
 colnames(table.msc) <- c("Disciplina", "Obrigatória", "CR", "CH", "Início", "Fim")
+
+# merge CR (CH)
+table.msc <- table.msc %>%
+  dplyr::mutate(CR = ifelse(is.na(CR), "", ifelse(is.na(CH), CR, paste0(CR, " (", CH, ")")))) %>%
+  dplyr::select(-CH)
+
+# merge Início-Fim in format X - X even if FIm is empty
+table.msc <- table.msc %>%
+  dplyr::mutate('Início-Fim' = ifelse(is.na(Fim), paste0(Início, " - Atual"), paste0(Início, " - ", Fim))) %>% 
+  dplyr::select(-Início, -Fim)
+
+# rename column
+colnames(table.msc) <- c("Disciplina", "Obrigatória", "CR (CH)", "Início-Fim")
 
 # Escape characters in table data & % $ # _ { }
 if(knitr::is_latex_output()) {
@@ -1819,39 +1833,46 @@ if(knitr::is_latex_output()) {
   try(table.msc <- apply(table.msc, 2, function(x) gsub("\\}", "\\\\}", x)), silent = TRUE)
 }
 
-ids <- order(table.msc[, 1], decreasing = FALSE)
-table.curricular <- table.msc[ids,]
+table.msc <- as.data.frame(table.msc, check.names = FALSE)
 
-# print tables
-if (knitr::is_html_output()) {
-  # use kable for HTML output
-  knitr::kable(
-    table.curricular,
-    align = "l",
-    escape = FALSE,
-    format = "html",
-    linesep = "",
-    caption = "1.1.2 Estrutura curricular (Mestrado)"
-  ) %>% kableExtra::kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = TRUE,
-    position = "center"
-  )
-} else {
-  # use tinytable for LaTeX output
-  table.curricular <- data.frame(table.curricular, check.names = FALSE)
-  options(tinytable_print_output = "latex")
-  tinytable::tt(
-    table.curricular,
-    width = 1,
-    style = "bootstrap",
-    align = "l",
-    caption = ifelse(knitr::is_html_output(), "", "1.1.2 Estrutura curricular (Mestrado)")
-  ) %>%
-    tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H")
+if(!sjmisc::is_empty(table.msc)) {
+  ids <- order(table.msc[, 1], decreasing = FALSE)
+  table.msc <- table.msc[ids,]
+  # Print HTML table
+  if (knitr::is_html_output()) {
+    knitr::kable(
+      table.msc,
+      align = "l",
+      escape = FALSE,
+      format = "html",
+      linesep = "",
+      caption = "1.1.2 Disciplinas do Mestrado"
+    ) %>% kableExtra::kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = TRUE,
+      position = "center"
+    )
+  }
+
+  # Print LaTeX table
+  if (knitr::is_latex_output()) {
+    # Convert gtsummary object to kableExtra object
+    kable_table <- gtsummary::as_kable_extra(
+      x = table.msc,
+      escape = FALSE,
+      format = ifelse(knitr::is_html_output(), "html", "latex"),
+      booktabs = TRUE,
+      linesep = "",
+      caption = ifelse(knitr::is_html_output(), "", "1.1.2 Disciplinas do Mestrado"),
+      bootstrap_options = c("basic", "hover", "condensed", "responsive"),
+      latex_options = c("basic", "scale_down", "HOLD_position"),
+      full_width = TRUE
+    )
+    print(kable_table)
     # Add LaTeX commands for new page and float barrier
     cat("\\newpage\n")
     cat("\\FloatBarrier\n")
+  }
 }
 
 # Load source
@@ -1876,13 +1897,14 @@ names(sucupira.list) <- as.character(anos)
 periodos <- names(sucupira.list)[na.omit(match(quadrienal.vigente, names(sucupira.list)))]
 disciplinas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
 
-# remove duplicates
-disciplinas.raw <- disciplinas.raw[!duplicated(disciplinas.raw),]
-
 # select level
 course.level <- "Doutorado"
 disciplinas.dsc <-
   disciplinas.raw[stringr::str_detect(disciplinas.raw$`Nível do Curso`, course.level),]
+
+# remove duplicates
+disciplinas.dsc <- disciplinas.dsc[!duplicated(disciplinas.dsc),]
+
 table.dsc <-
   data.frame(
     disciplinas.dsc$`Nome da Disciplina`,
@@ -1892,8 +1914,20 @@ table.dsc <-
     substr(as.Date(disciplinas.dsc$`Data de início`, format = "%d/%m/%Y"), 1, 4),
     substr(as.Date(disciplinas.dsc$`Data de fim`, format = "%d/%m/%Y"), 1, 4)
   )
-
 colnames(table.dsc) <- c("Disciplina", "Obrigatória", "CR", "CH", "Início", "Fim")
+
+# merge CR (CH)
+table.dsc <- table.dsc %>%
+  dplyr::mutate(CR = ifelse(is.na(CR), "", ifelse(is.na(CH), CR, paste0(CR, " (", CH, ")")))) %>%
+  dplyr::select(-CH)
+
+# merge Início-Fim in format X - X even if FIm is empty
+table.dsc <- table.dsc %>%
+  dplyr::mutate('Início-Fim' = ifelse(is.na(Fim), paste0(Início, " - Atual"), paste0(Início, " - ", Fim))) %>% 
+  dplyr::select(-Início, -Fim)
+
+# rename column
+colnames(table.dsc) <- c("Disciplina", "Obrigatória", "CR (CH)", "Início-Fim")
 
 # Escape characters in table data & % $ # _ { }
 if(knitr::is_latex_output()) {
@@ -1906,39 +1940,46 @@ if(knitr::is_latex_output()) {
   try(table.dsc <- apply(table.dsc, 2, function(x) gsub("\\}", "\\\\}", x)), silent = TRUE)
 }
 
-ids <- order(table.dsc[, 1], decreasing = FALSE)
-table.curricular <- table.dsc[ids,]
+table.dsc <- as.data.frame(table.dsc, check.names = FALSE)
 
-# print tables
-if (knitr::is_html_output()) {
-  # use kable for HTML output
-  knitr::kable(
-    table.curricular,
-    align = "l",
-    escape = FALSE,
-    format = "html",
-    linesep = "",
-    caption = "1.1.2 Estrutura curricular (Doutorado)"
-  ) %>% kableExtra::kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = TRUE,
-    position = "center"
-  )
-} else {
-  # use tinytable for LaTeX output
-  table.curricular <- data.frame(table.curricular, check.names = FALSE)
-  options(tinytable_print_output = "latex")
-  tinytable::tt(
-    table.curricular,
-    width = 1,
-    style = "bootstrap",
-    align = "l",
-    caption = ifelse(knitr::is_html_output(), "", "1.1.2 Estrutura curricular (Doutorado)")
-  ) %>%
-    tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H")
+if(!sjmisc::is_empty(table.dsc)) {
+  ids <- order(table.dsc[, 1], decreasing = FALSE)
+  table.dsc <- table.dsc[ids,]
+  # Print HTML table
+  if (knitr::is_html_output()) {
+    knitr::kable(
+      table.dsc,
+      align = "l",
+      escape = FALSE,
+      format = "html",
+      linesep = "",
+      caption = "1.1.2 Disciplinas do Doutorado"
+    ) %>% kableExtra::kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = TRUE,
+      position = "center"
+    )
+  }
+
+  # Print LaTeX table
+  if (knitr::is_latex_output()) {
+    # Convert gtsummary object to kableExtra object
+    kable_table <- gtsummary::as_kable_extra(
+      x = table.dsc,
+      escape = FALSE,
+      format = ifelse(knitr::is_html_output(), "html", "latex"),
+      booktabs = TRUE,
+      linesep = "",
+      caption = ifelse(knitr::is_html_output(), "", "1.1.2 Disciplinas do Doutorado"),
+      bootstrap_options = c("basic", "hover", "condensed", "responsive"),
+      latex_options = c("basic", "scale_down", "HOLD_position"),
+      full_width = TRUE
+    )
+    print(kable_table)
     # Add LaTeX commands for new page and float barrier
     cat("\\newpage\n")
     cat("\\FloatBarrier\n")
+  }
 }
 
 # Load source
