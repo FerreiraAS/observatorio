@@ -1874,13 +1874,13 @@ if(knitr::is_latex_output()) {
 ```
 
 ```{r 1-1-2-disciplina-msc, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = exists("table.msc")}
-if(knitr::is_html_output()) {
+if(knitr::is_html_output() && !sjmisc::is_empty(table.msc)) {
   cat('##### *Qualitativa (Mestrado)*')
   cat('\n\n')
 }
 
 # print tables
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.msc)) {
   # use kable for HTML output
   knitr::kable(
     table.msc,
@@ -1894,7 +1894,7 @@ if (knitr::is_html_output()) {
     full_width = TRUE,
     position = "center"
   )
-} else {
+} else if (knitr::is_latex_output() && !sjmisc::is_empty(table.msc)) {
   # use tinytable for LaTeX output
   table.msc <- data.frame(table.msc, check.names = FALSE)
   options(tinytable_print_output = "latex")
@@ -1917,13 +1917,13 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 ```{r 1-1-2-disciplinas-dsc, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = exists("table.dsc")}
-if(knitr::is_html_output()) {
+if(knitr::is_html_output() && !sjmisc::is_empty(table.dsc)) {
   cat('##### *Qualitativa (Doutorado)*')
   cat('\n\n')
 }
 
 # print tables
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.dsc)) {
   # use kable for HTML output
   knitr::kable(
     table.dsc,
@@ -1937,7 +1937,7 @@ if (knitr::is_html_output()) {
     full_width = TRUE,
     position = "center"
   )
-} else {
+} else if (knitr::is_latex_output() && !sjmisc::is_empty(table.dsc)) {
   # use tinytable for LaTeX output
   table.dsc <- data.frame(table.dsc, check.names = FALSE)
   options(tinytable_print_output = "latex")
