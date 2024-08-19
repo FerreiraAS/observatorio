@@ -338,8 +338,8 @@ table.missing.gt <-
 if (knitr::is_html_output()) {
   print(table.missing.gt)
 }
-# Print LaTeX table
 
+# Print LaTeX table
 if (knitr::is_latex_output()) {
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
@@ -392,8 +392,8 @@ table.duplicates.gt <-
 if (knitr::is_html_output()) {
   print(table.duplicates.gt)
 }
-# Print LaTeX table
 
+# Print LaTeX table
 if (knitr::is_latex_output()) {
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
@@ -1772,12 +1772,7 @@ if (knitr::is_latex_output()) {
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
-```{r 1-1-2-disciplinas-msc, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
-if(knitr::is_html_output()) {
-  cat('##### *Qualitativa (Mestrado)*')
-  cat('\n\n')
-}
-
+```{r 1-1-2-disciplinas, eval = has.sucupira.files, echo = FALSE, include = FALSE}
 # Load discipline data
 sheet <- "Disciplinas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -1833,62 +1828,6 @@ if(knitr::is_latex_output()) {
   try(table.msc <- apply(table.msc, 2, function(x) gsub("\\}", "\\\\}", x)), silent = TRUE)
 }
 
-if(!sjmisc::is_empty(table.msc)) {
-  ids <- order(table.msc[, 1], decreasing = FALSE)
-  table.msc <- table.msc[ids,]
-  # Print HTML table
-  if (knitr::is_html_output()) { 
-    knitr::kable(
-      table.msc,
-      align = "l",
-      escape = FALSE,
-      format = "html",
-      linesep = "",
-      caption = "1.1.2 Disciplinas do Mestrado"
-    ) %>% kableExtra::kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = TRUE,
-      position = "center"
-    )
-  } else {
-    # use tinytable for LaTeX output
-    table.msc <- data.frame(table.msc, check.names = FALSE)
-    options(tinytable_print_output = "latex")
-    tinytable::tt(
-      table.msc,
-      width = 1,
-      style = "bootstrap",
-      align = "l",
-      caption = ifelse(knitr::is_html_output(), "", "1.1.2 Disciplinas do Mestrado")
-    ) %>%
-      tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H")
-    # Add LaTeX commands for new page and float barrier
-    cat("\\newpage\n")
-    cat("\\FloatBarrier\n")
-  }
-}
-
-# Load source
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-```
-
-```{r 1-1-2-disciplinas-dsc, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
-if(knitr::is_html_output()) {
-  cat('##### *Qualitativa (Doutorado)*')
-  cat('\n\n')
-}
-
-# Load discipline data
-sheet <- "Disciplinas"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# Load years data
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# Bind all sheets for disciplines
-periodos <- names(sucupira.list)[na.omit(match(quadrienal.vigente, names(sucupira.list)))]
-disciplinas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
 
 # select level
 course.level <- "Doutorado"
@@ -1932,44 +1871,92 @@ if(knitr::is_latex_output()) {
   try(table.dsc <- apply(table.dsc, 2, function(x) gsub("\\{", "\\\\{", x)), silent = TRUE)
   try(table.dsc <- apply(table.dsc, 2, function(x) gsub("\\}", "\\\\}", x)), silent = TRUE)
 }
+```
 
-if(!sjmisc::is_empty(table.dsc)) {
-  ids <- order(table.dsc[, 1], decreasing = FALSE)
-  table.dsc <- table.dsc[ids,]
-  # Print HTML table
-  if (knitr::is_html_output()) { 
-    knitr::kable(
-      table.dsc,
-      align = "l",
-      escape = FALSE,
-      format = "html",
-      linesep = "",
-      caption = "1.1.2 Disciplinas do Doutorado"
-    ) %>% kableExtra::kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = TRUE,
-      position = "center"
-    )
-  } else {
-    # use tinytable for LaTeX output
-    table.dsc <- data.frame(table.dsc, check.names = FALSE)
-    options(tinytable_print_output = "latex")
-    tinytable::tt(
-      table.dsc,
-      width = 1,
-      style = "bootstrap",
-      align = "l",
-      caption = ifelse(knitr::is_html_output(), "", "1.1.2 Disciplinas do Doutorado")
-    ) %>%
-      tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H")
-    # Add LaTeX commands for new page and float barrier
-    cat("\\newpage\n")
-    cat("\\FloatBarrier\n")
-  }
+```{r 1-1-2-disciplina-msc, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = exists("table.msc")}
+if(knitr::is_html_output()) {
+  cat('##### *Qualitativa (Mestrado)*')
+  cat('\n\n')
 }
 
-# Load source
+# print tables
+if (knitr::is_html_output()) {
+  # use kable for HTML output
+  knitr::kable(
+    table.msc,
+    align = "l",
+    escape = FALSE,
+    format = "html",
+    linesep = "",
+    caption = "Disciplinas do Mestrado"
+  ) %>% kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = TRUE,
+    position = "center"
+  )
+} else {
+  # use tinytable for LaTeX output
+  table.msc <- data.frame(table.msc, check.names = FALSE)
+  options(tinytable_print_output = "latex")
+  tinytable::tt(
+    table.msc,
+    width = 1,
+    style = "bootstrap",
+    align = "l",
+    caption = ifelse(knitr::is_html_output(), "", "Disciplinas do Mestrado")
+  ) %>%
+    tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H")
+}
+
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+```{=latex}
+\newpage
+\FloatBarrier
+```
+
+```{r 1-1-2-disciplinas-dsc, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = exists("table.dsc")}
+if(knitr::is_html_output()) {
+  cat('##### *Qualitativa (Doutorado)*')
+  cat('\n\n')
+}
+
+# print tables
+if (knitr::is_html_output()) {
+  # use kable for HTML output
+  knitr::kable(
+    table.dsc,
+    align = "l",
+    escape = FALSE,
+    format = "html",
+    linesep = "",
+    caption = "Disciplinas do Doutorado"
+  ) %>% kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = TRUE,
+    position = "center"
+  )
+} else {
+  # use tinytable for LaTeX output
+  table.dsc <- data.frame(table.dsc, check.names = FALSE)
+  options(tinytable_print_output = "latex")
+  tinytable::tt(
+    table.dsc,
+    width = 1,
+    style = "bootstrap",
+    align = "l",
+    caption = ifelse(knitr::is_html_output(), "", "Disciplinas do Doutorado")
+  ) %>%
+    tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H")
+}
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+```{=latex}
+\newpage
+\FloatBarrier
 ```
 
 <br>
