@@ -94,6 +94,9 @@ produtos <- produtos[produtos$`Tipo de Produção` == "TÉCNICA", ]
 # select products
 produtos <- produtos[produtos$`Subtipo de Produção` == "APRESENTAÇÃO DE TRABALHO", ]
 
+# remove rows with NA in all columns
+produtos <- produtos[rowSums(is.na(produtos)) < ncol(produtos), ]
+
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
@@ -194,6 +197,9 @@ produtos <- produtos[produtos$`Tipo de Produção` == "TÉCNICA", ]
 
 # select products
 produtos <- produtos[produtos$`Subtipo de Produção` == "CARTAS, MAPAS E SIMILARES", ]
+
+# remove rows with NA in all columns
+produtos <- produtos[rowSums(is.na(produtos)) < ncol(produtos), ]
 
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
@@ -296,6 +302,9 @@ produtos <- produtos[produtos$`Tipo de Produção` == "TÉCNICA", ]
 # select products
 produtos <- produtos[produtos$`Subtipo de Produção` == "CURSO DE CURTA DURAÇÃO", ]
 
+# remove rows with NA in all columns
+produtos <- produtos[rowSums(is.na(produtos)) < ncol(produtos), ]
+
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
@@ -396,6 +405,9 @@ produtos <- produtos[produtos$`Tipo de Produção` == "TÉCNICA", ]
 
 # select products
 produtos <- produtos[produtos$`Subtipo de Produção` == "DESENVOLVIMENTO DE APLICATIVO", ]
+
+# remove rows with NA in all columns
+produtos <- produtos[rowSums(is.na(produtos)) < ncol(produtos), ]
 
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
@@ -498,6 +510,9 @@ produtos <- produtos[produtos$`Tipo de Produção` == "TÉCNICA", ]
 # select products
 produtos <- produtos[produtos$`Subtipo de Produção` == "DESENVOLVIMENTO DE MATERIAL DIDÁTICO E INSTRUCIONAL", ]
 
+# remove rows with NA in all columns
+produtos <- produtos[rowSums(is.na(produtos)) < ncol(produtos), ]
+
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
@@ -598,6 +613,9 @@ produtos <- produtos[produtos$`Tipo de Produção` == "TÉCNICA", ]
 
 # select products
 produtos <- produtos[produtos$`Subtipo de Produção` == "DESENVOLVIMENTO DE PRODUTO", ]
+
+# remove rows with NA in all columns
+produtos <- produtos[rowSums(is.na(produtos)) < ncol(produtos), ]
 
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
@@ -700,6 +718,9 @@ produtos <- produtos[produtos$`Tipo de Produção` == "TÉCNICA", ]
 # select products
 produtos <- produtos[produtos$`Subtipo de Produção` == "DESENVOLVIMENTO DE TÉCNICA", ]
 
+# remove rows with NA in all columns
+produtos <- produtos[rowSums(is.na(produtos)) < ncol(produtos), ]
+
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
@@ -797,6 +818,9 @@ names(produtos) <-
 
 # select products
 produtos <- produtos[produtos$`Subtipo de Produção` == "EDITORIA", ]
+
+# remove rows with NA in all columns
+produtos <- produtos[rowSums(is.na(produtos)) < ncol(produtos), ]
 
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
@@ -899,6 +923,9 @@ produtos <- produtos[produtos$`Tipo de Produção` == "TÉCNICA", ]
 # select products
 produtos <- produtos[produtos$`Subtipo de Produção` == "MANUTENÇÃO DE OBRA ARTÍSTICA", ]
 
+# remove rows with NA in all columns
+produtos <- produtos[rowSums(is.na(produtos)) < ncol(produtos), ]
+
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
@@ -999,6 +1026,9 @@ produtos <- produtos[produtos$`Tipo de Produção` == "TÉCNICA", ]
 
 # select products
 produtos <- produtos[produtos$`Subtipo de Produção` == "MAQUETE", ]
+
+# remove rows with NA in all columns
+produtos <- produtos[rowSums(is.na(produtos)) < ncol(produtos), ]
 
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
@@ -1101,6 +1131,9 @@ produtos <- produtos[produtos$`Tipo de Produção` == "TÉCNICA", ]
 # select products
 produtos <- produtos[produtos$`Subtipo de Produção` == "ORGANIZAÇÃO DE EVENTO", ]
 
+# remove rows with NA in all columns
+produtos <- produtos[rowSums(is.na(produtos)) < ncol(produtos), ]
+
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
@@ -1201,6 +1234,9 @@ produtos <- produtos[produtos$`Tipo de Produção` == "TÉCNICA", ]
 
 # select products
 produtos <- produtos[produtos$`Subtipo de Produção` == "PATENTE", ]
+
+# remove rows with NA in all columns
+produtos <- produtos[rowSums(is.na(produtos)) < ncol(produtos), ]
 
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
@@ -1303,6 +1339,9 @@ produtos <- produtos[produtos$`Tipo de Produção` == "TÉCNICA", ]
 # select products
 produtos <- produtos[produtos$`Subtipo de Produção` == "PROGRAMA DE RÁDIO OU TV", ]
 
+# remove rows with NA in all columns
+produtos <- produtos[rowSums(is.na(produtos)) < ncol(produtos), ]
+
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
@@ -1403,6 +1442,9 @@ produtos <- produtos[produtos$`Tipo de Produção` == "TÉCNICA", ]
 
 # select products
 produtos <- produtos[produtos$`Subtipo de Produção` == "RELATÓRIO DE PESQUISA", ]
+
+# remove rows with NA in all columns
+produtos <- produtos[rowSums(is.na(produtos)) < ncol(produtos), ]
 
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
@@ -1505,6 +1547,9 @@ produtos <- produtos[produtos$`Tipo de Produção` == "TÉCNICA", ]
 # select products
 produtos <- produtos[produtos$`Subtipo de Produção` == "SERVIÇOS TÉCNICOS", ]
 
+# remove rows with NA in all columns
+produtos <- produtos[rowSums(is.na(produtos)) < ncol(produtos), ]
+
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
@@ -1605,6 +1650,9 @@ produtos <- produtos[produtos$`Tipo de Produção` == "TÉCNICA", ]
 
 # select products
 produtos <- produtos[produtos$`Subtipo de Produção` == "OUTRO", ]
+
+# remove rows with NA in all columns
+produtos <- produtos[rowSums(is.na(produtos)) < ncol(produtos), ]
 
 # get years
 produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)

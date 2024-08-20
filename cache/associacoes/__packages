@@ -24,6 +24,7 @@ dplyr
 DT
 fontawesome
 geobr
+glue
 ggplot2
 ggpubr
 ggraph
@@ -64,6 +65,7 @@ sessioninfo
 sf
 sjmisc
 spatstat.data
+spatstat.univar
 spatstat.geom
 spatstat.random
 nlme
@@ -80,6 +82,7 @@ tibble
 tidyr
 purrr
 forcats
+tinytable
 NLP
 tm
 tools
