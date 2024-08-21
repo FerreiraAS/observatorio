@@ -1647,7 +1647,7 @@ for (j in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r turmas-2024-2021, eval = has.sucupira.files}
+```{r turmas, eval = has.sucupira.files}
 # turmas
 sheet <- "Turmas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -1667,6 +1667,8 @@ turmas <- dplyr::select(
   "Indicador de responsável principal"
 )
 
+turmas$`Nome do responsável` <- tools::toTitleCase(tolower(turmas$`Nome do responsável`))
+
 # unique ID de turma
 turmas.ID <- unique(turmas$`Identificador da Turma`)
 
@@ -1681,41 +1683,83 @@ table.turmas <- data.frame(
 )
 
 # create table of unique turmas
-for(i in 1:length(turmas.ID)) {
+for (i in 1:length(turmas.ID)) {
   # get turma data
-  turma <- turmas[turmas$`Identificador da Turma` == turmas.ID[i],]
+  turma <- turmas[turmas$`Identificador da Turma` == turmas.ID[i], ]
   # get turma ano e periodo
-  table.turmas$Ano[i] <- as.numeric(unlist(strsplit(unique(turma$`Período/Ano`), "/"))[2])
-  table.turmas$Período[i] <- as.numeric(unlist(strsplit(unique(turma$`Período/Ano`), "/"))[1])
+  table.turmas$Ano[i] <- as.numeric(unlist(strsplit(unique(
+    turma$`Período/Ano`
+  ), "/"))[2])
+  table.turmas$Período[i] <- as.numeric(unlist(strsplit(unique(
+    turma$`Período/Ano`
+  ), "/"))[1])
   # get turma disciplina
   table.turmas$`Disciplina`[i] <- unique(turma$`Nome da Disciplina`)
   # get turma nível
   table.turmas$`Nível`[i] <- unique(turma$`Nível do curso`)
-  # get turma responsável
-  table.turmas$`Responsável`[i] <- paste0(
-    stringr::str_to_title(unique(turma$`Nome do responsável`[turma$`Indicador de responsável principal` == "Sim"])),
-    " (",
-    unique(turma$`Categoria do responsável`[turma$`Indicador de responsável principal` == "Sim"]),
-    ")"
+  # get turma responsável if existent
+  responsaveis <- turma[turma$`Indicador de responsável principal` == "Sim",]
+  if (!sjmisc::is_empty(responsaveis)) {
+    for (j in 1:dim(responsaveis)[1]) {
+      try(if (responsaveis$`Categoria do responsável`[j] == "Discente") {
+        responsaveis$Responsável[j] <-
+          paste0("<b>", responsaveis$`Nome do responsável`[j], "¹", "</b>")
+      } else if (responsaveis$`Categoria do responsável`[j] == "Egresso") {
+        responsaveis$Responsável[j] <-
+          paste0("<b>", responsaveis$`Nome do responsável`[j], "²", "</b>")
+      } else if (responsaveis$`Categoria do responsável`[j] == "Docente") {
+        responsaveis$Responsável[j] <-
+          paste0("<b>", responsaveis$`Nome do responsável`[j], "³", "</b>")
+      } else {
+        responsaveis$Responsável[j] <-
+          responsaveis$`Nome do responsável`[j]
+      }, silent = TRUE)
+    }
+  }
+  # paste colaboradores
+  table.turmas$Responsável[i] <- paste0(
+    paste0(responsaveis$Responsável, collapse = ", "),
+    collapse = ", "
   )
+  
   # get turma colaboradores if existent
-  if(sum(turma$`Indicador de responsável principal` == "Não") > 0){
+  colaboradores <- turma[turma$`Indicador de responsável principal` == "Não", ]
+  if (!sjmisc::is_empty(colaboradores)) {
+    for (j in 1:dim(colaboradores)[1]) {
+      try(if (colaboradores$`Categoria do responsável`[j] == "Discente") {
+        colaboradores$Colaboradores[j] <-
+          paste0("<b>", colaboradores$`Nome do responsável`[j], "¹", "</b>")
+      } else if (colaboradores$`Categoria do responsável`[j] == "Egresso") {
+        colaboradores$Colaboradores[j] <-
+          paste0("<b>", colaboradores$`Nome do responsável`[j], "²", "</b>")
+      } else if (colaboradores$`Categoria do responsável`[j] == "Docente") {
+        colaboradores$Colaboradores[j] <-
+          paste0("<b>", colaboradores$`Nome do responsável`[j], "³", "</b>")
+      } else {
+        colaboradores$Colaboradores[j] <-
+          colaboradores$`Nome do responsável`[j]
+      }, silent = TRUE)
+    }
+    # paste colaboradores
     table.turmas$`Colaboradores`[i] <- paste0(
-      stringr::str_to_title(turma$`Nome do responsável`[turma$`Indicador de responsável principal` == "Não"]),
-      " (",
-      turma$`Categoria do responsável`[turma$`Indicador de responsável principal` == "Não"],
-      ")",
+      paste0(colaboradores$Colaboradores, collapse = ", "),
       collapse = ", "
     )
   }
 }
 
 # sort by Ano, Período, Disciplina, Nivel
-table.turmas <- table.turmas[order(-table.turmas$Ano, -table.turmas$Período, table.turmas$Disciplina, table.turmas$Nível),]
+table.turmas <- table.turmas[order(
+  -table.turmas$Ano,
+  -table.turmas$Período,
+  table.turmas$Disciplina,
+  table.turmas$Nível
+), ]
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.turmas, title = "Programa - Turmas")
+cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```

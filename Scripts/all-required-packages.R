@@ -5,7 +5,7 @@
 # 3. packup()
 
 # set default directory
-options(repos = list(CRAN="http://cran.rstudio.com/"))
+options(repos = list(CRAN = "http://cran.rstudio.com/"))
 
 # set timeout to download packages, in seconds
 options(timeout = 360)
@@ -87,17 +87,10 @@ packs.cran <-
     "yaml"
   )
 
-for (i in 1:length(packs.cran)) {
-  if (!require(packs.cran[i], character.only = TRUE, quietly = TRUE)) {
-    install.packages(packs.cran[i],
-                     character.only = TRUE,
-                     dependencies = TRUE)
-  }
-}
-
 # other packages work better if installed from github
 packs.git <-
-  c("cssparser",
+  c(
+    "cssparser",
     "geobr",
     "packup",
     "rcrossref",
@@ -105,41 +98,58 @@ packs.git <-
     "rscopus",
     "sf",
     "pacman",
-    "textreadr")
+    "textreadr"
+  )
 
-if (!require("cssparser", character.only = TRUE, quietly = TRUE)) {
-  remotes::install_github('coolbutuseless/cssparser')
-}
-
-if (!require("geobr", character.only = TRUE, quietly = TRUE)) {
-  devtools::install_github("ipeaGIT/geobr", subdir = "r-package")
-}
-
-if (!require("packup", character.only = TRUE, quietly = TRUE)) {
-  devtools::install_github("milesmcbain/packup")
-}
-
-if (!require("rcrossref", character.only = TRUE, quietly = TRUE)) {
-  devtools::install_github("ropensci/rcrossref")
-}
-
-if (!require("retractcheck",
-             character.only = TRUE,
-             quietly = TRUE)) {
-  remotes::install_github("libscie/retractcheck")
-}
-
-if (!require("rscopus", character.only = TRUE, quietly = TRUE)) {
-  devtools::install_github("muschellij2/rscopus")
-}
-
-if (!require("sf", character.only = TRUE, quietly = TRUE)) {
-  remotes::install_github("r-spatial/sf")
-}
-
-if (!require("pacman")) {
-  install.packages("pacman")
-  pacman::p_load_gh("trinker/textreadr")
+# check if there is internet connection
+if (curl::has_internet()) {
+  for (i in 1:length(packs.cran)) {
+    if (!require(packs.cran[i],
+                 character.only = TRUE,
+                 quietly = TRUE)) {
+      install.packages(packs.cran[i],
+                       character.only = TRUE,
+                       dependencies = TRUE)
+    }
+  }
+  
+  if (!require("cssparser", character.only = TRUE, quietly = TRUE)) {
+    remotes::install_github('coolbutuseless/cssparser')
+  }
+  
+  if (!require("geobr", character.only = TRUE, quietly = TRUE)) {
+    devtools::install_github("ipeaGIT/geobr", subdir = "r-package")
+  }
+  
+  if (!require("packup", character.only = TRUE, quietly = TRUE)) {
+    devtools::install_github("milesmcbain/packup")
+  }
+  
+  if (!require("rcrossref", character.only = TRUE, quietly = TRUE)) {
+    devtools::install_github("ropensci/rcrossref")
+  }
+  
+  if (!require("retractcheck",
+               character.only = TRUE,
+               quietly = TRUE)) {
+    remotes::install_github("libscie/retractcheck")
+  }
+  
+  if (!require("rscopus", character.only = TRUE, quietly = TRUE)) {
+    devtools::install_github("muschellij2/rscopus")
+  }
+  
+  if (!require("sf", character.only = TRUE, quietly = TRUE)) {
+    remotes::install_github("r-spatial/sf")
+  }
+  
+  if (!require("pacman")) {
+    install.packages("pacman")
+    pacman::p_load_gh("trinker/textreadr")
+  }
+  
+  # update all packages
+  update.packages(checkBuilt = TRUE, ask = FALSE)
 }
 
 # load all libraries
@@ -148,6 +158,3 @@ packs <- unique(c(packs.cran, packs.git))
 for (i in 1:length(packs)) {
   library(packs[i], character.only = TRUE)
 }
-
-# update all packages
-update.packages(checkBuilt = TRUE, ask = FALSE)

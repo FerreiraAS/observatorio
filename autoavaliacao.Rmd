@@ -2068,6 +2068,12 @@ for (j in 1:length(abas)) {
     cat("\\FloatBarrier\n")
   }
 }
+
+if (knitr::is_html_output()) {
+  # print end of tab rows
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>'
+  )
+}
 ```
 
 <br>
@@ -2961,6 +2967,12 @@ cat('\n\n')
 cat(
   "**Fontes**: [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**"
 )
+
+if (knitr::is_html_output()) {
+  # print end of tab rows
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>'
+  )
+}
 ```
 
 <br>
@@ -3536,6 +3548,8 @@ if (knitr::is_latex_output()) {
   cat("\\newpage\n")
   cat("\\FloatBarrier\n")
 }
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -3617,6 +3631,12 @@ turmas.raw$`Período/Ano` <-
     sub("/.*", "", turmas.raw$`Período/Ano`),
     sep = "/"
   )
+
+# remove duplicates based on selected columns
+turmas.raw <- turmas.raw[!duplicated(turmas.raw[c("Período/Ano",
+                                                  "ID da Disciplina",
+                                                  "Nome da Disciplina",
+                                                  "Nível do curso")]), ]
 
 # select variables
 turmas <- turmas.raw %>%
@@ -3925,8 +3945,6 @@ cat('\n\n')
 
 <!-- EM CONSTRUÇÃO -->
 
-
-<br>
 
 ```{=latex}
 \newpage
@@ -4804,7 +4822,7 @@ if (knitr::is_latex_output()) {
   cat("\\FloatBarrier\n")
 }
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 <br>

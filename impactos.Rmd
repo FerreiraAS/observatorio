@@ -98,6 +98,12 @@ turmas.raw$`Período/Ano` <-
     sep = "/"
   )
 
+# remove duplicates based on selected columns
+turmas.raw <- turmas.raw[!duplicated(turmas.raw[c("Período/Ano",
+                                                  "ID da Disciplina",
+                                                  "Nome da Disciplina",
+                                                  "Nível do curso")]), ]
+
 # select variables
 turmas <- turmas.raw %>%
   dplyr::select(c(
@@ -172,6 +178,12 @@ turmas.raw$`Período/Ano` <-
     sub("/.*", "", turmas.raw$`Período/Ano`),
     sep = "/"
   )
+
+# remove duplicates based on selected columns
+turmas.raw <- turmas.raw[!duplicated(turmas.raw[c("Período/Ano",
+                                                  "ID da Disciplina",
+                                                  "Nome da Disciplina",
+                                                  "Nível do curso")]), ]
 
 # select variables
 turmas <- turmas.raw %>%
@@ -449,8 +461,12 @@ table.2.3.1 <-
  ) %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA)
 
-# Print table
-print(table.2.3.1)
+# Print HTML table
+if (knitr::is_html_output()) {
+  print(table.2.3.1)
+}
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1121,7 +1137,7 @@ if (knitr::is_html_output()) {
   print(table.3.2.1)
 }
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -1845,13 +1861,13 @@ periodos <- names(sucupira.list)
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
+# dplyr::selecting those with COVID in the title
+tcc.all <-
+  tcc.all[grep(paste(tolower(pandemia), collapse = "|"),
+           tolower(tcc.all$`Nome do Trabalho de Conclusão`)),]
+
 tcc <-
   tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "TESE",]
-
-# dplyr::selecting those with COVID in the title
-tcc <-
-  tcc[grep(paste(tolower(pandemia), collapse = "|"),
-               tolower(tcc.all$`Nome do Trabalho de Conclusão`)),]
 
 # make unique ID
 id.TCC <- tcc$"Identificador do Trabalho de Conclusão"
@@ -1908,7 +1924,7 @@ if (!sjmisc::is_empty(id.TCC)) {
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.tese, title = "Impactos - Ações durante a Pandemia - Teses")
+create_dt(table.tese, title = "Repositório - Teses")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1937,13 +1953,13 @@ periodos <- names(sucupira.list)
 periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
 tcc.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
+# dplyr::selecting those with COVID in the title
+tcc.all <-
+  tcc.all[grep(paste(tolower(pandemia), collapse = "|"),
+           tolower(tcc.all$`Nome do Trabalho de Conclusão`)),]
+
 tcc <-
   tcc.all[tcc.all$`Tipo de Trabalho de Conclusão` == "DISSERTAÇÃO",]
-
-# dplyr::selecting those with COVID in the title
-tcc <-
-  tcc[grep(paste(tolower(pandemia), collapse = "|"),
-               tolower(tcc.all$`Nome do Trabalho de Conclusão`)),]
 
 # make unique ID
 id.TCC <- tcc$"Identificador do Trabalho de Conclusão"
@@ -1955,7 +1971,7 @@ for (i in 1:length(id.TCC)) {
   tcc$`País da Pessoa da Banca`[match(id.TCC[i], tcc$"Identificador do Trabalho de Conclusão")] <- paises
 }
 
-table.tese <- data.frame(
+table.dissert <- data.frame(
   "Ano" = rep(NA, length(id.TCC)),
   "Linha de Pesquisa" = rep(NA, length(id.TCC)),
   "Título" = rep(NA, length(id.TCC)),
@@ -1965,10 +1981,10 @@ table.tese <- data.frame(
   "País" = rep(NA, length(id.TCC)),
   check.names = FALSE
 )
-  
+
 if (!sjmisc::is_empty(id.TCC)) {
   # select data
-  table.tese <-
+  table.dissert <-
     data.frame(
       "Ano" = format((as.Date(gsub("/", "-", tcc$'Data da Defesa'), "%d-%m-%Y")), "%Y"),
       "Linha de Pesquisa" = tcc$`Linha de Pesquisa`,
@@ -1980,27 +1996,27 @@ if (!sjmisc::is_empty(id.TCC)) {
       check.names = FALSE
     )
   
-  table.tese[, 2] <-
-    as.vector(unlist(lapply(table.tese[, 2], FUN = stringr::str_to_title)))
-  table.tese[, 3] <-
-    as.vector(unlist(lapply(table.tese[, 3], FUN = stringr::str_to_sentence)))
-  table.tese[, 4] <-
-    as.vector(unlist(lapply(table.tese[, 4], FUN = stringr::str_to_title)))
-  table.tese[, 5] <-
-    as.vector(unlist(lapply(table.tese[, 5], FUN = stringr::str_to_title)))
-  table.tese[, 6] <-
-    as.vector(unlist(lapply(table.tese[, 6], FUN = stringr::str_to_title)))
+  table.dissert[, 2] <-
+    as.vector(unlist(lapply(table.dissert[, 2], FUN = stringr::str_to_title)))
+  table.dissert[, 3] <-
+    as.vector(unlist(lapply(table.dissert[, 3], FUN = stringr::str_to_sentence)))
+  table.dissert[, 4] <-
+    as.vector(unlist(lapply(table.dissert[, 4], FUN = stringr::str_to_title)))
+  table.dissert[, 5] <-
+    as.vector(unlist(lapply(table.dissert[, 5], FUN = stringr::str_to_title)))
+  table.dissert[, 6] <-
+    as.vector(unlist(lapply(table.dissert[, 6], FUN = stringr::str_to_title)))
 
   # drop duplicated entries
-  table.tese <- table.tese[!duplicated(table.tese), ]
+  table.dissert <- table.dissert[!duplicated(table.dissert), ]
   
   # sort by Ano and Titulo
-  table.tese <- dplyr::arrange(table.tese, dplyr::desc(Ano), Título)
+  table.dissert <- dplyr::arrange(table.dissert, dplyr::desc(Ano), Título)
 }
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.tese, title = "Impactos - Ações durante a Pandemia - Dissertações")
+create_dt(table.dissert, title = "Repositório - Dissertações")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```

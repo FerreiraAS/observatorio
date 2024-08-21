@@ -347,33 +347,40 @@ O Observatório é atualizado periodicamente. Para receber atualizações no seu
 
 -   [**Observatório PPGFisio**](https://ppgfisioufc.github.io/PPGFisio_UFC/) \| Programa de Pós-graduação em Fisioterapia
 
-### [**UFTM-UFU**](https://www.uftm.edu.br/stricto-sensu/ppgfisio) **\| Universidade Federal do Triângulo Mineiro - Universidade Federal de Uberlândia**
+### [**UFTM-UFU**](https://www.uftm.edu.br) **\| Universidade Federal do Triângulo Mineiro - Universidade Federal de Uberlândia**
 
 -   [**Observatório PPGFisio**](https://ppgfisiouftmufu.github.io/ObservatorioUFTM_UFU/) \| Programa de Pós-graduação em Fisioterapia
 
-### [**UFRN**](https://posgraduacao.ufrn.br/ppgfst) **\| Universidade Federal do Rio Grande do Norte**
+### [**UFRN**](https://www.ufrn.br) **\| Universidade Federal do Rio Grande do Norte**
 
 -   [**Observatório UFRN**](https://ppgfisioterapia.github.io/observatorioUFRN/) \| Programa de Pós-graduação em Ciências da Reabilitação
 
-### [**USP**](https://www.fm.usp.br/fofito/pos-graduacao/programa-de-ciencias-da-reabilitacao) **\| Universidade de São Paulo**
+### [**USP**](https://www5.usp.br) **\| Universidade de São Paulo**
 
 -   [**Observatório PPGPosReab**](https://ppgreab.github.io/Observatorio-PPGPosReab-USP/) \| Programa de Pós-graduação em Ciências da Reabilitação
 
-### [**IFRJ**](https://www.ifrj.edu.br/cursos-pos-graduacao/stricto-sensu/programa-pos-graduacao-ciencia-tecnologia-e-inovacao-saude-0/) **\| Instituto Federal do Rio de Janeiro**
+### [**IFRJ**](https://www.ifrj.edu.br) **\| Instituto Federal do Rio de Janeiro**
 
 -   [**Observatório PPGCTIS**](https://ppgctis.github.io/ObservatorioCTIS/) \| Programa de Pós-graduação em Ciência, Tecnologia e Inovação em Saúde
 
-### [**UPE**](https://www.upe.br/petrolina/ppgrdf/) **\| Universidade de Pernambuco**
+### [**UPE**](https://www.upe.br) **\| Universidade de Pernambuco**
 
 -   [**Observatório PPGRDF**](https://ppgrdf-upe.github.io/Observatorio_PPGRDF/) \| Programa de Pós-graduação em Reabilitação e Desempenho Funcional
 
-### [**UFMG**](http://www.eeffto.ufmg.br/eeffto/) **\| Universidade Federal de Minas Gerais**
+### [**UFMG**](https://ufmg.br) **\| Universidade Federal de Minas Gerais**
 
 -   [**Observatório PPGCR**]() \| Programa de Pós-graduação em Ciências da Reabilitação
 
+### [**UFF**](https://www.uff.br) **\| Universidade Federal de Minas Gerais**
+
+-   [**Observatório PPGCN**]() \| Programa de Pós-graduação em Ciências da Nutrição
+
 ### [**UNIEVANGÉLICA**](https://www4.unievangelica.edu.br) **\| Universidade Evangélica de Goiás**
 
+-   [**Observatório PPGCF**]() \| Programa de Pós-graduação em Ciências Farmacêuticas
 -   [**Observatório PPGMHR**]() \| Programa de Pós-graduação em Ciências do Movimento Humano e Reabilitação
+-   [**Observatório PPGO**]() \| Programa de Pós-graduação em Odontologia
+-   [**Observatório PPGSTMA**]() \| Programa de Pós-graduação em Sociedade, Tecnologia e Meio Ambiente
 
 
 ## **FAQ**

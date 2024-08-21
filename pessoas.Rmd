@@ -1214,6 +1214,9 @@ formacao.continuada <- dplyr::bind_rows(
   docentes
 )
 
+# format names
+formacao.continuada$Nome <- tools::toTitleCase(tolower(formacao.continuada$Nome))
+
 # remove duplicates
 formacao.continuada <- formacao.continuada %>%
   dplyr::distinct()
@@ -1379,9 +1382,6 @@ externos <- unique(externos)
 # drop columns
 externos <- externos %>% dplyr::select("Nome do Participante", "Tipos de Participação", "Instituição de Origem", "País")
 
-# complete cases only
-externos <- externos[complete.cases(externos), ]
-
 # format names
 externos$`Nome do Participante` <- tools::toTitleCase(tolower(externos$`Nome do Participante`))
 externos$`Tipos de Participação` <- tools::toTitleCase(tolower(externos$`Tipos de Participação`))
@@ -1414,9 +1414,6 @@ names(sucupira.list) <- as.character(anos)
 # drop columns and remove duplicated entries
 externos <- externos %>% dplyr::select("Instituição de Origem", "País")
 externos <- unique(externos)
-
-# complete cases only
-externos <- externos[complete.cases(externos), ]
 
 # format names
 externos$`Instituição de Origem` <- toupper(externos$`Instituição de Origem`)
