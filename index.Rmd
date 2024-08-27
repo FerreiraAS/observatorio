@@ -1186,7 +1186,7 @@ table.5 <- data.frame(metricas_artigos$`Valor do Item de Detalhamento`, metricas
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 # Define colors using RColorBrewer
-colors <- RColorBrewer::brewer.pal(n = length(agencias), name = "Set3")
+colors <- RColorBrewer::brewer.pal(n = length(table.1), name = "Set3")
 
 # Reshape data for Plotly
 data_long <- reshape2::melt(table.1, value.name = "Frequência")
