@@ -2178,8 +2178,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
 # periodo
-n.anos <- 100
-periodo <- (as.numeric(format(Sys.Date(), "%Y")) - n.anos):(as.numeric(format(Sys.Date(), "%Y")))
+periodo <- min(as.numeric(anos)):max(as.numeric(anos))
 
 # egressos
 sheet <- "Discentes - Orientadores"
