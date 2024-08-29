@@ -408,7 +408,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 
 ### **Associações** {.tabset}
 
-```{r associacoes, cache = TRUE, cache.path = "cache/associacoes/", eval = has.sucupira.files}
+```{r associacoes, cache = TRUE, cache.path = "cache/associacoes/", eval = all(has.sucupira.files, curl::has_internet())}
 # Docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -442,7 +442,7 @@ for (id in 1:length(orcids)) {
 
 ### **Corpo editorial de periódicos** {.tabset}
 
-```{r corpo-editorial, cache = TRUE, cache.path = "cache/corpo-editorial/", eval = has.sucupira.files}
+```{r corpo-editorial, cache = TRUE, cache.path = "cache/corpo-editorial/", eval = all(has.sucupira.files, curl::has_internet())}
 # Docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -476,7 +476,7 @@ for (id in 1:length(orcids)) {
 
 ### **Revisor de periódicos** {.tabset}
 
-```{r revisores, cache = TRUE, cache.path = "cache/revisores/", eval = has.sucupira.files}
+```{r revisores, cache = TRUE, cache.path = "cache/revisores/", eval = all(has.sucupira.files, curl::has_internet())}
 # Docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())

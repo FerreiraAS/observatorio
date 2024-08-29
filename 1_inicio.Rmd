@@ -87,9 +87,20 @@ css <- cssparser::read_css("./CSS/main-color.css")
 main.color <- css$`:root`$`--mybackgroundcolor`
 ```
 
+## **Qualis CAPES**
+
+```{r qualis-capes, cache = TRUE, cache.path = "cache/qualis-capes/"}
+# read XLSX file
+qualis <- readxl::read_xlsx(list.files(
+  path = "Metrics/Qualis",
+  pattern = ".xlsx",
+  full.names = TRUE
+))
+```
+
 ## **GeoBR data**
 
-```{r geobr-data, cache = TRUE, cache.path = "cache/geobr-data/"}
+```{r geobr-data, cache = TRUE, cache.path = "cache/geobr-data/", eval = curl::has_internet()}
 # reading BR geospatial data from IPEA
 geoBRdata <- geobr::list_geobr()$years[3]
 # reading BR geospatial data from IPEA
@@ -554,7 +565,7 @@ source_with_error <- c()
 
 ### **Altmetric (score)**
 
-```{r altmetric-doi-sucupira, cache = TRUE, cache.path = "cache/altmetric-doi-sucupira/", eval = has.metricas.doi.sucupira}
+```{r altmetric-doi-sucupira, cache = TRUE, cache.path = "cache/altmetric-doi-sucupira/", eval = all(has.metricas.doi.sucupira, curl::has_internet())}
 # iterate item-wise
 for (item in 1:nrow(produtos.sucupira)) {
   # match ID da Produção entre produtos.sucupira e produtos.detalhes.sucupira
@@ -611,7 +622,7 @@ data.table::setnames(produtos.detalhes.sucupira, 'score', 'altmetric_score')
 
 ### **CrossRef (Open Access, Citations)**
 
-```{r crossref-doi-sucupira, cache = TRUE, cache.path = "cache/crossref-doi-sucupira/", eval = has.metricas.doi.sucupira}
+```{r crossref-doi-sucupira, cache = TRUE, cache.path = "cache/crossref-doi-sucupira/", eval = all(has.metricas.doi.sucupira, curl::has_internet())}
 # continue from previous chunk
 
 # iterate item-wise
@@ -644,7 +655,7 @@ for (item in 1:nrow(produtos.sucupira)) {
 
 ### **Scopus (SJR, CiteScore)**
 
-```{r scopus-issn-sucupira, cache = TRUE, cache.path = "cache/scopus-issn-sucupira/", eval = has.metricas.doi.sucupira}
+```{r scopus-issn-sucupira, cache = TRUE, cache.path = "cache/scopus-issn-sucupira/", eval = all(has.metricas.doi.sucupira, curl::has_internet())}
 # continue from previous chunk
 
 # get unique ISSN
@@ -688,19 +699,19 @@ for (item in 1:nrow(issn.unique)) {
 
 ### **PlumX (score)**
 
-```{r plumx-doi-sucupira, cache = TRUE, cache.path = "cache/plumx-doi-sucupira/", eval = has.metricas.doi.sucupira}
+```{r plumx-doi-sucupira, cache = TRUE, cache.path = "cache/plumx-doi-sucupira/", eval = all(has.metricas.doi.sucupira, curl::has_internet())}
 # add to data.frame
 ```
 
 ### **Dimensions (score)**
 
-```{r dimensions-doi-sucupira, cache = TRUE, cache.path = "cache/dimensions-doi-sucupira/", eval = has.metricas.doi.sucupira}
+```{r dimensions-doi-sucupira, cache = TRUE, cache.path = "cache/dimensions-doi-sucupira/", eval = all(has.metricas.doi.sucupira, curl::has_internet())}
 # add to data.frame
 ```
 
 ## **Check DOI produção PPG**
 
-```{r metricas-doi-ppg, cache = TRUE, cache.path = "cache/metricas-doi-ppg/", eval = FALSE}
+```{r metricas-doi-ppg, cache = TRUE, cache.path = "cache/metricas-doi-ppg/", eval = all(has.metricas.doi.sucupira, curl::has_internet())}
 
 ```
 

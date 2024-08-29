@@ -24,7 +24,6 @@ packs.cran <-
     "data.tree",
     "details",
     "devtools",
-    "do",
     "evaluate",
     # plyr first, then dplyr
     "plyr",

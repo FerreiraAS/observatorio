@@ -1022,11 +1022,22 @@ metricas_all_ID <- metricas_all[!duplicated(metricas_all$"ID da Produção"),]
 
 metricas_all_ID$Qualis[is.na(metricas_all_ID$Qualis)] <- "Não classificado"
 
+# get only artigos
+metricas_all_ID <- metricas_all_ID[metricas_all_ID$"Subtipo de Produção" == "ARTIGO EM PERIÓDICO",]
+
+# loop to get Qualis values from matched ISSN values
+for(i in 1:dim(metricas_all_ID)[1]) {
+  # check if ISSN exists in the list
+  if(!sjmisc::is_empty(which(metricas_all_ID$ISSN[i] == qualis$ISSN))){
+      metricas_all_ID$Qualis[i] <- as.character(unique(qualis[which(metricas_all_ID$ISSN[i] == qualis$ISSN), "Estrato"]))
+  }
+}
+
 síntese.ano <- dplyr::bind_cols(
       Ano = as.numeric(metricas_all_ID$"Ano da Produção"),
+      Qualis = as.factor(metricas_all_ID$Qualis),
       CiteScore = as.numeric(metricas_all_ID$CiteScore),
       SJR = as.numeric(metricas_all_ID$SJR),
-      Qualis = as.character(metricas_all_ID$Qualis),
       Citações = as.numeric(metricas_all_ID$citations),
       Altmetric = as.numeric(metricas_all_ID$altmetric_score),
       Facebook = as.numeric(metricas_all_ID$cited_by_fbwalls_count),
@@ -1046,9 +1057,9 @@ síntese.ano <- dplyr::bind_cols(
 síntese.ano <- síntese.ano %>%
   dplyr::select(c(
     "Ano",
+    "Qualis",
     "CiteScore",
     "SJR",
-    "Qualis",
     "Citações",
     "Altmetric",
     "Facebook",
@@ -1078,8 +1089,8 @@ table.3.2.1 <-
     by = "Ano",
     type = list(
       "CiteScore" ~ "continuous",
-      "SJR" ~ "continuous",
       "Qualis" ~ "categorical",
+      "SJR" ~ "continuous",
       "Citações" ~ "continuous",
       "Altmetric" ~ "continuous",
       "Facebook" ~ "continuous",
@@ -1096,13 +1107,13 @@ table.3.2.1 <-
       ),
     statistic = list(
       gtsummary::all_continuous() ~ "{median} ({min}-{max})",
-      gtsummary::all_categorical() ~ "{n}"
+      gtsummary::all_categorical() ~ "{n} ({p}%)"
       ),
     missing = "no",
     digits = list(
+      "Qualis" ~ 0,
       "CiteScore" ~ 2,
       "SJR" ~ 2,
-      "Qualis" ~ 0,
       "Citações" ~ 0,
       "Altmetric" ~ 0,
       "Facebook" ~ 0,
@@ -1122,7 +1133,7 @@ table.3.2.1 <-
     col_label = "**Subtotal**",
     statistic = list(
       gtsummary::all_continuous() ~ "{median} ({min}-{max})",
-      gtsummary::all_categorical() ~ "{n}"
+      gtsummary::all_categorical() ~ "{n} ({p}%)"
       )
   ) %>%
   gtsummary::modify_header(
@@ -1138,6 +1149,10 @@ if (knitr::is_html_output()) {
 }
 
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+
+cat('\n\n')
+cat('**Nota**: A classificação dos periódicos pelo Qualis refere-se à Avaliação Quadrienal 2017-2020 conforme arquivo disponibilizado na [Plataforma Sucupira](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.xhtml) e não substitui a classificação da CAPES da Avaliação Quadrienal ', min(quadrienal.vigente), '-', max(quadrienal.vigente), '.', sep = "")
+cat('\n\n')
 ```
 
 <br>
