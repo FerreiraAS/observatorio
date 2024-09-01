@@ -898,7 +898,7 @@ plot.3 <- plot.3 %>% plotly::layout(
 
 
 editais <- financiadores$Programa
-top <- min(length(do::unique_no.NA(editais)), 10)
+top <- min(length(editais[which(!is.na(editais))]), 10)
 data.editais <-
   na.omit(data.frame(name = names(sort(
     table(editais), decreasing = TRUE
@@ -964,7 +964,7 @@ plot.4 <- plot.4 %>% plotly::layout(
 
 
 agencias <- financiadores$Agência
-top <- min(length(do::unique_no.NA(agencias)), 10)
+top <- min(length(agencias[which(!is.na(agencias))]), 10)
 data.agencias <-
   na.omit(data.frame(name = names(sort(
     table(agencias), decreasing = TRUE
@@ -2060,10 +2060,10 @@ g <-
               layout_matrix = rbind(c(1, 2), c(1, 3)),
               widths = c(7 / 10, 3 / 10))
 
-g2 <- cowplot::ggdraw(g) +
+g1 <- cowplot::ggdraw(g) +
   ggplot2::theme(plot.background = ggplot2::element_rect(fill = main.color, color = NA))
 
-plot(g2)
+plot(g1)
 
 # plot 2 (geospatial plot of egressos)
 states$egressos <- rep(NA, dim(states)[1])
@@ -2086,8 +2086,8 @@ p1 <- ggplot2::ggplot() +
   ggplot2::theme_minimal() +
   ggplot2::theme(
     legend.position = 'bottom',
-    legend.title = element_text(color = "white"),
-    legend.text = element_text(color = "white")
+    legend.title = ggplot2::element_text(color = "white"),
+    legend.text = ggplot2::element_text(color = "white")
   ) +
   ggplot2::theme(
     plot.margin = ggplot2::unit(c(0, 0, 0, 0), "cm"),
