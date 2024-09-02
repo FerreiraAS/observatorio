@@ -3759,7 +3759,7 @@ if (knitr::is_latex_output()) {
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 
-# get turmas by responsável and categoria DOcente
+# get turmas by responsável and categoria Docente
 turmas.doc <- turmas[turmas$Responsável == "Sim" & turmas$Categoria == "Docente", ]
   
 table.part2 <- 

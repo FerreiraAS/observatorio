@@ -1076,6 +1076,67 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 
 <br>
 
+## **Encerrados** {#encerrados .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !has.sucupira.files}
+cat('<br>')
+```
+
+```{r discentes-encerrados, eval = has.sucupira.files}
+# discentes
+sheet <- "Discentes - Orientadores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# get only last data available
+discentes <- sucupira.list[[length(anos)]]
+
+# dplyr::select students that are not matriculated or have already graduated
+discentes <- discentes %>%
+  dplyr::filter(`Situação Discente` %in% c("DESLIGADO", "ABANDONOU"))
+
+# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
+discentes <- discentes[discentes$`Orientador Principal?` == "Sim", ]
+
+# calculate deadlines
+discentes$'Tempo em curso' <-
+  lubridate::interval(start = lubridate::dmy(gsub("/", "", discentes$`Data Matrícula`)), end = lubridate::today()) %/% months(1)
+
+# get years
+discentes$'Ano de Matrícula' <- substr(as.Date(discentes$`Data Matrícula`, format = "%d/%m/%Y"), 1, 4)
+
+# get years
+discentes$'Ano de Encerramento' <- substr(as.Date(discentes$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+discentes$`Nível Discente` <- tools::toTitleCase(tolower(discentes$`Nível Discente`))
+discentes$`Nome Discente` <- tools::toTitleCase(tolower(discentes$`Nome Discente`))
+discentes$`Nome do Orientador` <- tools::toTitleCase(tolower(discentes$`Nome do Orientador`))
+
+# drop columns
+discentes <- discentes %>% dplyr::select("Nível Discente", "Nome Discente", "Nome do Orientador", "Ano de Matrícula", "Ano de Encerramento", "Tempo em curso", "Situação Discente", "País")
+
+# remove duplicates and empty rows
+discentes <- unique(discentes)
+
+if (dim(discentes)[1] != 0) {
+  ids <- order(discentes$'Ano de Matrícula', discentes$'Tempo em curso', discentes$'Nome Discente', decreasing = TRUE)
+  discentes <- discentes[ids,]
+}
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(discentes, title = "Pessoas - Discentes - Matriculados")
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+<br>
+
 ## **Bacharelado** {#graduacao .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -1135,7 +1196,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-## **Formação de pessoal** {#formacao-pessoal .tabset}
+## **Formação continuada** {#formacao-continuada .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -1292,7 +1353,7 @@ table.continuada <- table %>%
   )
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.continuada, title = "Pessoas - Formação de pessoal")
+create_dt(table.continuada, title = "Pessoas - Formação continuada")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```

@@ -76,7 +76,7 @@ periodo.vigente <- anos
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Turmas por nível**
+### **Turmas**
 
 ```{r turmas-nivel, eval = has.sucupira.files}
 # turmas
@@ -247,6 +247,123 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
+### **Docentes**
+
+```{r turmas-docentes, eval = has.sucupira.files}
+# turmas
+sheet <- "Turmas"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# Load years data
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# Bind all sheets for disciplines
+periodos <- names(sucupira.list)[na.omit(match(periodo.vigente, names(sucupira.list)))]
+turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
+
+turmas.raw$`Período/Ano` <-
+  paste(
+    sub(".*/", "", turmas.raw$`Período/Ano`),
+    sub("/.*", "", turmas.raw$`Período/Ano`),
+    sep = "/"
+  )
+
+# remove duplicates based on selected columns
+turmas.raw <- turmas.raw[!duplicated(turmas.raw[c("Período/Ano",
+                                                  "ID da Disciplina",
+                                                  "Nome da Disciplina",
+                                                  "Nível do curso")]), ]
+
+# select variables
+turmas <- turmas.raw %>%
+  dplyr::select(c(
+    "Período/Ano",
+    "Nível do curso",
+    "Nome da Disciplina",
+    "Categoria do responsável",
+    "Nome do responsável",
+    "Indicador de responsável principal"
+  ))
+
+# change to title case
+turmas$`Nome da Disciplina` <- tools::toTitleCase(tolower(turmas$`Nome da Disciplina`))
+turmas$`Nome do responsável` <- tools::toTitleCase(tolower(turmas$`Nome do responsável`))
+
+# rename
+colnames(turmas) <- c(
+  "Período/Ano",
+  "Disciplinas por curso",
+  "Disciplina",
+  "Categoria",
+  "Docente responsável",
+  "Responsável"
+)
+
+# get turmas by responsável and categoria Docente
+turmas.doc <- turmas[turmas$Responsável == "Sim" & turmas$Categoria == "Docente", ]
+  
+table.part2 <- 
+gtsummary::tbl_summary(
+    turmas.doc %>% dplyr::select(
+      "Período/Ano",
+      "Docente responsável"
+    ),
+    by = "Período/Ano",
+    type = list(
+      "Docente responsável" ~ "categorical"
+    ),
+    statistic = list(
+      "Docente responsável" ~ "{n}"
+      ),
+    missing = "no",
+    digits = list(gtsummary::everything() ~ 0)) %>%
+  gtsummary::modify_header(label = "**Período/Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels()
+
+# Print HTML table
+if (knitr::is_html_output()) {
+  print(table.part2)
+}
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+
+# get turmas by responsável and categoria Pós-Doc
+turmas.posdoc <- turmas[turmas$Responsável == "Sim" & turmas$Categoria == "Pós-Doc", ]
+
+if(!sjmisc::is_empty(turmas.posdoc)){
+  table.part3 <- 
+    gtsummary::tbl_summary(
+      turmas.posdoc %>% dplyr::select(
+        "Período/Ano",
+        "Docente responsável"
+      ),
+      by = "Período/Ano",
+      type = list(
+        "Docente responsável" ~ "categorical"
+      ),
+      statistic = list(
+        "Docente responsável" ~ "{n}"
+      ),
+      missing = "no",
+      digits = list(gtsummary::everything() ~ 0)) %>%
+    gtsummary::modify_header(label = "**Período/Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+    gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+    gtsummary::bold_labels()
+}
+
+# Print HTML table
+if (knitr::is_html_output() && !sjmisc::is_empty(turmas.posdoc)) {
+  print(table.part3)
+}
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+<br>
+
 ### **Formação continuada**
 
 ```{r formacao-continuada, eval = has.sucupira.files}
@@ -398,14 +515,14 @@ table.continuada$Ano <- apply(table.continuada, 1, function(x) {
   as.numeric(min(x[2:6], na.rm = TRUE))
 })
 
-# select data to print with Ano in quadrienal.vigente
+# select data to print with Ano in periodo.vigente
 table.continuada <- table.continuada %>%
   dplyr::filter(
-    table.continuada$`Bacharelado` == quadrienal.vigente |
-      table.continuada$`Mestrado` == quadrienal.vigente |
-      table.continuada$`Doutorado` == quadrienal.vigente |
-      table.continuada$`Pós-Doc` == quadrienal.vigente |
-      table.continuada$`Docente` == quadrienal.vigente
+    table.continuada$`Bacharelado` == periodo.vigente |
+      table.continuada$`Mestrado` == periodo.vigente |
+      table.continuada$`Doutorado` == periodo.vigente |
+      table.continuada$`Pós-Doc` == periodo.vigente |
+      table.continuada$`Docente` == periodo.vigente
   )
 
 # select columns to print
@@ -1151,7 +1268,7 @@ if (knitr::is_html_output()) {
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 cat('\n\n')
-cat('**Nota**: A classificação dos periódicos pelo Qualis refere-se à Avaliação Quadrienal 2017-2020 conforme arquivo disponibilizado na [Plataforma Sucupira](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.xhtml) e não substitui a classificação da CAPES da Avaliação Quadrienal ', min(quadrienal.vigente), '-', max(quadrienal.vigente), '.', sep = "")
+cat('**Nota**: A classificação dos periódicos pelo Qualis refere-se à Avaliação Quadrienal 2017-2020 conforme arquivo disponibilizado na [Plataforma Sucupira](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.xhtml) e não substitui a classificação da CAPES da Avaliação Quadrienal ', min(periodo.vigente), '-', max(periodo.vigente), '.', sep = "")
 cat('\n\n')
 ```
 
@@ -1793,68 +1910,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **Financiadores**
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !has.financiadores}
-cat('<br>')
-```
-
-```{r pandemia-financiadores, eval = has.financiadores}
-financiadores.sub <-
-  financiadores.raw %>% dplyr::select("Ano",
-                                      "Agência",
-                                      "Edital",
-                                      "Processo No.",
-                                      "Título do projeto",
-                                      "Programa")
-fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
-
-financiadores <- financiadores.sub[complete.cases(financiadores.sub),]
-fonte <- fonte.sub[complete.cases(financiadores.sub),]
-
-# dplyr::selecting those with COVID in the title
-financiadores <- financiadores[grep(paste(tolower(pandemia), collapse = "|"),
-                     tolower(financiadores$`Título do projeto`)),]
-fonte <- fonte[grep(paste(tolower(pandemia), collapse = "|"),
-             tolower(financiadores$`Título do projeto`)),]
-
-if (dim(financiadores)[1] != 0){
-  Abrir <- matrix(NA, nrow = dim(financiadores)[1])
-  colnames(Abrir) <- "Abrir"
-  # add hyperlinks
-  for (i in 1:dim(fonte)[1]){
-    if (!is.na(fonte[i, 1])) {
-      Abrir[i] <-
-        paste0('<a href="',
-               fonte[i, 1],
-               '" target="_blank"',
-               '>',
-               # fontawesome icon
-               fontawesome::fa("up-right-from-square"),
-               '</a>')
-    }
-  }
-  financiadores <- data.frame(financiadores, Abrir)
-  financiadores <- financiadores[order(financiadores$Ano, decreasing = TRUE), ]
-}
-
-cat('\n\n<!-- -->\n\n')
-
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(financiadores, title = "Impactos - Ações durante a Pandemia - Financiadores")
-
-cat('\n\n')
-cat("**Fontes**: [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**")
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-```
-
-<br>
-
-### **Tese**
+### **Teses**
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -1946,7 +2002,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **Dissertação**
+### **Dissertações**
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -2117,7 +2173,8 @@ if (dim(produtos)[1] != 0) {
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
       "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
-      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
+      "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -2221,7 +2278,8 @@ if (dim(produtos)[1] != 0) {
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
       "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
-      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
+      "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }

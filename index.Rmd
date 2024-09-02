@@ -365,7 +365,7 @@ cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
-```{r sintese-temas, include = FALSE, eval = has.sucupira.files}
+```{r sintese-projetos-cloud, include = FALSE, eval = has.sucupira.files}
 # file path to save the wordclouds
 dir.path <- file.path(getwd(), "index_files", "figure-html")
 dir.create(dir.path, recursive = TRUE)
@@ -389,35 +389,9 @@ data.to.cloud <- sucupira.raw$`Nome do Trabalho de Conclusão`
 cloud.title <- "Dissertações e Teses"
 clean.text <- TRUE
 source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
-
-# produções
-sheet <- "Produções"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-# delete duplicates based on ID da Produção
-sucupira.raw <- sucupira.raw[!duplicated(sucupira.raw$`ID da Produção`),]
-data.to.cloud <- sucupira.raw$`Nome da Produção`
-cloud.title <- "Produção"
-clean.text <- TRUE
-source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
-
-# filter produção bibliográfica
-sucupira <- sucupira.raw[sucupira.raw$`Tipo de Produção` == "BIBLIOGRÁFICA",]
-data.to.cloud <- sucupira$`Subtipo de Produção`
-sheet <- "Produção bibliográfica"
-cloud.title <- "Produção bibliográfica"
-clean.text <- FALSE
-source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
-
-# filter produção bibliográfica
-sucupira <- sucupira.raw[sucupira.raw$`Tipo de Produção` == "TÉCNICA",]
-data.to.cloud <- sucupira$`Subtipo de Produção`
-sheet <- "Produção técnica"
-cloud.title <- "Produção técnica"
-clean.text <- FALSE
-source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
 ```
 
-```{r sintese-temas-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = has.sucupira.files, out.width = "70%"}
+```{r sintese-projetos-cloud-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = has.sucupira.files, out.width = "70%"}
 cat('<br>')
 cat('<br>')
 
@@ -428,21 +402,6 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 # show TCC
 knitr::include_graphics("index_files/figure-html/TCC.png")
-cat('\n\n')
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-
-# show Produções
-knitr::include_graphics("index_files/figure-html/Produções.png")
-cat('\n\n')
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-
-# show Produção bibliográfica
-knitr::include_graphics("index_files/figure-html/Produção bibliográfica.png")
-cat('\n\n')
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-
-# show Produção técnica
-knitr::include_graphics("index_files/figure-html/Produção técnica.png")
 cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1136,7 +1095,308 @@ cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
-```{r sintese-producao, include = FALSE, eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira)}
+
+```{r sintese-producoes-cloud, include = FALSE, eval = has.sucupira.files}
+# file path to save the wordclouds
+dir.path <- file.path(getwd(), "index_files", "figure-html")
+dir.create(dir.path, recursive = TRUE)
+
+# produções
+sheet <- "Produções"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+# delete duplicates based on ID da Produção
+sucupira.raw <- sucupira.raw[!duplicated(sucupira.raw$`ID da Produção`),]
+data.to.cloud <- sucupira.raw$`Nome da Produção`
+cloud.title <- "Produção"
+clean.text <- TRUE
+source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
+
+# filter produção bibliográfica
+sucupira <- sucupira.raw[sucupira.raw$`Tipo de Produção` == "BIBLIOGRÁFICA",]
+data.to.cloud <- sucupira$`Subtipo de Produção`
+sheet <- "Produção bibliográfica"
+cloud.title <- "Produção bibliográfica"
+clean.text <- FALSE
+source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
+
+# filter produção bibliográfica
+sucupira <- sucupira.raw[sucupira.raw$`Tipo de Produção` == "TÉCNICA",]
+data.to.cloud <- sucupira$`Subtipo de Produção`
+sheet <- "Produção técnica"
+cloud.title <- "Produção técnica"
+clean.text <- FALSE
+source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
+```
+
+```{r sintese-producoes-cloud-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = has.sucupira.files, out.width = "70%"}
+cat('<br>')
+cat('<br>')
+
+# show Produções
+knitr::include_graphics("index_files/figure-html/Produções.png")
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+# show Produção bibliográfica
+knitr::include_graphics("index_files/figure-html/Produção bibliográfica.png")
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+# show Produção técnica
+knitr::include_graphics("index_files/figure-html/Produção técnica.png")
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+```{r sintese-producao, include = FALSE, eval = has.sucupira.files}
+# produção
+sheet <- "Produções - Autores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# get data for the current period
+produtos <- sucupira.list[as.character(anos)] %>%
+  plyr::compact()
+produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
+names(produtos) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# remove duplicated ID rows
+produtos <- produtos[!duplicated(produtos$`ID da Produção`), ]
+
+# get years
+produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
+
+# generate cross tables of artigos per year
+table.1 <- table(produtos$`Tipo de Produção`, produtos$"Ano")
+subtipos.1 <- unique(produtos$`Tipo de Produção`)
+
+# plot 2 (total de produção bibliografica, por ano, por subtipo)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(subtipos.1), name = "Set3")
+
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.1, id.vars = "Subtipo", variable.name = "Ano", value.name = "Frequência")
+data_long <- data.frame(data_long, stringsAsFactors = FALSE)
+colnames(data_long) <- c("Tipo", "Ano", "Frequência")
+
+plot.1 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = ~Tipo,
+  type = 'bar',
+  colors = colors,
+  height = 720
+)
+
+plot.1 <- plot.1 %>% plotly::layout(
+  title = list(
+    text = "Produção total por tipo",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = 24, color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+)
+
+# select products
+produtos.bib <- produtos[produtos$`Tipo de Produção` == "BIBLIOGRÁFICA", ]
+
+# get years
+produtos.bib$'Ano' <- substr(as.Date(produtos.bib$`Ano da Produção`, format = "%Y"), 1, 4)
+
+# generate cross tables of artigos per year
+table.2 <- table(produtos.bib$`Subtipo de Produção`, produtos.bib$"Ano")
+subtipos.2 <- unique(produtos.bib$`Subtipo de Produção`)
+
+# plot 2 (total de produção bilbiográfica, por ano, por subtipo)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(subtipos.2), name = "Set3")
+
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.2, id.vars = "Subtipo", variable.name = "Ano", value.name = "Frequência")
+data_long <- data.frame(data_long, stringsAsFactors = FALSE)
+colnames(data_long) <- c("Subtipo", "Ano", "Frequência")
+
+plot.2 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = ~Subtipo,
+  type = 'bar',
+  colors = colors,
+  height = 720
+)
+
+plot.2 <- plot.2 %>% plotly::layout(
+  title = list(
+    text = "Produção bibliográfica por subtipo",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = 24, color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+)
+
+
+# select products
+produtos.tec <- produtos[produtos$`Tipo de Produção` == "BIBLIOGRÁFICA", ]
+
+# get years
+produtos.tec$'Ano' <- substr(as.Date(produtos.tec$`Ano da Produção`, format = "%Y"), 1, 4)
+
+# generate cross tables of artigos per year
+table.3 <- table(produtos.tec$`Subtipo de Produção`, produtos.tec$"Ano")
+subtipos.3 <- unique(produtos.tec$`Subtipo de Produção`)
+
+# plot 3 (total de produção técnica, por ano, por subtipo)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(subtipos.3), name = "Set3")
+
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.3, id.vars = "Subtipo", variable.name = "Ano", value.name = "Frequência")
+data_long <- data.frame(data_long, stringsAsFactors = FALSE)
+colnames(data_long) <- c("Subtipo", "Ano", "Frequência")
+
+plot.3 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = ~Subtipo,
+  type = 'bar',
+  colors = colors,
+  height = 720
+)
+
+plot.3 <- plot.3 %>% plotly::layout(
+  title = list(
+    text = "Produção técnica por subtipo",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = 24, color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+)
+```
+
+```{r sintese-producao-carousel-1, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = has.sucupira.files, out.width = "100%"}
+cat('<br>')
+cat('<br>')
+
+cat('<div align="center">')
+plot.1
+cat('</div>')
+cat('\n\n')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.2
+cat('</div>')
+cat('\n\n')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.3
+cat('</div>')
+cat('\n\n')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+```
+
+```{r sintese-artigos, include = FALSE, eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira)}
 # select products
 metricas_artigos <- metricas_all[metricas_all$`Subtipo de Produção` == "ARTIGO EM PERIÓDICO", ]
 
@@ -1180,55 +1440,7 @@ table.4 <- data.frame(metricas_artigos$"Ano da Produção", metricas_artigos$Cit
 
 table.5 <- data.frame(metricas_artigos$`Valor do Item de Detalhamento`, metricas_artigos$SJR)
 
-# plot 1 (total de produção bilbiográfica, por ano)
-
-# plot area setup
-layout.m <- c(1)
-source("Scripts/plot-margins.R", local = knitr::knit_global())
-# Define colors using RColorBrewer
-colors <- RColorBrewer::brewer.pal(n = length(table.1), name = "Set3")
-
-# Reshape data for Plotly
-data_long <- reshape2::melt(table.1, value.name = "Frequência")
-data_long <- data.frame(data_long, stringsAsFactors = FALSE)
-colnames(data_long) <- c("Ano", "Frequência")
-
-plot.1 <- plotly::plot_ly(
-  data = data_long,
-  x = ~Ano,
-  y = ~Frequência,
-  color = colors[1],
-  type = 'bar',
-  colors = colors[1],
-  height = 720
-)
-
-plot.1 <- plot.1 %>% plotly::layout(
-  title = list(
-    text = "Produção Bibliográfica (Artigo em Periódico)",
-    x = 0.5,
-    xanchor = 'center',
-    font = list(size = 24, color = 'white')
-  ),
-  xaxis = list(
-    title = "",
-    titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
-  ),
-  yaxis = list(
-    title = "N",
-    titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
-  ),
-  plot_bgcolor = 'black',
-  paper_bgcolor = 'black',
-  font = list(color = 'white'),
-  margin = list(l = 60, r = 60, t = 60, b = 60),
-  showlegend = FALSE
-)
-
-
-# plot 2 (total de produção bibliográfica, por estrato, por ano)
+# plot 1 (total de produção bibliográfica, por estrato, por ano)
 
 # plot area setup
 layout.m <- c(1)
@@ -1241,7 +1453,7 @@ data_long <- reshape2::melt(table.2, id.vars = "Estrato", variable.name = "Ano",
 data_long <- data.frame(data_long, stringsAsFactors = FALSE)
 colnames(data_long) <- c("Estrato", "Ano", "Frequência")
 
-plot.2 <- plotly::plot_ly(
+plot.1 <- plotly::plot_ly(
   data = data_long,
   x = ~Ano,
   y = ~Frequência,
@@ -1251,9 +1463,9 @@ plot.2 <- plotly::plot_ly(
   height = 720
 )
 
-plot.2 <- plot.2 %>% plotly::layout(
+plot.1 <- plot.1 %>% plotly::layout(
   title = list(
-    text = "Publicações por estratos Qualis",
+    text = "Artigos em periódicos por estratos Qualis",
     x = 0.5,
     xanchor = 'center',
     font = list(size = 24, color = 'white')
@@ -1288,7 +1500,7 @@ plot.2 <- plot.2 %>% plotly::layout(
 )
 
 
-# plot 3 (violin plot of SJR por ano)
+# plot 2 (violin plot of SJR por ano)
 
 # plot area setup
 layout.m <- c(1)
@@ -1302,7 +1514,7 @@ data_long <- data.frame(data_long, stringsAsFactors = FALSE)
 data_long <- data_long[, -2]
 colnames(data_long) <- c("Ano", "SJR")
 
-plot.3 <- plotly::plot_ly(
+plot.2 <- plotly::plot_ly(
   data = data_long,
   x = ~Ano,
   y = ~SJR,
@@ -1312,7 +1524,7 @@ plot.3 <- plotly::plot_ly(
   height = 720
 )
 
-plot.3 <- plot.3 %>% plotly::layout(
+plot.2 <- plot.2 %>% plotly::layout(
   title = list(
     text = "Métricas da produção (SJR)",
     x = 0.5,
@@ -1337,7 +1549,7 @@ plot.3 <- plot.3 %>% plotly::layout(
 )
 
 
-# plot 4 (violin plot of CiteScore por ano)
+# plot 3 (violin plot of CiteScore por ano)
 
 # plot area setup
 layout.m <- c(1)
@@ -1351,7 +1563,7 @@ data_long <- data.frame(data_long, stringsAsFactors = FALSE)
 data_long <- data_long[, -2]
 colnames(data_long) <- c("Ano", "CiteScore")
 
-plot.4 <- plotly::plot_ly(
+plot.3 <- plotly::plot_ly(
   data = data_long,
   x = ~Ano,
   y = ~CiteScore,
@@ -1361,7 +1573,7 @@ plot.4 <- plotly::plot_ly(
   height = 720
 )
 
-plot.4 <- plot.4 %>% plotly::layout(
+plot.3 <- plot.3 %>% plotly::layout(
   title = list(
     text = "Métricas da produção (CiteScore)",
     x = 0.5,
@@ -1401,7 +1613,7 @@ text.2.break <- data.journals$name
 source("Scripts/line-2-break.R", local = knitr::knit_global())
 data.journals$name <- broken_text
 
-# plot 5 (top-10 journals)
+# plot 4 (top-10 journals)
 
 # plot area setup
 layout.m <- c(1)
@@ -1416,7 +1628,7 @@ colnames(data_long) <- c("Periódico", "SJR")
 # set factor level for sorting
 data_long$Periódico <- factor(data_long$Periódico, levels = data.journals$name)
 
-plot.5 <- plotly::plot_ly(
+plot.4 <- plotly::plot_ly(
   data = data_long,
   x = ~SJR,
   y = ~Periódico,
@@ -1426,7 +1638,7 @@ plot.5 <- plotly::plot_ly(
   height = 720
 )
 
-plot.5 <- plot.5 %>% plotly::layout(
+plot.4 <- plot.4 %>% plotly::layout(
   title = list(
     text = paste0("Top-", top, " periódicos (SJR)"),
     x = 0.5,
@@ -1453,7 +1665,7 @@ plot.5 <- plot.5 %>% plotly::layout(
 )
 
 
-# plot 6 (summary table in plot)
+# plot 5 (summary table in plot)
 
 # calculate summary statistics for producao
 summ.table.producao <-
@@ -1551,7 +1763,7 @@ summ.data <- summ.table.producao
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-producao-carousel-1, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira), out.width = "100%"}
+```{r sintese-artigos-carousel-1, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira), out.width = "100%"}
 cat('<br>')
 cat('<br>')
 
@@ -1578,20 +1790,14 @@ plot.4
 cat('</div>')
 cat('\n\n')
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
-
-cat('<div align="center">')
-plot.5
-cat('</div>')
-cat('\n\n')
-source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
-```{r sintese-producao-carousel-2, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira), out.width = "70%"}
+```{r sintese-artigos-carousel-2, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira), out.width = "70%"}
 cat('<br>')
 cat('<br>')
 
-# show sintese-producao-1
-knitr::include_graphics("index_files/figure-html/sintese-producao-1.png")
+# show sintese-artigos-1
+knitr::include_graphics("index_files/figure-html/sintese-artigos-1.png")
 cat('\n\n')
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```

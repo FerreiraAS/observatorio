@@ -143,7 +143,8 @@ if (dim(produtos)[1] != 0) {
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
       "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
-      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
+      "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -247,7 +248,8 @@ if (dim(produtos)[1] != 0) {
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
       "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
-      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
+      "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -351,7 +353,8 @@ if (dim(produtos)[1] != 0) {
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
       "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
-      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
+      "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -455,7 +458,8 @@ if (dim(produtos)[1] != 0) {
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
       "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
-      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
+      "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -559,7 +563,8 @@ if (dim(produtos)[1] != 0) {
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
       "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
-      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
+      "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -663,7 +668,8 @@ if (dim(produtos)[1] != 0) {
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
       "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
-      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
+      "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -767,7 +773,8 @@ if (dim(produtos)[1] != 0) {
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
       "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
-      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
+      "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -868,7 +875,8 @@ if (dim(produtos)[1] != 0) {
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
       "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
-      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
+      "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -972,7 +980,8 @@ if (dim(produtos)[1] != 0) {
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
       "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
-      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
+      "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -1076,7 +1085,8 @@ if (dim(produtos)[1] != 0) {
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
       "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
-      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
+      "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -1180,7 +1190,8 @@ if (dim(produtos)[1] != 0) {
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
       "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
-      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
+      "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -1284,7 +1295,8 @@ if (dim(produtos)[1] != 0) {
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
       "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
-      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
+      "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -1388,7 +1400,8 @@ if (dim(produtos)[1] != 0) {
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
       "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
-      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
+      "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -1492,7 +1505,8 @@ if (dim(produtos)[1] != 0) {
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
       "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
-      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
+      "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -1596,7 +1610,8 @@ if (dim(produtos)[1] != 0) {
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
       "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
-      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
+      "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
@@ -1700,7 +1715,8 @@ if (dim(produtos)[1] != 0) {
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
       "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
-      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id])
+      "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
+      "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
