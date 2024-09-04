@@ -807,7 +807,9 @@ if (knitr::is_latex_output()) {
 }
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
 
+```{r 1-1-1-AC-detalhes, eval = has.dados.cadastrais, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
 # read data
 area.raw <-
   readxl::read_excel("PPG/Dados Cadastrais.xlsx",
@@ -833,7 +835,7 @@ colnames(area.ativas) <-
 rownames(area.ativas) <- NULL
 
 # print tables
-if (knitr::is_html_output() & has.dados.cadastrais) {
+if (knitr::is_html_output()) {
   # use kable for HTML output
   knitr::kable(
     area.ativas,
@@ -847,7 +849,7 @@ if (knitr::is_html_output() & has.dados.cadastrais) {
     full_width = TRUE,
     position = "center"
   )
-} else if (!knitr::is_html_output() & has.dados.cadastrais) {
+} else {
   # use tinytable for LaTeX output
   area.ativas <- data.frame(area.ativas, check.names = FALSE)
   options(tinytable_print_output = "latex")
@@ -1047,7 +1049,10 @@ if (knitr::is_latex_output()) {
 }
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
 
+
+```{r 1-1-1-LP-detalhes, eval = has.dados.cadastrais, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
 # read data
 linhas.raw <-
   readxl::read_excel("PPG/Dados Cadastrais.xlsx",
@@ -1073,7 +1078,7 @@ colnames(linhas.atual) <-
 rownames(linhas.atual) <- NULL
 
 # print tables
-if (knitr::is_html_output() & has.dados.cadastrais) {
+if (knitr::is_html_output()) {
   # use kable for HTML output
   knitr::kable(
     linhas.atual,
@@ -1087,7 +1092,7 @@ if (knitr::is_html_output() & has.dados.cadastrais) {
     full_width = TRUE,
     position = "center"
   )
-} else if (!knitr::is_html_output() & has.dados.cadastrais) {
+} else {
   # use tinytable for LaTeX output
   linhas.atual <- data.frame(linhas.atual, check.names = FALSE)
   options(tinytable_print_output = "latex")
