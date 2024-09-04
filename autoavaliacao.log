@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.8.31)  2 SEP 2024 13:52
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.8.31)  4 SEP 2024 13:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -576,7 +576,7 @@ Package: tabularx 2023/12/11 v2.12a `tabularx' package (DPC)
 )) (/usr/local/texlive/2024/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty
 Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
 ) (/usr/local/texlive/2024/texmf-dist/tex/latex/pdfpages/pdfpages.sty
-Package: pdfpages 2024/05/29 v0.6a Insert pages of external PDF documents (AM)
+Package: pdfpages 2024/08/20 v0.6b Insert pages of external PDF documents (AM)
 (/usr/local/texlive/2024/texmf-dist/tex/latex/base/ifthen.sty
 Package: ifthen 2024/03/16 v1.1e Standard LaTeX ifthen package (DPC)
 ) (/usr/local/texlive/2024/texmf-dist/tex/latex/eso-pic/eso-pic.sty
@@ -588,7 +588,7 @@ Package: eso-pic 2023/05/03 v3.0c eso-pic (RN)
 \AM@pageheight=\dimen309
 \AM@fboxrule=\dimen310
 (/usr/local/texlive/2024/texmf-dist/tex/latex/pdfpages/ppxetex.def
-File: ppxetex.def 2024/05/29 v0.6a Pdfpages driver for XeTeX (AM)
+File: ppxetex.def 2024/08/20 v0.6b Pdfpages driver for XeTeX (AM)
 )
 \pdfpages@includegraphics@status=\count350
 \AM@pagebox=\box100

@@ -515,7 +515,8 @@ plot.1 <- plot.1 %>% plotly::layout(
   xaxis = list(
     title = "",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = anos
   ),
   yaxis = list(
     title = "N",
@@ -579,7 +580,8 @@ plot.2 <- plot.2 %>% plotly::layout(
   xaxis = list(
     title = "",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = anos
   ),
   yaxis = list(
     title = "N",
@@ -697,7 +699,8 @@ plot.1 <- plot.1 %>% plotly::layout(
   xaxis = list(
     title = "",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano)
   ),
   yaxis = list(
     title = "N",
@@ -775,7 +778,8 @@ plot.2 <- plot.2 %>% plotly::layout(
   xaxis = list(
     title = "",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano)
   ),
   yaxis = list(
     title = "R$",
@@ -841,7 +845,8 @@ plot.3 <- plot.3 %>% plotly::layout(
   xaxis = list(
     title = "",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano)
   ),
   yaxis = list(
     title = "N",
@@ -905,7 +910,8 @@ plot.4 <- plot.4 %>% plotly::layout(
   xaxis = list(
     title = "N",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = seq(0, max(data.editais$value), by = 1)
   ),
   yaxis = list(
     title = "",
@@ -971,7 +977,8 @@ plot.5 <- plot.5 %>% plotly::layout(
   xaxis = list(
     title = "N",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = seq(0, max(data.agencias$value), by = 1)
   ),
   yaxis = list(
     title = "",
@@ -1207,7 +1214,8 @@ plot.1 <- plot.1 %>% plotly::layout(
   xaxis = list(
     title = "",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = anos
   ),
   yaxis = list(
     title = "N",
@@ -1276,7 +1284,8 @@ plot.2 <- plot.2 %>% plotly::layout(
   xaxis = list(
     title = "",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = anos
   ),
   yaxis = list(
     title = "N",
@@ -1304,7 +1313,7 @@ plot.2 <- plot.2 %>% plotly::layout(
 
 
 # select products
-produtos.tec <- produtos[produtos$`Tipo de Produção` == "BIBLIOGRÁFICA", ]
+produtos.tec <- produtos[produtos$`Tipo de Produção` == "TÉCNICA", ]
 
 # get years
 produtos.tec$'Ano' <- substr(as.Date(produtos.tec$`Ano da Produção`, format = "%Y"), 1, 4)
@@ -1346,7 +1355,8 @@ plot.3 <- plot.3 %>% plotly::layout(
   xaxis = list(
     title = "",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = anos
   ),
   yaxis = list(
     title = "N",
@@ -1465,7 +1475,7 @@ plot.1 <- plotly::plot_ly(
 
 plot.1 <- plot.1 %>% plotly::layout(
   title = list(
-    text = "Artigos em periódicos por estratos Qualis",
+    text = "Métricas da produção (Qualis)",
     x = 0.5,
     xanchor = 'center',
     font = list(size = 24, color = 'white')
@@ -1473,7 +1483,8 @@ plot.1 <- plot.1 %>% plotly::layout(
   xaxis = list(
     title = "",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = anos
   ),
   yaxis = list(
     title = "N",
@@ -1534,7 +1545,8 @@ plot.2 <- plot.2 %>% plotly::layout(
   xaxis = list(
     title = "",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = anos
   ),
   yaxis = list(
     title = "SciMAGO Journal Rank (SJR)",
@@ -1583,7 +1595,8 @@ plot.3 <- plot.3 %>% plotly::layout(
   xaxis = list(
     title = "",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = anos
   ),
   yaxis = list(
     title = "CiteScore",
@@ -1648,7 +1661,8 @@ plot.4 <- plot.4 %>% plotly::layout(
   xaxis = list(
     title = "N",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = seq(0, top, 1)
   ),
   yaxis = list(
     title = "",
@@ -1851,7 +1865,8 @@ plot.1 <- plot.1 %>% plotly::layout(
   xaxis = list(
     title = "",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = anos
   ),
   yaxis = list(
     title = "Altmetric Score",
@@ -1946,7 +1961,8 @@ plot.2 <- plot.2 %>% plotly::layout(
   xaxis = list(
     title = "",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = anos
   ),
   yaxis = list(
     title = "N",
@@ -2020,7 +2036,8 @@ plot.3 <- plot.3 %>% plotly::layout(
   xaxis = list(
     title = "",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = anos
   ),
   yaxis = list(
     title = "N",
@@ -2485,7 +2502,8 @@ plot.1 <- plot.1 %>% plotly::layout(
   xaxis = list(
     title = "",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = anos
   ),
   yaxis = list(
     title = "N",
@@ -2547,7 +2565,8 @@ plot.2 <- plot.2 %>% plotly::layout(
   xaxis = list(
     title = "",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    tickvals = anos
   ),
   yaxis = list(
     title = "Meses",
