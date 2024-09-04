@@ -764,7 +764,7 @@ table.ac.doc.gt <-
   gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 ```
 
-```{r 1-1-1-AC, eval = has.dados.cadastrais, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
+```{r 1-1-1-AC, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
 if(knitr::is_html_output()) {
   cat("##### **AC** {#descricao-ac}")
   cat('\n\n')
@@ -833,7 +833,7 @@ colnames(area.ativas) <-
 rownames(area.ativas) <- NULL
 
 # print tables
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() & has.dados.cadastrais) {
   # use kable for HTML output
   knitr::kable(
     area.ativas,
@@ -847,7 +847,7 @@ if (knitr::is_html_output()) {
     full_width = TRUE,
     position = "center"
   )
-} else {
+} else if (!knitr::is_html_output() & has.dados.cadastrais) {
   # use tinytable for LaTeX output
   area.ativas <- data.frame(area.ativas, check.names = FALSE)
   options(tinytable_print_output = "latex")
@@ -1004,7 +1004,7 @@ table.lp.doc.gt <-
   gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 ```
 
-```{r 1-1-1-LP, eval = has.dados.cadastrais, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
+```{r 1-1-1-LP, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis"}
 if(knitr::is_html_output()) {
   cat("##### **LP** {#descricao-lp}")
   cat('\n\n')
@@ -1073,7 +1073,7 @@ colnames(linhas.atual) <-
 rownames(linhas.atual) <- NULL
 
 # print tables
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() & has.dados.cadastrais) {
   # use kable for HTML output
   knitr::kable(
     linhas.atual,
@@ -1087,7 +1087,7 @@ if (knitr::is_html_output()) {
     full_width = TRUE,
     position = "center"
   )
-} else {
+} else if (!knitr::is_html_output() & has.dados.cadastrais) {
   # use tinytable for LaTeX output
   linhas.atual <- data.frame(linhas.atual, check.names = FALSE)
   options(tinytable_print_output = "latex")
