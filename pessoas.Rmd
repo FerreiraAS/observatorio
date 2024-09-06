@@ -772,7 +772,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
 # periodo max
-periodo <- max(as.numeric(format(Sys.Date(), "%Y")), anos)
+periodo <- as.numeric(format(Sys.Date(), "%Y"))
 
 # egressos
 sheet <- "Discentes - Orientadores"
@@ -783,8 +783,7 @@ names(sucupira.list) <- as.character(anos)
 egressos <- sucupira.list[as.character(periodo)] %>%
   plyr::compact()
 egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
-names(egressos) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+try(names(egressos) <- names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]]), silent = TRUE)
 
 # dplyr::select active students
 egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
@@ -800,7 +799,7 @@ egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`)
 egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
 
 # drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-egressos <- egressos %>% dplyr::select("Nível Discente", "Data Situação", "Nome do Orientador", "Nome Discente", "País")
+try(egressos <- egressos %>% dplyr::select("Nível Discente", "Data Situação", "Nome do Orientador", "Nome Discente", "País"), silent = TRUE)
 
 # remove duplicates
 egressos <- unique(egressos)
