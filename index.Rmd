@@ -173,8 +173,8 @@ summ.AC.LP <- summ.AC.LP[summ.AC.LP$Freq != 0, ]
 
 colnames(summ.AC.LP) <- c("AC", "LP", "Freq")
 
-summ.AC.LP$AC <- as.factor(abbreviate(abbrev))
-summ.AC.LP$LP <- as.factor(summ.AC.LP$LP)
+summ.AC.LP$AC <- as.factor(abbreviate(summ.AC.LP$AC))
+summ.AC.LP$LP <- as.factor(abbreviate(summ.AC.LP$LP))
 data <- summ.AC.LP
 
 # Criar uma tabela de nós com identificadores únicos
