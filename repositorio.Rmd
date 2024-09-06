@@ -105,9 +105,9 @@ if (!sjmisc::is_empty(id.TCC)) {
     bancas$Título[i] <- stringr::str_to_sentence(unique(banca$"Nome do Trabalho de Conclusão"))
     bancas$Autor[i] <- stringr::str_to_title(unique(banca$"Nome do Autor"))
     bancas$Orientadores[i] <- paste0(stringr::str_to_title(unique(banca$"Nome do Orientador")), collapse = ", ")
-    bancas$Examinadores[i] <- paste0(unique(
-      paste0(stringr::str_to_title(banca$"Nome da Pessoa da Banca"), " (", banca$"Sigla da IES da Pessoa da Banca", ")")
-    ), collapse = ", ")
+    bancas$Examinadores[i] <- if(is.na(banca$"Sigla da IES da Pessoa da Banca")) {
+      paste0(unique(paste0(stringr::str_to_title(banca$"Nome da Pessoa da Banca"))), collapse = ", ")
+      } else { paste0(unique(paste0(stringr::str_to_title(banca$"Nome da Pessoa da Banca"), " (", banca$"Sigla da IES da Pessoa da Banca", ")")), collapse = ", ")} 
     # check proportion of same IES between autor and examinadores
     ies.autor <- unique(banca$"IES Nome Autor")
     bancas$`IES externas` <- ifelse(sum(unique(banca$"Sigla da IES da Pessoa da Banca") != ies.autor, na.rm = TRUE) > 0, "Sim", "Não")

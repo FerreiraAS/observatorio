@@ -40,8 +40,8 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
       ),
     row.names = NULL
   )
-  cat('<br>')
   cat("**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)")
+  cat('<br>')
   cat('<br>')
 }
 
@@ -89,7 +89,7 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
       ),
     row.names = NULL
   )
-  cat('<br>')
   cat("**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)")
+  cat('<br>')
   cat('<br>')
 }

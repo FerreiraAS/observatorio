@@ -16,6 +16,12 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
       affiliations[[i]][['invited-position-summary.department-name']]
     invited.pos[i, 2] <-
       affiliations[[i]][['invited-position-summary.role-title']]
+    if(is.na(invited.pos[i, 1])){
+      # split invited.pos[i, 2] into two columns using gsub to extrac text between ()
+      invited.pos[i, 1] <- trimws(gsub(".*\\((.*)\\).*", "\\1", invited.pos[i, 2]))
+      # keep only text before ()
+      invited.pos[i, 2] <- trimws(gsub("\\(.*\\)", "", invited.pos[i, 2]))
+    }
   }
   colnames(invited.pos) <- c("Periódico", "Atuação")
   
@@ -42,7 +48,7 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
       ),
     row.names = NULL
   )
-  cat('<br>')
   cat("**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)")
+  cat('<br>')
   cat('<br>')
 }

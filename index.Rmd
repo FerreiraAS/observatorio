@@ -173,14 +173,8 @@ summ.AC.LP <- summ.AC.LP[summ.AC.LP$Freq != 0, ]
 
 colnames(summ.AC.LP) <- c("AC", "LP", "Freq")
 
-data.to.abbrev <- as.character(summ.AC.LP$AC)
-source("Scripts/get-abbrev.R", local = TRUE)
-summ.AC.LP$AC <- as.factor(abbrev)
-  
-data.to.abbrev <- as.character(summ.AC.LP$LP)
-source("Scripts/get-abbrev.R", local = TRUE)
-summ.AC.LP$LP <- as.factor(abbrev)
-
+summ.AC.LP$AC <- as.factor(abbreviate(abbrev))
+summ.AC.LP$LP <- as.factor(summ.AC.LP$LP)
 data <- summ.AC.LP
 
 # Criar uma tabela de nós com identificadores únicos
@@ -521,7 +515,71 @@ plot.3 <- plot.3 %>% plotly::layout(
   barmode = 'stack'
 )
 
-# plot 4 (total de projetos por tipo, por ano)
+# plot 4 (total de projetos por Natureza do Projeto de Pesquisa, por ano)
+
+# crosstable of projects by Natureza
+projetos.natureza <- sucupira %>%
+  dplyr::distinct(Ano, `Identificador do Projeto de Pesquisa`, .keep_all = TRUE) %>%
+  dplyr::group_by(Ano, `Natureza do Projeto de Pesquisa`) %>%
+  dplyr::summarise(n = n())
+
+# replace NA values by Indefinido
+projetos.natureza$`Natureza do Projeto de Pesquisa`[is.na(projetos.natureza$`Natureza do Projeto de Pesquisa`)] <- "Indefinido"
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(unique(projetos.natureza$`Natureza do Projeto de Pesquisa`)), name = "Set3")
+
+plot.4 <- plotly::plot_ly(
+  data = projetos.natureza,
+  x = ~Ano,
+  y = ~n,
+  color = ~`Natureza do Projeto de Pesquisa`,
+  type = 'bar',
+  colors = colors,
+  height = 720
+)
+
+plot.4 <- plot.4 %>% plotly::layout(
+  title = list(
+    text = "Projetos por natureza",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = 24, color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+)
+
+# plot 5 (total de projetos por tipo, por ano)
 
 # crosstable of projects by Natureza do Projeto de Pesquisa
 projetos.tipo <- sucupira %>%
@@ -538,7 +596,7 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 # Define colors using RColorBrewer
 colors <- RColorBrewer::brewer.pal(n = length(unique(projetos.tipo$`Natureza do Projeto de Pesquisa`)), name = "Set3")
 
-plot.4 <- plotly::plot_ly(
+plot.5 <- plotly::plot_ly(
   data = projetos.tipo,
   x = ~Ano,
   y = ~n,
@@ -548,7 +606,7 @@ plot.4 <- plotly::plot_ly(
   height = 720
 )
 
-plot.4 <- plot.4 %>% plotly::layout(
+plot.5 <- plot.5 %>% plotly::layout(
   title = list(
     text = "Projetos por Natureza",
     x = 0.5,
@@ -585,7 +643,7 @@ plot.4 <- plot.4 %>% plotly::layout(
   barmode = 'stack'
 )
 
-# plot 5 (total de projetos por categoria de membro, por ano)
+# plot 6 (total de projetos por categoria de membro, por ano)
 
 # crosstable of projects by Categoria do Membro
 projetos.categoria <- sucupira %>%
@@ -602,7 +660,7 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 # Define colors using RColorBrewer
 colors <- RColorBrewer::brewer.pal(n = length(unique(projetos.categoria$`Categoria do Membro do Projeto`)), name = "Set3")
 
-plot.5 <- plotly::plot_ly(
+plot.6 <- plotly::plot_ly(
   data = projetos.categoria,
   x = ~Ano,
   y = ~n,
@@ -612,7 +670,7 @@ plot.5 <- plotly::plot_ly(
   height = 720
 )
 
-plot.5 <- plot.5 %>% plotly::layout(
+plot.6 <- plot.6 %>% plotly::layout(
   title = list(
     text = "Projetos por Categoria de Membro",
     x = 0.5,
@@ -649,7 +707,7 @@ plot.5 <- plot.5 %>% plotly::layout(
   barmode = 'stack'
 )
 
-# plot 6 (summary table in plot)
+# plot 7 (summary table in plot)
 summ.table.projetos <- data.frame()
 
 # total per situação em andamento using filter current year
@@ -720,6 +778,24 @@ plot.3
 cat('</div>')
 cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.4
+cat('</div>')
+cat('\n\n')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.5
+cat('</div>')
+cat('\n\n')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.6
+cat('</div>')
+cat('\n\n')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-projetos-carousel-2, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", eval = has.sucupira.files, out.width = "70%"}
@@ -2622,7 +2698,7 @@ plot.1 <- plot.1 %>% plotly::layout(
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 # Define colors using RColorBrewer
-colors <- RColorBrewer::brewer.pal(n = 9, name = "Set3")
+colors <- RColorBrewer::brewer.pal(n = dim(table.1)[1], name = "Set3")
 
 # generate table of tempo de curso per year
 table.2 <- egressos %>%
@@ -2660,13 +2736,23 @@ plot.2 <- plot.2 %>% plotly::layout(
     tickfont = list(color = 'white'),
     type = "log"
   ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
   plot_bgcolor = 'black',
   paper_bgcolor = 'black',
   font = list(color = 'white'),
   margin = list(l = 60, r = 60, t = 60, b = 60),
-  showlegend = FALSE
+  showlegend = TRUE
 )
-
 
 # plot 3 (summary table in plot)
 
@@ -3034,7 +3120,7 @@ IES.inter <- IES.inter[!is.na(IES.inter)]
 
 # get initials
 data.to.abbrev <- IES
-source("Scripts/get-abbrev.R", local = knitr::knit_global())
+abbrev <- abbreviate(data.to.abbrev)
 
 ranked.ies <- c()
 for (i in 1:length(sort(table(abbrev), decreasing = FALSE))) {

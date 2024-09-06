@@ -502,10 +502,6 @@ for (id in 1:length(orcids)) {
   cat('\n\n<!-- -->\n\n')
   source("Scripts/orcid-reviewer-board.R", local = knitr::knit_global())
   cat('\n\n<!-- -->\n\n')
-  cat(
-    "**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"
-  )
-  cat('\n\n<!-- -->\n\n')
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```

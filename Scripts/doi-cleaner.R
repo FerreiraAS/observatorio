@@ -7,6 +7,11 @@ doi_cleaner <- function(dois) {
       if (length(grep("\\[|\\]", clean_doi$DOI[j])) != 0) {
         clean_doi$DOI[j] <- gsub("\\[|\\]", "", clean_doi$DOI[j])
       }
+      # extract text between '[doi:' prefix and ']' suffix
+      if (length(grep("\\[doi:", clean_doi$DOI[j])) != 0) {
+        clean_doi$DOI[j] <- gsub("\\[doi:", "", clean_doi$DOI[j])
+        clean_doi$DOI[j] <- gsub("\\]", "", clean_doi$DOI[j])
+      }
       # remove 'doi:' prefix
       if (length(grep("doi:", clean_doi$DOI[j])) != 0) {
         clean_doi$DOI[j] <- gsub("doi:", "", clean_doi$DOI[j])
