@@ -35,7 +35,7 @@ if (length(files.to.read) != 0) {
     
     # search for 2 "|" in a given row (meaning there are changes within a given year)
     for (row in 1:dim(sucupira)[1]) {
-      if (sum(grepl("\\|", sucupira[row, ])) == 2) {
+      if (sum(grepl("\\|", sucupira[row, ])) == 200) {
         has.any.change <-
           which(`dim<-`(grepl(' \\| ', as.matrix(sucupira)), dim(sucupira)), arr.ind =
                   TRUE)

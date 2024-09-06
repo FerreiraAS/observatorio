@@ -140,141 +140,49 @@ source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
-# remove duplicated lines across years
-sucupira.raw <- unique(sucupira.raw)
+# convert sucupira.list into dataframe adding a new colum with the respective ano
+sucupira <- dplyr::bind_rows(sucupira.list, .id = "Ano")
 
-# remove duplicated projects ("EM ANDAMENTO" vs. "CONCLUÍDO" -> keep "CONCLUÍDO")
-projetos.id <- unique(sucupira.raw$`Identificador do Projeto`)
-sucupira <- c()
-for (i in 1:length(projetos.id)) {
-  matches <-
-    sucupira.raw[sucupira.raw$`Identificador do Projeto` == projetos.id[i], ]
-  if (dim(matches)[1] == 1) {
-    sucupira <- dplyr::bind_rows(sucupira, matches)
-  } else {
-    keep <-
-      matches[matches$Situação == "CONCLUÍDO" |
-                !is.na(matches$`Data de Fim da Linha`), ]
-    sucupira <- dplyr::bind_rows(sucupira, keep)
-  }
-}
+# crosstable of projects by year EM ANDAMENTO by Área de Concentração and Linha de Pesquisa
+projetos.em.andamento <- sucupira[sucupira$Situação == "EM ANDAMENTO", ]
+projetos.em.andamento <- projetos.em.andamento %>%
+  dplyr::group_by(Ano, `Área de Concentração`, `Linha de Pesquisa`) %>%
+  dplyr::summarise(n = n())
 
-# update base data
-sucupira.raw <- sucupira
+# crosstable of projects by year CONCLUÍDO by Linha de Pesquisa
+projetos.concluido <- sucupira[sucupira$Situação == "CONCLUÍDO", ]
+projetos.concluido <- projetos.concluido %>%
+  dplyr::group_by(Ano, `Área de Concentração`, `Linha de Pesquisa`) %>%
+  dplyr::summarise(n = n())
 
-# structure the alluvial plot
-alluv.data <-
-  data.frame(
-    `Área de Concentração` = toupper(tolower(sucupira.raw$`Área de Concentração`)),
-    `Linha de Pesquisa` = tools::toTitleCase(tolower(sucupira.raw$`Linha de Pesquisa`)),
-    `Nome do Projeto de Pesquisa` = sucupira.raw$`Nome do Projeto de Pesquisa`,
-    `Data de Início da Linha` = sucupira.raw$`Data de Início da Linha`,
-    `Data de Fim da Linha` = sucupira.raw$`Data de Fim da Linha`,
-    check.names = FALSE
-  )
-
-# replace full date by year only
-alluv.data$`Data de Início da Linha` <-
-  format(as.Date(
-    alluv.data$`Data de Início da Linha`,
-    "%d/%m/%Y"
-  ),
-  format = "%Y")
-alluv.data$`Data de Fim da Linha` <-
-  format(as.Date(alluv.data$`Data de Fim da Linha`, "%d/%m/%Y"),
-         format = "%Y")
-
-# replace NA values by current year
-alluv.data$`Data de Fim da Linha`[is.na(alluv.data$`Data de Fim da Linha`)] <-
-  format(Sys.Date(), format = "%Y")
-
-# remove data without AC or LP
-alluv.data <-
-  alluv.data[!is.na(alluv.data$`Área de Concentração`) &
-               !is.na(alluv.data$`Linha de Pesquisa`), ]
-
-# ordering by dates
-alluv.data <-
-  alluv.data[order(
-    alluv.data$`Data de Início da Linha`,
-    alluv.data$`Data de Fim da Linha`,
-    alluv.data$`Nome do Projeto de Pesquisa`,
-    decreasing = FALSE
-  ),]
-
-# remove dupicates
-alluv.data <- unique(alluv.data)
+# get current AC and LP
+current.AC <- unique(projetos.em.andamento$`Área de Concentração`)
+current.LP <- unique(projetos.em.andamento$`Linha de Pesquisa`)
 
 # summary data for plot table
-current.AC <-
-  unique(alluv.data$`Área de Concentração`[alluv.data$`Data de Fim da Linha` == format(Sys.Date(), format = "%Y")])
-
-old.AC <-
-  unique(alluv.data$`Área de Concentração`[alluv.data$`Data de Fim da Linha` == format(Sys.Date(), format = "%Y")])
-old.AC <- old.AC[!old.AC %in% c(current.AC, NA)]
-
-old.LP <-
-  unique(alluv.data$`Linha de Pesquisa`[alluv.data$`Data de Fim da Linha` != format(Sys.Date(), format = "%Y")])
-
-current.LP <-
-  unique(alluv.data$`Linha de Pesquisa`)
-current.LP <- current.LP[!current.LP %in% c(old.LP, NA)]
-
-# remove data from inactive LP
-if (length(old.LP) != 0) {
-  alluv.data <-
-    alluv.data[!(alluv.data$`Linha de Pesquisa` == old.LP),]
-}
-
 summ.AC.LP <-
   as.data.frame(
     table(
-      alluv.data$`Área de Concentração`,
-      alluv.data$`Linha de Pesquisa`,
-      alluv.data$`Data de Início da Linha`,
-      alluv.data$`Data de Fim da Linha`
+      projetos.em.andamento$`Área de Concentração`,
+      projetos.em.andamento$`Linha de Pesquisa`
     )
   )
 
 # drop freq = 0 values
 summ.AC.LP <- summ.AC.LP[summ.AC.LP$Freq != 0, ]
 
-colnames(summ.AC.LP) <- c("AC", "LP", "Inicio", "Fim", "Freq")
+colnames(summ.AC.LP) <- c("AC", "LP", "Freq")
 
-# insert data from later LP
-extra <- c()
-for (i in 1:dim(summ.AC.LP)[1]) {
-  if (as.character(summ.AC.LP$Inicio[i]) > min(as.character(summ.AC.LP$Inicio))) {
-    extra <-
-      rbind(extra,
-            c(
-              as.character(summ.AC.LP$AC[i]),
-              as.character(summ.AC.LP$LP[i]),
-              min(as.character(summ.AC.LP$Inicio)),
-              as.character(summ.AC.LP$Inicio[i]),
-              as.character(summ.AC.LP$Freq[i])
-            ))
-  }
-}
-extra <- as.data.frame(extra)
-try(colnames(extra) <- c("AC", "LP", "Inicio", "Fim", "Freq"), silent = TRUE)
-
-summ.AC.LP <- rbind(summ.AC.LP, extra)
-
-text.2.break <- as.character(summ.AC.LP$AC)
-source("Scripts/line-2-break.R", local = TRUE)
-summ.AC.LP$AC <- as.factor(broken_text)
+data.to.abbrev <- as.character(summ.AC.LP$AC)
+source("Scripts/get-abbrev.R", local = TRUE)
+summ.AC.LP$AC <- as.factor(abbrev)
   
-text.2.break <- as.character(summ.AC.LP$LP)
-source("Scripts/line-2-break.R", local = TRUE)
-summ.AC.LP$LP <- as.factor(broken_text)
+data.to.abbrev <- as.character(summ.AC.LP$LP)
+source("Scripts/get-abbrev.R", local = TRUE)
+summ.AC.LP$LP <- as.factor(abbrev)
 
-data <- summ.AC.LP %>%
-  dplyr::group_by(AC, LP) %>%
-  dplyr::summarise(Freq = sum(as.numeric(Freq))) %>%
-  dplyr::ungroup()
+data <- summ.AC.LP
 
-# Supondo que 'data' já tenha sido criado como mostrado
 # Criar uma tabela de nós com identificadores únicos
 nodes <- data %>%
   dplyr::select(AC, LP) %>%
@@ -293,7 +201,7 @@ node_freq <- data %>%
 # Adicionar a frequência dos nós ao dataframe 'nodes'
 nodes <- nodes %>%
   dplyr::left_join(node_freq, by = c("label" = "label")) %>%
-  dplyr::mutate(size = Freq / max(Freq) * 50)  # Ajuste o fator de escala (50) conforme necessário
+  dplyr::mutate(size = Freq)
 
 # Criar uma tabela de arestas
 edges <- data %>%
@@ -304,7 +212,7 @@ edges <- data %>%
   dplyr::mutate(label = paste("Freq:", Freq)) %>%
   dplyr::select(from, to, label)
 
-# Criar o grafo
+# Criar o grafo tree layout
 g <- igraph::graph_from_data_frame(d = edges, vertices = nodes, directed = FALSE)
 
 # plot 1
@@ -323,9 +231,10 @@ plot(
   g,
   vertex.size = igraph::V(g)$size,  # Tamanho dos vértices baseado na frequência
   vertex.label.cex = 0.8,
-  vertex.label.color = "white",
-  vertex.frame.color = ifelse(igraph::V(g)$type == "AC", RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], RColorBrewer::brewer.pal(n = 9, name = "Set3")[2]),
-  vertex.color = ifelse(igraph::V(g)$type == "AC", main.color, main.color),
+  vertex.label.color = ifelse(igraph::V(g)$type == "AC", main.color, "white"),
+  vertex.label.dist = ifelse(igraph::V(g)$type == "AC", 0, 2),
+  vertex.frame.color = ifelse(igraph::V(g)$type == "AC", main.color, main.color),
+  vertex.color = ifelse(igraph::V(g)$type == "AC", RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], RColorBrewer::brewer.pal(n = 9, name = "Set3")[2]),
   edge.label = NA,
   edge.label.cex = 0.8,
   edge.label.color = "white",
@@ -413,93 +322,35 @@ source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
 
-# get all history of 'linha de pesquisa'
-linhas <- as.character(na.exclude(unique(sucupira.raw$`Linha de Pesquisa`)))
+# convert sucupira.list into dataframe adding a new colum with the respective ano
+sucupira <- dplyr::bind_rows(sucupira.list, .id = "Ano")
+# distinct entries
+sucupira <- dplyr::distinct(sucupira)
 
-# initialize data structure
-andamento.ano <-
-  matrix(NA, nrow = length(linhas), ncol = length(anos))
-colnames(andamento.ano) <- anos
-rownames(andamento.ano) <- linhas
-concluido.ano <- andamento.ano
+# plot 1 (total de projetos por área de concentração, por ano)
 
-# iterate across all Sucupira list elements to search for active and closed projects
-for (i in 1:length(anos)) {
-  # active
-  projetos <- sucupira.list[[i]]
-  projetos <-
-    projetos[projetos$`Membro Responsável` == "Sim" &
-               projetos$Situação == "EM ANDAMENTO",]
-  for (j in 1:length(linhas)) {
-    andamento.ano[j, i] <-
-      sum(projetos$`Linha de Pesquisa` == linhas[j], na.rm = TRUE)
-  }
-  # closed
-  projetos <- sucupira.list[[i]]
-  projetos <-
-    projetos[projetos$`Membro Responsável` == "Sim" &
-               projetos$Situação == "CONCLUÍDO",]
-  for (j in 1:length(linhas)) {
-    concluido.ano[j, i] <-
-      sum(projetos$`Linha de Pesquisa` == linhas[j], na.rm = TRUE)
-  }
-}
-projetos.ano <- andamento.ano + concluido.ano
-projetos.ano <- projetos.ano[, order(colnames(projetos.ano), decreasing = FALSE)]
+# crosstable of projects by Área de Concentração
+projetos.ac <- sucupira %>%
+  dplyr::distinct(Ano, `Identificador do Projeto de Pesquisa`, .keep_all = TRUE) %>%
+  dplyr::group_by(Ano, `Área de Concentração`) %>%
+  dplyr::summarise(n = n())
 
-membros <-
-  data.frame(sucupira.raw$`Nome do Membro do Projeto`,
-             sucupira.raw$`Categoria do Membro do Projeto`)
-membros <- membros[!duplicated(membros), ]
-categorias <- table(membros$sucupira.raw..Categoria.do.Membro.do.Projeto.)
-
-# calculate summary statistics for projetos
-summ.table.projetos <-
-  c(paste0(
-    formatC(
-      sum(concluido.ano, na.rm = TRUE),
-      format = "d",
-      digits = 0,
-      big.mark = ".",
-      decimal.mark = ","
-    )
-  ),
-  paste0(
-    formatC(
-      sum(andamento.ano[, dim(andamento.ano)[2]], na.rm = TRUE),
-      format = "d",
-      digits = 0,
-      big.mark = ".",
-      decimal.mark = ","
-    )
-  ),
-  categorias,
-  sum(categorias))
-names(summ.table.projetos) <-
-  c("Projetos concluídos",
-    "Projetos em andamento",
-    names(categorias),
-    "Total de membros")
-
-# plot 1 (total de projetos por linha, por ano)
+# replace NA values by Indefinido
+projetos.ac$`Área de Concentração`[is.na(projetos.ac$`Área de Concentração`)] <- "Indefinido"
 
 # plot area setup
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 # Define colors using RColorBrewer
-colors <- RColorBrewer::brewer.pal(n = length(linhas), name = "Set3")
-
-# Reshape data for Plotly
-data_long <- reshape2::melt(projetos.ano, id.vars = "Linhas de Pesquisa", variable.name = "Ano", value.name = "Frequência")
-data_long <- data.frame(data_long, stringsAsFactors = FALSE)
-colnames(data_long) <- c("Linhas de Pesquisa", "Ano", "Frequência")
+colors <- RColorBrewer::brewer.pal(n = length(unique(projetos.ac$`Área de Concentração`)), name = "Set3")
 
 plot.1 <- plotly::plot_ly(
-  data = data_long,
+  data = projetos.ac,
   x = ~Ano,
-  y = ~Frequência,
-  color = ~`Linhas de Pesquisa`,
+  y = ~n,
+  color = ~`Área de Concentração`,
   type = 'bar',
   colors = colors,
   height = 720
@@ -507,7 +358,7 @@ plot.1 <- plotly::plot_ly(
 
 plot.1 <- plot.1 %>% plotly::layout(
   title = list(
-    text = "Projetos por Linha de Pesquisa",
+    text = "Projetos por Área de Concentração",
     x = 0.5,
     xanchor = 'center',
     font = list(size = 24, color = 'white')
@@ -542,29 +393,28 @@ plot.1 <- plot.1 %>% plotly::layout(
   barmode = 'stack'
 )
 
-# plot 2 (percentual de projetos por linha, por ano)
+# plot 2 (total de projetos por linha, por ano)
+
+# crosstable of projects by Linha de Pesquisa
+projetos.lp <- sucupira %>%
+  dplyr::distinct(Ano, `Identificador do Projeto de Pesquisa`, .keep_all = TRUE) %>%
+  dplyr::group_by(Ano, `Linha de Pesquisa`) %>%
+  dplyr::summarise(n = n())
+
+# replace NA values by Indefinido
+projetos.lp$`Linha de Pesquisa`[is.na(projetos.lp$`Linha de Pesquisa`)] <- "Indefinido"
 
 # plot area setup
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 # Define colors using RColorBrewer
-colors <- RColorBrewer::brewer.pal(n = length(linhas), name = "Set3")
-
-# Reshape data for Plotly
-data_long <- reshape2::melt(projetos.ano, id.vars = "Linhas de Pesquisa", variable.name = "Ano", value.name = "Frequência")
-data_long <- data.frame(data_long, stringsAsFactors = FALSE)
-colnames(data_long) <- c("Linhas de Pesquisa", "Ano", "Frequência")
-
-# convert absolute to relative frequency
-data_long <- data_long %>%
-  dplyr::group_by(Ano) %>%
-  dplyr::mutate(Frequência = Frequência / sum(Frequência, na.rm = TRUE))
+colors <- RColorBrewer::brewer.pal(n = length(unique(projetos.lp$`Linha de Pesquisa`)), name = "Set3")
 
 plot.2 <- plotly::plot_ly(
-  data = data_long,
+  data = projetos.lp,
   x = ~Ano,
-  y = ~Frequência,
-  color = ~`Linhas de Pesquisa`,
+  y = ~n,
+  color = ~`Linha de Pesquisa`,
   type = 'bar',
   colors = colors,
   height = 720
@@ -607,7 +457,236 @@ plot.2 <- plot.2 %>% plotly::layout(
   barmode = 'stack'
 )
 
-# plot 3 (summary table in plot)
+# plot 3 (total de projetos por situação, por ano)
+
+# crosstable of projects by Situação
+projetos.situacao <- sucupira %>%
+  dplyr::distinct(Ano, `Identificador do Projeto de Pesquisa`, .keep_all = TRUE) %>%
+  dplyr::group_by(Ano, Situação) %>%
+  dplyr::summarise(n = n())
+
+# replace NA values by Indefinido
+projetos.situacao$Situação[is.na(projetos.situacao$Situação)] <- "Indefinido"
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(unique(projetos.situacao$Situação)), name = "Set3")
+
+plot.3 <- plotly::plot_ly(
+  data = projetos.situacao,
+  x = ~Ano,
+  y = ~n,
+  color = ~Situação,
+  type = 'bar',
+  colors = colors,
+  height = 720
+)
+
+plot.3 <- plot.3 %>% plotly::layout(
+  title = list(
+    text = "Projetos por Situação",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = 24, color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+)
+
+# plot 4 (total de projetos por tipo, por ano)
+
+# crosstable of projects by Natureza do Projeto de Pesquisa
+projetos.tipo <- sucupira %>%
+  dplyr::distinct(Ano, `Identificador do Projeto de Pesquisa`, .keep_all = TRUE) %>%
+  dplyr::group_by(Ano, `Natureza do Projeto de Pesquisa`) %>%
+  dplyr::summarise(n = n())
+
+# replace NA values by Indefinido
+projetos.tipo$`Natureza do Projeto de Pesquisa`[is.na(projetos.tipo$`Natureza do Projeto de Pesquisa`)] <- "Indefinido"
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(unique(projetos.tipo$`Natureza do Projeto de Pesquisa`)), name = "Set3")
+
+plot.4 <- plotly::plot_ly(
+  data = projetos.tipo,
+  x = ~Ano,
+  y = ~n,
+  color = ~`Natureza do Projeto de Pesquisa`,
+  type = 'bar',
+  colors = colors,
+  height = 720
+)
+
+plot.4 <- plot.4 %>% plotly::layout(
+  title = list(
+    text = "Projetos por Natureza",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = 24, color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+)
+
+# plot 5 (total de projetos por categoria de membro, por ano)
+
+# crosstable of projects by Categoria do Membro
+projetos.categoria <- sucupira %>%
+  dplyr::distinct(Ano, `Identificador da Pessoa do Membro`, .keep_all = TRUE) %>%
+  dplyr::group_by(Ano, `Categoria do Membro do Projeto`) %>%
+  dplyr::summarise(n = n())
+
+# replace NA values by Indefinido
+projetos.categoria$`Categoria do Membro do Projeto`[is.na(projetos.categoria$`Categoria do Membro do Projeto`)] <- "Indefinido"
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(unique(projetos.categoria$`Categoria do Membro do Projeto`)), name = "Set3")
+
+plot.5 <- plotly::plot_ly(
+  data = projetos.categoria,
+  x = ~Ano,
+  y = ~n,
+  color = ~`Categoria do Membro do Projeto`,
+  type = 'bar',
+  colors = colors,
+  height = 720
+)
+
+plot.5 <- plot.5 %>% plotly::layout(
+  title = list(
+    text = "Projetos por Categoria de Membro",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = 24, color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+)
+
+# plot 6 (summary table in plot)
+summ.table.projetos <- data.frame()
+
+# total per situação em andamento using filter current year
+summ.table.projetos.1 <- sucupira %>%
+  dplyr::filter(Ano == Ano[length(Ano)]) %>%
+  dplyr::distinct(`Identificador do Projeto de Pesquisa`, Situação, .keep_all = TRUE) %>%
+  dplyr::group_by(Situação) %>%
+  dplyr::summarise(n = n()) %>%
+  dplyr::filter(Situação == "EM ANDAMENTO")
+
+# total per situação concluído using all years
+summ.table.projetos.1 <- rbind(
+  summ.table.projetos.1,
+  sucupira %>%
+    dplyr::distinct(`Identificador do Projeto de Pesquisa`, Situação, .keep_all = TRUE) %>%
+    dplyr::group_by(Situação) %>%
+    dplyr::summarise(n = n()) %>%
+    dplyr::filter(Situação == "CONCLUÍDO")
+)
+
+# total per categoria
+summ.table.projetos.2 <- sucupira %>% 
+  dplyr::distinct(`Identificador da Pessoa do Membro`, `Categoria do Membro do Projeto`, .keep_all = TRUE) %>%
+  dplyr::group_by(`Categoria do Membro do Projeto`) %>%
+  dplyr::summarise(n = n())
+
+# total de membros
+summ.table.projetos.3 <- sucupira %>%
+  dplyr::distinct(`Identificador da Pessoa do Membro`, .keep_all = TRUE) %>%
+  dplyr::summarise(n = n())
+
+# merge datasets as two column 
+summ.table.projetos <- c(summ.table.projetos.1$n, summ.table.projetos.2$n, summ.table.projetos.3$n)
+names(summ.table.projetos) <- c(summ.table.projetos.1$Situação, summ.table.projetos.2$`Categoria do Membro do Projeto`, "Membros")
+
+# to title case
+names(summ.table.projetos) <- tools::toTitleCase(tolower(names(summ.table.projetos)))
 
 # plot area setup
 layout.m <- matrix(c(1, 1, 1, 2, 2, 2, 3, 4, 5, 6, 7, 8),
@@ -615,6 +694,7 @@ layout.m <- matrix(c(1, 1, 1, 2, 2, 2, 3, 4, 5, 6, 7, 8),
                    byrow = TRUE)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 
+# change to matrix format with names
 summ.data <- summ.table.projetos
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
@@ -631,6 +711,12 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.2
+cat('</div>')
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.3
 cat('</div>')
 cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
