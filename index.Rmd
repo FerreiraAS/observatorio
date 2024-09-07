@@ -159,6 +159,13 @@ projetos.concluido <- projetos.concluido %>%
 current.AC <- unique(projetos.em.andamento$`Área de Concentração`)
 current.LP <- unique(projetos.em.andamento$`Linha de Pesquisa`)
 
+# remove NA values
+current.AC <- current.AC[!is.na(current.AC)]
+current.LP <- current.LP[!is.na(current.LP)]
+
+# remove projeto isolado da LP
+current.LP <- current.LP[current.LP != "PROJETO ISOLADO"]
+
 # summary data for plot table
 summ.AC.LP <-
   as.data.frame(
@@ -173,8 +180,8 @@ summ.AC.LP <- summ.AC.LP[summ.AC.LP$Freq != 0, ]
 
 colnames(summ.AC.LP) <- c("AC", "LP", "Freq")
 
-summ.AC.LP$AC <- as.factor(abbreviate(summ.AC.LP$AC))
-summ.AC.LP$LP <- as.factor(abbreviate(summ.AC.LP$LP))
+# summ.AC.LP$AC <- as.factor(abbreviate(summ.AC.LP$AC))
+# summ.AC.LP$LP <- as.factor(abbreviate(summ.AC.LP$LP))
 data <- summ.AC.LP
 
 # Criar uma tabela de nós com identificadores únicos
@@ -224,6 +231,7 @@ par(
 plot(
   g,
   vertex.size = igraph::V(g)$size,  # Tamanho dos vértices baseado na frequência
+  vertex.label = NA,  # Rótulos dos vértices
   vertex.label.cex = 0.8,
   vertex.label.color = ifelse(igraph::V(g)$type == "AC", main.color, "white"),
   vertex.label.dist = ifelse(igraph::V(g)$type == "AC", 0, 2),
@@ -236,6 +244,9 @@ plot(
   main = "Áreas de Concentração e Linhas de Pesquisa"
 )
 
+# add legend
+legend("bottomleft", legend = c("Área de Concentração", "Linha de Pesquisa"), fill = RColorBrewer::brewer.pal(n = 9, name = "Set3"), bty = "n")
+
 # plot 2
 
 # plot area setup
@@ -243,8 +254,8 @@ plot(
 layout.m <- matrix(c(1, 2), ncol = 1, byrow = FALSE)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 
-summ.coerencia.1 <- c(length(unique(current.AC)),
-                      length(unique(current.LP)))
+summ.coerencia.1 <- c(length(current.AC),
+                      length(current.LP))
 names(summ.coerencia.1) <-
   c("Áreas de Concentração",
     "Linhas de Pesquisa")
