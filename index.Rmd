@@ -672,7 +672,7 @@ plot.6 <- plotly::plot_ly(
 
 plot.6 <- plot.6 %>% plotly::layout(
   title = list(
-    text = "Categoria dod Membrod dos Projetos",
+    text = "Categoria dos Membros dos Projetos",
     x = 0.5,
     xanchor = 'center',
     font = list(size = 24, color = 'white')
