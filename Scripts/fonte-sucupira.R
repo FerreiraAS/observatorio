@@ -1,4 +1,6 @@
-cat('\n\n')
+if (knitr::is_html_output()){
+  cat('\n\n')
+}
 cat('**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)')
 cat('\n\n')
 if (knitr::is_html_output()) {
