@@ -1647,6 +1647,10 @@ for (j in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
+```{r, eval = !has.sucupira.files}
+cat('<br>')
+```
+
 ```{r turmas, eval = has.sucupira.files}
 # turmas
 sheet <- "Turmas"

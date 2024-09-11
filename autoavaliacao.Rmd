@@ -468,6 +468,10 @@ if(knitr::is_latex_output()) {
 
 <br>
 
+```{=latex}
+\newpage
+```
+
 ```{r, eval = knitr::is_html_output()}
 cat("## **Ficha de Avaliação** {#ficha-avaliacao}")
 ```
@@ -1105,7 +1109,6 @@ if(knitr::is_latex_output()) {
 }
 ```
 
-
 ```{r 1-1-1-LP-detalhes, eval = has.dados.cadastrais, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", fig.pos='H'}
 # read data
 linhas.raw <-
@@ -1457,7 +1460,6 @@ if(knitr::is_latex_output()) {
 }
 ```
 
-\newpage
 \blandscape
 
 ```{r 1-1-1-PP-DP-landscape, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", fig.pos='H'}
@@ -2974,6 +2976,10 @@ for (i in 1:length(abas)) {
   cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 }
 ```
+
+<!-- EM CONSTRUÇÃO -->
+
+<br>
 
 ```{=latex}
 \newpage
