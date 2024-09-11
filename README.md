@@ -192,7 +192,6 @@ Um arquivo-modelo de cada planilha está disponível no [repositório do Observa
 *Importante*: Os modelos são disponibilizados com dados do PPGCR-UNISUAM, os quais devem ser substituídos pelos dados do PPG. As seguintes planilhas podem ser complementadas:
 
 -   [Agendas de Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Agendas%20de%20Pesquisa.xlsx)
--   [Apresentação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Apresenta%C3%A7%C3%A3o.xlsx)
 -   [Área CAPES.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/%C3%81rea%20CAPES.xlsx)
 -   [Autoavaliação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Autoavalia%C3%A7%C3%A3o.xlsx)
 -   [Avaliação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Avalia%C3%A7%C3%A3o.xlsx)
