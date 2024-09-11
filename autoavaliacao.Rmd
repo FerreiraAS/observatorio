@@ -1777,13 +1777,13 @@ if(knitr::is_latex_output()) {
 ```
 
 ```{r 1-1-2-disciplina-msc, eval = exists("table.msc"), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", fig.pos='H'}
-if(knitr::is_html_output() && !sjmisc::is_empty(table.msc)) {
+if (all(knitr::is_html_output(), exists("table.msc"), try(!sjmisc::is_empty(table.msc), silent = TRUE))) {
   cat('##### *Qualitativa (Mestrado)*')
   cat('\n\n')
 }
 
 # print tables
-if (knitr::is_html_output() && !sjmisc::is_empty(table.msc)) {
+if (all(knitr::is_html_output(), exists("table.msc"), try(!sjmisc::is_empty(table.msc), silent = TRUE))) {
   # use kable for HTML output
   knitr::kable(
     table.msc,
@@ -1825,13 +1825,13 @@ if(knitr::is_latex_output()) {
 ```
 
 ```{r 1-1-2-disciplinas-dsc, eval = exists("table.dsc"), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", fig.pos='H'}
-if(knitr::is_html_output() && !sjmisc::is_empty(table.dsc)) {
+if (all(knitr::is_html_output(), exists("table.dsc"), try(!sjmisc::is_empty(table.dsc), silent = TRUE))) {
   cat('##### *Qualitativa (Doutorado)*')
   cat('\n\n')
 }
 
 # print tables
-if (knitr::is_html_output() && !sjmisc::is_empty(table.dsc)) {
+if (all(knitr::is_html_output(), exists("table.dsc"), try(!sjmisc::is_empty(table.dsc), silent = TRUE))) {
   # use kable for HTML output
   knitr::kable(
     table.dsc,
