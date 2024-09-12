@@ -68,10 +68,6 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = !has.sucupira.files}
-cat('<br>')
-```
-
 ### **Formação continuada** {#formacao-continuada}
 
 ```{r formacao-continuada, eval = has.sucupira.files}
