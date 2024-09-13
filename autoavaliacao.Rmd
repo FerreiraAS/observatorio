@@ -5283,7 +5283,7 @@ if (knitr::is_latex_output()) {
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 cat('\n\n')
-cat('**Nota**: A classificação dos periódicos pelo Qualis refere-se à Avaliação Quadrienal 2017-2020 conforme arquivo disponibilizado na [Plataforma Sucupira](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.xhtml) e não substitui a classificação da CAPES da Avaliação Quadrienal ', min(quadrienal.vigente), '-', max(quadrienal.vigente), '.', sep = "")￼
+cat('**Nota**: A classificação dos periódicos pelo Qualis refere-se à Avaliação Quadrienal 2017-2020 conforme arquivo disponibilizado na [Plataforma Sucupira](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.xhtml) e não substitui a classificação da CAPES da Avaliação Quadrienal ', min(quadrienal.vigente), '-', max(quadrienal.vigente), '.', sep = "")
 cat('\n\n')
 
 # Add LaTeX commands for new page and float barrier
