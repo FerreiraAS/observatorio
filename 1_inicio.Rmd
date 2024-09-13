@@ -430,9 +430,9 @@ has.videos <-
   )
 ```
 
-## **Check dados cadastrais PPG**
+## **Check dados cPPG**
 
-```{r ppg-data, eval = all(has.dados.cadastrais, has.sucupira.files)}
+```{r ppg-data, eval = has.sucupira.files}
 # projetos - membros
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -458,11 +458,7 @@ nome.PPG.no.stopwords <- paste(nome.PPG.split[is.na(match.stopwords)], collapse 
 source("Scripts/get-initials.R", local = knitr::knit_global())
 sigla.PPG <- initials(nome.PPG.no.stopwords)
 
-try(site.PPG <-
-  readxl::read_excel("PPG/Dados Cadastrais.xlsx",
-             sheet = "Endereço",
-             col_types = c("text"))[7, 2],
-  silent = TRUE)
+site.PPG <- yaml::read_yaml(file = "./_site.yml")$navbar$right[[1]]$menu[[2]]$href
 
 # qualquer planilha para obter os dados da IES
 sheet <- "Docentes"

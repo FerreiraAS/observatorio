@@ -631,6 +631,10 @@ names(sucupira.df) <-
 sucupira.df <-
   sucupira.df[sucupira.df$`Membro Responsável` == "Sim",]
 
+# keep docente permanente only
+sucupira.df <-
+  sucupira.df[sucupira.df$`Nome do Membro do Projeto` %in% toupper(docentes.quadrienio), ]
+
 sucupira.df <-
   sucupira.df %>% dplyr::select(
     "Anos",
@@ -729,7 +733,7 @@ for(i in 1:dim(table.ac.doc.freq)[1]){
 }
 # rename and drop columns
 table.ac.doc.long <- dplyr::select(table.ac.doc.long, "Ano", "Área de Concentração")
-names(table.ac.doc.long) <- c("Ano", "Docente")
+names(table.ac.doc.long) <- c("Ano", "Docente Permanente")
 
 table.ac.doc.long <- rbind(
   table.ac.doc.long,
@@ -737,7 +741,7 @@ table.ac.doc.long <- rbind(
     "Ano" = rep(paste0(
       min(quadrienal.vigente), "-", max(quadrienal.vigente)
     ), times = length(unique(table.ac.doc$Docente))),
-    "Docente" = rep("Áreas", times = length(unique(table.ac.doc$Docente))),
+    "Docente Permanente" = rep("Áreas", times = length(unique(table.ac.doc$Docente))),
     check.names = FALSE
   )
 )
@@ -794,7 +798,7 @@ table.ac.doc.gt <-
     gtsummary::all_stat_cols() ~ "**{level}**"
   )) %>%
   gtsummary::remove_row_type(
-    variables = c('Docente'),
+    variables = c('Docente Permanente'),
     type = "level",
     level_value = ("Áreas")
   ) %>%
@@ -987,7 +991,7 @@ for(i in 1:dim(table.lp.doc.freq)[1]){
 
 # rename and drop columns
 table.lp.doc.long <- dplyr::select(table.lp.doc.long, "Ano", "Linha de Pesquisa")
-names(table.lp.doc.long) <- c("Ano", "Docente")
+names(table.lp.doc.long) <- c("Ano", "Docente Permanente")
 
 table.lp.doc.long <- rbind(
   table.lp.doc.long,
@@ -995,7 +999,7 @@ table.lp.doc.long <- rbind(
     "Ano" = rep(paste0(
       min(quadrienal.vigente), "-", max(quadrienal.vigente)
     ), times = length(unique(table.lp.doc$Docente))),
-    "Docente" = rep("Linhas", times = length(unique(table.lp.doc$Docente))),
+    "Docente Permanente" = rep("Linhas", times = length(unique(table.lp.doc$Docente))),
     check.names = FALSE
   )
 )
@@ -1050,7 +1054,7 @@ table.lp.doc.gt <-
     gtsummary::all_stat_cols() ~ "**{level}**"
   )) %>%
   gtsummary::remove_row_type(
-    variables = c('Docente'),
+    variables = c('Docente Permanente'),
     type = "level",
     level_value = ("Linhas")
   ) %>%
@@ -1440,7 +1444,7 @@ if (knitr::is_latex_output()) {
     format = ifelse(knitr::is_html_output(), "html", "latex"),
     booktabs = TRUE,
     linesep = "",
-    caption = ifelse(knitr::is_html_output(), "", "Projetos")
+    caption = ifelse(knitr::is_html_output(), "", "Projetos Liderados por Docentes Permanentes")
   ) %>%
     kableExtra::kable_styling(
       bootstrap_options = c("basic", "hover", "condensed", "responsive"),
@@ -1532,7 +1536,7 @@ if (knitr::is_html_output()) {
     width = c(0.01,0.19,0.15,0.25,0.10,0.15,0.15)*(21-3-3),
     style = "bootstrap",
     align = "l",
-    caption = ifelse(knitr::is_html_output(), "", "Projetos")
+    caption = ifelse(knitr::is_html_output(), "", "Projetos Liderados por Docentes Permanentes")
   ) %>%
     tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H") %>%
     tinytable::style_tt(i = 0, j = 1:ncol(table.projetos), bold = TRUE) %>%
@@ -2048,6 +2052,9 @@ sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
 names(sucupira) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
+# keep docentes permanente only
+sucupira <- sucupira[sucupira$Categoria == "PERMANENTE", ]
+
 sucupira$'Data de Admissão' <-
   substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
 sucupira$'Data de Desligamento' <-
@@ -2149,6 +2156,9 @@ sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
 names(sucupira) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
+# keep docentes permanente only
+sucupira <- sucupira[sucupira$Categoria == "PERMANENTE", ]
+
 sucupira$'Data de Admissão' <-
   substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
 sucupira$'Data de Desligamento' <-
@@ -2246,6 +2256,9 @@ sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
 sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
 names(sucupira) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# keep docentes permanente only
+sucupira <- sucupira[sucupira$Categoria == "PERMANENTE", ]
 
 sucupira$'Data de Admissão' <-
   substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
@@ -2349,6 +2362,9 @@ sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
 sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
 names(sucupira) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# keep docentes permanente only
+sucupira <- sucupira[sucupira$Categoria == "PERMANENTE", ]
 
 sucupira$'Data de Admissão' <-
   substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
@@ -2456,7 +2472,7 @@ if (knitr::is_latex_output()) {
     format = ifelse(knitr::is_html_output(), "html", "latex"),
     booktabs = TRUE,
     linesep = "",
-    caption = ifelse(knitr::is_html_output(), "", "Dimensão do Corpo Docente")
+    caption = ifelse(knitr::is_html_output(), "", "Dimensão do Corpo Docente Permanente")
   ) %>%
     kableExtra::kable_styling(
       bootstrap_options = c("basic", "hover", "condensed", "responsive"),
@@ -2505,6 +2521,9 @@ sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
 
 sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
 names(sucupira) <- names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# keep docentes permanente only
+sucupira <- sucupira[sucupira$Categoria == "PERMANENTE", ]
 
 # recode
 sucupira$'Data de Admissão' <- substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
@@ -2594,7 +2613,7 @@ if (knitr::is_latex_output()) {
     format = ifelse(knitr::is_html_output(), "html", "latex"),
     booktabs = TRUE,
     linesep = "",
-    caption = ifelse(knitr::is_html_output(), "", "Coerência Acadêmica do Corpo Docente à Proposta do Programa")
+    caption = ifelse(knitr::is_html_output(), "", "Coerência Acadêmica do Corpo Docente Permanente à Proposta do Programa")
   ) %>%
     kableExtra::kable_styling(
       bootstrap_options = c("basic", "hover", "condensed", "responsive"),
@@ -3986,7 +4005,7 @@ if (knitr::is_latex_output()) {
     format = ifelse(knitr::is_html_output(), "html", "latex"),
     booktabs = TRUE,
     linesep = "",
-    caption = ifelse(knitr::is_html_output(), "", "Docentes Responsáveis por Projetos")
+    caption = ifelse(knitr::is_html_output(), "", "Docentes Permanentes Responsáveis por Projetos")
   ) %>%
     kableExtra::kable_styling(
       bootstrap_options = c("basic", "hover", "condensed", "responsive"),
@@ -4058,7 +4077,7 @@ if (knitr::is_html_output()) {
     format = "html",
     booktabs = TRUE,
     linesep = "",
-    caption = "Docentes Responsáveis por Projetos"
+    caption = "Docentes Permanentes Responsáveis por Projetos"
   ) %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = TRUE,
@@ -4073,7 +4092,7 @@ if (knitr::is_html_output()) {
     width = 1,
     style = "bootstrap",
     align = "l",
-    caption = ifelse(knitr::is_html_output(), "", "Docentes Responsáveis por Projetos")
+    caption = ifelse(knitr::is_html_output(), "", "Docentes Permanenters Responsáveis por Projetos")
   ) %>%
     tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H") %>%
     tinytable::style_tt(i = 0, j = 1:ncol(table.doc), bold = TRUE) %>%
@@ -5261,12 +5280,10 @@ if (knitr::is_latex_output()) {
   print(kable_table)
 }
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 cat('\n\n')
-cat('**Nota**: A classificação dos periódicos pelo Qualis refere-se à Avaliação Quadrienal 2017-2020 conforme arquivo disponibilizado na [Plataforma Sucupira](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.xhtml) e não substitui a classificação da CAPES da Avaliação Quadrienal ', min(quadrienal.vigente), '-', max(quadrienal.vigente), '.', sep = "")
+cat('**Nota**: A classificação dos periódicos pelo Qualis refere-se à Avaliação Quadrienal 2017-2020 conforme arquivo disponibilizado na [Plataforma Sucupira](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.xhtml) e não substitui a classificação da CAPES da Avaliação Quadrienal ', min(quadrienal.vigente), '-', max(quadrienal.vigente), '.', sep = "")￼
 cat('\n\n')
 
 # Add LaTeX commands for new page and float barrier

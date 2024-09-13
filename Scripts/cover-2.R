@@ -17,13 +17,22 @@ par(family = 'ComputerModern')
 texto <- paste0(
   "Citação:",
   "\n\n",
-  if (has.dados.cadastrais) {nome.IES} else {""},
+  if (has.dados.cadastrais) {nome.IES} else if (has.sucupira.files) {nome.IES} else {"(NOME DA IES)"},
   ". ",
   if (has.sucupira.files) {paste0("Quadrienal ", as.character(min(quadrienal.vigente)), "-", as.character(max(quadrienal.vigente)))} else {""},
   ". ",
-  try(paste0(pdftools::pdf_info("docs/autoavaliacao.pdf")$pages, "p"), silent = TRUE),
+  tryCatch(
+    {
+      # Attempt to get the page numbers from the PDF
+      paste0(pdftools::pdf_info("docs/autoavaliacao.pdf")$pages, "p")
+    },
+    error = function(e) {
+      # In case of an error, return "0p"
+      "0p"
+    }
+  ),
   ". ",
-  "Relatório elaborado computacionalmente pelo Observatório do Programa disponível em ",
+  "Relatório de autoavaliação elaborado computacionalmente pelo Observatório do Programa disponível em ",
   yaml::read_yaml(file = "./_site.yml")$href,
   ". ",
   paste0("Atualizado em ", format(Sys.Date(), "%d/%m/%Y")),
