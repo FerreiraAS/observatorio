@@ -765,6 +765,10 @@ has.videos <- as.logical(has.videos)
 # metrics sucupira
 has.metricas.doi.sucupira <- as.logical(has.metricas.doi.sucupira)
 has.metricas.doi.ppg <- as.logical(has.metricas.doi.ppg)
+
+# has.tables
+has.table.msc <- FALSE
+has.table.dsc <- FALSE
 ```
 
 ## **Agregar dados de produção**
