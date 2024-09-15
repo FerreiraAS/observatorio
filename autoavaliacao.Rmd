@@ -1481,10 +1481,8 @@ table.projetos <-
 # if duplicated, keep Situacão = Concluído
 table.projetos <- table.projetos[!duplicated(table.projetos[1:5], fromLast = TRUE),]
 
-table.projetos <- cbind(
-  seq(1, dim(table.projetos)[1]),
-  table.projetos
-  )
+# add ID to the dataframe
+table.projetos$ID <- seq(1, dim(table.projetos)[1])
 
 colnames(table.projetos) <-
   c(
@@ -1509,45 +1507,42 @@ if(knitr::is_latex_output()) {
   try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\}", "\\\\}", x)), silent = TRUE)
 }
 
-# print tables
-if (knitr::is_html_output()) {
-  # use kable for HTML output
-  knitr::kable(
-    table.projetos,
-    align = "l",
-    escape = FALSE,
-    format = "html",
-    booktabs = TRUE,
-    linesep = "",
-    caption = "Projetos"
-  ) %>% kableExtra::kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = TRUE,
-    position = "center"
-  ) %>% kableExtra::column_spec(column = 1:ncol(table.projetos), width = paste0(c(0.01,0.19,0.15,0.25,0.10,0.15,0.15)*(21-3-3), "cm")) %>%
+table.projetos <- data.frame(table.projetos, check.names = FALSE)
+
+# replace NA values with (Sem Área Associada) in area de concentração
+table.projetos$`Área de Concentração`[is.na(table.projetos$`Área de Concentração`)] <- "Não Vinculada"
+
+# replace NA values with (Sem Linha Associada) in linhas de pesquisa
+table.projetos$`Linha de Pesquisa`[is.na(table.projetos$`Linha de Pesquisa`)] <- "Não Vinculada"
+
+# get unique linhas de pesquisa
+linhas <- unique(table.projetos$`Linha de Pesquisa`)
+
+# loop to show separate tables by Linha de Pesquisa
+for (i in 1:length(linhas)) {
+  cat(knitr::knit_print(
+    knitr::kable(
+      x = table.projetos[table.projetos$`Linha de Pesquisa` == linhas[i], ],
+      align = "l",
+      escape = FALSE,
+      format = ifelse(knitr::is_html_output(), "html", "latex"),
+      booktabs = TRUE,
+      linesep = "",
+      caption = paste0("Projetos Liderados por Docentes Permanentes (Linha de Pesquisa: ", linhas[i], ")")
+    ) %>% kableExtra::kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      latex_options = c("striped", "repeat_header", "HOLD_position"),
+      latex_table_env = "tabularx",
+      full_width = TRUE,
+      position = "center"
+    ) %>% kableExtra::column_spec(column = 1:ncol(table.projetos), width = paste0(c(0.01,0.19,0.15,0.25,0.10,0.15,0.15)*(21-3-3), "cm")) %>%
       kableExtra::column_spec(column = 1, bold = TRUE) %>%
       kableExtra::row_spec(row = 0, bold = TRUE)
-} else {
-  # use tinytable for LaTeX output
-  table.projetos <- data.frame(table.projetos, check.names = FALSE)
-  options(tinytable_print_output = "latex")
-  tinytable::tt(
-    table.projetos,
-    width = c(0.01,0.19,0.15,0.25,0.10,0.15,0.15)*(21-3-3),
-    style = "bootstrap",
-    align = "l",
-    caption = ifelse(knitr::is_html_output(), "", "Projetos Liderados por Docentes Permanentes")
-  ) %>%
-    tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H") %>%
-    tinytable::style_tt(i = 0, j = 1:ncol(table.projetos), bold = TRUE) %>%
-    tinytable::style_tt(i = 1:nrow(table.projetos), j = 1, bold = TRUE)
-}
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-
-# Add LaTeX commands for new page and float barrier
-if(knitr::is_latex_output()) {
-  cat('\\newpage')
+  ))
+    
+  if (knitr::is_latex_output()) {
+    cat("\\newpage")
+  }
 }
 ```
 
