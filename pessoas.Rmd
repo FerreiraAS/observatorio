@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE,
   fig.align = 'center',
-  results = "asis",
+  results = 'asis',
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
@@ -1096,11 +1096,7 @@ names(sucupira.list) <- as.character(anos)
 discentes <- sucupira.list[[length(anos)]]
 
 # dplyr::select students that are not matriculated or have already graduated
-discentes <- discentes %>%
-  dplyr::filter(`Situação Discente` %in% c("DESLIGADO", "ABANDONOU"))
-
-# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
-discentes <- discentes[discentes$`Orientador Principal?` == "Sim", ]
+discentes <- discentes[discentes$`Situação Discente` %in% c("DESLIGADO", "ABANDONOU"), ]
 
 # calculate deadlines
 discentes$'Tempo em curso' <-
@@ -1115,10 +1111,9 @@ discentes$'Ano de Encerramento' <- substr(as.Date(discentes$`Data Situação`, f
 # format names
 discentes$`Nível Discente` <- tools::toTitleCase(tolower(discentes$`Nível Discente`))
 discentes$`Nome Discente` <- tools::toTitleCase(tolower(discentes$`Nome Discente`))
-discentes$`Nome do Orientador` <- tools::toTitleCase(tolower(discentes$`Nome do Orientador`))
 
 # drop columns
-discentes <- discentes %>% dplyr::select("Nível Discente", "Nome Discente", "Nome do Orientador", "Ano de Matrícula", "Ano de Encerramento", "Tempo em curso", "Situação Discente", "País")
+discentes <- discentes %>% dplyr::select("Nível Discente", "Nome Discente", "Ano de Matrícula", "Ano de Encerramento", "Tempo em curso", "Situação Discente", "País")
 
 # remove duplicates and empty rows
 discentes <- unique(discentes)
@@ -1128,7 +1123,7 @@ if (dim(discentes)[1] != 0) {
   discentes <- discentes[ids,]
 }
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(discentes, title = "Pessoas - Discentes - Matriculados")
+create_dt(discentes, title = "Pessoas - Discentes - Encerrados")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```

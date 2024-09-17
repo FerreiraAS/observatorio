@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE,
   fig.align = 'center',
-  results = "asis",
+  results = 'asis',
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
@@ -90,19 +90,22 @@ for (j in 1:length(abas)) {
 
 ```{r create-markdown-chunks-dynamically, eval = has.downloads}
 out <- NULL
-for (i in 1:length(abas)) {
-  knit_expanded <- paste0("\n```{r abas[", as.character(i), "]}
-                          cat('\n\n<!-- -->\n\n')
-                          cat(paste0('## **', abas[", as.character(i), "], '**'))
-                          cat('\n\n<!-- -->\n\n')
-                          cat('<hr style=\"height:2px;border-width:0;color:black;background-color:black\">')
-                          \n\n
-                          source(\"Scripts/table-with-buttons.R\", local = knitr::knit_global())
-                          \n\n
-                          create_dt(datasets[[", as.character(i), "]], title = abas[", as.character(i), "])
-                          \n\n
-                          cat('<br><a style=\"float:right\" href=\"#top\"><b>Início &nbsp;</b>⬆️</a><br>')
-                          \n\n```")
+
+for (i in seq_along(abas)) {
+  # Create the R Markdown chunk content
+  knit_expanded <- paste0(
+    "\n```{r ", abas[i], "}\n",
+    "cat('\\n\\n<!-- -->\\n\\n')\n",
+    "cat('## **", abas[i], "**')\n",
+    "cat('\\n\\n<!-- -->\\n\\n')\n",
+    "cat('<hr style=\"height:2px;border-width:0;color:black;background-color:black\">')\n",
+    "source(\"Scripts/table-with-buttons.R\", local = knitr::knit_global())\n",
+    "create_dt(datasets[[", i, "]], title = '", abas[i], "')\n",
+    "cat('<br><a style=\"float:right\" href=\"#top\"><b>Início &nbsp;</b>⬆️</a><br>')\n",
+    "```"
+  )
+  
+  # Append the generated content to 'out'
   out <- c(out, knit_expanded)
 }
 ```

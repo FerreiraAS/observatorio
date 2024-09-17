@@ -1,5 +1,5 @@
 if (knitr::is_html_output()){
-  cat('\n\n')
+  cat('\n')
 }
 cat('**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/)', sep = "")
 cat(', ', sep = "")
@@ -18,7 +18,7 @@ cat(', ', sep = "")
 cat('[**CrossRef**](https://www.crossref.org)', sep = "")
 cat(', ', sep = "")
 cat('[**DOAJ**](https://doaj.org)', sep = "")
-cat('\n\n')
+cat('\n')
 if (knitr::is_html_output()) {
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa('circle-arrow-up'), '</a><br>')
 }

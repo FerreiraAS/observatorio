@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE,
   fig.align = 'center',
-  results = "asis",
+  results = 'asis',
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
@@ -533,8 +533,8 @@ table.continuada.part <- table.continuada %>%
 table.continuada.part <- table.continuada.part %>%
   dplyr::arrange(Ano, Atuações, Formação)
 
-# select Formação with " - " in Formação
-try(table.continuada.part <- dplyr::filter(table.continuada.part, grepl(" - ", Formação)), silent = TRUE)
+# Select rows where Formação contains " - " using base R
+try(table.continuada.part <- table.continuada.part[grepl(" - ", table.continuada.part$Formação), ], silent = TRUE)
 
 # reload previous table if current is empty
 if(nrow(table.continuada.part) == 0) {

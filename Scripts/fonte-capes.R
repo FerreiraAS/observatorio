@@ -1,8 +1,8 @@
 if (knitr::is_html_output()){
-  cat('\n\n')
+  cat('\n')
 }
 cat('**Fontes**: [**CAPES**](https://www.gov.br/capes/pt-br)')
-cat('\n\n')
+cat('\n')
 if (knitr::is_html_output()) {
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa('circle-arrow-up'), '</a><br>')
 }

@@ -31,7 +31,7 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE,
   fig.align = 'center',
-  results = "asis",
+  results = 'asis',
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
@@ -771,11 +771,10 @@ has.table.dsc <- FALSE
 
 ```{r bind-all, cache = TRUE, cache.path = "cache/bind-all/", eval = any(has.sucupira.files, has.ppg.files)}
 # drop lines with empty ID or Ano de publicação
-produtos.detalhes.sucupira <-
-  produtos.detalhes.sucupira %>%
-  dplyr::filter(
-    !is.na(`ID da Produção`) | !is.na(`Ano da Produção`)
-  )
+produtos.detalhes.sucupira <- produtos.detalhes.sucupira[
+  !is.na(produtos.detalhes.sucupira$`ID da Produção`) | 
+  !is.na(produtos.detalhes.sucupira$`Ano da Produção`), 
+]
 
 # bind sources
 metricas_all <-
