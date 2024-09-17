@@ -2090,6 +2090,19 @@ course.level <- "Mestrado"
 turmas.msc <-
   turmas[stringr::str_detect(turmas$`Disciplinas por curso`, course.level),]
 
+
+# select level
+course.level <- "Doutorado"
+turmas.dsc <-
+  turmas[stringr::str_detect(turmas$`Disciplinas por curso`, course.level),]
+```
+
+```{r 1-1-2-disciplinas-msc, eval = has.table.msc, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+if (knitr::is_html_output()) {
+  cat('##### *Qualitativa (Mestrado)*')
+  cat('\n\n')
+}
+
 # compute periodicidade: semestral, anual, bienal, trienal, quadrienal
 ID <- unique(table.msc$ID)
 table.msc$Periodicidade <- "Não oferecida"
@@ -2120,49 +2133,6 @@ table.msc <- table.msc %>% dplyr::select(-ID)
 
 # sort by natureza
 table.msc <- table.msc[order(table.msc$Natureza), ]
-
-# select level
-course.level <- "Doutorado"
-turmas.dsc <-
-  turmas[stringr::str_detect(turmas$`Disciplinas por curso`, course.level),]
-
-# compute periodicidade: semestral, anual, bienal, trienal, quadrienal
-ID <- unique(table.dsc$ID)
-table.dsc$Periodicidade <- "Não oferecida"
-for (i in 1:length(ID)) {
-  data <- turmas.dsc[turmas.dsc$ID == ID[i], ]
-  # check closest proportion of 1, 1/2, 1/4, 1/8
-  n <- nrow(data)
-  m <- length(quadrienal.vigente)
-  freq <- n / m # oferta anual
-  # freq between 1 and 2 periodicidade is semestral
-  if (freq >= 1 & freq <= 2) {
-    table.dsc[table.dsc$ID == ID[i], "Periodicidade"] <- "Semestral"
-  } else if (freq > 1/2 & freq <= 1) {
-    table.dsc[table.dsc$ID == ID[i], "Periodicidade"] <- "Anual"
-  } else if (freq > 1/4 & freq <= 1/2) {
-    table.dsc[table.dsc$ID == ID[i], "Periodicidade"] <- "Bienal"
-  } else if (freq > 1/8 & freq <= 1/4) {
-    table.dsc[table.dsc$ID == ID[i], "Periodicidade"] <- "Trienal"
-  } else if (freq <= 1/8){
-    table.dsc[table.dsc$ID == ID[i], "Periodicidade"] <- "Quadrienal"
-  } else {
-    table.dsc[table.dsc$ID == ID[i], "Periodicidade"] <- "Variável"
-  }
-}
-
-# drop ID
-table.dsc <- table.dsc %>% dplyr::select(-ID)
-
-# sort by natureza
-table.dsc <- table.dsc[order(table.dsc$Natureza), ]
-```
-
-```{r 1-1-2-disciplinas-msc, eval = has.table.msc, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
-if (knitr::is_html_output()) {
-  cat('##### *Qualitativa (Mestrado)*')
-  cat('\n\n')
-}
 
 # Escape characters in table data & % $ # _ { }
 if(knitr::is_latex_output()) {
@@ -2222,6 +2192,37 @@ if (knitr::is_html_output()) {
   cat('##### *Qualitativa (Doutorado)*')
   cat('\n\n')
 }
+
+# compute periodicidade: semestral, anual, bienal, trienal, quadrienal
+ID <- unique(table.dsc$ID)
+table.dsc$Periodicidade <- "Não oferecida"
+for (i in 1:length(ID)) {
+  data <- turmas.dsc[turmas.dsc$ID == ID[i], ]
+  # check closest proportion of 1, 1/2, 1/4, 1/8
+  n <- nrow(data)
+  m <- length(quadrienal.vigente)
+  freq <- n / m # oferta anual
+  # freq between 1 and 2 periodicidade is semestral
+  if (freq >= 1 & freq <= 2) {
+    table.dsc[table.dsc$ID == ID[i], "Periodicidade"] <- "Semestral"
+  } else if (freq > 1/2 & freq <= 1) {
+    table.dsc[table.dsc$ID == ID[i], "Periodicidade"] <- "Anual"
+  } else if (freq > 1/4 & freq <= 1/2) {
+    table.dsc[table.dsc$ID == ID[i], "Periodicidade"] <- "Bienal"
+  } else if (freq > 1/8 & freq <= 1/4) {
+    table.dsc[table.dsc$ID == ID[i], "Periodicidade"] <- "Trienal"
+  } else if (freq <= 1/8){
+    table.dsc[table.dsc$ID == ID[i], "Periodicidade"] <- "Quadrienal"
+  } else {
+    table.dsc[table.dsc$ID == ID[i], "Periodicidade"] <- "Variável"
+  }
+}
+
+# drop ID
+table.dsc <- table.dsc %>% dplyr::select(-ID)
+
+# sort by natureza
+table.dsc <- table.dsc[order(table.dsc$Natureza), ]
 
 # Escape characters in table data & % $ # _ { }
 if(knitr::is_latex_output()) {
