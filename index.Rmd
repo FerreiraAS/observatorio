@@ -342,8 +342,8 @@ projetos.ac <- sucupira %>%
   dplyr::group_by(Ano, `Área de Concentração`) %>%
   dplyr::summarise(n = n())
 
-# replace NA values by Indefinido
-projetos.ac$`Área de Concentração`[is.na(projetos.ac$`Área de Concentração`)] <- "Indefinido"
+# replace NA values by Indefinida
+projetos.ac$`Área de Concentração`[is.na(projetos.ac$`Área de Concentração`)] <- "Indefinida"
 
 # plot area setup
 layout.m <- c(1)
@@ -406,8 +406,8 @@ projetos.lp <- sucupira %>%
   dplyr::group_by(Ano, `Linha de Pesquisa`) %>%
   dplyr::summarise(n = n())
 
-# replace NA values by Indefinido
-projetos.lp$`Linha de Pesquisa`[is.na(projetos.lp$`Linha de Pesquisa`)] <- "Indefinido"
+# replace NA values by Indefinida
+projetos.lp$`Linha de Pesquisa`[is.na(projetos.lp$`Linha de Pesquisa`)] <- "Indefinida"
 
 # plot area setup
 layout.m <- c(1)
@@ -470,8 +470,8 @@ projetos.situacao <- sucupira %>%
   dplyr::group_by(Ano, Situação) %>%
   dplyr::summarise(n = n())
 
-# replace NA values by Indefinido
-projetos.situacao$Situação[is.na(projetos.situacao$Situação)] <- "Indefinido"
+# replace NA values by Indefinida
+projetos.situacao$Situação[is.na(projetos.situacao$Situação)] <- "Indefinida"
 
 # plot area setup
 layout.m <- c(1)
@@ -534,8 +534,8 @@ projetos.natureza <- sucupira %>%
   dplyr::group_by(Ano, `Natureza do Projeto de Pesquisa`) %>%
   dplyr::summarise(n = n())
 
-# replace NA values by Indefinido
-projetos.natureza$`Natureza do Projeto de Pesquisa`[is.na(projetos.natureza$`Natureza do Projeto de Pesquisa`)] <- "Indefinido"
+# replace NA values by Indefinida
+projetos.natureza$`Natureza do Projeto de Pesquisa`[is.na(projetos.natureza$`Natureza do Projeto de Pesquisa`)] <- "Indefinida"
 
 # plot area setup
 layout.m <- c(1)
@@ -598,8 +598,8 @@ projetos.tipo <- sucupira %>%
   dplyr::group_by(Ano, `Natureza do Projeto de Pesquisa`) %>%
   dplyr::summarise(n = n())
 
-# replace NA values by Indefinido
-projetos.tipo$`Natureza do Projeto de Pesquisa`[is.na(projetos.tipo$`Natureza do Projeto de Pesquisa`)] <- "Indefinido"
+# replace NA values by Indefinida
+projetos.tipo$`Natureza do Projeto de Pesquisa`[is.na(projetos.tipo$`Natureza do Projeto de Pesquisa`)] <- "Indefinida"
 
 # plot area setup
 layout.m <- c(1)
@@ -662,8 +662,8 @@ projetos.categoria <- sucupira %>%
   dplyr::group_by(Ano, `Categoria do Membro do Projeto`) %>%
   dplyr::summarise(n = n())
 
-# replace NA values by Indefinido
-projetos.categoria$`Categoria do Membro do Projeto`[is.na(projetos.categoria$`Categoria do Membro do Projeto`)] <- "Indefinido"
+# replace NA values by Indefinida
+projetos.categoria$`Categoria do Membro do Projeto`[is.na(projetos.categoria$`Categoria do Membro do Projeto`)] <- "Indefinida"
 
 # plot area setup
 layout.m <- c(1)
@@ -1589,8 +1589,8 @@ metricas_artigos <- metricas_artigos[metricas_artigos$`Item de Detalhamento` == 
 # remove duplicated ID rows
 metricas_artigos <- metricas_artigos[!duplicated(metricas_artigos$`ID da Produção`), ]
 
-# convert NA values in "Indefinido"
-metricas_artigos$Qualis[is.na(metricas_artigos$Qualis)] <- "Indefinido"
+# convert NA values in "Indefinida"
+metricas_artigos$Qualis[is.na(metricas_artigos$Qualis)] <- "Indefinida"
 
 # Qualis
 estratos.capes <- c("A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "B5", "C")
