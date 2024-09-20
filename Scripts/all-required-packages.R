@@ -157,3 +157,10 @@ packs <- unique(c(packs.cran, packs.git))
 for (i in 1:length(packs)) {
   library(packs[i], character.only = TRUE)
 }
+
+# update TeX packages
+tinytex::tlmgr_update()
+
+# install missing TeX packages
+try(tinytex::parse_install("./autoavaliacao.log"), silent = TRUE)
+try(tinytex::parse_packages("./autoavaliacao.log"), silent = TRUE)
