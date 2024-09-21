@@ -88,7 +88,7 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # Bind all sheets for disciplines
-periodos <- names(sucupira.list)[na.omit(match(periodo.vigente, names(sucupira.list)))]
+periodos <- names(sucupira.list)[na.omit(match(quadrienal.vigente, names(sucupira.list)))]
 turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
 
 turmas.raw$`Período/Ano` <-
@@ -101,8 +101,7 @@ turmas.raw$`Período/Ano` <-
 # remove duplicates based on selected columns
 turmas.raw <- turmas.raw[!duplicated(turmas.raw[c("Período/Ano",
                                                   "ID da Disciplina",
-                                                  "Nome da Disciplina",
-                                                  "Nível do curso")]), ]
+                                                  "ID pessoa do responsável")]), ]
 
 # select variables
 turmas <- turmas.raw %>%
@@ -169,7 +168,7 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # Bind all sheets for disciplines
-periodos <- names(sucupira.list)[na.omit(match(periodo.vigente, names(sucupira.list)))]
+periodos <- names(sucupira.list)[na.omit(match(quadrienal.vigente, names(sucupira.list)))]
 turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
 
 turmas.raw$`Período/Ano` <-
@@ -182,8 +181,7 @@ turmas.raw$`Período/Ano` <-
 # remove duplicates based on selected columns
 turmas.raw <- turmas.raw[!duplicated(turmas.raw[c("Período/Ano",
                                                   "ID da Disciplina",
-                                                  "Nome da Disciplina",
-                                                  "Nível do curso")]), ]
+                                                  "ID pessoa do responsável")]), ]
 
 # select variables
 turmas <- turmas.raw %>%
@@ -259,7 +257,7 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # Bind all sheets for disciplines
-periodos <- names(sucupira.list)[na.omit(match(periodo.vigente, names(sucupira.list)))]
+periodos <- names(sucupira.list)[na.omit(match(quadrienal.vigente, names(sucupira.list)))]
 turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
 
 turmas.raw$`Período/Ano` <-
@@ -272,8 +270,7 @@ turmas.raw$`Período/Ano` <-
 # remove duplicates based on selected columns
 turmas.raw <- turmas.raw[!duplicated(turmas.raw[c("Período/Ano",
                                                   "ID da Disciplina",
-                                                  "Nome da Disciplina",
-                                                  "Nível do curso")]), ]
+                                                  "ID pessoa do responsável")]), ]
 
 # select variables
 turmas <- turmas.raw %>%

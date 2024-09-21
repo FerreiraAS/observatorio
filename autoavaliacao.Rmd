@@ -613,8 +613,7 @@ sucupira.df$`Área de Concentração`[is.na(sucupira.df$`Área de Concentração
 sucupira.df$`Linha de Pesquisa`[is.na(sucupira.df$`Linha de Pesquisa`)] <- "Indefinida"
 sucupira.df$`Natureza do Projeto de Pesquisa`[is.na(sucupira.df$`Natureza do Projeto de Pesquisa`)] <- "Indefinida"
 
-
-# get financiadores from another Sucupira workshheet
+# get financiadores from another Sucupira worksheet
 sheet <- "Projetos - Financiadores"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
@@ -640,10 +639,17 @@ sucupira <- sucupira %>%
       )
   })
 
+# remove duplicates
+sucupira <- lapply(sucupira, function(x) x[!duplicated(x),])
+
+# if still duplicated, keep Situacão = Concluído
+
 # match financiadores with projects
 sucupira.financiadores <- list()
 for (i in 1:length(sucupira)) {
   sucupira.financiadores[[i]] <- dplyr::left_join(sucupira.df, sucupira[[i]], by = "Identificador do Projeto de Pesquisa", keep = FALSE)
+  # remove rows with NA values inyroduced after left_join 
+  sucupira.financiadores[[i]] <- sucupira.financiadores[[i]][!is.na(sucupira.financiadores[[i]][, which(names(sucupira.financiadores[[i]]) == "Data Início Financiador")]), ]
 }
 
 # to dataframe
@@ -652,10 +658,7 @@ sucupira.financiadores.df <- data.frame(do.call(dplyr::bind_rows, sucupira.finan
 # remove duplicates
 sucupira.financiadores.df <- sucupira.financiadores.df[!duplicated(sucupira.financiadores.df),]
 
-# replace NA with Indefinido
-sucupira.financiadores.df$`Nome do Financiador`[is.na(sucupira.financiadores.df$`Nome do Financiador`)] <- "Indefinida"
-sucupira.financiadores.df$`Natureza do Financiador`[is.na(sucupira.financiadores.df$`Natureza do Financiador`)] <- "Indefinida"
-sucupira.financiadores.df$`Financiador Estrangeiro`[is.na(sucupira.financiadores.df$`Financiador Estrangeiro`)] <- "Indefinida"
+sucupira.financiadores.df$`Data Fim Financiador`[is.na(sucupira.financiadores.df$`Data Fim Financiador`)] <- "Atual"
 ```
 
 ```{r 1-1-1-ac, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
@@ -1627,27 +1630,63 @@ if(knitr::is_latex_output()) {
 
 ```{r 1-1-1-PP-DP-landscape, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
 # select data
-table.projetos <-
-  sucupira.df %>% dplyr::select(
-    "Área de Concentração",
-    "Linha de Pesquisa",
-    "Nome do Projeto de Pesquisa",
-    "Natureza do Projeto de Pesquisa",
-    "Nome do Membro do Projeto",
-    "Situação"
+table.projetos <- dplyr::select(
+  sucupira.financiadores.df,
+  "Identificador do Projeto de Pesquisa",
+  "Área de Concentração",
+  "Linha de Pesquisa",
+  "Nome do Projeto de Pesquisa",
+  "Natureza do Projeto de Pesquisa",
+  "Nome do Membro do Projeto",
+  "Situação",
+  "Nome do Financiador",
+  "Natureza do Financiador"
+)
+
+# remove duplicates
+table.projetos <- table.projetos[!duplicated(table.projetos),]
+
+# split Natureza do Financiador em Bolsas e Outros Auxílios
+table.projetos <- table.projetos %>%
+  dplyr::mutate(
+    Bolsa = ifelse(`Natureza do Financiador` == "BOLSA", `Nome do Financiador`, NA),
+    Auxílio = ifelse(`Natureza do Financiador` == "OUTRO AUXÍLIO FINANCEIRO", `Nome do Financiador`, NA)
   )
 
-# if duplicated, keep Situacão = Concluído
-table.projetos <- table.projetos[!duplicated(table.projetos[1:5], fromLast = TRUE),]
-
 # sort by Linha de Pesquisa
-table.projetos <- table.projetos[order(table.projetos$`Linha de Pesquisa`),]
+table.projetos <- table.projetos[order(table.projetos$`Área de Concentração`, table.projetos$`Linha de Pesquisa`, table.projetos$`Nome do Projeto de Pesquisa`),]
+
+# if duplicated, keep Situacão = Concluído
+ids <- unique(table.projetos$`Identificador do Projeto de Pesquisa`)
+output <- data.frame(
+  "ID" = rep(NA, length(ids)),
+  "Área de Concentração" = rep(NA, length(ids)),
+  "Linha de Pesquisa" = rep(NA, length(ids)),
+  "Projeto" = rep(NA, length(ids)),
+  "Natureza" = rep(NA, length(ids)),
+  "Responsável" = rep(NA, length(ids)),
+  "Bolsa" = rep(NA, length(ids)),
+  "Auxílio" = rep(NA, length(ids)),
+  "Situação" = rep(NA, length(ids)),
+  check.names = FALSE
+)
+
+for (i in 1:length(ids)) {
+  data <- table.projetos[table.projetos$`Identificador do Projeto de Pesquisa` == ids[i], ]
+  output$ID[i] <- unique(data$`Identificador do Projeto de Pesquisa`)
+  output$`Área de Concentração`[i] <- unique(data$`Área de Concentração`)
+  output$`Linha de Pesquisa`[i] <- unique(data$`Linha de Pesquisa`)
+  output$Projeto[i] <- unique(data$`Nome do Projeto de Pesquisa`)
+  output$Natureza[i] <- unique(data$`Natureza do Projeto de Pesquisa`)
+  output$Responsável[i] <- unique(data$`Nome do Membro do Projeto`)
+  output$Bolsa[i] <- paste0(na.omit(tools::toTitleCase(tolower(unique(data$Bolsa)))), collapse = "; ")
+  output$Auxílio[i] <- paste0(na.omit(tools::toTitleCase(tolower(unique(data$Auxílio)))), collapse = "; ")
+  output$Situação[i] <- unique(data$Situação)
+}
+table.projetos <- output
 
 # add ID to the dataframe
 table.projetos$ID <- seq(1, dim(table.projetos)[1])
-
-# reorder columns to ID first
-table.projetos <- dplyr::select(table.projetos, ID, dplyr::everything())
 
 # Escape characters in table data & % $ # _ { }
 if(knitr::is_latex_output()) {
@@ -1670,17 +1709,19 @@ colnames(table.projetos) <-
     "Projeto",
     "Natureza",
     "Responsável",
+    "Bolsa",
+    "Auxílio",
     "Situação"
   )
 rownames(table.projetos) <- NULL
 
-linhas <- unique(table.projetos$`Linha de Pesquisa`)
-linhas <- linhas[!is.na(linhas)]
+# unique paired matrix of area de concentração and linha de pesquisa
+AC.LP <- unique(table.projetos[, c("Área de Concentração", "Linha de Pesquisa")])
 
 # create list of tables
-lista.linhas <- list()
-for (linha in linhas) {
-  lista.linhas[[linha]] <- table.projetos[table.projetos$`Linha de Pesquisa` == linha, ]
+lista.AC.LP <- list()
+for (item in 1:dim(AC.LP)[1]) {
+  lista.AC.LP[[item]] <- table.projetos[table.projetos$`Área de Concentração` == AC.LP[item,1] & table.projetos$`Linha de Pesquisa` == AC.LP[item,2], ]
 }
 ```
 
@@ -1689,9 +1730,12 @@ for (linha in linhas) {
 
 out <- NULL
 
-for (i in seq_along(linhas)) {
+for (i in 1:length(lista.AC.LP)) {
   # Define table caption
-  caption <- paste0('Projetos Liderados por Docentes Permanentes (Linha de Pesquisa: ', linhas[i], ')')
+  caption <- paste0('Projetos Liderados por Docentes Permanentes - Área de Concentração: ', toupper(AC.LP[i,1]), ' - ', 'Linha de Pesquisa: ', toupper(AC.LP[i,2]))
+  
+  # drop columns Area de Concentração, Linha de Pesquisa
+  lista.AC.LP[[i]] <- dplyr::select(lista.AC.LP[[i]], -c('Área de Concentração', 'Linha de Pesquisa'))
   
   # Generate R Markdown code for this chunk
   knit_expanded <- paste0(
@@ -1701,7 +1745,7 @@ for (i in seq_along(linhas)) {
     "if (knitr::is_html_output()) {\n",
     "  # use kable for HTML output\n",
     "  knitr::kable(\n",
-    "    lista.linhas[[", i, "]],\n",
+    "    lista.AC.LP[[", i, "]],\n",
     "    align = 'l',\n",
     "    escape = FALSE,\n",
     "    format = 'html',\n",
@@ -1714,24 +1758,24 @@ for (i in seq_along(linhas)) {
     "      full_width = TRUE,\n",
     "      position = 'center'\n",
     "    ) %>% \n",
-    "    kableExtra::column_spec(column = 1:ncol(lista.linhas[[", i, "]]), width = paste0(c(0.01,0.19,0.15,0.25,0.10,0.15,0.15)*(21-3-3), 'cm')) %>% \n",
+    "    kableExtra::column_spec(column = 1:ncol(lista.AC.LP[[", i, "]]), width = paste0(c(0.02,0.21,0.08,0.16,0.20,0.20,0.13)*(21-3-3), 'cm')) %>% \n",
     "    kableExtra::column_spec(column = 1, bold = TRUE) %>% \n",
     "    kableExtra::row_spec(row = 0, bold = TRUE)\n",
     "} else {\n",
     "  # use tinytable for LaTeX output\n",
-    "  linhas.atual <- data.frame(lista.linhas[[", i, "]], check.names = FALSE)\n",
+    "  linhas.atual <- data.frame(lista.AC.LP[[", i, "]], check.names = FALSE)\n",
     "  options(tinytable_print_output = 'latex')\n",
     "  tinytable::tt(\n",
     "    linhas.atual,\n",
-    "    width = c(0.01,0.19,0.15,0.25,0.10,0.15,0.15)*(21-3-3),\n",
+    "    width = c(0.02,0.21,0.08,0.16,0.20,0.20,0.13)*(21-3-3),\n",
     "    style = 'bootstrap',\n",
     "    align = 'l',\n",
     "    caption = '", caption, "',\n",
     "    row.names = FALSE\n",
     "  ) %>% \n",
     "    tinytable::theme_tt('multipage', rowhead = 1, latex_float = 'H') %>% \n",
-    "    tinytable::style_tt(i = 0, j = 1:ncol(lista.linhas[[", i, "]]), bold = TRUE) %>% \n",
-    "    tinytable::style_tt(i = 1:nrow(lista.linhas[[", i, "]]), j = 1, bold = TRUE)\n",
+    "    tinytable::style_tt(i = 0, j = 1:ncol(lista.AC.LP[[", i, "]]), bold = TRUE) %>% \n",
+    "    tinytable::style_tt(i = 1:nrow(lista.AC.LP[[", i, "]]), j = 1, bold = TRUE)\n",
     "}\n",
     "source('Scripts/fonte-sucupira.R', local = knitr::knit_global())\n",
     "```"
@@ -2055,8 +2099,7 @@ turmas.raw$`Período/Ano` <-
 # remove duplicates based on selected columns
 turmas.raw <- turmas.raw[!duplicated(turmas.raw[c("Período/Ano",
                                                   "ID da Disciplina",
-                                                  "Nome da Disciplina",
-                                                  "Nível do curso")]), ]
+                                                  "ID pessoa do responsável")]), ]
 
 # select variables
 turmas <- turmas.raw %>%
@@ -2069,6 +2112,9 @@ turmas <- turmas.raw %>%
     "Nome do responsável",
     "Indicador de responsável principal"
   ))
+
+# keep responsável only
+turmas <- turmas[turmas$`Indicador de responsável principal` == "Sim",]
 
 # change to title case
 turmas$`Nome da Disciplina` <- tools::toTitleCase(tolower(turmas$`Nome da Disciplina`))
@@ -4114,8 +4160,9 @@ cat("### **2.5.1 Atividades de ensino nas disciplinas do PPG**")
 cat('\n\n')
 ```
 
+\blandscape
+
 ```{r turmas, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
-# turmas
 sheet <- "Turmas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
@@ -4137,8 +4184,7 @@ turmas.raw$`Período/Ano` <-
 # remove duplicates based on selected columns
 turmas.raw <- turmas.raw[!duplicated(turmas.raw[c("Período/Ano",
                                                   "ID da Disciplina",
-                                                  "Nome da Disciplina",
-                                                  "Nível do curso")]), ]
+                                                  "ID pessoa do responsável")]), ]
 
 # select variables
 turmas <- turmas.raw %>%
@@ -4394,6 +4440,8 @@ if(knitr::is_latex_output()) {
   cat('\\newpage')
 }
 ```
+
+\elandscape
 
 <br>
 
