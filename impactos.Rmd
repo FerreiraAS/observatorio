@@ -88,7 +88,7 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # Bind all sheets for disciplines
-periodos <- names(sucupira.list)[na.omit(match(quadrienal.vigente, names(sucupira.list)))]
+periodos <- names(sucupira.list)[na.omit(match(periodo.vigente, names(sucupira.list)))]
 turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
 
 turmas.raw$`Período/Ano` <-
@@ -168,7 +168,7 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # Bind all sheets for disciplines
-periodos <- names(sucupira.list)[na.omit(match(quadrienal.vigente, names(sucupira.list)))]
+periodos <- names(sucupira.list)[na.omit(match(periodo.vigente, names(sucupira.list)))]
 turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
 
 turmas.raw$`Período/Ano` <-
@@ -257,7 +257,7 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # Bind all sheets for disciplines
-periodos <- names(sucupira.list)[na.omit(match(quadrienal.vigente, names(sucupira.list)))]
+periodos <- names(sucupira.list)[na.omit(match(periodo.vigente, names(sucupira.list)))]
 turmas.raw <- do.call(rbind.data.frame, sucupira.list[periodos])
 
 turmas.raw$`Período/Ano` <-

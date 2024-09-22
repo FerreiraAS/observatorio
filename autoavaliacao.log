@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.9.13)  20 SEP 2024 21:08
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.9.22)  22 SEP 2024 18:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -337,7 +337,7 @@ Package graphics Info: Driver file: xetex.def on input line 106.
 \Gin@req@height=\dimen182
 \Gin@req@width=\dimen183
 ) (/usr/local/texlive/2024/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2024/08/29 v24.9 The Babel package
+Package: babel 2024/09/18 v24.10 The Babel package
 \babel@savecnt=\count312
 \U@D=\dimen184
 \l@unhyphenated=\language89
@@ -1560,10 +1560,10 @@ L3 programming layer <2024-08-30>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 39665 strings out of 474235
- 782864 string characters out of 5742253
- 1372556 words of memory out of 5000000
- 61737 multiletter control sequences out of 15000+600000
+ 39675 strings out of 474235
+ 783034 string characters out of 5742253
+ 1372826 words of memory out of 5000000
+ 61747 multiletter control sequences out of 15000+600000
  561728 words of font info for 71 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  99i,19n,123p,1202b,492s stack positions out of 10000i,1000n,20000p,200000b,200000s

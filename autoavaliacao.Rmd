@@ -565,16 +565,16 @@ sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
   plyr::compact()
 
 for (i in 1:length(sucupira)) {
-  sucupira[[i]] <- cbind("Anos" = rep(quadrienal.vigente[i], times = dim(sucupira[[i]])[1]),
-                         sucupira[[i]])
+  sucupira[[i]] <- cbind("Anos" = rep(quadrienal.vigente[i], times = dim(sucupira[[i]])[1]), sucupira[[i]])
 }
 sucupira.df <- data.frame(do.call(dplyr::bind_rows, sucupira))
-names(sucupira.df) <-
-  names(sucupira[[as.character(max(as.numeric(quadrienal.vigente)))]])
+names(sucupira.df) <- names(sucupira[[as.character(max(as.numeric(quadrienal.vigente)))]])
 
 # filter docente responsável
-sucupira.df <-
-  sucupira.df[sucupira.df$`Membro Responsável` == "Sim",]
+sucupira.df <- sucupira.df[sucupira.df$`Membro Responsável` == "Sim",]
+
+# filter docentes only
+sucupira.df <- sucupira.df[sucupira.df$`Categoria do Membro do Projeto` == "Docente",]
 
 # keep docente permanente only
 sucupira.df <-
@@ -1679,8 +1679,18 @@ for (i in 1:length(ids)) {
   output$Projeto[i] <- unique(data$`Nome do Projeto de Pesquisa`)
   output$Natureza[i] <- unique(data$`Natureza do Projeto de Pesquisa`)
   output$Responsável[i] <- unique(data$`Nome do Membro do Projeto`)
-  output$Bolsa[i] <- paste0(na.omit(tools::toTitleCase(tolower(unique(data$Bolsa)))), collapse = "; ")
-  output$Auxílio[i] <- paste0(na.omit(tools::toTitleCase(tolower(unique(data$Auxílio)))), collapse = "; ")
+  n.bolsas <- sum(!is.na(data$Bolsa))
+  if(n.bolsas > 0){
+    output$Bolsa[i] <- paste0("(", 1:n.bolsas, ") ", na.omit(tools::toTitleCase(tolower(unique(data$Bolsa)))), collapse = "; ")
+  } else {
+    output$Bolsa[i] <- ""
+  }
+  n.auxilios <- sum(!is.na(data$Auxílio))
+  if(n.auxilios > 0){
+    output$Auxílio[i] <- paste0("(", 1:n.auxilios, ") ", na.omit(tools::toTitleCase(tolower(unique(data$Auxílio)))), collapse = "; ")
+  } else {
+    output$Auxílio[i] <- ""
+  }
   output$Situação[i] <- unique(data$Situação)
 }
 table.projetos <- output
@@ -2856,7 +2866,8 @@ table.1d <-
     statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = gtsummary::everything() ~ 0,
-    sort = gtsummary::all_categorical() ~ "frequency"
+    # sort alphanumeric THIS ONLY
+    sort = gtsummary::all_categorical() ~ "alphanumeric"
   ) %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
@@ -2974,7 +2985,6 @@ for (i in 1:dim(docentes)[1]) {
     table.doc[i, j + 1] <- try(sucupira.temp$'Área de Conhecimento Titulação'[match(table.doc$`Nome Docente`[i], sucupira.temp$`Nome Docente`)], silent = TRUE)
   }
 }
-table.doc.5 <- table.doc
 
 table.doc.long <-
   tidyr::gather(
@@ -3005,8 +3015,11 @@ my_N <- function(data, ...) {
 table.doc.long <- table.doc.long %>%
   dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
+# rename table.doc.long
+colnames(table.doc.long)[2] <- "Docentes Permanentes"
+
 # print tables
-table.1.2.2 <- gtsummary::tbl_summary(
+table.1.2.2.doc <- gtsummary::tbl_summary(
   table.doc.long,
   by = "Ano",
   statistic = list(gtsummary::all_categorical() ~ "{n}"),
@@ -3024,42 +3037,8 @@ table.1.2.2 <- gtsummary::tbl_summary(
       gtsummary::all_stat_cols() ~ "**{level}**"
     )
   ) %>%
-  gtsummary::remove_row_type(variables = c('Área de Conhecimento Titulação'), type = "level", level_value = ("Docentes")) %>%
+  gtsummary::remove_row_type(variables = c('Docentes Permanentes'), type = "level", level_value = ("Docentes")) %>%
   gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
-
-# Print HTML table
-if (knitr::is_html_output()) {
-  print(table.1.2.2)
-}
-
-# Print LaTeX table
-if (knitr::is_latex_output()) {
-  cat('\\FloatBarrier')
-  # Convert gtsummary object to kableExtra object
-  kable_table <- gtsummary::as_kable_extra(
-    x = table.1.2.2,
-    escape = FALSE,
-    format = ifelse(knitr::is_html_output(), "html", "latex"),
-    booktabs = TRUE,
-    linesep = "",
-    caption = ifelse(knitr::is_html_output(), "", "Coerência Acadêmica do Corpo Docente Permanente à Proposta do Programa")
-  ) %>%
-    kableExtra::kable_styling(
-      bootstrap_options = c("basic", "hover", "condensed", "responsive"),
-      latex_options = c("basic", "repeat_header", "HOLD_position"),
-      latex_table_env = "tabularx",
-      full_width = TRUE,
-      position = "center"
-    ) %>% kableExtra::column_spec(column = 1:(1 + length(quadrienal.vigente)+ 1), width = paste0(c(0.65, rep(0.20/(length(quadrienal.vigente)), times = length(quadrienal.vigente)), 0.15)*(21-3-3), "cm"))
-  print(kable_table)
-}
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-
-# Add LaTeX commands for new page and float barrier
-if(knitr::is_latex_output()) {
-  cat('\\newpage')
-}
 ```
 
 ```{r coerencia-docente-colaborador, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
@@ -3101,7 +3080,9 @@ for (i in 1:dim(docentes)[1]) {
     table.doc[i, j + 1] <- try(sucupira.temp$'Área de Conhecimento Titulação'[match(table.doc$`Nome Docente`[i], sucupira.temp$`Nome Docente`)], silent = TRUE)
   }
 }
-table.doc.5 <- table.doc
+
+# remove empty rows
+table.doc <- table.doc[complete.cases(table.doc), ]
 
 table.doc.long <-
   tidyr::gather(
@@ -3132,27 +3113,47 @@ my_N <- function(data, ...) {
 table.doc.long <- table.doc.long %>%
   dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
+# rename table.doc.long
+colnames(table.doc.long)[2] <- "Docentes Colaboradores e Visitantes"
+
 # print tables
-table.1.2.2 <- gtsummary::tbl_summary(
-  table.doc.long,
-  by = "Ano",
-  statistic = list(gtsummary::all_categorical() ~ "{n}"),
-  missing = "no",
-  digits = gtsummary::everything() ~ 0,
+if(nrow(table.doc.long) > 0) {
+  table.1.2.2.outros <- gtsummary::tbl_summary(
+    table.doc.long,
+    by = "Ano",
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
+    missing = "no",
+    digits = gtsummary::everything() ~ 0,
     sort = gtsummary::all_categorical() ~ "frequency"
   ) %>%
-  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels() %>%
-  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-  gtsummary::modify_header(
-    list(
-      add_stat_1 ~ "**Quadriênio**",
-      gtsummary::all_stat_cols() ~ "**{level}**"
-    )
-  ) %>%
-  gtsummary::remove_row_type(variables = c('Área de Conhecimento Titulação'), type = "level", level_value = ("Docentes")) %>%
-  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+    gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+    gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+    gtsummary::bold_labels() %>%
+    gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+    gtsummary::modify_header(
+      list(
+        add_stat_1 ~ "**Quadriênio**",
+        gtsummary::all_stat_cols() ~ "**{level}**"
+      )
+    ) %>%
+    gtsummary::remove_row_type(variables = c('Docentes Colaboradores e Visitantes'), type = "level", level_value = ("Docentes")) %>%
+    gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+} else {
+  table.1.2.2.outros <- list()
+}
+```
+
+```{r coerencia, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+# List all tables
+table.all <- list(
+  table.1.2.2.doc,
+  table.1.2.2.outros
+)
+
+# Drop empty elements from the list
+table.all <- table.all[lapply(table.all, length) > 0]
+
+table.1.2.2 <- gtsummary::tbl_stack(table.all)
 
 # Print HTML table
 if (knitr::is_html_output()) {
@@ -3169,7 +3170,7 @@ if (knitr::is_latex_output()) {
     format = ifelse(knitr::is_html_output(), "html", "latex"),
     booktabs = TRUE,
     linesep = "",
-    caption = ifelse(knitr::is_html_output(), "", "Coerência Acadêmica do Corpo Docente (Colaboradores, Visitantes e Pós-Docs) à Proposta do Programa")
+    caption = ifelse(knitr::is_html_output(), "", "Coerência Acadêmica do Corpo Docente à Proposta do Programa - Área de Conhecimento (Maior Titulação)")
   ) %>%
     kableExtra::kable_styling(
       bootstrap_options = c("basic", "hover", "condensed", "responsive"),
