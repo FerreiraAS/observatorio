@@ -219,13 +219,11 @@ Um arquivo-modelo de cada planilha está disponível no [repositório do Observa
 -   [Notas.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Notas.xlsx)
 -   [Periódicos institucionais.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Peri%C3%B3dicos%20institucionais.xlsx)
 -   [Planejamento estratégico.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Planejamento%20estrat%C3%A9gico.xlsx)
--   [Podcasts.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Podcasts.xlsx)
 -   [Políticas.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/cd7e88477169e474befd583e89574711c877e4c1/PPG/Pol%C3%ADticas.xlsx)
 -   [Prêmio CAPES de Tese.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Pr%C3%AAmio%20CAPES%20de%20Tese.xlsx)
 -   [Prêmios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Pr%C3%AAmios.xlsx)
 -   [Produção.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Produ%C3%A7%C3%A3o.xlsx)
 -   [Repositórios.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Reposit%C3%B3rios.xlsx)
--   [Videos.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Videos.xlsx)
 
 ### **Metricas**
 

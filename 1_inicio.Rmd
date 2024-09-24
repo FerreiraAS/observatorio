@@ -377,13 +377,6 @@ has.planejamento <-
   )
 ```
 
-```{r try-podcasts}
-has.podcasts <-
-  !BBmisc::is.error(try(readxl::read_excel("PPG/Podcasts.xlsx", sheet = 1),
-                silent = TRUE)
-  )
-```
-
 ```{r try-politicas}
 has.politicas <-
   !BBmisc::is.error(try(readxl::read_excel("PPG/Políticas.xlsx", sheet = 1),
@@ -419,13 +412,6 @@ has.repositorios.sede <-
   )
 has.repositorios.cooperacao <-
   !BBmisc::is.error(try(readxl::read_excel("PPG/Repositórios.xlsx", sheet = "Cooperação"),
-                silent = TRUE)
-  )
-```
-
-```{r try-videos}
-has.videos <-
-  !BBmisc::is.error(try(readxl::read_excel("PPG/Videos.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
@@ -749,14 +735,12 @@ has.metodologia <- as.logical(has.metodologia)
 has.notas <- as.logical(has.notas)
 has.periodicos <- as.logical(has.periodicos)
 has.planejamento <- as.logical(has.planejamento)
-has.podcasts <- as.logical(has.podcasts)
 has.politicas <- as.logical(has.politicas)
 has.premios <- as.logical(has.premios)
 has.premio.capes <- as.logical(has.premio.capes)
 has.producao <- as.logical(has.producao)
 has.repositorios.cooperacao <- as.logical(has.repositorios.cooperacao)
 has.repositorios.sede <- as.logical(has.repositorios.sede)
-has.videos <- as.logical(has.videos)
 
 # metrics sucupira
 has.metricas.doi.sucupira <- as.logical(has.metricas.doi.sucupira)
