@@ -1796,7 +1796,7 @@ for (i in 1:length(lista.AC.LP)) {
 ```
  
 <!--- knit those table chunk statements --> 
-`r if(has.sucupira.files){paste(knit(text = out), collapse = '\n\n')}`
+`r if(has.sucupira.files){paste(knitr::knit(text = out), collapse = '\n\n')}`
 
 \elandscape
 

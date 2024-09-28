@@ -36,6 +36,7 @@ packs.cran <-
     "ggpubr",
     "ggraph",
     "ggtext",
+    "ggwordcloud",
     "grid",
     "gridExtra",
     "gtsummary",
@@ -76,13 +77,13 @@ packs.cran <-
     "terra",
     "tidyverse",
     "tinytable",
+    "tinytex",
     "tm",
     "tools",
     "units",
     "usethis",
     "vioplot",
     "webshot2",
-    "wordcloud2",
     "yaml"
   )
 
@@ -147,6 +148,14 @@ if (curl::has_internet()) {
     pacman::p_load_gh("trinker/textreadr")
   }
   
+  
+  # update TeX packages
+  tinytex::tlmgr_update()
+  
+  # install missing TeX packages
+  try(tinytex::parse_install("./autoavaliacao.log"), silent = TRUE)
+  try(tinytex::parse_packages("./autoavaliacao.log"), silent = TRUE)
+  
   # update all packages
   update.packages(checkBuilt = TRUE, ask = FALSE)
 }
@@ -157,10 +166,3 @@ packs <- unique(c(packs.cran, packs.git))
 for (i in 1:length(packs)) {
   library(packs[i], character.only = TRUE)
 }
-
-# update TeX packages
-tinytex::tlmgr_update()
-
-# install missing TeX packages
-try(tinytex::parse_install("./autoavaliacao.log"), silent = TRUE)
-try(tinytex::parse_packages("./autoavaliacao.log"), silent = TRUE)

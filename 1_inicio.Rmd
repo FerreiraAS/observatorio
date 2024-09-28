@@ -186,12 +186,6 @@ has.agendas.pesquisa <-
                 silent = TRUE))
 ```
 
-```{r try-apresentacao}
-has.apresentacao <-
-  !BBmisc::is.error(try(readxl::read_excel("PPG/Apresentação.xlsx", sheet = 1),
-                silent = TRUE))
-```
-
 ```{r try-area-capes}
 has.area.capes <-
   !BBmisc::is.error(try(readxl::read_excel("PPG/Área CAPES.xlsx", sheet = 1),
@@ -707,7 +701,6 @@ has.ppg.files <- as.logical(has.ppg.files)
 
 # PPG files
 has.agendas.pesquisa <- as.logical(has.agendas.pesquisa)
-has.apresentacao <- as.logical(has.apresentacao)
 has.area.capes <- as.logical(has.area.capes)
 has.autoavaliacao <- as.logical(has.autoavaliacao)
 has.avaliacao <- as.logical(has.avaliacao)
@@ -745,6 +738,9 @@ has.repositorios.sede <- as.logical(has.repositorios.sede)
 # metrics sucupira
 has.metricas.doi.sucupira <- as.logical(has.metricas.doi.sucupira)
 has.metricas.doi.ppg <- as.logical(has.metricas.doi.ppg)
+
+# has.posdoc
+has.posdoc <- as.logical(has.posdoc)
 
 # has.tables
 has.table.msc <- FALSE

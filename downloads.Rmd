@@ -111,6 +111,6 @@ for (i in seq_along(abas)) {
 ```
  
 <!--- knit those table chunk statements --> 
-`r if(has.downloads){paste(knit(text = out), collapse = '\n')}`
+`r if(has.downloads){paste(knitr::knit(text = out), collapse = '\n')}`
 
 <br>

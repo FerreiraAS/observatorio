@@ -280,10 +280,6 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-projetos-cloud, include = FALSE, eval = has.sucupira.files}
-# file path to save the wordclouds
-dir.path <- file.path(getwd(), "index_files", "figure-html")
-dir.create(dir.path, recursive = TRUE)
-
 # projetos
 sheet <- "Projetos"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -293,6 +289,7 @@ data.to.cloud <- sucupira.raw$`Nome do Projeto de Pesquisa`
 cloud.title <- "Projetos"
 clean.text <- TRUE
 source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
+plot(wordcloud)
 
 # dissertações e teses
 sheet <- "TCC"
@@ -303,19 +300,20 @@ data.to.cloud <- sucupira.raw$`Nome do Trabalho de Conclusão`
 cloud.title <- "Dissertações e Teses"
 clean.text <- TRUE
 source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
+plot(wordcloud)
 ```
 
 ```{r sintese-projetos-cloud-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files, out.width = "70%"}
 cat('<br>')
 cat('<br>')
 
-# show Projetos
-knitr::include_graphics("index_files/figure-html/Projetos.png")
+# show sintese-projetos-cloud-1
+knitr::include_graphics("index_files/figure-html/sintese-projetos-cloud-1.png")
 cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
-# show TCC
-knitr::include_graphics("index_files/figure-html/TCC.png")
+# show sintese-projetos-cloud-2
+knitr::include_graphics("index_files/figure-html/sintese-projetos-cloud-2.png")
 cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -978,7 +976,6 @@ plot.2 <- plot.2 %>% plotly::layout(
   barmode = 'stack'
 )
 
-
 # generate cross-table
 professores.ano <-
   rowSums(table(financiadores$Ano, financiadores$Proponente) != 0)
@@ -1032,7 +1029,6 @@ plot.3 <- plot.3 %>% plotly::layout(
   margin = list(l = 60, r = 60, t = 60, b = 60),
   showlegend = FALSE
 )
-
 
 editais <- financiadores$Programa
 top <- min(length(editais[which(!is.na(editais))]), 10)
@@ -1100,7 +1096,6 @@ plot.4 <- plot.4 %>% plotly::layout(
   showlegend = FALSE
 )
 
-
 agencias <- financiadores$Agência
 top <- min(length(agencias[which(!is.na(agencias))]), 10)
 data.agencias <-
@@ -1166,7 +1161,6 @@ plot.5 <- plot.5 %>% plotly::layout(
   margin = list(l = 60, r = 60, t = 60, b = 60),
   showlegend = FALSE
 )
-
 
 # calculate summary statistics for financiamentos
 summ.table.financiadores <- matrix(0, nrow = 1, ncol = 5)
@@ -1275,22 +1269,19 @@ cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
-
 ```{r sintese-producoes-cloud, include = FALSE, eval = has.sucupira.files}
-# file path to save the wordclouds
-dir.path <- file.path(getwd(), "index_files", "figure-html")
-dir.create(dir.path, recursive = TRUE)
-
 # produções
 sheet <- "Produções"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 # delete duplicates based on ID da Produção
 sucupira.raw <- sucupira.raw[!duplicated(sucupira.raw$`ID da Produção`),]
+
 data.to.cloud <- sucupira.raw$`Nome da Produção`
 cloud.title <- "Produção"
 clean.text <- TRUE
 source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
-
+plot(wordcloud)
+  
 # filter produção bibliográfica
 sucupira <- sucupira.raw[sucupira.raw$`Tipo de Produção` == "BIBLIOGRÁFICA",]
 data.to.cloud <- sucupira$`Subtipo de Produção`
@@ -1298,6 +1289,7 @@ sheet <- "Produção bibliográfica"
 cloud.title <- "Produção bibliográfica"
 clean.text <- FALSE
 source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
+plot(wordcloud)
 
 # filter produção bibliográfica
 sucupira <- sucupira.raw[sucupira.raw$`Tipo de Produção` == "TÉCNICA",]
@@ -1306,24 +1298,25 @@ sheet <- "Produção técnica"
 cloud.title <- "Produção técnica"
 clean.text <- FALSE
 source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
+plot(wordcloud)
 ```
 
 ```{r sintese-producoes-cloud-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files, out.width = "70%"}
 cat('<br>')
 cat('<br>')
 
-# show Produções
-knitr::include_graphics("index_files/figure-html/Produções.png")
+# show sintese-producoes-cloud-1
+knitr::include_graphics("index_files/figure-html/sintese-producoes-cloud-1.png")
 cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
-# show Produção bibliográfica
-knitr::include_graphics("index_files/figure-html/Produção bibliográfica.png")
+# show sintese-producoes-cloud-2
+knitr::include_graphics("index_files/figure-html/sintese-producoes-cloud-2.png")
 cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
-# show Produção técnica
-knitr::include_graphics("index_files/figure-html/Produção técnica.png")
+# show sintese-producoes-cloud-3
+knitr::include_graphics("index_files/figure-html/sintese-producoes-cloud-3.png")
 cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -2856,6 +2849,12 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-posdoc, include = FALSE, eval = all(has.sucupira.files, has.posdoc)}
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+
+# periodo
+periodo <- min(as.numeric(anos)):max(as.numeric(anos))
+
 # posdocs
 sheet <- "Pós-Doc"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -2913,22 +2912,61 @@ table.3 <- as.matrix(table.3a) + as.matrix(table.3b)
 # plot area setup
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = dim(table.1)[1], name = "Set3")
 
-barplot(as.matrix(table.3),
-        ylab = "Pós-docs",
-        col = RColorBrewer::brewer.pal(n = 9, name = "Set3"))
-title(main = "Estágio Pós-Doutoral",
-      outer = TRUE,
-      cex.main = 1.7)
-legend(
-  "topleft",
-  legend = unique(posdoc.raw$Nacionalidade),
-  fill = RColorBrewer::brewer.pal(n = 9, name = "Set3"),
-  text.col = "white",
-  box.lwd = 0,
-  bty = "n",
-  horiz = FALSE,
-  cex = 1
+# Reshape data for Plotly
+table.1a <- as.data.frame(table.1)
+names(table.1a) <- c("Nacionalidade", "Ano", "Frequência")
+
+data_long <- dplyr::select(table.1a, `Nacionalidade`, `Ano`, `Frequência`)
+
+plot.1 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~`Frequência`,
+  color = ~`Nacionalidade`,
+  type = 'bar',
+  colors = colors,
+  height = 720
+)
+
+plot.1 <- plot.1 %>% plotly::layout(
+  title = list(
+    text = "Estágio Pós-Doutoral",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = 24, color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    type = "log"
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
 )
 
 # plot 2 (geospatial plot of posdocs)
@@ -3005,18 +3043,29 @@ summ.data <- summ.table.posdoc
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-posdoc-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = and(has.sucupira.files, has.posdoc)}
+```{r sintese-posdoc-carousel-1, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = and(has.sucupira.files, has.posdoc), out.width = "100%"}
 cat('<br>')
 cat('<br>')
 
-# carousel
-bsplus::bs_carousel(id = "posdoc-carousel",
-            use_indicators = FALSE,
-            use_controls = TRUE) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-1.png", width = "70%")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-2.png", width = "70%")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-3.png", width = "70%"))
+cat('<div align="center">')
+plot.1
+cat('</div>')
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
 
+```{r sintese-posdoc-carousel-2, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = and(has.sucupira.files, has.posdoc), out.width = "70%"}
+cat('<br>')
+cat('<br>')
+
+# show sintese-posdoc-1
+knitr::include_graphics("index_files/figure-html/sintese-posdoc-1.png")
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+# show sintese-posdoc-2
+knitr::include_graphics("index_files/figure-html/sintese-posdoc-2.png")
+cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
@@ -3104,10 +3153,7 @@ title(main = "Membros de projetos de pesquisa",
       outer = TRUE,
       cex.main = 1.7)
 
-
-# file path to save the wordclouds
-dir.path <- file.path(getwd(), "index_files", "figure-html")
-dir.create(dir.path, recursive = TRUE)
+# plot 2
 
 # IES participantes externos
 sheet <- "Participante Externo"
@@ -3148,14 +3194,10 @@ data.to.cloud <- ranked.ies
 cloud.title <- "Instituições"
 clean.text <- TRUE
 source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
+# show the wordcloud
+plot(wordcloud)
 
 # plot 3
-# plot area setup
-layout.m <- c(1)
-source("Scripts/plot-margins.R", local = knitr::knit_global())
-
-# plot area setup
-par(mar = c(1.5, 15, 1, 1))
 
 # check if there are IES
 if (length(IES.nac) > 0) {
@@ -3172,38 +3214,54 @@ if (length(IES.nac) > 0) {
   source("Scripts/line-2-break.R", local = knitr::knit_global())
   data.nac$name <- broken_text
   
-  barplot(
-    height = rev(data.nac$value),
-    names = rev(data.nac$name),
-    xlab = "N",
-    col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
-    horiz = T,
-    las = 1,
-    cex.names = 0.7
+  # plot area setup
+  layout.m <- c(1)
+  source("Scripts/plot-margins.R", local = knitr::knit_global())
+  # Define colors using RColorBrewer
+  colors <- RColorBrewer::brewer.pal(n = top, name = "Set3")
+  
+  # set factor level for sorting
+  data.nac$name <- factor(data.nac$name, levels = data.nac$name)
+
+  plot.3 <- plotly::plot_ly(
+    data = data.nac,
+    x = ~value,
+    y = ~name,
+    color = colors[1],
+    type = 'bar',
+    colors = colors[1],
+    height = 720
   )
-  title(
-    main = paste0("Top-", top, " nacionais"),
-    outer = TRUE,
-    cex.main = 1.7
-  )
-} else {
-  # plot empty plot
-  plot.new()
-  title(
-    main = "Top-10 nacionais",
-    outer = TRUE,
-    cex.main = 1.7
+  
+  plot.3 <- plot.3 %>% plotly::layout(
+    title = list(
+      text = paste0("Top-", top, " nacionais"),
+      x = 0.5,
+      xanchor = 'center',
+      font = list(size = 24, color = 'white')
+    ),
+    xaxis = list(
+      title = "N",
+      titlefont = list(color = 'white'),
+      tickfont = list(color = 'white'),
+      tickvals = seq(0, max(data.nac$value), by = 1)
+    ),
+    yaxis = list(
+      title = "",
+      titlefont = list(color = 'white'),
+      tickfont = list(color = 'white'),
+      # reverse axis
+      autorange = 'reversed'
+    ),
+    plot_bgcolor = 'black',
+    paper_bgcolor = 'black',
+    font = list(color = 'white'),
+    margin = list(l = 60, r = 60, t = 60, b = 60),
+    showlegend = FALSE
   )
 }
 
 # plot 4
-
-# plot area setup
-layout.m <- c(1)
-source("Scripts/plot-margins.R", local = knitr::knit_global())
-
-# plot area setup
-par(mar = c(1.5, 15, 1, 1))
 
 # check if there are IES
 if (length(IES.inter) > 0) {
@@ -3220,37 +3278,54 @@ if (length(IES.inter) > 0) {
   source("Scripts/line-2-break.R", local = knitr::knit_global())
   data.inter$name <- broken_text
   
-  barplot(
-    height = rev(data.inter$value),
-    names = rev(data.inter$name),
-    xlab = "N",
-    col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
-    horiz = T,
-    las = 1,
-    cex.names = 0.7
+  # plot area setup
+  layout.m <- c(1)
+  source("Scripts/plot-margins.R", local = knitr::knit_global())
+  # Define colors using RColorBrewer
+  colors <- RColorBrewer::brewer.pal(n = top, name = "Set3")
+  
+  # set factor level for sorting
+  data.inter$name <- factor(data.inter$name, levels = data.inter$name)
+
+  plot.4 <- plotly::plot_ly(
+    data = data.inter,
+    x = ~value,
+    y = ~name,
+    color = colors[1],
+    type = 'bar',
+    colors = colors[1],
+    height = 720
   )
-  title(
-    main = paste0("Top-", top, " internacionais"),
-    outer = TRUE,
-    cex.main = 1.7
-  )
-} else {
-  # plot empty plot
-  plot.new()
-  title(
-    main = "Top-10 internacionais",
-    outer = TRUE,
-    cex.main = 1.7
+  
+  plot.4 <- plot.4 %>% plotly::layout(
+    title = list(
+      text = paste0("Top-", top, " internacionais"),
+      x = 0.5,
+      xanchor = 'center',
+      font = list(size = 24, color = 'white')
+    ),
+    xaxis = list(
+      title = "N",
+      titlefont = list(color = 'white'),
+      tickfont = list(color = 'white'),
+      tickvals = seq(0, max(data.inter$value), by = 1)
+    ),
+    yaxis = list(
+      title = "",
+      titlefont = list(color = 'white'),
+      tickfont = list(color = 'white'),
+      # reverse axis
+      autorange = 'reversed'
+    ),
+    plot_bgcolor = 'black',
+    paper_bgcolor = 'black',
+    font = list(color = 'white'),
+    margin = list(l = 60, r = 60, t = 60, b = 60),
+    showlegend = FALSE
   )
 }
 
 # plot 5
-# plot area setup
-layout.m <- c(1)
-source("Scripts/plot-margins.R", local = knitr::knit_global())
-
-# plot area setup
-par(mar = c(1.5, 15, 1, 1))
 
 # check if there are mundo
 if (length(mundo) > 0) {
@@ -3267,26 +3342,45 @@ if (length(mundo) > 0) {
   source("Scripts/line-2-break.R", local = knitr::knit_global())
   data.pais$name <- broken_text
   
-  barplot(
-    height = rev(data.pais$value),
-    names = rev(data.pais$name),
-    xlab = "N",
-    col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
-    horiz = T,
-    las = 1,
-    cex.names = 0.7
+  # set factor level for sorting
+  data.pais$name <- factor(data.pais$name, levels = data.pais$name)
+
+  plot.5 <- plotly::plot_ly(
+    data = data.pais,
+    x = ~value,
+    y = ~name,
+    color = colors[1],
+    type = 'bar',
+    colors = colors[1],
+    height = 720
   )
-  title(
-    main = paste0("Top-", top, " países"),
-    outer = TRUE,
-    cex.main = 1.7
+  
+  plot.5 <- plot.5 %>% plotly::layout(
+    title = list(
+      text = paste0("Top-", top, " países"),
+      x = 0.5,
+      xanchor = 'center',
+      font = list(size = 24, color = 'white')
+    ),
+    xaxis = list(
+      title = "N",
+      titlefont = list(color = 'white'),
+      tickfont = list(color = 'white'),
+      tickvals = seq(0, max(data.pais$value), by = 1)
+    ),
+    yaxis = list(
+      title = "",
+      titlefont = list(color = 'white'),
+      tickfont = list(color = 'white'),
+      # reverse axis
+      autorange = 'reversed'
+    ),
+    plot_bgcolor = 'black',
+    paper_bgcolor = 'black',
+    font = list(color = 'white'),
+    margin = list(l = 60, r = 60, t = 60, b = 60),
+    showlegend = FALSE
   )
-} else {
-  # plot empty plot
-  plot.new()
-  title(main = "Top-10 países",
-        outer = TRUE,
-        cex.main = 1.7)
 }
   
 # check if there are mundo
@@ -3378,22 +3472,45 @@ summ.data <- summ.table.ies
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-rede-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files}
+```{r sintese-rede-carousel-1, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files, out.width = "100%"}
 cat('<br>')
 cat('<br>')
 
-# carousel
-bsplus::bs_carousel(id = "rede-carousel",
-            use_indicators = FALSE,
-            use_controls = TRUE) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-1.png", width = "70%")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/Participante Externo.png", width = "70%")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-2.png", width = "70%")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-3.png", width = "70%")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-4.png", width = "70%")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-5.png", width = "70%")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-6.png", width = "70%"))
+cat('<div align="center">')
+plot.3
+cat('</div>')
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
+cat('<div align="center">')
+plot.4
+cat('</div>')
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.5
+cat('</div>')
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+```{r sintese-rede-carousel-2, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files, out.width = "70%"}
+cat('<br>')
+cat('<br>')
+
+# show sintese-rede-1
+knitr::include_graphics("index_files/figure-html/sintese-rede-1.png")
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+# show sintese-rede-2
+knitr::include_graphics("index_files/figure-html/sintese-rede-2.png")
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+# show sintese-rede-3
+knitr::include_graphics("index_files/figure-html/sintese-rede-3.png")
 cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
