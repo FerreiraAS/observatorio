@@ -2859,55 +2859,55 @@ periodo <- min(as.numeric(anos)):max(as.numeric(anos))
 sheet <- "Pós-Doc"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-posdoc.raw <- sucupira.raw
+# get table of posdocs per ano in list
+posdoc.raw <- sucupira.raw %>%
+  plyr::compact()
 
-posdoc.raw$`Vínculo Início` <-
-  as.Date(posdoc.raw$`Vínculo Início`, format = "%d/%m/%Y")
-posdoc.raw$`Vínculo Fim` <-
-  substr(as.Date(posdoc.raw$`Vínculo Fim`, format = "%d/%m/%Y"), 1, 4)
-posdoc.raw$'Ano Matrícula' <-
-  substr(as.Date(posdoc.raw$`Vínculo Início`, format = "%d/%m/%Y"), 1, 4)
+posdoc.list <- sucupira.list
+names(posdoc.list) <- as.character(anos)
 
-posdocs <- posdoc.raw[!is.na(posdoc.raw$`Vínculo Fim`), ]
-posdocs <- posdocs[!is.na(posdocs$`Pós-Doc Nome`), ]
-posdocs <- posdocs[!duplicated(posdocs), ]
+# frequency table of posdocs per year (list element)
+posdoc <- data.frame(
+  Ano = rep(NA, length(posdoc.list)),
+  Frequência = rep(NA, length(posdoc.list))
+)
+posdoc$Ano <- anos
+posdoc$Frequência <- lapply(posdoc.list, function(x) {
+  dim(x)[1]
+})
+# repeate Ano based on each Frequência
+posdocs.long <- c()
+for (i in 1:nrow(posdoc)){
+  if(posdoc$Frequência[i] == 0){
+    posdocs.long <- rbind(
+      posdocs.long,
+      data.frame(
+        Ano = rep(posdoc$Ano[i], 1),
+        Nacionalidade = NA
+      )
+    )
+  }
+  posdocs.long <- rbind(
+    posdocs.long,
+    data.frame(
+      Ano = rep(posdoc$Ano[i], posdoc$Frequência[i]),
+      Nacionalidade = posdoc.list[[as.character(posdoc$Ano[i])]]$Nacionalidade
+    )
+  )
+}
+# drop rows with NA
+posdocs.long <- posdocs.long[!is.na(posdocs.long$Nacionalidade), ]
 
 posdocs.atuais <- posdoc.raw[is.na(posdoc.raw$`Vínculo Fim`), ]
 posdocs.atuais <- posdocs.atuais[!is.na(posdocs.atuais$`Pós-Doc Nome`), ]
 posdocs.atuais <- posdocs.atuais[!duplicated(posdocs.atuais), ]
 
 # generate plot of posdocs per year
-table.1 <- table(posdocs$Nacionalidade, posdocs$'Ano Matrícula')
-table.2 <- table(posdocs.atuais$Nacionalidade, posdocs.atuais$'Ano Matrícula')
-
-# all posdocs
-posdoc.years <- min(posdocs$'Ano Matrícula', posdocs.atuais$'Ano Matrícula'):max(posdocs$'Ano Matrícula', posdocs.atuais$'Ano Matrícula')
+table.1 <- posdocs.long %>%
+  dplyr::group_by(Ano, Nacionalidade) %>%
+  dplyr::summarise(Frequência = n())
 
 # plot 1 (posdocs titulados)
-table.3 <- matrix(0, nrow = length(unique(posdoc.raw$Nacionalidade)), ncol = length(posdoc.years))
-rownames(table.3) <- unique(posdoc.raw$Nacionalidade)
-colnames(table.3) <- posdoc.years
-
-table.3a <- table.3
-table.3b <- table.3
-
-if (sum(table.1) != 0) {
-  for (i in 1:dim(table.1)[1]) {
-    for (j in 1:dim(table.1)[2]) {
-      table.3a[match(rownames(table.1)[i], rownames(table.3)), match(colnames(table.1)[j], colnames(table.3))] <-
-        table.1[i, j]
-    }
-  }
-}
-if (sum(table.2) != 0) {
-  for (i in 1:dim(table.2)[1]) {
-    for (j in 1:dim(table.2)[2]) {
-      table.3b[match(rownames(table.2)[i], rownames(table.3)), match(colnames(table.2)[j], colnames(table.3))] <-
-        table.2[i, j]
-    }
-  }
-}
-table.3 <- as.matrix(table.3a) + as.matrix(table.3b)
 
 # plot area setup
 layout.m <- c(1)
@@ -2915,11 +2915,8 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 # Define colors using RColorBrewer
 colors <- RColorBrewer::brewer.pal(n = dim(table.1)[1], name = "Set3")
 
-# Reshape data for Plotly
-table.1a <- as.data.frame(table.1)
-names(table.1a) <- c("Nacionalidade", "Ano", "Frequência")
-
-data_long <- dplyr::select(table.1a, `Nacionalidade`, `Ano`, `Frequência`)
+# summary table
+data_long <- table.1
 
 plot.1 <- plotly::plot_ly(
   data = data_long,
@@ -2942,13 +2939,14 @@ plot.1 <- plot.1 %>% plotly::layout(
     title = "",
     titlefont = list(color = 'white'),
     tickfont = list(color = 'white'),
-    tickvals = anos
+    tickvals = anos,
+    range = c(min(as.numeric(anos)), max(as.numeric(anos)))
   ),
   yaxis = list(
     title = "N",
     titlefont = list(color = 'white'),
     tickfont = list(color = 'white'),
-    type = "log"
+    tickvals = seq(0, max(data_long$Frequência), by = 1)
   ),
   legend = list(
     title = 'Legenda',
@@ -2969,8 +2967,34 @@ plot.1 <- plot.1 %>% plotly::layout(
   barmode = 'stack'
 )
 
+
+# frequency table of posdocs per country (list element)
+# repeate Ano based on each Frequência
+posdocs.pais.long <- c()
+for (i in 1:nrow(posdoc)){
+  if(posdoc$Frequência[i] == 0){
+    posdocs.pais.long <- rbind(
+      posdocs.pais.long,
+      data.frame(
+        Ano = rep(posdoc$Ano[i], 1),
+        País = NA
+      )
+    )
+  }
+  posdocs.pais.long <- rbind(
+    posdocs.pais.long,
+    data.frame(
+      Ano = rep(posdoc$Ano[i], posdoc$Frequência[i]),
+      País = posdoc.list[[as.character(posdoc$Ano[i])]]$País
+    )
+  )
+}
+# drop rows with NA
+posdocs.pais.long <- posdocs.pais.long[!is.na(posdocs.pais.long$País), ]
+
+
 # plot 2 (geospatial plot of posdocs)
-paises <- as.data.frame(table(c(posdocs$País, posdocs.atuais$País)))
+paises <- as.data.frame(table(posdocs.pais.long$País))
 source("Scripts/worldmap.R", local = knitr::knit_global())
 
 ggplot2::ggplot() +
@@ -3019,21 +3043,46 @@ ggplot2::ggplot() +
 # plot 3 (summary table in plot)
 
 # calculate summary statistics for posdocs
+total <- length(unique(posdoc.raw$`Identificador do Pós-Doc`))
+concluidos <- sum(!is.na(posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$`Vínculo Fim`))
+brasileiros.concluidos <- sum(
+  !is.na(posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$`Vínculo Fim`) &
+  posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$País == "Brasil"
+)
+estrangeiros.concluidos <- sum(
+  !is.na(posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$`Vínculo Fim`) &
+  posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$País != "Brasil"
+)
+em.andamento <- sum(is.na(posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$`Vínculo Fim`))
+brasileiros.em.andamento <- sum(
+  is.na(posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$`Vínculo Fim`) &
+  posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$País == "Brasil"
+)
+estrangeiros.em.andamento <- sum(
+  is.na(posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$`Vínculo Fim`) &
+  posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$País != "Brasil"
+)
+
 summ.table.posdoc <-
   c(
-    sum(table.3),
-    sum(table.1),
-    as.numeric(rowSums(table.1)),
-    sum(table.2),
-    as.numeric(rowSums(table.2))
+    total,
+    concluidos,
+    brasileiros.concluidos,
+    estrangeiros.concluidos,
+    em.andamento,
+    brasileiros.em.andamento,
+    estrangeiros.em.andamento
   )
 
 names(summ.table.posdoc) <-
   c("Pós-Docs total",
     "Concluídos",
-    names(rowSums(table.1)),
+    "Brasileiro",
+    "Estrangeiro",
     "Em andamento",
-    names(rowSums(table.2)))
+    "Brasileiro",
+    "Estrangeiro"
+  )
 
 # plot area setup
 layout.m <- matrix(c(1, 1, 1, 2, 3, 4, 5, 6, 7), ncol = 3, byrow = TRUE)
