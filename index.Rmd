@@ -3043,16 +3043,31 @@ ggplot2::ggplot() +
 # plot 3 (summary table in plot)
 
 # calculate summary statistics for posdocs
-total <- length(unique(posdoc.raw$`Identificador do Pós-Doc`))
-concluidos <- sum(!is.na(posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$`Vínculo Fim`))
-brasileiros.concluidos <- sum(
-  !is.na(posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$`Vínculo Fim`) &
-  posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$País == "Brasil"
-)
-estrangeiros.concluidos <- sum(
-  !is.na(posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$`Vínculo Fim`) &
-  posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$País != "Brasil"
-)
+IDs <- unique(posdoc.raw$`Identificador do Pós-Doc`)
+total <- length(IDs)
+
+concluidos <- 0
+for (i in IDs){
+  posdoc.data <- posdoc.raw[posdoc.raw$`Identificador do Pós-Doc` == i, ]
+  if(any(!is.na(posdoc.data$`Vínculo Fim`))){
+    concluidos <- concluidos + 1
+  }
+}
+brasileiros.concluidos <- 0
+for(i in IDs){
+  posdoc.data <- posdoc.raw[posdoc.raw$`Identificador do Pós-Doc` == i, ]
+  if(any(!is.na(posdoc.data$`Vínculo Fim`) & posdoc.data$País == "Brasil")){
+    brasileiros.concluidos <- brasileiros.concluidos + 1
+  }
+}
+estrangeiros.concluidos <- 0
+for(i in IDs){
+  posdoc.data <- posdoc.raw[posdoc.raw$`Identificador do Pós-Doc` == i, ]
+  if(any(!is.na(posdoc.data$`Vínculo Fim`) & posdoc.data$País != "Brasil")){
+    estrangeiros.concluidos <- estrangeiros.concluidos + 1
+  }
+}
+
 em.andamento <- sum(is.na(posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$`Vínculo Fim`))
 brasileiros.em.andamento <- sum(
   is.na(posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$`Vínculo Fim`) &
