@@ -1,3 +1,10 @@
+base
+methods
+datasets
+utils
+grDevices
+graphics
+stats
 alluvial
 anytime
 BBmisc
@@ -21,6 +28,8 @@ ggplot2
 ggpubr
 ggraph
 ggtext
+ggwordcloud
+grid
 gridExtra
 gtsummary
 hrbrthemes
@@ -74,14 +83,15 @@ tidyr
 purrr
 forcats
 tinytable
+tinytex
 NLP
 tm
+tools
 units
 sm
 zoo
 vioplot
 webshot2
-wordcloud2
 yaml
 cssparser
 packup
@@ -89,5 +99,3 @@ rcrossref
 retractcheck
 rscopus
 textreadr
-ggwordcloud
-tinytex

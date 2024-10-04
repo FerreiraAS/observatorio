@@ -389,9 +389,9 @@ source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
-# get data from all Sucupira year available
-projetos.all <-
-  do.call(rbind.data.frame, sucupira.list)
+# Bind all sheets for disciplines
+periodos <- names(sucupira.list)[na.omit(match(periodo.vigente, names(sucupira.list)))]
+projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
 # filter CONCLUIDOS projects only
 projetos <-

@@ -171,7 +171,7 @@ most.recent <- as.character(ifelse(!is.null(sucupira.list[[format(Sys.Date(), "%
 periodo <- most.recent
 
 # Get docentes for the current period
-sucupira <- sucupira.list[as.character(periodo)] %>% compact()
+sucupira <- sucupira.list[as.character(periodo)] %>% plyr::compact()
 sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
 names(sucupira) <- names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
@@ -461,7 +461,7 @@ most.recent <- as.character(ifelse(!is.null(sucupira.list[[format(Sys.Date(), "%
 periodo <- most.recent
 
 # Get docentes for the current period
-sucupira <- sucupira.list[as.character(periodo)] %>% compact()
+sucupira <- sucupira.list[as.character(periodo)] %>% plyr::compact()
 sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
 names(sucupira) <- names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 

@@ -225,7 +225,7 @@ cat('\n\n')
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r descritivo-dados, eval = has.sucupira.files, cache = TRUE, cache.path = "cache/missing/"}
+```{r descritivo, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
@@ -235,9 +235,7 @@ source("Scripts/get-sucupira-sheets-names.R", local = knitr::knit_global())
 summ.df <- data.frame(
   "Ano" = rep(NA, length(quadrienal.vigente) * length(sucupira.sheets)),
   "Aba" = rep(NA, length(quadrienal.vigente) * length(sucupira.sheets)),
-  "Quantidade de dados" = rep(NA, length(quadrienal.vigente) * length(sucupira.sheets)),
-  "Dados perdidos" = rep(NA, length(quadrienal.vigente) * length(sucupira.sheets)),
-  "Dados duplicados" = rep(NA, length(quadrienal.vigente) * length(sucupira.sheets)),
+  "Dimensão (L x C)" = rep(NA, length(quadrienal.vigente) * length(sucupira.sheets)),
   check.names = FALSE
 )
 
@@ -252,210 +250,55 @@ if (has.sucupira.files) {
       ano <- quadrienal.vigente[COL]
       summ.df$Ano[COL + length(quadrienal.vigente)*(ROW - 1)] <- ano
       summ.df$Aba[COL + length(quadrienal.vigente)*(ROW - 1)] <- sheet
-      summ.df$`Quantidade de dados`[COL + length(quadrienal.vigente)*(ROW - 1)] <- sum(!is.na(unlist(sucupira.list[[as.character(ano)]])))
-      summ.df$`Dados perdidos`[COL + length(quadrienal.vigente)*(ROW - 1)] <- sum(is.na(unlist(sucupira.list[[as.character(ano)]])))
-      summ.df$`Dados duplicados`[COL + length(quadrienal.vigente)*(ROW - 1)] <- sum(duplicated(sucupira.list[[as.character(ano)]]))
+      summ.df$`Dimensão (L x C)`[COL + length(quadrienal.vigente)*(ROW - 1)] <-
+        paste0(
+        nrow(!is.na(sucupira.list[[as.character(ano)]])),
+        " x ",
+        ncol(!is.na(sucupira.list[[as.character(ano)]]))
+        )
     }
   }
 }
 
-summ.data.wider <- tidyr::pivot_wider(
-  summ.df,
-  id_cols = Ano,
-  names_from = Aba,
-  values_from = `Quantidade de dados`
+# transpose years as columns
+summ.df <- tidyr::pivot_wider(
+  data = summ.df,
+  names_from = Ano,
+  values_from = `Dimensão (L x C)`
 )
 
-summ.missing.wider <- tidyr::pivot_wider(
-  summ.df,
-  id_cols = Ano,
-  names_from = Aba,
-  values_from = `Dados perdidos`
-)
-
-summ.duplicates.wider <- tidyr::pivot_wider(
-  summ.df,
-  id_cols = Ano,
-  names_from = Aba,
-  values_from = `Dados duplicados`
-)
-
-# percent of missing data
-summ.missing.wider <- summ.missing.wider / (summ.data.wider + summ.data.wider) * 100
-summ.missing.wider$Ano <- quadrienal.vigente
-```
-
-```{r, eval = all(knitr::is_html_output(), has.sucupira.files)}
-cat("### **Dados completos**")
-```
-
-```{r, eval = all(!knitr::is_html_output(), has.sucupira.files)}
-cat("### **Dados completos**")
-cat('\n\n')
-```
-
-```{r descritivo-dados-completos, eval = has.sucupira.files, cache = TRUE, cache.path = "cache/missing/", echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
 # print tables
-table.dados.gt <-
-  gtsummary::tbl_summary(
-    summ.data.wider,
-    type = list(gtsummary::everything() ~ "continuous"),
-    by = "Ano",
-    statistic = list(gtsummary::everything() ~ "{sum}"),
-    missing = "no",
-    digits = gtsummary::everything() ~ 0
-  ) %>%
-  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels()
-
-# Print HTML table
 if (knitr::is_html_output()) {
-  print(table.dados.gt)
-}
-
-# Print LaTeX table
-if (knitr::is_latex_output()) {
-  cat('\\FloatBarrier')
-  # Convert gtsummary object to kableExtra object
-  kable_table <- gtsummary::as_kable_extra(
-    x = table.dados.gt,
+  # use kable for HTML output
+  knitr::kable(
+    summ.df,
+    align = "l",
     escape = FALSE,
-    format = ifelse(knitr::is_html_output(), "html", "latex"),
+    format = "html",
     booktabs = TRUE,
     linesep = "",
-    caption = ifelse(knitr::is_html_output(), "", "Dados completos por ano e aba da planilha")
+    caption = "Dados do Coleta por aba (linhas x colunas)"
+  ) %>% kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = TRUE,
+    position = "center"
+  )  %>% kableExtra::column_spec(column = 1:(1 + length(quadrienal.vigente)), width = paste0(c(0.60, rep(0.40/(length(quadrienal.vigente)), times = length(quadrienal.vigente)))*(21-3-3), "cm")) %>%
+  kableExtra::column_spec(column = 1, bold = TRUE) %>%
+  kableExtra::row_spec(row = 0, bold = TRUE)
+} else {
+  # use tinytable for LaTeX output
+  summ.df <- data.frame(summ.df, check.names = FALSE)
+  options(tinytable_print_output = "latex")
+  tinytable::tt(
+    summ.df,
+    width = c(0.60, rep(0.40/(length(quadrienal.vigente)), times = length(quadrienal.vigente)))*(21-3-3),
+    style = "bootstrap",
+    align = "l",
+    caption = ifelse(knitr::is_html_output(), "", "Dados do Coleta por aba (linhas x colunas)")
   ) %>%
-    kableExtra::kable_styling(
-      bootstrap_options = c("basic", "hover", "condensed", "responsive"),
-      latex_options = c("basic", "repeat_header", "HOLD_position"),
-      latex_table_env = "tabularx",
-      full_width = TRUE,
-      position = "center"
-    ) %>% kableExtra::column_spec(column = 1:(1 + length(quadrienal.vigente)), width = paste0(c(0.60, rep(0.40/length(quadrienal.vigente), times = length(quadrienal.vigente)))*(21-3-3), "cm"))
-  print(kable_table)
-}
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-
-# Add LaTeX commands for new page and float barrier
-if(knitr::is_latex_output()) {
-  cat('\\newpage')
-}
-```
-
-<br>
-
-```{r, eval = all(knitr::is_html_output(), has.sucupira.files)}
-cat("### **Dados omissos**")
-```
-
-```{r, eval = all(!knitr::is_html_output(), has.sucupira.files)}
-cat("### **Dados omissos**")
-cat('\n\n')
-```
-
-```{r descritivo-dados-omissos, eval = has.sucupira.files, cache = TRUE, cache.path = "cache/missing/", echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
-# print tables
-table.missing.gt <-
-  gtsummary::tbl_summary(
-    summ.missing.wider,
-    type = list(gtsummary::everything() ~ "continuous"),
-    by = "Ano",
-    statistic = list(gtsummary::everything() ~ "{sum}%"),
-    missing = "no",
-    digits = gtsummary::everything() ~ 1
-  ) %>%
-  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels()
-
-# Print HTML table
-if (knitr::is_html_output()) {
-  print(table.missing.gt)
-}
-
-# Print LaTeX table
-if (knitr::is_latex_output()) {
-  cat('\\FloatBarrier')
-  # Convert gtsummary object to kableExtra object
-  kable_table <- gtsummary::as_kable_extra(
-    x = table.missing.gt,
-    escape = FALSE,
-    format = ifelse(knitr::is_html_output(), "html", "latex"),
-    booktabs = TRUE,
-    linesep = "",
-    caption = ifelse(knitr::is_html_output(), "", "Dados omissos por ano e aba da planilha")
-  ) %>%
-    kableExtra::kable_styling(
-      bootstrap_options = c("basic", "hover", "condensed", "responsive"),
-      latex_options = c("basic", "repeat_header", "HOLD_position"),
-      latex_table_env = "tabularx",
-      full_width = TRUE,
-      position = "center"
-    ) %>% kableExtra::column_spec(column = 1:(1 + length(quadrienal.vigente)), width = paste0(c(0.60, rep(0.40/length(quadrienal.vigente), times = length(quadrienal.vigente)))*(21-3-3), "cm"))
-  print(kable_table)
-}
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-
-# Add LaTeX commands for new page and float barrier
-if(knitr::is_latex_output()) {
-  cat('\\newpage')
-}
-```
-
-<br>
-
-```{r, eval = all(knitr::is_html_output(), has.sucupira.files)}
-cat("### **Dados duplicados**")
-```
-
-```{r, eval = all(!knitr::is_html_output(), has.sucupira.files)}
-cat("### **Dados duplicados**")
-cat('\n\n')
-```
-
-```{r descritivo-dados-duplicados, eval = has.sucupira.files, cache = TRUE, cache.path = "cache/missing/", echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
-# print tables
-table.duplicates.gt <-
-  gtsummary::tbl_summary(
-    summ.duplicates.wider,
-    type = list(gtsummary::everything() ~ "continuous"),
-    by = "Ano",
-    statistic = list(gtsummary::everything() ~ "{sum}%"),
-    missing = "no",
-    digits = gtsummary::everything() ~ 1
-  ) %>%
-  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels()
-
-# Print HTML table
-if (knitr::is_html_output()) {
-  print(table.duplicates.gt)
-}
-
-# Print LaTeX table
-if (knitr::is_latex_output()) {
-  cat('\\FloatBarrier')
-  # Convert gtsummary object to kableExtra object
-  kable_table <- gtsummary::as_kable_extra(
-    x = table.duplicates.gt,
-    escape = FALSE,
-    format = ifelse(knitr::is_html_output(), "html", "latex"),
-    booktabs = TRUE,
-    linesep = "",
-    caption = ifelse(knitr::is_html_output(), "", "Dados duplicados por ano e aba da planilha")
-  ) %>%
-    kableExtra::kable_styling(
-      bootstrap_options = c("basic", "hover", "condensed", "responsive"),
-      latex_options = c("basic", "repeat_header", "HOLD_position"),
-      latex_table_env = "tabularx",
-      full_width = TRUE,
-      position = "center"
-    ) %>% kableExtra::column_spec(column = 1:(1 + length(quadrienal.vigente)), width = paste0(c(0.60, rep(0.40/length(quadrienal.vigente), times = length(quadrienal.vigente)))*(21-3-3), "cm"))
-  print(kable_table)
+    tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H") %>%
+    tinytable::style_tt(i = 0, j = 1:ncol(summ.df), bold = TRUE) %>%
+    tinytable::style_tt(i = 1:nrow(summ.df), j = 1, bold = TRUE)
 }
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
@@ -1768,7 +1611,7 @@ for (i in 1:length(lista.AC.LP)) {
     "      full_width = TRUE,\n",
     "      position = 'center'\n",
     "    ) %>% \n",
-    "    kableExtra::column_spec(column = 1:ncol(lista.AC.LP[[", i, "]]), width = paste0(c(0.02,0.21,0.08,0.16,0.20,0.20,0.13)*(21-3-3), 'cm')) %>% \n",
+    "    kableExtra::column_spec(column = 1:ncol(lista.AC.LP[[", i, "]]), width = paste0(c(0.02,0.21,0.08,0.16,0.20,0.20,0.13)*(29-3-3), 'cm')) %>% \n",
     "    kableExtra::column_spec(column = 1, bold = TRUE) %>% \n",
     "    kableExtra::row_spec(row = 0, bold = TRUE)\n",
     "} else {\n",
@@ -1777,7 +1620,7 @@ for (i in 1:length(lista.AC.LP)) {
     "  options(tinytable_print_output = 'latex')\n",
     "  tinytable::tt(\n",
     "    linhas.atual,\n",
-    "    width = c(0.02,0.21,0.08,0.16,0.20,0.20,0.13)*(21-3-3),\n",
+    "    width = c(0.02,0.21,0.08,0.16,0.20,0.20,0.13)*(29-3-3),\n",
     "    style = 'bootstrap',\n",
     "    align = 'l',\n",
     "    caption = '", caption, "',\n",
@@ -4010,28 +3853,29 @@ table.continuada <- table %>%
     Nome
   )
 
-# add column with first first atuação date available
-table.continuada$Ano <- apply(table.continuada, 1, function(x) {
-  as.numeric(min(x[2:6], na.rm = TRUE))
-})
-
-# select data to print with Ano in quadrienal.vigente
+# to long format
 table.continuada <- table.continuada %>%
-  dplyr::filter(
-    table.continuada$`Bacharelado` == quadrienal.vigente |
-      table.continuada$`Mestrado` == quadrienal.vigente |
-      table.continuada$`Doutorado` == quadrienal.vigente |
-      table.continuada$`Pós-Doc` == quadrienal.vigente |
-      table.continuada$`Docente` == quadrienal.vigente
+  tidyr::pivot_longer(
+    cols = c(`Bacharelado`, `Mestrado`, `Doutorado`, `Pós-Doc`, `Docente`),
+    names_to = "Nível",
+    values_to = "Ano"
   )
+
+# drop NA values
+table.continuada <- table.continuada %>%
+  dplyr::filter(!is.na(Ano))
+
+# select data with Quadrienal in range of quadrienal.vigente
+table.continuada <- table.continuada %>%
+  dplyr::filter(Ano >= quadrienal.vigente[1] & Ano <= quadrienal.vigente[length(quadrienal.vigente)])
 
 # select columns to print
 table.continuada.part <- table.continuada %>%
-  dplyr::select(Atuações, Formação, Ano)
+  dplyr::select(Atuações, Nível, Formação, Ano)
 
 # sort by Ano
 table.continuada.part <- table.continuada.part %>%
-  dplyr::arrange(Ano, Atuações, Formação)
+  dplyr::arrange(Ano, Atuações, Nível, Formação)
 
 # Select rows where Formação contains " - " using base R
 try(table.continuada.part <- table.continuada.part[grepl(" - ", table.continuada.part$Formação), ], silent = TRUE)
@@ -4039,8 +3883,36 @@ try(table.continuada.part <- table.continuada.part[grepl(" - ", table.continuada
 # reload previous table if current is empty
 if(nrow(table.continuada.part) == 0) {
   table.continuada.part <- table.continuada %>%
-    dplyr::select(Atuações, Formação, Ano)
+    dplyr::select(Atuações, Nível, Formação, Ano)
 }
+
+# get available levels
+niveis <- unique(table.continuada.part$Formação)
+niveis.todos <- c(
+  "Bacharelado",
+  "Mestrado",
+  "Doutorado",
+  "Pós-Doc",
+  "Docente",
+  "Bacharelado - Mestrado",
+  "Bacharelado - Doutorado",
+  "Bacharelado - Pós-Doc",
+  "Bacharelado - Docente",
+  "Mestrado - Doutorado",
+  "Mestrado - Pós-Doc",
+  "Mestrado - Docente",
+  "Doutorado - Pós-Doc",
+  "Doutorado - Docente",
+  "Pós-Doc - Docente"
+)
+
+niveis.usados <- niveis.todos[niveis.todos %in% niveis]
+
+# order levels of Formação
+table.continuada.part$Formação <- factor(
+  table.continuada.part$Formação,
+  levels = niveis.usados
+)
 
 # bug report
 # https://stackoverflow.com/questions/78811916/gtsummary-tbl-summary-sorting-of-stratify-variable/78812588
@@ -4064,8 +3936,7 @@ table.2.3.1 <-
     by = "Ano",
     statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
-    digits = gtsummary::everything() ~ 0,
-    sort = gtsummary::all_categorical() ~ "frequency"
+    digits = gtsummary::everything() ~ 0
   ) %>%
   tbl_fix_order() %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
@@ -4094,14 +3965,14 @@ if (knitr::is_latex_output()) {
     booktabs = TRUE,
     linesep = "",
     caption = ifelse(knitr::is_html_output(), "", "Formação continuada no Programa")
-  ) %>%
+  ) %>% 
     kableExtra::kable_styling(
       bootstrap_options = c("basic", "hover", "condensed", "responsive"),
       latex_options = c("basic", "repeat_header", "HOLD_position"),
       latex_table_env = "tabularx",
       full_width = TRUE,
       position = "center"
-    )
+    ) %>% kableExtra::column_spec(column = 1:(1 + length(quadrienal.vigente)+ 1), width = paste0(c(0.65, rep(0.20/(length(quadrienal.vigente)), times = length(quadrienal.vigente)), 0.15)*(21-3-3), "cm"))
   print(kable_table)
 }
 
@@ -4197,6 +4068,7 @@ turmas.raw$`Período/Ano` <-
 # remove duplicates based on selected columns
 turmas.raw <- turmas.raw[!duplicated(turmas.raw[c("Período/Ano",
                                                   "ID da Disciplina",
+                                                  "Nível do curso",
                                                   "ID pessoa do responsável")]), ]
 
 # select variables
@@ -4224,10 +4096,14 @@ colnames(turmas) <- c(
   "Responsável"
 )
 
+# unique disciplinas por curso por periodo/ano
+turmas.curso <- turmas %>%
+  dplyr::distinct(`Período/Ano`, `Disciplinas por curso`, `Disciplina`, .keep_all = TRUE)
+
 # generate table (total by year)
 table.part1 <-
   gtsummary::tbl_summary(
-    turmas %>% dplyr::select(
+    turmas.curso %>% dplyr::select(
       "Período/Ano",
       "Disciplinas por curso",
       "Categoria"
@@ -4270,7 +4146,7 @@ if (knitr::is_latex_output()) {
       latex_table_env = "tabularx",
       full_width = TRUE,
       position = "center"
-    )
+    ) %>% kableExtra::column_spec(column = 1:(1 + length(unique(turmas$"Período/Ano"))), width = paste0(c(0.60, rep(0.40/(length(unique(turmas$"Período/Ano"))), times = length(unique(turmas$"Período/Ano"))))*(29-3-3), "cm"))
   print(kable_table)
 }
 
@@ -4281,10 +4157,11 @@ if(knitr::is_latex_output()) {
   cat('\\newpage')
 }
 
+
 # generate table (total by year)
-table.part1 <-
+table.part2 <-
   gtsummary::tbl_summary(
-    turmas %>% dplyr::select(
+    turmas.curso %>% dplyr::select(
       "Período/Ano",
       "Disciplina"
     ),
@@ -4294,66 +4171,6 @@ table.part1 <-
     ),
     statistic = list(
       "Disciplina" ~ "{n}"
-      ),
-    missing = "no",
-    digits = list(gtsummary::everything() ~ 0)) %>%
-  gtsummary::modify_header(label = "**Período/Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels()
-
-# Print LaTeX table
-if (knitr::is_latex_output()) {
-  cat('\\FloatBarrier')
-  # Convert gtsummary object to kableExtra object
-  kable_table <- gtsummary::as_kable_extra(
-    x = table.part1,
-    escape = FALSE,
-    format = ifelse(knitr::is_html_output(), "html", "latex"),
-    booktabs = TRUE,
-    linesep = "",
-    caption = ifelse(knitr::is_html_output(), "", "Disciplinas oferecidas por curso e categoria por período/ano"),
-  ) %>%
-    kableExtra::kable_styling(
-      bootstrap_options = c("basic", "hover", "condensed", "responsive"),
-      latex_options = c("basic", "repeat_header", "HOLD_position"),
-      latex_table_env = "tabularx",
-      full_width = TRUE,
-      position = "center"
-    )
-  print(kable_table)
-}
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-
-# Add LaTeX commands for new page and float barrier
-if(knitr::is_latex_output()) {
-  cat('\\newpage')
-}
-
-# get turmas by responsável and categoria Docente
-turmas.doc <- turmas[turmas$Responsável == "Sim" & turmas$Categoria == "Docente", ]
-
-# as factor
-turmas.doc$`Docente responsável` <- factor(turmas.doc$`Docente responsável`)
-
-# check for missing docentes.quadrienio
-turmas.doc$`Docente responsável` <- factor(
-  turmas.doc$`Docente responsável`,
-  levels = sort(unique(c(levels(turmas.doc$`Docente responsável`), docentes.quadrienio)))
-)
-
-table.part2 <- 
-gtsummary::tbl_summary(
-    turmas.doc %>% dplyr::select(
-      "Período/Ano",
-      "Docente responsável"
-    ),
-    by = "Período/Ano",
-    type = list(
-      "Docente responsável" ~ "categorical"
-    ),
-    statistic = list(
-      "Docente responsável" ~ "{n}"
       ),
     missing = "no",
     digits = list(gtsummary::everything() ~ 0)) %>%
@@ -4376,7 +4193,7 @@ if (knitr::is_latex_output()) {
     format = ifelse(knitr::is_html_output(), "html", "latex"),
     booktabs = TRUE,
     linesep = "",
-    caption = ifelse(knitr::is_html_output(), "", "Docentes responsáveis pelas disciplinas oferecidas por curso e categoria por período/ano"),
+    caption = ifelse(knitr::is_html_output(), "", "Disciplinas oferecidas por curso e categoria por período/ano"),
   ) %>%
     kableExtra::kable_styling(
       bootstrap_options = c("basic", "hover", "condensed", "responsive"),
@@ -4384,7 +4201,7 @@ if (knitr::is_latex_output()) {
       latex_table_env = "tabularx",
       full_width = TRUE,
       position = "center"
-    )
+    ) %>% kableExtra::column_spec(column = 1:(1 + length(unique(turmas$"Período/Ano"))), width = paste0(c(0.60, rep(0.40/(length(unique(turmas$"Período/Ano"))), times = length(unique(turmas$"Período/Ano"))))*(29-3-3), "cm"))
   print(kable_table)
 }
 
@@ -4395,11 +4212,78 @@ if(knitr::is_latex_output()) {
   cat('\\newpage')
 }
 
+
+# get turmas by responsável and categoria Docente
+turmas.doc <- turmas[turmas$Responsável == "Sim" & turmas$Categoria == "Docente", ]
+
+# as factor
+turmas.doc$`Docente responsável` <- factor(turmas.doc$`Docente responsável`)
+
+# check for missing docentes.quadrienio
+turmas.doc$`Docente responsável` <- factor(
+  turmas.doc$`Docente responsável`,
+  levels = sort(unique(c(levels(turmas.doc$`Docente responsável`), docentes.quadrienio)))
+)
+
+table.part3 <- 
+gtsummary::tbl_summary(
+    turmas.doc %>% dplyr::select(
+      "Período/Ano",
+      "Docente responsável"
+    ),
+    by = "Período/Ano",
+    type = list(
+      "Docente responsável" ~ "categorical"
+    ),
+    statistic = list(
+      "Docente responsável" ~ "{n}"
+      ),
+    missing = "no",
+    digits = list(gtsummary::everything() ~ 0)) %>%
+  gtsummary::modify_header(label = "**Período/Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels()
+
+# Print HTML table
+if (knitr::is_html_output()) {
+  print(table.part3)
+}
+
+# Print LaTeX table
+if (knitr::is_latex_output()) {
+  cat('\\FloatBarrier')
+  # Convert gtsummary object to kableExtra object
+  kable_table <- gtsummary::as_kable_extra(
+    x = table.part3,
+    escape = FALSE,
+    format = ifelse(knitr::is_html_output(), "html", "latex"),
+    booktabs = TRUE,
+    linesep = "",
+    caption = ifelse(knitr::is_html_output(), "", "Docentes responsáveis pelas disciplinas oferecidas por curso e categoria por período/ano"),
+  ) %>%
+    kableExtra::kable_styling(
+      bootstrap_options = c("basic", "hover", "condensed", "responsive"),
+      latex_options = c("basic", "repeat_header", "HOLD_position"),
+      latex_table_env = "tabularx",
+      full_width = TRUE,
+      position = "center"
+    ) %>% kableExtra::column_spec(column = 1:(1 + length(unique(turmas.doc$"Período/Ano"))), width = paste0(c(0.60, rep(0.40/(length(unique(turmas.doc$"Período/Ano"))), times = length(unique(turmas.doc$"Período/Ano"))))*(29-3-3), "cm"))
+  print(kable_table)
+}
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+# Add LaTeX commands for new page and float barrier
+if(knitr::is_latex_output()) {
+  cat('\\newpage')
+}
+
+
 # get turmas by responsável and categoria Pós-Doc
 turmas.posdoc <- turmas[turmas$Responsável == "Sim" & turmas$Categoria == "Pós-Doc", ]
 
 if(!sjmisc::is_empty(turmas.posdoc)){
-  table.part3 <- 
+  table.part4 <- 
     gtsummary::tbl_summary(
       turmas.posdoc %>% dplyr::select(
         "Período/Ano",
@@ -4421,7 +4305,7 @@ if(!sjmisc::is_empty(turmas.posdoc)){
 
 # Print HTML table
 if (knitr::is_html_output() && !sjmisc::is_empty(turmas.posdoc)) {
-  print(table.part3)
+  print(table.part4)
 }
 
 # Print LaTeX table
@@ -4429,7 +4313,7 @@ if (knitr::is_latex_output() && !sjmisc::is_empty(turmas.posdoc)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
-    x = table.part3,
+    x = table.part4,
     escape = FALSE,
     format = ifelse(knitr::is_html_output(), "html", "latex"),
     booktabs = TRUE,
@@ -4442,7 +4326,7 @@ if (knitr::is_latex_output() && !sjmisc::is_empty(turmas.posdoc)) {
       latex_table_env = "tabularx",
       full_width = TRUE,
       position = "center"
-    )
+    ) %>% kableExtra::column_spec(column = 1:(1 + length(unique(turmas.posdoc$"Período/Ano"))), width = paste0(c(0.60, rep(0.40/(length(unique(turmas.posdoc$"Período/Ano"))), times = length(unique(turmas.posdoc$"Período/Ano"))))*(29-3-3), "cm"))
   print(kable_table)
 }
 
@@ -4647,231 +4531,28 @@ if (knitr::is_html_output()) {
     format = "html",
     booktabs = TRUE,
     linesep = "",
-    caption = "Docentes Permanentes Responsáveis por Projetos"
+    caption = "Docentes Permanentes Responsáveis por Projetos, por Linha de Pesquisa"
   ) %>% kableExtra::kable_styling(
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = TRUE,
     position = "center"
-  )
+  ) %>% kableExtra::column_spec(column = 1:ncol(table.doc), width = paste0(c(0.05, rep(0.80/(length(quadrienal.vigente)), times = length(quadrienal.vigente)),0.15)*(21-3-3), "cm")) %>%
+      kableExtra::column_spec(column = 1, bold = TRUE) %>%
+      kableExtra::row_spec(row = 0, bold = TRUE)
 } else {
   # use tinytable for LaTeX output
   table.doc <- data.frame(table.doc, check.names = FALSE)
   options(tinytable_print_output = "latex")
   tinytable::tt(
     table.doc,
-    width = 1,
+    width = c(0.05, rep(0.80/(length(quadrienal.vigente)), times = length(quadrienal.vigente)),0.15),
     style = "bootstrap",
     align = "l",
-    caption = ifelse(knitr::is_html_output(), "", "Docentes Permanenters Responsáveis por Projetos")
+    caption = ifelse(knitr::is_html_output(), "", "Docentes Permanentes Responsáveis por Projetos, por Linha de Pesquisa")
   ) %>%
     tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H") %>%
     tinytable::style_tt(i = 0, j = 1:ncol(table.doc), bold = TRUE) %>%
     tinytable::style_tt(i = 1:nrow(table.doc), j = 1, bold = TRUE)
-}
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-
-# Add LaTeX commands for new page and float barrier
-if(knitr::is_latex_output()) {
-  cat('\\newpage')
-}
-```
-
-```{r 2-5-2-posdoc, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
-table.posdoc <-
-  data.frame(matrix(
-    NA,
-    nrow = length(unique(sucupira.df$`Nome do Projeto de Pesquisa`[sucupira.df$`Categoria do Membro do Projeto` == "Pós-Doc"])),
-    ncol = length(quadrienal.vigente)
-  ))
-rownames(table.posdoc) <- NULL
-table.posdoc <-
-  cbind(unique(sucupira.df$`Nome do Projeto de Pesquisa`[sucupira.df$`Categoria do Membro do Projeto` == "Pós-Doc"]),
-        table.posdoc)
-colnames(table.posdoc) <-
-  c("Nome do Projeto de Pesquisa", as.character(quadrienal.vigente))
-for (i in 1:dim(table.posdoc)[1]) {
-  for (j in 1:length(quadrienal.vigente)) {
-    data <- sucupira.df[sucupira.df$Anos == quadrienal.vigente[j],]
-    table.posdoc[i, j + 1] <-
-      try(data$`Nome do Membro do Projeto`[match(table.posdoc$`Nome do Projeto de Pesquisa`[i],
-                                                 data$`Nome do Projeto de Pesquisa`)], silent = TRUE)
-  }
-}
-
-table.posdoc.long <-
-  tidyr::gather(
-    table.posdoc[, -1],
-    "Ano",
-    "Nome do Membro do Projeto",
-    colnames(table.posdoc)[-1],
-    factor_key = TRUE
-  )
-
-# to title case
-table.posdoc.long$`Nome do Membro do Projeto` <- tools::toTitleCase(tolower(table.posdoc.long$`Nome do Membro do Projeto`))
-
-
-table.posdoc.long <- rbind(
-  table.posdoc.long,
-  data.frame(
-    "Ano" = rep(paste0(
-      min(quadrienal.vigente), "-", max(quadrienal.vigente)
-    ), times = dim(table.posdoc)[1]),
-    "Nome do Membro do Projeto" = rep("Membros", times = dim(table.posdoc)[1]),
-    check.names = FALSE
-  )
-)
-
-my_N <- function(data, ...) {
-  gtsummary::style_number(sum(data == "Membros", na.rm = TRUE), digits = 0)
-}
-
-colnames(table.posdoc.long) <-
-  c("Ano", "Projetos de pesquisa por Pós-Doc")
-
-# change all column types to factors
-table.posdoc.long <- table.posdoc.long %>%
-  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
-
-# print tables
-table.posdoc.gt <-
-  gtsummary::tbl_summary(
-    table.posdoc.long,
-    by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n}"),
-    missing = "no",
-    digits = gtsummary::everything() ~ 0
-  ) %>%
-  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels() %>%
-  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-  gtsummary::modify_header(list(
-    add_stat_1 ~ "**Quadriênio**",
-    gtsummary::all_stat_cols() ~ "**{level}**"
-  )) %>%
-  gtsummary::remove_row_type(
-    variables = c('Projetos de pesquisa por Pós-Doc'),
-    type = "level",
-    level_value = ("Membros")
-  ) %>%
-  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
-```
-
-```{r 2-5-2-posdoutorandos, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
-if(knitr::is_html_output()) {
-  cat("##### **Pós-Docs** {#posdocs-linhas-pesquisa}")
-  cat('\n\n')
-}
-
-# Print HTML table
-if (knitr::is_html_output()) {
-  print(table.posdoc.gt)
-}
-
-# Print LaTeX table
-if (knitr::is_latex_output()) {
-  cat('\\FloatBarrier')
-  # Convert gtsummary object to kableExtra object
-  kable_table <- gtsummary::as_kable_extra(
-    x = table.posdoc.gt,
-    escape = FALSE,
-    format = ifelse(knitr::is_html_output(), "html", "latex"),
-    booktabs = TRUE,
-    linesep = "",
-    caption = ifelse(knitr::is_html_output(), "", "Pós-docs Responsáveis por Projetos")
-  ) %>%
-    kableExtra::kable_styling(
-      bootstrap_options = c("basic", "hover", "condensed", "responsive"),
-      latex_options = c("basic", "repeat_header", "HOLD_position"),
-      latex_table_env = "tabularx",
-      full_width = TRUE,
-      position = "center"
-    ) %>% kableExtra::column_spec(column = 1:(1 + length(quadrienal.vigente)+ 1), width = paste0(c(0.65, rep(0.20/(length(quadrienal.vigente)), times = length(quadrienal.vigente)), 0.15)*(21-3-3), "cm"))
-  print(kable_table)
-}
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-
-# Add LaTeX commands for new page and float barrier
-if(knitr::is_latex_output()) {
-  cat('\\newpage')
-}
-
-# select data
-table.projetos.posdoc <-
-  sucupira.df %>% dplyr::select(
-    "Área de Concentração",
-    "Linha de Pesquisa",
-    "Nome do Projeto de Pesquisa",
-    "Natureza do Projeto de Pesquisa",
-    "Nome do Membro do Projeto",
-    "Categoria do Membro do Projeto",
-    "Situação"
-  )
-
-# if duplicated, keep Situacão = Concluído
-table.projetos.posdoc <- table.projetos.posdoc[!duplicated(table.projetos.posdoc[1:5], fromLast = TRUE),]
-
-# select data DOCENTES
-table.posdoc <-
-  table(table.projetos.posdoc$`Nome do Membro do Projeto`[table.projetos.posdoc$`Categoria do Membro do Projeto` == "Pós-Doc"],
-        table.projetos.posdoc$`Linha de Pesquisa`[table.projetos.posdoc$`Categoria do Membro do Projeto` == "Pós-Doc"])
-
-# add row totals
-table.posdoc <- cbind(table.posdoc, rowSums(table.posdoc))
-colnames(table.posdoc) <- stringr::str_to_title(c(head(colnames(table.posdoc), -1), "Quadriênio"))
-
-# add column totals
-table.posdoc <- rbind(table.posdoc, colSums(table.posdoc))
-rownames(table.posdoc) <- stringr::str_to_title(c(head(rownames(table.posdoc), -1), "Quadriênio"))
-
-# add name column
-table.posdoc <- cbind(
-  "Nome do Membro do Projeto" = rownames(table.posdoc),
-  table.posdoc
-)
-
-table.posdoc <- cbind(
-  c(seq(1, dim(table.posdoc)[1] - 1), ""),
-  table.posdoc
-  )
-
-colnames(table.posdoc) <-
-  c("ID", colnames(table.posdoc)[-1])
-rownames(table.posdoc) <- NULL
-
-# print tables
-if (knitr::is_html_output()) {
-  # use kable for HTML output
-  knitr::kable(
-    table.posdoc,
-    align = "l",
-    escape = FALSE,
-    format = "html",
-    booktabs = TRUE,
-    linesep = "",
-    caption = "Pós-Docs Responsáveis por Projetos"
-  ) %>% kableExtra::kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = TRUE,
-    position = "center"
-  )
-} else {
-  # use tinytable for LaTeX output
-  table.posdoc <- data.frame(table.posdoc, check.names = FALSE)
-  options(tinytable_print_output = "latex")
-  tinytable::tt(
-    table.posdoc,
-    width = 1,
-    style = "bootstrap",
-    align = "l",
-    caption = ifelse(knitr::is_html_output(), "", "Pós-Docs Responsáveis por Projetos")
-  ) %>%
-    tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H") %>%
-    tinytable::style_tt(i = 0, j = 1:ncol(table.posdoc), bold = TRUE) %>%
-    tinytable::style_tt(i = 1:nrow(table.posdoc), j = 1, bold = TRUE)
 }
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
@@ -5667,7 +5348,7 @@ if (knitr::is_latex_output()) {
       latex_table_env = "tabularx",
       full_width = TRUE,
       position = "center"
-    )
+    ) %>% kableExtra::column_spec(column = 1:(1 + length(quadrienal.vigente)+ 1 + 1), width = paste0(c(0.50, rep(0.20/(length(quadrienal.vigente)), times = length(quadrienal.vigente)), 0.15, 0.15)*(21-3-3), "cm"))
   print(kable_table)
 }
 

@@ -148,9 +148,6 @@ formacao.continuada <- dplyr::bind_rows(
   docentes
 )
 
-# format names
-formacao.continuada$Nome <- tools::toTitleCase(tolower(formacao.continuada$Nome))
-
 # remove duplicates
 formacao.continuada <- formacao.continuada %>%
   dplyr::distinct()
@@ -162,7 +159,7 @@ formacao.continuada <- formacao.continuada %>%
 # create table to fill with start-end year for each situation
 table <- data.frame(
   "Nome" = NA,
-  Bacharelado = NA,
+  "Bacharelado" = NA,
   "Mestrado" = NA,
   "Doutorado" = NA,
   "Pós-Doc" = NA,
@@ -210,7 +207,7 @@ table$Formação <- apply(table, 1, function(x) {
   if(length(which(!is.na(x))) == 1) {
     return(names(x)[lower])
   } else {
-    return(paste(names(x)[lower], names(x)[higher], sep = " - "))
+    return(paste(names(x)[lower], names(x)[higher], sep = "-"))
   }
 })
 
@@ -236,7 +233,6 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ### **Turmas**
 
 ```{r turmas-nivel, eval = has.sucupira.files}
-# turmas
 sheet <- "Turmas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
@@ -258,47 +254,57 @@ turmas.raw$`Período/Ano` <-
 # remove duplicates based on selected columns
 turmas.raw <- turmas.raw[!duplicated(turmas.raw[c("Período/Ano",
                                                   "ID da Disciplina",
+                                                  "Nível do curso",
                                                   "ID pessoa do responsável")]), ]
 
 # select variables
 turmas <- turmas.raw %>%
   dplyr::select(c(
     "Período/Ano",
-    "Nível do curso"
+    "Nível do curso",
+    "Nome da Disciplina",
+    "Categoria do responsável",
+    "Nome do responsável",
+    "Indicador de responsável principal"
   ))
 
-# bug report
-# https://stackoverflow.com/questions/78811916/gtsummary-tbl-summary-sorting-of-stratify-variable/78812588
-tbl_fix_order <- function(x) {
-  nms <- names(x$table_body)
-  is_stat_cols <- grepl("^stat_", nms)
-  non_stat_cols <- nms[!is_stat_cols]
-  stat_cols <- nms[is_stat_cols]
-  stat_cols <- stat_cols[
-    order(as.integer(gsub("^.*?(\\d+)$", "\\1", stat_cols)))
-  ]
-  x$table_body <- x$table_body[c(non_stat_cols, stat_cols)]
-  
-  x  
-}
+# change to title case
+turmas$`Nome da Disciplina` <- tools::toTitleCase(tolower(turmas$`Nome da Disciplina`))
+turmas$`Nome do responsável` <- tools::toTitleCase(tolower(turmas$`Nome do responsável`))
+
+# rename
+colnames(turmas) <- c(
+  "Período/Ano",
+  "Disciplinas por curso",
+  "Disciplina",
+  "Categoria",
+  "Docente responsável",
+  "Responsável"
+)
+
+# unique disciplinas por curso por periodo/ano
+turmas.curso <- turmas %>%
+  dplyr::distinct(`Período/Ano`, `Disciplinas por curso`, `Disciplina`, .keep_all = TRUE)
 
 # generate table (total by year)
 table.part1 <-
   gtsummary::tbl_summary(
-    turmas %>% dplyr::select(
+    turmas.curso %>% dplyr::select(
       "Período/Ano",
-      "Nível do curso"
+      "Disciplinas por curso",
+      "Categoria"
     ),
     by = "Período/Ano",
     type = list(
-      "Nível do curso" ~ "categorical"
+      "Disciplinas por curso" ~ "categorical",
+      "Categoria" ~ "categorical"
     ),
     statistic = list(
-      "Nível do curso" ~ "{n}"
+      "Disciplinas por curso" ~ "{n}",
+      "Categoria" ~ "{n}"
       ),
     missing = "no",
     digits = list(gtsummary::everything() ~ 0)) %>%
-  tbl_fix_order() %>%
   gtsummary::modify_header(label = "**Período/Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels()
@@ -316,7 +322,6 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ### **Disciplinas**
 
 ```{r turmas-disciplinas, eval = has.sucupira.files}
-# turmas
 sheet <- "Turmas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
@@ -338,43 +343,42 @@ turmas.raw$`Período/Ano` <-
 # remove duplicates based on selected columns
 turmas.raw <- turmas.raw[!duplicated(turmas.raw[c("Período/Ano",
                                                   "ID da Disciplina",
+                                                  "Nível do curso",
                                                   "ID pessoa do responsável")]), ]
 
 # select variables
 turmas <- turmas.raw %>%
   dplyr::select(c(
     "Período/Ano",
-    "Nome da Disciplina"
+    "Nível do curso",
+    "Nome da Disciplina",
+    "Categoria do responsável",
+    "Nome do responsável",
+    "Indicador de responsável principal"
   ))
 
 # change to title case
 turmas$`Nome da Disciplina` <- tools::toTitleCase(tolower(turmas$`Nome da Disciplina`))
+turmas$`Nome do responsável` <- tools::toTitleCase(tolower(turmas$`Nome do responsável`))
 
 # rename
 colnames(turmas) <- c(
   "Período/Ano",
-  "Disciplina"
+  "Disciplinas por curso",
+  "Disciplina",
+  "Categoria",
+  "Docente responsável",
+  "Responsável"
 )
 
-# bug report
-# https://stackoverflow.com/questions/78811916/gtsummary-tbl-summary-sorting-of-stratify-variable/78812588
-tbl_fix_order <- function(x) {
-  nms <- names(x$table_body)
-  is_stat_cols <- grepl("^stat_", nms)
-  non_stat_cols <- nms[!is_stat_cols]
-  stat_cols <- nms[is_stat_cols]
-  stat_cols <- stat_cols[
-    order(as.integer(gsub("^.*?(\\d+)$", "\\1", stat_cols)))
-  ]
-  x$table_body <- x$table_body[c(non_stat_cols, stat_cols)]
-  
-  x  
-}
+# unique disciplinas por curso por periodo/ano
+turmas.curso <- turmas %>%
+  dplyr::distinct(`Período/Ano`, `Disciplinas por curso`, `Disciplina`, .keep_all = TRUE)
 
 # generate table (total by year)
-table.part1 <-
+table.part2 <-
   gtsummary::tbl_summary(
-    turmas %>% dplyr::select(
+    turmas.curso %>% dplyr::select(
       "Período/Ano",
       "Disciplina"
     ),
@@ -387,14 +391,13 @@ table.part1 <-
       ),
     missing = "no",
     digits = list(gtsummary::everything() ~ 0)) %>%
-  tbl_fix_order() %>%
   gtsummary::modify_header(label = "**Período/Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels()
 
 # Print HTML table
 if (knitr::is_html_output()) {
-  print(table.part1)
+  print(table.part2)
 }
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
@@ -402,10 +405,9 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **Docentes**
+### **Docentes e Pós-Docs**
 
 ```{r turmas-docentes, eval = has.sucupira.files}
-# turmas
 sheet <- "Turmas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
@@ -427,6 +429,7 @@ turmas.raw$`Período/Ano` <-
 # remove duplicates based on selected columns
 turmas.raw <- turmas.raw[!duplicated(turmas.raw[c("Período/Ano",
                                                   "ID da Disciplina",
+                                                  "Nível do curso",
                                                   "ID pessoa do responsável")]), ]
 
 # select variables
@@ -456,8 +459,17 @@ colnames(turmas) <- c(
 
 # get turmas by responsável and categoria Docente
 turmas.doc <- turmas[turmas$Responsável == "Sim" & turmas$Categoria == "Docente", ]
-  
-table.part2 <- 
+
+# as factor
+turmas.doc$`Docente responsável` <- factor(turmas.doc$`Docente responsável`)
+
+# check for missing docentes.quadrienio
+turmas.doc$`Docente responsável` <- factor(
+  turmas.doc$`Docente responsável`,
+  levels = sort(unique(c(levels(turmas.doc$`Docente responsável`), docentes.quadrienio)))
+)
+
+table.part3 <- 
 gtsummary::tbl_summary(
     turmas.doc %>% dplyr::select(
       "Período/Ano",
@@ -478,7 +490,7 @@ gtsummary::tbl_summary(
 
 # Print HTML table
 if (knitr::is_html_output()) {
-  print(table.part2)
+  print(table.part3)
 }
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
@@ -488,7 +500,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 turmas.posdoc <- turmas[turmas$Responsável == "Sim" & turmas$Categoria == "Pós-Doc", ]
 
 if(!sjmisc::is_empty(turmas.posdoc)){
-  table.part3 <- 
+  table.part4 <- 
     gtsummary::tbl_summary(
       turmas.posdoc %>% dplyr::select(
         "Período/Ano",
@@ -510,7 +522,7 @@ if(!sjmisc::is_empty(turmas.posdoc)){
 
 # Print HTML table
 if (knitr::is_html_output() && !sjmisc::is_empty(turmas.posdoc)) {
-  print(table.part3)
+  print(table.part4)
 }
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
@@ -1774,9 +1786,9 @@ source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
-# get data from all Sucupira years available
-projetos.all <-
-  do.call(rbind.data.frame, sucupira.list)
+# Bind all sheets for disciplines
+periodos <- names(sucupira.list)[na.omit(match(periodo.vigente, names(sucupira.list)))]
+projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
 projetos.all <-
   unique(projetos.all[projetos.all$`Membro Responsável` == "Sim",])
