@@ -4536,7 +4536,7 @@ if (knitr::is_html_output()) {
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = TRUE,
     position = "center"
-  ) %>% kableExtra::column_spec(column = 1:ncol(table.doc), width = paste0(c(0.05, rep(0.80/(length(quadrienal.vigente)), times = length(quadrienal.vigente)),0.15)*(21-3-3), "cm")) %>%
+  ) %>% kableExtra::column_spec(column = 1:length(unique(table.projetos.doc$`Linha de Pesquisa`)), width = paste0(c(0.05, 0.10, rep(0.70/length(unique(table.projetos.doc$`Linha de Pesquisa`)), times = length(unique(table.projetos.doc$`Linha de Pesquisa`))), 0.15)*(21-3-3), "cm")) %>%
       kableExtra::column_spec(column = 1, bold = TRUE) %>%
       kableExtra::row_spec(row = 0, bold = TRUE)
 } else {
@@ -4545,7 +4545,7 @@ if (knitr::is_html_output()) {
   options(tinytable_print_output = "latex")
   tinytable::tt(
     table.doc,
-    width = c(0.05, rep(0.80/(length(quadrienal.vigente)), times = length(quadrienal.vigente)),0.15),
+    width = c(0.05, 0.10, rep(0.70/length(unique(table.projetos.doc$`Linha de Pesquisa`)), times = length(unique(table.projetos.doc$`Linha de Pesquisa`))), 0.15),
     style = "bootstrap",
     align = "l",
     caption = ifelse(knitr::is_html_output(), "", "Docentes Permanentes Responsáveis por Projetos, por Linha de Pesquisa")
