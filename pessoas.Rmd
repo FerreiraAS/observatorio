@@ -799,7 +799,7 @@ egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`)
 egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
 
 # drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-try(egressos <- egressos %>% dplyr::select("Nível Discente", "Data Situação", "Nome do Orientador", "Nome Discente", "País"), silent = TRUE)
+try(egressos <- egressos %>% dplyr::select("Nível Discente", "Nome Discente", "Data Situação", "Nome do Orientador", "País"), silent = TRUE)
 
 # remove duplicates
 egressos <- unique(egressos)
@@ -856,7 +856,7 @@ egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`)
 egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
 
 # drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-egressos <- egressos %>% dplyr::select("Nível Discente", "Data Situação", "Nome do Orientador", "Nome Discente", "País")
+try(egressos <- egressos %>% dplyr::select("Nível Discente", "Nome Discente", "Data Situação", "Nome do Orientador", "País"), silent = TRUE)
 
 # remove duplicates
 egressos <- unique(egressos)
@@ -913,7 +913,7 @@ egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`)
 egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
 
 # drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-egressos <- egressos %>% dplyr::select("Nível Discente", "Data Situação", "Nome do Orientador", "Nome Discente", "País")
+try(egressos <- egressos %>% dplyr::select("Nível Discente", "Nome Discente", "Data Situação", "Nome do Orientador", "País"), silent = TRUE)
 
 # remove duplicates
 egressos <- unique(egressos)
@@ -969,7 +969,7 @@ egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`)
 egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
 
 # drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
-egressos <- egressos %>% dplyr::select("Nível Discente", "Data Situação", "Nome do Orientador", "Nome Discente", "País")
+try(egressos <- egressos %>% dplyr::select("Nível Discente", "Nome Discente", "Data Situação", "Nome do Orientador", "País"), silent = TRUE)
 
 # remove duplicates
 egressos <- unique(egressos)
