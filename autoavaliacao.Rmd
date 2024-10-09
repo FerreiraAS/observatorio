@@ -600,7 +600,7 @@ table.ac.gt <-
   gtsummary::tbl_summary(
     table.ac.long,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = gtsummary::everything() ~ 0,
     sort = gtsummary::all_categorical() ~ "frequency"
@@ -625,7 +625,7 @@ table.ac.doc.gt <-
   gtsummary::tbl_summary(
     table.ac.doc.long,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = gtsummary::everything() ~ 0,
     sort = gtsummary::all_categorical() ~ "frequency"
@@ -858,7 +858,7 @@ table.lp.gt <-
   gtsummary::tbl_summary(
     table.lp.long,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = gtsummary::everything() ~ 0
   ) %>%
@@ -882,7 +882,7 @@ table.lp.doc.gt <-
   gtsummary::tbl_summary(
     table.lp.doc.long,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = gtsummary::everything() ~ 0
   ) %>%
@@ -1079,7 +1079,7 @@ table.pp.gt <-
   gtsummary::tbl_summary(
     table.pp.long,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = gtsummary::everything() ~ 0,
     sort = gtsummary::all_categorical() ~ "frequency"
@@ -1154,7 +1154,7 @@ table.pp.nt.gt <-
   gtsummary::tbl_summary(
     table.pp.nt.long,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = gtsummary::everything() ~ 0
   ) %>%
@@ -1232,7 +1232,7 @@ table.pp.membro.gt <-
   gtsummary::tbl_summary(
     table.pp.membro.long,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = gtsummary::everything() ~ 0
   ) %>%
@@ -1313,7 +1313,7 @@ table.pp.auxilio.gt <-
   gtsummary::tbl_summary(
     table.pp.financiamento.long,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = gtsummary::everything() ~ 0
   ) %>%
@@ -1394,7 +1394,7 @@ table.pp.bolsa.gt <-
   gtsummary::tbl_summary(
     table.pp.financiamento.long,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = gtsummary::everything() ~ 0
   ) %>%
@@ -2401,7 +2401,7 @@ table.1a <-
   gtsummary::tbl_summary(
     table.doc.long,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = gtsummary::everything() ~ 0,
     sort = gtsummary::all_categorical() ~ "frequency"
@@ -2500,7 +2500,7 @@ table.1b <-
   gtsummary::tbl_summary(
     table.doc.long,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = gtsummary::everything() ~ 0,
     sort = gtsummary::all_categorical() ~ "frequency"
@@ -2604,7 +2604,7 @@ table.1c <-
   gtsummary::tbl_summary(
     table.doc.long,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = gtsummary::everything() ~ 0,
     sort = gtsummary::all_categorical() ~ "frequency"
@@ -2698,7 +2698,7 @@ table.1d <-
   gtsummary::tbl_summary(
     table.doc.long,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = gtsummary::everything() ~ 0,
     # sort alphanumeric THIS ONLY
@@ -2867,7 +2867,7 @@ colnames(table.doc.long)[2] <- "Docentes Permanentes"
 table.1.2.2.doc <- gtsummary::tbl_summary(
   table.doc.long,
   by = "Ano",
-  statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+  statistic = list(gtsummary::all_categorical() ~ "{n}"),
   missing = "no",
   digits = gtsummary::everything() ~ 0,
     sort = gtsummary::all_categorical() ~ "frequency"
@@ -2976,7 +2976,7 @@ if(nrow(table.doc.long) > 0) {
   table.1.2.2.outros <- gtsummary::tbl_summary(
     table.doc.long,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = gtsummary::everything() ~ 0,
     sort = gtsummary::all_categorical() ~ "frequency"
@@ -3201,7 +3201,7 @@ tbl_fix_order <- function(x) {
 table.1.2.3 <- gtsummary::tbl_summary(
   table.doc.long,
   by = "Ano",
-  statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+  statistic = list(gtsummary::all_categorical() ~ "{n}"),
   missing = "no",
   digits = gtsummary::everything() ~ 0,
     sort = gtsummary::all_categorical() ~ "alphanumeric"
@@ -3326,7 +3326,7 @@ table.1.2.5 <-
   gtsummary::tbl_summary(
     financiadores,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = list(gtsummary::everything() ~ 0, "Total" ~ 2)
   ) %>%
@@ -3934,7 +3934,7 @@ table.2.3.1 <-
  gtsummary::tbl_summary(
     table.continuada.part,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = gtsummary::everything() ~ 0
   ) %>%
@@ -4418,7 +4418,7 @@ table.doc.gt <-
   gtsummary::tbl_summary(
     table.doc.long,
     by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
     digits = gtsummary::everything() ~ 0
   ) %>%
@@ -4730,6 +4730,7 @@ sucupira.df$`Área de Concentração`[is.na(sucupira.df$`Área de Concentração
 sucupira.df$`Linha de Pesquisa`[is.na(sucupira.df$`Linha de Pesquisa`)] <- "Indefinido"
 sucupira.df$`Tipo de Produção`[is.na(sucupira.df$`Tipo de Produção`)] <- "Indefinido"
 sucupira.df$`Subtipo de Produção`[is.na(sucupira.df$`Subtipo de Produção`)] <- "Indefinido"
+sucupira.df$`Categoria do Autor Principal`[is.na(sucupira.df$`Categoria do Autor Principal`)] <- "Indefinido"
 ```
 
 ```{r 3-1-2-total, , eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
@@ -4789,7 +4790,7 @@ table.total.long <- table.total.long %>%
 table.tot.gt <- gtsummary::tbl_summary(
   table.total.long,
   by = "Ano",
-  statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+  statistic = list(gtsummary::all_categorical() ~ "{n}"),
   missing = "no",
   digits = gtsummary::everything() ~ 0,
   sort = gtsummary::all_categorical() ~ "frequency"
@@ -4872,7 +4873,7 @@ table.prd.long <- table.prd.long %>%
 table.prd.gt <- gtsummary::tbl_summary(
   table.prd.long,
   by = "Ano",
-  statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+  statistic = list(gtsummary::all_categorical() ~ "{n}"),
   missing = "no",
   digits = gtsummary::everything() ~ 0,
   sort = gtsummary::all_categorical() ~ "frequency"
@@ -4958,7 +4959,7 @@ table.bib.long <- table.bib.long %>%
 table.bib.gt <- gtsummary::tbl_summary(
   table.bib.long,
   by = "Ano",
-  statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+  statistic = list(gtsummary::all_categorical() ~ "{n}"),
   missing = "no",
   digits = gtsummary::everything() ~ 0,
   sort = gtsummary::all_categorical() ~ "frequency"
@@ -5044,7 +5045,7 @@ table.tec.long <- table.tec.long %>%
 table.tec.gt <- gtsummary::tbl_summary(
   table.tec.long,
   by = "Ano",
-  statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+  statistic = list(gtsummary::all_categorical() ~ "{n}"),
   missing = "no",
   digits = gtsummary::everything() ~ 0,
   sort = gtsummary::all_categorical() ~ "frequency"
@@ -5135,7 +5136,7 @@ table.tcc.long <- table.tcc.long %>%
 table.tcc.gt <- gtsummary::tbl_summary(
   table.tcc.long,
   by = "Ano",
-  statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+  statistic = list(gtsummary::all_categorical() ~ "{n}"),
   missing = "no",
   digits = gtsummary::everything() ~ 0,
   sort = gtsummary::all_categorical() ~ "frequency"
@@ -5218,7 +5219,7 @@ table.ac.long <- table.ac.long %>%
 table.ac.gt <- gtsummary::tbl_summary(
   table.ac.long,
   by = "Ano",
-  statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+  statistic = list(gtsummary::all_categorical() ~ "{n}"),
   missing = "no",
   digits = gtsummary::everything() ~ 0,
   sort = gtsummary::all_categorical() ~ "frequency"
@@ -5301,7 +5302,7 @@ table.lp.long <- table.lp.long %>%
 table.lp.gt <- gtsummary::tbl_summary(
   table.lp.long,
   by = "Ano",
-  statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+  statistic = list(gtsummary::all_categorical() ~ "{n}"),
   missing = "no",
   digits = gtsummary::everything() ~ 0,
   sort = gtsummary::all_categorical() ~ "frequency"
@@ -5384,7 +5385,7 @@ table.aut.long <- table.aut.long %>%
 table.aut.gt <- gtsummary::tbl_summary(
   table.aut.long,
   by = "Ano",
-  statistic = list(gtsummary::all_categorical() ~ "{n} ({p}%)"),
+  statistic = list(gtsummary::all_categorical() ~ "{n}"),
   missing = "no",
   digits = gtsummary::everything() ~ 0,
   sort = gtsummary::all_categorical() ~ "frequency"
@@ -5414,13 +5415,13 @@ table.aut.gt <- gtsummary::tbl_summary(
 # List all tables
 table.all <- list(
   table.tot.gt,
-  table.prd.gt,
-  table.bib.gt,
-  table.tec.gt,
-  table.tcc.gt,
   table.ac.gt,
   table.lp.gt,
-  table.aut.gt
+  table.tcc.gt,
+  table.aut.gt,
+  table.prd.gt,
+  table.bib.gt,
+  table.tec.gt
 )
 
 # Drop empty elements from the list
@@ -5567,7 +5568,7 @@ table.3.2.1 <-
       ),
     statistic = list(
       gtsummary::all_continuous() ~ "{median} ({min}-{max})",
-      gtsummary::all_categorical() ~ "{n} ({p}%)"
+      gtsummary::all_categorical() ~ "{n}"
       ),
     missing = "no",
     digits = list(
@@ -5593,7 +5594,7 @@ table.3.2.1 <-
     col_label = "**Subtotal**",
     statistic = list(
       gtsummary::all_continuous() ~ "{median} ({min}-{max})",
-      gtsummary::all_categorical() ~ "{n} ({p}%)"
+      gtsummary::all_categorical() ~ "{n}"
     )
   ) %>%
   gtsummary::modify_header(

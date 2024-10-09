@@ -542,25 +542,27 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 sheet <- "Produções - Detalhes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-# get years
+# Get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
-# get data for the current period
+# Get data for the current period
 sucupira <- sucupira.list[as.character(periodo.vigente)] %>%
   plyr::compact()
-for(i in 1:length(sucupira)){
+
+for (i in 1:length(sucupira)) {
   sucupira[[i]] <- cbind(
     "Anos" = rep(periodo.vigente[i], times = dim(sucupira[[i]])[1]),
     sucupira[[i]]
   )
 }
-sucupira.df <- data.frame(do.call(dplyr::bind_rows, sucupira))
-names(sucupira.df) <-
-  names(sucupira[[as.character(max(as.numeric(periodo.vigente)))]])
 
-sucupira.df <-
-  sucupira.df %>% dplyr::select(
+sucupira.df <- data.frame(do.call(dplyr::bind_rows, sucupira))
+names(sucupira.df) <- names(sucupira[[as.character(max(as.numeric(periodo.vigente)))]])
+
+sucupira.df <- sucupira.df %>% 
+  dplyr::select(
+    "ID da Produção",
     "Anos",
     "Nome da Produção",
     "Produção vinculada a TCC concluído",
@@ -575,53 +577,71 @@ sucupira.df$`Área de Concentração` <- tools::toTitleCase(tolower(sucupira.df$
 sucupira.df$`Linha de Pesquisa` <- tools::toTitleCase(tolower(sucupira.df$`Linha de Pesquisa`))
 sucupira.df$`Tipo de Produção` <- tools::toTitleCase(tolower(sucupira.df$`Tipo de Produção`))
 sucupira.df$`Subtipo de Produção` <- tools::toTitleCase(tolower(sucupira.df$`Subtipo de Produção`))
+
+# replace NA values with "Indefinido"
+sucupira.df$`Área de Concentração`[is.na(sucupira.df$`Área de Concentração`)] <- "Indefinido"
+sucupira.df$`Linha de Pesquisa`[is.na(sucupira.df$`Linha de Pesquisa`)] <- "Indefinido"
+sucupira.df$`Tipo de Produção`[is.na(sucupira.df$`Tipo de Produção`)] <- "Indefinido"
+sucupira.df$`Subtipo de Produção`[is.na(sucupira.df$`Subtipo de Produção`)] <- "Indefinido"
+sucupira.df$`Categoria do Autor Principal`[is.na(sucupira.df$`Categoria do Autor Principal`)] <- "Indefinido"
 ```
 
-```{r 3-1-2-ac, eval = has.sucupira.files}
-table.ac <- data.frame(matrix(
+```{r 3-1-2-total, , eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+table.total <- data.frame(matrix(
   NA,
-  nrow = length(sucupira.df$`Nome da Produção`[!duplicated(sucupira.df)]),
+  nrow = length(unique(sucupira.df$`ID da Produção`)),
   ncol = length(periodo.vigente)
 ))
 
-rownames(table.ac) <- NULL
-table.ac <- cbind(sucupira.df$`Nome da Produção`[!duplicated(sucupira.df)], table.ac)
-colnames(table.ac) <- c("Nome da Produção", as.character(periodo.vigente))
+rownames(table.total) <- NULL
+table.total <- cbind(unique(sucupira.df$`ID da Produção`), table.total)
+colnames(table.total) <- c("ID da Produção", as.character(periodo.vigente))
 
-for (i in 1:dim(table.ac)[1]) {
-  for (j in 1:length(periodo.vigente)) {
-    data <- sucupira.df[sucupira.df$Anos == periodo.vigente[j], ]
-    table.ac[i, j + 1] <- try(
-      data$`Área de Concentração`[match(table.ac$`Nome da Produção`[i], data$`Nome da Produção`)],
-      silent = TRUE
+# match ID da Produção and Ano and fill with Produção
+for(i in 1:dim(table.total)[1]) {
+  for(j in 1:length(periodo.vigente)) {
+    id <- table.total[i, 1]
+    ano <- periodo.vigente[j]
+    table.total[i, j + 1] <- ifelse(
+      id %in% sucupira.df$`ID da Produção`[sucupira.df$Anos == ano],
+      "Produção total",
+      NA
     )
   }
 }
 
-# remove rows with NA in all columns
-table.ac <- table.ac[rowSums(is.na(table.ac)) < ncol(table.ac), ]
-
-table.ac.long <- tidyr::gather(
-  table.ac[, -1],
+table.total.long <- tidyr::gather(
+  table.total[, -1],
   "Ano",
-  "Área de Concentração",
-  colnames(table.ac)[-1],
+  "Tipo de Produção",
+  colnames(table.total)[-1],
   factor_key = TRUE
+)
+
+table.total.long <- rbind(
+  table.total.long,
+  data.frame(
+    "Ano" = rep(paste0(
+      min(periodo.vigente), "-", max(periodo.vigente)
+    ), times = sum(!is.na(table.total[, -1]))),
+    "Tipo de Produção" = rep("Produção", times = sum(!is.na(table.total[, -1]))),
+    check.names = FALSE
+  )
 )
 
 my_N <- function(data, ...) {
   gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
 }
 
-colnames(table.ac.long) <- c("Ano", "Área de Concentração")
+colnames(table.total.long) <- c("Ano", "Produção total")
 
 # change all column types to factors
-table.ac.long <- table.ac.long %>%
+table.total.long <- table.total.long %>%
   dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # Print tables
-table.ac.gt <- gtsummary::tbl_summary(
-  table.ac.long,
+table.tot.gt <- gtsummary::tbl_summary(
+  table.total.long,
   by = "Ano",
   statistic = list(gtsummary::all_categorical() ~ "{n}"),
   missing = "no",
@@ -636,102 +656,42 @@ table.ac.gt <- gtsummary::tbl_summary(
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels() %>%
-    gtsummary::remove_row_type(
-    variables = c('Área de Concentração'),
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(list(
+    add_stat_1 ~ "**Total**",
+    gtsummary::all_stat_cols() ~ "**{level}**"
+  )) %>%
+  gtsummary::remove_row_type(
+    variables = c('Produção total'),
     type = "level",
     level_value = ("Produção")
-  )
+  ) %>%
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1)))
 ```
 
-```{r 3-1-2-lp, eval = has.sucupira.files}
-table.lp <- data.frame(matrix(
-  NA,
-  nrow = length(sucupira.df$`Nome da Produção`[!duplicated(sucupira.df)]),
-  ncol = length(periodo.vigente)
-))
-
-rownames(table.lp) <- NULL
-table.lp <- cbind(sucupira.df$`Nome da Produção`[!duplicated(sucupira.df)], table.lp)
-colnames(table.lp) <- c("Nome da Produção", as.character(periodo.vigente))
-
-for (i in 1:dim(table.lp)[1]) {
-  for (j in 1:length(periodo.vigente)) {
-    data <- sucupira.df[sucupira.df$Anos == periodo.vigente[j], ]
-    table.lp[i, j + 1] <- try(
-      data$`Linha de Pesquisa`[match(table.lp$`Nome da Produção`[i], data$`Nome da Produção`)],
-      silent = TRUE
-    )
-  }
-}
-
-# remove rows with NA in all columns
-table.lp <- table.lp[rowSums(is.na(table.lp)) < ncol(table.lp), ]
-
-table.lp.long <- tidyr::gather(
-  table.lp[, -1],
-  "Ano",
-  "Linha de Pesquisa",
-  colnames(table.lp)[-1],
-  factor_key = TRUE
-)
-
-my_N <- function(data, ...) {
-  gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
-}
-
-colnames(table.lp.long) <- c("Ano", "Linha de Pesquisa")
-
-# change all column types to factors
-table.lp.long <- table.lp.long %>%
-  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
-
-# Print tables
-table.lp.gt <- gtsummary::tbl_summary(
-  table.lp.long,
-  by = "Ano",
-  statistic = list(gtsummary::all_categorical() ~ "{n}"),
-  missing = "no",
-  digits = gtsummary::everything() ~ 0,
-  sort = gtsummary::all_categorical() ~ "frequency"
-  ) %>%
-  gtsummary::add_overall(
-    last = TRUE,
-    col_label = "**Subtotal**",
-    statistic = gtsummary::everything() ~ "{n}"
-  ) %>%
-  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels() %>%
-    gtsummary::remove_row_type(
-    variables = c('Linha de Pesquisa'),
-    type = "level",
-    level_value = ("Produção")
-  )
-```
-
-```{r 3-1-2-producao, eval = has.sucupira.files}
+```{r 3-1-2-producao, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
 table.prd <- data.frame(matrix(
   NA,
-  nrow = length(sucupira.df$`Nome da Produção`[!duplicated(sucupira.df)]),
+  nrow = length(unique(sucupira.df$`ID da Produção`)),
   ncol = length(periodo.vigente)
 ))
 
 rownames(table.prd) <- NULL
-table.prd <- cbind(sucupira.df$`Nome da Produção`[!duplicated(sucupira.df)], table.prd)
-colnames(table.prd) <- c("Nome da Produção", as.character(periodo.vigente))
+table.prd <- cbind(unique(sucupira.df$`ID da Produção`), table.prd)
+colnames(table.prd) <- c("ID da Produção", as.character(periodo.vigente))
 
-for (i in 1:dim(table.prd)[1]) {
-  for (j in 1:length(periodo.vigente)) {
-    data <- sucupira.df[sucupira.df$Anos == periodo.vigente[j], ]
-    table.prd[i, j + 1] <- try(
-      data$`Tipo de Produção`[match(table.prd$`Nome da Produção`[i], data$`Nome da Produção`)],
-      silent = TRUE
+# match ID da Produção and Ano and fill with Produção
+for(i in 1:dim(table.prd)[1]) {
+  for(j in 1:length(periodo.vigente)) {
+    id <- table.prd[i, 1]
+    ano <- periodo.vigente[j]
+    table.prd[i, j + 1] <- ifelse(
+      id %in% sucupira.df$`ID da Produção`[sucupira.df$Anos == ano],
+      sucupira.df$`Tipo de Produção`[match(table.prd$`ID da Produção`[i], sucupira.df$`ID da Produção`)],
+      NA
     )
   }
 }
-
-# remove rows with NA in all columns
-table.prd <- table.prd[rowSums(is.na(table.prd)) < ncol(table.prd), ]
 
 table.prd.long <- tidyr::gather(
   table.prd[, -1],
@@ -739,6 +699,17 @@ table.prd.long <- tidyr::gather(
   "Tipo de Produção",
   colnames(table.prd)[-1],
   factor_key = TRUE
+)
+
+table.prd.long <- rbind(
+  table.prd.long,
+  data.frame(
+    "Ano" = rep(paste0(
+      min(periodo.vigente), "-", max(periodo.vigente)
+    ), times = sum(!is.na(table.prd[, -1]))),
+    "Tipo de Produção" = rep("Produção", times = sum(!is.na(table.prd[, -1]))),
+    check.names = FALSE
+  )
 )
 
 my_N <- function(data, ...) {
@@ -768,58 +739,78 @@ table.prd.gt <- gtsummary::tbl_summary(
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels() %>%
-    gtsummary::remove_row_type(
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(list(
+    add_stat_1 ~ "**Total**",
+    gtsummary::all_stat_cols() ~ "**{level}**"
+  )) %>%
+  gtsummary::remove_row_type(
     variables = c('Tipo de Produção'),
     type = "level",
     level_value = ("Produção")
-  )
+  ) %>%
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1)))
 ```
 
-```{r 3-1-2-autor, eval = has.sucupira.files}
-table.aut <- data.frame(matrix(
+```{r 3-1-2-bibliografica, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+# filter sucupira.df by "Tipo de Produção" == "Bibliográfica"
+sucupira.df.bib <- unique(sucupira.df[sucupira.df$`Tipo de Produção` == "Bibliográfica", ])
+
+table.bib <- data.frame(matrix(
   NA,
-  nrow = length(sucupira.df$`Nome da Produção`[!duplicated(sucupira.df)]),
+  nrow = length(unique(sucupira.df.bib$`ID da Produção`)),
   ncol = length(periodo.vigente)
 ))
 
-rownames(table.aut) <- NULL
-table.aut <- cbind(sucupira.df$`Nome da Produção`[!duplicated(sucupira.df)], table.aut)
-colnames(table.aut) <- c("Nome da Produção", as.character(periodo.vigente))
+rownames(table.bib) <- NULL
+table.bib <- cbind(unique(sucupira.df.bib$`ID da Produção`), table.bib)
+colnames(table.bib) <- c("ID da Produção", as.character(periodo.vigente))
 
-for (i in 1:dim(table.aut)[1]) {
-  for (j in 1:length(periodo.vigente)) {
-    data <- sucupira.df[sucupira.df$Anos == periodo.vigente[j], ]
-    table.aut[i, j + 1] <- try(
-      data$`Categoria do Autor Principal`[match(table.aut$`Nome da Produção`[i], data$`Nome da Produção`)],
-      silent = TRUE
+# match ID da Produção and Ano and fill with Produção
+for(i in 1:dim(table.bib)[1]) {
+  for(j in 1:length(periodo.vigente)) {
+    id <- table.bib[i, 1]
+    ano <- periodo.vigente[j]
+    table.bib[i, j + 1] <- ifelse(
+      id %in% sucupira.df.bib$`ID da Produção`[sucupira.df.bib$Anos == ano],
+      sucupira.df.bib$`Subtipo de Produção`[match(sucupira.df.bib$`ID da Produção`[i], sucupira.df.bib$`ID da Produção`)],
+      NA
     )
   }
 }
 
-# remove rows with NA in all columns
-table.aut <- table.aut[rowSums(is.na(table.aut)) < ncol(table.aut), ]
-
-table.aut.long <- tidyr::gather(
-  table.aut[, -1],
+table.bib.long <- tidyr::gather(
+  table.bib[, -1],
   "Ano",
-  "Categoria do Autor Principal",
-  colnames(table.aut)[-1],
+  "Nome da Produção",
+  colnames(table.bib)[-1],
   factor_key = TRUE
+)
+
+table.bib.long <- rbind(
+  table.bib.long,
+  data.frame(
+    "Ano" = rep(paste0(
+      min(periodo.vigente), "-", max(periodo.vigente)
+    ), times = sum(!is.na(table.bib[, -1]))),
+    "Nome da Produção" = rep("Produção", times = sum(!is.na(table.bib[, -1]))),
+    check.names = FALSE
+  )
 )
 
 my_N <- function(data, ...) {
   gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
 }
 
-colnames(table.aut.long) <- c("Ano", "Categoria do Autor Principal")
+colnames(table.bib.long) <- c("Ano", "Produção bibliográfica")
 
 # change all column types to factors
-table.aut.long <- table.aut.long %>%
+table.bib.long <- table.bib.long %>%
   dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # Print tables
-table.aut.gt <- gtsummary::tbl_summary(
-  table.aut.long,
+table.bib.gt <- gtsummary::tbl_summary(
+  table.bib.long,
   by = "Ano",
   statistic = list(gtsummary::all_categorical() ~ "{n}"),
   missing = "no",
@@ -834,36 +825,136 @@ table.aut.gt <- gtsummary::tbl_summary(
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels() %>%
-    gtsummary::remove_row_type(
-    variables = c('Categoria do Autor Principal'),
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(list(
+    add_stat_1 ~ "**Total**",
+    gtsummary::all_stat_cols() ~ "**{level}**"
+  )) %>%
+  gtsummary::remove_row_type(
+    variables = c('Produção bibliográfica'),
     type = "level",
     level_value = ("Produção")
-  )
+  ) %>%
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1)))
 ```
 
-```{r 3-1-2-tcc, eval = has.sucupira.files}
-table.tcc <- data.frame(matrix(
+```{r 3-1-2-tecnica, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+# filter sucupira.df by "Tipo de Produção" == "Técnica"
+sucupira.df.tec <- unique(sucupira.df[sucupira.df$`Tipo de Produção` == "Técnica", ])
+
+table.tec <- data.frame(matrix(
   NA,
-  nrow = length(sucupira.df$`Nome da Produção`[!duplicated(sucupira.df)]),
+  nrow = length(unique(sucupira.df.tec$`ID da Produção`)),
   ncol = length(periodo.vigente)
 ))
 
-rownames(table.tcc) <- NULL
-table.tcc <- cbind(sucupira.df$`Nome da Produção`[!duplicated(sucupira.df)], table.tcc)
-colnames(table.tcc) <- c("Nome da Produção", as.character(periodo.vigente))
+rownames(table.tec) <- NULL
+table.tec <- cbind(unique(sucupira.df.tec$`ID da Produção`), table.tec)
+colnames(table.tec) <- c("ID da Produção", as.character(periodo.vigente))
 
-for (i in 1:dim(table.tcc)[1]) {
-  for (j in 1:length(periodo.vigente)) {
-    data <- sucupira.df[sucupira.df$Anos == periodo.vigente[j], ]
-    table.tcc[i, j + 1] <- try(
-      data$`Produção vinculada a TCC concluído`[match(table.tcc$`Nome da Produção`[i], data$`Nome da Produção`)],
-      silent = TRUE
+# match ID da Produção and Ano and fill with Produção
+for(i in 1:dim(table.tec)[1]) {
+  for(j in 1:length(periodo.vigente)) {
+    id <- table.tec[i, 1]
+    ano <- periodo.vigente[j]
+    table.tec[i, j + 1] <- ifelse(
+      id %in% sucupira.df.tec$`ID da Produção`[sucupira.df.tec$Anos == ano],
+      sucupira.df.tec$`Subtipo de Produção`[match(sucupira.df.tec$`ID da Produção`[i], sucupira.df.tec$`ID da Produção`)],
+      NA
     )
   }
 }
 
-# remove rows with NA in all columns
-table.tcc <- table.tcc[rowSums(is.na(table.tcc)) < ncol(table.tcc), ]
+table.tec.long <- tidyr::gather(
+  table.tec[, -1],
+  "Ano",
+  "Subtipo de Produção",
+  colnames(table.tec)[-1],
+  factor_key = TRUE
+)
+
+table.tec.long <- rbind(
+  table.tec.long,
+  data.frame(
+    "Ano" = rep(paste0(
+      min(periodo.vigente), "-", max(periodo.vigente)
+    ), times = sum(!is.na(table.tec[, -1]))),
+    "Subtipo de Produção" = rep("Produção", times = sum(!is.na(table.tec[, -1]))),
+    check.names = FALSE
+  )
+)
+
+my_N <- function(data, ...) {
+  gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
+}
+
+colnames(table.tec.long) <- c("Ano", "Produção técnica")
+
+# change all column types to factors
+table.tec.long <- table.tec.long %>%
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
+
+# Print tables
+table.tec.gt <- gtsummary::tbl_summary(
+  table.tec.long,
+  by = "Ano",
+  statistic = list(gtsummary::all_categorical() ~ "{n}"),
+  missing = "no",
+  digits = gtsummary::everything() ~ 0,
+  sort = gtsummary::all_categorical() ~ "frequency"
+  ) %>%
+  gtsummary::add_overall(
+    last = TRUE,
+    col_label = "**Subtotal**",
+    statistic = gtsummary::everything() ~ "{n}"
+  ) %>%
+  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels() %>%
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(list(
+    add_stat_1 ~ "**Total**",
+    gtsummary::all_stat_cols() ~ "**{level}**"
+  )) %>%
+  gtsummary::remove_row_type(
+    variables = c('Produção técnica'),
+    type = "level",
+    level_value = ("Produção")
+  ) %>%
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1)))
+```
+
+```{r 3-1-2-tcc, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+table.tcc <- data.frame(matrix(
+  NA,
+  nrow = length(unique(sucupira.df$`ID da Produção`)),
+  ncol = length(periodo.vigente)
+))
+
+rownames(table.tcc) <- NULL
+table.tcc <- cbind(unique(sucupira.df$`ID da Produção`), table.tcc)
+colnames(table.tcc) <- c("ID da Produção", as.character(periodo.vigente))
+
+# match ID da Produção and Ano and fill with Produção
+for(i in 1:dim(table.tcc)[1]) {
+  for(j in 1:length(periodo.vigente)) {
+    id <- table.tcc[i, 1]
+    ano <- periodo.vigente[j]
+    table.tcc[i, j + 1] <- ifelse(
+      id %in% sucupira.df$`ID da Produção`[sucupira.df$Anos == ano],
+      sucupira.df$`Produção vinculada a TCC concluído`[match(sucupira.df$`ID da Produção`[i], sucupira.df$`ID da Produção`)],
+      NA
+    )
+  }
+}
+
+table.tcc.long <- tidyr::gather(
+  table.tcc[, -1],
+  "Ano",
+  "Subtipo de Produção",
+  colnames(table.tec)[-1],
+  factor_key = TRUE
+)
 
 table.tcc.long <- tidyr::gather(
   table.tcc[, -1],
@@ -871,6 +962,17 @@ table.tcc.long <- tidyr::gather(
   "Produção vinculada a TCC concluído",
   colnames(table.tcc)[-1],
   factor_key = TRUE
+)
+
+table.tcc.long <- rbind(
+  table.tcc.long,
+  data.frame(
+    "Ano" = rep(paste0(
+      min(periodo.vigente), "-", max(periodo.vigente)
+    ), times = sum(!is.na(table.tcc[, -1]))),
+    "Produção vinculada a TCC concluído" = rep("Produção", times = sum(!is.na(table.tcc[, -1]))),
+    check.names = FALSE
+  )
 )
 
 my_N <- function(data, ...) {
@@ -900,64 +1002,75 @@ table.tcc.gt <- gtsummary::tbl_summary(
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels() %>%
-    gtsummary::remove_row_type(
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(list(
+    add_stat_1 ~ "**Total**",
+    gtsummary::all_stat_cols() ~ "**{level}**"
+  )) %>%
+  gtsummary::remove_row_type(
     variables = c('Produção vinculada a TCC concluído'),
     type = "level",
     level_value = ("Produção")
-  )
+  ) %>%
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1)))
 ```
 
-```{r 3-1-2-bibliografica, eval = has.sucupira.files}
-# filter sucupira.df by "Tipo de Produção" == "Bibliográfica"
-sucupira.df.bib <- unique(sucupira.df[sucupira.df$`Tipo de Produção` == "Bibliográfica", ])
-
-table.bib <- data.frame(matrix(
+```{r 3-1-2-ac, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+table.ac <- data.frame(matrix(
   NA,
-  nrow = length(sucupira.df.bib$`Nome da Produção`[!duplicated(sucupira.df.bib)]),
+  nrow = length(unique(sucupira.df$`ID da Produção`)),
   ncol = length(periodo.vigente)
 ))
 
-rownames(table.bib) <- NULL
-table.bib <- cbind(sucupira.df.bib$`Nome da Produção`[!duplicated(sucupira.df.bib)], table.bib)
-colnames(table.bib) <- c("Nome da Produção", as.character(periodo.vigente))
+rownames(table.ac) <- NULL
+table.ac <- cbind(unique(sucupira.df$`ID da Produção`), table.ac)
+colnames(table.ac) <- c("ID da Produção", as.character(periodo.vigente))
 
-for (i in 1:dim(table.bib)[1]) {
-  for (j in 1:length(periodo.vigente)) {
-    data <- sucupira.df.bib[sucupira.df.bib$Anos == periodo.vigente[j], ]
-    table.bib[i, j + 1] <- try(
-      data$`Subtipo de Produção`[match(table.bib$`Nome da Produção`[i], data$`Nome da Produção`)],
-      silent = TRUE
+# match ID da Produção and Ano and fill with Produção
+for(i in 1:dim(table.ac)[1]) {
+  for(j in 1:length(periodo.vigente)) {
+    id <- table.ac[i, 1]
+    ano <- periodo.vigente[j]
+    table.ac[i, j + 1] <- ifelse(
+      id %in% sucupira.df$`ID da Produção`[sucupira.df$Anos == ano],
+      sucupira.df$`Área de Concentração`[match(sucupira.df$`ID da Produção`[i], sucupira.df$`ID da Produção`)],
+      NA
     )
   }
 }
 
-# remove rows with NA in all columns
-table.bib <- table.bib[rowSums(is.na(table.bib)) < ncol(table.bib), ]
-
-table.bib.long <- tidyr::gather(
-  table.bib[, -1],
+table.ac.long <- tidyr::gather(
+  table.ac[, -1],
   "Ano",
-  "Nome da Produção",
-  colnames(table.bib)[-1],
+  "Área de Concentração",
+  colnames(table.ac)[-1],
   factor_key = TRUE
 )
 
-# to title case
-table.bib$`Nome da Produção` <- tools::toTitleCase(tolower(table.bib$`Nome da Produção`))
+table.ac.long <- rbind(
+  table.ac.long,
+  data.frame(
+    "Ano" = rep(paste0(
+      min(periodo.vigente), "-", max(periodo.vigente)
+    ), times = sum(!is.na(table.ac[, -1]))),
+    "Área de Concentração" = rep("Produção", times = sum(!is.na(table.ac[, -1]))),
+    check.names = FALSE
+  )
+)
 
 my_N <- function(data, ...) {
   gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
 }
 
-colnames(table.bib.long) <- c("Ano", "Produção bibliográfica")
+colnames(table.ac.long) <- c("Ano", "Produção vinculada a Área de Concentração")
 
 # change all column types to factors
-table.bib.long <- table.bib.long %>%
+table.ac.long <- table.ac.long %>%
   dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # Print tables
-table.bib.gt <- gtsummary::tbl_summary(
-  table.bib.long,
+table.ac.gt <- gtsummary::tbl_summary(
+  table.ac.long,
   by = "Ano",
   statistic = list(gtsummary::all_categorical() ~ "{n}"),
   missing = "no",
@@ -972,64 +1085,75 @@ table.bib.gt <- gtsummary::tbl_summary(
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels() %>%
-    gtsummary::remove_row_type(
-    variables = c('Produção bibliográfica'),
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(list(
+    add_stat_1 ~ "**Total**",
+    gtsummary::all_stat_cols() ~ "**{level}**"
+  )) %>%
+  gtsummary::remove_row_type(
+    variables = c('Produção vinculada a Área de Concentração'),
     type = "level",
     level_value = ("Produção")
-  )
+  ) %>%
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1)))
 ```
 
-```{r 3-1-2-tecnica, eval = has.sucupira.files}
-# filter sucupira.df by "Tipo de Produção" == "Técnica"
-sucupira.df.tec <- unique(sucupira.df[sucupira.df$`Tipo de Produção` == "Técnica", ])
-
-table.tec <- data.frame(matrix(
+```{r 3-1-2-lp, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+table.lp <- data.frame(matrix(
   NA,
-  nrow = length(sucupira.df.tec$`Nome da Produção`[!duplicated(sucupira.df.tec)]),
+  nrow = length(unique(sucupira.df$`ID da Produção`)),
   ncol = length(periodo.vigente)
 ))
 
-rownames(table.tec) <- NULL
-table.tec <- cbind(sucupira.df.tec$`Nome da Produção`[!duplicated(sucupira.df.tec)], table.tec)
-colnames(table.tec) <- c("Nome da Produção", as.character(periodo.vigente))
+rownames(table.lp) <- NULL
+table.lp <- cbind(unique(sucupira.df$`ID da Produção`), table.lp)
+colnames(table.lp) <- c("ID da Produção", as.character(periodo.vigente))
 
-for (i in 1:dim(table.tec)[1]) {
-  for (j in 1:length(periodo.vigente)) {
-    data <- sucupira.df.tec[sucupira.df.tec$Anos == periodo.vigente[j], ]
-    table.tec[i, j + 1] <- try(
-      data$`Subtipo de Produção`[match(table.tec$`Nome da Produção`[i], data$`Nome da Produção`)],
-      silent = TRUE
+# match ID da Produção and Ano and fill with Produção
+for(i in 1:dim(table.lp)[1]) {
+  for(j in 1:length(periodo.vigente)) {
+    id <- table.lp[i, 1]
+    ano <- periodo.vigente[j]
+    table.lp[i, j + 1] <- ifelse(
+      id %in% sucupira.df$`ID da Produção`[sucupira.df$Anos == ano],
+      sucupira.df$`Linha de Pesquisa`[match(sucupira.df$`ID da Produção`[i], sucupira.df$`ID da Produção`)],
+      NA
     )
   }
 }
 
-# remove rows with NA in all columns
-table.tec <- table.tec[rowSums(is.na(table.tec)) < ncol(table.tec), ]
-
-table.tec.long <- tidyr::gather(
-  table.tec[, -1],
+table.lp.long <- tidyr::gather(
+  table.lp[, -1],
   "Ano",
-  "Subtipo de Produção",
-  colnames(table.tec)[-1],
+  "Linha de Pesquisa",
+  colnames(table.lp)[-1],
   factor_key = TRUE
 )
 
-# to title case
-table.tec.long$`Subtipo de Produção` <- tools::toTitleCase(tolower(table.tec.long$`Subtipo de Produção`))
+table.lp.long <- rbind(
+  table.lp.long,
+  data.frame(
+    "Ano" = rep(paste0(
+      min(periodo.vigente), "-", max(periodo.vigente)
+    ), times = sum(!is.na(table.lp[, -1]))),
+    "Linha de Pesquisa" = rep("Produção", times = sum(!is.na(table.lp[, -1]))),
+    check.names = FALSE
+  )
+)
 
 my_N <- function(data, ...) {
   gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
 }
 
-colnames(table.tec.long) <- c("Ano", "Produção técnica")
+colnames(table.lp.long) <- c("Ano", "Produção vinculada a Linha de Pesquisa")
 
 # change all column types to factors
-table.tec.long <- table.tec.long %>%
+table.lp.long <- table.lp.long %>%
   dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # Print tables
-table.tec.gt <- gtsummary::tbl_summary(
-  table.tec.long,
+table.lp.gt <- gtsummary::tbl_summary(
+  table.lp.long,
   by = "Ano",
   statistic = list(gtsummary::all_categorical() ~ "{n}"),
   missing = "no",
@@ -1044,30 +1168,124 @@ table.tec.gt <- gtsummary::tbl_summary(
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels() %>%
-    gtsummary::remove_row_type(
-    variables = c('Produção técnica'),
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(list(
+    add_stat_1 ~ "**Total**",
+    gtsummary::all_stat_cols() ~ "**{level}**"
+  )) %>%
+  gtsummary::remove_row_type(
+    variables = c('Produção vinculada a Linha de Pesquisa'),
     type = "level",
     level_value = ("Produção")
+  ) %>%
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1)))
+```
+
+```{r 3-1-2-autor-principal, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+table.aut <- data.frame(matrix(
+  NA,
+  nrow = length(unique(sucupira.df$`ID da Produção`)),
+  ncol = length(periodo.vigente)
+))
+
+rownames(table.aut) <- NULL
+table.aut <- cbind(unique(sucupira.df$`ID da Produção`), table.aut)
+colnames(table.aut) <- c("ID da Produção", as.character(periodo.vigente))
+
+# match ID da Produção and Ano and fill with Produção
+for(i in 1:dim(table.aut)[1]) {
+  for(j in 1:length(periodo.vigente)) {
+    id <- table.aut[i, 1]
+    ano <- periodo.vigente[j]
+    table.aut[i, j + 1] <- ifelse(
+      id %in% sucupira.df$`ID da Produção`[sucupira.df$Anos == ano],
+      sucupira.df$`Categoria do Autor Principal`[match(sucupira.df$`ID da Produção`[i], sucupira.df$`ID da Produção`)],
+      NA
+    )
+  }
+}
+
+table.aut.long <- tidyr::gather(
+  table.aut[, -1],
+  "Ano",
+  "Categoria do Autor Principal",
+  colnames(table.aut)[-1],
+  factor_key = TRUE
+)
+
+table.aut.long <- rbind(
+  table.aut.long,
+  data.frame(
+    "Ano" = rep(paste0(
+      min(periodo.vigente), "-", max(periodo.vigente)
+    ), times = sum(!is.na(table.aut[, -1]))),
+    "Categoria do Autor Principal" = rep("Produção", times = sum(!is.na(table.aut[, -1]))),
+    check.names = FALSE
   )
+)
+
+my_N <- function(data, ...) {
+  gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
+}
+
+colnames(table.aut.long) <- c("Ano", "Categoria do Autor Principal")
+
+# change all column types to factors
+table.aut.long <- table.aut.long %>%
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
+
+# Print tables
+table.aut.gt <- gtsummary::tbl_summary(
+  table.aut.long,
+  by = "Ano",
+  statistic = list(gtsummary::all_categorical() ~ "{n}"),
+  missing = "no",
+  digits = gtsummary::everything() ~ 0,
+  sort = gtsummary::all_categorical() ~ "frequency"
+  ) %>%
+  gtsummary::add_overall(
+    last = TRUE,
+    col_label = "**Subtotal**",
+    statistic = gtsummary::everything() ~ "{n}"
+  ) %>%
+  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels() %>%
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(list(
+    add_stat_1 ~ "**Total**",
+    gtsummary::all_stat_cols() ~ "**{level}**"
+  )) %>%
+  gtsummary::remove_row_type(
+    variables = c('Categoria do Autor Principal'),
+    type = "level",
+    level_value = ("Produção")
+  ) %>%
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(periodo.vigente) + 1)))
 ```
 
 ```{r 3-1-2-list-tables, eval = has.sucupira.files}
-# list all tables
-table.all <-
-  list(table.ac.gt,
-       table.lp.gt,
-       table.prd.gt,
-       table.aut.gt,
-       table.tcc.gt,
-       table.bib.gt,
-       table.tec.gt
-  )
+# List all tables
+table.all <- list(
+  table.tot.gt,
+  table.ac.gt,
+  table.lp.gt,
+  table.tcc.gt,
+  table.aut.gt,
+  table.prd.gt,
+  table.bib.gt,
+  table.tec.gt
+)
 
-# drop empty elements from list
+# Drop empty elements from the list
 table.all <- table.all[lapply(table.all, length) > 0]
 
-# print all tables stacked
-print(gtsummary::tbl_stack(table.all))
+table.3.1.2 <- gtsummary::tbl_stack(table.all)
+
+# Print HTML table
+if (knitr::is_html_output()) {
+  print(table.3.1.2)
+}
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1166,7 +1384,7 @@ table.3.2.1 <-
       ),
     statistic = list(
       gtsummary::all_continuous() ~ "{median} ({min}-{max})",
-      gtsummary::all_categorical() ~ "{n} ({p}%)"
+      gtsummary::all_categorical() ~ "{n}"
       ),
     missing = "no",
     digits = list(
@@ -1192,7 +1410,7 @@ table.3.2.1 <-
     col_label = "**Subtotal**",
     statistic = list(
       gtsummary::all_continuous() ~ "{median} ({min}-{max})",
-      gtsummary::all_categorical() ~ "{n} ({p}%)"
+      gtsummary::all_categorical() ~ "{n}"
       )
   ) %>%
   gtsummary::modify_header(
