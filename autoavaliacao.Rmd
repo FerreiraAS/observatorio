@@ -81,6 +81,9 @@ quadrienal.vigente <-
     max(anos),
     2024)
 
+# ajusta para pastas Sucupira
+quadrienal.vigente <- anos[anos %in% quadrienal.vigente]
+
 # docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -3349,29 +3352,33 @@ table.cap.aux.long$Auxílios <- factor(
   levels = sort(unique(c(levels(table.cap.aux.long$Auxílios), docentes.quadrienio)))
 )
 
-# print tables
-table.cap.aux.gt <-
-  gtsummary::tbl_summary(
-    table.cap.aux.long,
-    by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n}"),
-    missing = "no",
-    digits = gtsummary::everything() ~ 0
-  ) %>%
-  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels() %>%
-  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-  gtsummary::modify_header(list(
-    add_stat_1 ~ "**Quadriênio**",
-    gtsummary::all_stat_cols() ~ "**{level}**"
-  )) %>%
-  gtsummary::remove_row_type(
-    variables = c('Auxílios'),
-    type = "level",
-    level_value = ("Financiador")
-  ) %>%
-  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+if(!sjmisc::is_empty(table.cap.aux)) {
+  # print tables
+  table.cap.aux.gt <-
+    gtsummary::tbl_summary(
+      table.cap.aux.long,
+      by = "Ano",
+      statistic = list(gtsummary::all_categorical() ~ "{n}"),
+      missing = "no",
+      digits = gtsummary::everything() ~ 0
+    ) %>%
+    gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+    gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+    gtsummary::bold_labels() %>%
+    gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+    gtsummary::modify_header(list(
+      add_stat_1 ~ "**Quadriênio**",
+      gtsummary::all_stat_cols() ~ "**{level}**"
+    )) %>%
+    gtsummary::remove_row_type(
+      variables = c('Auxílios'),
+      type = "level",
+      level_value = ("Financiador")
+    ) %>%
+    gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(
+      quadrienal.vigente
+    ) + 1)))
+}
 ```
 
 ```{r 1-2-5-captacao-bolsas, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
@@ -3436,29 +3443,33 @@ table.cap.bolsa.long$Bolsas <- factor(
   levels = sort(unique(c(levels(table.cap.bolsa.long$Bolsas), docentes.quadrienio)))
 )
 
-# print tables
-table.cap.bolsa.gt <-
-  gtsummary::tbl_summary(
-    table.cap.bolsa.long,
-    by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n}"),
-    missing = "no",
-    digits = gtsummary::everything() ~ 0
-  ) %>%
-  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels() %>%
-  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-  gtsummary::modify_header(list(
-    add_stat_1 ~ "**Quadriênio**",
-    gtsummary::all_stat_cols() ~ "**{level}**"
-  )) %>%
-  gtsummary::remove_row_type(
-    variables = c('Bolsas'),
-    type = "level",
-    level_value = ("Financiador")
-  ) %>%
-  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+if(!sjmisc::is_empty(table.cap.bolsa)) {
+  # print tables
+  table.cap.bolsa.gt <-
+    gtsummary::tbl_summary(
+      table.cap.bolsa.long,
+      by = "Ano",
+      statistic = list(gtsummary::all_categorical() ~ "{n}"),
+      missing = "no",
+      digits = gtsummary::everything() ~ 0
+    ) %>%
+    gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+    gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+    gtsummary::bold_labels() %>%
+    gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+    gtsummary::modify_header(list(
+      add_stat_1 ~ "**Quadriênio**",
+      gtsummary::all_stat_cols() ~ "**{level}**"
+    )) %>%
+    gtsummary::remove_row_type(
+      variables = c('Bolsas'),
+      type = "level",
+      level_value = ("Financiador")
+    ) %>%
+    gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(
+      quadrienal.vigente
+    ) + 1)))
+}
 ```
 
 ```{r 1-2-5-captacao-pq, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
@@ -3542,28 +3553,30 @@ table.cap.pq.long$`Bolsa CNPq` <- factor(
   levels = sort(unique(c(levels(table.cap.pq.long$`Bolsa CNPq`), docentes.quadrienio)))
 )
 
-table.cap.pq.gt <-
-  gtsummary::tbl_summary(
-    table.cap.pq.long,
-    by = "Ano",
-    statistic = list(gtsummary::all_categorical() ~ "{n}"),
-    missing = "no",
-    digits = gtsummary::everything() ~ 0,
-    sort = gtsummary::all_categorical() ~ "frequency"
-  ) %>%
-  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels() %>%
-  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-  gtsummary::modify_header(
-    list(
-      add_stat_1 ~ "**Quadriênio**",
-      gtsummary::all_stat_cols() ~ "**{level}**"
-    )
-  ) %>%  
-  gtsummary::remove_row_type(variables = c('Bolsa CNPq'), 
-                  type = "level", level_value = ("Modalidade")) %>%
-  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+if(!sjmisc::is_empty(table.cap.pq)){
+  table.cap.pq.gt <-
+    gtsummary::tbl_summary(
+      table.cap.pq.long,
+      by = "Ano",
+      statistic = list(gtsummary::all_categorical() ~ "{n}"),
+      missing = "no",
+      digits = gtsummary::everything() ~ 0,
+      sort = gtsummary::all_categorical() ~ "frequency"
+    ) %>%
+    gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+    gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+    gtsummary::bold_labels() %>%
+    gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+    gtsummary::modify_header(
+      list(
+        add_stat_1 ~ "**Quadriênio**",
+        gtsummary::all_stat_cols() ~ "**{level}**"
+      )
+    ) %>%  
+    gtsummary::remove_row_type(variables = c('Bolsa CNPq'), 
+                               type = "level", level_value = ("Modalidade")) %>%
+    gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+}
 ```
 
 ```{r 1-2-5-list-tables, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
