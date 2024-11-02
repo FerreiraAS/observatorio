@@ -9,7 +9,7 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
   affiliations <- res[[1]]$`affiliation-group`$summaries
   n.pos <- length(affiliations)
   
-  invited.pos <- as.data.frame(matrix(NA, ncol = 2, nrow = n.pos))
+  invited.pos <- as.data.frame(matrix(NA, ncol = 2, nrow = n.pos), check.names = FALSE)
   for (i in 1:n.pos) {
     # periódico
     invited.pos[i, 1] <-

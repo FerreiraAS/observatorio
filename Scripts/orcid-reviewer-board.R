@@ -20,7 +20,7 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
   CiteScore <- c()
   for (i in 1:length(issn)) {
     # get ISSN values
-    df_scopus <- data.frame(issn = issn[i])
+    df_scopus <- data.frame(issn = issn[i], check.names = FALSE)
     # remove - from ISSN
     df_scopus$issn <- gsub("-", "", df_scopus$issn)
     # get metrics
@@ -41,7 +41,7 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
                ), digits = 3), nsmall = 3),
                format(round(matrix(
                  as.numeric(CiteScore), ncol = 1
-               ), digits = 1), nsmall = 1))
+               ), digits = 1), nsmall = 1), check.names = FALSE)
   peer.review <-
     peer.review[order(as.numeric(SJR), as.numeric(CiteScore), decreasing = TRUE), ]
   

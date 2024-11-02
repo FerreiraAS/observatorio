@@ -93,7 +93,7 @@ names(sucupira.list) <- as.character(anos)
 sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
   plyr::compact()
 
-docentes.quadrienio <- data.frame(do.call(dplyr::bind_rows, sucupira))
+docentes.quadrienio <- data.frame(do.call(dplyr::bind_rows, sucupira), check.names = FALSE)
 names(docentes.quadrienio) <-
   names(sucupira[[as.character(max(as.numeric(quadrienal.vigente)))]])
 
@@ -410,7 +410,7 @@ sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
 for (i in 1:length(sucupira)) {
   sucupira[[i]] <- cbind("Anos" = rep(quadrienal.vigente[i], times = dim(sucupira[[i]])[1]), sucupira[[i]])
 }
-sucupira.df <- data.frame(do.call(dplyr::bind_rows, sucupira))
+sucupira.df <- data.frame(do.call(dplyr::bind_rows, sucupira), check.names = FALSE)
 names(sucupira.df) <- names(sucupira[[as.character(max(as.numeric(quadrienal.vigente)))]])
 
 # filter docente responsável
@@ -448,8 +448,8 @@ sucupira.df$`Situação` <- tools::toTitleCase(tolower(sucupira.df$`Situação`)
 # remove duplicates
 sucupira.df <- sucupira.df[!duplicated(sucupira.df),]
 
-# if still duplicated, keep Situacão = Concluído
-sucupira.df <- sucupira.df[!duplicated(sucupira.df[, 1:7], fromLast = TRUE),]
+# if duplicated, keep Situacão = Concluído
+sucupira.df <- sucupira.df[!duplicated(sucupira.df[1:7], fromLast = TRUE),]
 
 # if NA, replace values
 sucupira.df$`Área de Concentração`[is.na(sucupira.df$`Área de Concentração`)] <- "Indefinida"
@@ -485,8 +485,6 @@ sucupira <- sucupira %>%
 # remove duplicates
 sucupira <- lapply(sucupira, function(x) x[!duplicated(x),])
 
-# if still duplicated, keep Situacão = Concluído
-
 # match financiadores with projects
 sucupira.financiadores <- list()
 for (i in 1:length(sucupira)) {
@@ -511,7 +509,7 @@ table.ac <-
     NA,
     nrow = length(unique(sucupira.df$`Área de Concentração`)),
     ncol = length(quadrienal.vigente)
-  ))
+  ), check.names = FALSE)
 rownames(table.ac) <- NULL
 table.ac <-
   cbind(unique(sucupira.df$`Área de Concentração`), table.ac)
@@ -552,7 +550,7 @@ table.ac.doc <- table(
   sucupira.df$Anos[sucupira.df$`Categoria do Membro do Projeto` == "Docente"],
   sucupira.df$`Área de Concentração`[sucupira.df$`Categoria do Membro do Projeto` == "Docente"],
   sucupira.df$`Nome do Membro do Projeto`[sucupira.df$`Categoria do Membro do Projeto` == "Docente"]
-) %>% as.data.frame()
+) %>% as.data.frame(check.names = FALSE)
 # drop Freq = 0
 table.ac.doc <- table.ac.doc[table.ac.doc$Freq > 0, ]
 # select AC e Docentes
@@ -3206,10 +3204,10 @@ table.1.2.3 <- gtsummary::tbl_summary(
   digits = gtsummary::everything() ~ 0,
     sort = gtsummary::all_categorical() ~ "alphanumeric"
   ) %>%
-  tbl_fix_order() %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels() %>%
+  tbl_fix_order() %>%
   gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
   gtsummary::modify_header(
     list(
@@ -3289,57 +3287,297 @@ cat("### **1.2.5 Capacidade de captação de recursos**")
 cat('\n\n')
 ```
 
-```{r auto-financiadores-docente-ano, eval = has.financiadores, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
-# Read the financiadores raw data
-financiadores.raw <- readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
+```{r 1-2-5-captacao-auxilios, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+# filter by type of financiamento = AUXILIO
+sucupira.aux.df <- sucupira.financiadores.df[sucupira.financiadores.df$`Natureza do Financiador` == "OUTRO AUXÍLIO FINANCEIRO", ]
 
-# Select variables to display, by AGENCIA & ANO
-financiadores <- financiadores.raw %>% 
-  dplyr::select("Proponente", "Ano", "Total")
-
-# Drop rows with empty cells
-financiadores <- financiadores[complete.cases(financiadores),]
-
-# Order financiadores by Proponente
-financiadores <- financiadores[order(financiadores$Proponente, decreasing = TRUE),]
-
-# Filter data for the current quadrennial period
-financiadores <- financiadores[financiadores$Ano %in% quadrienal.vigente, ]
-
-# count number of unique "Docentes" in the data
-my_N <- function(data, ...) {
-  dplyr::n_distinct(data$Proponente)
+table.cap.aux <-
+  data.frame(matrix(
+    NA,
+    nrow = length(unique(sucupira.aux.df$`Nome do Membro do Projeto`)),
+    ncol = length(quadrienal.vigente)
+  ))
+rownames(table.cap.aux) <- NULL
+table.cap.aux <-
+  cbind(unique(sucupira.aux.df$`Nome do Membro do Projeto`), table.cap.aux)
+colnames(table.cap.aux) <-
+  c("Nome do Membro do Projeto", as.character(quadrienal.vigente))
+for (i in 1:dim(table.cap.aux)[1]) {
+  for (j in 1:length(quadrienal.vigente)) {
+    data <- sucupira.aux.df[sucupira.aux.df$Anos == quadrienal.vigente[j],]
+    table.cap.aux[i, j + 1] <-
+      try(data$`Nome do Membro do Projeto`[match(table.cap.aux$`Nome do Membro do Projeto`[i],
+                                         data$`Nome do Membro do Projeto`)], silent = TRUE)
+  }
 }
 
+table.cap.aux.long <-
+  tidyr::gather(table.cap.aux[, -1],
+                "Ano",
+                "Nome do Membro do Projeto",
+                colnames(table.cap.aux)[-1],
+                factor_key = TRUE)
+
+# to title case
+table.cap.aux.long$`Nome do Membro do Projeto` <- tools::toTitleCase(tolower(table.cap.aux.long$`Nome do Membro do Projeto`))
+
+table.cap.aux.long <- rbind(
+  table.cap.aux.long,
+  data.frame(
+    "Ano" = rep(paste0(
+      min(quadrienal.vigente), "-", max(quadrienal.vigente)
+    ), times = dim(table.cap.aux)[1]),
+    "Nome do Membro do Projeto" = rep("Financiador", times = dim(table.cap.aux)[1]),
+    check.names = FALSE
+  )
+)
+
+my_N <- function(data, ...) {
+  gtsummary::style_number(sum(data == "Financiador", na.rm = TRUE), digits = 0)
+}
+
+colnames(table.cap.aux.long) <-
+  c("Ano", "Auxílios")
+
 # change all column types to factors
-financiadores <- financiadores %>%
+table.cap.aux.long <- table.cap.aux.long %>%
   dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
 # check for missing docentes.quadrienio
-financiadores$Proponente <- factor(
-  financiadores$Proponente,
-  levels = sort(unique(c(levels(financiadores$Proponente), docentes.quadrienio)))
+table.cap.aux.long$Auxílios <- factor(
+  table.cap.aux.long$Auxílios,
+  levels = sort(unique(c(levels(table.cap.aux.long$Auxílios), docentes.quadrienio)))
 )
 
 # print tables
-table.1.2.5 <-
+table.cap.aux.gt <-
   gtsummary::tbl_summary(
-    financiadores,
+    table.cap.aux.long,
     by = "Ano",
     statistic = list(gtsummary::all_categorical() ~ "{n}"),
     missing = "no",
-    digits = list(gtsummary::everything() ~ 0, "Total" ~ 2)
+    digits = gtsummary::everything() ~ 0
   ) %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels() %>%
   gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-  gtsummary::modify_fmt_fun(update = add_stat_1 ~ function(x) gtsummary::style_number(x, digits = 0))  %>%
   gtsummary::modify_header(list(
     add_stat_1 ~ "**Quadriênio**",
     gtsummary::all_stat_cols() ~ "**{level}**"
   )) %>%
-  gtsummary::remove_row_type(variables = c("Total"), type = "all")
+  gtsummary::remove_row_type(
+    variables = c('Auxílios'),
+    type = "level",
+    level_value = ("Financiador")
+  ) %>%
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+```
+
+```{r 1-2-5-captacao-bolsas, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+# filter by type of financiamento = BOLSA
+sucupira.bolsa.df <- sucupira.financiadores.df[sucupira.financiadores.df$`Natureza do Financiador` == "BOLSA", ]
+
+table.cap.bolsa <-
+  data.frame(matrix(
+    NA,
+    nrow = length(unique(sucupira.bolsa.df$`Nome do Membro do Projeto`)),
+    ncol = length(quadrienal.vigente)
+  ))
+rownames(table.cap.bolsa) <- NULL
+table.cap.bolsa <-
+  cbind(unique(sucupira.bolsa.df$`Nome do Membro do Projeto`), table.cap.bolsa)
+colnames(table.cap.bolsa) <-
+  c("Nome do Membro do Projeto", as.character(quadrienal.vigente))
+for (i in 1:dim(table.cap.bolsa)[1]) {
+  for (j in 1:length(quadrienal.vigente)) {
+    data <- sucupira.bolsa.df[sucupira.bolsa.df$Anos == quadrienal.vigente[j],]
+    table.cap.bolsa[i, j + 1] <-
+      try(data$`Nome do Membro do Projeto`[match(table.cap.bolsa$`Nome do Membro do Projeto`[i],
+                                         data$`Nome do Membro do Projeto`)], silent = TRUE)
+  }
+}
+
+table.cap.bolsa.long <-
+  tidyr::gather(table.cap.bolsa[, -1],
+                "Ano",
+                "Nome do Membro do Projeto",
+                colnames(table.cap.bolsa)[-1],
+                factor_key = TRUE)
+
+# to title case
+table.cap.bolsa.long$`Nome do Membro do Projeto` <- tools::toTitleCase(tolower(table.cap.bolsa.long$`Nome do Membro do Projeto`))
+
+table.cap.bolsa.long <- rbind(
+  table.cap.bolsa.long,
+  data.frame(
+    "Ano" = rep(paste0(
+      min(quadrienal.vigente), "-", max(quadrienal.vigente)
+    ), times = dim(table.cap.bolsa)[1]),
+    "Nome do Membro do Projeto" = rep("Financiador", times = dim(table.cap.bolsa)[1]),
+    check.names = FALSE
+  )
+)
+
+my_N <- function(data, ...) {
+  gtsummary::style_number(sum(data == "Financiador", na.rm = TRUE), digits = 0)
+}
+
+colnames(table.cap.bolsa.long) <-
+  c("Ano", "Bolsas")
+
+# change all column types to factors
+table.cap.bolsa.long <- table.cap.bolsa.long %>%
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
+
+# check for missing docentes.quadrienio
+table.cap.bolsa.long$Bolsas <- factor(
+  table.cap.bolsa.long$Bolsas,
+  levels = sort(unique(c(levels(table.cap.bolsa.long$Bolsas), docentes.quadrienio)))
+)
+
+# print tables
+table.cap.bolsa.gt <-
+  gtsummary::tbl_summary(
+    table.cap.bolsa.long,
+    by = "Ano",
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
+    missing = "no",
+    digits = gtsummary::everything() ~ 0
+  ) %>%
+  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels() %>%
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(list(
+    add_stat_1 ~ "**Quadriênio**",
+    gtsummary::all_stat_cols() ~ "**{level}**"
+  )) %>%
+  gtsummary::remove_row_type(
+    variables = c('Bolsas'),
+    type = "level",
+    level_value = ("Financiador")
+  ) %>%
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+```
+
+```{r 1-2-5-captacao-pq, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
+  plyr::compact()
+
+# keep docentes permanente only
+sucupira <- lapply(sucupira, function(x) {
+  x <- x[x$Categoria == "PERMANENTE", ]
+  return(x)
+})
+
+docentes <- toupper(docentes.quadrienio)
+
+table.cap.pq <-
+  data.frame(matrix(
+    NA,
+    nrow = length(docentes),
+    ncol = length(quadrienal.vigente)
+  ))
+rownames(table.cap.pq) <- NULL
+table.cap.pq <- cbind(docentes, table.cap.pq)
+colnames(table.cap.pq) <-
+  c("Nome Docente", as.character(quadrienal.vigente))
+for (i in 1:dim(table.cap.pq)[1]) {
+  for (j in 1:length(quadrienal.vigente)) {
+    data <- sucupira[[j]]
+    data <- data[data$`Modalidade da Bolsa CNPq` != "NA", ]
+    table.cap.pq[i, j + 1] <-
+      try(data$`Nome Docente`[match(table.cap.pq$`Nome Docente`[i],
+                                         data$`Nome Docente`)], silent = TRUE)
+  }
+}
+
+table.cap.pq.long <-
+  tidyr::gather(table.cap.pq[, -1],
+                "Ano",
+                "Modalidade da Bolsa CNPq",
+                colnames(table.cap.pq)[-1],
+                factor_key = TRUE)
+
+# to sentence format
+table.cap.pq.long$`Modalidade da Bolsa CNPq` <- stringr::str_to_title(table.cap.pq.long$`Modalidade da Bolsa CNPq`)
+
+# remove empty rows (disregard first column)
+table.cap.pq <- table.cap.pq[complete.cases(table.cap.pq[, -1]), ]
+
+table.cap.pq.long <- rbind(table.cap.pq.long,
+                        data.frame(
+                          "Ano" = rep(paste0(
+                            min(quadrienal.vigente), "-", max(quadrienal.vigente)
+                          ), times = dim(table.cap.pq)[1]),
+                          "Modalidade da Bolsa CNPq" = rep("Modalidade", times = dim(table.cap.pq)[1]),
+                          check.names = FALSE
+                        ))
+
+my_N <- function(data, ...) {
+  gtsummary::style_number(sum(data == "Modalidade", na.rm = TRUE), digits = 0)
+}
+
+# change all column types to factors
+table.cap.pq.long <- table.cap.pq.long %>%
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
+
+colnames(table.cap.pq.long) <-
+  c("Ano", "Bolsa CNPq")
+
+# change all column types to factors
+table.cap.pq.long <- table.cap.pq.long %>%
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
+
+# check for missing docentes.quadrienio
+table.cap.pq.long$`Bolsa CNPq` <- factor(
+  table.cap.pq.long$`Bolsa CNPq`,
+  levels = sort(unique(c(levels(table.cap.pq.long$`Bolsa CNPq`), docentes.quadrienio)))
+)
+
+table.cap.pq.gt <-
+  gtsummary::tbl_summary(
+    table.cap.pq.long,
+    by = "Ano",
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
+    missing = "no",
+    digits = gtsummary::everything() ~ 0,
+    sort = gtsummary::all_categorical() ~ "frequency"
+  ) %>%
+  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels() %>%
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(
+    list(
+      add_stat_1 ~ "**Quadriênio**",
+      gtsummary::all_stat_cols() ~ "**{level}**"
+    )
+  ) %>%  
+  gtsummary::remove_row_type(variables = c('Bolsa CNPq'), 
+                  type = "level", level_value = ("Modalidade")) %>%
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+```
+
+```{r 1-2-5-list-tables, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+# List all tables
+table.all <- list(
+  table.cap.aux.gt,
+  table.cap.bolsa.gt,
+  table.cap.pq.gt
+)
+
+# Drop empty elements from the list
+table.all <- table.all[lapply(table.all, length) > 0]
+
+table.1.2.5 <- gtsummary::tbl_stack(table.all)
 
 # Print HTML table
 if (knitr::is_html_output()) {
@@ -3356,7 +3594,7 @@ if (knitr::is_latex_output()) {
     format = ifelse(knitr::is_html_output(), "html", "latex"),
     booktabs = TRUE,
     linesep = "",
-    caption = ifelse(knitr::is_html_output(), "", "Capacidade de Captação de Recursos")
+    caption = ifelse(knitr::is_html_output(), "", " Capacidade de captação de recursos")
   ) %>%
     kableExtra::kable_styling(
       bootstrap_options = c("basic", "hover", "condensed", "responsive"),
@@ -3364,7 +3602,7 @@ if (knitr::is_latex_output()) {
       latex_table_env = "tabularx",
       full_width = TRUE,
       position = "center"
-    ) %>% kableExtra::column_spec(column = 1:(1 + length(unique(financiadores$Ano))+ 1), width = paste0(c(0.65, rep(0.20/(length(unique(financiadores$Ano))), times = length(unique(financiadores$Ano))), 0.15)*(21-3-3), "cm"))
+    ) %>% kableExtra::column_spec(column = 1:(1 + length(quadrienal.vigente)+ 1 + 1), width = paste0(c(0.50, rep(0.20/(length(quadrienal.vigente)), times = length(quadrienal.vigente)), 0.15, 0.15)*(21-3-3), "cm"))
   print(kable_table)
 }
 
@@ -3373,12 +3611,6 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 # Add LaTeX commands for new page and float barrier
 if(knitr::is_latex_output()) {
   cat('\\newpage')
-}
-
-if (knitr::is_html_output()) {
-  # print end of tab rows
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>'
-  )
 }
 ```
 
@@ -3617,16 +3849,346 @@ cat("### **2.1.1 Coerência do produto final**")
 cat('\n\n')
 ```
 
+```{r 2-1-1-coerencia, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+# TCC - Banca
+sheet <- "TCC - Banca"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-<!-- EM CONSTRUÇÃO -->
+# make unique ID
+id.TCC <- sucupira.raw$"Identificador do Trabalho de Conclusão"
+id.TCC <- unique(id.TCC)
+
+bancas <- data.frame(
+  "Ano" = rep(NA, length(id.TCC)),
+  "Linha de Pesquisa" = rep(NA, length(id.TCC)),
+  "Tipo de Trabalho de Conclusão" = rep(NA, length(id.TCC)),
+  "Título" = rep(NA, length(id.TCC)),
+  check.names = FALSE
+)
+
+if (!sjmisc::is_empty(id.TCC)) {
+  # loop over each ID
+  for (i in 1:length(id.TCC)) {
+    # select current ID
+    banca <- sucupira.raw[sucupira.raw$"Identificador do Trabalho de Conclusão" == id.TCC[i], ]
+    
+    # get unique values
+    bancas$Ano[i] <- substr(as.Date(unique(banca$"Data da Defesa"), format = "%d/%m/%Y"), 1, 4)
+    bancas$"Linha de Pesquisa"[i] <- stringr::str_to_sentence(unique(banca$"Linha de Pesquisa"))
+    bancas$`Tipo de Trabalho de Conclusão`[i] <- stringr::str_to_sentence(unique(banca$"Tipo de Trabalho de Conclusão"))
+    bancas$Título[i] <- stringr::str_to_sentence(unique(banca$"Nome do Trabalho de Conclusão"))
+  }
+  # sort by Ano and Titulo
+  bancas <- dplyr::arrange(bancas, dplyr::desc(Ano), Título)
+}
+# rename Tipo de trabalho de conclusão para Tipo
+bancas <- dplyr::rename(bancas, Tipo = `Tipo de Trabalho de Conclusão`)
+
+# retain bancas para o quadrienio
+bancas <- bancas[bancas$Ano %in% as.character(quadrienal.vigente), ]
+
+# compare corpora based on Linha de Pesquisa
+
+# create new list with names from each Linhas de Pesquisa
+words <- list()
+for (i in 1:length(unique(bancas$"Linha de Pesquisa"))) {
+  words[[i]] <- unlist(strsplit(bancas$Título[bancas$"Linha de Pesquisa"[i] == unique(bancas$"Linha de Pesquisa")], " "))
+  # to lower case
+  words[[i]] <- tolower(words[[i]])
+  # remove stopwords
+  words[[i]] <- words[[i]][!words[[i]] %in% tm::stopwords("portuguese")]
+  words[[i]] <- words[[i]][!words[[i]] %in% tm::stopwords("english")]
+  # remove punctuation
+  words[[i]] <- gsub("[[:punct:]]", "", words[[i]])
+  # remove numbers
+  words[[i]] <- gsub("[[:digit:]]", "", words[[i]])
+  # strip whitespace
+  words[[i]] <- gsub("^\\s+|\\s+$", "", words[[i]])
+  # remove whitespace
+  words[[i]] <- words[[i]][words[[i]] != ""]
+  # sort
+  words[[i]] <- sort(words[[i]])
+}
+names(words) <- unique(bancas$"Linha de Pesquisa")
+# resize list elements to largest one
+words <- lapply(words, function(x) {length(x) <- max(lengths(words)); x})
+# convert list to data.frame
+words <- as.data.frame(words, check.names = FALSE)
+
+# create dataframe of all words
+all.words <- data.frame(
+  word = sort(unique(unlist(words)))
+)
+# add columns for each Linha de Pesquisa
+for (i in 1:length(unique(bancas$"Linha de Pesquisa"))) {
+  all.words <- dplyr::mutate(all.words, !!unique(bancas$"Linha de Pesquisa")[i])
+}
+# remove quotes from name
+colnames(all.words) <- gsub("\"", "", colnames(all.words))
+
+# to numeric type
+for (i in 2:dim(all.words)[2]){
+  all.words[,i] <- all.words[,i] %>% as.numeric()
+}
+# frequency of words in all.words by Linha de Pesquisa
+for (i in 1:dim(all.words)[1]) {
+  for (j in 2:dim(all.words)[2]) {
+    all.words[i, j] <- sum(all.words$word[i] == words[[j - 1]], na.rm = TRUE)
+  }
+}
+# sort by overall frequency
+all.words <- dplyr::arrange(all.words, dplyr::desc(rowSums(all.words[, -1])))
+
+create_keyness_pairs <- function(data, col1, col2) {
+  # keep rows where n1 + n2 >= 1
+  data <- data[rowSums(data[, c(col1, col2)]) >= 1, ]
+
+  n1 <- sum(data[[col1]])
+  n2 <- sum(data[[col2]])
+  
+  kw <- transform(
+    dplyr::select(data, word = word, col1, col2),
+    G2 = corpora::keyness(data[[col1]], n1, data[[col2]], n2, measure = "G2",
+                          conf.level = 0.95, alpha = 0.05, p.adjust = FALSE, lambda = 1),
+    LogRatio = corpora::keyness(data[[col1]], n1, data[[col2]], n2, measure = "LogRatio",
+                                 conf.level = 0.95, alpha = 0.05, p.adjust = FALSE, lambda = 1),
+    PositiveLRC = corpora::keyness(data[[col1]], n1, data[[col2]], n2, measure = "PositiveLRC",
+                                    conf.level = 0.95, alpha = 0.05, p.adjust = FALSE, lambda = 1)
+  )
+  
+  kw <- kw[order(-kw$LogRatio), ]
+  
+  # Hide rows with 0 values in measure (significance filter)
+  kw <- kw[kw$G2 != 0 & kw$LogRatio != 0 & kw$PositiveLRC != 0, ]
+  
+  # Format numbers
+  kw$G2 <- format(round(kw$G2, digits = 3), nsmall = 3)
+  kw$LogRatio <- format(round(kw$LogRatio, digits = 3), nsmall = 3)
+  kw$PositiveLRC <- format(round(kw$PositiveLRC, digits = 3), nsmall = 3)
+  
+  return(kw)
+}
+
+# create all unique pairs of Linhas de Pesquisa
+pairs <- combn(colnames(all.words)[-1], 2, simplify = TRUE)
+
+# loop through all pairs to calculate kw
+all.kw <- list()
+for (i in 1:dim(pairs)[2]) {
+  all.kw[[i]] <- create_keyness_pairs(all.words, pairs[1, i], pairs[2, i])
+}
+
+# as data.frame with new first column with names from col1 and col2 combined
+all.kw <- lapply(all.kw, function(x) {
+  try(x <- cbind(
+    "Linha 1" = names(x)[2],
+    "Linha 2" = names(x)[3],
+    x
+  ), silent = TRUE)
+  try(x[,1] <- stringr::str_to_title(x[,1]), silent = FALSE)
+  try(x[,2] <- stringr::str_to_title(x[,2]), silent = FALSE)
+  try(names(x)[3] <- "Termo", silent = FALSE)
+  try(x[,3] <- toupper(x[,3]), silent = FALSE)
+  try(names(x)[4] <- "Linha 1 (n)", silent = FALSE)
+  try(names(x)[5] <- "Linha 2 (n)", silent = FALSE)
+  return(x)
+})
+
+# drop lists with 0 elements
+all.kw <- all.kw[lengths(all.kw) == 8]
+
+# as data.frame
+all.kw <- dplyr::bind_rows(all.kw)
+
+# check which bancas$Título have all.kw$Termo
+bancas.with.words <- c()
+for (i in 1:dim(bancas)[1]){
+  for(j in 1:dim(all.kw)[1]){
+    if(grepl(tolower(all.kw$Termo[j]), tolower(bancas$Título[i]))){
+      bancas.with.words <- c(bancas.with.words, i)
+    }
+  }
+}
+bancas.with.words <- unique(bancas.with.words)
+bancas.with.words <- bancas[bancas.with.words, ]
+
+# gt summary table per year of % de bancas with words
+my_N1 <- function(data, ...) {
+  gtsummary::style_number(sum(data == "Data1", na.rm = TRUE), digits = 0)
+}
+my_N2 <- function(data, ...) {
+  gtsummary::style_number(sum(data == "Data2", na.rm = TRUE), digits = 0)
+}
+table.bancas.long <- rbind(
+  data.frame(bancas.with.words,
+             check.names = FALSE),
+  data.frame(
+    "Ano" = rep(paste0(min(quadrienal.vigente), "-", max(quadrienal.vigente)), times = dim(bancas.with.words)[1]),
+    "Linha de Pesquisa" = rep("Data1", times = dim(bancas.with.words)[1]),
+    "Tipo" = rep("Data2", times = dim(bancas.with.words)[1]),
+    "Título" = rep("TÍTULO", times = dim(bancas.with.words)[1]),
+    check.names = FALSE
+  )
+)
+
+# to title case
+table.bancas.long$`Linha de Pesquisa` <- stringr::str_to_title(table.bancas.long$`Linha de Pesquisa`)
+
+# change all column types to factors
+table.bancas.long <- table.bancas.long %>%
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
+
+# reoder factor Ano
+table.bancas.long$Ano <- factor(table.bancas.long$Ano, levels = c(quadrienal.vigente, paste0(
+  min(quadrienal.vigente), "-", max(quadrienal.vigente)
+)))
+
+# bug report
+# https://stackoverflow.com/questions/78811916/gtsummary-tbl-summary-sorting-of-stratify-variable/78812588
+tbl_fix_order <- function(x) {
+  nms <- names(x$table_body)
+  is_stat_cols <- grepl("^stat_", nms)
+  non_stat_cols <- nms[!is_stat_cols]
+  stat_cols <- nms[is_stat_cols]
+  stat_cols <- stat_cols[
+    order(as.integer(gsub("^.*?(\\d+)$", "\\1", stat_cols)))
+  ]
+  x$table_body <- x$table_body[c(non_stat_cols, stat_cols)]
+  
+  x  
+}
+
+# print tables
+table.2.1.1 <- gtsummary::tbl_summary(
+  dplyr::select(table.bancas.long, "Ano", "Linha de Pesquisa", "Tipo"),
+  by = "Ano",
+  statistic = list(gtsummary::all_categorical() ~ "{n}"),
+  missing = "no",
+  digits = gtsummary::everything() ~ 0,
+    sort = gtsummary::all_categorical() ~ "alphanumeric"
+  ) %>%
+  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels() %>%
+  tbl_fix_order() %>%
+  gtsummary::add_stat(fns = list("Linha de Pesquisa" ~ my_N1, "Tipo" ~ my_N2)) %>%
+  gtsummary::modify_header(
+    list(
+      add_stat_1 ~ "**Quadriênio**",
+      gtsummary::all_stat_cols() ~ "**{level}**"
+    )
+  ) %>%
+  gtsummary::remove_row_type(variables = c('Linha de Pesquisa'), type = "level", level_value = ("Data1")) %>%
+  gtsummary::remove_row_type(variables = c('Tipo'), type = "level", level_value = ("Data2")) %>%
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 
 
-```{=latex}
-\newpage
-\FloatBarrier
+# Print HTML table
+if (knitr::is_html_output()) {
+  print(table.2.1.1)
+}
+
+# Print LaTeX table
+if (knitr::is_latex_output()) {
+  cat('\\FloatBarrier')
+  # Convert gtsummary object to kableExtra object
+  kable_table <- gtsummary::as_kable_extra(
+    x = table.2.1.1,
+    escape = FALSE,
+    format = ifelse(knitr::is_html_output(), "html", "latex"),
+    booktabs = TRUE,
+    linesep = "",
+    caption = ifelse(knitr::is_html_output(), "", "Coerência interna do produto final (dissertações e teses) com as Linhas de Pesquisa.")
+  ) %>% 
+    kableExtra::kable_styling(
+      bootstrap_options = c("basic", "hover", "condensed", "responsive"),
+      latex_options = c("basic", "repeat_header", "HOLD_position"),
+      latex_table_env = "tabularx",
+      full_width = TRUE,
+      position = "center"
+    ) %>% kableExtra::column_spec(column = 1:(1 + length(quadrienal.vigente)+ 1), width = paste0(c(0.65, rep(0.20/(length(quadrienal.vigente)), times = length(quadrienal.vigente)), 0.15)*(21-3-3), "cm"))
+  print(kable_table)
+}
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+# Add LaTeX commands for new page and float barrier
+if(knitr::is_latex_output()) {
+  cat('\\newpage')
+}
 ```
 
-<br>
+\blandscape
+
+```{r 2.1.1-detalhe,eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+
+# print tables
+if (knitr::is_html_output()) {
+  # use kable for HTML output
+  knitr::kable(
+    all.kw,
+    align = "l",
+    escape = FALSE,
+    format = "html",
+    booktabs = TRUE,
+    linesep = "",
+    caption = "Palavras-chave mais frequentes por Linha de Pesquisa"
+  ) %>% kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = TRUE,
+    position = "center"
+  )  %>% kableExtra::column_spec(column = 1:dim(all.kw)[2], width = paste0(c(0.23, 0.23, 0.15, 0.09, 0.09, 0.05, 0.08, 0.08)*(21-3-3), "cm")) %>%
+  kableExtra::column_spec(column = 1, bold = TRUE) %>%
+  kableExtra::column_spec(column = 2, bold = TRUE) %>%
+  kableExtra::row_spec(row = 0, bold = TRUE)
+} else {
+  # use tinytable for LaTeX output
+  all.kw <- data.frame(all.kw, check.names = FALSE)
+  options(tinytable_print_output = "latex")
+  tinytable::tt(
+    all.kw,
+    width = c(0.23, 0.23, 0.15, 0.09, 0.09, 0.05, 0.08, 0.08)*(21-3-3),
+    style = "bootstrap",
+    align = "l",
+    caption = ifelse(knitr::is_html_output(), "", "Palavras-chave mais frequentes por Linha de Pesquisa")
+  ) %>%
+    tinytable::theme_tt("multipage", rowhead = 1, latex_float = "H") %>%
+    tinytable::style_tt(i = 0, j = 1:ncol(all.kw), bold = TRUE) %>%
+    tinytable::style_tt(i = 1:nrow(all.kw), j = 1, bold = TRUE) %>%
+    tinytable::style_tt(i = 1:nrow(all.kw), j = 2, bold = TRUE)
+}
+
+cat("
+G2: Mede a probabilidade de que duas distribuições de palavras sejam diferentes. Sempre retorna valores positivos. 
+Se a frequência de uma palavra em um texto for menor do que em outro, o resultado é ajustado para indicar a direção. 
+Tende a favorecer palavras que aparecem muitas vezes.
+
+LogRatio: Compara o risco relativo de duas palavras ou grupos de palavras. É uma forma intuitiva de ver diferenças. 
+É menos afetado por palavras que aparecem raramente, mas pode dar resultados enganosos para essas palavras.
+
+PositiveLRC: Uma versão que indica se há evidência de que uma palavra é mais comum em um texto do que em outro. 
+Resultados iguais ou menores que zero significam que não há evidência significativa. É útil para considerar palavras 
+que não são claramente significativas, especialmente em textos menores.
+
+Um filtro de significância é aplicado, de modo que apenas palavras com valores diferentes de zero são exibidas.
+
+Fonte: Evert S (2023). corpora: Statistics and Data Sets for Corpus Frequency Data. R package version 0.6,
+  <https://CRAN.R-project.org/package=corpora>.
+")
+
+cat("<br>")
+cat("\\newline")
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+# Add LaTeX commands for new page and float barrier
+if(knitr::is_latex_output()) {
+  cat('\\newpage')
+}
+```
+
+
+\elandscape
 
 ```{r 2-1-2, eval = knitr::is_html_output()}
 cat("### **2.1.2**")
@@ -3938,7 +4500,6 @@ table.2.3.1 <-
     missing = "no",
     digits = gtsummary::everything() ~ 0
   ) %>%
-  tbl_fix_order() %>%
   gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
   gtsummary::bold_labels() %>%
   tbl_fix_order() %>%

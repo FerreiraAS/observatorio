@@ -15,7 +15,7 @@ for (id in 1:length(my_orcid)) {
         tools::toTitleCase(paste(temp[[1]]$name$`given-names`, temp[[1]]$name$`family-name`))
         },
       t(c(my_orcid[id], res[[id]]$`external-identifier`$`external-id-value`))
-    ))
+    ), check.names = FALSE)
     # add column names
     colnames(ext.id) <- c("Nome", "ORCID", res[[id]]$`external-identifier`$`external-id-type`)
     # remove duplicated columns if any

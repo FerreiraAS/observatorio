@@ -30,7 +30,7 @@ if (length(files.to.read) != 0) {
       as.data.frame(readxl::read_excel(
         files.to.read[file],
         sheet = sheet
-      )) %>%
+      ), check.names = FALSE) %>%
       dplyr::mutate(dplyr::across(tidyselect::everything(), as.character))
     
     # search for 2 "|" in a given row (meaning there are changes within a given year)

@@ -100,7 +100,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-## **Coordenação** {#coordenacao}
+## **Coordenação** {#coordenacao .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -110,9 +110,9 @@ cat('<br>')
 ```
 
 ```{r coordenadores, eval = has.coordenacao}
-# Import necessary libraries with `library::function` notation
-library(readxl)
-library(kableExtra)
+cat('\n\n<!-- -->\n\n')
+cat('### **Coordenadores**')
+cat('\n\n<!-- -->\n\n')
 
 # Read Excel data
 coordenadores <- readxl::read_excel("PPG/Coordenação.xlsx", sheet = "Coordenação")
@@ -144,6 +144,37 @@ source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.coord, title = "Pessoas - Coordenação")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('\n\n<!-- -->\n\n')
+cat('### **Portarias**')
+cat('\n\n<!-- -->\n\n')
+
+# Read Excel data
+portarias.raw <- readxl::read_excel("PPG/Coordenação.xlsx", sheet = "Portarias")
+
+# replace the link by a tag
+Abrir <- matrix(NA, nrow = dim(portarias.raw)[1])
+colnames(Abrir) <- "Abrir"
+# add hyperlinks
+for (i in 1:dim(portarias.raw)[1]) {
+  if (!is.na(portarias.raw[i, ncol(portarias.raw)])) {
+    Abrir[i] <-
+      paste0(
+        '<a href="',
+        portarias.raw[i, ncol(portarias.raw)],
+        '" target="_blank"',
+        '>',
+        # fontawesome icon
+        fontawesome::fa("up-right-from-square"),
+        '</a>'
+      )
+  }
+}
+portarias <- cbind(portarias.raw[, -ncol(portarias.raw)], Abrir)
+
+# print table
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(portarias, title = "Pessoas - Portarias")
 ```
 
 <br>
@@ -462,11 +493,11 @@ periodo <- most.recent
 
 # Get docentes for the current period
 sucupira <- sucupira.list[as.character(periodo)] %>% plyr::compact()
-sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
+sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira), check.names = FALSE)
 names(sucupira) <- names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
 # Keep active professors and remove duplicated data
-sucupira <- sucupira[is.na(sucupira.raw$`Data de Desligamento`),]
+sucupira <- sucupira[is.na(sucupira$`Data de Desligamento`),]
 sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupira$ORCID),]
 
 # order by name
@@ -694,6 +725,9 @@ discentes <- discentes[discentes$`Situação Discente` == "MATRICULADO", ]
 
 # dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
 discentes <- discentes[discentes$`Orientador Principal?` == "Sim", ]
+
+# drop rows with all NA
+discentes <- discentes[!is.na(discentes$`Identificador da Pessoa`), ]
 
 # calculate deadlines
 discentes$'Tempo em curso' <-

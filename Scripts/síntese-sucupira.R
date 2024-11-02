@@ -40,7 +40,7 @@ sintese <- function(sucupira.list = NULL, ano = NULL) {
     'Organizações de eventos'
   )
   resultados <- matrix(0, nrow = 1, ncol = length(labels))
-  resultados <- data.frame(resultados)
+  resultados <- data.frame(resultados, check.names = FALSE)
   colnames(resultados) <- labels
   
   resultados$'Ano' <- ano

@@ -20,6 +20,7 @@ packs.cran <-
     "bsplus",
     "cowplot",
     "chromote",
+    "corpora",
     "curl",
     "data.tree",
     "details",

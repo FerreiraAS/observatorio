@@ -54,7 +54,8 @@ df <- data.frame(
   vjust = 1,
   orientation = "upright",
   color = "black",
-  fill = "white"
+  fill = "white",
+  check.names = FALSE
 )
 
 ggplot2::ggplot(df) +

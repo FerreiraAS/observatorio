@@ -522,7 +522,7 @@ for (item in 1:nrow(produtos.sucupira)) {
 source("Scripts/doi-cleaner.R", local = knitr::knit_global())
 clean_dois <- ifelse(
   grepl("Número do DOI|URL do DOI|URL", produtos.detalhes.sucupira$`Item de Detalhamento`),
-  doi_cleaner(data.frame(DOI = produtos.detalhes.sucupira$`Valor do Item de Detalhamento`))$DOI,
+  doi_cleaner(data.frame(DOI = produtos.detalhes.sucupira$`Valor do Item de Detalhamento`, check.names = FALSE))$DOI,
   produtos.detalhes.sucupira$DOI
 )
 
@@ -551,7 +551,7 @@ for (item in 1:nrow(produtos.sucupira)) {
   )
   
   # get DOI values
-  dois <- data.frame(DOI = unique(na.omit(produtos.detalhes.sucupira$DOI[matches]))[1])
+  dois <- data.frame(DOI = unique(na.omit(produtos.detalhes.sucupira$DOI[matches]))[1], check.names = FALSE)
   
   # check if DOI is not NA
   if (!sjmisc::is_empty(dois$DOI)) {
@@ -610,7 +610,7 @@ for (item in 1:nrow(produtos.sucupira)) {
   )
   
   # get DOI values
-  dois <- data.frame(DOI = unique(na.omit(produtos.detalhes.sucupira$DOI[matches]))[1])
+  dois <- data.frame(DOI = unique(na.omit(produtos.detalhes.sucupira$DOI[matches]))[1], check.names = FALSE)
   
   # check if DOI is not NA
   if (!sjmisc::is_empty(dois$DOI)) {
@@ -635,7 +635,7 @@ for (item in 1:nrow(produtos.sucupira)) {
 # continue from previous chunk
 
 # get unique ISSN
-issn.unique <- data.frame(ISSN = as.character(unique(na.omit(produtos.detalhes.sucupira$ISSN))))
+issn.unique <- data.frame(ISSN = as.character(unique(na.omit(produtos.detalhes.sucupira$ISSN))), check.names = FALSE)
 
 # iterate item-wise
 for (item in 1:nrow(issn.unique)) {
@@ -646,7 +646,7 @@ for (item in 1:nrow(issn.unique)) {
   )
   
   # get ISSN values
-  df_scopus <- data.frame(issn = issn.unique$ISSN[item])
+  df_scopus <- data.frame(issn = issn.unique$ISSN[item], check.names = FALSE)
   
   # remove - from ISSN
   df_scopus$issn <- gsub("-", "", df_scopus$issn)
@@ -761,7 +761,7 @@ metricas_all <-
   dplyr::bind_rows(
     produtos.detalhes.sucupira
   ) %>%
-  as.data.frame()
+  as.data.frame(check.names = FALSE)
 ```
 
 ## **Gravar .TSV**

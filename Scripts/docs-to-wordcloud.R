@@ -15,13 +15,13 @@ if (clean.text == TRUE) {
   dtm <- tm::TermDocumentMatrix(docs)
   matrix <- as.matrix(dtm)
   words <- sort(rowSums(matrix), decreasing = TRUE)
-  df <- data.frame(word = names(words), freq = words)
+  df <- data.frame(word = names(words), freq = words, check.names = FALSE)
   # set minimum word frequency
   df <- df[df$freq >= 1, ]
 } else {
   # count the frequency of each term
   words <- sort(table(tolower(data.to.cloud)), decreasing = TRUE)
-  df <- data.frame(word = names(words), freq = as.numeric(words))
+  df <- data.frame(word = names(words), freq = as.numeric(words), check.names = FALSE)
   rownames(df) <- names(words)
   # replace frequencies by rank order
   df$freq <- rank(df$freq, ties.method = "first")

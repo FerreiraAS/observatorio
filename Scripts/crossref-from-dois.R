@@ -12,7 +12,7 @@ doi_with_metrics <-
     nrow = 1,
     ncol = length(columns_to_grab),
     dimnames = list(c(), columns_to_grab)
-  ))
+  ), check.names = FALSE)
 
 # loop for all DOI in the list
 for (input in 1:dim(dois)[1]) {

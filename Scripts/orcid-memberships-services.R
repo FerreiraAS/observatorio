@@ -9,7 +9,7 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
   memberships <- res[[1]]$`affiliation-group`$summaries
   n.pos <- length(memberships)
   
-  member <- as.data.frame(matrix(NA, ncol = 2, nrow = n.pos))
+  member <- as.data.frame(matrix(NA, ncol = 2, nrow = n.pos), check.names = FALSE)
   for (i in 1:n.pos) {
     # periódico
     member[i, 1] <-
@@ -58,7 +58,7 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
   services.res <- res[[1]]$`affiliation-group`$summaries
   n.pos <- length(services.res)
   
-  services <- as.data.frame(matrix(NA, ncol = 2, nrow = n.pos))
+  services <- as.data.frame(matrix(NA, ncol = 2, nrow = n.pos), check.names = FALSE)
   for (i in 1:n.pos) {
     # periódico
     services[i, 1] <-
