@@ -3378,6 +3378,8 @@ if(!sjmisc::is_empty(table.cap.aux)) {
     gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(
       quadrienal.vigente
     ) + 1)))
+} else {
+  table.cap.aux.gt <- list()
 }
 ```
 
@@ -3469,6 +3471,8 @@ if(!sjmisc::is_empty(table.cap.bolsa)) {
     gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(
       quadrienal.vigente
     ) + 1)))
+} else {
+  table.cap.bolsa.gt <- list()
 }
 ```
 
@@ -3576,6 +3580,8 @@ if(!sjmisc::is_empty(table.cap.pq)){
     gtsummary::remove_row_type(variables = c('Bolsa CNPq'), 
                                type = "level", level_value = ("Modalidade")) %>%
     gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+} else {
+  table.cap.pq.gt <- list()
 }
 ```
 
@@ -3905,7 +3911,7 @@ bancas <- bancas[bancas$Ano %in% as.character(quadrienal.vigente), ]
 # create new list with names from each Linhas de Pesquisa
 words <- list()
 for (i in 1:length(unique(bancas$"Linha de Pesquisa"))) {
-  words[[i]] <- unlist(strsplit(bancas$Título[bancas$"Linha de Pesquisa"[i] == unique(bancas$"Linha de Pesquisa")], " "))
+  words[[i]] <- unlist(strsplit(bancas$Título[bancas$"Linha de Pesquisa" == unique(bancas$"Linha de Pesquisa")[i]], " "))
   # to lower case
   words[[i]] <- tolower(words[[i]])
   # remove stopwords
@@ -3939,15 +3945,15 @@ for (i in 1:length(unique(bancas$"Linha de Pesquisa"))) {
 # remove quotes from name
 colnames(all.words) <- gsub("\"", "", colnames(all.words))
 
-# to numeric type
-for (i in 2:dim(all.words)[2]){
-  all.words[,i] <- all.words[,i] %>% as.numeric()
-}
 # frequency of words in all.words by Linha de Pesquisa
 for (i in 1:dim(all.words)[1]) {
   for (j in 2:dim(all.words)[2]) {
     all.words[i, j] <- sum(all.words$word[i] == words[[j - 1]], na.rm = TRUE)
   }
+}
+# to numeric type
+for (i in 2:dim(all.words)[2]){
+  all.words[,i] <- all.words[,i] %>% as.numeric()
 }
 # sort by overall frequency
 all.words <- dplyr::arrange(all.words, dplyr::desc(rowSums(all.words[, -1])))
