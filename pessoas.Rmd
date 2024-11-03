@@ -145,36 +145,38 @@ create_dt(table.coord, title = "Pessoas - Coordenação")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
-cat('\n\n<!-- -->\n\n')
-cat('### **Portarias**')
-cat('\n\n<!-- -->\n\n')
-
+portarias.raw <- data.frame()
 # Read Excel data
-portarias.raw <- readxl::read_excel("PPG/Coordenação.xlsx", sheet = "Portarias")
-
-# replace the link by a tag
-Abrir <- matrix(NA, nrow = dim(portarias.raw)[1])
-colnames(Abrir) <- "Abrir"
-# add hyperlinks
-for (i in 1:dim(portarias.raw)[1]) {
-  if (!is.na(portarias.raw[i, ncol(portarias.raw)])) {
-    Abrir[i] <-
-      paste0(
-        '<a href="',
-        portarias.raw[i, ncol(portarias.raw)],
-        '" target="_blank"',
-        '>',
-        # fontawesome icon
-        fontawesome::fa("up-right-from-square"),
-        '</a>'
-      )
+try(portarias.raw <- readxl::read_excel("PPG/Coordenação.xlsx", sheet = "Portarias"), silent = TRUE)
+if(!sjmisc::is_empty(portarias.raw)){
+  cat('\n\n<!-- -->\n\n')
+  cat('### **Portarias**')
+  cat('\n\n<!-- -->\n\n')
+  
+  # replace the link by a tag
+  Abrir <- matrix(NA, nrow = dim(portarias.raw)[1])
+  colnames(Abrir) <- "Abrir"
+  # add hyperlinks
+  for (i in 1:dim(portarias.raw)[1]) {
+    if (!is.na(portarias.raw[i, ncol(portarias.raw)])) {
+      Abrir[i] <-
+        paste0(
+          '<a href="',
+          portarias.raw[i, ncol(portarias.raw)],
+          '" target="_blank"',
+          '>',
+          # fontawesome icon
+          fontawesome::fa("up-right-from-square"),
+          '</a>'
+        )
+    }
   }
+  portarias <- cbind(portarias.raw[, -ncol(portarias.raw)], Abrir)
+  
+  # print table
+  source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+  cat(knitr::knit_print(create_dt(portarias, title = "Pessoas - Portarias")))
 }
-portarias <- cbind(portarias.raw[, -ncol(portarias.raw)], Abrir)
-
-# print table
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(portarias, title = "Pessoas - Portarias")
 ```
 
 <br>
