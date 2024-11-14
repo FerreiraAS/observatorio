@@ -4147,7 +4147,7 @@ out <- NULL
 
 for (i in 1:length(lista.kw)) {
   # Define table caption
-  caption <- paste0('Palavras-chave mais frequentes por Linha de Pesquisa - Linhas de Pesquisa: ', toupper(lista.kw$"Linha 1"[i]), ' - ', toupper(lista.kw$"Linha 2)"[i]))
+  caption <- paste0('Palavras-chave mais frequentes por Linha de Pesquisa - Linhas de Pesquisa: ', toupper(unique(lista.kw[[i]]$`Linha 1`)), ' <> ', toupper(unique(lista.kw[[i]]$`Linha 2`)))
   
   # Generate R Markdown code for this chunk
   knit_expanded <- paste0(
@@ -4199,18 +4199,20 @@ for (i in 1:length(lista.kw)) {
 }
 
 cat("
-G2: Mede a probabilidade de que duas distribuições de palavras sejam diferentes. Sempre retorna valores positivos. 
+**Parâmetros de análise de frequência de palavras-chave entre Linhas de Pesquisa**:
+
+*G2*: Mede a probabilidade de que duas distribuições de palavras sejam diferentes. Sempre retorna valores positivos. 
 Se a frequência de uma palavra em um texto for menor do que em outro, o resultado é ajustado para indicar a direção. 
 Tende a favorecer palavras que aparecem muitas vezes.
 
-LogRatio: Compara o risco relativo de duas palavras ou grupos de palavras. É uma forma intuitiva de ver diferenças. 
+*LogRatio8*: Compara o risco relativo de duas palavras ou grupos de palavras. É uma forma intuitiva de ver diferenças. 
 É menos afetado por palavras que aparecem raramente, mas pode dar resultados enganosos para essas palavras.
 
-PositiveLRC: Uma versão que indica se há evidência de que uma palavra é mais comum em um texto do que em outro. 
+*PositiveLRC*: Uma versão que indica se há evidência de que uma palavra é mais comum em um texto do que em outro. 
 Resultados iguais ou menores que zero significam que não há evidência significativa. É útil para considerar palavras 
 que não são claramente significativas, especialmente em textos menores.
 
-Um filtro de significância é aplicado, de modo que apenas palavras com valores diferentes de zero são exibidas.
+Um filtro de significância é aplicado, de modo que apenas palavras com valores diferentes de zero (p<0,05) são exibidas.
 
 Fonte: Evert S (2023). corpora: Statistics and Data Sets for Corpus Frequency Data. R package version 0.6,
   <https://CRAN.R-project.org/package=corpora>.
@@ -4259,13 +4261,398 @@ cat("### **2.2.1 Produção do corpo discente em eventos científicos**")
 cat('\n\n')
 ```
 
+```{r 2-2-1-data, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+# Produções - Autores
+sheet <- "Produções - Autores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-<!-- EM CONSTRUÇÃO -->
+# Get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
 
+# Get data for the current period
+sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
+  plyr::compact()
 
-```{=latex}
-\newpage
-\FloatBarrier
+for (i in 1:length(sucupira)) {
+  sucupira[[i]] <- cbind(
+    "Anos" = rep(quadrienal.vigente[i], times = dim(sucupira[[i]])[1]),
+    sucupira[[i]]
+  )
+}
+
+sucupira.df.anais <- data.frame(do.call(dplyr::bind_rows, sucupira))
+names(sucupira.df.anais) <- names(sucupira[[as.character(max(as.numeric(quadrienal.vigente)))]])
+
+# get ID da Produção
+ID <- sucupira.df.anais$`ID da Produção`
+
+# filter by Subtipo = Trabalho Em Anais
+sucupira.df.anais <- sucupira.df.anais %>% 
+  dplyr::filter(`Subtipo de Produção` == "TRABALHO EM ANAIS")
+
+# filter by ID and "Categoria do Autor" == "Discente"
+sucupira.df.anais <- sucupira.df.anais %>% 
+  dplyr::filter(`Categoria do Autor` == "Discente")
+
+# get unique ID da Produção
+ID <- unique(sucupira.df.anais$`ID da Produção`)
+
+# Produções - Detalhes
+sheet <- "Produções - Detalhes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# Get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# Get data for the current period
+sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
+  plyr::compact()
+
+for (i in 1:length(sucupira)) {
+  sucupira[[i]] <- cbind(
+    "Anos" = rep(quadrienal.vigente[i], times = dim(sucupira[[i]])[1]),
+    sucupira[[i]]
+  )
+}
+
+sucupira.df.anais <- data.frame(do.call(dplyr::bind_rows, sucupira))
+names(sucupira.df.anais) <- names(sucupira[[as.character(max(as.numeric(quadrienal.vigente)))]])
+
+# select sucupira.df.anais with matching ID
+sucupira.df.anais <- sucupira.df.anais[sucupira.df.anais$`ID da Produção` %in% ID,]
+
+sucupira.df.anais <- sucupira.df.anais %>% 
+  dplyr::select(
+    "ID da Produção",
+    "Anos",
+    "Tipo de Produção",
+    "Subtipo de Produção",
+    "Item de Detalhamento",
+    "Valor do Item de Detalhamento",
+    "Categoria do Autor Principal"
+  )
+sucupira.df.anais$`Tipo de Produção` <- tools::toTitleCase(tolower(sucupira.df.anais$`Tipo de Produção`))
+sucupira.df.anais$`Subtipo de Produção` <- tools::toTitleCase(tolower(sucupira.df.anais$`Subtipo de Produção`))
+
+sucupira.df.anais$`Tipo de Produção`[is.na(sucupira.df.anais$`Tipo de Produção`)] <- "Indefinido"
+sucupira.df.anais$`Subtipo de Produção`[is.na(sucupira.df.anais$`Subtipo de Produção`)] <- "Indefinido"
+sucupira.df.anais$`Categoria do Autor Principal`[is.na(sucupira.df.anais$`Categoria do Autor Principal`)] <- "Indefinido"
+```
+
+```{r 2-2-1-bibliografica, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+# filter sucupira.df.anais by "Tipo de Produção" == "Bibliográfica"
+sucupira.df.bib <- unique(sucupira.df.anais[sucupira.df.anais$`Tipo de Produção` == "Bibliográfica", ])
+
+table.bib <- data.frame(matrix(
+  NA,
+  nrow = length(unique(sucupira.df.bib$`ID da Produção`)),
+  ncol = length(quadrienal.vigente)
+))
+
+rownames(table.bib) <- NULL
+table.bib <- cbind(unique(sucupira.df.bib$`ID da Produção`), table.bib)
+colnames(table.bib) <- c("ID da Produção", as.character(quadrienal.vigente))
+
+# match ID da Produção and Ano and fill with Produção
+for(i in 1:dim(table.bib)[1]) {
+  for(j in 1:length(quadrienal.vigente)) {
+    id <- table.bib[i, 1]
+    ano <- quadrienal.vigente[j]
+    table.bib[i, j + 1] <- ifelse(
+      id %in% sucupira.df.bib$`ID da Produção`[sucupira.df.bib$Anos == ano],
+      sucupira.df.bib$`Subtipo de Produção`[match(sucupira.df.bib$`ID da Produção`[i], sucupira.df.bib$`ID da Produção`)],
+      NA
+    )
+  }
+}
+
+table.bib.long <- tidyr::gather(
+  table.bib[, -1],
+  "Ano",
+  "Nome da Produção",
+  colnames(table.bib)[-1],
+  factor_key = TRUE
+)
+
+table.bib.long <- rbind(
+  table.bib.long,
+  data.frame(
+    "Ano" = rep(paste0(
+      min(quadrienal.vigente), "-", max(quadrienal.vigente)
+    ), times = sum(!is.na(table.bib[, -1]))),
+    "Nome da Produção" = rep("Produção", times = sum(!is.na(table.bib[, -1]))),
+    check.names = FALSE
+  )
+)
+
+my_N <- function(data, ...) {
+  gtsummary::style_number(sum(data == "Produção", na.rm = TRUE), digits = 0)
+}
+
+colnames(table.bib.long) <- c("Ano", "Produção bibliográfica com discente")
+
+# change all column types to factors
+table.bib.long <- table.bib.long %>%
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
+
+# Print tables
+table.bib.gt <- gtsummary::tbl_summary(
+  table.bib.long,
+  by = "Ano",
+  statistic = list(gtsummary::all_categorical() ~ "{n}"),
+  missing = "no",
+  digits = gtsummary::everything() ~ 0,
+  sort = gtsummary::all_categorical() ~ "frequency"
+  ) %>%
+  gtsummary::add_overall(
+    last = TRUE,
+    col_label = "**Subtotal**",
+    statistic = gtsummary::everything() ~ "{n}"
+  ) %>%
+  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels() %>%
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(list(
+    add_stat_1 ~ "**Quadriênio**",
+    gtsummary::all_stat_cols() ~ "**{level}**"
+  )) %>%
+  gtsummary::remove_row_type(
+    variables = c('Produção bibliográfica com discente'),
+    type = "level",
+    level_value = ("Produção")
+  ) %>%
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+```
+
+```{r 2-2-1-natureza, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+# filter `Item de Detalhamento` = "Natureza"
+sucupira.df.nat <- sucupira.df.anais %>%
+  dplyr::filter(`Item de Detalhamento` == "Natureza")
+
+# to title case
+sucupira.df.nat$`Valor do Item de Detalhamento` <- tools::toTitleCase(tolower(sucupira.df.nat$`Valor do Item de Detalhamento`))
+
+table.nat <- data.frame(matrix(
+  NA,
+  nrow = length(unique(sucupira.df.nat$`ID da Produção`)),
+  ncol = length(quadrienal.vigente)
+))
+
+rownames(table.nat) <- NULL
+table.nat <- cbind(unique(sucupira.df.nat$`ID da Produção`), table.nat)
+colnames(table.nat) <- c("ID da Produção", as.character(quadrienal.vigente))
+
+# match ID da Produção and Ano and fill with Produção
+for(i in 1:dim(table.nat)[1]) {
+  for(j in 1:length(quadrienal.vigente)) {
+    id <- table.nat[i, 1]
+    ano <- quadrienal.vigente[j]
+    table.nat[i, j + 1] <- ifelse(
+      id %in% sucupira.df.nat$`ID da Produção`[sucupira.df.nat$Anos == ano],
+      sucupira.df.nat$`Valor do Item de Detalhamento`[match(sucupira.df.nat$`ID da Produção`[i], sucupira.df.nat$`ID da Produção`)],
+      NA
+    )
+  }
+}
+
+table.nat.long <- tidyr::gather(
+  table.nat[, -1],
+  "Ano",
+  "Natureza",
+  colnames(table.nat)[-1],
+  factor_key = TRUE
+)
+
+table.nat.long <- rbind(
+  table.nat.long,
+  data.frame(
+    "Ano" = rep(paste0(
+      min(quadrienal.vigente), "-", max(quadrienal.vigente)
+    ), times = sum(!is.na(table.nat[, -1]))),
+    "Natureza" = rep("Natureza", times = sum(!is.na(table.nat[, -1]))),
+    check.names = FALSE
+  )
+)
+
+my_N <- function(data, ...) {
+  gtsummary::style_number(sum(data == "Natureza", na.rm = TRUE), digits = 0)
+}
+
+colnames(table.nat.long) <- c("Ano", "Natureza da produção")
+
+# change all column types to factors
+table.nat.long <- table.nat.long %>%
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
+
+# Print tables
+table.nat.gt <- gtsummary::tbl_summary(
+  table.nat.long,
+  by = "Ano",
+  statistic = list(gtsummary::all_categorical() ~ "{n}"),
+  missing = "no",
+  digits = gtsummary::everything() ~ 0,
+  sort = gtsummary::all_categorical() ~ "frequency"
+  ) %>%
+  gtsummary::add_overall(
+    last = TRUE,
+    col_label = "**Subtotal**",
+    statistic = gtsummary::everything() ~ "{n}"
+  ) %>%
+  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels() %>%
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(list(
+    add_stat_1 ~ "**Quadriênio**",
+    gtsummary::all_stat_cols() ~ "**{level}**"
+  )) %>%
+  gtsummary::remove_row_type(
+    variables = c('Natureza da produção'),
+    type = "level",
+    level_value = ("Natureza")
+  ) %>%
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+```
+
+```{r 2-2-1-local, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+# filter `Item de Detalhamento` = "Natureza"
+sucupira.df.local <- sucupira.df.anais %>%
+  dplyr::filter(`Item de Detalhamento` == "País")
+
+# to title case
+sucupira.df.local$`Valor do Item de Detalhamento` <- tools::toTitleCase(tolower(sucupira.df.local$`Valor do Item de Detalhamento`))
+
+table.local <- data.frame(matrix(
+  NA,
+  nrow = length(unique(sucupira.df.local$`ID da Produção`)),
+  ncol = length(quadrienal.vigente)
+))
+
+rownames(table.local) <- NULL
+table.local <- cbind(unique(sucupira.df.local$`ID da Produção`), table.local)
+colnames(table.local) <- c("ID da Produção", as.character(quadrienal.vigente))
+
+# match ID da Produção and Ano and fill with Produção
+for(i in 1:dim(table.local)[1]) {
+  for(j in 1:length(quadrienal.vigente)) {
+    id <- table.local[i, 1]
+    ano <- quadrienal.vigente[j]
+    table.local[i, j + 1] <- ifelse(
+      id %in% sucupira.df.local$`ID da Produção`[sucupira.df.local$Anos == ano],
+      sucupira.df.local$`Valor do Item de Detalhamento`[match(sucupira.df.local$`ID da Produção`[i], sucupira.df.local$`ID da Produção`)],
+      NA
+    )
+  }
+}
+
+table.local.long <- tidyr::gather(
+  table.local[, -1],
+  "Ano",
+  "País",
+  colnames(table.local)[-1],
+  factor_key = TRUE
+)
+
+table.local.long <- rbind(
+  table.local.long,
+  data.frame(
+    "Ano" = rep(paste0(
+      min(quadrienal.vigente), "-", max(quadrienal.vigente)
+    ), times = sum(!is.na(table.local[, -1]))),
+    "País" = rep("País", times = sum(!is.na(table.local[, -1]))),
+    check.names = FALSE
+  )
+)
+
+my_N <- function(data, ...) {
+  gtsummary::style_number(sum(data == "País", na.rm = TRUE), digits = 0)
+}
+
+colnames(table.local.long) <- c("Ano", "País")
+
+# change all column types to factors
+table.local.long <- table.local.long %>%
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
+
+# Print tables
+table.local.gt <- gtsummary::tbl_summary(
+  table.local.long,
+  by = "Ano",
+  statistic = list(gtsummary::all_categorical() ~ "{n}"),
+  missing = "no",
+  digits = gtsummary::everything() ~ 0,
+  sort = gtsummary::all_categorical() ~ "frequency"
+  ) %>%
+  gtsummary::add_overall(
+    last = TRUE,
+    col_label = "**Subtotal**",
+    statistic = gtsummary::everything() ~ "{n}"
+  ) %>%
+  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+  gtsummary::bold_labels() %>%
+  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+  gtsummary::modify_header(list(
+    add_stat_1 ~ "**Quadriênio**",
+    gtsummary::all_stat_cols() ~ "**{level}**"
+  )) %>%
+  gtsummary::remove_row_type(
+    variables = c('País'),
+    type = "level",
+    level_value = ("País")
+  ) %>%
+  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+```
+
+```{r 2-2-1-list-tables, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+# List all tables
+table.all <- list(
+  table.bib.gt,
+  table.nat.gt,
+  table.local.gt
+)
+
+# Drop empty elements from the list
+table.all <- table.all[lapply(table.all, length) > 0]
+
+table.2.2.1 <- gtsummary::tbl_stack(table.all)
+
+# Print HTML table
+if (knitr::is_html_output()) {
+  print(table.2.2.1)
+}
+
+# Print LaTeX table
+if (knitr::is_latex_output()) {
+  cat('\\FloatBarrier')
+  # Convert gtsummary object to kableExtra object
+  kable_table <- gtsummary::as_kable_extra(
+    x = table.2.2.1,
+    escape = FALSE,
+    format = ifelse(knitr::is_html_output(), "html", "latex"),
+    booktabs = TRUE,
+    linesep = "",
+    caption = ifelse(knitr::is_html_output(), "", "Produção do corpo discente em eventos científicos")
+  ) %>%
+    kableExtra::kable_styling(
+      bootstrap_options = c("basic", "hover", "condensed", "responsive"),
+      latex_options = c("basic", "repeat_header", "HOLD_position"),
+      latex_table_env = "tabularx",
+      full_width = TRUE,
+      position = "center"
+    ) %>% kableExtra::column_spec(column = 1:(1 + length(quadrienal.vigente)+ 1 + 1), width = paste0(c(0.50, rep(0.20/(length(quadrienal.vigente)), times = length(quadrienal.vigente)), 0.15, 0.15)*(21-3-3), "cm"))
+  print(kable_table)
+}
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+# Add LaTeX commands for new page and float barrier
+if(knitr::is_latex_output()) {
+  cat('\\newpage')
+}
 ```
 
 <br>
