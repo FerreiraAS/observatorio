@@ -1,15 +1,6 @@
 ---
 title: Autoavaliação
 output:
-  html_document:
-    toc: true
-    toc_float: true
-    css:
-      - ./CSS/generic.css
-      - ./CSS/logo-above-toc.css
-      - ./CSS/main-color.css
-      - ./CSS/narrow-margins.css
-      - ./CSS/responsive.css
   pdf_document:
     toc: true
     toc_depth: 4
@@ -19,6 +10,15 @@ output:
       before_body: [tex/cover-1.tex, tex/cover-2.tex]
     latex_engine: xelatex
     keep_tex: false
+  html_document:
+    toc: true
+    toc_float: true
+    css:
+      - ./CSS/generic.css
+      - ./CSS/logo-above-toc.css
+      - ./CSS/main-color.css
+      - ./CSS/narrow-margins.css
+      - ./CSS/responsive.css
 documentclass: book
 classoption: oneside
 papersize: a4
@@ -26,6 +26,8 @@ geometry: "top=2cm,left=2cm,right=2cm,bottom=2cm"
 link-citations: true
 always_allow_html: true
 tables: true
+params:
+  quadrienal.vigente: 2013;2014;2015;2016
 ---
 
 <!--set up-->
@@ -74,12 +76,8 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
-# periodo
-quadrienal.vigente <-
-  2021:min(
-    as.numeric(format(Sys.Date(), "%Y")),
-    max(anos),
-    2024)
+# get from params (header)
+quadrienal.vigente <- as.numeric(strsplit(params$quadrienal.vigente, ";")[[1]])
 
 # ajusta para pastas Sucupira
 quadrienal.vigente <- anos[anos %in% quadrienal.vigente]
@@ -7022,21 +7020,4 @@ cat('\n\n')
 
 ```{=latex}
 \DisableFootNotes
-```
-
-```{r relatorio-quadrienal, eval = knitr::is_html_output(), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
-cat("## **Relatório quadrienal** {#relatorio-quadrienal}")
-cat('\n\n')
-cat('<!--script for generating HORIZONTAL LINE-->')
-cat('\n\n')
-cat('<hr style="height:2px;border-width:0;color:black;background-color:black">')
-cat('\n\n')
-cat(
-  paste0(
-    '<iframe src=\"',
-    'autoavaliacao.pdf',
-    '\" style=\"width:100%; height:600px; border:2px solid black;\"></iframe>'
-  )
-)
-cat('\n\n')
 ```

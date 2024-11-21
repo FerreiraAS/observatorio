@@ -34,6 +34,8 @@ navbar:
       menu:
         - text: "-Programa-"
           href: [programa.html]
+        - text: "Dados básicos do Programa"
+          href: [programa.html#dados-basicos]
         - text: "Breve histórico"
           href: [programa.html#breve-historico]
         - text: "Área de avaliação"
@@ -89,12 +91,10 @@ navbar:
           href: [pessoas.html#discentes]
         - text: "Egressos"
           href: [pessoas.html#egressos]
-        - text: "Bacharelado"
-          href: [pessoas.html#bacharelado]
-        - text: "Formação continuada"
-          href: [pessoas.html#formacao-continuada]
         - text: "Encerrados"
           href: [pessoas.html#encerrados]
+        - text: "Bacharelado"
+          href: [pessoas.html#bacharelado]
         - text: "Grupos de pesquisa"
           href: [pessoas.html#grupos-pesquisa]
         - text: "Participantes externos"
@@ -225,11 +225,17 @@ navbar:
           href: [autoavaliacao.html#formacao]
         - text: "3. Impacto na sociedade"
           href: [autoavaliacao.html#impacto]
-        - text: "Relatório quadrienal"
-          href: [autoavaliacao.html#relatorio-quadrienal]
-        - text: "Relatório quadrienal"
+    - text: "Relatórios"
+      menu:
+        - text: "2021-2024"
           icon: "fa-file-pdf"
-          href: [autoavaliacao.pdf]
+          href: [autoavaliacao-2021-2024.pdf]
+        - text: "2017-2020"
+          icon: "fa-file-pdf"
+          href: [autoavaliacao-2017-2020.pdf]
+        - text: "2013-2016"
+          icon: "fa-file-pdf"
+          href: [autoavaliacao-2013-2016.pdf]
   right:
     - text: ""
       icon: "fa-share-nodes"

@@ -1,9 +1,9 @@
 # Getting Altmetric Data Using API and R
 # by Arthur de Sá Ferreira
 
-# sources:
+# sources: 19 nov 2024
 # https://api.altmetric.com
-# https://docs.google.com/spreadsheets/d/1ndVY8Q2LOaZO_P_HDmSQulagjeUrS250mAL2N5V8GvY/edit#gid=0
+# https://api.altmetric.com/data-endpoints-counts.html
 
 # select data to grab from Altmetric API
 columns_to_grab <-
@@ -12,12 +12,15 @@ columns_to_grab <-
     "cited_by_feeds_count",
     "cited_by_gplus_count",
     "cited_by_msm_count",
-    "cited_by_posts_count",
     "cited_by_rdts_count",
+    "cited_by_qna_count", # NEW
     "cited_by_tweeters_count",
+    "cited_by_wikipedia_count", # NEW
+    "cited_by_policies_count", # NEW
+    "cited_by_patents_count",
     "cited_by_videos_count",
     "cited_by_accounts_count",
-    "cited_by_patents_count",
+    "cited_by_posts_count",
     "mendeley",
     "score",
     "is_oa"
@@ -76,14 +79,17 @@ for (input in 1:dim(dois)[1]) {
         doi_with_metrics$cited_by_feeds_count[doi_with_metrics$cited_by_feeds_count == ""] <- 0
         doi_with_metrics$cited_by_gplus_count[doi_with_metrics$cited_by_gplus_count == ""] <- 0
         doi_with_metrics$cited_by_msm_count[doi_with_metrics$cited_by_msm_count == ""] <- 0
-        doi_with_metrics$cited_by_posts_count[doi_with_metrics$cited_by_posts_count == ""] <- 0
         doi_with_metrics$cited_by_rdts_count[doi_with_metrics$cited_by_rdts_count == ""] <- 0
+        doi_with_metrics$cited_by_qna_count[doi_with_metrics$cited_by_qna_count == ""] <- 0
         doi_with_metrics$cited_by_tweeters_count[doi_with_metrics$cited_by_tweeters_count == ""] <- 0
+        doi_with_metrics$cited_by_wikipedia_count[doi_with_metrics$cited_by_wikipedia_count == ""] <- 0
+        doi_with_metrics$cited_by_policies_count[doi_with_metrics$cited_by_policies_count == ""] <- 0
+        doi_with_metrics$cited_by_patents_count[doi_with_metrics$cited_by_patents_count == ""] <- 0
         doi_with_metrics$cited_by_videos_count[doi_with_metrics$cited_by_videos_count == ""] <- 0
         doi_with_metrics$cited_by_accounts_count[doi_with_metrics$cited_by_accounts_count == ""] <- 0
-        doi_with_metrics$cited_by_patents_count[doi_with_metrics$cited_by_patents_count == ""] <- 0
+        doi_with_metrics$cited_by_posts_count[doi_with_metrics$cited_by_posts_count == ""] <- 0
         doi_with_metrics$mendeley[doi_with_metrics$mendeley == ""] <- 0
-        
+
         # clean up the environment
         rm(raw_data)
       }
