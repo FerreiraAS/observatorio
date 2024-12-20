@@ -3908,23 +3908,25 @@ bancas <- bancas[bancas$Ano %in% as.character(quadrienal.vigente), ]
 
 # create new list with names from each Linhas de Pesquisa
 words <- list()
-for (i in 1:length(unique(bancas$"Linha de Pesquisa"))) {
-  words[[i]] <- unlist(strsplit(bancas$Título[bancas$"Linha de Pesquisa" == unique(bancas$"Linha de Pesquisa")[i]], " "))
-  # to lower case
-  words[[i]] <- tolower(words[[i]])
-  # remove stopwords
-  words[[i]] <- words[[i]][!words[[i]] %in% tm::stopwords("portuguese")]
-  words[[i]] <- words[[i]][!words[[i]] %in% tm::stopwords("english")]
-  # remove punctuation
-  words[[i]] <- gsub("[[:punct:]]", "", words[[i]])
-  # remove numbers
-  words[[i]] <- gsub("[[:digit:]]", "", words[[i]])
-  # strip whitespace
-  words[[i]] <- gsub("^\\s+|\\s+$", "", words[[i]])
-  # remove whitespace
-  words[[i]] <- words[[i]][words[[i]] != ""]
-  # sort
-  words[[i]] <- sort(words[[i]])
+if (!sjmisc::is_empty(bancas)) {
+  for (i in 1:length(unique(bancas$"Linha de Pesquisa"))) {
+    words[[i]] <- unlist(strsplit(bancas$Título[bancas$"Linha de Pesquisa" == unique(bancas$"Linha de Pesquisa")[i]], " "))
+    # to lower case
+    words[[i]] <- tolower(words[[i]])
+    # remove stopwords
+    words[[i]] <- words[[i]][!words[[i]] %in% tm::stopwords("portuguese")]
+    words[[i]] <- words[[i]][!words[[i]] %in% tm::stopwords("english")]
+    # remove punctuation
+    words[[i]] <- gsub("[[:punct:]]", "", words[[i]])
+    # remove numbers
+    words[[i]] <- gsub("[[:digit:]]", "", words[[i]])
+    # strip whitespace
+    words[[i]] <- gsub("^\\s+|\\s+$", "", words[[i]])
+    # remove whitespace
+    words[[i]] <- words[[i]][words[[i]] != ""]
+    # sort
+    words[[i]] <- sort(words[[i]])
+  }
 }
 names(words) <- unique(bancas$"Linha de Pesquisa")
 # resize list elements to largest one
@@ -3943,18 +3945,90 @@ for (i in 1:length(unique(bancas$"Linha de Pesquisa"))) {
 # remove quotes from name
 colnames(all.words) <- gsub("\"", "", colnames(all.words))
 
-# frequency of words in all.words by Linha de Pesquisa
-for (i in 1:dim(all.words)[1]) {
-  for (j in 2:dim(all.words)[2]) {
-    all.words[i, j] <- sum(all.words$word[i] == words[[j - 1]], na.rm = TRUE)
+all.kw <- list()
+bancas.with.words <- c()
+table.bancas.long <- data.frame()
+if (!sjmisc::is_empty(all.words)) {
+  # frequency of words in all.words by Linha de Pesquisa
+  for (i in 1:dim(all.words)[1]) {
+    for (j in 2:dim(all.words)[2]) {
+      all.words[i, j] <- sum(all.words$word[i] == words[[j - 1]], na.rm = TRUE)
+    }
   }
+  
+  # to numeric type
+  for (i in 2:dim(all.words)[2]){
+    all.words[,i] <- all.words[,i] %>% as.numeric()
+  }
+  # sort by overall frequency
+  all.words <- dplyr::arrange(all.words, dplyr::desc(rowSums(all.words[, -1])))
+  
+  # create all unique pairs of Linhas de Pesquisa
+  pairs <- combn(colnames(all.words)[-1], 2, simplify = TRUE)
+  
+  # loop through all pairs to calculate kw
+  for (i in 1:dim(pairs)[2]) {
+    all.kw[[i]] <- create_keyness_pairs(all.words, pairs[1, i], pairs[2, i])
+  }
+  
+  # as data.frame with new first column with names from col1 and col2 combined
+  all.kw <- lapply(all.kw, function(x) {
+    try(x <- cbind(
+      "Linha 1" = names(x)[2],
+      "Linha 2" = names(x)[3],
+      x
+    ), silent = TRUE)
+    try(x[,1] <- stringr::str_to_title(x[,1]), silent = FALSE)
+    try(x[,2] <- stringr::str_to_title(x[,2]), silent = FALSE)
+    try(x[,3] <- toupper(x[,3]), silent = FALSE)
+    try(names(x)[3] <- "Termo", silent = FALSE)
+    try(names(x)[4] <- "Linha 1 (n)", silent = FALSE)
+    try(names(x)[5] <- "Linha 2 (n)", silent = FALSE)
+    return(x)
+  })
+  
+  # drop lists with 0 elements
+  all.kw <- all.kw[lengths(all.kw) == 8]
+  lista.kw <- all.kw
+  
+  # as data.frame
+  all.kw <- dplyr::bind_rows(all.kw)
+  
+  # check which bancas$Título have all.kw$Termo
+  for (i in 1:dim(bancas)[1]){
+    for(j in 1:dim(all.kw)[1]){
+      if(grepl(tolower(all.kw$Termo[j]), tolower(bancas$Título[i]))){
+        bancas.with.words <- c(bancas.with.words, i)
+      }
+    }
+  }
+  bancas.with.words <- unique(bancas.with.words)
+  bancas.with.words <- bancas[bancas.with.words, ]
+  
+  table.bancas.long <- rbind(
+    data.frame(bancas.with.words,
+               check.names = FALSE),
+    data.frame(
+      "Ano" = rep(paste0(min(quadrienal.vigente), "-", max(quadrienal.vigente)), times = dim(bancas.with.words)[1]),
+      "Linha de Pesquisa" = rep("Data1", times = dim(bancas.with.words)[1]),
+      "Tipo" = rep("Data2", times = dim(bancas.with.words)[1]),
+      "Título" = rep("TÍTULO", times = dim(bancas.with.words)[1]),
+      check.names = FALSE
+    )
+  )
+  
+  # to title case
+  table.bancas.long$`Linha de Pesquisa` <- stringr::str_to_title(table.bancas.long$`Linha de Pesquisa`)
+  
+  # change all column types to factors
+  table.bancas.long <- table.bancas.long %>%
+    dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
+  
+  # reoder factor Ano
+  table.bancas.long$Ano <- factor(table.bancas.long$Ano, levels = c(quadrienal.vigente, paste0(
+    min(quadrienal.vigente), "-", max(quadrienal.vigente)
+  )))
 }
-# to numeric type
-for (i in 2:dim(all.words)[2]){
-  all.words[,i] <- all.words[,i] %>% as.numeric()
-}
-# sort by overall frequency
-all.words <- dplyr::arrange(all.words, dplyr::desc(rowSums(all.words[, -1])))
 
 create_keyness_pairs <- function(data, col1, col2) {
   # keep rows where n1 + n2 >= 1
@@ -3986,50 +4060,6 @@ create_keyness_pairs <- function(data, col1, col2) {
   return(kw)
 }
 
-# create all unique pairs of Linhas de Pesquisa
-pairs <- combn(colnames(all.words)[-1], 2, simplify = TRUE)
-
-# loop through all pairs to calculate kw
-all.kw <- list()
-for (i in 1:dim(pairs)[2]) {
-  all.kw[[i]] <- create_keyness_pairs(all.words, pairs[1, i], pairs[2, i])
-}
-
-# as data.frame with new first column with names from col1 and col2 combined
-all.kw <- lapply(all.kw, function(x) {
-  try(x <- cbind(
-    "Linha 1" = names(x)[2],
-    "Linha 2" = names(x)[3],
-    x
-  ), silent = TRUE)
-  try(x[,1] <- stringr::str_to_title(x[,1]), silent = FALSE)
-  try(x[,2] <- stringr::str_to_title(x[,2]), silent = FALSE)
-  try(x[,3] <- toupper(x[,3]), silent = FALSE)
-  try(names(x)[3] <- "Termo", silent = FALSE)
-  try(names(x)[4] <- "Linha 1 (n)", silent = FALSE)
-  try(names(x)[5] <- "Linha 2 (n)", silent = FALSE)
-  return(x)
-})
-
-# drop lists with 0 elements
-all.kw <- all.kw[lengths(all.kw) == 8]
-lista.kw <- all.kw
-
-# as data.frame
-all.kw <- dplyr::bind_rows(all.kw)
-
-# check which bancas$Título have all.kw$Termo
-bancas.with.words <- c()
-for (i in 1:dim(bancas)[1]){
-  for(j in 1:dim(all.kw)[1]){
-    if(grepl(tolower(all.kw$Termo[j]), tolower(bancas$Título[i]))){
-      bancas.with.words <- c(bancas.with.words, i)
-    }
-  }
-}
-bancas.with.words <- unique(bancas.with.words)
-bancas.with.words <- bancas[bancas.with.words, ]
-
 # gt summary table per year of % de bancas with words
 my_N1 <- function(data, ...) {
   gtsummary::style_number(sum(data == "Data1", na.rm = TRUE), digits = 0)
@@ -4037,29 +4067,6 @@ my_N1 <- function(data, ...) {
 my_N2 <- function(data, ...) {
   gtsummary::style_number(sum(data == "Data2", na.rm = TRUE), digits = 0)
 }
-table.bancas.long <- rbind(
-  data.frame(bancas.with.words,
-             check.names = FALSE),
-  data.frame(
-    "Ano" = rep(paste0(min(quadrienal.vigente), "-", max(quadrienal.vigente)), times = dim(bancas.with.words)[1]),
-    "Linha de Pesquisa" = rep("Data1", times = dim(bancas.with.words)[1]),
-    "Tipo" = rep("Data2", times = dim(bancas.with.words)[1]),
-    "Título" = rep("TÍTULO", times = dim(bancas.with.words)[1]),
-    check.names = FALSE
-  )
-)
-
-# to title case
-table.bancas.long$`Linha de Pesquisa` <- stringr::str_to_title(table.bancas.long$`Linha de Pesquisa`)
-
-# change all column types to factors
-table.bancas.long <- table.bancas.long %>%
-  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
-
-# reoder factor Ano
-table.bancas.long$Ano <- factor(table.bancas.long$Ano, levels = c(quadrienal.vigente, paste0(
-  min(quadrienal.vigente), "-", max(quadrienal.vigente)
-)))
 
 # bug report
 # https://stackoverflow.com/questions/78811916/gtsummary-tbl-summary-sorting-of-stratify-variable/78812588
@@ -4076,127 +4083,129 @@ tbl_fix_order <- function(x) {
   x  
 }
 
-# print tables
-table.2.1.1 <- gtsummary::tbl_summary(
-  dplyr::select(table.bancas.long, "Ano", "Linha de Pesquisa", "Tipo"),
-  by = "Ano",
-  statistic = list(gtsummary::all_categorical() ~ "{n}"),
-  missing = "no",
-  digits = gtsummary::everything() ~ 0,
+if (!sjmisc::is_empty(table.bancas.long)) {
+  # print tables
+  table.2.1.1 <- gtsummary::tbl_summary(
+    dplyr::select(table.bancas.long, "Ano", "Linha de Pesquisa", "Tipo"),
+    by = "Ano",
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
+    missing = "no",
+    digits = gtsummary::everything() ~ 0,
     sort = gtsummary::all_categorical() ~ "alphanumeric"
   ) %>%
-  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels() %>%
-  tbl_fix_order() %>%
-  gtsummary::add_stat(fns = list("Linha de Pesquisa" ~ my_N1, "Tipo" ~ my_N2)) %>%
-  gtsummary::modify_header(
-    list(
-      add_stat_1 ~ "**Quadriênio**",
-      gtsummary::all_stat_cols() ~ "**{level}**"
-    )
-  ) %>%
-  gtsummary::remove_row_type(variables = c('Linha de Pesquisa'), type = "level", level_value = ("Data1")) %>%
-  gtsummary::remove_row_type(variables = c('Tipo'), type = "level", level_value = ("Data2")) %>%
-  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
-
-
-# Print HTML table
-if (knitr::is_html_output()) {
-  print(table.2.1.1)
-}
-
-# Print LaTeX table
-if (knitr::is_latex_output()) {
-  cat('\\FloatBarrier')
-  # Convert gtsummary object to kableExtra object
-  kable_table <- gtsummary::as_kable_extra(
-    x = table.2.1.1,
-    escape = FALSE,
-    format = ifelse(knitr::is_html_output(), "html", "latex"),
-    booktabs = TRUE,
-    linesep = "",
-    caption = ifelse(knitr::is_html_output(), "", "Coerência interna do produto final (dissertações e teses) com as Linhas de Pesquisa.")
-  ) %>% 
-    kableExtra::kable_styling(
-      bootstrap_options = c("basic", "hover", "condensed", "responsive"),
-      latex_options = c("basic", "repeat_header", "HOLD_position"),
-      latex_table_env = "tabularx",
-      full_width = TRUE,
-      position = "center"
-    ) %>% kableExtra::column_spec(column = 1:(1 + length(quadrienal.vigente)+ 1), width = paste0(c(0.65, rep(0.20/(length(quadrienal.vigente)), times = length(quadrienal.vigente)), 0.15)*(21-3-3), "cm"))
-  print(kable_table)
-}
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-
-# Add LaTeX commands for new page and float barrier
-if(knitr::is_latex_output()) {
-  cat('\\newpage')
+    gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+    gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+    gtsummary::bold_labels() %>%
+    tbl_fix_order() %>%
+    gtsummary::add_stat(fns = list("Linha de Pesquisa" ~ my_N1, "Tipo" ~ my_N2)) %>%
+    gtsummary::modify_header(
+      list(
+        add_stat_1 ~ "**Quadriênio**",
+        gtsummary::all_stat_cols() ~ "**{level}**"
+      )
+    ) %>%
+    gtsummary::remove_row_type(variables = c('Linha de Pesquisa'), type = "level", level_value = ("Data1")) %>%
+    gtsummary::remove_row_type(variables = c('Tipo'), type = "level", level_value = ("Data2")) %>%
+    gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+  
+  # Print HTML table
+  if (knitr::is_html_output()) {
+    print(table.2.1.1)
+  }
+  
+  # Print LaTeX table
+  if (knitr::is_latex_output()) {
+    cat('\\FloatBarrier')
+    # Convert gtsummary object to kableExtra object
+    kable_table <- gtsummary::as_kable_extra(
+      x = table.2.1.1,
+      escape = FALSE,
+      format = ifelse(knitr::is_html_output(), "html", "latex"),
+      booktabs = TRUE,
+      linesep = "",
+      caption = ifelse(knitr::is_html_output(), "", "Coerência interna do produto final (dissertações e teses) com as Linhas de Pesquisa.")
+    ) %>% 
+      kableExtra::kable_styling(
+        bootstrap_options = c("basic", "hover", "condensed", "responsive"),
+        latex_options = c("basic", "repeat_header", "HOLD_position"),
+        latex_table_env = "tabularx",
+        full_width = TRUE,
+        position = "center"
+      ) %>% kableExtra::column_spec(column = 1:(1 + length(quadrienal.vigente)+ 1), width = paste0(c(0.65, rep(0.20/(length(quadrienal.vigente)), times = length(quadrienal.vigente)), 0.15)*(21-3-3), "cm"))
+    print(kable_table)
+  }
+  
+  source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+  
+  # Add LaTeX commands for new page and float barrier
+  if(knitr::is_latex_output()) {
+    cat('\\newpage')
+  }
 }
 ```
 
 \blandscape
 
 ```{r 2.1.1-detalhe, eval = has.sucupira.files}
-# Create R Markdown chunks dynamically because projetos can be very large tables
-
-out <- NULL
-
-for (i in 1:length(lista.kw)) {
-  # Define table caption
-  caption <- paste0('Palavras-chave mais frequentes por Linha de Pesquisa - Linhas de Pesquisa: ', toupper(unique(lista.kw[[i]]$`Linha 1`)), ' <> ', toupper(unique(lista.kw[[i]]$`Linha 2`)))
+if (!sjmisc::is_empty(table.bancas.long)) {
+  # Create R Markdown chunks dynamically because projetos can be very large tables
   
-  # Generate R Markdown code for this chunk
-  knit_expanded <- paste0(
-    "\n```{r, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}\n",
-    "cat('\\n\\n<!-- -->\\n\\n')\n",
-    "# print tables\n",
-    "if (knitr::is_html_output()) {\n",
-    "  # use kable for HTML output\n",
-    "  knitr::kable(\n",
-    "    lista.kw[[", i, "]],\n",
-    "    align = 'l',\n",
-    "    escape = FALSE,\n",
-    "    format = 'html',\n",
-    "    booktabs = TRUE,\n",
-    "    linesep = '',\n",
-    "    caption = '", caption, "',\n",
-    "    row.names = FALSE) %>% \n",
-    "    kableExtra::kable_styling(\n",
-    "      bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'),\n",
-    "      full_width = TRUE,\n",
-    "      position = 'center'\n",
-    "    ) %>% \n",
-    "    kableExtra::column_spec(column = 1:ncol(lista.kw[[", i, "]]), width = paste0(c(0.23, 0.23, 0.15, 0.09, 0.09, 0.05, 0.08, 0.08)*(29-3-3), 'cm')) %>% \n",
-    "    kableExtra::column_spec(column = 1, bold = TRUE) %>% \n",
-    "    kableExtra::column_spec(column = 2, bold = TRUE) %>% \n",
-    "    kableExtra::row_spec(row = 0, bold = TRUE)\n",
-    "} else {\n",
-    "  # use tinytable for LaTeX output\n",
-    "  linhas.atual <- data.frame(lista.kw[[", i, "]], check.names = FALSE)\n",
-    "  options(tinytable_print_output = 'latex')\n",
-    "  tinytable::tt(\n",
-    "    linhas.atual,\n",
-    "    width = c(0.23, 0.23, 0.15, 0.09, 0.09, 0.05, 0.08, 0.08)*(29-3-3),\n",
-    "    style = 'bootstrap',\n",
-    "    align = 'l',\n",
-    "    caption = '", caption, "',\n",
-    "    row.names = FALSE\n",
-    "  ) %>% \n",
-    "    tinytable::theme_tt('multipage', rowhead = 1, latex_float = 'H') %>% \n",
-    "    tinytable::style_tt(i = 0, j = 1:ncol(lista.kw[[", i, "]]), bold = TRUE) %>% \n",
-    "    tinytable::style_tt(i = 1:nrow(lista.kw[[", i, "]]), j = 1, bold = TRUE) %>% \n",
-    "    tinytable::style_tt(i = 1:nrow(lista.kw[[", i, "]]), j = 2, bold = TRUE)\n",
-    "}\n",
-    "source('Scripts/fonte-sucupira.R', local = knitr::knit_global())\n",
-    "```"
-  )
+  out <- NULL
   
-  out <- c(out, knit_expanded)
-}
-
-cat("
+  for (i in 1:length(lista.kw)) {
+    # Define table caption
+    caption <- paste0('Palavras-chave mais frequentes por Linha de Pesquisa - Linhas de Pesquisa: ', toupper(unique(lista.kw[[i]]$`Linha 1`)), ' <> ', toupper(unique(lista.kw[[i]]$`Linha 2`)))
+    
+    # Generate R Markdown code for this chunk
+    knit_expanded <- paste0(
+      "\n```{r, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}\n",
+      "cat('\\n\\n<!-- -->\\n\\n')\n",
+      "# print tables\n",
+      "if (knitr::is_html_output()) {\n",
+      "  # use kable for HTML output\n",
+      "  knitr::kable(\n",
+      "    lista.kw[[", i, "]],\n",
+      "    align = 'l',\n",
+      "    escape = FALSE,\n",
+      "    format = 'html',\n",
+      "    booktabs = TRUE,\n",
+      "    linesep = '',\n",
+      "    caption = '", caption, "',\n",
+      "    row.names = FALSE) %>% \n",
+      "    kableExtra::kable_styling(\n",
+      "      bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'),\n",
+      "      full_width = TRUE,\n",
+      "      position = 'center'\n",
+      "    ) %>% \n",
+      "    kableExtra::column_spec(column = 1:ncol(lista.kw[[", i, "]]), width = paste0(c(0.23, 0.23, 0.15, 0.09, 0.09, 0.05, 0.08, 0.08)*(29-3-3), 'cm')) %>% \n",
+      "    kableExtra::column_spec(column = 1, bold = TRUE) %>% \n",
+      "    kableExtra::column_spec(column = 2, bold = TRUE) %>% \n",
+      "    kableExtra::row_spec(row = 0, bold = TRUE)\n",
+      "} else {\n",
+      "  # use tinytable for LaTeX output\n",
+      "  linhas.atual <- data.frame(lista.kw[[", i, "]], check.names = FALSE)\n",
+      "  options(tinytable_print_output = 'latex')\n",
+      "  tinytable::tt(\n",
+      "    linhas.atual,\n",
+      "    width = c(0.23, 0.23, 0.15, 0.09, 0.09, 0.05, 0.08, 0.08)*(29-3-3),\n",
+      "    style = 'bootstrap',\n",
+      "    align = 'l',\n",
+      "    caption = '", caption, "',\n",
+      "    row.names = FALSE\n",
+      "  ) %>% \n",
+      "    tinytable::theme_tt('multipage', rowhead = 1, latex_float = 'H') %>% \n",
+      "    tinytable::style_tt(i = 0, j = 1:ncol(lista.kw[[", i, "]]), bold = TRUE) %>% \n",
+      "    tinytable::style_tt(i = 1:nrow(lista.kw[[", i, "]]), j = 1, bold = TRUE) %>% \n",
+      "    tinytable::style_tt(i = 1:nrow(lista.kw[[", i, "]]), j = 2, bold = TRUE)\n",
+      "}\n",
+      "source('Scripts/fonte-sucupira.R', local = knitr::knit_global())\n",
+      "```"
+    )
+    
+    out <- c(out, knit_expanded)
+  }
+  
+  cat("
 **Parâmetros de análise de frequência de palavras-chave entre Linhas de Pesquisa**:
 
 *G2*: Mede a probabilidade de que duas distribuições de palavras sejam diferentes. Sempre retorna valores positivos. 
@@ -4215,6 +4224,7 @@ Um filtro de significância é aplicado, de modo que apenas palavras com valores
 Fonte: Evert S (2023). corpora: Statistics and Data Sets for Corpus Frequency Data. R package version 0.6,
   <https://CRAN.R-project.org/package=corpora>.
 ")
+}
 ```
 
 <!--- knit those table chunk statements --> 
