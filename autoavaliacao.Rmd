@@ -6795,6 +6795,7 @@ síntese.ano <- dplyr::bind_cols(
       Reddit = as.numeric(metricas_all_ID$cited_by_rdts_count),
       'Stack Exchange' = as.numeric(metricas_all_ID$cited_by_qna_count),
       X = as.numeric(metricas_all_ID$cited_by_tweeters_count),
+      BlueSky = as.numeric(metricas_all_ID$cited_by_bluesky_count),
       Wikipedia = as.numeric(metricas_all_ID$cited_by_wikipedia_count),
       Policies = as.numeric(metricas_all_ID$cited_by_policies_count),
       Patentes = as.numeric(metricas_all_ID$cited_by_patents_count),
