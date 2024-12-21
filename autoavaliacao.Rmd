@@ -3871,8 +3871,16 @@ cat('\n\n')
 sheet <- "TCC - Banca"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
+# get data for the current period
+sucupira <- sucupira.list[as.character(quadrienal.vigente)] %>%
+  plyr::compact()
+
+sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira), check.names = FALSE)
+names(sucupira) <-
+  names(sucupira[[as.character(max(as.numeric(quadrienal.vigente)))]])
+
 # make unique ID
-id.TCC <- sucupira.raw$"Identificador do Trabalho de Conclusão"
+id.TCC <- sucupira$"Identificador do Trabalho de Conclusão"
 id.TCC <- unique(id.TCC)
 
 bancas <- data.frame(
@@ -3913,11 +3921,15 @@ create_keyness_pairs <- function(data, col1, col2) {
   return(kw)
 }
 
+all.kw <- list()
+bancas.with.words <- c()
+table.bancas.long <- data.frame()
+
 if (!sjmisc::is_empty(id.TCC)) {
   # loop over each ID
   for (i in 1:length(id.TCC)) {
     # select current ID
-    banca <- sucupira.raw[sucupira.raw$"Identificador do Trabalho de Conclusão" == id.TCC[i], ]
+    banca <- sucupira[sucupira$"Identificador do Trabalho de Conclusão" == id.TCC[i], ]
     
     # get unique values
     bancas$Ano[i] <- substr(as.Date(unique(banca$"Data da Defesa"), format = "%d/%m/%Y"), 1, 4)
@@ -3973,9 +3985,6 @@ if (!sjmisc::is_empty(id.TCC)) {
   # remove quotes from name
   colnames(all.words) <- gsub("\"", "", colnames(all.words))
   
-  all.kw <- list()
-  bancas.with.words <- c()
-  table.bancas.long <- data.frame()
   # frequency of words in all.words by Linha de Pesquisa
   for (i in 1:dim(all.words)[1]) {
     for (j in 2:dim(all.words)[2]) {
