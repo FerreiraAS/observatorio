@@ -3883,6 +3883,36 @@ bancas <- data.frame(
   check.names = FALSE
 )
 
+create_keyness_pairs <- function(data, col1, col2) {
+  # keep rows where n1 + n2 >= 1
+  data <- data[rowSums(data[, c(col1, col2)]) >= 1, ]
+  
+  n1 <- sum(data[[col1]])
+  n2 <- sum(data[[col2]])
+  
+  kw <- transform(
+    dplyr::select(data, word = word, col1, col2),
+    G2 = corpora::keyness(data[[col1]], n1, data[[col2]], n2, measure = "G2",
+                          conf.level = 0.95, alpha = 0.05, p.adjust = FALSE, lambda = 1),
+    LogRatio = corpora::keyness(data[[col1]], n1, data[[col2]], n2, measure = "LogRatio",
+                                conf.level = 0.95, alpha = 0.05, p.adjust = FALSE, lambda = 1),
+    PositiveLRC = corpora::keyness(data[[col1]], n1, data[[col2]], n2, measure = "PositiveLRC",
+                                   conf.level = 0.95, alpha = 0.05, p.adjust = FALSE, lambda = 1)
+  )
+  
+  kw <- kw[order(-kw$LogRatio), ]
+  
+  # Hide rows with 0 values in measure (significance filter)
+  kw <- kw[kw$G2 != 0 & kw$LogRatio != 0 & kw$PositiveLRC != 0, ]
+  
+  # Format numbers
+  kw$G2 <- format(round(kw$G2, digits = 3), nsmall = 3)
+  kw$LogRatio <- format(round(kw$LogRatio, digits = 3), nsmall = 3)
+  kw$PositiveLRC <- format(round(kw$PositiveLRC, digits = 3), nsmall = 3)
+  
+  return(kw)
+}
+
 if (!sjmisc::is_empty(id.TCC)) {
   # loop over each ID
   for (i in 1:length(id.TCC)) {
@@ -3897,18 +3927,17 @@ if (!sjmisc::is_empty(id.TCC)) {
   }
   # sort by Ano and Titulo
   bancas <- dplyr::arrange(bancas, dplyr::desc(Ano), Título)
-}
-# rename Tipo de trabalho de conclusão para Tipo
-bancas <- dplyr::rename(bancas, Tipo = `Tipo de Trabalho de Conclusão`)
-
-# retain bancas para o quadrienio
-bancas <- bancas[bancas$Ano %in% as.character(quadrienal.vigente), ]
-
-# compare corpora based on Linha de Pesquisa
-
-# create new list with names from each Linhas de Pesquisa
-words <- list()
-if (!sjmisc::is_empty(bancas)) {
+  
+  # rename Tipo de trabalho de conclusão para Tipo
+  bancas <- dplyr::rename(bancas, Tipo = `Tipo de Trabalho de Conclusão`)
+  
+  # retain bancas para o quadrienio
+  bancas <- bancas[bancas$Ano %in% as.character(quadrienal.vigente), ]
+  
+  # compare corpora based on Linha de Pesquisa
+  
+  # create new list with names from each Linhas de Pesquisa
+  words <- list()
   for (i in 1:length(unique(bancas$"Linha de Pesquisa"))) {
     words[[i]] <- unlist(strsplit(bancas$Título[bancas$"Linha de Pesquisa" == unique(bancas$"Linha de Pesquisa")[i]], " "))
     # to lower case
@@ -3927,28 +3956,26 @@ if (!sjmisc::is_empty(bancas)) {
     # sort
     words[[i]] <- sort(words[[i]])
   }
-}
-names(words) <- unique(bancas$"Linha de Pesquisa")
-# resize list elements to largest one
-words <- lapply(words, function(x) {length(x) <- max(lengths(words)); x})
-# convert list to data.frame
-words <- as.data.frame(words, check.names = FALSE)
-
-# create dataframe of all words
-all.words <- data.frame(
-  word = sort(unique(unlist(words)))
-)
-# add columns for each Linha de Pesquisa
-for (i in 1:length(unique(bancas$"Linha de Pesquisa"))) {
-  all.words <- dplyr::mutate(all.words, !!unique(bancas$"Linha de Pesquisa")[i])
-}
-# remove quotes from name
-colnames(all.words) <- gsub("\"", "", colnames(all.words))
-
-all.kw <- list()
-bancas.with.words <- c()
-table.bancas.long <- data.frame()
-if (!sjmisc::is_empty(all.words)) {
+  names(words) <- unique(bancas$"Linha de Pesquisa")
+  # resize list elements to largest one
+  words <- lapply(words, function(x) {length(x) <- max(lengths(words)); x})
+  # convert list to data.frame
+  words <- as.data.frame(words, check.names = FALSE)
+  
+  # create dataframe of all words
+  all.words <- data.frame(
+    word = sort(unique(unlist(words)))
+  )
+  # add columns for each Linha de Pesquisa
+  for (i in 1:length(unique(bancas$"Linha de Pesquisa"))) {
+    all.words <- dplyr::mutate(all.words, !!unique(bancas$"Linha de Pesquisa")[i])
+  }
+  # remove quotes from name
+  colnames(all.words) <- gsub("\"", "", colnames(all.words))
+  
+  all.kw <- list()
+  bancas.with.words <- c()
+  table.bancas.long <- data.frame()
   # frequency of words in all.words by Linha de Pesquisa
   for (i in 1:dim(all.words)[1]) {
     for (j in 2:dim(all.words)[2]) {
@@ -4028,36 +4055,6 @@ if (!sjmisc::is_empty(all.words)) {
   table.bancas.long$Ano <- factor(table.bancas.long$Ano, levels = c(quadrienal.vigente, paste0(
     min(quadrienal.vigente), "-", max(quadrienal.vigente)
   )))
-}
-
-create_keyness_pairs <- function(data, col1, col2) {
-  # keep rows where n1 + n2 >= 1
-  data <- data[rowSums(data[, c(col1, col2)]) >= 1, ]
-
-  n1 <- sum(data[[col1]])
-  n2 <- sum(data[[col2]])
-  
-  kw <- transform(
-    dplyr::select(data, word = word, col1, col2),
-    G2 = corpora::keyness(data[[col1]], n1, data[[col2]], n2, measure = "G2",
-                          conf.level = 0.95, alpha = 0.05, p.adjust = FALSE, lambda = 1),
-    LogRatio = corpora::keyness(data[[col1]], n1, data[[col2]], n2, measure = "LogRatio",
-                                 conf.level = 0.95, alpha = 0.05, p.adjust = FALSE, lambda = 1),
-    PositiveLRC = corpora::keyness(data[[col1]], n1, data[[col2]], n2, measure = "PositiveLRC",
-                                    conf.level = 0.95, alpha = 0.05, p.adjust = FALSE, lambda = 1)
-  )
-  
-  kw <- kw[order(-kw$LogRatio), ]
-  
-  # Hide rows with 0 values in measure (significance filter)
-  kw <- kw[kw$G2 != 0 & kw$LogRatio != 0 & kw$PositiveLRC != 0, ]
-  
-  # Format numbers
-  kw$G2 <- format(round(kw$G2, digits = 3), nsmall = 3)
-  kw$LogRatio <- format(round(kw$LogRatio, digits = 3), nsmall = 3)
-  kw$PositiveLRC <- format(round(kw$PositiveLRC, digits = 3), nsmall = 3)
-  
-  return(kw)
 }
 
 # gt summary table per year of % de bancas with words
