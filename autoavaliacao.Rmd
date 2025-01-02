@@ -27,7 +27,7 @@ link-citations: true
 always_allow_html: true
 tables: true
 params:
-  quadrienal.vigente: 2021;2022;2023;2024
+  quadrienal.vigente: 2013;2014;2015;2016
 ---
 
 <!--set up-->
@@ -45,6 +45,7 @@ knitr::opts_chunk$set(
   webshot = "webshot",
   dev = "png"
 )
+nome.IES <- "NOME"
 ```
 
 <!--load caches-->
@@ -526,7 +527,7 @@ for (i in 1:dim(table.ac)[1]) {
 }
 
 table.ac.long <-
-  tidyr::gather(table.ac[, -1],
+  tidyr::gather(dplyr::select(table.ac, -1),
                 "Ano",
                 "Área de Concentração",
                 colnames(table.ac)[-1],
@@ -785,7 +786,7 @@ for (i in 1:dim(table.lp)[1]) {
 }
 
 table.lp.long <-
-  tidyr::gather(table.lp[, -1],
+  tidyr::gather(dplyr::select(table.lp, -1),
                 "Ano",
                 "Linha de Pesquisa",
                 colnames(table.lp)[-1],
@@ -1042,7 +1043,7 @@ for (i in 1:dim(table.pp)[1]) {
 }
 
 table.pp.long <-
-  tidyr::gather(table.pp[, -1],
+  tidyr::gather(dplyr::select(table.pp, -1),
                 "Ano",
                 "Nome do Projeto de Pesquisa",
                 colnames(table.pp)[-1],
@@ -1121,7 +1122,7 @@ for (i in 1:dim(table.pp.nt)[1]) {
 }
 
 table.pp.nt.long <-
-  tidyr::gather(table.pp.nt[, -1],
+  tidyr::gather(dplyr::select(table.pp.nt, -1),
                 "Ano",
                 "Nome do Projeto de Pesquisa",
                 colnames(table.pp.nt)[-1],
@@ -1195,7 +1196,7 @@ for (i in 1:dim(table.pp.membro)[1]) {
 }
 
 table.pp.membro.long <-
-  tidyr::gather(table.pp.membro[, -1],
+  tidyr::gather(dplyr::select(table.pp.membro, -1),
                 "Ano",
                 "Nome do Projeto de Pesquisa",
                 colnames(table.pp.membro)[-1],
@@ -1276,7 +1277,7 @@ for (i in 1:dim(table.pp.financiamento)[1]) {
 }
 
 table.pp.financiamento.long <-
-  tidyr::gather(table.pp.financiamento[, -1],
+  tidyr::gather(dplyr::select(table.pp.financiamento, -1),
                 "Ano",
                 "Nome do Financiador",
                 colnames(table.pp.financiamento)[-1],
@@ -1357,7 +1358,7 @@ for (i in 1:dim(table.pp.financiamento)[1]) {
 }
 
 table.pp.financiamento.long <-
-  tidyr::gather(table.pp.financiamento[, -1],
+  tidyr::gather(dplyr::select(table.pp.financiamento, -1),
                 "Ano",
                 "Nome do Financiador",
                 colnames(table.pp.financiamento)[-1],
@@ -2370,7 +2371,7 @@ for (i in 1:length(docentes)) {
 }
 
 table.doc.long <-
-  tidyr::gather(table.doc[, -1],
+  tidyr::gather(dplyr::select(table.doc, -1),
                 "Ano",
                 "Categoria",
                 colnames(table.doc)[-1],
@@ -2472,7 +2473,7 @@ for (i in 1:length(docentes)) {
 }
 
 table.doc.long <-
-  tidyr::gather(table.doc[, -1],
+  tidyr::gather(dplyr::select(table.doc, -1),
                 "Ano",
                 "Tipo vínculo",
                 colnames(table.doc)[-1],
@@ -2571,7 +2572,7 @@ for (i in 1:length(docentes)) {
 }
 
 table.doc.long <-
-  tidyr::gather(table.doc[, -1],
+  tidyr::gather(dplyr::select(table.doc, -1),
                 "Ano",
                 "Regime de Trabalho",
                 colnames(table.doc)[-1],
@@ -2674,7 +2675,12 @@ for (i in 1:length(docentes)) {
   }
 }
 
-table.doc.long <- tidyr::gather(table.doc[, -1], "Ano", "Carga Horária PG (Semanal)", colnames(table.doc)[-1], factor_key=TRUE)
+table.doc.long <-
+  tidyr::gather(dplyr::select(table.doc, -1),
+                "Ano",
+                "Carga Horária PG (Semanal)",
+                colnames(table.doc)[-1],
+                factor_key = TRUE)
 
 table.doc.long <- rbind(
   table.doc.long,
@@ -2831,8 +2837,7 @@ for (i in 1:length(docentes)) {
 }
 
 table.doc.long <-
-  tidyr::gather(
-    table.doc[, -1],
+  tidyr::gather(dplyr::select(table.doc, -1),
     "Ano",
     "Área de Conhecimento Titulação",
     colnames(table.doc)[-1],
@@ -2939,8 +2944,7 @@ for (i in 1:length(docentes)) {
 table.doc <- table.doc[complete.cases(table.doc), ]
 
 table.doc.long <-
-  tidyr::gather(
-    table.doc[, -1],
+  tidyr::gather(dplyr::select(table.doc, -1),
     "Ano",
     "Área de Conhecimento Titulação",
     colnames(table.doc)[-1],
@@ -3313,7 +3317,7 @@ for (i in 1:dim(table.cap.aux)[1]) {
 }
 
 table.cap.aux.long <-
-  tidyr::gather(table.cap.aux[, -1],
+  tidyr::gather(dplyr::select(table.cap.aux, -1),
                 "Ano",
                 "Nome do Membro do Projeto",
                 colnames(table.cap.aux)[-1],
@@ -3406,7 +3410,7 @@ for (i in 1:dim(table.cap.bolsa)[1]) {
 }
 
 table.cap.bolsa.long <-
-  tidyr::gather(table.cap.bolsa[, -1],
+  tidyr::gather(dplyr::select(table.cap.bolsa, -1),
                 "Ano",
                 "Nome do Membro do Projeto",
                 colnames(table.cap.bolsa)[-1],
@@ -3513,7 +3517,7 @@ for (i in 1:dim(table.cap.pq)[1]) {
 }
 
 table.cap.pq.long <-
-  tidyr::gather(table.cap.pq[, -1],
+  tidyr::gather(dplyr::select(table.cap.pq, -1),
                 "Ano",
                 "Modalidade da Bolsa CNPq",
                 colnames(table.cap.pq)[-1],
@@ -4382,8 +4386,8 @@ for(i in 1:dim(table.bib)[1]) {
   }
 }
 
-table.bib.long <- tidyr::gather(
-  table.bib[, -1],
+table.bib.long <-
+  tidyr::gather(dplyr::select(table.bib, -1),
   "Ano",
   "Nome da Produção",
   colnames(table.bib)[-1],
@@ -4467,8 +4471,8 @@ for(i in 1:dim(table.nat)[1]) {
   }
 }
 
-table.nat.long <- tidyr::gather(
-  table.nat[, -1],
+table.nat.long <-
+  tidyr::gather(dplyr::select(table.nat, -1),
   "Ano",
   "Natureza",
   colnames(table.nat)[-1],
@@ -4552,8 +4556,8 @@ for(i in 1:dim(table.local)[1]) {
   }
 }
 
-table.local.long <- tidyr::gather(
-  table.local[, -1],
+table.local.long <-
+  tidyr::gather(dplyr::select(table.local, -1),
   "Ano",
   "País",
   colnames(table.local)[-1],
@@ -4658,8 +4662,8 @@ for(i in 1:dim(table.disc)[1]) {
   }
 }
 
-table.disc.long <- tidyr::gather(
-  table.disc[, -1],
+table.disc.long <-
+  tidyr::gather(dplyr::select(table.disc, -1),
   "Ano",
   "Discentes",
   colnames(table.disc)[-1],
@@ -4736,8 +4740,8 @@ for(i in 1:dim(table.nivel)[1]) {
   }
 }
 
-table.nivel.long <- tidyr::gather(
-  table.nivel[, -1],
+table.nivel.long <-
+  tidyr::gather(dplyr::select(table.nivel, -1),
   "Ano",
   "Nível",
   colnames(table.nivel)[-1],
@@ -5679,7 +5683,7 @@ for (i in 1:dim(table.doc)[1]) {
 }
 
 table.doc.long <-
-  tidyr::gather(table.doc[, -1],
+  tidyr::gather(dplyr::select(table.doc, -1),
                 "Ano",
                 "Nome do Membro do Projeto",
                 colnames(table.doc)[-1],
@@ -6060,8 +6064,8 @@ for(i in 1:dim(table.total)[1]) {
   }
 }
 
-table.total.long <- tidyr::gather(
-  table.total[, -1],
+table.total.long <-
+  tidyr::gather(dplyr::select(table.total, -1),
   "Ano",
   "Tipo de Produção",
   colnames(table.total)[-1],
@@ -6143,8 +6147,8 @@ for(i in 1:dim(table.prd)[1]) {
   }
 }
 
-table.prd.long <- tidyr::gather(
-  table.prd[, -1],
+table.prd.long <-
+  tidyr::gather(dplyr::select(table.prd, -1),
   "Ano",
   "Tipo de Produção",
   colnames(table.prd)[-1],
@@ -6229,8 +6233,8 @@ for(i in 1:dim(table.bib)[1]) {
   }
 }
 
-table.bib.long <- tidyr::gather(
-  table.bib[, -1],
+table.bib.long <-
+  tidyr::gather(dplyr::select(table.bib, -1),
   "Ano",
   "Nome da Produção",
   colnames(table.bib)[-1],
@@ -6315,8 +6319,8 @@ for(i in 1:dim(table.tec)[1]) {
   }
 }
 
-table.tec.long <- tidyr::gather(
-  table.tec[, -1],
+table.tec.long <-
+  tidyr::gather(dplyr::select(table.tec, -1),
   "Ano",
   "Subtipo de Produção",
   colnames(table.tec)[-1],
@@ -6398,16 +6402,16 @@ for(i in 1:dim(table.tcc)[1]) {
   }
 }
 
-table.tcc.long <- tidyr::gather(
-  table.tcc[, -1],
+table.tcc.long <-
+  tidyr::gather(dplyr::select(table.tcc, -1),
   "Ano",
   "Subtipo de Produção",
   colnames(table.tec)[-1],
   factor_key = TRUE
 )
 
-table.tcc.long <- tidyr::gather(
-  table.tcc[, -1],
+table.tcc.long <-
+  tidyr::gather(dplyr::select(table.tcc, -1),
   "Ano",
   "Produção vinculada a TCC concluído",
   colnames(table.tcc)[-1],
@@ -6489,8 +6493,8 @@ for(i in 1:dim(table.ac)[1]) {
   }
 }
 
-table.ac.long <- tidyr::gather(
-  table.ac[, -1],
+table.ac.long <-
+  tidyr::gather(dplyr::select(table.ac, -1),
   "Ano",
   "Área de Concentração",
   colnames(table.ac)[-1],
@@ -6572,8 +6576,8 @@ for(i in 1:dim(table.lp)[1]) {
   }
 }
 
-table.lp.long <- tidyr::gather(
-  table.lp[, -1],
+table.lp.long <-
+  tidyr::gather(dplyr::select(table.lp, -1),
   "Ano",
   "Linha de Pesquisa",
   colnames(table.lp)[-1],
@@ -6655,8 +6659,8 @@ for(i in 1:dim(table.aut)[1]) {
   }
 }
 
-table.aut.long <- tidyr::gather(
-  table.aut[, -1],
+table.aut.long <-
+  tidyr::gather(dplyr::select(table.aut, -1),
   "Ano",
   "Categoria do Autor Principal",
   colnames(table.aut)[-1],

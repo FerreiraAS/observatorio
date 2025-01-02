@@ -711,17 +711,17 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 ### **Matriculados** {#matriculados .tabset}
 
-```{r discentes-inscritos, eval = has.sucupira.files}
+```{r discentes-matriculados, eval = has.sucupira.files}
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
-
-# periodo max
-periodo <- as.numeric(format(Sys.Date(), "%Y"))
 
 # discentes
 sheet <- "Discentes - Orientadores"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
+
+# periodo max
+periodo <- as.numeric(max(as.numeric(names(sucupira.list))))
 
 # get egressos for the current period
 discentes <- sucupira.list[as.character(periodo)] %>%
@@ -815,7 +815,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
 # periodo max
-periodo <- as.numeric(format(Sys.Date(), "%Y"))
+periodo <- as.numeric(max(as.numeric(names(sucupira.list))))
 
 # egressos
 sheet <- "Discentes - Orientadores"
