@@ -1136,7 +1136,7 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # get only last data available
-discentes <- sucupira.list[[length(anos)]]
+discentes <- sucupira.raw
 
 # dplyr::select students that are not matriculated or have already graduated
 discentes <- discentes[discentes$`Situação Discente` %in% c("DESLIGADO", "ABANDONOU"), ]

@@ -776,7 +776,7 @@ metricas_all <-
   as.data.frame(check.names = FALSE)
 ```
 
-## **Gravar .TSV**
+## **Gravar TSV**
 
 ```{r save-tsv, eval = FALSE}
 # Write data to TSV file
@@ -801,17 +801,9 @@ try(write.table(
 silent = TRUE)
 ```
 
-## **Session info**
-
-```{r session-info}
-sessioninfo::session_info() %>%
-  details::details(summary = 'Current session info',
-                   open = FALSE)
-```
-
 ## **Relatórios de autoavaliação**
 
-```{r autoavaliacao, eval = TRUE}
+```{r autoavaliacao, echo = FALSE, include = FALSE, eval = TRUE}
 # Define periods
 periodos <- c("2013-2016", "2017-2020", "2021-2024")
 
@@ -830,6 +822,8 @@ periodos <- names(spam.periodos)[sapply(spam.periodos, function(x) any(x %in% an
 
 # Rmd files
 for (periodo in periodos) {
+  # Clean metadata
+  knitr::knit_meta(class = NULL, clean = TRUE)
   # Knit Rmd file
   rmarkdown::render(
     input = "autoavaliacao.Rmd",
@@ -840,4 +834,12 @@ for (periodo in periodos) {
     )
   )
 }
+```
+
+## **Session info**
+
+```{r session-info}
+sessioninfo::session_info() %>%
+  details::details(summary = 'Current session info',
+                   open = FALSE)
 ```
