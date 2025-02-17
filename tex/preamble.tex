@@ -71,6 +71,10 @@
 \newcommand{\EnableFootNotes}{\LetLtxMacro\footnote\Oldfootnote}
 \newcommand{\DisableFootNotes}{\renewcommand{\footnote}[2][]{\relax}}
 
+% to Portuguese in long tables
+\DefTblrTemplate{contfoot-text}{default}{Continuado na próxima página}
+\DefTblrTemplate{conthead-text}{default}{(Continuado)}
+
 % Watermark
 % \usepackage{draftwatermark}
 % \SetWatermarkLightness{0.9}
