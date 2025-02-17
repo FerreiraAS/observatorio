@@ -6005,23 +6005,40 @@ sucupira.df.princ <- sucupira.df.princ[sucupira.df.princ$`Situação Discente` =
 sucupira.df.princ <- sucupira.df.princ %>%
   dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
-# Print tables
-table.princ.gt <- sucupira.df.princ |>
-  dplyr::select('Anos', 'Nome do Orientador', 'Nível Discente') |>
-  gtsummary::tbl_strata(
-    strata = 'Nível Discente',
-    .tbl_fun =
-      ~ .x |>
-      gtsummary::tbl_summary(
-        by = Anos,
-        statistic = list(gtsummary::all_categorical() ~ "{n}"),
-        missing = "no",
-        digits = gtsummary::everything() ~ 0,
-        sort = gtsummary::all_categorical() ~ "alphanumeric"
-      ) %>%
-      gtsummary::modify_header(label = "**Nome do Orientador**"),
-    .header = paste0("**{strata}**")
-  )
+# check nlevels of Nível Discente
+if (nlevels(sucupira.df.princ$`Nível Discente`) == 1) {
+  # Mestrado OU Doutorado
+  # Print tables
+  table.princ.gt <- sucupira.df.princ |>
+    dplyr::select('Anos', 'Nome do Orientador', 'Nível Discente') |>
+    gtsummary::tbl_summary(
+      by = Anos,
+      statistic = list(gtsummary::all_categorical() ~ "{n}"),
+      missing = "no",
+      digits = gtsummary::everything() ~ 0,
+      sort = gtsummary::all_categorical() ~ "alphanumeric"
+    ) %>%
+    gtsummary::modify_header(label = "**Nome do Orientador**")
+} else {
+  # Mestrado & Doutorado
+  # Print tables
+  table.princ.gt <- sucupira.df.princ |>
+    dplyr::select('Anos', 'Nome do Orientador', 'Nível Discente') |>
+    gtsummary::tbl_strata(
+      strata = 'Nível Discente',
+      .tbl_fun =
+        ~ .x |>
+        gtsummary::tbl_summary(
+          by = Anos,
+          statistic = list(gtsummary::all_categorical() ~ "{n}"),
+          missing = "no",
+          digits = gtsummary::everything() ~ 0,
+          sort = gtsummary::all_categorical() ~ "alphanumeric"
+        ) %>%
+        gtsummary::modify_header(label = "**Nome do Orientador**"),
+      .header = paste0("**{strata}**")
+    )
+}
 
 # Print HTML table
 if (knitr::is_html_output()) {
@@ -6083,23 +6100,40 @@ sucupira.df.princ <- sucupira.df.princ[sucupira.df.princ$`Situação Discente` =
 sucupira.df.princ <- sucupira.df.princ %>%
   dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
-# Print tables
-table.princ.gt <- sucupira.df.princ |>
-  dplyr::select('Anos', 'Nome do Orientador', 'Nível Discente') |>
-  gtsummary::tbl_strata(
-    strata = 'Nível Discente',
-    .tbl_fun =
-      ~ .x |>
-      gtsummary::tbl_summary(
-        by = Anos,
-        statistic = list(gtsummary::all_categorical() ~ "{n}"),
-        missing = "no",
-        digits = gtsummary::everything() ~ 0,
-        sort = gtsummary::all_categorical() ~ "alphanumeric"
-      ) %>%
-      gtsummary::modify_header(label = "**Nome do Orientador**"),
-    .header = paste0("**{strata}**")
-  )
+# check nlevels of Nível Discente
+if (nlevels(sucupira.df.princ$`Nível Discente`) == 1) {
+  # Mestrado OU Doutorado
+  # Print tables
+  table.princ.gt <- sucupira.df.princ |>
+    dplyr::select('Anos', 'Nome do Orientador', 'Nível Discente') |>
+    gtsummary::tbl_summary(
+      by = Anos,
+      statistic = list(gtsummary::all_categorical() ~ "{n}"),
+      missing = "no",
+      digits = gtsummary::everything() ~ 0,
+      sort = gtsummary::all_categorical() ~ "alphanumeric"
+    ) %>%
+    gtsummary::modify_header(label = "**Nome do Orientador**")
+} else {
+  # Mestrado & Doutorado
+  # Print tables
+  table.princ.gt <- sucupira.df.princ |>
+    dplyr::select('Anos', 'Nome do Orientador', 'Nível Discente') |>
+    gtsummary::tbl_strata(
+      strata = 'Nível Discente',
+      .tbl_fun =
+        ~ .x |>
+        gtsummary::tbl_summary(
+          by = Anos,
+          statistic = list(gtsummary::all_categorical() ~ "{n}"),
+          missing = "no",
+          digits = gtsummary::everything() ~ 0,
+          sort = gtsummary::all_categorical() ~ "alphanumeric"
+        ) %>%
+        gtsummary::modify_header(label = "**Nome do Orientador**"),
+      .header = paste0("**{strata}**")
+    )
+}
 
 # Print HTML table
 if (knitr::is_html_output()) {
