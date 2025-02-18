@@ -206,13 +206,14 @@ for (j in 1:length(abas)) {
     cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>'
     )
   }
-  if (knitr::is_latex_output()) {
-    cat("\\newpage")
-  }
 }
 ```
 
 <br>
+
+```{=latex}
+\newpage
+```
 
 ```{r, eval = all(knitr::is_html_output(), has.sucupira.files)}
 cat("## **Dados do Coleta", paste0(quadrienal.vigente[1], "-", quadrienal.vigente[length(quadrienal.vigente)], "** {#coleta .tabset}"))
@@ -3686,9 +3687,9 @@ if (knitr::is_latex_output() && !sjmisc::is_empty(table.cap.pq)) {
       position = "center"
     ) %>% kableExtra::column_spec(column = 1:(1 + length(quadrienal.vigente)+ 1 + 1), width = paste0(c(0.50, rep(0.20/(length(quadrienal.vigente)), times = length(quadrienal.vigente)), 0.15, 0.15)*(21-3-3), "cm"))
   print(kable_table)
+  
+  source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 }
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 # Add LaTeX commands for new page and float barrier
 if(knitr::is_latex_output() && !sjmisc::is_empty(table.cap.pq)) {
@@ -3912,7 +3913,13 @@ for (j in 1:length(abas)) {
 }
 ```
 
+```{=latex}
+\newpage
+```
+
 <br>
+
+\blandscape
 
 ## **2. Formação** {#formacao .tabset}
 
@@ -4214,8 +4221,6 @@ if (!sjmisc::is_empty(table.bancas.long)) {
   }
 }
 ```
-
-\blandscape
 
 ```{r 2.1.1-detalhe, eval = has.sucupira.files}
 if (!sjmisc::is_empty(table.bancas.long)) {
@@ -5339,7 +5344,7 @@ if (knitr::is_latex_output()) {
       latex_table_env = "tabularx",
       full_width = TRUE,
       position = "center"
-    ) %>% kableExtra::column_spec(column = 1:(1 + length(quadrienal.vigente)+ 1), width = paste0(c(0.65, rep(0.20/(length(quadrienal.vigente)), times = length(quadrienal.vigente)), 0.15)*(21-3-3), "cm"))
+    ) %>% kableExtra::column_spec(column = 1:(1 + length(unique(table.continuada.part$Ano))+ 1), width = paste0(c(0.65, rep(0.20/(length(quadrienal.vigente)), times = length(unique(table.continuada.part$Ano))), 0.15)*(21-3-3), "cm"))
   print(kable_table)
 }
 
@@ -5398,6 +5403,8 @@ cat('\n\n')
 ```
 
 <br>
+
+\blandscape
 
 ```{r 2-5-1, eval = knitr::is_html_output()}
 cat("### **2.5.1**")
@@ -5511,7 +5518,7 @@ if (knitr::is_latex_output()) {
       latex_table_env = "tabularx",
       full_width = TRUE,
       position = "center"
-    ) %>% kableExtra::column_spec(column = 1:(1 + length(unique(turmas$"Período/Ano"))), width = paste0(c(0.15, rep(0.85/(length(unique(turmas$"Período/Ano"))), times = length(unique(turmas$"Período/Ano"))))*(21-3-3), "cm"))
+    ) %>% kableExtra::column_spec(column = 1:(1 + length(unique(turmas$"Período/Ano"))), width = paste0(c(0.15, rep(0.85/(length(unique(turmas$"Período/Ano"))), times = length(unique(turmas$"Período/Ano"))))*(29-3-3), "cm"))
   print(kable_table)
 }
 
@@ -5520,7 +5527,6 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 # Add LaTeX commands for new page and float barrier
 if(knitr::is_latex_output()) {
   cat('\\newpage')
-  cat('\\blandscape')
 }
 
 # generate table (total by year)
@@ -5576,7 +5582,6 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 if(knitr::is_latex_output()) {
   cat('\\newpage')
 }
-
 
 # get turmas by responsável and categoria Docente
 turmas.doc <- turmas[turmas$Responsável == "Sim" & turmas$Categoria == "Docente", ]
@@ -5700,9 +5705,11 @@ if (knitr::is_latex_output() && !sjmisc::is_empty(turmas.posdoc)) {
 # Add LaTeX commands for new page and float barrier
 if(knitr::is_latex_output() && !sjmisc::is_empty(turmas.posdoc)) {
   cat('\\newpage')
-  cat('\\elandscape')
 }
+
 ```
+
+\elandscape
 
 <br>
 
@@ -5939,6 +5946,8 @@ if(knitr::is_latex_output()) {
 
 <br>
 
+\blandscape
+
 ```{r 2-5-3, eval = knitr::is_html_output()}
 cat("### **2.5.3**")
 cat('\n\n')
@@ -5992,6 +6001,12 @@ sucupira.df.orient <- sucupira.df.orient %>%
   )
 sucupira.df.orient$`Nome do Orientador` <- tools::toTitleCase(tolower(sucupira.df.orient$`Nome do Orientador`))
 sucupira.df.orient$`Nível Discente` <- tools::toTitleCase(tolower(sucupira.df.orient$`Nível Discente`))
+
+# check for missing docentes.quadrienio
+sucupira.df.orient$"Nome do Orientador" <- factor(
+  sucupira.df.orient$"Nome do Orientador",
+  levels = sort(unique(c("Docentes", levels(sucupira.df.orient$"Nome do Orientador"), docentes.quadrienio)))
+)
 ```
 
 ```{r 2-5-3-orient-matr, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
@@ -6020,10 +6035,8 @@ if (nlevels(sucupira.df.princ$`Nível Discente`) != 0) {
         sort = gtsummary::all_categorical() ~ "alphanumeric"
       ) %>%
       gtsummary::modify_header(label = "**Nome do Orientador**") %>%
-      # remove header row
-      gtsummary::modify_table_body(
-        ~ .x[-1, ]
-      )
+      gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+      gtsummary::bold_labels()
   } else if (nlevels(sucupira.df.princ$`Nível Discente`) == 2) {
     # Mestrado & Doutorado
     # Print tables
@@ -6040,9 +6053,9 @@ if (nlevels(sucupira.df.princ$`Nível Discente`) != 0) {
             digits = gtsummary::everything() ~ 0,
             sort = gtsummary::all_categorical() ~ "alphanumeric"
           ) %>%
-          gtsummary::modify_header(label = "**Nome do Orientador**")  %>%
-          # remove header row
-          gtsummary::modify_table_body(~ .x[-1, ]),
+          gtsummary::modify_header(label = "**Nome do Orientador**") %>%
+          gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+          gtsummary::bold_labels(),
         .header = paste0("**{strata}**")
       )
   }
@@ -6070,7 +6083,7 @@ if (nlevels(sucupira.df.princ$`Nível Discente`) != 0) {
         latex_table_env = "tabularx",
         full_width = TRUE,
         position = "center"
-      ) %>% kableExtra::column_spec(column = 1:(1 + length(quadrienal.vigente)+ 1), width = paste0(c(0.65, rep(0.20/(length(quadrienal.vigente)), times = length(quadrienal.vigente)), 0.15)*(21-3-3), "cm"))
+      ) %>% kableExtra::column_spec(column = 1:(1 + length(unique(sucupira.df.princ$Anos)*nlevels(sucupira.df.princ$"Nível Discente"))), width = paste0(c(0.65, rep(0.20/(length(unique(sucupira.df.princ$Anos))), times = length(unique(sucupira.df.princ$Anos)*nlevels(sucupira.df.princ$"Nível Discente"))), 0.15)*(21-3-3), "cm"))
     print(kable_table)
   }
   
@@ -6078,7 +6091,7 @@ if (nlevels(sucupira.df.princ$`Nível Discente`) != 0) {
 }
 
 # Add LaTeX commands for new page and float barrier
-if(knitr::is_latex_output() && !sjmisc::is_empty(sucupira.df.princ)) {
+if(knitr::is_latex_output()) {
   cat('\\newpage')
 }
 ```
@@ -6123,10 +6136,8 @@ if (nlevels(sucupira.df.princ$`Nível Discente`) != 0) {
         sort = gtsummary::all_categorical() ~ "alphanumeric"
       ) %>%
       gtsummary::modify_header(label = "**Nome do Orientador**") %>%
-      # remove header row
-      gtsummary::modify_table_body(
-        ~ .x[-1, ]
-      )
+      gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+      gtsummary::bold_labels()
   } else if (nlevels(sucupira.df.princ$`Nível Discente`) == 2) {
     # Mestrado & Doutorado
     # Print tables
@@ -6143,9 +6154,9 @@ if (nlevels(sucupira.df.princ$`Nível Discente`) != 0) {
             digits = gtsummary::everything() ~ 0,
             sort = gtsummary::all_categorical() ~ "alphanumeric"
           ) %>%
-          gtsummary::modify_header(label = "**Nome do Orientador**")  %>%
-          # remove header row
-          gtsummary::modify_table_body(~ .x[-1, ]),
+          gtsummary::modify_header(label = "**Nome do Orientador**") %>%
+          gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+          gtsummary::bold_labels(),
         .header = paste0("**{strata}**")
       )
   }
@@ -6208,6 +6219,8 @@ cat('\n\n')
 \newpage
 \FloatBarrier
 ```
+
+\elandscape
 
 <br>
 
