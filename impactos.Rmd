@@ -687,7 +687,7 @@ for(i in 1:dim(table.prd)[1]) {
     ano <- periodo.vigente[j]
     table.prd[i, j + 1] <- ifelse(
       id %in% sucupira.df$`ID da Produção`[sucupira.df$Anos == ano],
-      sucupira.df$`Tipo de Produção`[match(table.prd$`ID da Produção`[i], sucupira.df$`ID da Produção`)],
+      sucupira.df$`Tipo de Produção`[match(id, sucupira.df$`ID da Produção`)],
       NA
     )
   }
@@ -773,7 +773,7 @@ for(i in 1:dim(table.bib)[1]) {
     ano <- periodo.vigente[j]
     table.bib[i, j + 1] <- ifelse(
       id %in% sucupira.df.bib$`ID da Produção`[sucupira.df.bib$Anos == ano],
-      sucupira.df.bib$`Subtipo de Produção`[match(sucupira.df.bib$`ID da Produção`[i], sucupira.df.bib$`ID da Produção`)],
+      sucupira.df.bib$`Subtipo de Produção`[match(id, sucupira.df.bib$`ID da Produção`)],
       NA
     )
   }
@@ -859,7 +859,7 @@ for(i in 1:dim(table.tec)[1]) {
     ano <- periodo.vigente[j]
     table.tec[i, j + 1] <- ifelse(
       id %in% sucupira.df.tec$`ID da Produção`[sucupira.df.tec$Anos == ano],
-      sucupira.df.tec$`Subtipo de Produção`[match(sucupira.df.tec$`ID da Produção`[i], sucupira.df.tec$`ID da Produção`)],
+      sucupira.df.tec$`Subtipo de Produção`[match(id, sucupira.df.tec$`ID da Produção`)],
       NA
     )
   }
@@ -942,7 +942,7 @@ for(i in 1:dim(table.tcc)[1]) {
     ano <- periodo.vigente[j]
     table.tcc[i, j + 1] <- ifelse(
       id %in% sucupira.df$`ID da Produção`[sucupira.df$Anos == ano],
-      sucupira.df$`Produção vinculada a TCC concluído`[match(sucupira.df$`ID da Produção`[i], sucupira.df$`ID da Produção`)],
+      sucupira.df$`Produção vinculada a TCC concluído`[match(id, sucupira.df$`ID da Produção`)],
       NA
     )
   }
@@ -1033,7 +1033,7 @@ for(i in 1:dim(table.ac)[1]) {
     ano <- periodo.vigente[j]
     table.ac[i, j + 1] <- ifelse(
       id %in% sucupira.df$`ID da Produção`[sucupira.df$Anos == ano],
-      sucupira.df$`Área de Concentração`[match(sucupira.df$`ID da Produção`[i], sucupira.df$`ID da Produção`)],
+      sucupira.df$`Área de Concentração`[match(id, sucupira.df$`ID da Produção`)],
       NA
     )
   }
@@ -1116,7 +1116,7 @@ for(i in 1:dim(table.lp)[1]) {
     ano <- periodo.vigente[j]
     table.lp[i, j + 1] <- ifelse(
       id %in% sucupira.df$`ID da Produção`[sucupira.df$Anos == ano],
-      sucupira.df$`Linha de Pesquisa`[match(sucupira.df$`ID da Produção`[i], sucupira.df$`ID da Produção`)],
+      sucupira.df$`Linha de Pesquisa`[match(id, sucupira.df$`ID da Produção`)],
       NA
     )
   }
@@ -1199,7 +1199,7 @@ for(i in 1:dim(table.aut)[1]) {
     ano <- periodo.vigente[j]
     table.aut[i, j + 1] <- ifelse(
       id %in% sucupira.df$`ID da Produção`[sucupira.df$Anos == ano],
-      sucupira.df$`Categoria do Autor Principal`[match(sucupira.df$`ID da Produção`[i], sucupira.df$`ID da Produção`)],
+      sucupira.df$`Categoria do Autor Principal`[match(id, sucupira.df$`ID da Produção`)],
       NA
     )
   }
@@ -1321,11 +1321,15 @@ síntese.ano <- dplyr::bind_cols(
       Blogs = as.numeric(metricas_all_ID$cited_by_feeds_count),
       'Google+' = as.numeric(metricas_all_ID$cited_by_gplus_count),
       Notícias = as.numeric(metricas_all_ID$cited_by_msm_count),
-      Posts = as.numeric(metricas_all_ID$cited_by_posts_count),
       Reddit = as.numeric(metricas_all_ID$cited_by_rdts_count),
+      'Stack Exchange' = as.numeric(metricas_all_ID$cited_by_qna_count),
       X = as.numeric(metricas_all_ID$cited_by_tweeters_count),
-      'YouTube/Vimeo' = as.numeric(metricas_all_ID$cited_by_videos_count),
+      BlueSky = as.numeric(metricas_all_ID$cited_by_bluesky_count),
+      Wikipedia = as.numeric(metricas_all_ID$cited_by_wikipedia_count),
+      Policies = as.numeric(metricas_all_ID$cited_by_policies_count),
       Patentes = as.numeric(metricas_all_ID$cited_by_patents_count),
+      'YouTube/Vimeo' = as.numeric(metricas_all_ID$cited_by_videos_count),
+      Posts = as.numeric(metricas_all_ID$cited_by_posts_count),
       Mendeley = as.numeric(metricas_all_ID$mendeley),
       'Acesso aberto' = factor(as.logical(metricas_all_ID$is_oa), levels = c(TRUE, FALSE), labels = c("Sim", "Não"))
           )
@@ -1343,11 +1347,14 @@ síntese.ano <- síntese.ano %>%
     "Blogs",
     "Google+",
     "Notícias",
-    "Posts",
     "Reddit",
+    "Stack Exchange",
     "X",
-    "YouTube/Vimeo",
+    "Wikipedia",
+    "Policies",
     "Patentes",
+    "YouTube/Vimeo",
+    "Posts",
     "Mendeley",
     "Acesso aberto"
     ))
@@ -1374,11 +1381,14 @@ table.3.2.1 <-
       "Blogs" ~ "continuous",
       "Google+" ~ "continuous",
       "Notícias" ~ "continuous",
-      "Posts" ~ "continuous",
       "Reddit" ~ "continuous",
+      "Stack Exchange" ~ "continuous",
       "X" ~ "continuous",
-      "YouTube/Vimeo" ~ "continuous",
+      "Wikipedia" ~ "continuous",
+      "Policies" ~ "continuous",
       "Patentes" ~ "continuous",
+      "YouTube/Vimeo" ~ "continuous",
+      "Posts" ~ "continuous",
       "Mendeley" ~ "continuous",
       "Acesso aberto" ~ "categorical"
       ),
@@ -1397,12 +1407,16 @@ table.3.2.1 <-
       "Blogs" ~ 0,
       "Google+" ~ 0,
       "Notícias" ~ 0,
-      "Posts" ~ 0,
       "Reddit" ~ 0,
+      "Stack Exchange" ~ 0,
       "X" ~ 0,
-      "YouTube/Vimeo" ~ 0,
+      "Wikipedia" ~ 0,
+      "Policies" ~ 0,
       "Patentes" ~ 0,
-      "Mendeley" ~ 0
+      "YouTube/Vimeo" ~ 0,
+      "Posts" ~ 0,
+      "Mendeley" ~ 0,
+      "Acesso aberto" ~ 0
       ),
     ) %>%
   gtsummary::add_overall(

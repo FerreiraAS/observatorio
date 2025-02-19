@@ -478,7 +478,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 
 ### **ID Externo** {#id .tabset}
 
-```{r ids-externos-docentes, cache = TRUE, cache.path = "cache/external-ids/", eval = has.sucupira.files}
+```{r ids-externos-docentes, eval = has.sucupira.files}
 # Read Excel data
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -510,6 +510,7 @@ my_orcid <- gsub("(.{14})(.*)$", "\\1-\\2", gsub("(.{9})(.*)$", "\\1-\\2", gsub(
 
 # Compile external identifiers
 source("Scripts/orcid-external-identifiers.R", local = knitr::knit_global())
+external.ids <- get_external_ids(my_orcid)
 
 # Print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -710,17 +711,23 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 ### **Matriculados** {#matriculados .tabset}
 
-```{r discentes-inscritos, eval = has.sucupira.files}
+```{r discentes-matriculados, eval = has.sucupira.files}
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+
 # discentes
 sheet <- "Discentes - Orientadores"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
-# get only last data available
-discentes <- sucupira.list[[length(anos)]]
+# periodo max
+periodo <- as.numeric(max(as.numeric(names(sucupira.list))))
+
+# get egressos for the current period
+discentes <- sucupira.list[as.character(periodo)] %>%
+  plyr::compact()
+discentes <- data.frame(do.call(dplyr::bind_rows, discentes))
+try(names(discentes) <- names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]]), silent = TRUE)
 
 # dplyr::select active students
 discentes <- discentes[discentes$`Situação Discente` == "MATRICULADO", ]
@@ -808,7 +815,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
 # periodo max
-periodo <- as.numeric(format(Sys.Date(), "%Y"))
+periodo <- as.numeric(max(as.numeric(names(sucupira.list))))
 
 # egressos
 sheet <- "Discentes - Orientadores"
@@ -1129,7 +1136,7 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
 # get only last data available
-discentes <- sucupira.list[[length(anos)]]
+discentes <- sucupira.raw
 
 # dplyr::select students that are not matriculated or have already graduated
 discentes <- discentes[discentes$`Situação Discente` %in% c("DESLIGADO", "ABANDONOU"), ]

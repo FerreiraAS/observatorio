@@ -1977,34 +1977,6 @@ plot.1 <- plot.1 %>% plotly::layout(
   showlegend = FALSE
 )
 
-# add trace Altmetric image logo and summary
-# par(new = TRUE)
-# my_image <-
-#   png::readPNG("Metrics/Altmetric/cropped-altmetric-symbol.png")
-# img <- as.raster(my_image)
-# lm <- par("usr")
-# r <- (lm[2] - lm[1]) / (lm[4] - lm[3])
-# h <- (lm[4] - lm[3]) / 5
-# w <- ((lm[2] - lm[1]) / 5)
-# x1 <- lm[1]
-# x2 <- lm[1] + w
-# y1 <- lm[4] - h
-# y2 <- lm[4]
-# rasterImage(
-#   img,
-#   xleft = x1,
-#   xright = x2,
-#   ybottom = y1,
-#   ytop = y2
-# )
-# text(
-#   x = (x1 + x2) / 2,
-#   y = (y1 + y2) / 2,
-#   labels = as.character(sum(as.numeric(table.1[, 2]), na.rm = TRUE)),
-#   adj = 0.5
-# )
-
-
 # plot 2 (IS_OA in plot)
 
 # generate cross tables of IS_OA artigos per year
@@ -2499,8 +2471,8 @@ source("Scripts/years-sucupira.R", local = knitr::knit_global())
 # periodo
 periodo <- min(as.numeric(anos)):max(as.numeric(anos))
 
-# egressos
-sheet <- "Discentes - Orientadores"
+# discentes
+sheet <- "Discentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 names(sucupira.list) <- as.character(anos)
@@ -2664,6 +2636,11 @@ plot.2 <- plot.2 %>% plotly::layout(
   barmode = 'stack'
 )
 
+# Discentes - Orientadores
+sheet <- "Discentes - Orientadores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+names(sucupira.list) <- as.character(anos)
 
 # get egressos for the current period
 egressos <- sucupira.list[as.character(periodo)] %>%
@@ -2766,7 +2743,7 @@ plot.3 <- plot.3 %>% plotly::layout(
 )
 
 
-# plot 3 (violin plot of Tempo de Curso por ano)
+# plot 4 (violin plot of Tempo de Curso por ano)
 
 # plot area setup
 layout.m <- c(1)
@@ -2828,20 +2805,7 @@ plot.4 <- plot.4 %>% plotly::layout(
   showlegend = TRUE
 )
 
-# plot 4 (summary table in plot)
-
-# get discentes for the last year
-discentes <- sucupira.list[as.character(max(periodo))] %>%
-  plyr::compact()
-discentes <- data.frame(do.call(dplyr::bind_rows, discentes))
-names(discentes) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
-
-# dplyr::select current students
-discentes <- discentes[discentes$`Situação Discente` == "MATRICULADO", ]
-
-# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
-discentes <- discentes[discentes$`Orientador Principal?` == "Sim", ]
+# plot 5(summary table in plot)
 
 # calculate summary statistics for pessoal
 summ.table.pessoal <-
@@ -2877,9 +2841,9 @@ summ.table.pessoal <-
       digits = 0,
       big.mark = "."
     ),
-    dim(discentes)[1],
-    sum(discentes$`Nível Discente` == "Mestrado"),
-    sum(discentes$`Nível Discente` == "Doutorado")
+    sum(discentes$Mestrado[discentes$Ano == max(discentes$Ano)] + discentes$Doutorado[discentes$Ano == max(discentes$Ano)]),
+    sum(discentes$Mestrado[discentes$Ano == max(discentes$Ano)]),
+    sum(discentes$Doutorado[discentes$Ano == max(discentes$Ano)])
   )
 
 names(summ.table.pessoal) <-
@@ -3035,7 +2999,7 @@ plot.1 <- plot.1 %>% plotly::layout(
     titlefont = list(color = 'white'),
     tickfont = list(color = 'white'),
     tickvals = anos,
-    range = c(min(as.numeric(anos)), max(as.numeric(anos)))
+    range = anos
   ),
   yaxis = list(
     title = "N",

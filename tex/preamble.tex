@@ -11,12 +11,24 @@
 \usepackage{longtable}
 \usepackage{array}
 \usepackage{multirow}
+\usepackage{multicol}
 \usepackage{wrapfig}
 \usepackage{float}
 \usepackage{placeins}
 \usepackage{colortbl}
 \usepackage{pdflscape}
+
+% patch for tabu
+\makeatletter
+\def\tabu@verticalspacing{\ifnum\everyeof{\noexpand}\the\everyeof\space=%
+  \relax \@tempdima\dimexpr\ht\tabu@arstrutbox+\dp\tabu@arstrutbox\relax
+  \else \@tempdima\z@ \fi
+  \setbox\tabu@arstrutbox\hbox{\vrule
+    \@height\ht\tabu@arstrutbox \@depth\dp\tabu@arstrutbox \@width\z@}
+  \nointerlineskip \vskip\@tempdima}
+\makeatother
 \usepackage{tabu}
+
 \usepackage{threeparttable}
 \usepackage{threeparttablex}
 \usepackage[normalem]{ulem}
@@ -71,11 +83,15 @@
 \newcommand{\EnableFootNotes}{\LetLtxMacro\footnote\Oldfootnote}
 \newcommand{\DisableFootNotes}{\renewcommand{\footnote}[2][]{\relax}}
 
+% to Portuguese in long tables
+\DefTblrTemplate{contfoot-text}{default}{Continuado na próxima página}
+\DefTblrTemplate{conthead-text}{default}{(Continuado)}
+
 % Watermark
-\usepackage{draftwatermark}
-\SetWatermarkLightness{0.9}
-\SetWatermarkText{RASCUNHO}
-\SetWatermarkScale{1}
+% \usepackage{draftwatermark}
+% \SetWatermarkLightness{0.9}
+% \SetWatermarkText{RASCUNHO}
+% \SetWatermarkScale{1}
 
 % Remove the title page
 \AtBeginDocument{\let\maketitle\relax}

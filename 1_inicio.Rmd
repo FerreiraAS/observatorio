@@ -25,7 +25,7 @@ has.metricas.doi.ppg <- FALSE
 ## **Set up**
 
 <!--set up-->
-```{r setup, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%", results = "hide"}
+```{r setup-main, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%", results = "hide"}
 knitr::opts_chunk$set(
   echo = FALSE,
   warning = FALSE,
@@ -44,7 +44,7 @@ knitr::opts_chunk$set(
 ## **Load caches**
 
 <!--load caches-->
-```{r load-caches, echo = FALSE, include = FALSE}
+```{r load-caches-main, echo = FALSE, include = FALSE}
 folders <- list.dirs(file.path("cache/"), full.names = FALSE, recursive = FALSE)
 for(folder in folders){
     knitr::load_cache(label = folder, path = paste0(file.path("cache", folder), "/"))
@@ -487,12 +487,16 @@ produtos.detalhes.sucupira <- produtos.detalhes.sucupira %>%
     cited_by_feeds_count = NA,
     cited_by_gplus_count = NA,
     cited_by_msm_count = NA,
-    cited_by_posts_count = NA,
     cited_by_rdts_count = NA,
+    cited_by_qna_count = NA,
     cited_by_tweeters_count = NA,
+    cited_by_bluesky_count = NA,
+    cited_by_wikipedia_count = NA,
+    cited_by_policies_count = NA,
+    cited_by_patents_count = NA,
     cited_by_videos_count = NA,
     cited_by_accounts_count = NA,
-    cited_by_patents_count = NA,
+    cited_by_posts_count = NA,
     mendeley = NA,
     score = NA,
     # from Altmetric and CrossRef
@@ -568,18 +572,26 @@ for (item in 1:nrow(produtos.sucupira)) {
       doi_with_metrics$cited_by_gplus_count
     produtos.detalhes.sucupira$cited_by_msm_count[matches] <-
       doi_with_metrics$cited_by_msm_count
-    produtos.detalhes.sucupira$cited_by_posts_count[matches] <-
-      doi_with_metrics$cited_by_posts_count
     produtos.detalhes.sucupira$cited_by_rdts_count[matches] <-
       doi_with_metrics$cited_by_rdts_count
+    produtos.detalhes.sucupira$cited_by_qna_count[matches] <-
+      doi_with_metrics$cited_by_qna_count
     produtos.detalhes.sucupira$cited_by_tweeters_count[matches] <-
       doi_with_metrics$cited_by_tweeters_count
+    produtos.detalhes.sucupira$cited_by_bluesky_count[matches] <-
+      doi_with_metrics$cited_by_bluesky_count
+    produtos.detalhes.sucupira$cited_by_wikipedia_count[matches] <-
+      doi_with_metrics$cited_by_wikipedia_count
+    produtos.detalhes.sucupira$cited_by_policies_count[matches] <-
+      doi_with_metrics$cited_by_policies_count
+    produtos.detalhes.sucupira$cited_by_patents_count[matches] <-
+      doi_with_metrics$cited_by_patents_count
     produtos.detalhes.sucupira$cited_by_videos_count[matches] <-
       doi_with_metrics$cited_by_videos_count
     produtos.detalhes.sucupira$cited_by_accounts_count[matches] <-
       doi_with_metrics$cited_by_accounts_count
-    produtos.detalhes.sucupira$cited_by_patents_count[matches] <-
-      doi_with_metrics$cited_by_patents_count
+    produtos.detalhes.sucupira$cited_by_posts_count[matches] <-
+      doi_with_metrics$cited_by_posts_count
     produtos.detalhes.sucupira$mendeley[matches] <-
       doi_with_metrics$mendeley
     produtos.detalhes.sucupira$score[matches] <-
@@ -764,7 +776,7 @@ metricas_all <-
   as.data.frame(check.names = FALSE)
 ```
 
-## **Gravar .TSV**
+## **Gravar TSV**
 
 ```{r save-tsv, eval = FALSE}
 # Write data to TSV file
@@ -787,6 +799,41 @@ try(write.table(
   col.names = TRUE
 ),
 silent = TRUE)
+```
+
+## **Relatórios de autoavaliação**
+
+```{r autoavaliacao, echo = FALSE, include = FALSE, eval = TRUE}
+# Define periods
+periodos <- c("2013-2016", "2017-2020", "2021-2024")
+
+# Spam periods by vector element in a new list
+spam.periodos <- list()
+for (periodo in periodos) {
+  spam.periodos[[periodo]] <- seq(as.numeric(strsplit(periodo, "-")[[1]][1]), as.numeric(strsplit(periodo, "-")[[1]][2]))
+}
+
+# Get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+anos <- as.character(anos)
+
+# Get spam.periodos elements that have anos in range
+periodos <- names(spam.periodos)[sapply(spam.periodos, function(x) any(x %in% anos))]
+
+# Rmd files
+for (periodo in periodos) {
+  # Clean metadata
+  knitr::knit_meta(class = NULL, clean = TRUE)
+  # Knit Rmd file
+  rmarkdown::render(
+    input = "autoavaliacao.Rmd",
+    output_format = "all",
+    output_file = paste0("autoavaliacao-", periodo),
+    params = list(
+      quadrienal.vigente = paste0(as.numeric(strsplit(periodo, "-")[[1]][1]):as.numeric(strsplit(periodo, "-")[[1]][2]), collapse = ";")
+    )
+  )
+}
 ```
 
 ## **Session info**
