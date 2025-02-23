@@ -653,27 +653,30 @@ if(knitr::is_html_output()) {
 }
 
 # list all tables
-table.all <-
+table.1.1.1.ac <-
   list(table.ac.gt,
        table.ac.doc.gt
        )
 
 # drop empty elements from list
-table.all <- table.all[lapply(table.all, length) > 0]
-
-table.all <- gtsummary::tbl_stack(table.all)
+table.1.1.1.ac <- table.1.1.1.ac[lapply(table.1.1.1.ac, length) > 0]
+if(any(lapply(table.1.1.1.ac, length) > 0)){
+  table.1.1.1.ac <- gtsummary::tbl_stack(table.1.1.1.ac)
+} else {
+  table.1.1.1.ac <- NULL
+}
 
 # Print HTML table
-if (knitr::is_html_output()) {
-  print(table.all)
+if (knitr::is_html_output() && !sjmisc::is_empty(table.1.1.1.ac)) {
+  print(table.1.1.1.ac)
 }
 
 # Print LaTeX table
-if (knitr::is_latex_output()) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.1.1.1.ac)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
-    x = table.all,
+    x = table.1.1.1.ac,
     escape = FALSE,
     format = ifelse(knitr::is_html_output(), "html", "latex"),
     booktabs = TRUE,
@@ -909,27 +912,30 @@ if(knitr::is_html_output()) {
 }
 
 # list all tables
-table.all <-
+table.1.1.1.lp <-
   list(table.lp.gt,
        table.lp.doc.gt
        )
 
 # drop empty elements from list
-table.all <- table.all[lapply(table.all, length) > 0]
-
-table.all <- gtsummary::tbl_stack(table.all)
+table.1.1.1.lp <- table.1.1.1.lp[lapply(table.1.1.1.lp, length) > 0]
+if(any(lapply(table.1.1.1.lp, length) > 0)){
+  table.1.1.1.lp <- gtsummary::tbl_stack(table.1.1.1.lp)
+} else {
+  table.1.1.1.lp <- NULL
+}
 
 # Print HTML table
-if (knitr::is_html_output()) {
-  print(table.all)
+if (knitr::is_html_output() && !sjmisc::is_empty(table.1.1.1.lp)) {
+  print(table.1.1.1.lp)
 }
 
 # Print LaTeX table
-if (knitr::is_latex_output()) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.1.1.1.lp)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
-    x = table.all,
+    x = table.1.1.1.lp,
     escape = FALSE,
     format = ifelse(knitr::is_html_output(), "html", "latex"),
     booktabs = TRUE,
@@ -1421,7 +1427,7 @@ if(knitr::is_html_output()) {
 }
 
 # list all tables
-table.all <-
+table.1.1.1.ppdp <-
   list(table.pp.gt,
        table.pp.nt.gt,
        table.pp.membro.gt,
@@ -1430,21 +1436,24 @@ table.all <-
        )
 
 # drop empty elements from list
-table.all <- table.all[lapply(table.all, length) > 0]
-
-table.all <- gtsummary::tbl_stack(table.all)
+table.1.1.1.ppdp <- table.1.1.1.ppdp[lapply(table.1.1.1.ppdp, length) > 0]
+if(any(lapply(table.1.1.1.ppdp, length) > 0)){
+  table.1.1.1.ppdp <- gtsummary::tbl_stack(table.1.1.1.ppdp)
+} else {
+  table.1.1.1.ppdp <- NULL
+}
 
 # Print HTML table
-if (knitr::is_html_output()) {
-  print(table.all)
+if (knitr::is_html_output() && !sjmisc::is_empty(table.1.1.1.ppdp)) {
+  print(table.1.1.1.ppdp)
 }
 
 # Print LaTeX table
-if (knitr::is_latex_output()) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.1.1.1.ppdp)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
-    x = table.all,
+    x = table.1.1.1.ppdp,
     escape = FALSE,
     format = ifelse(knitr::is_html_output(), "html", "latex"),
     booktabs = TRUE,
@@ -1784,12 +1793,12 @@ table.1.1.2 <-
   gtsummary::bold_labels()
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.1.1.2)) {
   print(table.1.1.2)
 }
 
 # Print LaTeX table
-if (knitr::is_latex_output()) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.1.1.2)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
@@ -2263,14 +2272,14 @@ for (j in 1:length(abas)) {
     gtsummary::bold_labels()
   
   # Print HTML table
-  if (knitr::is_html_output()) {
+  if (knitr::is_html_output() && !sjmisc::is_empty(table_summary)) {
     cat('\n\n')
     print(table_summary)
     cat('\n\n')
   }
   
   # Print LaTeX table
-  if (knitr::is_latex_output()) {
+  if (knitr::is_latex_output() && !sjmisc::is_empty(table_summary)) {
     cat('\\FloatBarrier')
     # Convert gtsummary object to kableExtra object
     kable_table <- gtsummary::as_kable_extra(
@@ -2334,7 +2343,7 @@ sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
 names(sucupira) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
-# keep docentes permanente only
+# keep docente permanente only
 sucupira <- sucupira[sucupira$Categoria == "PERMANENTE", ]
 
 sucupira$'Data de Admissão' <-
@@ -2436,7 +2445,7 @@ sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
 names(sucupira) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
-# keep docentes permanente only
+# keep docente permanente only
 sucupira <- sucupira[sucupira$Categoria == "PERMANENTE", ]
 
 sucupira$'Data de Admissão' <-
@@ -2535,7 +2544,7 @@ sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
 names(sucupira) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
-# keep docentes permanente only
+# keep docente permanente only
 sucupira <- sucupira[sucupira$Categoria == "PERMANENTE", ]
 
 sucupira$'Data de Admissão' <-
@@ -2639,7 +2648,7 @@ sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
 names(sucupira) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
-# keep docentes permanente only
+# keep docente permanente only
 sucupira <- sucupira[sucupira$Categoria == "PERMANENTE", ]
 
 sucupira$'Data de Admissão' <-
@@ -2726,28 +2735,31 @@ table.1d <-
 
 ```{r dimensao-corpo-docente, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
 # list all tables
-table.all <- 
+table.1.1.1.dim <- 
   list(table.1a,
        table.1b,
        table.1c,
        table.1d)
 
 # drop empty elements from list
-table.all <- table.all[lapply(table.all, length) > 0]
-
-table.1.2.1 <- gtsummary::tbl_stack(table.all)
+table.1.1.1.dim <- table.1.1.1.dim[lapply(table.1.1.1.dim, length) > 0]
+if(any(lapply(table.1.1.1.dim, length) > 0)){
+  table.1.1.1.dim <- gtsummary::tbl_stack(table.1.1.1.dim)
+} else {
+  table.1.1.1.dim <- NULL
+}
 
 # Print HTML table
-if (knitr::is_html_output()) {
-  print(table.1.2.1)
+if (knitr::is_html_output() && !sjmisc::is_empty(table.1.1.1.dim)) {
+  print(table.1.1.1.dim)
 }
 
 # Print LaTeX table
-if (knitr::is_latex_output()) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.1.1.1.dim)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
-    x = table.1.2.1,
+    x = table.1.1.1.dim,
     escape = FALSE,
     format = ifelse(knitr::is_html_output(), "html", "latex"),
     booktabs = TRUE,
@@ -3003,23 +3015,26 @@ if(nrow(table.doc.long) > 0) {
 
 ```{r coerencia, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
 # List all tables
-table.all <- list(
+table.1.2.2 <- list(
   table.1.2.2.doc,
   table.1.2.2.outros
 )
 
 # Drop empty elements from the list
-table.all <- table.all[lapply(table.all, length) > 0]
-
-table.1.2.2 <- gtsummary::tbl_stack(table.all)
+table.1.2.2 <- table.1.2.2[lapply(table.1.2.2, length) > 0]
+if(any(lapply(table.1.2.2, length) > 0)){
+  table.1.2.2 <- gtsummary::tbl_stack(table.1.2.2)
+} else {
+  table.1.2.2 <- NULL
+}
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.1.2.2)) {
   print(table.1.2.2)
 }
 
 # Print LaTeX table
-if (knitr::is_latex_output()) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.1.2.2)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
@@ -3224,12 +3239,12 @@ table.1.2.3 <- gtsummary::tbl_summary(
   gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.1.2.3)) {
   print(table.1.2.3)
 }
 
 # Print LaTeX table
-if (knitr::is_latex_output()) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.1.2.3)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
@@ -4187,12 +4202,12 @@ if (!sjmisc::is_empty(table.bancas.long)) {
     gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
   
   # Print HTML table
-  if (knitr::is_html_output()) {
+  if (knitr::is_html_output() && !sjmisc::is_empty(table.2.1.1)) {
     print(table.2.1.1)
   }
   
   # Print LaTeX table
-  if (knitr::is_latex_output()) {
+  if (knitr::is_latex_output() && !sjmisc::is_empty(table.2.1.1)) {
     cat('\\FloatBarrier')
     # Convert gtsummary object to kableExtra object
     kable_table <- gtsummary::as_kable_extra(
@@ -4481,29 +4496,34 @@ colnames(table.bib.long) <- c("Ano", "Produção bibliográfica com discente")
 table.bib.long <- table.bib.long %>%
   dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
-# Print tables
-table.bib.gt <- gtsummary::tbl_summary(
-  table.bib.long,
-  by = "Ano",
-  statistic = list(gtsummary::all_categorical() ~ "{n}"),
-  missing = "no",
-  digits = gtsummary::everything() ~ 0,
-  sort = gtsummary::all_categorical() ~ "frequency"
+# print tables
+if(nrow(sucupira.df.bib) > 0) {
+  # Print tables
+  table.bib.gt <- gtsummary::tbl_summary(
+    table.bib.long,
+    by = "Ano",
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
+    missing = "no",
+    digits = gtsummary::everything() ~ 0,
+    sort = gtsummary::all_categorical() ~ "frequency"
   ) %>%
-  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels() %>%
-  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-  gtsummary::modify_header(list(
-    add_stat_1 ~ "**Quadriênio**",
-    gtsummary::all_stat_cols() ~ "**{level}**"
-  )) %>%
-  gtsummary::remove_row_type(
-    variables = c('Produção bibliográfica com discente'),
-    type = "level",
-    level_value = ("Produção")
-  ) %>%
-  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+    gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+    gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+    gtsummary::bold_labels() %>%
+    gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+    gtsummary::modify_header(list(
+      add_stat_1 ~ "**Quadriênio**",
+      gtsummary::all_stat_cols() ~ "**{level}**"
+    )) %>%
+    gtsummary::remove_row_type(
+      variables = c('Produção bibliográfica com discente'),
+      type = "level",
+      level_value = ("Produção")
+    ) %>%
+    gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+} else {
+  table.bib.gt <- list()
+}
 ```
 
 ```{r 2-2-1-natureza, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
@@ -4566,29 +4586,34 @@ colnames(table.nat.long) <- c("Ano", "Natureza da produção")
 table.nat.long <- table.nat.long %>%
   dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
-# Print tables
-table.nat.gt <- gtsummary::tbl_summary(
-  table.nat.long,
-  by = "Ano",
-  statistic = list(gtsummary::all_categorical() ~ "{n}"),
-  missing = "no",
-  digits = gtsummary::everything() ~ 0,
-  sort = gtsummary::all_categorical() ~ "frequency"
+# print tables
+if(nrow(sucupira.df.nat) > 0) {
+  # Print tables
+  table.nat.gt <- gtsummary::tbl_summary(
+    table.nat.long,
+    by = "Ano",
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
+    missing = "no",
+    digits = gtsummary::everything() ~ 0,
+    sort = gtsummary::all_categorical() ~ "frequency"
   ) %>%
-  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels() %>%
-  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-  gtsummary::modify_header(list(
-    add_stat_1 ~ "**Quadriênio**",
-    gtsummary::all_stat_cols() ~ "**{level}**"
-  )) %>%
-  gtsummary::remove_row_type(
-    variables = c('Natureza da produção'),
-    type = "level",
-    level_value = ("Natureza")
-  ) %>%
-  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+    gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+    gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+    gtsummary::bold_labels() %>%
+    gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+    gtsummary::modify_header(list(
+      add_stat_1 ~ "**Quadriênio**",
+      gtsummary::all_stat_cols() ~ "**{level}**"
+    )) %>%
+    gtsummary::remove_row_type(
+      variables = c('Natureza da produção'),
+      type = "level",
+      level_value = ("Natureza")
+    ) %>%
+    gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+} else {
+  table.nat.gt <- list()
+}
 ```
 
 ```{r 2-2-1-local, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
@@ -4651,29 +4676,33 @@ colnames(table.local.long) <- c("Ano", "País")
 table.local.long <- table.local.long %>%
   dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
-# Print tables
-table.local.gt <- gtsummary::tbl_summary(
-  table.local.long,
-  by = "Ano",
-  statistic = list(gtsummary::all_categorical() ~ "{n}"),
-  missing = "no",
-  digits = gtsummary::everything() ~ 0,
-  sort = gtsummary::all_categorical() ~ "frequency"
+if(nrow(sucupira.df.local) > 0) {
+  # Print tables
+  table.local.gt <- gtsummary::tbl_summary(
+    table.local.long,
+    by = "Ano",
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
+    missing = "no",
+    digits = gtsummary::everything() ~ 0,
+    sort = gtsummary::all_categorical() ~ "frequency"
   ) %>%
-  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels() %>%
-  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-  gtsummary::modify_header(list(
-    add_stat_1 ~ "**Quadriênio**",
-    gtsummary::all_stat_cols() ~ "**{level}**"
-  )) %>%
-  gtsummary::remove_row_type(
-    variables = c('País'),
-    type = "level",
-    level_value = ("País")
-  ) %>%
-  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+    gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+    gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+    gtsummary::bold_labels() %>%
+    gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+    gtsummary::modify_header(list(
+      add_stat_1 ~ "**Quadriênio**",
+      gtsummary::all_stat_cols() ~ "**{level}**"
+    )) %>%
+    gtsummary::remove_row_type(
+      variables = c('País'),
+      type = "level",
+      level_value = ("País")
+    ) %>%
+    gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+} else {
+  table.local.gt <- list()
+}
 ```
 
 ```{r 2-2-1-discentes-data, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
@@ -4757,29 +4786,33 @@ colnames(table.disc.long) <- c("Ano", "Discentes")
 table.disc.long <- table.disc.long %>%
   dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
-# Print tables
-table.disc.gt <- gtsummary::tbl_summary(
-  table.disc.long,
-  by = "Ano",
-  statistic = list(gtsummary::all_categorical() ~ "{n}"),
-  missing = "no",
-  digits = gtsummary::everything() ~ 0,
-  sort = gtsummary::all_categorical() ~ "frequency"
+if(nrow(table.disc.long) > 0) {
+  # Print tables
+  table.disc.gt <- gtsummary::tbl_summary(
+    table.disc.long,
+    by = "Ano",
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
+    missing = "no",
+    digits = gtsummary::everything() ~ 0,
+    sort = gtsummary::all_categorical() ~ "frequency"
   ) %>%
-  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels() %>%
-  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-  gtsummary::modify_header(list(
-    add_stat_1 ~ "**Quadriênio**",
-    gtsummary::all_stat_cols() ~ "**{level}**"
-  )) %>%
-  gtsummary::remove_row_type(
-    variables = c('Discentes'),
-    type = "level",
-    level_value = ("Discentes")
-  ) %>%
-  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+    gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+    gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+    gtsummary::bold_labels() %>%
+    gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+    gtsummary::modify_header(list(
+      add_stat_1 ~ "**Quadriênio**",
+      gtsummary::all_stat_cols() ~ "**{level}**"
+    )) %>%
+    gtsummary::remove_row_type(
+      variables = c('Discentes'),
+      type = "level",
+      level_value = ("Discentes")
+    ) %>%
+    gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+} else {
+  table.disc.gt <- list()
+}
 ```
 
 ```{r 2-2-1-discentes-nivel, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
@@ -4835,29 +4868,33 @@ colnames(table.nivel.long) <- c("Ano", "Nível")
 table.nivel.long <- table.nivel.long %>%
   dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
-# Print tables
-table.nivel.gt <- gtsummary::tbl_summary(
-  table.nivel.long,
-  by = "Ano",
-  statistic = list(gtsummary::all_categorical() ~ "{n}"),
-  missing = "no",
-  digits = gtsummary::everything() ~ 0,
-  sort = gtsummary::all_categorical() ~ "frequency"
+if(nrow(table.nivel.long) > 0){
+  # Print tables
+  table.nivel.gt <- gtsummary::tbl_summary(
+    table.nivel.long,
+    by = "Ano",
+    statistic = list(gtsummary::all_categorical() ~ "{n}"),
+    missing = "no",
+    digits = gtsummary::everything() ~ 0,
+    sort = gtsummary::all_categorical() ~ "frequency"
   ) %>%
-  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels() %>%
-  gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-  gtsummary::modify_header(list(
-    add_stat_1 ~ "**Quadriênio**",
-    gtsummary::all_stat_cols() ~ "**{level}**"
-  )) %>%
-  gtsummary::remove_row_type(
-    variables = c('Nível'),
-    type = "level",
-    level_value = ("Nível")
-  ) %>%
-  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+    gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+    gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+    gtsummary::bold_labels() %>%
+    gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
+    gtsummary::modify_header(list(
+      add_stat_1 ~ "**Quadriênio**",
+      gtsummary::all_stat_cols() ~ "**{level}**"
+    )) %>%
+    gtsummary::remove_row_type(
+      variables = c('Nível'),
+      type = "level",
+      level_value = ("Nível")
+    ) %>%
+    gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+} else {
+  table.nivel.gt <- list()
+}
 ```
 
 ```{r 2-2-1-razao, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
@@ -4874,7 +4911,12 @@ alunos.ano <- table.disc.long %>%
   dplyr::count(Ano)
 colnames(alunos.ano) <- c("Ano", "Número de discentes do Programa")
 
-razao.ano <- merge(producao.ano, alunos.ano, by = "Ano")
+# bind columns os dataframes with different rows size by Ano
+razao.ano <- dplyr::full_join(producao.ano, alunos.ano, by = "Ano")
+# replace NA with 0
+razao.ano[is.na(razao.ano)] <- 0
+
+# calculate ratio
 razao.ano$Razão <- razao.ano$`Número de trabalhos de discentes publicados em anais (resumo ou resumo expandido)` / razao.ano$`Número de discentes do Programa`
 
 # keep razao only
@@ -4899,51 +4941,58 @@ table.razao.long <- razao.ano %>%
 table.razao.long <- razao.ano %>%
   dplyr::mutate(dplyr::across("Razão (trabalhos publicados em Anais por discente)", as.numeric))
 
-# Print tables
-table.razao.gt <- gtsummary::tbl_summary(
-  table.razao.long,
-  by = "Ano",
-  type = list(gtsummary::everything() ~ "continuous"),
-  statistic = list(gtsummary::everything() ~ "{max}"),
-  missing = "no",
-  digits = gtsummary::everything() ~ 2
+if(nrow(table.razao.long) > 0) {
+  # Print tables
+  table.razao.gt <- gtsummary::tbl_summary(
+    table.razao.long,
+    by = "Ano",
+    type = list(gtsummary::everything() ~ "continuous"),
+    statistic = list(gtsummary::everything() ~ "{max}"),
+    missing = "no",
+    digits = gtsummary::everything() ~ 2
   ) %>%
-  gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
-  gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-  gtsummary::bold_labels() %>%
-  gtsummary::add_stat(fns = gtsummary::everything() ~ my_N) %>%
-  gtsummary::modify_header(list(
-    add_stat_1 ~ "**Quadriênio**",
-    gtsummary::all_stat_cols() ~ "**{level}**"
-  )) %>%
-  gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+    gtsummary::modify_header(label = "**Ano**", gtsummary::all_stat_cols() ~ "**{level}**") %>%
+    gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+    gtsummary::bold_labels() %>%
+    gtsummary::add_stat(fns = gtsummary::everything() ~ my_N) %>%
+    gtsummary::modify_header(list(
+      add_stat_1 ~ "**Quadriênio**",
+      gtsummary::all_stat_cols() ~ "**{level}**"
+    )) %>%
+    gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+} else {
+  table.razao.gt <- list()
+}
 ```
 
 ```{r 2-2-1-list-tables, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
 # producão
 # List all tables
-table.all <- list(
+table.2.2.1.a <- list(
   table.bib.gt,
   table.nat.gt,
   table.local.gt
 )
 
 # Drop empty elements from the list
-table.all <- table.all[lapply(table.all, length) > 0]
-
-table.2.2.1 <- gtsummary::tbl_stack(table.all)
+table.2.2.1.a <- table.2.2.1.a[lapply(table.2.2.1.a, length) > 0]
+if(any(lapply(table.2.2.1.a, length) > 0)){
+  table.2.2.1.a <- gtsummary::tbl_stack(table.2.2.1.a)
+} else {
+  table.2.2.1.a <- NULL
+}
 
 # Print HTML table
-if (knitr::is_html_output()) {
-  print(table.2.2.1)
+if (knitr::is_html_output() && !sjmisc::is_empty(table.2.2.1.a)) {
+  print(table.2.2.1.a)
 }
 
 # Print LaTeX table
-if (knitr::is_latex_output()) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.2.2.1.a)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
-    x = table.2.2.1,
+    x = table.2.2.1.a,
     escape = FALSE,
     format = ifelse(knitr::is_html_output(), "html", "latex"),
     booktabs = TRUE,
@@ -4962,27 +5011,30 @@ if (knitr::is_latex_output()) {
 
 # discentes
 # List all tables
-table.all <- list(
+table.2.2.1.b <- list(
   table.disc.gt,
   table.nivel.gt
 )
 
 # Drop empty elements from the list
-table.all <- table.all[lapply(table.all, length) > 0]
-
-table.2.2.1 <- gtsummary::tbl_stack(table.all)
+table.2.2.1.b <- table.2.2.1.b[lapply(table.2.2.1.b, length) > 0]
+if(any(lapply(table.2.2.1.b, length) > 0)){
+  table.2.2.1.b <- gtsummary::tbl_stack(table.2.2.1.b)
+} else {
+  table.2.2.1.b <- NULL
+}
 
 # Print HTML table
-if (knitr::is_html_output()) {
-  print(table.2.2.1)
+if (knitr::is_html_output() && !sjmisc::is_empty(table.2.2.1.b)) {
+  print(table.2.2.1.b)
 }
 
 # Print LaTeX table
-if (knitr::is_latex_output()) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.2.2.1.b)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
-    x = table.2.2.1,
+    x = table.2.2.1.b,
     escape = FALSE,
     format = ifelse(knitr::is_html_output(), "html", "latex"),
     booktabs = TRUE,
@@ -5001,26 +5053,29 @@ if (knitr::is_latex_output()) {
 
 # razao producão/discentes
 # List all tables
-table.all <- list(
+table.2.2.1.c <- list(
   table.razao.gt
 )
 
 # Drop empty elements from the list
-table.all <- table.all[lapply(table.all, length) > 0]
-
-table.2.2.1 <- gtsummary::tbl_stack(table.all)
+table.2.2.1.c <- table.2.2.1.c[lapply(table.2.2.1.c, length) > 0]
+if(any(lapply(table.2.2.1.c, length) > 0)){
+  table.2.2.1.c <- gtsummary::tbl_stack(table.2.2.1.c)
+} else {
+  table.2.2.1.c <- NULL
+}
 
 # Print HTML table
-if (knitr::is_html_output()) {
-  print(table.2.2.1)
+if (knitr::is_html_output() && !sjmisc::is_empty(table.2.2.1.c)) {
+  print(table.2.2.1.c)
 }
 
 # Print LaTeX table
-if (knitr::is_latex_output()) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.2.2.1.c)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
-    x = table.2.2.1,
+    x = table.2.2.1.c,
     escape = FALSE,
     format = ifelse(knitr::is_html_output(), "html", "latex"),
     booktabs = TRUE,
@@ -5322,12 +5377,12 @@ table.2.3.1 <-
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA)
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.2.3.1)) {
   print(table.2.3.1)
 }
 
 # Print LaTeX table
-if (knitr::is_latex_output()) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.2.3.1)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
@@ -5496,12 +5551,12 @@ table.part1 <-
   gtsummary::bold_labels()
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.part1)) {
   print(table.part1)
 }
 
 # Print LaTeX table
-if (knitr::is_latex_output()) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.part1)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
@@ -5550,12 +5605,12 @@ table.part2 <-
   gtsummary::bold_labels()
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.part2)) {
   print(table.part2)
 }
 
 # Print LaTeX table
-if (knitr::is_latex_output()) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.part2)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
@@ -5615,12 +5670,12 @@ gtsummary::tbl_summary(
   gtsummary::bold_labels()
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.part3)) {
   print(table.part3)
 }
 
 # Print LaTeX table
-if (knitr::is_latex_output()) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.part3)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
@@ -5816,12 +5871,12 @@ if(knitr::is_html_output()) {
 }
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.doc.gt)) {
   print(table.doc.gt)
 }
 
 # Print LaTeX table
-if (knitr::is_latex_output()) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.doc.gt)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
@@ -6140,7 +6195,7 @@ if (nlevels(sucupira.df.tit$`Nível Discente`) != 0) {
         digits = gtsummary::everything() ~ 0,
         sort = gtsummary::all_categorical() ~ "alphanumeric"
       ) %>%
-      gtsummary::modify_header(label = "**Nome do Orientador**") %>%
+      gtsummary::modify_header(label = "**Nome do Orientador (Principal)**") %>%
       gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
       gtsummary::bold_labels()
   } else if (nlevels(sucupira.df.tit$`Nível Discente`) == 2) {
@@ -6318,7 +6373,7 @@ sucupira.df$`Subtipo de Produção`[is.na(sucupira.df$`Subtipo de Produção`)] 
 sucupira.df$`Categoria do Autor Principal`[is.na(sucupira.df$`Categoria do Autor Principal`)] <- "Indefinido"
 ```
 
-```{r 3-1-2-total, , eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+```{r 3-1-2-total, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
 table.total <- data.frame(matrix(
   NA,
   nrow = length(unique(sucupira.df$`ID da Produção`)),
@@ -6998,7 +7053,7 @@ table.aut.gt <- gtsummary::tbl_summary(
 
 ```{r 3-1-2-list-tables, eval = has.sucupira.files, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
 # List all tables
-table.all <- list(
+table.3.1.2 <- list(
   table.tot.gt,
   table.ac.gt,
   table.lp.gt,
@@ -7010,17 +7065,20 @@ table.all <- list(
 )
 
 # Drop empty elements from the list
-table.all <- table.all[lapply(table.all, length) > 0]
-
-table.3.1.2 <- gtsummary::tbl_stack(table.all)
+table.3.1.2 <- table.3.1.2[lapply(table.3.1.2, length) > 0]
+if(any(lapply(table.3.1.2, length) > 0)){
+  table.3.1.2 <- gtsummary::tbl_stack(table.3.1.2)
+} else {
+  table.3.1.2 <- NULL
+}
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.3.1.2)) {
   print(table.3.1.2)
 }
 
 # Print LaTeX table
-if (knitr::is_latex_output()) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.3.1.2)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
@@ -7119,6 +7177,7 @@ síntese.ano <- síntese.ano %>%
     "Reddit",
     "Stack Exchange",
     "X",
+    "BlueSky",
     "Wikipedia",
     "Policies",
     "Patentes",
@@ -7208,12 +7267,12 @@ table.3.2.1 <-
 
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.3.2.1)) {
   print(table.3.2.1)
 }
 
 # Print LaTeX table
-if (knitr::is_latex_output()) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.3.2.1)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(

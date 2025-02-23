@@ -253,13 +253,11 @@ legend("bottomleft", legend = c("Área de Concentração", "Linha de Pesquisa"),
 # layout.m <- matrix(c(1, 2, 3, 4), ncol = 2, byrow = FALSE)
 layout.m <- matrix(c(1, 2), ncol = 1, byrow = FALSE)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
-
 summ.coerencia.1 <- c(length(current.AC),
                       length(current.LP))
 names(summ.coerencia.1) <-
   c("Áreas de Concentração",
     "Linhas de Pesquisa")
-
 summ.data <- c(summ.coerencia.1)
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
@@ -696,8 +694,6 @@ layout.m <- matrix(c(1, 1, 1, 2, 2, 2, 3, 4, 5, 6, 7, 8),
                    ncol = 3,
                    byrow = TRUE)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
-
-# change to matrix format with names
 summ.data <- summ.table.projetos
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
@@ -1148,7 +1144,6 @@ names(summ.table.financiadores) <-
 layout.m <-
   matrix(c(1, 1, 2, 2, 3, 3, 4, 5), ncol = 2, byrow = TRUE)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
-
 summ.data <- summ.table.financiadores
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
@@ -1929,17 +1924,17 @@ table.1 <- data.frame(metricas_artigos$"Ano da Produção", metricas_artigos$alt
 
 # plot 1 (violin plot of Altmetric por ano)
 
-# plot area setup
-layout.m <- c(1)
-source("Scripts/plot-margins.R", local = knitr::knit_global())
-# Define colors using RColorBrewer
-colors <- RColorBrewer::brewer.pal(n = 9, name = "Set3")
-
 # Reshape data for Plotly
 data_long <- reshape2::melt(table.1, id.vars = "metricas_artigos..Ano.da.Produção.", value.name = "Altmetric")
 data_long <- data.frame(data_long, stringsAsFactors = FALSE)
 data_long <- data_long[, -2]
 colnames(data_long) <- c("Ano", "Altmetric")
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = 9, name = "Set3")
 
 plot.1 <- plotly::plot_ly(
   data = data_long,
@@ -1953,7 +1948,7 @@ plot.1 <- plotly::plot_ly(
 
 plot.1 <- plot.1 %>% plotly::layout(
   title = list(
-    text = "Atenção e Visibilidade (Altmetric)",
+    text = "Atenção e Visibilidade (Altmetric attention score)",
     x = 0.5,
     xanchor = 'center',
     font = list(size = 24, color = 'white')
@@ -1977,19 +1972,118 @@ plot.1 <- plot.1 %>% plotly::layout(
   showlegend = FALSE
 )
 
-# plot 2 (IS_OA in plot)
+# plot 2 (Altmetric breakdown)
+
+table.2 <- metricas_artigos %>% dplyr::select(
+    "Ano da Produção",
+    "altmetric_score",
+    "cited_by_fbwalls_count",
+    "cited_by_feeds_count",
+    "cited_by_gplus_count",
+    "cited_by_msm_count",
+    "cited_by_rdts_count",
+    "cited_by_qna_count", # NEW
+    "cited_by_tweeters_count",
+    "cited_by_bluesky_count", #NEW
+    "cited_by_wikipedia_count", # NEW
+    "cited_by_policies_count", # NEW
+    "cited_by_patents_count",
+    "cited_by_videos_count",
+    "cited_by_posts_count",
+    "mendeley"
+  )
+
+colnames(table.2) <- 
+  c(
+    "Ano",
+    "Altmetric \n score",
+    "Facebook",
+    "Blogs",
+    "Google+",
+    "Notícias",
+    "Reddit",
+    "Stack \n Exchange",
+    "X",
+    "BlueSky",
+    "Wikipedia",
+    "Policies",
+    "Patentes",
+    "YouTube \n Vimeo",
+    "Posts",
+    "Mendeley"
+  )
+
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.2, id.vars = "Ano", value.name = "Frequência")
+data_long <- data.frame(data_long, stringsAsFactors = FALSE, check.names = FALSE)
+colnames(data_long) <- c("Ano", "Altmetric", "Frequência")
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = 9, name = "Set3")
+
+plot.2 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = ~Altmetric,
+  type = 'bar',
+  colors = colors,
+  height = 720
+)
+
+plot.2 <- plot.2 %>% plotly::layout(
+  title = list(
+    text = "Altmetric Attention Score (breakdown)",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = 24, color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+)
+
+# plot 3 (IS_OA in plot)
 
 # generate cross tables of IS_OA artigos per year
-table.2 <-
+table.3 <-
   t(table(metricas_artigos$"Ano da Produção",
           as.logical(metricas_artigos$is_oa)))
-table.2 <- table.2[order(rownames(table.2)), ]
-rownames(table.2) <- c("Open access", "Paywall")
+table.3 <- table.3[order(rownames(table.3)), ]
+rownames(table.3) <- c("Open access", "Paywall")
 # swap lines
-table.2 <- table.2[seq_len(nrow(table.2)) + c(1, -1),]
+table.3 <- table.3[seq_len(nrow(table.3)) + c(1, -1),]
 
 # Define the number of colors you want
-nb.cols <- length(rownames(table.2))
+nb.cols <- length(rownames(table.3))
 mycolors <-
   colorRampPalette(RColorBrewer::brewer.pal(9, "Set3"))(nb.cols)
 
@@ -1997,10 +2091,10 @@ mycolors <-
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 # Define colors using RColorBrewer
-colors <- RColorBrewer::brewer.pal(n = dim(table.2)[1], name = "Set3")
+colors <- RColorBrewer::brewer.pal(n = dim(table.3)[1], name = "Set3")
 
 # Reshape data for Plotly
-data_long <- reshape2::melt(table.2, id.vars = "Linhas de Pesquisa", variable.name = "Acesso", value.name = "Frequência")
+data_long <- reshape2::melt(table.3, id.vars = "Linhas de Pesquisa", variable.name = "Acesso", value.name = "Frequência")
 data_long <- data.frame(data_long, stringsAsFactors = FALSE)
 colnames(data_long) <- c("Acesso", "Ano", "Frequência")
 
@@ -2009,7 +2103,7 @@ data_long <- data_long %>%
   dplyr::group_by(Ano) %>%
   dplyr::mutate(Frequência = Frequência / sum(Frequência, na.rm = TRUE))
 
-plot.2 <- plotly::plot_ly(
+plot.3 <- plotly::plot_ly(
   data = data_long,
   x = ~Ano,
   y = ~Frequência,
@@ -2019,7 +2113,7 @@ plot.2 <- plotly::plot_ly(
   height = 720
 )
 
-plot.2 <- plot.2 %>% plotly::layout(
+plot.3 <- plot.3 %>% plotly::layout(
   title = list(
     text = "Acesso",
     x = 0.5,
@@ -2057,34 +2151,34 @@ plot.2 <- plot.2 %>% plotly::layout(
 )
 
 
-# plot 3 (CITATIONS in plot)
+# plot 4 (CITATIONS in plot)
 
 if (sjmisc::is_empty(metricas_artigos$citations)) {
-  table.3 <- as.matrix(rep(0, length(max(anos) - min(anos) + 1)))
+  table.4 <- as.matrix(rep(0, length(max(anos) - min(anos) + 1)))
 } else {
   # generate cross tables of citations per year
-  table.3 <-
+  table.4 <-
     t(table(metricas_artigos$"Ano da Produção",
             metricas_artigos$citations))
-  table.3 <- table.3[order(rownames(table.3)),]
-  table.3 <- colSums(table.3)
+  table.4 <- table.4[order(rownames(table.4)),]
+  table.4 <- colSums(table.4)
 }
 
 # plot area setup
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 # Define colors using RColorBrewer
-nb.cols <- length(table.3)
+nb.cols <- length(table.4)
 mycolors <- colorRampPalette(RColorBrewer::brewer.pal(9, "Set3"))(nb.cols)
 
 # Reshape data for Plotly
-data_long <- reshape2::melt(table.3, value.name = "Citações")
-data_long$Ano <- as.numeric(names(table.3))
+data_long <- reshape2::melt(table.4, value.name = "Citações")
+data_long$Ano <- as.numeric(names(table.4))
 data_long <- data.frame(data_long, stringsAsFactors = FALSE)
 
 colnames(data_long) <- c("Citações", "Ano")
 
-plot.3 <- plotly::plot_ly(
+plot.4 <- plotly::plot_ly(
   data = data_long,
   x = ~Ano,
   y = ~Citações,
@@ -2094,7 +2188,7 @@ plot.3 <- plotly::plot_ly(
   height = 720
 )
 
-plot.3 <- plot.3 %>% plotly::layout(
+plot.4 <- plot.4 %>% plotly::layout(
   title = list(
     text = "Citações",
     x = 0.5,
@@ -2120,7 +2214,42 @@ plot.3 <- plot.3 %>% plotly::layout(
 )
 
 
-# plot 4 (summary table in plot)
+# plot 5 (summay table for Altmetric breackdown)
+
+# convert to numeric and get total of each column
+table.2.sum <- data.frame(lapply(table.2, type.convert, as.is = TRUE))
+table.2.sum <- colSums(table.2.sum, na.rm = TRUE)
+# drop Ano
+table.2.sum <- table.2.sum[-1]
+# rename columns
+names(table.2.sum) <-
+  c(
+    "Facebook",
+    "Blogs",
+    "Google+",
+    "Notícias",
+    "Reddit",
+    "Stack Exchange",
+    "X",
+    "BlueSky",
+    "Wikipedia",
+    "Policies",
+    "Patentes",
+    "YouTube/Vimeo",
+    "Posts",
+    "Mendeley"
+  )
+
+# plot area setup
+layout.m <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
+                   ncol = 5,
+                   byrow = TRUE)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+summ.data <- table.2.sum
+source("Scripts/plot-summaries.R", local = knitr::knit_global())
+
+
+# plot 6 (summary table in plot)
 
 # calculate summary statistics for visibilidade
 summ.table.visibilidade <-
@@ -2144,7 +2273,7 @@ summ.table.visibilidade <-
       digits = 0,
       big.mark = "."
     ),
-    sum(as.numeric(table.3), na.rm = TRUE),
+    sum(as.numeric(table.4), na.rm = TRUE),
     formatC(
       min(table.3, na.rm = TRUE),
       format = "d",
@@ -2152,13 +2281,13 @@ summ.table.visibilidade <-
       big.mark = "."
     ),
     formatC(
-      median(table.3, na.rm = TRUE),
+      median(table.4, na.rm = TRUE),
       format = "d",
       digits = 0,
       big.mark = "."
     ),
     formatC(
-      max(table.3, na.rm = TRUE),
+      max(table.4, na.rm = TRUE),
       format = "d",
       digits = 0,
       big.mark = "."
@@ -2182,7 +2311,6 @@ layout.m <- matrix(c(1, 1, 1, 2, 3, 4, 5, 5, 5, 6, 7, 8),
                    ncol = 3,
                    byrow = TRUE)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
-
 summ.data <- summ.table.visibilidade
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
@@ -2208,6 +2336,12 @@ plot.3
 cat('</div>')
 cat('\n\n')
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.4
+cat('</div>')
+cat('\n\n')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-visibilidade-carousel-2, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira), out.width = "70%"}
@@ -2216,6 +2350,14 @@ cat('<br>')
 
 # show sintese-visibilidade-1
 knitr::include_graphics("index_files/figure-html/sintese-visibilidade-1.png")
+cat('\n\n')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+
+cat('<br>')
+cat('<br>')
+
+# show sintese-visibilidade-1
+knitr::include_graphics("index_files/figure-html/sintese-visibilidade-2.png")
 cat('\n\n')
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```

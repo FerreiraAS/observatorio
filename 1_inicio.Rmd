@@ -410,7 +410,7 @@ has.repositorios.cooperacao <-
   )
 ```
 
-## **Check dados cPPG**
+## **Check dados PPG**
 
 ```{r ppg-data, eval = has.sucupira.files}
 # projetos - membros
