@@ -805,7 +805,7 @@ silent = TRUE)
 
 ```{r autoavaliacao, echo = FALSE, include = FALSE, eval = TRUE}
 # Define periods
-periodos <- c("2013-2016", "2017-2020", "2021-2024")
+periodos <- c("2013-2016", "2017-2020", "2021-2024", "2025-2028")
 
 # Spam periods by vector element in a new list
 spam.periodos <- list()
