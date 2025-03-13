@@ -410,7 +410,7 @@ has.repositorios.cooperacao <-
   )
 ```
 
-## **Check dados cPPG**
+## **Check dados PPG**
 
 ```{r ppg-data, eval = has.sucupira.files}
 # projetos - membros
@@ -805,7 +805,7 @@ silent = TRUE)
 
 ```{r autoavaliacao, echo = FALSE, include = FALSE, eval = TRUE}
 # Define periods
-periodos <- c("2013-2016", "2017-2020", "2021-2024")
+periodos <- c("2013-2016", "2017-2020", "2021-2024", "2025-2028")
 
 # Spam periods by vector element in a new list
 spam.periodos <- list()
@@ -830,7 +830,8 @@ for (periodo in periodos) {
     output_format = "all",
     output_file = paste0("autoavaliacao-", periodo),
     params = list(
-      quadrienal.vigente = paste0(as.numeric(strsplit(periodo, "-")[[1]][1]):as.numeric(strsplit(periodo, "-")[[1]][2]), collapse = ";")
+      quadrienal.vigente = paste0(as.numeric(strsplit(periodo, "-")[[1]][1]):as.numeric(strsplit(periodo, "-")[[1]][2]), collapse = ";"),
+      render_document = TRUE
     )
   )
 }

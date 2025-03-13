@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2025.2.16)  12 MAR 2025 22:13
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2025.2.16)  12 MAR 2025 22:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1515,51 +1515,35 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 
 ]
 
-[2]
+[2
+
+
+
+
+
+]
 
 [3
 
 
-]
-
-[4]
-
-[5]
-
-[6]
-
-[7
 
 
-]
 
-[8]
 
-[9]
 
-[10]
-
-[11]
-
-[12]
-
-[13]
-
-[14]
-
-[15] (./autoavaliacao.aux)
+] (./autoavaliacao.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 39681 strings out of 473840
- 782614 string characters out of 5729724
- 1379524 words of memory out of 5000000
- 62133 multiletter control sequences out of 15000+600000
- 562488 words of font info for 70 fonts, out of 8000000 for 9000
+ 39613 strings out of 473840
+ 780993 string characters out of 5729724
+ 1364012 words of memory out of 5000000
+ 62067 multiletter control sequences out of 15000+600000
+ 562472 words of font info for 68 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  99i,19n,114p,1202b,495s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on autoavaliacao.pdf (18 pages).
+Output written on autoavaliacao.pdf (6 pages).
