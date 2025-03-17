@@ -73,6 +73,15 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 ```
 </p>
 
+```{r, eval = all(!render_document, knitr::is_html_output())}
+cat('<div class="d-grid gap-2">
+  <button class="btn btn-lg btn-primary" type="button">Quadrienal 2025-2028</button>
+  <button class="btn btn-lg btn-primary" type="button">Quadrienal 2021-2024</button>
+  <button class="btn btn-lg btn-primary" type="button">Quadrienal 2017-2020</button>
+  <button class="btn btn-lg btn-primary" type="button">Quadrienal 2013-2016</button>
+</div>')
+```
+
 <br>
 
 ```{r quadrienal-vigente, results = "hide", echo = FALSE, include = FALSE, eval = all(render_document, has.sucupira.files)}
@@ -134,15 +143,15 @@ source("Scripts/cover-2.R", local = knitr::knit_global())
 
 ```{r, eval = all(render_document, knitr::is_html_output())}
 cat("## **Avaliação CAPES** {#avalicao-capes .tabset}")
+cat('\n\n')
+cat('<hr style="height:2px;border-width:0;color:black;background-color:black">')
+cat('\n\n')
 ```
 
 ```{r, eval = all(render_document, !knitr::is_html_output())}
 cat("## **Avaliação CAPES**")
 cat('\n\n')
 ```
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r, eval = all(render_document, !has.avaliacao)}
 cat('<br>')
@@ -220,15 +229,15 @@ for (j in 1:length(abas)) {
 
 ```{r, eval = all(render_document, knitr::is_html_output(), has.sucupira.files)}
 cat("## **Preenchimento do Coleta** {#coleta .tabset}")
+cat('\n\n')
+cat('<hr style="height:2px;border-width:0;color:black;background-color:black">')
+cat('\n\n')
 ```
 
 ```{r, eval = all(render_document, !knitr::is_html_output(), has.sucupira.files)}
 cat("## **Preenchimento do Coleta**")
 cat('\n\n')
 ```
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r preenchimento-coleta, eval = all(render_document, has.sucupira.files), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
 # get years
@@ -314,15 +323,18 @@ if(knitr::is_latex_output()) {
 
 ```{=latex}
 \newpage
+\vspace*{\fill}
+\section{\textbf{1. Programa}}
+\vspace*{\fill}
+\newpage
 ```
 
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-## **1. Programa** {#programa .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
+```{r 1-Programa, eval = all(render_document, knitr::is_html_output())}
+cat("## **1. Programa** {#programa .tabset}")
+cat('\n\n')
+cat('<hr style="height:2px;border-width:0;color:black;background-color:black">')
+cat('\n\n')
+```
 
 ```{r 1-1-1, eval = all(render_document, knitr::is_html_output())}
 cat("### **1.1.1**")
@@ -4194,20 +4206,26 @@ for (j in 1:length(abas)) {
 }
 ```
 
+<br>
+
+<br>
+
 ```{=latex}
+\newpage
+\vspace*{\fill}
+\section{\textbf{2. Formação}}
+\vspace*{\fill}
 \newpage
 ```
 
-<br>
-
-<br>
+```{r 2-Formacao, eval = all(render_document, knitr::is_html_output())}
+cat("## **2. Formação** {#formacao .tabset}")
+cat('\n\n')
+cat('<hr style="height:2px;border-width:0;color:black;background-color:black">')
+cat('\n\n')
+```
 
 \blandscape
-
-## **2. Formação** {#formacao .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
 
 ```{r 2-1-1, eval = all(render_document, knitr::is_html_output())}
 cat("### **2.1.1**")
@@ -6583,9 +6601,9 @@ dplyr::select(
   "Anos",
   "Nome Docente",
   "Orientações de Monografia",
-  "Número de Disciplinas da Graduação",
   "Orientações de Iniciação Científica",
   "Orientações de Tutoria",
+  "Número de Disciplinas da Graduação",
   "Carga Horária na Graduação (Anual)"
 )
 
@@ -6732,43 +6750,43 @@ if(!sjmisc::is_empty(table.tut)){
 }
 
 # List all tables
-table.2.5.5 <- list(
+table.2.5.5a <- list(
   table.mono.gt,
   table.ic.gt,
   table.tut.gt
 )
 
 # Drop empty elements from the list
-table.2.5.5 <- table.2.5.5[lapply(table.2.5.5, length) > 0]
+table.2.5.5a <- table.2.5.5a[lapply(table.2.5.5a, length) > 0]
 
 spann <- c("**Orientações de Monografia**", "**Orientações de Iniciação Científica**", "**Orientações de Tutoria**")
-spann <- spann[which(lapply(table.2.5.5, length) > 0)]
+spann <- spann[which(lapply(table.2.5.5a, length) > 0)]
 
-if(any(lapply(table.2.5.5, length) > 0)){
-  table.2.5.5 <- gtsummary::tbl_merge(
-    tbls = table.2.5.5,
+if(any(lapply(table.2.5.5a, length) > 0)){
+  table.2.5.5a <- gtsummary::tbl_merge(
+    tbls = table.2.5.5a,
     tab_spanner = spann
   )
 } else {
-  table.2.5.5 <- NULL
+  table.2.5.5a <- NULL
 }
 
 # Print HTML table
-if (knitr::is_html_output() && !sjmisc::is_empty(table.2.5.5)) {
-  print(table.2.5.5)
+if (knitr::is_html_output() && !sjmisc::is_empty(table.2.5.5a)) {
+  print(table.2.5.5a)
 }
 
 # Print LaTeX table
-if (knitr::is_latex_output() && !sjmisc::is_empty(table.2.5.5)) {
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.2.5.5a)) {
   cat('\\FloatBarrier')
   # Convert gtsummary object to kableExtra object
   kable_table <- gtsummary::as_kable_extra(
-    x = table.2.5.5,
+    x = table.2.5.5a,
     escape = FALSE,
     format = ifelse(knitr::is_html_output(), "html", "latex"),
     booktabs = TRUE,
     linesep = "",
-    caption = ifelse(knitr::is_html_output(), "", "Produção do Programa")
+    caption = ifelse(knitr::is_html_output(), "", "Inserção na Graduação - Orientação"),
   ) %>%
     kableExtra::kable_styling(
       bootstrap_options = c("basic", "hover", "condensed", "responsive"),
@@ -6776,7 +6794,156 @@ if (knitr::is_latex_output() && !sjmisc::is_empty(table.2.5.5)) {
       latex_table_env = "tabularx",
       full_width = TRUE,
       position = "center"
-    ) %>% kableExtra::column_spec(column = 1:(1 + length(unique(sucupira.df.grad$Anos))*nlevels(sucupira.df.grad$"Nível Discente")), width = paste0(c(0.55, rep(0.45/(length(unique(sucupira.df.grad$Anos))*length(spann)), times = length(unique(sucupira.df.grad$Anos))*length(spann)))*(29-3-3), "cm"))
+    ) %>% kableExtra::column_spec(column = 1:(1 + (length(unique(sucupira.df.grad$Anos))+1)*length(spann)), width = paste0(c(0.55, rep(0.45/((length(unique(sucupira.df.grad$Anos))+1)*length(spann)*length(spann)), times = (length(unique(sucupira.df.grad$Anos))+1)*length(spann)))*(29-3-3), "cm"))
+  print(kable_table)
+}
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+# Add LaTeX commands for new page and float barrier
+if(knitr::is_latex_output()) {
+  cat('\\newpage')
+}
+```
+
+```{r 2-5-5-aulas-grad, eval = all(render_document, has.sucupira.files), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+# Create table
+table.aulas <- sucupira.df.grad %>% 
+  dplyr::select(
+    "Anos",
+    "Nome Docente",
+    "Número de Disciplinas da Graduação"
+  )
+
+# drop rows with 0 values
+table.aulas <- table.aulas %>%
+  dplyr::filter(`Número de Disciplinas da Graduação` > 0)
+
+# check for missing docentes.quadrienio
+table.aulas$"Nome Docente" <- factor(
+  table.aulas$"Nome Docente",
+  levels = sort(unique(c("Docentes", levels(table.aulas$"Nome Docente"), docentes.quadrienio)))
+)
+
+# check for missing anos in table.aulas
+table.aulas$"Anos" <- factor(
+  table.aulas$"Anos",
+  levels = sort(quadrienal.vigente)
+)
+
+# change all column types to factors
+table.aulas <- table.aulas %>%
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
+
+# print tables tbl_cross with thee levels
+if(!sjmisc::is_empty(table.aulas)){
+  table.aulas.gt <- table.aulas |>
+    gtsummary::tbl_cross(
+      row = 'Nome Docente',
+      col = "Anos",
+      statistic = "{n}",
+      missing = "no",
+      digits = 0,
+      margin = "column"
+    ) %>%
+    gtsummary::modify_header(label = "**Disciplinas na Graduação**", stat_0 = "Total") %>%
+    gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+    gtsummary::bold_labels() 
+} else {
+  table.aulas.gt <- list()
+}
+
+# Create table
+table.ch <- sucupira.df.grad %>% 
+  dplyr::select(
+    "Anos",
+    "Nome Docente",
+    "Carga Horária na Graduação (Anual)"
+  )
+
+# drop rows with 0 values
+table.ch <- table.ch %>%
+  dplyr::filter(`Carga Horária na Graduação (Anual)` > 0)
+
+# check for missing docentes.quadrienio
+table.ch$"Nome Docente" <- factor(
+  table.ch$"Nome Docente",
+  levels = sort(unique(c("Docentes", levels(table.ch$"Nome Docente"), docentes.quadrienio)))
+)
+
+# check for missing anos in table.ch
+table.ch$"Anos" <- factor(
+  table.ch$"Anos",
+  levels = sort(quadrienal.vigente)
+)
+
+# change all column types to factors
+table.ch <- table.ch %>%
+  dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
+
+# print tables tbl_cross with thee levels
+if(!sjmisc::is_empty(table.ch)){
+  table.ch.gt <- table.ch |>
+    gtsummary::tbl_cross(
+      row = 'Nome Docente',
+      col = "Anos",
+      statistic = "{n}",
+      missing = "no",
+      digits = 0,
+      margin = "column"
+    ) %>%
+    gtsummary::modify_header(label = "**Disciplinas na Graduação - Carga Horária (Anual)**", stat_0 = "Total") %>%
+    gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+    gtsummary::bold_labels() 
+} else {
+  table.ch.gt <- list()
+}
+
+# List all tables
+table.2.5.5b <- list(
+  table.aulas.gt,
+  table.ch.gt
+)
+
+# Drop empty elements from the list
+table.2.5.5b <- table.2.5.5b[lapply(table.2.5.5b, length) > 0]
+
+spann <- c("**Disciplinas na Graduação**", "**Carga Horária (Anual)**")
+spann <- spann[which(lapply(table.2.5.5b, length) > 0)]
+
+if(any(lapply(table.2.5.5b, length) > 0)){
+  table.2.5.5b <- gtsummary::tbl_merge(
+    tbls = table.2.5.5b,
+    tab_spanner = spann
+  )
+} else {
+  table.2.5.5b <- NULL
+}
+
+# Print HTML table
+if (knitr::is_html_output() && !sjmisc::is_empty(table.2.5.5b)) {
+  print(table.2.5.5b)
+}
+
+# Print LaTeX table
+if (knitr::is_latex_output() && !sjmisc::is_empty(table.2.5.5b)) {
+  cat('\\FloatBarrier')
+  # Convert gtsummary object to kableExtra object
+  kable_table <- gtsummary::as_kable_extra(
+    x = table.2.5.5b,
+    escape = FALSE,
+    format = ifelse(knitr::is_html_output(), "html", "latex"),
+    booktabs = TRUE,
+    linesep = "",
+    caption = ifelse(knitr::is_html_output(), "", "Inserção na Graduação - Disciplinas"),
+  ) %>%
+    kableExtra::kable_styling(
+      bootstrap_options = c("basic", "hover", "condensed", "responsive"),
+      latex_options = c("basic", "repeat_header", "HOLD_position"),
+      latex_table_env = "tabularx",
+      full_width = TRUE,
+      position = "center"
+    ) %>% kableExtra::column_spec(column = 1:(1 + (length(unique(sucupira.df.grad$Anos))+1)*length(spann)), width = paste0(c(0.55, rep(0.45/((length(unique(sucupira.df.grad$Anos))+1)*length(spann)*length(spann)), times = (length(unique(sucupira.df.grad$Anos))+1)*length(spann)))*(29-3-3), "cm"))
   print(kable_table)
 }
 
@@ -6792,10 +6959,20 @@ if(knitr::is_latex_output()) {
 
 <br>
 
-## **3. Impacto na sociedade** {#impacto .tabset}
+```{=latex}
+\newpage
+\vspace*{\fill}
+\section{\textbf{3. Impacto}}
+\vspace*{\fill}
+\newpage
+```
 
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
+```{r 3-Impacto, eval = all(render_document, knitr::is_html_output())}
+cat("## **3. Impacto** {#impacto .tabset}")
+cat('\n\n')
+cat('<hr style="height:2px;border-width:0;color:black;background-color:black">')
+cat('\n\n')
+```
 
 ```{r 3-1-1, eval = all(render_document, knitr::is_html_output())}
 cat("### **3.1.1**")
