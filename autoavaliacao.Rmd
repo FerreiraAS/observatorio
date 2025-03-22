@@ -632,37 +632,40 @@ table.ac.doc <- table(
 ) %>% as.data.frame(check.names = FALSE)
 # drop Freq = 0
 table.ac.doc <- table.ac.doc[table.ac.doc$Freq > 0, ]
-# select AC e Docentes
-table.ac.doc <- dplyr::select(as.data.frame(table.ac.doc), "Var1", "Var2", "Var3")
-names(table.ac.doc) <- c("Ano", "Área de Concentração", "Docente")
-# count docentes per year per AC
-table.ac.doc.freq <- table.ac.doc %>%
-  dplyr::group_by(Ano, `Área de Concentração`) %>%
-  dplyr::summarise(Docente = n())
 
-# long format
-table.ac.doc.long <- data.frame()
-for(i in 1:dim(table.ac.doc.freq)[1]){
-  table.ac.doc.long <- rbind(table.ac.doc.long,
-                             data.frame("Ano" = rep(table.ac.doc.freq$Ano[i], times = table.ac.doc.freq$Docente[i]),
-                                        "Área de Concentração" = rep(table.ac.doc.freq$`Área de Concentração`[i], times = table.ac.doc.freq$Docente[i]),
-                                        "Docente" = rep(table.ac.doc.freq$Docente[i], times = table.ac.doc.freq$Docente[i]),
-                                        check.names = FALSE))
-}
-# rename and drop columns
-table.ac.doc.long <- dplyr::select(table.ac.doc.long, "Ano", "Área de Concentração")
-names(table.ac.doc.long) <- c("Ano", "Docente Permanente")
-
-table.ac.doc.long <- rbind(
-  table.ac.doc.long,
-  data.frame(
-    "Ano" = rep(paste0(
-      min(quadrienal.vigente), "-", max(quadrienal.vigente)
-    ), times = length(unique(table.ac.doc$Docente))),
-    "Docente Permanente" = rep("Áreas", times = length(unique(table.ac.doc$Docente))),
-    check.names = FALSE
+if(!sjmisc::is_empty(table.ac.doc)){
+  # select AC e Docentes
+  table.ac.doc <- dplyr::select(as.data.frame(table.ac.doc), "Var1", "Var2", "Var3")
+  names(table.ac.doc) <- c("Ano", "Área de Concentração", "Docente")
+  # count docentes per year per AC
+  table.ac.doc.freq <- table.ac.doc %>%
+    dplyr::group_by(Ano, `Área de Concentração`) %>%
+    dplyr::summarise(Docente = n())
+  
+  # long format
+  table.ac.doc.long <- data.frame()
+  for(i in 1:dim(table.ac.doc.freq)[1]){
+    table.ac.doc.long <- rbind(table.ac.doc.long,
+                               data.frame("Ano" = rep(table.ac.doc.freq$Ano[i], times = table.ac.doc.freq$Docente[i]),
+                                          "Área de Concentração" = rep(table.ac.doc.freq$`Área de Concentração`[i], times = table.ac.doc.freq$Docente[i]),
+                                          "Docente" = rep(table.ac.doc.freq$Docente[i], times = table.ac.doc.freq$Docente[i]),
+                                          check.names = FALSE))
+  }
+  # rename and drop columns
+  table.ac.doc.long <- dplyr::select(table.ac.doc.long, "Ano", "Área de Concentração")
+  names(table.ac.doc.long) <- c("Ano", "Docente Permanente")
+  
+  table.ac.doc.long <- rbind(
+    table.ac.doc.long,
+    data.frame(
+      "Ano" = rep(paste0(
+        min(quadrienal.vigente), "-", max(quadrienal.vigente)
+      ), times = length(unique(table.ac.doc$Docente))),
+      "Docente Permanente" = rep("Áreas", times = length(unique(table.ac.doc$Docente))),
+      check.names = FALSE
+    )
   )
-)
+}
 
 my_N <- function(data, ...) {
   gtsummary::style_number(sum(data == "Áreas", na.rm = TRUE), digits = 0)
@@ -900,38 +903,41 @@ table.lp.doc <- table(
 ) %>% as.data.frame()
 # drop Freq = 0
 table.lp.doc <- table.lp.doc[table.lp.doc$Freq > 0, ]
-# select AC e Docentes
-table.lp.doc <- dplyr::select(as.data.frame(table.lp.doc), "Var1", "Var2", "Var3")
-names(table.lp.doc) <- c("Ano", "Linha de Pesquisa", "Docente")
-# count docentes per year per AC
-table.lp.doc.freq <- table.lp.doc %>%
-  dplyr::group_by(Ano, `Linha de Pesquisa`) %>%
-  dplyr::summarise(Docente = n())
 
-# long format
-table.lp.doc.long <- data.frame()
-for(i in 1:dim(table.lp.doc.freq)[1]){
-  table.lp.doc.long <- rbind(table.lp.doc.long,
-                             data.frame("Ano" = rep(table.lp.doc.freq$Ano[i], times = table.lp.doc.freq$Docente[i]),
-                                        "Linha de Pesquisa" = rep(table.lp.doc.freq$`Linha de Pesquisa`[i], times = table.lp.doc.freq$Docente[i]),
-                                        "Docente" = rep(table.lp.doc.freq$Docente[i], times = table.lp.doc.freq$Docente[i]),
-                                        check.names = FALSE))
-}
-
-# rename and drop columns
-table.lp.doc.long <- dplyr::select(table.lp.doc.long, "Ano", "Linha de Pesquisa")
-names(table.lp.doc.long) <- c("Ano", "Docente Permanente")
-
-table.lp.doc.long <- rbind(
-  table.lp.doc.long,
-  data.frame(
-    "Ano" = rep(paste0(
-      min(quadrienal.vigente), "-", max(quadrienal.vigente)
-    ), times = length(unique(table.lp.doc$Docente))),
-    "Docente Permanente" = rep("Linhas", times = length(unique(table.lp.doc$Docente))),
-    check.names = FALSE
+if(!sjmisc::is_empty(table.lp)){
+  # select AC e Docentes
+  table.lp.doc <- dplyr::select(as.data.frame(table.lp.doc), "Var1", "Var2", "Var3")
+  names(table.lp.doc) <- c("Ano", "Linha de Pesquisa", "Docente")
+  # count docentes per year per AC
+  table.lp.doc.freq <- table.lp.doc %>%
+    dplyr::group_by(Ano, `Linha de Pesquisa`) %>%
+    dplyr::summarise(Docente = n())
+  
+  # long format
+  table.lp.doc.long <- data.frame()
+  for(i in 1:dim(table.lp.doc.freq)[1]){
+    table.lp.doc.long <- rbind(table.lp.doc.long,
+                               data.frame("Ano" = rep(table.lp.doc.freq$Ano[i], times = table.lp.doc.freq$Docente[i]),
+                                          "Linha de Pesquisa" = rep(table.lp.doc.freq$`Linha de Pesquisa`[i], times = table.lp.doc.freq$Docente[i]),
+                                          "Docente" = rep(table.lp.doc.freq$Docente[i], times = table.lp.doc.freq$Docente[i]),
+                                          check.names = FALSE))
+  }
+  
+  # rename and drop columns
+  table.lp.doc.long <- dplyr::select(table.lp.doc.long, "Ano", "Linha de Pesquisa")
+  names(table.lp.doc.long) <- c("Ano", "Docente Permanente")
+  
+  table.lp.doc.long <- rbind(
+    table.lp.doc.long,
+    data.frame(
+      "Ano" = rep(paste0(
+        min(quadrienal.vigente), "-", max(quadrienal.vigente)
+      ), times = length(unique(table.lp.doc$Docente))),
+      "Docente Permanente" = rep("Linhas", times = length(unique(table.lp.doc$Docente))),
+      check.names = FALSE
+    )
   )
-)
+}
 
 my_N <- function(data, ...) {
   gtsummary::style_number(sum(data == "Linhas", na.rm = TRUE), digits = 0)
@@ -993,6 +999,8 @@ if(!sjmisc::is_empty(table.lp)){
       level_value = ("Linhas")
     ) %>%
     gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
+} else {
+  table.lp.doc.gt <- list()
 }
 ```
 
@@ -1634,67 +1642,72 @@ output <- data.frame(
   check.names = FALSE
 )
 
-for (i in 1:length(ids)) {
-  data <- table.projetos[table.projetos$`Identificador do Projeto de Pesquisa` == ids[i], ]
-  output$ID[i] <- unique(data$`Identificador do Projeto de Pesquisa`)
-  output$`Área de Concentração`[i] <- unique(data$`Área de Concentração`)
-  output$`Linha de Pesquisa`[i] <- unique(data$`Linha de Pesquisa`)
-  output$Projeto[i] <- unique(data$`Nome do Projeto de Pesquisa`)
-  output$Natureza[i] <- unique(data$`Natureza do Projeto de Pesquisa`)
-  output$Responsável[i] <- unique(data$`Nome do Membro do Projeto`)
-  n.bolsas <- sum(!is.na(data$Bolsa))
-  if(n.bolsas > 0){
-    output$Bolsa[i] <- paste0("(", 1:n.bolsas, ") ", na.omit(tools::toTitleCase(tolower(unique(data$Bolsa)))), collapse = "; ")
-  } else {
-    output$Bolsa[i] <- ""
+if(!sjmisc::is_empty(ids)){
+  for (i in 1:length(ids)) {
+    data <- table.projetos[table.projetos$`Identificador do Projeto de Pesquisa` == ids[i], ]
+    output$ID[i] <- unique(data$`Identificador do Projeto de Pesquisa`)
+    output$`Área de Concentração`[i] <- unique(data$`Área de Concentração`)
+    output$`Linha de Pesquisa`[i] <- unique(data$`Linha de Pesquisa`)
+    output$Projeto[i] <- unique(data$`Nome do Projeto de Pesquisa`)
+    output$Natureza[i] <- unique(data$`Natureza do Projeto de Pesquisa`)
+    output$Responsável[i] <- unique(data$`Nome do Membro do Projeto`)
+    n.bolsas <- sum(!is.na(data$Bolsa))
+    if(n.bolsas > 0){
+      output$Bolsa[i] <- paste0("(", 1:n.bolsas, ") ", na.omit(tools::toTitleCase(tolower(unique(data$Bolsa)))), collapse = "; ")
+    } else {
+      output$Bolsa[i] <- ""
+    }
+    n.auxilios <- sum(!is.na(data$Auxílio))
+    if(n.auxilios > 0){
+      output$Auxílio[i] <- paste0("(", 1:n.auxilios, ") ", na.omit(tools::toTitleCase(tolower(unique(data$Auxílio)))), collapse = "; ")
+    } else {
+      output$Auxílio[i] <- ""
+    }
+    output$Situação[i] <- unique(data$Situação)
   }
-  n.auxilios <- sum(!is.na(data$Auxílio))
-  if(n.auxilios > 0){
-    output$Auxílio[i] <- paste0("(", 1:n.auxilios, ") ", na.omit(tools::toTitleCase(tolower(unique(data$Auxílio)))), collapse = "; ")
-  } else {
-    output$Auxílio[i] <- ""
+  table.projetos <- output
+  
+  # add ID to the dataframe
+  table.projetos$ID <- seq(1, dim(table.projetos)[1])
+  
+  # Escape characters in table data & % $ # _ { }
+  if(knitr::is_latex_output()) {
+    try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\&", "\\\\&", x)), silent = TRUE)
+    try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\%", "\\\\%", x)), silent = TRUE)
+    try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\$", "\\\\$", x)), silent = TRUE)
+    try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\#", "\\\\#", x)), silent = TRUE)
+    try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\_", "\\\\_", x)), silent = TRUE)
+    try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\{", "\\\\{", x)), silent = TRUE)
+    try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\}", "\\\\}", x)), silent = TRUE)
   }
-  output$Situação[i] <- unique(data$Situação)
-}
-table.projetos <- output
-
-# add ID to the dataframe
-table.projetos$ID <- seq(1, dim(table.projetos)[1])
-
-# Escape characters in table data & % $ # _ { }
-if(knitr::is_latex_output()) {
-  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\&", "\\\\&", x)), silent = TRUE)
-  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\%", "\\\\%", x)), silent = TRUE)
-  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\$", "\\\\$", x)), silent = TRUE)
-  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\#", "\\\\#", x)), silent = TRUE)
-  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\_", "\\\\_", x)), silent = TRUE)
-  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\{", "\\\\{", x)), silent = TRUE)
-  try(table.projetos <- apply(table.projetos, 2, function(x) gsub("\\}", "\\\\}", x)), silent = TRUE)
-}
-
-table.projetos <- as.data.frame(table.projetos, check.names = FALSE)
-
-colnames(table.projetos) <-
-  c(
-    "ID",
-    "Área de Concentração",
-    "Linha de Pesquisa",
-    "Projeto",
-    "Natureza",
-    "Responsável",
-    "Bolsa",
-    "Auxílio",
-    "Situação"
-  )
-rownames(table.projetos) <- NULL
-
-# unique paired matrix of area de concentração and linha de pesquisa
-AC.LP <- unique(table.projetos[, c("Área de Concentração", "Linha de Pesquisa")])
-
-# create list of tables
-lista.AC.LP <- list()
-for (item in 1:dim(AC.LP)[1]) {
-  lista.AC.LP[[item]] <- table.projetos[table.projetos$`Área de Concentração` == AC.LP[item,1] & table.projetos$`Linha de Pesquisa` == AC.LP[item,2], ]
+  
+  table.projetos <- as.data.frame(table.projetos, check.names = FALSE)
+  
+  colnames(table.projetos) <-
+    c(
+      "ID",
+      "Área de Concentração",
+      "Linha de Pesquisa",
+      "Projeto",
+      "Natureza",
+      "Responsável",
+      "Bolsa",
+      "Auxílio",
+      "Situação"
+    )
+  rownames(table.projetos) <- NULL
+  
+  # unique paired matrix of area de concentração and linha de pesquisa
+  AC.LP <- unique(table.projetos[, c("Área de Concentração", "Linha de Pesquisa")])
+  
+  # create list of tables
+  lista.AC.LP <- list()
+  for (item in 1:dim(AC.LP)[1]) {
+    lista.AC.LP[[item]] <- table.projetos[table.projetos$`Área de Concentração` == AC.LP[item,1] & table.projetos$`Linha de Pesquisa` == AC.LP[item,2], ]
+  }
+} else {
+  lista.AC.LP <- NULL
+  AC.LP <- NULL
 }
 ```
 
@@ -1703,63 +1716,65 @@ for (item in 1:dim(AC.LP)[1]) {
 
 out <- NULL
 
-for (i in 1:length(lista.AC.LP)) {
-  # Define table caption
-  caption <- paste0('Projetos Liderados por Docentes Permanentes - Área de Concentração: ', toupper(AC.LP[i,1]), ' - ', 'Linha de Pesquisa: ', toupper(AC.LP[i,2]))
-  
-  # drop columns Area de Concentração, Linha de Pesquisa
-  lista.AC.LP[[i]] <- dplyr::select(lista.AC.LP[[i]], -c('Área de Concentração', 'Linha de Pesquisa'))
-  
-  # Generate R Markdown code for this chunk
-  knit_expanded <- paste0(
-    "\n```{r, eval = all(render_document, has.sucupira.files), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}\n",
-    "cat('\\n\\n<!-- -->\\n\\n')\n",
-    "# print tables\n",
-    "if (knitr::is_html_output()) {\n",
-    "  # use kable for HTML output\n",
-    "  knitr::kable(\n",
-    "    lista.AC.LP[[", i, "]],\n",
-    "    align = 'l',\n",
-    "    escape = FALSE,\n",
-    "    format = 'html',\n",
-    "    booktabs = TRUE,\n",
-    "    linesep = '',\n",
-    "    caption = '", caption, "',\n",
-    "    row.names = FALSE) %>% \n",
-    "    kableExtra::kable_styling(\n",
-    "      bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'),\n",
-    "      full_width = TRUE,\n",
-    "      position = 'center'\n",
-    "    ) %>% \n",
-    "    kableExtra::column_spec(column = 1:ncol(lista.AC.LP[[", i, "]]), width = paste0(c(0.02,0.21,0.08,0.16,0.20,0.20,0.13)*(29-3-3), 'cm')) %>% \n",
-    "    kableExtra::column_spec(column = 1, bold = TRUE) %>% \n",
-    "    kableExtra::row_spec(row = 0, bold = TRUE)\n",
-    "} else {\n",
-    "  # use tinytable for LaTeX output\n",
-    "  linhas.atual <- data.frame(lista.AC.LP[[", i, "]], check.names = FALSE)\n",
-    "  options(tinytable_print_output = 'latex')\n",
-    "  tinytable::tt(\n",
-    "    linhas.atual,\n",
-    "    width = c(0.02,0.21,0.08,0.16,0.20,0.20,0.13)*(29-3-3),\n",
-    "    style = 'bootstrap',\n",
-    "    align = 'l',\n",
-    "    caption = '", caption, "',\n",
-    "    row.names = FALSE\n",
-    "  ) %>% \n",
-    "    tinytable::theme_tt('multipage', rowhead = 1, latex_float = 'H') %>% \n",
-    "    tinytable::style_tt(i = 0, j = 1:ncol(lista.AC.LP[[", i, "]]), bold = TRUE) %>% \n",
-    "    tinytable::style_tt(i = 1:nrow(lista.AC.LP[[", i, "]]), j = 1, bold = TRUE)\n",
-    "}\n",
-    "source('Scripts/fonte-sucupira.R', local = knitr::knit_global())\n",
-    "```"
-  )
-  
-  out <- c(out, knit_expanded)
+if(!sjmisc::is_empty(lista.AC.LP)){
+  for (i in 1:length(lista.AC.LP)) {
+    # Define table caption
+    caption <- paste0('Projetos Liderados por Docentes Permanentes - Área de Concentração: ', toupper(AC.LP[i,1]), ' - ', 'Linha de Pesquisa: ', toupper(AC.LP[i,2]))
+    
+    # drop columns Area de Concentração, Linha de Pesquisa
+    lista.AC.LP[[i]] <- dplyr::select(lista.AC.LP[[i]], -c('Área de Concentração', 'Linha de Pesquisa'))
+    
+    # Generate R Markdown code for this chunk
+    knit_expanded <- paste0(
+      "\n```{r, eval = all(!sjmisc::is_empty(lista.AC.LP), render_document, has.sucupira.files), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}\n",
+      "cat('\\n\\n<!-- -->\\n\\n')\n",
+      "# print tables\n",
+      "if (knitr::is_html_output()) {\n",
+      "  # use kable for HTML output\n",
+      "  knitr::kable(\n",
+      "    lista.AC.LP[[", i, "]],\n",
+      "    align = 'l',\n",
+      "    escape = FALSE,\n",
+      "    format = 'html',\n",
+      "    booktabs = TRUE,\n",
+      "    linesep = '',\n",
+      "    caption = '", caption, "',\n",
+      "    row.names = FALSE) %>% \n",
+      "    kableExtra::kable_styling(\n",
+      "      bootstrap_options = c('striped', 'hover', 'condensed', 'responsive'),\n",
+      "      full_width = TRUE,\n",
+      "      position = 'center'\n",
+      "    ) %>% \n",
+      "    kableExtra::column_spec(column = 1:ncol(lista.AC.LP[[", i, "]]), width = paste0(c(0.02,0.21,0.08,0.16,0.20,0.20,0.13)*(29-3-3), 'cm')) %>% \n",
+      "    kableExtra::column_spec(column = 1, bold = TRUE) %>% \n",
+      "    kableExtra::row_spec(row = 0, bold = TRUE)\n",
+      "} else {\n",
+      "  # use tinytable for LaTeX output\n",
+      "  linhas.atual <- data.frame(lista.AC.LP[[", i, "]], check.names = FALSE)\n",
+      "  options(tinytable_print_output = 'latex')\n",
+      "  tinytable::tt(\n",
+      "    linhas.atual,\n",
+      "    width = c(0.02,0.21,0.08,0.16,0.20,0.20,0.13)*(29-3-3),\n",
+      "    style = 'bootstrap',\n",
+      "    align = 'l',\n",
+      "    caption = '", caption, "',\n",
+      "    row.names = FALSE\n",
+      "  ) %>% \n",
+      "    tinytable::theme_tt('multipage', rowhead = 1, latex_float = 'H') %>% \n",
+      "    tinytable::style_tt(i = 0, j = 1:ncol(lista.AC.LP[[", i, "]]), bold = TRUE) %>% \n",
+      "    tinytable::style_tt(i = 1:nrow(lista.AC.LP[[", i, "]]), j = 1, bold = TRUE)\n",
+      "}\n",
+      "source('Scripts/fonte-sucupira.R', local = knitr::knit_global())\n",
+      "```"
+    )
+    
+    out <- c(out, knit_expanded)
+  }
 }
 ```
  
 <!--- knit those table chunk statements --> 
-`r if(has.sucupira.files){paste(knitr::knit(text = out), collapse = '\n\n')}`
+`r if(all(render_document, has.sucupira.files)){paste(knitr::knit(text = out), collapse = '\n\n')}`
 
 \newpage
 
@@ -1779,26 +1794,30 @@ coerencia <- coerencia[!duplicated(coerencia),]
 coerencia <- coerencia %>%
   dplyr::mutate(dplyr::across(gtsummary::everything(), as.factor))
 
-# print tables tbl_cross with thee levels
-coerencia.gt <- coerencia |>
-  gtsummary::tbl_strata(
-    strata = 'Área de Concentração',
-    .tbl_fun =
-      ~ .x |>
-      gtsummary::tbl_summary(
-        by = 'Linha de Pesquisa',
-        statistic = list(
-          gtsummary::all_categorical() ~ "{n}"
-        ),
-        missing = "no",
-        digits = gtsummary::everything() ~ 0,
-        sort = gtsummary::all_categorical() ~ "alphanumeric"
-      ) %>%
-      gtsummary::modify_header(label = "**Coerência e Abrangência**") %>%
-      gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
-      gtsummary::bold_labels(),
-    .header = paste0("**{strata}**")
-  )
+if(!sjmisc::is_empty(coerencia)){
+  # print tables tbl_cross with thee levels
+  coerencia.gt <- coerencia |>
+    gtsummary::tbl_strata(
+      strata = 'Área de Concentração',
+      .tbl_fun =
+        ~ .x |>
+        gtsummary::tbl_summary(
+          by = 'Linha de Pesquisa',
+          statistic = list(
+            gtsummary::all_categorical() ~ "{n}"
+          ),
+          missing = "no",
+          digits = gtsummary::everything() ~ 0,
+          sort = gtsummary::all_categorical() ~ "alphanumeric"
+        ) %>%
+        gtsummary::modify_header(label = "**Coerência e Abrangência**") %>%
+        gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
+        gtsummary::bold_labels(),
+      .header = paste0("**{strata}**")
+    )
+} else {
+  coerencia.gt <- list()
+}
 
 # remove 0s from gtsummary
 # coerencia.gt[1]$table_body <- coerencia.gt[1]$table_body %>% 
@@ -3968,6 +3987,12 @@ sucupira.perfil.disc$Idade <- as.numeric(sucupira.perfil.disc$Anos) - as.numeric
 # try replacing Bacharelado por Graduação
 try(sucupira.perfil.disc$`Nível Discente`[sucupira.perfil.disc$`Nível Discente` == "Bacharelado"] <- "Graduação", silent = TRUE)
 
+# try rename levels Mestrado Profissional by Mestrado
+try(sucupira.perfil.disc$`Nível Discente`[sucupira.perfil.disc$`Nível Discente` == "Mestrado Profissional"] <- "Mestrado")
+
+# try rename levels Mestrado Profissional by Mestrado
+try(sucupira.perfil.disc$`Nível Discente`[sucupira.perfil.disc$`Nível Discente` == "Doutorado Profissional"] <- "Doutorado")
+
 # reorder levels of Nível Discente: "Bacharelado", "Mestrado" and "Doutorado"
 sucupira.perfil.disc$`Nível Discente` <- factor(
   sucupira.perfil.disc$`Nível Discente`,
@@ -4038,7 +4063,7 @@ sucupira.perfil.disc <- sucupira.perfil.disc %>%
   )
 
 # check nlevels of Nível Discente
-if (nlevels(sucupira.perfil.disc$`Nível Discente`) != 0) {
+if (nlevels(sucupira.perfil.disc$`Nível Discente`) != 0 && !sjmisc::is_empty(sucupira.perfil.disc)) {
   if (nlevels(sucupira.perfil.disc$`Nível Discente`) == 1) {
     # Mestrado OU Doutorado OU Bacharelado
     # Print tables
@@ -4597,7 +4622,7 @@ if (!sjmisc::is_empty(id.TCC)) {
 ```
 
 ```{r 2.1.1-detalhe, eval = all(render_document, has.sucupira.files)}
-if (!sjmisc::is_empty(id.TCC)) {
+if (!sjmisc::is_empty(lista.kw)) {
   # Create R Markdown chunks dynamically because projetos can be very large tables
   
   out <- NULL
@@ -6611,7 +6636,7 @@ if (nlevels(sucupira.df.tit$`Nível Discente`) != 0) {
       format = ifelse(knitr::is_html_output(), "html", "latex"),
       booktabs = TRUE,
       linesep = "",
-      caption = ifelse(knitr::is_html_output(), "", "Relação de orientadores com alunos matriculados por ano"),
+      caption = ifelse(knitr::is_html_output(), "", "Relação de orientadores com alunos titulados por ano"),
     ) %>%
       kableExtra::kable_styling(
         bootstrap_options = c("basic", "hover", "condensed", "responsive"),

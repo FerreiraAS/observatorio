@@ -1394,7 +1394,7 @@ plot.3 <- plot.3 %>% plotly::layout(
   margin = list(l = 60, r = 60, t = 60, b = 60),
   showlegend = TRUE,
   barmode = 'stack'
-)
+) %>% plotly::config(displayModeBar = FALSE)
 ```
 
 ```{r sintese-producao-carousel-1, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files, out.width = "100%"}
@@ -1783,7 +1783,7 @@ names(summ.table.producao) <-
     "Menor",
     "Mediana SJR",
     "Maior",
-    "Outros",
+    "Aguardando estrato",
     "Estrato B",
     "Estrato A"
   )
@@ -1893,8 +1893,7 @@ plot.1 <- plot.1 %>% plotly::layout(
   yaxis = list(
     title = "Altmetric Attention Score",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white'),
-    type = "log"
+    tickfont = list(color = 'white')
   ),
   plot_bgcolor = 'black',
   paper_bgcolor = 'black',
@@ -1933,13 +1932,13 @@ colnames(table.2) <-
     "Google+",
     "Notícias",
     "Reddit",
-    "Stack \n Exchange",
+    "Stack\nExchange",
     "X",
     "BlueSky",
     "Wikipedia",
     "Policies",
     "Patentes",
-    "YouTube \n Vimeo",
+    "YouTube\nVimeo",
     "Posts",
     "Mendeley"
   )
@@ -2565,8 +2564,8 @@ discentes <- data.frame(
   stringsAsFactors = FALSE
 )
 for (i in 1:length(anos)){
-  sucupira.list[[i]]$`Nível Discente`[grepl("Mestrado", discentes$`Nível Discente`)] <- "Mestrado"
-  sucupira.list[[i]]$`Nível Discente`[grepl("Doutorado", discentes$`Nível Discente`)] <- "Doutorado"
+  sucupira.list[[i]]$`Nível Discente`[grepl("Mestrado", sucupira.list[[i]]$`Nível Discente`)] <- "Mestrado"
+  sucupira.list[[i]]$`Nível Discente`[grepl("Doutorado", sucupira.list[[i]]$`Nível Discente`)] <- "Doutorado"
 
   discentes$Mestrado[i] <- sum(sucupira.list[[i]]$`Nível Discente` == "Mestrado")
   discentes$Doutorado[i] <- sum(sucupira.list[[i]]$`Nível Discente` == "Doutorado")
@@ -2908,19 +2907,27 @@ summ.table.pessoal <-
       big.mark = "."
     ),
     formatC(
-      median(
-        egressos$`Tempo de Curso (meses)`[egressos$`Nível Discente` == "Mestrado"],
-        na.rm = TRUE
-      ),
+      if(sum(egressos$`Nível Discente` == "Mestrado", na.rm = TRUE) > 0) {
+        median(
+          egressos$`Tempo de Curso (meses)`[egressos$`Nível Discente` == "Mestrado"],
+          na.rm = TRUE
+        )
+      } else {
+        "-"
+      },
       format = "d",
       digits = 0,
       big.mark = "."
     ),
     formatC(
-      median(
-        egressos$`Tempo de Curso (meses)`[egressos$`Nível Discente` == "Doutorado"],
-        na.rm = TRUE
-      ),
+      if(sum(egressos$`Nível Discente` == "Doutorado", na.rm = TRUE) > 0) {
+        median(
+          egressos$`Tempo de Curso (meses)`[egressos$`Nível Discente` == "Doutorado"],
+          na.rm = TRUE
+        )
+      } else {
+        "-"
+      },
       format = "d",
       digits = 0,
       big.mark = "."
@@ -2935,8 +2942,8 @@ names(summ.table.pessoal) <-
     "Egressos",
     "Mestres",
     "Doutores",
-    "Meses",
-    "Meses",
+    "Titulação (Meses)",
+    "Titulação (Meses)",
     "Candidatos",
     "Mestrandos",
     "Doutorandos"
@@ -3109,6 +3116,18 @@ plot.1 <- plot.1 %>% plotly::layout(
   showlegend = TRUE,
   barmode = 'stack'
 ) %>% plotly::config(displayModeBar = FALSE)
+
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # #
+paises <- c()
+for (i in IDs){
+  paises <- rbind(
+    paises,
+    posdoc.raw[posdoc.raw$`Identificador do Pós-Doc` == i, ]
+  )
+}
+
 
 
 # frequency table of posdocs per country (list element)
