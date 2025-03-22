@@ -3118,17 +3118,18 @@ plot.1 <- plot.1 %>% plotly::layout(
 ) %>% plotly::config(displayModeBar = FALSE)
 
 
+# calculate summary statistics for posdocs
+IDs <- unique(posdoc.raw$`Identificador do Pós-Doc`)
+total <- length(IDs)
 
 # # # # # # # # # # # # # # # # # # # # # # # # #
-paises <- c()
-for (i in IDs){
-  paises <- rbind(
-    paises,
-    posdoc.raw[posdoc.raw$`Identificador do Pós-Doc` == i, ]
-  )
-}
-
-
+# paises <- c()
+# for (i in IDs){
+#   paises <- rbind(
+#     paises,
+#     posdoc.raw[posdoc.raw$`Identificador do Pós-Doc` == i, ]
+#   )
+# }
 
 # frequency table of posdocs per country (list element)
 # repeate Ano based on each Frequência
@@ -3203,10 +3204,6 @@ ggplot2::ggplot() +
   ggplot2::ggtitle("Distribuição Global de Pós-Docs")
 
 # plot 3 (summary table in plot)
-
-# calculate summary statistics for posdocs
-IDs <- unique(posdoc.raw$`Identificador do Pós-Doc`)
-total <- length(IDs)
 
 concluidos <- 0
 for (i in IDs){
