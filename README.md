@@ -41,12 +41,13 @@ Copyright © 2021 Arthur de Sá Ferreira, DSc. Todos os direitos reservados.
 -   [x] Pessoas
 -   [x] Teses e Dissertações
 -   [x] Produção Bibliográfica
--   [x] Produção técnica
+-   [x] Produção Técnica
 -   [x] Destaques
 -   [x] Impactos
 -   [x] Downloads
 -   [x] Autoavaliação
 -   [x] Redes sociais
+-   [x] GitHub
 
 ## **Recursos computacionais**
 
@@ -86,6 +87,7 @@ Ao completar esta etapa, a estrutura dos diretórios será esta:
 │   └── 2022
 │   └── 2023
 │   └── 2024
+│   └── 2025
 ```
 
 1.  Acesse a [Plataforma
@@ -141,6 +143,8 @@ Ao completar esta etapa, a estrutura dos diretórios e arquivos será esta:
 │       └── conferencia_programa.xlsx
 │   └── 2024
 │       └── conferencia_programa.xlsx
+│   └── 2025
+│       └── conferencia_programa.xlsx
 ```
 
 ### **Programa**
@@ -150,10 +154,9 @@ O **Observatório** pode exibir informações complementares, não disponíveis 
 ``` bash
 ├── PPG
 │   └── Agendas de Pesquisa.xlsx
-│   └── Apresentação.xlsx
 │   └── Área CAPES.xlsx
 │   └── Autoavaliação.xlsx
-│   └── Avaliação.xlsx
+│   └── Avaliação CAPES.xlsx
 │   └── Bibliografia.xlsx
 │   └── Blog institucional.xlsx
 │   └── Blogs externos.xlsx
@@ -178,13 +181,11 @@ O **Observatório** pode exibir informações complementares, não disponíveis 
 │   └── Notas.xlsx
 │   └── Periódicos institucionais.xlsx
 │   └── Planejamento estratégico.xlsx
-│   └── Podcasts.xlsx
 │   └── Políticas.xlsx
 │   └── Prêmio CAPES de Tese.xlsx
 │   └── Prêmios.xlsx
 │   └── Produção.xlsx
 │   └── Repositórios.xlsx
-│   └── Videos.xlsx
 ```
 
 Um arquivo-modelo de cada planilha está disponível no [repositório do Observatório CR](https://github.com/ppgcr-unisuam/observatoriocr/tree/76185c88ea0ead961c03c0a09f6c5fb9eb104e39/PPG).
@@ -194,7 +195,7 @@ Um arquivo-modelo de cada planilha está disponível no [repositório do Observa
 -   [Agendas de Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Agendas%20de%20Pesquisa.xlsx)
 -   [Área CAPES.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/%C3%81rea%20CAPES.xlsx)
 -   [Autoavaliação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Autoavalia%C3%A7%C3%A3o.xlsx)
--   [Avaliação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Avalia%C3%A7%C3%A3o.xlsx)
+-   [Avaliação CAPES.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Avalia%C3%A7%C3%A3o.xlsx)
 -   [Bibliografia.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Bibliografia.xlsx)
 -   [Blog institucional.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Blog%20institucional.xlsx)
 -   [Blogs externos.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Blogs%20externos.xlsx)

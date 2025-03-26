@@ -3119,42 +3119,19 @@ plot.1 <- plot.1 %>% plotly::layout(
 
 
 # calculate summary statistics for posdocs
+# frequency table of unique posdocs per country
 IDs <- unique(posdoc.raw$`Identificador do Pós-Doc`)
 total <- length(IDs)
 
-# # # # # # # # # # # # # # # # # # # # # # # # #
-# paises <- c()
-# for (i in IDs){
-#   paises <- rbind(
-#     paises,
-#     posdoc.raw[posdoc.raw$`Identificador do Pós-Doc` == i, ]
-#   )
-# }
-
-# frequency table of posdocs per country (list element)
-# repeate Ano based on each Frequência
 posdocs.pais.long <- c()
-for (i in 1:nrow(posdoc)){
-  if(posdoc$Frequência[i] == 0){
-    posdocs.pais.long <- rbind(
-      posdocs.pais.long,
-      data.frame(
-        Ano = rep(posdoc$Ano[i], 1),
-        País = NA
-      )
-    )
-  }
+for (i in 1:total){
   posdocs.pais.long <- rbind(
     posdocs.pais.long,
     data.frame(
-      Ano = rep(posdoc$Ano[i], posdoc$Frequência[i]),
-      País = posdoc.list[[as.character(posdoc$Ano[i])]]$País
+      País = unique(posdoc.raw[posdoc.raw$`Identificador do Pós-Doc` == IDs[i], ]$`País`)
     )
   )
 }
-# drop rows with NA
-posdocs.pais.long <- posdocs.pais.long[!is.na(posdocs.pais.long$País), ]
-
 
 # plot 2 (geospatial plot of posdocs)
 paises <- as.data.frame(table(posdocs.pais.long$País))

@@ -404,7 +404,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 
 ### **Associações** {.tabset}
 
-```{r associacoes, cache = TRUE, cache.path = "cache/associacoes/", eval = all(has.sucupira.files, curl::has_internet())}
+```{r associacoes, cache = TRUE, eval = all(has.sucupira.files, curl::has_internet())}
 # Docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -419,26 +419,37 @@ orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
                   )
               )
 
+member.all <- c()
+services.all <- c()
 for (id in 1:length(orcids)) {
-  assoc.name <- sucupira.unique$`Nome Docente`[id]
   my_orcid <- orcids[id]
-
-  cat('\n\n<!-- -->\n\n')
-  cat('#### **', as.character(id), '**', sep = "")
-  cat('\n\n<!-- -->\n\n')
-  cat('##### **', assoc.name, '**', sep = "")
-  cat('\n\n<!-- -->\n\n')
+  docente.name <- sucupira.unique$`Nome Docente`[id]
   source("Scripts/orcid-memberships-services.R", local = knitr::knit_global())
-  cat('\n\n<!-- -->\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+  member.all <- rbind(member.all, member)
+  services.all <- rbind(services.all, services)
 }
+
+# print tables
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(member.all, title = "Destaques - Representação em Entidades Científicas")
+cat("**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)")
+cat('<br>')
+cat('<br>')
+
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(services.all, title = "Destaques - Representação em Periódicos Científicos")
+cat("**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)")
+cat('<br>')
+cat('<br>')
+
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
 
 ### **Corpo editorial de periódicos** {.tabset}
 
-```{r corpo-editorial, cache = TRUE, cache.path = "cache/corpo-editorial/", eval = all(has.sucupira.files, curl::has_internet())}
+```{r corpo-editorial, cache = TRUE, eval = all(has.sucupira.files, curl::has_internet())}
 # Docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -453,26 +464,29 @@ orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
                   )
               )
 
+editor.name.all <- c()
 for (id in 1:length(orcids)) {
-  editor.name <- sucupira.unique$`Nome Docente`[id]
   my_orcid <- orcids[id]
-
-  cat('\n\n<!-- -->\n\n')
-  cat('#### **', as.character(id), '**', sep = "")
-  cat('\n\n<!-- -->\n\n')
-  cat('##### **', editor.name, '**', sep = "")
-  cat('\n\n<!-- -->\n\n')
+  docente.name <- sucupira.unique$`Nome Docente`[id]
   source("Scripts/orcid-invited-positions.R", local = knitr::knit_global())
-  cat('\n\n<!-- -->\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+  editor.name.all <- rbind(editor.name.all, invited.pos)
 }
+
+# print tables
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(editor.name.all, title = "Destaques - Representação em Corpo Editorial de Periódicos Científicos")
+cat("**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)")
+cat('<br>')
+cat('<br>')
+
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
 
 ### **Revisor de periódicos** {.tabset}
 
-```{r revisores, cache = TRUE, cache.path = "cache/revisores/", eval = all(has.sucupira.files, curl::has_internet())}
+```{r revisores, cache = TRUE, eval = all(has.sucupira.files, curl::has_internet())}
 # Docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -487,19 +501,22 @@ orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
                   )
               )
 
+peer.review.all <- c()
 for (id in 1:length(orcids)) {
-  reviewer.name <- sucupira.unique$`Nome Docente`[id]
   my_orcid <- orcids[id]
-
-  cat('\n\n<!-- -->\n\n')
-  cat('#### **', as.character(id), '**', sep = "")
-  cat('\n\n<!-- -->\n\n')
-  cat('##### **', reviewer.name, '**', sep = "")
-  cat('\n\n<!-- -->\n\n')
+  docente.name <- sucupira.unique$`Nome Docente`[id]
   source("Scripts/orcid-reviewer-board.R", local = knitr::knit_global())
-  cat('\n\n<!-- -->\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+  peer.review.all <- rbind(peer.review.all, peer.review)
 }
+
+# print tables
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(peer.review.all, title = "Destaques - Representação em Corpo de Revisores de Periódicos Científicos")
+cat("**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)")
+cat('<br>')
+cat('<br>')
+
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>

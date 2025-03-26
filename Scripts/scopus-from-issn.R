@@ -18,6 +18,7 @@ doi_with_metrics <-
     dimnames = list(c(), columns_to_grab)
   ), check.names = FALSE)
 
+source_with_error <- c()
 # loop for all entries in the list
 for (input in 1:dim(df_scopus)[1]) {
   tryCatch(

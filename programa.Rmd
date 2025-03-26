@@ -555,7 +555,12 @@ if (dim(financiadores.all)[1] != 0) {
                                       c("Nome do Financiador",
                                         "Natureza do Financiador",
                                         "Data Início Financiador",
-                                        "Data Fim Financiador"))
+                                        "Data Fim Financiador",
+                                        "Financiador Estrangeiro"))
+  
+  # revise foreing funders
+  table.financiadores$`Financiador Estrangeiro`[financiadores.all$`Tipo de Documento do Financiador` == "Pessoa Jurídica Estrangeira"] <- "Sim"
+  
   table.financiadores <- table.financiadores[order(financiadores.all[, 1]), ]
   # print tables
   table.financiadores[, 1] <-
@@ -573,7 +578,8 @@ if (dim(financiadores.all)[1] != 0) {
     c("Agência",
       "Natureza",
       "Início",
-      "Fim")
+      "Fim",
+      "Estrangeiro")
   table.financiadores <- table.financiadores[order(table.financiadores$Início, table.financiadores$Fim, table.financiadores$Agência, decreasing = FALSE), ]
   
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -610,7 +616,12 @@ if (dim(financiadores.all)[1] != 0) {
                                       c("Nome do Financiador",
                                         "Natureza do Financiador",
                                         "Data Início Financiador",
-                                        "Data Fim Financiador"))
+                                        "Data Fim Financiador",
+                                        "Financiador Estrangeiro"))
+  
+  # revise foreing funders
+  table.financiadores$`Financiador Estrangeiro`[financiadores.all$`Tipo de Documento do Financiador` == "Pessoa Jurídica Estrangeira"] <- "Sim"
+  
   table.financiadores <- table.financiadores[order(financiadores.all[, 1]), ]
   # print tables
   table.financiadores[, 1] <-
@@ -628,7 +639,8 @@ if (dim(financiadores.all)[1] != 0) {
     c("Agência",
       "Natureza",
       "Início",
-      "Fim")
+      "Fim", 
+      "Estrangeira")
   table.financiadores <- table.financiadores[order(table.financiadores$Início, table.financiadores$Fim, table.financiadores$Agência, decreasing = FALSE), ]
   
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -712,6 +724,7 @@ financiadores.sub <-
                                "Edital",
                                "Processo No.",
                                "Título do projeto",
+                               "Proponente",
                                "Programa",
                                "País")
 fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
@@ -743,7 +756,7 @@ if (dim(financiadores)[1] != 0) {
     financiadores[order(financiadores$Ano, decreasing = TRUE), ]
 }
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(financiadores, title = "Programa - Financiadores - 2024-2021")
+create_dt(financiadores, title = "Programa - Financiadores - Detalhamento")
 
 cat('\n\n')
 cat(

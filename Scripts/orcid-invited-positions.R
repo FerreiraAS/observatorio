@@ -1,4 +1,9 @@
+# test
+# my_orcid <- "0000-0001-7014-2002"
+
+# periódico
 invited.pos <- c()
+labels <- c("Ano (início)", "Ano (fim)", "Docente", "Periódico", "Atuação", "País")
 
 # get invited positions data
 res <- rorcid::orcid_invited_positions(my_orcid)
@@ -9,46 +14,33 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
   affiliations <- res[[1]]$`affiliation-group`$summaries
   n.pos <- length(affiliations)
   
-  invited.pos <- as.data.frame(matrix(NA, ncol = 2, nrow = n.pos), check.names = FALSE)
+  invited.pos <- as.data.frame(matrix(NA, ncol = length(labels), nrow = n.pos), check.names = FALSE)
   for (i in 1:n.pos) {
-    # periódico
-    invited.pos[i, 1] <-
-      affiliations[[i]][['invited-position-summary.department-name']]
-    invited.pos[i, 2] <-
-      affiliations[[i]][['invited-position-summary.role-title']]
+    # get ano inicio
+    try(invited.pos[i, 1] <-
+      affiliations[[i]][['invited-position-summary.start-date.year.value']], silent = TRUE)
+    # get ano fim
+    try(invited.pos[i, 2] <-
+      affiliations[[i]][['invited-position-summary.end-date']], silent = TRUE)
+    if(is.na(invited.pos[i, 2])){invited.pos[i, 2] <- "Atual"}
+    # get docente
+    try(invited.pos[i, 3] <-
+      affiliations[[i]][['invited-position-summary.source.source-name.value']], silent = TRUE)
+    # get periódico
+    try(invited.pos[i, 4] <-
+      affiliations[[i]][['invited-position-summary.department-name']], silent = TRUE)
+    # get atuacao
+    try(invited.pos[i, 5] <-
+      affiliations[[i]][['invited-position-summary.role-title']], silent = TRUE)
     if(is.na(invited.pos[i, 1])){
       # split invited.pos[i, 2] into two columns using gsub to extrac text between ()
-      invited.pos[i, 1] <- trimws(gsub(".*\\((.*)\\).*", "\\1", invited.pos[i, 2]))
+      invited.pos[i, 4] <- trimws(gsub(".*\\((.*)\\).*", "\\1", invited.pos[i, 5]))
       # keep only text before ()
-      invited.pos[i, 2] <- trimws(gsub("\\(.*\\)", "", invited.pos[i, 2]))
+      invited.pos[i, 5] <- trimws(gsub("\\(.*\\)", "", invited.pos[i, 5]))
     }
+    # get pais
+    try(invited.pos[i, 6] <-
+      affiliations[[i]][['invited-position-summary.organization.address.country']], silent = TRUE)
   }
-  colnames(invited.pos) <- c("Periódico", "Atuação")
-  
-  invited.pos <- cbind(invited.pos)
-  
-  # print table (reviewed journals)
-  print(
-    knitr::kable(
-      invited.pos,
-      align = "l",
-      format = ifelse(knitr::is_html_output(), "html", "latex"),
-      escape = FALSE
-    ) %>%
-      kableExtra::kable_styling(
-        bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-        full_width = T,
-        position = "center"
-      ) %>%
-      kableExtra::row_spec(
-        0,
-        background = main.color,
-        bold = TRUE,
-        color = "white"
-      ),
-    row.names = NULL
-  )
-  cat("**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)")
-  cat('<br>')
-  cat('<br>')
+  colnames(invited.pos) <- labels
 }
