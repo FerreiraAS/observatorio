@@ -155,7 +155,7 @@ O **Observatório** pode exibir informações complementares, não disponíveis 
 ├── PPG
 │   └── Agendas de Pesquisa.xlsx
 │   └── Área CAPES.xlsx
-│   └── Autoavaliação.xlsx
+│   └── Autoavaliação PPG.xlsx
 │   └── Avaliação CAPES.xlsx
 │   └── Bibliografia.xlsx
 │   └── Blog institucional.xlsx
@@ -194,7 +194,7 @@ Um arquivo-modelo de cada planilha está disponível no [repositório do Observa
 
 -   [Agendas de Pesquisa.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Agendas%20de%20Pesquisa.xlsx)
 -   [Área CAPES.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/%C3%81rea%20CAPES.xlsx)
--   [Autoavaliação.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Autoavalia%C3%A7%C3%A3o.xlsx)
+-   [Autoavaliação PPG.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Autoavalia%C3%A7%C3%A3o.xlsx)
 -   [Avaliação CAPES.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Avalia%C3%A7%C3%A3o.xlsx)
 -   [Bibliografia.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Bibliografia.xlsx)
 -   [Blog institucional.xlsx](https://github.com/ppgcr-unisuam/observatoriocr/blob/1ee2bc100e8ca943e81ac9302fd15f31986cfbcf/PPG/Blog%20institucional.xlsx)

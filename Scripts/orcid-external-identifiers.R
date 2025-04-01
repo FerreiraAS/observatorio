@@ -4,7 +4,7 @@ get_external_ids <- function(my_orcid) {
   res.all <- c()
   
   for (id in 1:length(my_orcid)) {
-    ext.id <- matrix(NA, nrow = 0, ncol = 0)
+    ext.id <- matrix("", nrow = 0, ncol = 0)
     colnames(ext.id) <- c()
     if (!is.null(res[[id]]$`external-identifier`$`external-id-type`)) {
       # select external ID and external ID value

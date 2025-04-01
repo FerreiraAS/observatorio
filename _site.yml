@@ -212,16 +212,12 @@ navbar:
       href: [autoavaliacao.html]
       menu:
         - text: "2025-2028"
-          icon: "fa-file-pdf"
           href: [autoavaliacao-2025-2028.html]
         - text: "2021-2024"
-          icon: "fa-file-pdf"
           href: [autoavaliacao-2021-2024.html]
         - text: "2017-2020"
-          icon: "fa-file-pdf"
           href: [autoavaliacao-2017-2020.html]
         - text: "2013-2016"
-          icon: "fa-file-pdf"
           href: [autoavaliacao-2013-2016.html]
     - text: "Relatórios"
       menu:

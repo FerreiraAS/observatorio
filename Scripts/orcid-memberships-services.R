@@ -16,7 +16,7 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
   n.pos <- length(memberships)
   
   # associações
-  member <- as.data.frame(matrix(NA, ncol = length(labels.1), nrow = n.pos), check.names = FALSE)
+  member <- as.data.frame(matrix("", ncol = length(labels.1), nrow = n.pos), check.names = FALSE)
   for (i in 1:n.pos) {
     # get ano inicial
     try(member[i, 1] <- 
@@ -55,7 +55,7 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
   n.pos <- length(services.res)
   
   # periódicos
-  services <- as.data.frame(matrix(NA, ncol = length(labels.2), nrow = n.pos), check.names = FALSE)
+  services <- as.data.frame(matrix("", ncol = length(labels.2), nrow = n.pos), check.names = FALSE)
   for (i in 1:n.pos) {
     # get ano inicial
     try(services[i, 1] <- 

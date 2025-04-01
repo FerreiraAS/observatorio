@@ -84,7 +84,7 @@ names(sucupira.list) <- as.character(anos)
 # get data for the current period
 produtos <- sucupira.list[as.character(anos)] %>%
   plyr::compact()
-produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
+produtos <- data.frame(do.call(dplyr::bind_rows, produtos), check.names = FALSE)
 names(produtos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
@@ -148,7 +148,7 @@ if (dim(produtos)[1] != 0) {
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list), check.names = FALSE)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -189,7 +189,7 @@ names(sucupira.list) <- as.character(anos)
 # get data for the current period
 produtos <- sucupira.list[as.character(anos)] %>%
   plyr::compact()
-produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
+produtos <- data.frame(do.call(dplyr::bind_rows, produtos), check.names = FALSE)
 names(produtos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
@@ -253,7 +253,7 @@ if (dim(produtos)[1] != 0) {
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <-  data.frame(do.call(dplyr::bind_rows, produtos.list), check.names = FALSE)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -294,7 +294,7 @@ names(sucupira.list) <- as.character(anos)
 # get data for the current period
 produtos <- sucupira.list[as.character(anos)] %>%
   plyr::compact()
-produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
+produtos <-  data.frame(do.call(dplyr::bind_rows, produtos), check.names = FALSE)
 names(produtos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
@@ -358,7 +358,7 @@ if (dim(produtos)[1] != 0) {
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list), check.names = FALSE)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -399,7 +399,7 @@ names(sucupira.list) <- as.character(anos)
 # get data for the current period
 produtos <- sucupira.list[as.character(anos)] %>%
   plyr::compact()
-produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
+produtos <-  data.frame(do.call(dplyr::bind_rows, produtos), check.names = FALSE)
 names(produtos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
@@ -463,7 +463,7 @@ if (dim(produtos)[1] != 0) {
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <-  data.frame(do.call(dplyr::bind_rows, produtos.list), check.names = FALSE)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -504,7 +504,7 @@ names(sucupira.list) <- as.character(anos)
 # get data for the current period
 produtos <- sucupira.list[as.character(anos)] %>%
   plyr::compact()
-produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
+produtos <-  data.frame(do.call(dplyr::bind_rows, produtos), check.names = FALSE)
 names(produtos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
@@ -568,7 +568,7 @@ if (dim(produtos)[1] != 0) {
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <-  data.frame(do.call(dplyr::bind_rows, produtos.list), check.names = FALSE)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -609,7 +609,7 @@ names(sucupira.list) <- as.character(anos)
 # get data for the current period
 produtos <- sucupira.list[as.character(anos)] %>%
   plyr::compact()
-produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
+produtos <-  data.frame(do.call(dplyr::bind_rows, produtos), check.names = FALSE)
 names(produtos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
@@ -673,7 +673,7 @@ if (dim(produtos)[1] != 0) {
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <-  data.frame(do.call(dplyr::bind_rows, produtos.list), check.names = FALSE)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -714,7 +714,7 @@ names(sucupira.list) <- as.character(anos)
 # get data for the current period
 produtos <- sucupira.list[as.character(anos)] %>%
   plyr::compact()
-produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
+produtos <-  data.frame(do.call(dplyr::bind_rows, produtos), check.names = FALSE)
 names(produtos) <-
   names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
 
@@ -778,7 +778,7 @@ if (dim(produtos)[1] != 0) {
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <-  data.frame(do.call(dplyr::bind_rows, produtos.list), check.names = FALSE)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)

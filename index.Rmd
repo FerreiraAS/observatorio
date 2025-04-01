@@ -37,7 +37,7 @@ for(folder in folders){
 ```
 
 ---
-title: "OBSERVATÓRIO `r ifelse(magrittr::and(has.dados.cadastrais, has.sucupira.files), sigla.PPG, "")`"
+title: "OBSERVATÓRIO `r ifelse(all(has.dados.cadastrais, has.sucupira.files), sigla.PPG, "")`"
 ---
 
 <br>
@@ -178,43 +178,48 @@ summ.AC.LP <-
 # drop freq = 0 values
 summ.AC.LP <- summ.AC.LP[summ.AC.LP$Freq != 0, ]
 
-colnames(summ.AC.LP) <- c("AC", "LP", "Freq")
-
-# summ.AC.LP$AC <- as.factor(abbreviate(summ.AC.LP$AC))
-# summ.AC.LP$LP <- as.factor(abbreviate(summ.AC.LP$LP))
-data <- summ.AC.LP
-
-# Criar uma tabela de nós com identificadores únicos
-nodes <- data %>%
-  dplyr::select(AC, LP) %>%
-  tidyr::pivot_longer(cols = c(AC, LP), names_to = "type", values_to = "label") %>%
-  dplyr::distinct() %>%
-  dplyr::mutate(id = as.character(row_number())) %>%
-  dplyr::select(id, label, type)
-
-# Calcular a frequência total para cada nó
-node_freq <- data %>%
-  tidyr::pivot_longer(cols = c(AC, LP), names_to = "type", values_to = "label") %>%
-  dplyr::group_by(label) %>%
-  dplyr::summarise(Freq = sum(as.numeric(Freq))) %>%
-  dplyr::ungroup()
-
-# Adicionar a frequência dos nós ao dataframe 'nodes'
-nodes <- nodes %>%
-  dplyr::left_join(node_freq, by = c("label" = "label")) %>%
-  dplyr::mutate(size = Freq)
-
-# Criar uma tabela de arestas
-edges <- data %>%
-  dplyr::left_join(nodes %>% dplyr::select(label, id), by = c("AC" = "label")) %>%
-  dplyr::rename(from = id) %>%
-  dplyr::left_join(nodes %>% dplyr::select(label, id), by = c("LP" = "label")) %>%
-  dplyr::rename(to = id) %>%
-  dplyr::mutate(label = paste("Freq:", Freq)) %>%
-  dplyr::select(from, to, label)
-
-# Criar o grafo tree layout
-g <- igraph::graph_from_data_frame(d = edges, vertices = nodes, directed = FALSE)
+if(!sjmisc::is_empty(summ.AC.LP)){
+  
+  colnames(summ.AC.LP) <- c("AC", "LP", "Freq")
+  
+  data <- summ.AC.LP
+  
+  # Criar uma tabela de nós com identificadores únicos
+  nodes <- data %>%
+    dplyr::select(AC, LP) %>%
+    tidyr::pivot_longer(cols = c(AC, LP), names_to = "type", values_to = "label") %>%
+    dplyr::distinct() %>%
+    dplyr::mutate(id = as.character(row_number())) %>%
+    dplyr::select(id, label, type)
+  
+  # Calcular a frequência total para cada nó
+  node_freq <- data %>%
+    tidyr::pivot_longer(cols = c(AC, LP), names_to = "type", values_to = "label") %>%
+    dplyr::group_by(label) %>%
+    dplyr::summarise(Freq = sum(as.numeric(Freq))) %>%
+    dplyr::ungroup()
+  
+  # Adicionar a frequência dos nós ao dataframe 'nodes'
+  nodes <- nodes %>%
+    dplyr::left_join(node_freq, by = c("label" = "label")) %>%
+    dplyr::mutate(size = Freq)
+  
+  # Criar uma tabela de arestas
+  edges <- data %>%
+    dplyr::left_join(nodes %>% dplyr::select(label, id), by = c("AC" = "label")) %>%
+    dplyr::rename(from = id) %>%
+    dplyr::left_join(nodes %>% dplyr::select(label, id), by = c("LP" = "label")) %>%
+    dplyr::rename(to = id) %>%
+    dplyr::mutate(label = paste("Freq:", Freq)) %>%
+    dplyr::select(from, to, label)
+  
+  # Criar o grafo tree layout
+  g <- igraph::graph_from_data_frame(d = edges, vertices = nodes, directed = FALSE)
+  
+} else {
+  # empty igraph
+  g <- igraph::make_empty_graph()
+}
 
 # plot 1
 par(
@@ -3243,7 +3248,7 @@ summ.data <- summ.table.posdoc
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-posdoc-carousel-1, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = and(has.sucupira.files, has.posdoc), out.width = "100%"}
+```{r sintese-posdoc-carousel-1, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = all(has.sucupira.files, has.posdoc), out.width = "100%"}
 cat('<br>')
 cat('<br>')
 
@@ -3254,7 +3259,7 @@ cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
-```{r sintese-posdoc-carousel-2, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = and(has.sucupira.files, has.posdoc), out.width = "70%"}
+```{r sintese-posdoc-carousel-2, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = all(has.sucupira.files, has.posdoc), out.width = "70%"}
 cat('<br>')
 cat('<br>')
 
@@ -3285,41 +3290,47 @@ n.categ <- nlevels(categ)
 edge.matrix <- matrix(NA, nrow = 0, ncol = 2)
 colnames(edge.matrix) <- c("from", "to")
 
-# loop across all projects to populate the edge matrix
-for (i in 1:n.proj) {
-  # get the members by project id
-  membros.proj <-
-    unique(sucupira.raw$`Nome do Membro do Projeto`[proj.id == levels(proj.id)[i]])
-  # only vote for upper diagonal elements
-  for (n in 1:length(membros.proj)) {
-    for (m in n:length(membros.proj)) {
-      if (n != m) {
-        # find members
-        row.n <- match(membros.proj[n], membros)
-        col.m <- match(membros.proj[m], membros)
-        new.edge <- cbind(membros[row.n], membros[col.m])
-        # add edges
-        edge.matrix <- rbind(edge.matrix, new.edge)
+if(!sjmisc::is_empty(proj.id)){
+  # loop across all projects to populate the edge matrix
+  for (i in 1:n.proj) {
+    # get the members by project id
+    membros.proj <-
+      unique(sucupira.raw$`Nome do Membro do Projeto`[proj.id == levels(proj.id)[i]])
+    # only vote for upper diagonal elements
+    for (n in 1:length(membros.proj)) {
+      for (m in n:length(membros.proj)) {
+        if (n != m) {
+          # find members
+          row.n <- match(membros.proj[n], membros)
+          col.m <- match(membros.proj[m], membros)
+          new.edge <- cbind(membros[row.n], membros[col.m])
+          # add edges
+          edge.matrix <- rbind(edge.matrix, new.edge)
+        }
       }
     }
   }
-}
-
-# complete cases only
-edge.matrix <- edge.matrix[complete.cases(edge.matrix), ]
-
-# build the graph object
-network <- igraph::graph_from_edgelist(edge.matrix, directed = FALSE)
-
-# set member category and color
-colrs <- RColorBrewer::brewer.pal(n = n.categ, name = "Set3")
-for (i in 1:length(igraph::V(network))) {
-  categ.id <-
-    match(igraph::V(network)[[i]]$name, sucupira.raw$`Nome do Membro do Projeto`)
-  igraph::V(network)[[i]]$categ <-
-    sucupira.raw$`Categoria do Membro do Projeto`[categ.id]
-  col.id <- match(igraph::V(network)[[i]]$categ, levels(categ))
-  igraph::V(network)[i]$color <- colrs[col.id]
+  
+  # complete cases only
+  edge.matrix <- edge.matrix[complete.cases(edge.matrix), ]
+  
+  # build the graph object
+  network <- igraph::graph_from_edgelist(edge.matrix, directed = FALSE)
+  
+  # set member category and color
+  colrs <- RColorBrewer::brewer.pal(n = n.categ, name = "Set3")
+  for (i in 1:length(igraph::V(network))) {
+    categ.id <-
+      match(igraph::V(network)[[i]]$name, sucupira.raw$`Nome do Membro do Projeto`)
+    igraph::V(network)[[i]]$categ <-
+      sucupira.raw$`Categoria do Membro do Projeto`[categ.id]
+    col.id <- match(igraph::V(network)[[i]]$categ, levels(categ))
+    igraph::V(network)[i]$color <- colrs[col.id]
+  }
+} else {
+  network <- igraph::make_empty_graph()
+  categ <- factor("", levels = "")
+  colrs <- main.color
 }
 
 # plot area setup

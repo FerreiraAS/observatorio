@@ -139,6 +139,9 @@ for (i in 1:dim(coordenadores)[1]) {
 colnames(table.coord) <- c("Nome", "Categoria", "Vigência")
 rownames(table.coord) <- NULL
 
+# order by last column
+table.coord <- table.coord[order(table.coord$'Vigência', decreasing = FALSE),]
+
 # Print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.coord, title = "Pessoas - Coordenação")
@@ -206,7 +209,7 @@ periodo <- most.recent
 # Get docentes for the current period
 sucupira <- sucupira.list[as.character(periodo)] %>% plyr::compact()
 sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
-names(sucupira) <- names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+names(sucupira) <- names(sucupira.list[[as.character(max(as.numeric(anos)))]])
 
 # Recode dates
 sucupira$'Data de Admissão' <- substr(as.Date(sucupira$'Data de Admissão', format = "%d/%m/%Y"), 1, 4)
@@ -319,7 +322,7 @@ sucupira <- sucupira.list[as.character(periodo)] %>%
   plyr::compact()
 sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
 names(sucupira) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+  names(sucupira.list[[as.character(max(as.numeric(anos)))]])
 
 # recode
 sucupira$'Data de Admissão' <-
@@ -496,7 +499,7 @@ periodo <- most.recent
 # Get docentes for the current period
 sucupira <- sucupira.list[as.character(periodo)] %>% plyr::compact()
 sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira), check.names = FALSE)
-names(sucupira) <- names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+names(sucupira) <- names(sucupira.list[[as.character(max(as.numeric(anos)))]])
 
 # Keep active professors and remove duplicated data
 sucupira <- sucupira[is.na(sucupira$`Data de Desligamento`),]
@@ -551,7 +554,7 @@ periodo <- most.recent
 sucupira <- sucupira.list[as.character(periodo)] %>%
   plyr::compact()
 sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
-names(sucupira) <- names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+names(sucupira) <- names(sucupira.list[[as.character(max(as.numeric(anos)))]])
 
 # Recode
 sucupira$'Vínculo Início' <- substr(as.Date(sucupira$'Vínculo Início', format = "%d/%m/%Y"), 1, 4)
@@ -631,7 +634,7 @@ sucupira <- sucupira.list[as.character(periodo)] %>%
   plyr::compact()
 sucupira <- data.frame(do.call(dplyr::bind_rows, sucupira))
 names(sucupira) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+  names(sucupira.list[[as.character(max(as.numeric(anos)))]])
 
 # recode
 sucupira$'Vínculo Início' <-
@@ -727,7 +730,7 @@ periodo <- as.numeric(max(as.numeric(names(sucupira.list))))
 discentes <- sucupira.list[as.character(periodo)] %>%
   plyr::compact()
 discentes <- data.frame(do.call(dplyr::bind_rows, discentes))
-try(names(discentes) <- names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]]), silent = TRUE)
+try(names(discentes) <- names(sucupira.list[[as.character(max(as.numeric(anos)))]]), silent = TRUE)
 
 # dplyr::select active students
 discentes <- discentes[discentes$`Situação Discente` == "MATRICULADO", ]
@@ -815,7 +818,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
 # periodo max
-periodo <- as.numeric(max(as.numeric(names(sucupira.list))))
+periodo <- as.numeric(max(as.numeric(names(anos))))
 
 # egressos
 sheet <- "Discentes - Orientadores"
@@ -826,7 +829,7 @@ names(sucupira.list) <- as.character(anos)
 egressos <- sucupira.list[as.character(periodo)] %>%
   plyr::compact()
 egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
-try(names(egressos) <- names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]]), silent = TRUE)
+try(names(egressos) <- names(sucupira.list[[as.character(max(as.numeric(anos)))]]), silent = TRUE)
 
 # dplyr::select active students
 egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
@@ -854,6 +857,10 @@ if (dim(egressos)[1] != 0) {
     egressos$'Nome Discente'
     )
 }
+
+# order by 3rd and 2 columns
+egressos <- egressos[order(egressos$'Data Situação', egressos$'Nome'), ]
+
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(egressos, title = "Pessoas - Egressos - Titulados")
 
@@ -882,8 +889,7 @@ names(sucupira.list) <- as.character(anos)
 egressos <- sucupira.list[as.character(periodo)] %>%
   plyr::compact()
 egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
-names(egressos) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+try(names(egressos) <- names(sucupira.list[[as.character(max(as.numeric(anos)))]]), silent = TRUE)
 
 # dplyr::select active students
 egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
@@ -911,6 +917,10 @@ if (dim(egressos)[1] != 0) {
     egressos$'Nome Discente'
     )
 }
+
+# order by 3rd and 2 columns
+egressos <- egressos[order(egressos$'Data Situação', egressos$'Nome'), ]
+
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(egressos, title = "Pessoas - Egressos - 5 anos")
 
@@ -939,8 +949,7 @@ names(sucupira.list) <- as.character(anos)
 egressos <- sucupira.list[as.character(periodo)] %>%
   plyr::compact()
 egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
-names(egressos) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+try(names(egressos) <- names(sucupira.list[[as.character(max(as.numeric(anos)))]]), silent = TRUE)
 
 # dplyr::select active students
 egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
@@ -968,6 +977,10 @@ if (dim(egressos)[1] != 0) {
     egressos$'Nome Discente'
     )
 }
+
+# order by 3rd and 2 columns
+egressos <- egressos[order(egressos$'Data Situação', egressos$'Nome'), ]
+
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(egressos, title = "Pessoas - Egressos - 10 anos")
 
@@ -995,8 +1008,7 @@ names(sucupira.list) <- as.character(anos)
 egressos <- sucupira.list[as.character(periodo)] %>%
   plyr::compact()
 egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
-names(egressos) <-
-  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+try(names(egressos) <- names(sucupira.list[[as.character(max(as.numeric(anos)))]]), silent = TRUE)
 
 # dplyr::select active students
 egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
@@ -1024,6 +1036,10 @@ if (dim(egressos)[1] != 0) {
     egressos$'Nome Discente'
     )
 }
+
+# order by 3rd and 2 columns
+egressos <- egressos[order(egressos$'Data Situação', egressos$'Nome'), ]
+
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(egressos, title = "Pessoas - Egressos - Histórico")
 
@@ -1237,7 +1253,7 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = !has.sucupira.files}
+```{r, eval = !has.grupos.pesquisa}
 cat('<br>')
 ```
 
@@ -1299,7 +1315,7 @@ for (j in 1:length(abas)) {
 
 ### **Participantes** {#participantes .tabset}
 
-```{r externos-nacionais, eval = has.sucupira.files}
+```{r externos, eval = has.sucupira.files}
 # participantes externos
 sheet <- "Participante Externo"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())

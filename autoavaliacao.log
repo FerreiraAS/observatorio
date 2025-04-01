@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.24)  26 MAR 2025 08:08
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.3.30)  1 APR 2025 14:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -342,7 +342,7 @@ Package graphics Info: Driver file: xetex.def on input line 106.
 \Gin@req@height=\dimen182
 \Gin@req@width=\dimen183
 ) (/usr/local/texlive/2025/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2025/03/10 v25.5 The multilingual framework for pdfLaTeX, LuaLaT
+Package: babel 2025/03/27 v25.6 The multilingual framework for pdfLaTeX, LuaLaT
 eX and XeLaTeX
 \babel@savecnt=\count314
 \U@D=\dimen184
@@ -1633,6 +1633,10 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 
 
 
+
+
+
+
 ]
 
 [3
@@ -1651,10 +1655,10 @@ L3 programming layer <2025-01-18>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 40164 strings out of 473832
- 796654 string characters out of 5729481
- 1382234 words of memory out of 5000000
- 62613 multiletter control sequences out of 15000+600000
+ 40166 strings out of 473832
+ 796686 string characters out of 5729481
+ 1382325 words of memory out of 5000000
+ 62615 multiletter control sequences out of 15000+600000
  562472 words of font info for 68 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  99i,19n,114p,1202b,495s stack positions out of 10000i,1000n,20000p,200000b,200000s

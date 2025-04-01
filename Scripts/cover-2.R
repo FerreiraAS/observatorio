@@ -24,7 +24,7 @@ texto <- paste0(
   tryCatch(
     {
       # Attempt to get the page numbers from the PDF
-      paste0(pdftools::pdf_info("docs/autoavaliacao.pdf")$pages, "p")
+      paste0(pdftools::pdf_info(file.path("docs", pdf.file.name))$pages, "p")
     },
     error = function(e) {
       # In case of an error, return "0p"

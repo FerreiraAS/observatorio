@@ -63,7 +63,7 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Egressos** {#egressos-destaque .tabset}
+## **Egressos de destaque** {#egressos-destaque .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -404,7 +404,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 
 ### **Associações** {.tabset}
 
-```{r associacoes, cache = TRUE, eval = all(has.sucupira.files, curl::has_internet())}
+```{r associacoes, eval = all(has.sucupira.files, curl::has_internet())}
 # Docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -449,7 +449,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 
 ### **Corpo editorial de periódicos** {.tabset}
 
-```{r corpo-editorial, cache = TRUE, eval = all(has.sucupira.files, curl::has_internet())}
+```{r corpo-editorial, eval = all(has.sucupira.files, curl::has_internet())}
 # Docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -486,7 +486,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 
 ### **Revisor de periódicos** {.tabset}
 
-```{r revisores, cache = TRUE, eval = all(has.sucupira.files, curl::has_internet())}
+```{r revisores, eval = all(has.sucupira.files, curl::has_internet())}
 # Docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
