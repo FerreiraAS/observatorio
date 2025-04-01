@@ -10337,13 +10337,15 @@ if (knitr::is_latex_output() && !sjmisc::is_empty(síntese.ano)) {
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 cat('\n\n')
-cat('**Nota**: A classificação dos periódicos pelo Qualis refere-se à Avaliação Quadrienal 2017-2020 conforme arquivo disponibilizado na [Plataforma Sucupira](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.xhtml) e não substitui a classificação da CAPES da Avaliação Quadrienal ', min(quadrienal.vigente), '-', max(quadrienal.vigente), '.', sep = "")
+cat('**Nota 1**: A classificação dos periódicos pelo Qualis refere-se à Avaliação Quadrienal 2017-2020 conforme arquivo disponibilizado na [Plataforma Sucupira](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.xhtml) e não substitui a classificação da CAPES da Avaliação Quadrienal ', min(quadrienal.vigente), '-', max(quadrienal.vigente), '.', sep = "")
 cat('\n\n')
+cat('**Nota 2**: As métricas são referentes apenas às produções com *digital object identifier* (DOI).')
+cat('\n\n')
+```
 
-# Add LaTeX commands for new page and float barrier
-if(knitr::is_latex_output()) {
-  cat('\\newpage')
-}
+```{=latex}
+\newpage
+\FloatBarrier
 ```
 
 <br>
@@ -10384,6 +10386,11 @@ cat('\n\n')
 ```
 
 ```{r site-ppg, eval = all(render_document, file.exists("site.png")), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H', out.width = "100%"}
+if(knitr::is_html_output()) {
+  cat("##### **Site institucional**")
+  cat('\n\n')
+}
+
 # get URL
 yml <- yaml::read_yaml("_site.yml")
 URL.site <- yml$navbar$right[[1]]$menu[[2]]$href
@@ -10408,6 +10415,11 @@ if(knitr::is_latex_output()) {
 ```
 
 ```{r observatorio-ppg, eval = all(render_document, file.exists("observatorio.png")), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H', out.width = "100%"}
+if(knitr::is_html_output()) {
+  cat("##### **Observatório**")
+  cat('\n\n')
+}
+
 # get URL
 yml <- yaml::read_yaml("_site.yml")
 URL.obs <- yml$href
@@ -10803,7 +10815,6 @@ if (knitr::is_html_output() && !sjmisc::is_empty(peer.review.all)) {
   
   source("Scripts/fonte-orcid.R", local = knitr::knit_global())
   
-  
   # Add LaTeX commands for new page and float barrier
   if(knitr::is_latex_output()) {
     cat('\\newpage')
@@ -10863,6 +10874,9 @@ if (knitr::is_html_output() && !sjmisc::is_empty(member.all)) {
   )  %>% kableExtra::column_spec(column = 1:dim(member.all)[2], width = paste0(c(0.10,0.10,0.25,0.30,0.15,0.10)*(21-3-3), "cm")) %>%
   kableExtra::column_spec(column = 1, bold = TRUE) %>%
   kableExtra::row_spec(row = 0, bold = TRUE)
+  
+  source("Scripts/fonte-orcid.R", local = knitr::knit_global())
+  
 } else if (knitr::is_latex_output() && !sjmisc::is_empty(member.all)) {
   # use tinytable for LaTeX output
   member.all <- data.frame(member.all, check.names = FALSE)
@@ -10877,13 +10891,13 @@ if (knitr::is_html_output() && !sjmisc::is_empty(member.all)) {
     tinytable::theme_tt("multipage", rowhead = 1) %>%
     tinytable::style_tt(i = 0, j = 1:ncol(member.all), bold = TRUE) %>%
     tinytable::style_tt(i = 1:nrow(member.all), j = 1, bold = TRUE)
-}
-
-source("Scripts/fonte-orcid.R", local = knitr::knit_global())
-
-# Add LaTeX commands for new page and float barrier
-if(knitr::is_latex_output()) {
-  cat('\\newpage')
+    
+  source("Scripts/fonte-orcid.R", local = knitr::knit_global())
+  
+  # Add LaTeX commands for new page and float barrier
+  if(knitr::is_latex_output()) {
+    cat('\\newpage')
+  }
 }
 
 # print tables
@@ -10904,6 +10918,9 @@ if (knitr::is_html_output() && !sjmisc::is_empty(services.all)) {
   )  %>% kableExtra::column_spec(column = 1:dim(services.all)[2], width = paste0(c(0.10,0.10,0.25,0.30,0.15,0.10)*(21-3-3), "cm")) %>%
   kableExtra::column_spec(column = 1, bold = TRUE) %>%
   kableExtra::row_spec(row = 0, bold = TRUE)
+  
+  source("Scripts/fonte-orcid.R", local = knitr::knit_global())
+
 } else if (knitr::is_latex_output() && !sjmisc::is_empty(services.all)) {
   # use tinytable for LaTeX output
   services.all <- data.frame(services.all, check.names = FALSE)
@@ -10918,13 +10935,13 @@ if (knitr::is_html_output() && !sjmisc::is_empty(services.all)) {
     tinytable::theme_tt("multipage", rowhead = 1) %>%
     tinytable::style_tt(i = 0, j = 1:ncol(services.all), bold = TRUE) %>%
     tinytable::style_tt(i = 1:nrow(services.all), j = 1, bold = TRUE)
-}
-
-source("Scripts/fonte-orcid.R", local = knitr::knit_global())
-
-# Add LaTeX commands for new page and float barrier
-if(knitr::is_latex_output()) {
-  cat('\\newpage')
+  
+  source("Scripts/fonte-orcid.R", local = knitr::knit_global())
+  
+  # Add LaTeX commands for new page and float barrier
+  if(knitr::is_latex_output()) {
+    cat('\\newpage')
+  }
 }
 ```
 
