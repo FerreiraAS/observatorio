@@ -10383,14 +10383,16 @@ cat("### **3.3.1 Visibilidade**")
 cat('\n\n')
 ```
 
-```{r site-ppg, eval = all(render_document, exists("site.png")), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H', out.width = "100%"}
+```{r site-ppg, eval = all(render_document, file.exists("site.png")), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H', out.width = "100%"}
 # get URL
 yml <- yaml::read_yaml("_site.yml")
 URL.site <- yml$navbar$right[[1]]$menu[[2]]$href
 
 if(knitr::is_html_output()) {
   img <- magick::image_read('site.png')
-  img
+  # zero margins
+  par(mar = c(0, 0, 0, 0), oma = c(0, 0, 0, 0))
+  plot(img)
 } else {
   cat("\\includegraphics[width=\\textwidth]{site.png}")
 }
@@ -10405,16 +10407,18 @@ if(knitr::is_latex_output()) {
 }
 ```
 
-```{r observatorio-ppg, eval = all(render_document, exists("site.png")), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H', out.width = "100%"}
+```{r observatorio-ppg, eval = all(render_document, file.exists("observatorio.png")), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H', out.width = "100%"}
 # get URL
 yml <- yaml::read_yaml("_site.yml")
 URL.obs <- yml$href
 
 if(knitr::is_html_output()) {
   img <- magick::image_read('observatorio.png')
-  img
+  # zero margins
+  par(mar = c(0, 0, 0, 0), oma = c(0, 0, 0, 0))
+  plot(img)
 } else {
-  cat("\\includegraphics[width=\\textwidth]{site.png}")
+  cat("\\includegraphics[width=\\textwidth]{observatorio.png}")
 }
 # add caption
 cat('\n\n')
