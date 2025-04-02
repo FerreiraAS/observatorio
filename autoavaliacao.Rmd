@@ -48,8 +48,6 @@ knitr::opts_chunk$set(
 )
 
 render_document <- params$render_document
-nome.IES <- "IES"
-nome.PPG <- "PPG"
 ```
 
 <!--load caches-->
@@ -1902,7 +1900,7 @@ if(!sjmisc::is_empty(lista.AC.LP)){
     
     # Generate R Markdown code for this chunk
     knit_expanded.1 <- paste0(
-      "\n\n```{r, eval = all(!sjmisc::is_empty(lista.AC.LP), render_document, has.sucupira.files), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}\n\n",
+      "\n\n```{r, eval = all(render_document, has.sucupira.files), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}\n\n",
       "cat('\\n\n\\n\n<!-- -->\\n\\n')\n\n",
       "# print tables\n\n",
       "if (knitr::is_html_output()) {\n\n",
@@ -5286,7 +5284,7 @@ if (!sjmisc::is_empty(table.bancas.long)) {
 }
 ```
 
-```{r 2.1.1-detalhe, eval = all(exists("lista.kw"), render_document, has.sucupira.files)}
+```{r 2.1.1-detalhe, eval = all(exists("lista.kw"), try(!sjmisc::is_empty(lista.kw)), render_document, has.sucupira.files)}
 if (!sjmisc::is_empty(lista.kw)) {
   # Create R Markdown chunks dynamically because projetos can be very large tables
   
@@ -5298,7 +5296,7 @@ if (!sjmisc::is_empty(lista.kw)) {
     
     # Generate R Markdown code for this chunk
     knit_expanded.2 <- paste0(
-      "\n\n```{r, eval = all(exists('lista.kw'), render_document, has.sucupira.files), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}\n\n",
+      "\n\n```{r, eval = all(exists('lista.kw'), try(!sjmisc::is_empty(lista.kw)), render_document, has.sucupira.files), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}\n\n",
       "cat('\\n\n\\n\n<!-- -->\\n\n\\n\n')\n\n",
       "# print tables\n\n",
       "if (knitr::is_html_output()) {\n\n",
@@ -5369,7 +5367,7 @@ Fonte: Evert S (2023). corpora: Statistics and Data Sets for Corpus Frequency Da
 ```
 
 <!--- knit those table chunk statements --> 
-`r if(all(exists("out.2"), try(!sjmisc::is_empty(out.2), silent = TRUE), exists("lista.kw"), render_document, has.sucupira.files)){paste(knitr::knit(text = out.2), collapse = '\n\n')}`
+`r if(all(exists("out.2"), try(!sjmisc::is_empty(out.2), silent = TRUE), exists("lista.kw"), try(!sjmisc::is_empty(lista.kw)), render_document, has.sucupira.files)){paste(knitr::knit(text = out.2), collapse = '\n\n')}`
 
 \elandscape
 
@@ -7857,6 +7855,15 @@ if (knitr::is_latex_output() && !sjmisc::is_empty(table.2.4.1.a)) {
     ) %>% kableExtra::column_spec(column = 1:(1 + length(quadrienal.vigente)+ 1 + 1), width = paste0(c(0.50, rep(0.20/(length(quadrienal.vigente)), times = length(quadrienal.vigente)), 0.15, 0.15)*(21-3-3), "cm"))
   print(kable_table)
 }
+
+cat('Nota: O protagonismo do docente permanente foi definido pela ordem de autoria: 1º autor, 2º autor, penúltmo ou último.')
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+# Add LaTeX commands for new page and float barrier
+if(knitr::is_latex_output()) {
+  cat('\\newpage')
+}
 ```
 
 <br>
@@ -10288,21 +10295,17 @@ if(!sjmisc::is_empty(síntese.ano)){
         "Acesso aberto" ~ 0
       ),
     ) %>%
+    gtsummary::modify_header(
+      label = "**Ano**",
+      gtsummary::all_stat_cols() ~ "**{level}**") %>%
     gtsummary::add_overall(
       last = TRUE,
-      col_label = "**Subtotal**",
+      col_label = "**Quadriênio**",
       statistic = list(
         gtsummary::all_continuous() ~ "{median} ({min}-{max})",
         gtsummary::all_categorical() ~ "{n}"
       )
     ) %>%
-    gtsummary::modify_header(
-      update = stat_0 ~ "**Total**",
-      gtsummary::all_stat_cols() ~ "**{level}**"
-    ) %>%
-    gtsummary::modify_header(
-      label = "**Ano**",
-      gtsummary::all_stat_cols() ~ "**{level}**") %>%
     gtsummary::modify_footnote(gtsummary::everything() ~ NA) %>%
     gtsummary::bold_labels()
 }
@@ -10642,8 +10645,11 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.posdoc.hist)) {
     full_width = TRUE,
     position = "center"
   )  %>% kableExtra::column_spec(column = 1:dim(table.posdoc.hist)[2], width = paste0(c(0.25,0.35,0.15,0.15,0.10)*(21-3-3), "cm")) %>%
-  kableExtra::column_spec(column = 1, bold = TRUE) %>%
-  kableExtra::row_spec(row = 0, bold = TRUE)
+    kableExtra::column_spec(column = 1, bold = TRUE) %>%
+    kableExtra::row_spec(row = 0, bold = TRUE)
+  
+  source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+  
 } else if (knitr::is_latex_output() && !sjmisc::is_empty(table.posdoc.hist)) {
   # use tinytable for LaTeX output
   table.posdoc.hist <- data.frame(table.posdoc.hist, check.names = FALSE)
@@ -10658,9 +10664,9 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.posdoc.hist)) {
     tinytable::theme_tt("multipage", rowhead = 1) %>%
     tinytable::style_tt(i = 0, j = 1:ncol(table.posdoc.hist), bold = TRUE) %>%
     tinytable::style_tt(i = 1:nrow(table.posdoc.hist), j = 1, bold = TRUE)
+  
+  source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 }
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 # Add LaTeX commands for new page and float barrier
 if(knitr::is_latex_output()) {
@@ -10741,11 +10747,11 @@ if (knitr::is_html_output() && !sjmisc::is_empty(editor.name.all)) {
     tinytable::style_tt(i = 1:nrow(editor.name.all), j = 1, bold = TRUE)
   
   source("Scripts/fonte-orcid.R", local = knitr::knit_global())
-  
-  # Add LaTeX commands for new page and float barrier
-  if(knitr::is_latex_output()) {
-    cat('\\newpage')
-  }
+}
+
+# Add LaTeX commands for new page and float barrier
+if(knitr::is_latex_output()) {
+  cat('\\newpage')
 }
 
 if (knitr::is_html_output()) {
@@ -10814,11 +10820,11 @@ if (knitr::is_html_output() && !sjmisc::is_empty(peer.review.all)) {
     tinytable::style_tt(i = 1:nrow(peer.review.all), j = 1, bold = TRUE)
   
   source("Scripts/fonte-orcid.R", local = knitr::knit_global())
-  
-  # Add LaTeX commands for new page and float barrier
-  if(knitr::is_latex_output()) {
-    cat('\\newpage')
-  }
+}
+
+# Add LaTeX commands for new page and float barrier
+if(knitr::is_latex_output()) {
+  cat('\\newpage')
 }
 ```
 
@@ -10893,11 +10899,11 @@ if (knitr::is_html_output() && !sjmisc::is_empty(member.all)) {
     tinytable::style_tt(i = 1:nrow(member.all), j = 1, bold = TRUE)
     
   source("Scripts/fonte-orcid.R", local = knitr::knit_global())
-  
-  # Add LaTeX commands for new page and float barrier
-  if(knitr::is_latex_output()) {
-    cat('\\newpage')
-  }
+}
+
+# Add LaTeX commands for new page and float barrier
+if(knitr::is_latex_output()) {
+  cat('\\newpage')
 }
 
 # print tables
@@ -10937,11 +10943,11 @@ if (knitr::is_html_output() && !sjmisc::is_empty(services.all)) {
     tinytable::style_tt(i = 1:nrow(services.all), j = 1, bold = TRUE)
   
   source("Scripts/fonte-orcid.R", local = knitr::knit_global())
-  
-  # Add LaTeX commands for new page and float barrier
-  if(knitr::is_latex_output()) {
-    cat('\\newpage')
-  }
+}
+
+# Add LaTeX commands for new page and float barrier
+if(knitr::is_latex_output()) {
+  cat('\\newpage')
 }
 ```
 
