@@ -869,15 +869,18 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **5 anos** {#egressos-5}
+### **Até 5 anos** {#egressos-5}
 
 ```{r historico-egressos-5, eval = has.sucupira.files}
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
 # periodo
-n.anos <- 5
-periodo <- (as.numeric(format(Sys.Date(), "%Y")) - n.anos):(as.numeric(format(Sys.Date(), "%Y")) - 1)
+n.end <- as.numeric(format(Sys.Date(), "%Y")) - 0
+n.start <- as.numeric(format(Sys.Date(), "%Y")) - 5
+# egressos dos últimos 5 anos
+periodo <- n.start:n.end
+periodo <- periodo[periodo %in% anos]
 
 # egressos
 sheet <- "Discentes - Orientadores"
@@ -929,15 +932,81 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 <br>
 
-### **10 anos** {#egressos-10}
+### **5 a 10 anos** {#egressos-10}
 
 ```{r historico-egressos-10, eval = has.sucupira.files}
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
 # periodo
-n.anos <- 10
-periodo <- (as.numeric(format(Sys.Date(), "%Y")) - n.anos):(as.numeric(format(Sys.Date(), "%Y")) - 1)
+n.end <- as.numeric(format(Sys.Date(), "%Y")) - 5
+n.start <- as.numeric(format(Sys.Date(), "%Y")) - 10
+# egressos dos últimos 5 anos
+periodo <- n.start:n.end
+periodo <- periodo[periodo %in% anos]
+
+# egressos
+sheet <- "Discentes - Orientadores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+names(sucupira.list) <- as.character(anos)
+
+# get egressos for the current period
+egressos <- sucupira.list[as.character(periodo)] %>%
+  plyr::compact()
+egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
+try(names(egressos) <- names(sucupira.list[[as.character(max(as.numeric(anos)))]]), silent = TRUE)
+
+# dplyr::select active students
+egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
+
+# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
+egressos <- egressos[egressos$`Orientador Principal?` == "Sim", ]
+
+# get years
+egressos$'Data Situação' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
+
+# format names
+egressos$`Nome Discente` <- tools::toTitleCase(tolower(egressos$`Nome Discente`))
+egressos$`Nome do Orientador` <- tools::toTitleCase(tolower(egressos$`Nome do Orientador`))
+
+# drop columns (NO SUPERVISOR FOR UNDERGRAD STUDENTS)
+try(egressos <- egressos %>% dplyr::select("Nível Discente", "Nome Discente", "Data Situação", "Nome do Orientador", "País"), silent = TRUE)
+
+# remove duplicates
+egressos <- unique(egressos)
+colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
+
+if (dim(egressos)[1] != 0) {
+  egressos <- egressos %>% dplyr::arrange(
+    dplyr::desc(egressos$'Data Situação'),
+    egressos$'Nome Discente'
+    )
+}
+
+# order by 3rd and 2 columns
+egressos <- egressos[order(egressos$'Data Situação', egressos$'Nome'), ]
+
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(egressos, title = "Pessoas - Egressos - 10 anos")
+
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+<br>
+
+### **10 a 15 anos** {#egressos-15}
+
+```{r historico-egressos-15, eval = has.sucupira.files}
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+
+# periodo
+n.end <- as.numeric(format(Sys.Date(), "%Y")) - 10
+n.start <- as.numeric(format(Sys.Date(), "%Y")) - 15
+# egressos dos últimos 5 anos
+periodo <- n.start:n.end
+periodo <- periodo[periodo %in% anos]
 
 # egressos
 sheet <- "Discentes - Orientadores"
