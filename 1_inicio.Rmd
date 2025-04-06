@@ -803,7 +803,7 @@ silent = TRUE)
 
 ## **Sites**
 
-```{r site}
+```{r site, eval = !file.exists("site.png")}
 yml <- yaml::read_yaml("_site.yml")
 URL.site <- yml$navbar$right[[1]]$menu[[2]]$href
 
@@ -839,7 +839,7 @@ if(!sjmisc::is_empty(URL.site)){
 }
 ```
 
-```{r observatorio}
+```{r observatorio, eval = !file.exists("observatorio.png")}
 yml <- yaml::read_yaml("_site.yml")
 URL.obs <- yml$href
 
