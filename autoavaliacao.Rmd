@@ -2063,6 +2063,17 @@ coerencia.tbl <- coerencia.tbl %>% dplyr::mutate(across(everything(), ~sort(., n
 # keep rows with at least 1 non-NA value
 coerencia.tbl <- coerencia.tbl[rowSums(!is.na(coerencia.tbl)) > 0,]
 
+# Escape characters in table data & % $ # _ { }
+if(knitr::is_latex_output()) {
+  try(coerencia.tbl <- apply(coerencia.tbl, 2, function(x) gsub("\\&", "\\\\&", x)), silent = TRUE)
+  try(coerencia.tbl <- apply(coerencia.tbl, 2, function(x) gsub("\\%", "\\\\%", x)), silent = TRUE)
+  try(coerencia.tbl <- apply(coerencia.tbl, 2, function(x) gsub("\\$", "\\\\$", x)), silent = TRUE)
+  try(coerencia.tbl <- apply(coerencia.tbl, 2, function(x) gsub("\\#", "\\\\#", x)), silent = TRUE)
+  try(coerencia.tbl <- apply(coerencia.tbl, 2, function(x) gsub("\\_", "\\\\_", x)), silent = TRUE)
+  try(coerencia.tbl <- apply(coerencia.tbl, 2, function(x) gsub("\\{", "\\\\{", x)), silent = TRUE)
+  try(coerencia.tbl <- apply(coerencia.tbl, 2, function(x) gsub("\\}", "\\\\}", x)), silent = TRUE)
+}
+
 # print tables
 if (knitr::is_html_output() && !sjmisc::is_empty(coerencia.tbl)) {
   # loop across columns to numerate projects with sprintf
