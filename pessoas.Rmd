@@ -512,7 +512,7 @@ sucupira.unique <- sucupira.unique[order(sucupira.unique$`Nome Docente`, decreas
 my_orcid <- gsub("(.{14})(.*)$", "\\1-\\2", gsub("(.{9})(.*)$", "\\1-\\2", gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)))
 
 if (file.exists(file.path("cache", "pessoas", "external-id.Rds"))) {
-  peer.review.all <- readRDS(file.path("cache", "pessoas", "external-id.Rds"))
+  external.ids <- readRDS(file.path("cache", "pessoas", "external-id.Rds"))
 } else {
   dir.create(file.path("cache", "pessoas"), showWarnings = FALSE, recursive = TRUE)
   source("Scripts/orcid-external-identifiers.R", local = knitr::knit_global())
