@@ -422,7 +422,7 @@ orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
 if (file.exists(file.path("cache", "impactos", "invited-positions.Rds"))) {
   editor.name.all <- readRDS(file.path("cache", "impactos", "invited-positions.Rds"))
 } else {
-  dir.create(file.path("cache", "impacto"), showWarnings = FALSE, recursive = TRUE)
+  dir.create(file.path("cache", "impactos"), showWarnings = FALSE, recursive = TRUE)
   editor.name.all <- c()
   for (id in 1:length(orcids)) {
     my_orcid <- orcids[id]
@@ -463,7 +463,7 @@ orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
 if (file.exists(file.path("cache", "impactos", "reviewer-board.Rds"))) {
   peer.review.all <- readRDS(file.path("cache", "impactos", "reviewer-board.Rds"))
 } else {
-  dir.create(file.path("cache", "impacto"), showWarnings = FALSE, recursive = TRUE)
+  dir.create(file.path("cache", "impactos"), showWarnings = FALSE, recursive = TRUE)
   peer.review.all <- c()
   for (id in 1:length(orcids)) {
     my_orcid <- orcids[id]
@@ -505,7 +505,7 @@ if (file.exists(file.path("cache", "impactos", "membership.Rds")) | file.exists(
   member.all <- readRDS(file.path("cache", "impactos", "membership.Rds"))
   services.all <- readRDS(file.path("cache", "impactos", "services.Rds"))
 } else {
-  dir.create(file.path("cache", "impacto"), showWarnings = FALSE, recursive = TRUE)
+  dir.create(file.path("cache", "impactos"), showWarnings = FALSE, recursive = TRUE)
   member.all <- c()
   services.all <- c()
   for (id in 1:length(orcids)) {
