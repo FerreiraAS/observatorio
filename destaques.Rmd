@@ -402,51 +402,6 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **Associações** {.tabset}
-
-```{r associacoes, eval = all(has.sucupira.files, curl::has_internet())}
-# Docentes
-sheet <- "Docentes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# Keep active professors and remove duplicated data
-sucupira <- sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`), ]
-sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupira$ORCID),]
-
-orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
-               gsub("(.{9})(.*)$", "\\1-\\2",
-                    gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
-                  )
-              )
-
-member.all <- c()
-services.all <- c()
-for (id in 1:length(orcids)) {
-  my_orcid <- orcids[id]
-  docente.name <- sucupira.unique$`Nome Docente`[id]
-  source("Scripts/orcid-memberships-services.R", local = knitr::knit_global())
-  member.all <- rbind(member.all, member)
-  services.all <- rbind(services.all, services)
-}
-
-# print tables
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(member.all, title = "Destaques - Representação em Entidades Científicas")
-cat("**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)")
-cat('<br>')
-cat('<br>')
-
-source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(services.all, title = "Destaques - Representação em Periódicos Científicos")
-cat("**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)")
-cat('<br>')
-cat('<br>')
-
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-```
-
-<br>
-
 ### **Corpo editorial de periódicos** {.tabset}
 
 ```{r corpo-editorial, eval = all(has.sucupira.files, curl::has_internet())}
@@ -461,25 +416,29 @@ sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupi
 orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
                gsub("(.{9})(.*)$", "\\1-\\2",
                     gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
-                  )
-              )
+               )
+)
 
-editor.name.all <- c()
-for (id in 1:length(orcids)) {
-  my_orcid <- orcids[id]
-  docente.name <- sucupira.unique$`Nome Docente`[id]
-  source("Scripts/orcid-invited-positions.R", local = knitr::knit_global())
-  editor.name.all <- rbind(editor.name.all, invited.pos)
+if (file.exists(file.path("cache", "impactos", "invited-positions.Rds"))) {
+  editor.name.all <- readRDS(file.path("cache", "impactos", "invited-positions.Rds"))
+} else {
+  dir.create(file.path("cache", "impacto"), showWarnings = FALSE, recursive = TRUE)
+  editor.name.all <- c()
+  for (id in 1:length(orcids)) {
+    my_orcid <- orcids[id]
+    docente.name <- sucupira.unique$`Nome Docente`[id]
+    source("Scripts/orcid-invited-positions.R", local = knitr::knit_global())
+    editor.name.all <- rbind(editor.name.all, invited.pos)
+  }
+  rownames(editor.name.all) <- NULL
+  
+  saveRDS(editor.name.all, file.path("cache", "impactos", "invited-positions.Rds"))
 }
 
 # print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(editor.name.all, title = "Destaques - Representação em Corpo Editorial de Periódicos Científicos")
-cat("**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)")
-cat('<br>')
-cat('<br>')
-
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+source("Scripts/fonte-orcid.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -498,25 +457,79 @@ sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupi
 orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
                gsub("(.{9})(.*)$", "\\1-\\2",
                     gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
-                  )
-              )
+               )
+)
 
-peer.review.all <- c()
-for (id in 1:length(orcids)) {
-  my_orcid <- orcids[id]
-  docente.name <- sucupira.unique$`Nome Docente`[id]
-  source("Scripts/orcid-reviewer-board.R", local = knitr::knit_global())
-  peer.review.all <- rbind(peer.review.all, peer.review)
+if (file.exists(file.path("cache", "impactos", "reviewer-board.Rds"))) {
+  peer.review.all <- readRDS(file.path("cache", "impactos", "reviewer-board.Rds"))
+} else {
+  dir.create(file.path("cache", "impacto"), showWarnings = FALSE, recursive = TRUE)
+  peer.review.all <- c()
+  for (id in 1:length(orcids)) {
+    my_orcid <- orcids[id]
+    docente.name <- sucupira.unique$`Nome Docente`[id]
+    source("Scripts/orcid-reviewer-board.R", local = knitr::knit_global())
+    peer.review.all <- rbind(peer.review.all, peer.review)
+  }
+  rownames(peer.review.all) <- NULL
+  
+  saveRDS(peer.review.all, file.path("cache", "impactos", "reviewer-board.Rds"))
 }
 
 # print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(peer.review.all, title = "Destaques - Representação em Corpo de Revisores de Periódicos Científicos")
-cat("**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)")
-cat('<br>')
-cat('<br>')
+source("Scripts/fonte-orcid.R", local = knitr::knit_global())
+```
 
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+<br>
+
+### **Associações** {.tabset}
+
+```{r associacoes, eval = all(has.sucupira.files, curl::has_internet())}
+# Docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# Keep active professors and remove duplicated data
+sucupira <- sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`), ]
+sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupira$ORCID),]
+
+orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
+               gsub("(.{9})(.*)$", "\\1-\\2",
+                    gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
+               )
+)
+
+if (file.exists(file.path("cache", "impactos", "membership.Rds")) | file.exists(file.path("cache", "impactos", "services.Rds"))) {
+  member.all <- readRDS(file.path("cache", "impactos", "membership.Rds"))
+  services.all <- readRDS(file.path("cache", "impactos", "services.Rds"))
+} else {
+  dir.create(file.path("cache", "impacto"), showWarnings = FALSE, recursive = TRUE)
+  member.all <- c()
+  services.all <- c()
+  for (id in 1:length(orcids)) {
+    my_orcid <- orcids[id]
+    docente.name <- sucupira.unique$`Nome Docente`[id]
+    source("Scripts/orcid-memberships-services.R", local = knitr::knit_global())
+    member.all <- rbind(member.all, member)
+    services.all <- rbind(services.all, services)
+  }
+  rownames(member.all) <- NULL
+  rownames(services.all) <- NULL
+  
+  saveRDS(peer.review.all, file.path("cache", "impactos", "membership.Rds"))
+  saveRDS(services.all, file.path("cache", "impactos", "services.Rds"))
+}
+
+# print tables
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(member.all, title = "Destaques - Representação em Entidades Científicas")
+source("Scripts/fonte-orcid.R", local = knitr::knit_global())
+
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(services.all, title = "Destaques - Representação em Periódicos Científicos")
+source("Scripts/fonte-orcid.R", local = knitr::knit_global())
 ```
 
 <br>

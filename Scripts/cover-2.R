@@ -80,12 +80,12 @@ ggplot2::ggplot(df) +
   )
 
 ggplot2::ggsave(
-    "PPG/Images/Cover-2.png",
-    width = W,
-    height = H,
-    units = "in",
-    dpi = 300
-  )
+  "PPG/Images/Cover-2.png",
+  width = W,
+  height = H,
+  units = "in",
+  dpi = 300
+)
 
 # save PDF
 grDevices::pdf(file = "PPG/Images/Cover-2.pdf",

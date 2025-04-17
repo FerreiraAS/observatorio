@@ -11,7 +11,7 @@ get_file <- function (file, sheet = NULL){
 }
 
 get_sheet_names <- function(file){
- return(readxl::excel_sheets(file))
+  return(readxl::excel_sheets(file))
 }
 
 big_dataframe <- function(file_path, dir_name) {
@@ -53,9 +53,9 @@ tabelao2023_2024 <- even_bigger_dataframe(files,folders)
 write_fun <- function (payload, dir_path, filename){
   tryCatch({
     openxlsx::write.xlsx(payload,
-                          file = file.path(dir_path, filename),
-                          rowNames = TRUE,
-                          overwrite = TRUE)
+                         file = file.path(dir_path, filename),
+                         rowNames = TRUE,
+                         overwrite = TRUE)
     return (TRUE)
   },
   error = function(e){

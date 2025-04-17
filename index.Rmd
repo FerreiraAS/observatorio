@@ -1426,6 +1426,9 @@ source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-artigos, include = FALSE, eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira)}
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+
 # select products
 metricas_artigos <- metricas_all[metricas_all$`Subtipo de Produção` == "ARTIGO EM PERIÓDICO", ]
 
@@ -1543,6 +1546,7 @@ colors <- RColorBrewer::brewer.pal(n = 9, name = "Set3")
 data_long <- reshape2::melt(table.3, id.vars = "metricas_artigos..Ano.da.Produção.", value.name = "SJR")
 data_long <- data.frame(data_long, stringsAsFactors = FALSE)
 data_long <- data_long[, -2]
+data_long$SJR <- as.numeric(data_long$SJR)
 colnames(data_long) <- c("Ano", "SJR")
 
 plot.2 <- plotly::plot_ly(
@@ -1574,7 +1578,8 @@ plot.2 <- plot.2 %>% plotly::layout(
     titlefont = list(color = 'white'),
     tickfont = list(color = 'white'),
     # discrete ticks
-    tickformat = ".0d"
+    tickformat = ".0d",
+    type = "log"
   ),
   plot_bgcolor = 'black',
   paper_bgcolor = 'black',
@@ -1596,6 +1601,7 @@ colors <- RColorBrewer::brewer.pal(n = 9, name = "Set3")
 data_long <- reshape2::melt(table.4, id.vars = "metricas_artigos..Ano.da.Produção.", value.name = "CiteScore")
 data_long <- data.frame(data_long, stringsAsFactors = FALSE)
 data_long <- data_long[, -2]
+data_long$CiteScore <- as.numeric(data_long$CiteScore)
 colnames(data_long) <- c("Ano", "CiteScore")
 
 plot.3 <- plotly::plot_ly(
@@ -1627,7 +1633,8 @@ plot.3 <- plot.3 %>% plotly::layout(
     titlefont = list(color = 'white'),
     tickfont = list(color = 'white'),
     # discrete ticks
-    tickformat = ".0d"
+    tickformat = ".0d",
+    type = "log"
   ),
   plot_bgcolor = 'black',
   paper_bgcolor = 'black',
@@ -2313,9 +2320,9 @@ discentes.raw <-
   )
 discentes.raw <- discentes.raw[discentes.raw$País == "Brasil",]
 discentes.raw$'Data Matrícula' <-
-  as.Date(discentes.raw$'Data Matrícula', format = "%d/%m/%Y")
+  as.Date(openxlsx::convertToDate(discentes.raw$`Data Matrícula`), format = "%d/%m/%Y")
 discentes.raw$'Data Situação' <-
-  as.Date(discentes.raw$'Data Situação', format = "%d/%m/%Y")
+  as.Date(openxlsx::convertToDate(discentes.raw$`Data Situação`), format = "%d/%m/%Y")
 discentes.raw$'Ano Titulação' <-
   substr(as.Date(discentes.raw$'Data Situação', format = "%d/%m/%Y"), 1, 4)
 # tempo de curso

@@ -833,7 +833,7 @@ screenshot <- function(b, img_path,
 # get URL screenshot (site)
 if(!sjmisc::is_empty(URL.site)){
   a <- ChromoteSession$new(height = screen_height, width = screen_width)
-  a$Page$navigate(URL.site)
+  invisible(a$Page$navigate(URL.site))
   Sys.sleep(1)
   screenshot(a, "site.png")
 }
@@ -869,7 +869,7 @@ screenshot <- function(b, img_path,
 # get URL screenshot (observatório)
 if(!sjmisc::is_empty(URL.obs)){
   b <- ChromoteSession$new(height = screen_height, width = screen_width)
-  b$Page$navigate(URL.obs)
+  invisible(b$Page$navigate(URL.obs))
   Sys.sleep(1)
   screenshot(b, "observatorio.png")
 }

@@ -26,6 +26,7 @@ packs.cran <-
     "details",
     "devtools",
     "evaluate",
+    "extrafont",
     # plyr first, then dplyr
     "plyr",
     "dplyr",
@@ -52,9 +53,12 @@ packs.cran <-
     "lemon",
     "lubridate",
     "magrittr",
+    "maps",
     "networkD3",
+    "openxlsx",
     "pacman",
     "parallelly",
+    "pdftools",
     "png",
     "raster",
     "Rcpp",
@@ -130,12 +134,6 @@ if (curl::has_internet()) {
     devtools::install_github("ropensci/rcrossref")
   }
   
-  if (!require("retractcheck",
-               character.only = TRUE,
-               quietly = TRUE)) {
-    remotes::install_github("libscie/retractcheck")
-  }
-  
   if (!require("rscopus", character.only = TRUE, quietly = TRUE)) {
     devtools::install_github("muschellij2/rscopus")
   }
@@ -149,6 +147,11 @@ if (curl::has_internet()) {
     pacman::p_load_gh("trinker/textreadr")
   }
   
+  if (!require("retractcheck",
+               character.only = TRUE,
+               quietly = TRUE)) {
+    remotes::install_github("chartgerink/retractcheck")
+  }
   
   # update TeX packages
   tinytex::tlmgr_update()

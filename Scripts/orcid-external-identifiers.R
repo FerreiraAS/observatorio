@@ -14,14 +14,14 @@ get_external_ids <- function(my_orcid) {
         } else {
           temp <- rorcid::orcid_id(my_orcid[id])
           tools::toTitleCase(paste(temp[[1]]$name$`given-names`, temp[[1]]$name$`family-name`))
-          },
+        },
         t(c(my_orcid[id], res[[id]]$`external-identifier`$`external-id-value`))
       ), check.names = FALSE)
       # add column names
       colnames(ext.id) <- c("Nome", "ORCID", res[[id]]$`external-identifier`$`external-id-type`)
       # remove duplicated columns if any
       ext.id <- ext.id[!duplicated(as.list(ext.id))]
-  
+      
       res.all <- 
         dplyr::bind_rows(
           res.all,

@@ -35,7 +35,7 @@ data <- svDialogs::dlg_form(
   title = "Formulário",
   columns = 1,
   gui = .GUI
-  )
+)
 form <- data$res
 
 # replace elements from the list

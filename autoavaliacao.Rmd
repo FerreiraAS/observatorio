@@ -11042,7 +11042,7 @@ if(knitr::is_latex_output()) {
 
 ```
 
-```{r 3-3-2-assessorias-de-ONGs-empresas-agencias-de-fomento-revistas-científicas-ou-orgaos-de-governo, eval = all(render_document, has.sucupira.files), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+```{r 3-3-2-assessorias-de-ONGs-empresas-agencias-de-fomento-revistas-científicas-ou-orgaos-de-governo, eval = all(render_document, has.sucupira.files, curl::has_internet()), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
 if (knitr::is_html_output()) {
   cat('##### *Assessoria*')
   cat('\n\n')
@@ -11062,12 +11062,20 @@ orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
                )
 )
 
-editor.name.all <- c()
-for (id in 1:length(orcids)) {
-  my_orcid <- orcids[id]
-  docente.name <- sucupira.unique$`Nome Docente`[id]
-  source("Scripts/orcid-invited-positions.R", local = knitr::knit_global())
-  editor.name.all <- rbind(editor.name.all, invited.pos)
+if (file.exists(file.path("cache", "impactos", "invited-positions.Rds"))) {
+  editor.name.all <- readRDS(file.path("cache", "impactos", "invited-positions.Rds"))
+} else {
+  dir.create(file.path("cache", "impacto"), showWarnings = FALSE, recursive = TRUE)
+  editor.name.all <- c()
+  for (id in 1:length(orcids)) {
+    my_orcid <- orcids[id]
+    docente.name <- sucupira.unique$`Nome Docente`[id]
+    source("Scripts/orcid-invited-positions.R", local = knitr::knit_global())
+    editor.name.all <- rbind(editor.name.all, invited.pos)
+  }
+  rownames(editor.name.all) <- NULL
+  
+  saveRDS(editor.name.all, file.path("cache", "impactos", "invited-positions.Rds"))
 }
 
 # print tables
@@ -11139,15 +11147,21 @@ orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
                )
 )
 
-peer.review.all <- c()
-for (id in 1:length(orcids)) {
-  my_orcid <- orcids[id]
-  docente.name <- sucupira.unique$`Nome Docente`[id]
-  source("Scripts/orcid-reviewer-board.R", local = knitr::knit_global())
-  peer.review.all <- rbind(peer.review.all, peer.review)
+if (file.exists(file.path("cache", "impactos", "reviewer-board.Rds"))) {
+  peer.review.all <- readRDS(file.path("cache", "impactos", "reviewer-board.Rds"))
+} else {
+  dir.create(file.path("cache", "impacto"), showWarnings = FALSE, recursive = TRUE)
+  peer.review.all <- c()
+  for (id in 1:length(orcids)) {
+    my_orcid <- orcids[id]
+    docente.name <- sucupira.unique$`Nome Docente`[id]
+    source("Scripts/orcid-reviewer-board.R", local = knitr::knit_global())
+    peer.review.all <- rbind(peer.review.all, peer.review)
+  }
+  rownames(peer.review.all) <- NULL
+  
+  saveRDS(peer.review.all, file.path("cache", "impactos", "reviewer-board.Rds"))
 }
-
-rownames(peer.review.all) <- NULL
 
 # print tables
 if (knitr::is_html_output() && !sjmisc::is_empty(peer.review.all)) {
@@ -11204,7 +11218,7 @@ if(knitr::is_latex_output()) {
 
 ```
 
-```{r 3-3-2-lideranca-de-sociedades-e-ou-de-orgãos-científicos-culturais-profissionais-sociais-governamentais, eval = all(render_document, has.sucupira.files), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+```{r 3-3-2-lideranca-de-sociedades-e-ou-de-orgãos-científicos-culturais-profissionais-sociais-governamentais, eval = all(render_document, has.sucupira.files, curl::has_internet()), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
 if (knitr::is_html_output()) {
   cat('##### *Liderança*')
   cat('\n\n')
@@ -11224,14 +11238,25 @@ orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
                )
 )
 
-member.all <- c()
-services.all <- c()
-for (id in 1:length(orcids)) {
-  my_orcid <- orcids[id]
-  docente.name <- sucupira.unique$`Nome Docente`[id]
-  source("Scripts/orcid-memberships-services.R", local = knitr::knit_global())
-  member.all <- rbind(member.all, member)
-  services.all <- rbind(services.all, services)
+if (file.exists(file.path("cache", "impactos", "membership.Rds")) | file.exists(file.path("cache", "impactos", "services.Rds"))) {
+  member.all <- readRDS(file.path("cache", "impactos", "membership.Rds"))
+  services.all <- readRDS(file.path("cache", "impactos", "services.Rds"))
+} else {
+  dir.create(file.path("cache", "impacto"), showWarnings = FALSE, recursive = TRUE)
+  member.all <- c()
+  services.all <- c()
+  for (id in 1:length(orcids)) {
+    my_orcid <- orcids[id]
+    docente.name <- sucupira.unique$`Nome Docente`[id]
+    source("Scripts/orcid-memberships-services.R", local = knitr::knit_global())
+    member.all <- rbind(member.all, member)
+    services.all <- rbind(services.all, services)
+  }
+  rownames(member.all) <- NULL
+  rownames(services.all) <- NULL
+  
+  saveRDS(peer.review.all, file.path("cache", "impactos", "membership.Rds"))
+  saveRDS(services.all, file.path("cache", "impactos", "services.Rds"))
 }
 
 # print tables
@@ -11249,7 +11274,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(member.all)) {
     bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = TRUE,
     position = "center"
-  )  %>% kableExtra::column_spec(column = 1:dim(member.all)[2], width = paste0(c(0.10,0.10,0.25,0.30,0.15,0.10)*(21-3-3), "cm")) %>%
+  )  %>% kableExtra::column_spec(column = 1:dim(member.all)[2], width = paste0(c(0.08,0.08,0.24,0.30,0.07,0.08,0.08,0.07)*(21-3-3), "cm")) %>%
     kableExtra::column_spec(column = 1, bold = TRUE) %>%
     kableExtra::row_spec(row = 0, bold = TRUE) %>%
     kableExtra::footnote(
@@ -11265,7 +11290,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(member.all)) {
   options(tinytable_print_output = "latex")
   tinytable::tt(
     member.all,
-    width = c(0.10,0.10,0.25,0.30,0.15,0.10)*(21-3-3),
+    width = c(0.08,0.08,0.24,0.30,0.07,0.08,0.08,0.07)*(21-3-3),
     style = "bootstrap",
     align = "l",
     caption = ifelse(knitr::is_html_output(), "", "Liderança de sociedades e/ou de órgãos científicos, culturais, profissionais, sociais, governamentais"),

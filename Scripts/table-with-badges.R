@@ -78,7 +78,7 @@ table.with.badges <-
         
         # add Altmetric badge
         if (show.Altmetric == TRUE) {
-            if (!sjmisc::is_empty(altmetric)) {
+          if (!sjmisc::is_empty(altmetric)) {
             cat(
               "<a style=\"display: inline-block; float: left; margin:0.1em 0.3em 0.1em 0.3em;\" class=\"altmetric-embed\" data-badge-type=\"donut\" data-badge-popover=\"right\" data-doi=\"",
               doi,

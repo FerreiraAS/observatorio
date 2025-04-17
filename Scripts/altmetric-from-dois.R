@@ -91,7 +91,7 @@ for (input in 1:dim(dois)[1]) {
         doi_with_metrics$cited_by_accounts_count[doi_with_metrics$cited_by_accounts_count == ""] <- 0
         doi_with_metrics$cited_by_posts_count[doi_with_metrics$cited_by_posts_count == ""] <- 0
         doi_with_metrics$mendeley[doi_with_metrics$mendeley == ""] <- 0
-
+        
         # clean up the environment
         rm(raw_data)
       }

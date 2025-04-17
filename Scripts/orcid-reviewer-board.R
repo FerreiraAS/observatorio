@@ -46,7 +46,7 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
     paises <- paste0(unique(paises$`convening-organization.address.country`), collapse = ", ")
     paises.all <- c(paises.all, paises)
   }
-
+  
   # list journals
   journals <- rorcid::issn_title[issn]
   
@@ -67,7 +67,7 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
     # beep to alert
     beepr::beep("coin")
   }
-
+  
   # bind and rank by SJR
   peer.review <-
     data.frame(

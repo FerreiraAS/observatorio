@@ -19,6 +19,7 @@ details
 usethis
 devtools
 evaluate
+extrafont
 plyr
 dplyr
 DT
@@ -44,9 +45,12 @@ knitr
 lemon
 lubridate
 magrittr
+maps
 networkD3
+openxlsx
 pacman
 parallelly
+pdftools
 png
 sp
 raster
@@ -97,6 +101,6 @@ yaml
 cssparser
 packup
 rcrossref
-retractcheck
 rscopus
+retractcheck
 textreadr

@@ -1854,12 +1854,12 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 
 #### **Tabela**
 
-```{r politicas-citacao, eval = has.sage.files}
+```{r politicas-citacao, eval = all(has.sage.files, curl::has_internet())}
 # list all Sage Profiles
 files.to.read <-
   list.files(file.path(getwd(), "Impacto", "Sage Policy Profiles"),
-            full.names = TRUE,
-            recursive = FALSE)
+             full.names = TRUE,
+             recursive = FALSE)
 
 # column bind all into a single dataframe
 sage.profiles.raw <- data.frame()
@@ -1876,70 +1876,77 @@ for (i in 1:length(files.to.read)) {
 sage.profiles.raw  <-
   sage.profiles.raw[!duplicated(sage.profiles.raw$Policy.Document.ID), ]
 
-# select columns
-sage.profiles <- dplyr::select(sage.profiles.raw,
-                               c("Published.on",
-                                 "Title",
-                                 "Source.title",
-                                 "Source.type",
-                                 "Cited.research.titles",
-                                 "Cited.research.DOIs",
-                                 "Source.country",
-                                 "Document.URL"
+if (file.exists(file.path("cache", "impactos", "sage-profile.Rds"))) {
+  sage.profiles <- readRDS(file.path("cache", "impactos", "sage-profile.Rds"))
+} else {
+  dir.create(file.path("cache", "impactos"), showWarnings = FALSE, recursive = TRUE)
+  # select columns
+  sage.profiles <- dplyr::select(sage.profiles.raw,
+                                 c("Published.on",
+                                   "Title",
+                                   "Source.title",
+                                   "Source.type",
+                                   "Cited.research.titles",
+                                   "Cited.research.DOIs",
+                                   "Source.country",
+                                   "Document.URL"
                                  ))
-
-# format Published.on as year
-sage.profiles$Published.on <-
-  format(as.Date(sage.profiles$Published.on, "%Y-%m-%d"), "%Y")
-
-# use title case
-sage.profiles$Source.title <-
-  tools::toTitleCase(sage.profiles$Source.title)
-sage.profiles$Source.type <-
-  tools::toTitleCase(sage.profiles$Source.type)
-
-# format link of Source.title using Document.URL and drop the latter column
-sage.profiles$Source.title <-
-  paste0('<a href="',
-         sage.profiles$Document.URL,
-         '" target="_blank"',
-         '>',
-         sage.profiles$Source.title,
-         '</a>')
-
-# create Fontes
-sage.profiles$Fontes <- NA
-
-# loop for all entries to bind Cited.research.titles with respective Cited.research.DOIs
-for (i in 1:nrow(sage.profiles)) {
-  dois.data <-
-    stringr::str_split_1(string = sage.profiles$Cited.research.DOIs[i],
-                         pattern = "  ，")
-  # try to retrieve data from the cache file
-  if (!sjmisc::is_empty(dois.data)) {
+  
+  # format Published.on as year
+  sage.profiles$Published.on <-
+    format(as.Date(sage.profiles$Published.on, "%Y-%m-%d"), "%Y")
+  
+  # use title case
+  sage.profiles$Source.title <-
+    tools::toTitleCase(sage.profiles$Source.title)
+  sage.profiles$Source.type <-
+    tools::toTitleCase(sage.profiles$Source.type)
+  
+  # format link of Source.title using Document.URL and drop the latter column
+  sage.profiles$Source.title <-
+    paste0('<a href="',
+           sage.profiles$Document.URL,
+           '" target="_blank"',
+           '>',
+           sage.profiles$Source.title,
+           '</a>')
+  
+  # create Fontes
+  sage.profiles$Fontes <- NA
+  
+  # loop for all entries to bind Cited.research.titles with respective Cited.research.DOIs
+  for (i in 1:nrow(sage.profiles)) {
+    dois.data <-
+      stringr::str_split_1(string = sage.profiles$Cited.research.DOIs[i],
+                           pattern = "  ，")
+    # try to retrieve data from the cache file
+    if (!sjmisc::is_empty(dois.data)) {
       bib.data <- rcrossref::cr_cn(dois = dois.data, format = "text", style = "apa-cv")
       # wait to respect API rate limit (polite request)
       Sys.sleep(1)
       # beep to alert
       beepr::beep("coin")
+    }
+    # convert bib.data from list to vector
+    sage.profiles$Fontes[i] <- paste(bib.data, collapse = "<br><br>")
   }
-  # convert bib.data from list to vector
-  sage.profiles$Fontes[i] <- paste(bib.data, collapse = "<br><br>")
+  
+  # drop columns
+  sage.profiles$Document.URL <- NULL
+  sage.profiles$Cited.research.titles <- NULL
+  sage.profiles$Cited.research.DOIs <- NULL
+  
+  # rename columns
+  colnames(sage.profiles) <- c("Ano",
+                               "Título",
+                               "Tipo",
+                               "Pesquisas citadas (DOI)",
+                               "País",
+                               "Fonte"
+  )
+  
+  saveRDS(sage.profiles, file.path("cache", "impactos", "sage-profile.Rds"))
 }
-
-# drop columns
-sage.profiles$Document.URL <- NULL
-sage.profiles$Cited.research.titles <- NULL
-sage.profiles$Cited.research.DOIs <- NULL
-
-# rename columns
-colnames(sage.profiles) <- c("Ano",
-                             "Título",
-                             "Tipo",
-                             "Pesquisas citadas (DOI)",
-                             "País",
-                             "Fonte"
-                             )
 
 # keep complete cases only
 sage.profiles <-
