@@ -1356,7 +1356,7 @@ if(any(lapply(table.3.1.2, length) > 0)){
 }
 
 # Print HTML table
-if (knitr::is_html_output() && !sjmisc::is_empty(table.all)) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.3.1.2)) {
   print(table.3.1.2)
 }
 
