@@ -2328,11 +2328,11 @@ discentes.raw$'Ano Titulação' <-
 # tempo de curso
 discentes.raw$`Tempo de Curso (meses)` <-
   lubridate::interval(start = lubridate::ymd(gsub("-", "", discentes.raw$'Data Matrícula')), end = lubridate::ymd(gsub("-", "", discentes.raw$'Data Situação'))) %/% months(1)
-discentes.raw %>%
+discentes.raw <- discentes.raw %>%
   dplyr::mutate(`Tempo de Curso (meses)` = as.numeric(`Tempo de Curso (meses)`)) %>%
   dplyr::mutate(`Ano Titulação` = as.numeric(`Ano Titulação`))
 discentes.raw$Curso[grepl("Mestrado", discentes.raw$Curso)] <- "Mestrado"
-discentes.raw$Curso[grepl("Doutorado", discentes.raw$Curso)] <-"Doutorado"
+discentes.raw$Curso[grepl("Doutorado", discentes.raw$Curso)] <- "Doutorado"
 
 discentes <- discentes.raw[is.na(discentes.raw$'Data Situação'), ]
 discentes <- discentes[discentes$'Situação' != "Cancelado", ]

@@ -565,7 +565,6 @@ for (i in 1:length(sucupira)) {
   )
 }
 
-
 sucupira.df <- data.frame(do.call(dplyr::bind_rows, sucupira), check.names = FALSE)
 names(sucupira.df) <- names(sucupira[[as.character(max(as.numeric(periodo.vigente)))]])
 
@@ -1337,7 +1336,7 @@ if(!sjmisc::is_empty(table.aut)){
 
 ```{r 3-1-2-list-tables, eval = has.sucupira.files}
 # List all tables
-table.all <- list(
+table.3.1.2 <- list(
   table.tot.gt,
   table.ac.gt,
   table.lp.gt,
@@ -1349,10 +1348,11 @@ table.all <- list(
 )
 
 # Drop empty elements from the list
-table.all <- table.all[lapply(table.all, length) > 0]
-
-if(!sjmisc::is_empty(table.all)){
-  table.all <- gtsummary::tbl_stack(table.all)
+table.3.1.2 <- table.3.1.2[lapply(table.3.1.2, length) > 0]
+if(any(lapply(table.3.1.2, length) > 0)){
+  table.3.1.2 <- gtsummary::tbl_stack(table.3.1.2)
+} else {
+  table.3.1.2 <- list()
 }
 
 # Print HTML table
