@@ -8272,46 +8272,48 @@ for(i in 1:length(ID)){
       }
     }
   }
-  # get name of protagonista
-  protagonismo$Protagonista[i] <- table.docente[i, coluna + 1]
-  # format citation
-  if(!is.na(table.docente[i, coluna + 1])){
-    id <- ID[i]
-    produtos.id <- sucupira.df.autor[sucupira.df.autor$"ID da Produção" == id,]
-    for (j in 1:length(produtos.id$"Nome do Autor")) {
-      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
-      }, silent = TRUE)
+  if(dim(subset)[1] > 0){
+    # get name of protagonista
+    protagonismo$Protagonista[i] <- table.docente[i, coluna + 1]
+    # format citation
+    if(!is.na(table.docente[i, coluna + 1])){
+      id <- ID[i]
+      produtos.id <- sucupira.df.autor[sucupira.df.autor$"ID da Produção" == id,]
+      for (j in 1:length(produtos.id$"Nome do Autor")) {
+        try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
+        }, silent = TRUE)
+        try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
+        }, silent = TRUE)
+        try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
+        }, silent = TRUE)
+      }
+      # get product metadata
+      source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
+      metadata <- get_id_metadata(id = id, subtipo = "ARTIGO EM PERIÓDICO", produtos.detalhes = produtos.detalhes)
+      protagonismo$Citação[i] <- paste0(
+        paste0(
+          # remove NA values from Nome do Autor
+          produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
+          collapse = "; "
+        ),
+        " (", sucupira.df.autor$"Ano da Produção"[sucupira.df.autor$"ID da Produção" == id], ") ",
+        sucupira.df.autor$"Nome da Produção"[sucupira.df.autor$"ID da Produção" == id],
+        metadata$detalhamento[1],
+        " (",
+        paste0("Altmetric: ", unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]), " | "),
+        paste0("CiteScore: ", unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]), " | "),
+        paste0("SJR: ", unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]), " | "),
+        paste0("Qualis: ", unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]), " | "),
+        paste0("Citações: ", unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])),
+        ")"
+      )
     }
-    # get product metadata
-    source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = "ARTIGO EM PERIÓDICO", produtos.detalhes = produtos.detalhes)
-    protagonismo$Citação[i] <- paste0(
-      paste0(
-        # remove NA values from Nome do Autor
-        produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
-        collapse = "; "
-      ),
-      " (", sucupira.df.autor$"Ano da Produção"[sucupira.df.autor$"ID da Produção" == id], ") ",
-      sucupira.df.autor$"Nome da Produção"[sucupira.df.autor$"ID da Produção" == id],
-      metadata$detalhamento[1],
-      " (",
-      paste0("Altmetric: ", unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]), " | "),
-      paste0("CiteScore: ", unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]), " | "),
-      paste0("SJR: ", unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]), " | "),
-      paste0("Qualis: ", unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]), " | "),
-      paste0("Citações: ", unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])),
-      ")"
-    )
   }
 }
 
