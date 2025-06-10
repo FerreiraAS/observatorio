@@ -2756,11 +2756,15 @@ egressos %>%
 egressos$`Nível Discente`[grepl("Mestrado", egressos$`Nível Discente`)] <- "Mestrado"
 egressos$`Nível Discente`[grepl("Doutorado", egressos$`Nível Discente`)] <-"Doutorado"
 
+# get data de nascimento para calcular idade
+egressos$`Idade (anos)` <- 
+    lubridate::interval(start = lubridate::dmy(gsub("-", "", egressos$`Data de Nascimento`)), end = lubridate::dmy(gsub("-", "", egressos$`Data Situação`))) %/% lubridate::years(1)
+
 # get years
 egressos$'Ano' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
 
 # drop columns
-egressos <- egressos %>% dplyr::select("Nível Discente", "Ano", "Nome do Orientador", "Nome Discente", "Tempo de Curso (meses)")
+egressos <- egressos %>% dplyr::select("Nível Discente", "Ano", "Nome do Orientador", "Nome Discente", "Tempo de Curso (meses)", "Idade (anos)", "Gênero")
 
 # remove duplicates
 egressos <- unique(egressos)
@@ -2768,14 +2772,6 @@ colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
 
 # generate table of egressos per year
 table.1 <- table(egressos$`Nível Discente`, egressos$`Ano`)
-
-# generate table of mestres per year
-mestres <- egressos[egressos$`Nível Discente` == "Mestrado", ]
-table.2 <- table(mestres$`Ano`)
-
-# generate table of doutores per year
-doutores <- egressos[egressos$`Nível Discente` == "Doutorado", ]
-table.3 <- table(doutores$`Ano`)
 
 # plot area setup
 layout.m <- c(1)
@@ -2900,7 +2896,141 @@ plot.4 <- plot.4 %>% plotly::layout(
 ) %>% plotly::config(displayModeBar = FALSE)
 
 
-# plot 5(summary table in plot)
+# plot 5 (boxplot of Idade por ano)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = dim(table.1)[1], name = "Set3")
+
+# generate table of tempo de curso per year
+table.3 <- egressos %>%
+  dplyr::group_by(`Nível Discente`, `Ano`)
+
+# Reshape data for Plotly
+data_long <- dplyr::select(table.3, `Nível Discente`, `Ano`, `Idade (anos)`)
+
+plot.5 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~`Idade (anos)`,
+  color = ~`Nível Discente`,
+  type = 'box',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.5 <- plot.5 %>% plotly::layout(
+  title = list(
+    text = "Idade na titulação",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "Anos",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE
+) %>% plotly::config(displayModeBar = FALSE)
+
+
+# plot 6 (Lineplot of Proporção de Mulheres/Homens entre os titulados por ano)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = dim(table.1)[1], name = "Set3")
+
+# generate table of tempo de curso per year
+table.4 <- egressos %>%
+  dplyr::group_by(`Nível Discente`, `Ano`)
+
+# Reshape data for Plotly
+data_long <- dplyr::select(table.4, `Nível Discente`, `Ano`, `Gênero`)
+
+# calculate proporção de mulheres/homens por ano
+data_long <- data_long %>%
+  dplyr::group_by(Ano, `Nível Discente`) %>%
+  dplyr::summarise(
+    `Proporção Mulheres/Homens` = sum(`Gênero` == "Feminino", na.rm = TRUE) / sum(`Gênero` %in% c("Feminino", "Masculino"), na.rm = TRUE) * 100
+  ) %>%
+  dplyr::ungroup()
+
+plot.6 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~`Proporção Mulheres/Homens`,
+  color = ~`Nível Discente`,
+  type = 'scatter',
+  mode = 'lines+markers',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.6 <- plot.6 %>% plotly::layout(
+  title = list(
+    text = "Proporção Mulheres/Homens entre os titulados",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "Percentual",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE
+) %>% plotly::config(displayModeBar = TRUE)
+
+# plot 7 (summary table in plot)
 
 # calculate summary statistics for pessoal
 summ.table.pessoal <-
@@ -2995,6 +3125,18 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.4
+cat('</div>')
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.5
+cat('</div>')
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.6
 cat('</div>')
 cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
