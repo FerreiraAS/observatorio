@@ -909,12 +909,6 @@ for (periodo in periodos) {
     )
   )
 }
-
-# delete all log files
-log.files <- list.files(pattern = ".log", full.names = TRUE, recursive = TRUE)
-if (length(log.files) > 0) {
-  file.remove(log.files)
-}
 ```
 
 ## **Session info**

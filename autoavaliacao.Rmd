@@ -9472,7 +9472,7 @@ table.mono <- table.mono[rep(row.names(table.mono), table.mono$`Orientações de
 # check for missing docentes.quadrienio
 table.mono$"Nome Docente" <- factor(
   table.mono$"Nome Docente",
-  levels = sort(unique(c("Docentes", levels(table.mono$"Nome Docente"), docentes.quadrienio)))
+  levels = sort(unique(c(levels(table.mono$"Nome Docente"), docentes.quadrienio)))
 )
 
 # check for missing anos in table.mono
@@ -9684,7 +9684,7 @@ table.aulas <- table.aulas[rep(row.names(table.aulas), table.aulas$`Número de D
 # check for missing docentes.quadrienio
 table.aulas$"Nome Docente" <- factor(
   table.aulas$"Nome Docente",
-  levels = sort(unique(c("Docentes", levels(table.aulas$"Nome Docente"), docentes.quadrienio)))
+  levels = sort(unique(c(levels(table.aulas$"Nome Docente"), docentes.quadrienio)))
 )
 
 # check for missing anos in table.aulas
@@ -9733,7 +9733,7 @@ table.ch <- table.ch[rep(row.names(table.ch), table.ch$`Carga Horária na Gradua
 # check for missing docentes.quadrienio
 table.ch$"Nome Docente" <- factor(
   table.ch$"Nome Docente",
-  levels = sort(unique(c("Docentes", levels(table.ch$"Nome Docente"), docentes.quadrienio)))
+  levels = sort(unique(c(levels(table.ch$"Nome Docente"), docentes.quadrienio)))
 )
 
 # check for missing anos in table.ch
@@ -9933,7 +9933,7 @@ if(!sjmisc::is_empty(table.insercao.2)){
       digits = 0,
       margin = NULL
     ) %>%
-    gtsummary::modify_header(label = "**Docentes permanentes com atuação na graduação**", stat_0 = "Atuação graduaçào") %>%
+    gtsummary::modify_header(label = "Docentes permanentes com atuação na graduação", stat_0 = "Atuação graduação") %>%
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() 
 } else {
@@ -9975,7 +9975,7 @@ if (knitr::is_latex_output() && !sjmisc::is_empty(table.insercao.gt)) {
     format = ifelse(knitr::is_html_output(), "html", "latex"),
     booktabs = TRUE,
     linesep = "",
-    caption = ifelse(knitr::is_html_output(), "", "**Docentes permanentes com atuação na graduação**"),
+    caption = ifelse(knitr::is_html_output(), "", "Docentes permanentes com atuação na graduação"),
   ) %>%
     kableExtra::kable_styling(
       bootstrap_options = c("basic", "hover", "condensed", "responsive"),
@@ -11471,6 +11471,11 @@ if (file.exists(file.path("cache", "impactos", "invited-positions.Rds"))) {
   saveRDS(editor.name.all, file.path("cache", "impactos", "invited-positions.Rds"))
 }
 
+# replace & by and for LaTeX output
+if (knitr::is_latex_output() && !sjmisc::is_empty(editor.name.all)) {
+  editor.name.all[] <- lapply(editor.name.all, function(x) gsub("&", "\\\\&", x))
+}
+
 # print tables
 if (knitr::is_html_output() && !sjmisc::is_empty(editor.name.all)) {
   # use kable for HTML output
@@ -11554,6 +11559,11 @@ if (file.exists(file.path("cache", "impactos", "reviewer-board.Rds"))) {
   rownames(peer.review.all) <- NULL
   
   saveRDS(peer.review.all, file.path("cache", "impactos", "reviewer-board.Rds"))
+}
+
+# replace & by and (escape did not work)
+if (knitr::is_latex_output() && !sjmisc::is_empty(peer.review.all)) {
+  peer.review.all[] <- lapply(peer.review.all, function(x) gsub("&", "\\\\&", x))
 }
 
 # print tables
@@ -11648,8 +11658,17 @@ if (file.exists(file.path("cache", "impactos", "membership.Rds")) | file.exists(
   rownames(member.all) <- NULL
   rownames(services.all) <- NULL
   
-  saveRDS(peer.review.all, file.path("cache", "impactos", "membership.Rds"))
+  saveRDS(member.all, file.path("cache", "impactos", "membership.Rds"))
   saveRDS(services.all, file.path("cache", "impactos", "services.Rds"))
+}
+
+# replace & by and (escape did not work)
+if (knitr::is_latex_output() && !sjmisc::is_empty(member.all)) {
+  member.all[] <- lapply(member.all, function(x) gsub("&", "\\\\&", x))
+}
+# replace & by and (escape did not work)
+if (knitr::is_latex_output() && !sjmisc::is_empty(services.all)) {
+  services.all[] <- lapply(services.all, function(x) gsub("&", "\\\\&", x))
 }
 
 # print tables
