@@ -676,31 +676,35 @@ cat('<br>')
 cat('<div align="center">')
 plot.1
 cat('</div>')
-cat('\n\n')
+cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.2
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.3
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.4
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.5
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
@@ -1132,32 +1136,36 @@ cat('<br>')
 cat('<div align="center">')
 plot.1
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.2
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.3
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.4
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-
 
 cat('<div align="center">')
 plot.5
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
@@ -1409,19 +1417,22 @@ cat('<br>')
 cat('<div align="center">')
 plot.1
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.2
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.3
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
@@ -1817,25 +1828,29 @@ cat('<br>')
 cat('<div align="center">')
 plot.1
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.2
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.3
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.4
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
@@ -2271,25 +2286,29 @@ cat('<br>')
 cat('<div align="center">')
 plot.1
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.2
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.3
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.4
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
@@ -3108,37 +3127,42 @@ cat('<br>')
 cat('<div align="center">')
 plot.1
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.2
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.3
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.4
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.5
 cat('</div>')
-cat('\n\n')
+cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.6
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
@@ -3404,7 +3428,8 @@ cat('<br>')
 cat('<div align="center">')
 plot.1
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
@@ -3816,19 +3841,22 @@ cat('<br>')
 cat('<div align="center">')
 plot.3
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.4
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.5
 cat('</div>')
-cat('\n\n')
+cat('<br>')
+cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
