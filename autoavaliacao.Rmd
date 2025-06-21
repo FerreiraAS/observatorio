@@ -105,6 +105,11 @@ cat('<center><div class="d-grid gap-2" style="width: 100%; display: block;">
   <button class="btn btn-lg btn-primary" type="button">
   <a href="autoavaliacao-2013-2016.html">Quadrienal 2013-2016</a>
   </button>
+  <br>
+  <br>
+  <button class="btn btn-lg btn-primary" type="button">
+  <a href="autoavaliacao-2010-2012.html">Quadrienal 2010-2012</a>
+  </button>
 </div></center>
 ')
 ```
