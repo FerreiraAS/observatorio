@@ -23,6 +23,7 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
     try(invited.pos[i, 2] <-
           affiliations[[i]][['invited-position-summary.end-date']], silent = TRUE)
     if(is.na(invited.pos[i, 2])){invited.pos[i, 2] <- "Atual"}
+    if(invited.pos[i, 2] == ""){invited.pos[i, 2] <- "Atual"}
     # get docente
     try(invited.pos[i, 3] <-
           affiliations[[i]][['invited-position-summary.source.source-name.value']], silent = TRUE)

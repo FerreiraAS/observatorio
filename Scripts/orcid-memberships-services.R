@@ -25,6 +25,7 @@ if (is.null(res[[1]]$`affiliation-group`$summaries)) {
     try(member[i, 2] <-
           memberships[[i]][['membership-summary.end-date']], silent = TRUE)
     if(is.na(member[i, 2])){member[i, 2] <- "Atual"}
+    if(member[i, 2] == ""){member[i, 2] <- "Atual"}
     # get name
     try(member[i, 3] <-
           memberships[[i]][['membership-summary.source.source-name.value']], silent = TRUE)

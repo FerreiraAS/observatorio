@@ -11476,6 +11476,16 @@ if (file.exists(file.path("cache", "impactos", "invited-positions.Rds"))) {
   saveRDS(editor.name.all, file.path("cache", "impactos", "invited-positions.Rds"))
 }
 
+# filter data based on quadrienal.vigente
+# replace Atual by current year
+editor.name.all$`Ano (fim)`[editor.name.all$`Ano (fim)` == "Atual"] <- format(Sys.Date(), "%Y")
+# keep rows which Ano (inicio) is within quadrienal.vigente
+editor.name.all <- editor.name.all[editor.name.all$`Ano (início)` <= max(quadrienal.vigente), ]
+# exclude rows which Ano (fim) is outside quadrienal.vigente
+editor.name.all <- editor.name.all[editor.name.all$`Ano (fim)` >= max(quadrienal.vigente), ]
+# replace current year by "Atual"
+editor.name.all$`Ano (fim)`[editor.name.all$`Ano (fim)` == format(Sys.Date(), "%Y")] <- "Atual"
+
 # replace & by and for LaTeX output
 if (knitr::is_latex_output() && !sjmisc::is_empty(editor.name.all)) {
   editor.name.all[] <- lapply(editor.name.all, function(x) gsub("&", "\\\\&", x))
@@ -11565,6 +11575,16 @@ if (file.exists(file.path("cache", "impactos", "reviewer-board.Rds"))) {
   
   saveRDS(peer.review.all, file.path("cache", "impactos", "reviewer-board.Rds"))
 }
+
+# filter data based on quadrienal.vigente
+# replace Atual by current year
+peer.review.all$`Ano (fim)`[peer.review.all$`Ano (fim)` == "Atual"] <- format(Sys.Date(), "%Y")
+# keep rows which Ano (inicio) is within quadrienal.vigente
+peer.review.all <- peer.review.all[peer.review.all$`Ano (início)` <= max(quadrienal.vigente), ]
+# exclude rows which Ano (fim) is outside quadrienal.vigente
+peer.review.all <- peer.review.all[peer.review.all$`Ano (fim)` >= max(quadrienal.vigente), ]
+# replace current year by "Atual"
+peer.review.all$`Ano (fim)`[peer.review.all$`Ano (fim)` == format(Sys.Date(), "%Y")] <- "Atual"
 
 # replace & by and (escape did not work)
 if (knitr::is_latex_output() && !sjmisc::is_empty(peer.review.all)) {
@@ -11666,6 +11686,26 @@ if (file.exists(file.path("cache", "impactos", "membership.Rds")) | file.exists(
   saveRDS(member.all, file.path("cache", "impactos", "membership.Rds"))
   saveRDS(services.all, file.path("cache", "impactos", "services.Rds"))
 }
+
+# filter data based on quadrienal.vigente
+# replace Atual by current year
+member.all$`Ano (fim)`[member.all$`Ano (fim)` == "Atual"] <- format(Sys.Date(), "%Y")
+# keep rows which Ano (inicio) is within quadrienal.vigente
+member.all <- member.all[member.all$`Ano (início)` <= max(quadrienal.vigente), ]
+# exclude rows which Ano (fim) is outside quadrienal.vigente
+member.all <- member.all[member.all$`Ano (fim)` >= max(quadrienal.vigente), ]
+# replace current year by "Atual"
+member.all$`Ano (fim)`[member.all$`Ano (fim)` == format(Sys.Date(), "%Y")] <- "Atual"
+
+# filter data based on quadrienal.vigente
+# replace Atual by current year
+services.all$`Ano (fim)`[services.all$`Ano (fim)` == "Atual"] <- format(Sys.Date(), "%Y")
+# keep rows which Ano (inicio) is within quadrienal.vigente
+services.all <- services.all[services.all$`Ano (início)` <= max(quadrienal.vigente), ]
+# exclude rows which Ano (fim) is outside quadrienal.vigente
+services.all <- services.all[services.all$`Ano (fim)` >= max(quadrienal.vigente), ]
+# replace current year by "Atual"
+services.all$`Ano (fim)`[services.all$`Ano (fim)` == format(Sys.Date(), "%Y")] <- "Atual"
 
 # replace & by and (escape did not work)
 if (knitr::is_latex_output() && !sjmisc::is_empty(member.all)) {

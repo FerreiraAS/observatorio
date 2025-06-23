@@ -28,6 +28,8 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
   for(k in 1:dim(dt)[1]) {
     year <- data.table::rbindlist((dt[[3]][[k]])[[1]], fill = TRUE)
     year <- max(year$`completion-date.year.value`, na.rm = TRUE)
+    if(is.na(year)){year <- "Atual"}
+    if(year == ""){year <- "Atual"}
     end.yr <- c(end.yr, year)
   }
   
