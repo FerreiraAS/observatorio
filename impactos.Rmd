@@ -2335,7 +2335,7 @@ if (!sjmisc::is_empty(id.TCC)) {
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.tese, title = "Repositório - Teses")
+create_dt(table.tese, title = "Impacto - Teses defendidas durante a Pandemia")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -2427,7 +2427,7 @@ if (!sjmisc::is_empty(id.TCC)) {
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.dissert, title = "Repositório - Dissertações")
+create_dt(table.tese, title = "Impacto - Dissertações defendidas durante a Pandemia")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```

@@ -84,11 +84,12 @@ id.TCC <- unique(id.TCC)
 bancas <- data.frame(
   "Ano" = rep(NA, length(id.TCC)),
   "Tipo de Trabalho de Conclusão" = rep(NA, length(id.TCC)),
+  "Área de Concentração" = rep(NA, length(id.TCC)),
+  "Linha de Pesquisa" = rep(NA, length(id.TCC)),
   "Título" = rep(NA, length(id.TCC)),
   "Autor" = rep(NA, length(id.TCC)),
   "Orientadores" = rep(NA, length(id.TCC)),
   "Examinadores" = rep(NA, length(id.TCC)),
-  "IES externas" = rep(NA, length(id.TCC)),
   "País" = rep(NA, length(id.TCC)),
   check.names = FALSE
 )
@@ -102,6 +103,8 @@ if (!sjmisc::is_empty(id.TCC)) {
     # get unique values
     bancas$Ano[i] <- substr(as.Date(unique(banca$"Data da Defesa"), format = "%d/%m/%Y"), 1, 4)
     bancas$`Tipo de Trabalho de Conclusão`[i] <- stringr::str_to_sentence(unique(banca$"Tipo de Trabalho de Conclusão"))
+    bancas$`Área de Concentração`[i] <- stringr::str_to_title(unique(banca$"Área de Concentração"))
+    bancas$`Linha de Pesquisa`[i] <- stringr::str_to_title(unique(banca$"Linha de Pesquisa"))
     bancas$Título[i] <- stringr::str_to_sentence(unique(banca$"Nome do Trabalho de Conclusão"))
     bancas$Autor[i] <- stringr::str_to_title(unique(banca$"Nome do Autor"))
     bancas$Orientadores[i] <- paste0(stringr::str_to_title(unique(banca$"Nome do Orientador")), collapse = ", ")
@@ -110,7 +113,6 @@ if (!sjmisc::is_empty(id.TCC)) {
     bancas$Examinadores[i] <- gsub(" (NA)", "", bancas$Examinadores[i])
     # check proportion of same IES between autor and examinadores
     ies.autor <- unique(banca$"IES Nome Autor")
-    bancas$`IES externas` <- ifelse(sum(unique(banca$"Sigla da IES da Pessoa da Banca") != ies.autor, na.rm = TRUE) > 0, "Sim", "Não")
     # check if there are country others than Brasil among examinadores
     bancas$País[i] <- paste0(unique(banca$"País da Pessoa da Banca"), collapse = ", ")
   }
@@ -121,7 +123,7 @@ if (!sjmisc::is_empty(id.TCC)) {
 bancas <- dplyr::rename(bancas, Tipo = `Tipo de Trabalho de Conclusão`)
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(bancas, title = "Repositório - Bancas Examinadoras")
+create_dt(bancas, title = "Banco de Teses e Dissertações - Bancas Examinadoras")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -165,6 +167,7 @@ for (i in 1:length(id.TCC)) {
 
 table.tese <- data.frame(
   "Ano" = rep(NA, length(id.TCC)),
+  "Área de Concentração" = rep(NA, length(id.TCC)),
   "Linha de Pesquisa" = rep(NA, length(id.TCC)),
   "Título" = rep(NA, length(id.TCC)),
   "Autor" = rep(NA, length(id.TCC)),
@@ -179,6 +182,7 @@ if (!sjmisc::is_empty(id.TCC)) {
   table.tese <-
     data.frame(
       "Ano" = format((as.Date(gsub("/", "-", tcc$'Data da Defesa'), "%d-%m-%Y")), "%Y"),
+      "Área de Concentração" = tcc$`Área de Concentração`,
       "Linha de Pesquisa" = tcc$`Linha de Pesquisa`,
       "Título" = tcc$`Nome do Trabalho de Conclusão`,
       "Autor" = tcc$`Nome do Autor`,
@@ -191,13 +195,15 @@ if (!sjmisc::is_empty(id.TCC)) {
   table.tese[, 2] <-
     as.vector(unlist(lapply(table.tese[, 2], FUN = stringr::str_to_title)))
   table.tese[, 3] <-
-    as.vector(unlist(lapply(table.tese[, 3], FUN = stringr::str_to_sentence)))
+    as.vector(unlist(lapply(table.tese[, 3], FUN = stringr::str_to_title)))
   table.tese[, 4] <-
-    as.vector(unlist(lapply(table.tese[, 4], FUN = stringr::str_to_title)))
+    as.vector(unlist(lapply(table.tese[, 4], FUN = stringr::str_to_sentence)))
   table.tese[, 5] <-
     as.vector(unlist(lapply(table.tese[, 5], FUN = stringr::str_to_title)))
   table.tese[, 6] <-
     as.vector(unlist(lapply(table.tese[, 6], FUN = stringr::str_to_title)))
+  table.tese[, 7] <-
+    as.vector(unlist(lapply(table.tese[, 7], FUN = stringr::str_to_title)))
 
   # drop duplicated entries
   table.tese <- table.tese[!duplicated(table.tese), ]
@@ -208,7 +214,7 @@ if (!sjmisc::is_empty(id.TCC)) {
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.tese, title = "Repositório - Teses")
+create_dt(table.tese, title = "Banco de Teses e Dissertações - Teses Examinadas")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -252,6 +258,7 @@ for (i in 1:length(id.TCC)) {
 
 table.dissert <- data.frame(
   "Ano" = rep(NA, length(id.TCC)),
+  "Área de Concentração" = rep(NA, length(id.TCC)),
   "Linha de Pesquisa" = rep(NA, length(id.TCC)),
   "Título" = rep(NA, length(id.TCC)),
   "Autor" = rep(NA, length(id.TCC)),
@@ -266,6 +273,7 @@ if (!sjmisc::is_empty(id.TCC)) {
   table.dissert <-
     data.frame(
       "Ano" = format((as.Date(gsub("/", "-", tcc$'Data da Defesa'), "%d-%m-%Y")), "%Y"),
+      "Área de Concentração" = tcc$`Área de Concentração`,
       "Linha de Pesquisa" = tcc$`Linha de Pesquisa`,
       "Título" = tcc$`Nome do Trabalho de Conclusão`,
       "Autor" = tcc$`Nome do Autor`,
@@ -278,13 +286,15 @@ if (!sjmisc::is_empty(id.TCC)) {
   table.dissert[, 2] <-
     as.vector(unlist(lapply(table.dissert[, 2], FUN = stringr::str_to_title)))
   table.dissert[, 3] <-
-    as.vector(unlist(lapply(table.dissert[, 3], FUN = stringr::str_to_sentence)))
+    as.vector(unlist(lapply(table.dissert[, 3], FUN = stringr::str_to_title)))
   table.dissert[, 4] <-
-    as.vector(unlist(lapply(table.dissert[, 4], FUN = stringr::str_to_title)))
+    as.vector(unlist(lapply(table.dissert[, 4], FUN = stringr::str_to_sentence)))
   table.dissert[, 5] <-
     as.vector(unlist(lapply(table.dissert[, 5], FUN = stringr::str_to_title)))
   table.dissert[, 6] <-
     as.vector(unlist(lapply(table.dissert[, 6], FUN = stringr::str_to_title)))
+  table.dissert[, 7] <-
+    as.vector(unlist(lapply(table.dissert[, 7], FUN = stringr::str_to_title)))
 
   # drop duplicated entries
   table.dissert <- table.dissert[!duplicated(table.dissert), ]
@@ -295,7 +305,7 @@ if (!sjmisc::is_empty(id.TCC)) {
 
 # print table
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.dissert, title = "Repositório - Dissertações")
+create_dt(table.dissert, title = "Banco de Teses e Dissertações - Dissertações Examinadas")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
