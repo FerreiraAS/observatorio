@@ -2978,78 +2978,7 @@ plot.5 <- plot.5 %>% plotly::layout(
 ) %>% plotly::config(displayModeBar = FALSE)
 
 
-# plot 6 (Lineplot of Proporção de Mulheres/Homens entre os titulados por ano)
-
-# plot area setup
-layout.m <- c(1)
-source("Scripts/plot-margins.R", local = knitr::knit_global())
-# Define colors using RColorBrewer
-colors <- RColorBrewer::brewer.pal(n = dim(table.1)[1], name = "Set3")
-
-# generate table of tempo de curso per year
-table.4 <- egressos %>%
-  dplyr::group_by(`Nível Discente`, `Ano`)
-
-# Reshape data for Plotly
-data_long <- dplyr::select(table.4, `Nível Discente`, `Ano`, `Gênero`)
-
-# calculate proporção de mulheres/homens por ano
-data_long <- data_long %>%
-  dplyr::group_by(Ano, `Nível Discente`) %>%
-  dplyr::summarise(
-    `Proporção Mulheres/Homens` = sum(`Gênero` == "Feminino", na.rm = TRUE) / sum(`Gênero` %in% c("Feminino", "Masculino"), na.rm = TRUE) * 100
-  ) %>%
-  dplyr::ungroup()
-
-plot.6 <- plotly::plot_ly(
-  data = data_long,
-  x = ~Ano,
-  y = ~`Proporção Mulheres/Homens`,
-  color = ~`Nível Discente`,
-  type = 'scatter',
-  mode = 'lines+markers',
-  colors = colors,
-  height = "50vmin"
-)
-
-plot.6 <- plot.6 %>% plotly::layout(
-  title = list(
-    text = "Proporção Mulheres/Homens entre os titulados",
-    x = 0.5,
-    xanchor = 'center',
-    font = list(size = '100vw', color = 'white')
-  ),
-  xaxis = list(
-    title = "",
-    titlefont = list(color = 'white'),
-    tickfont = list(color = 'white'),
-    tickvals = unique(data_long$Ano),
-    range = anos
-  ),
-  yaxis = list(
-    title = "Percentual",
-    titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
-  ),
-  legend = list(
-    title = 'Legenda',
-    titlefont = list(color = 'white'),
-    font = list(color = 'white'),
-    bgcolor = 'black',
-    bordercolor = 'white',
-    borderwidth = 1,
-    orientation = 'h',
-    xanchor = 'center',
-    x = 0.5
-  ),
-  plot_bgcolor = 'black',
-  paper_bgcolor = 'black',
-  font = list(color = 'white'),
-  margin = list(l = 60, r = 60, t = 60, b = 60),
-  showlegend = TRUE
-) %>% plotly::config(displayModeBar = TRUE)
-
-# plot 7 (summary table in plot)
+# plot 6 (summary table in plot)
 
 # calculate summary statistics for pessoal
 summ.table.pessoal <-
@@ -3157,13 +3086,6 @@ plot.5
 cat('</div>')
 cat('<br>')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-
-cat('<div align="center">')
-plot.6
-cat('</div>')
-cat('<br>')
-cat('<br>')
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-pessoal-carousel-2, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files, out.width = "70%"}
@@ -3172,6 +3094,355 @@ cat('<br>')
 
 # show sintese-pessoal-1
 knitr::include_graphics("index_files/figure-html/sintese-pessoal-1.png")
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+```{r sintese-diversidade, include = FALSE, eval = has.sucupira.files}
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+
+# periodo
+periodo <- min(as.numeric(anos)):max(as.numeric(anos))
+
+# discentes
+sheet <- "Discentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+names(sucupira.list) <- as.character(anos)
+
+# get egressos for the current period
+egressos <- sucupira.list[as.character(periodo)] %>%
+  plyr::compact()
+egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
+names(egressos) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# dplyr::select former students
+egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
+
+# tempo de curso
+egressos$`Tempo de Curso (meses)` <-
+  lubridate::interval(start = lubridate::dmy(gsub("-", "", egressos$`Data Matrícula`)), end = lubridate::dmy(gsub("-", "", egressos$`Data Situação`))) %/% months(1)
+egressos %>%
+  dplyr::mutate(`Tempo de Curso (meses)` = as.numeric(`Tempo de Curso (meses)`))
+egressos$`Nível Discente`[grepl("Mestrado", egressos$`Nível Discente`)] <- "Mestrado"
+egressos$`Nível Discente`[grepl("Doutorado", egressos$`Nível Discente`)] <-"Doutorado"
+
+# get data de nascimento para calcular idade
+egressos$`Idade (anos)` <- 
+    lubridate::interval(start = lubridate::dmy(gsub("-", "", egressos$`Data de Nascimento`)), end = lubridate::dmy(gsub("-", "", egressos$`Data Situação`))) %/% lubridate::years(1)
+
+# get years
+egressos$'Ano' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
+
+# drop columns
+egressos <- egressos %>% dplyr::select("Nível Discente", "Ano", "Idade (anos)", "Gênero", "Raça/Cor", "Portador de Deficiência")
+
+# remove duplicates
+egressos <- unique(egressos)
+colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
+
+# group non available data ("Não declarado", "Não dispõe da informação", "Não declarada") into "Não disponível"
+egressos <- egressos %>%
+  dplyr::mutate(
+    `Raça/Cor` = ifelse(`Raça/Cor` %in% c("Não declarado", "Não dispõe da informação", "Não declarada"), "Não disponível", `Raça/Cor`)
+  )
+
+# sort levels of Raça/Cor
+egressos$`Raça/Cor` <- factor(
+  egressos$`Raça/Cor`,
+  levels = c("Amarela", "Branca", "Indígena", "Parda", "Preta", "Não disponível")
+)
+
+# generate table of egressos per year
+table.1 <- table(egressos$`Nível Discente`, egressos$`Ano`)
+
+# plot 1 (Lineplot of Proporção de Mulheres/Homens entre os titulados por ano)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = dim(table.1)[1], name = "Set3")
+
+# generate table of tempo de curso per year
+table.2 <- egressos %>%
+  dplyr::group_by(`Nível Discente`, `Ano`)
+
+# Reshape data for Plotly
+data_long <- dplyr::select(table.2, `Nível Discente`, `Ano`, `Gênero`)
+
+# calculate proporção de mulheres/homens por ano
+data_long <- data_long %>%
+  dplyr::group_by(Ano, `Nível Discente`) %>%
+  dplyr::summarise(
+    `Proporção Mulheres/Homens` = sum(`Gênero` == "Feminino", na.rm = TRUE) / sum(`Gênero` %in% c("Feminino", "Masculino"), na.rm = TRUE) * 100
+  ) %>%
+  dplyr::ungroup()
+
+plot.1 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~`Proporção Mulheres/Homens`,
+  color = ~`Nível Discente`,
+  type = 'scatter',
+  mode = 'lines+markers',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.1 <- plot.1 %>% plotly::layout(
+  title = list(
+    text = "Proporção Mulheres/Homens entre os titulados",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "Percentual",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE
+) %>% plotly::config(displayModeBar = TRUE)
+
+# plot 2 (Lineplot of Proporção de Raça/Cor entre os titulados por ano)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = dim(table.1)[1], name = "Set3")
+
+# generate table of raça/cor per year
+table.3 <- egressos %>%
+  dplyr::group_by(`Raça/Cor`, `Ano`)
+
+# Reshape data for Plotly
+data_long <- dplyr::select(table.3, `Raça/Cor`, `Ano`)
+
+table.4 <- table(data_long$`Raça/Cor`, data_long$Ano)
+
+# normalize table 4 by sum year
+table.4 <- prop.table(table.4, margin = 2) * 100
+
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.4, varnames = c("Raça/Cor", "Ano"), value.name = "Frequência")
+
+plot.2 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = ~`Raça/Cor`,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.2 <- plot.2 %>% plotly::layout(
+  title = list(
+    text = "Raça/Cor entre os titulados",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = TRUE)
+
+# plot 3 (Lineplot of Proporção de Portadores de Deficiência entre os titulados por ano)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = dim(table.1)[1], name = "Set3")
+
+# generate table of raça/cor per year
+table.5 <- egressos %>%
+  dplyr::group_by(`Portador de Deficiência`, `Ano`)
+
+# Reshape data for Plotly
+data_long <- dplyr::select(table.5, `Portador de Deficiência`, `Ano`)
+
+table.6 <- table(data_long$`Portador de Deficiência`, data_long$Ano)
+
+# normalize table 4 by sum year
+table.6 <- prop.table(table.6, margin = 2) * 100
+
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.6, varnames = c("Portador de Deficiência", "Ano"), value.name = "Frequência")
+
+plot.3 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = ~`Portador de Deficiência`,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.3 <- plot.3 %>% plotly::layout(
+  title = list(
+    text = "Portadores de Deficiência entre os titulados",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = TRUE)
+
+# plot 4 (summary table in plot)
+
+# calculate summary statistics for pessoal
+summ.table.pessoal <-
+  cbind(
+    sum(egressos$`Gênero` == "Feminino", na.rm = TRUE),
+    sum(egressos$`Gênero` == "Masculino", na.rm = TRUE),
+    sum(egressos$`Raça/Cor` == "Amarela", na.rm = TRUE),
+    sum(egressos$`Raça/Cor` == "Branca", na.rm = TRUE),
+    sum(egressos$`Raça/Cor` == "Indígena", na.rm = TRUE),
+    sum(egressos$`Raça/Cor` == "Parda", na.rm = TRUE),
+    sum(egressos$`Raça/Cor` == "Preta", na.rm = TRUE),
+    sum(egressos$`Raça/Cor` == "Não disponível", na.rm = TRUE),
+    sum(egressos$`Portador de Deficiência` == "Não", na.rm = TRUE),
+    sum(egressos$`Portador de Deficiência` == "Sim", na.rm = TRUE)
+  )
+
+# rename Sim/Não em Portador de deficiência para "Portador de Deficiência" e "Não Portador de Deficiência"
+egressos$`Portador de Deficiência` <-
+  factor(egressos$`Portador de Deficiência`,
+         levels = c("Não", "Sim"),
+         labels = c("Não Portador", "Portador de Deficiência"))
+
+names(summ.table.pessoal) <-
+  c(
+    unique(egressos$Gênero),
+    levels(egressos$`Raça/Cor`),
+    levels(egressos$`Portador de Deficiência`)
+  )
+
+# plot area setup
+layout.m <- matrix(c(1, 1, 1, 2, 2, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 10, 10, 10),
+                   ncol = 6,
+                   byrow = TRUE)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+summ.data <- summ.table.pessoal
+source("Scripts/plot-summaries.R", local = knitr::knit_global())
+```
+
+```{r sintese-diversidade-carousel-1, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files, out.width = "100%"}
+cat('<br>')
+cat('<br>')
+
+cat('<div align="center">')
+plot.1
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.2
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.3
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+```{r sintese-diversidade-carousel-2, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files, out.width = "70%"}
+cat('<br>')
+cat('<br>')
+
+# show sintese-diversidade-1
+knitr::include_graphics("index_files/figure-html/sintese-diversidade-1.png")
 cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
