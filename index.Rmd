@@ -3378,6 +3378,7 @@ summ.table.pessoal <-
   cbind(
     sum(egressos$`Gênero` == "Feminino", na.rm = TRUE),
     sum(egressos$`Gênero` == "Masculino", na.rm = TRUE),
+    sum(egressos$`Gênero` == "Não Informado", na.rm = TRUE),
     sum(egressos$`Raça/Cor` == "Amarela", na.rm = TRUE),
     sum(egressos$`Raça/Cor` == "Branca", na.rm = TRUE),
     sum(egressos$`Raça/Cor` == "Indígena", na.rm = TRUE),
@@ -3402,7 +3403,7 @@ names(summ.table.pessoal) <-
   )
 
 # plot area setup
-layout.m <- matrix(c(1, 1, 1, 2, 2, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 10, 10, 10),
+layout.m <- matrix(c(1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11, 11, 11),
                    ncol = 6,
                    byrow = TRUE)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
