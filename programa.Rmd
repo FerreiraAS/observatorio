@@ -824,6 +824,37 @@ cat('<br>')
 abas <- readxl::excel_sheets("PPG/Laboratórios.xlsx")
 abas <- abas[order(abas, decreasing = FALSE)]
 
+# create a sumary table of all labs (each sheet is a laboratory)
+all_labs <- data.frame(
+  Laboratório = character(),
+  Equipamentos = character(),
+  stringsAsFactors = FALSE
+)
+
+for (j in 1:length(abas)) {
+  temp <- readxl::read_excel("PPG/Laboratórios.xlsx",
+                             sheet = abas[j],
+                             col_types = c("text"))
+  # quantidade de equipamentos é a soma da coluna 2
+  num_equip <- sum(as.numeric(unlist(temp[2:nrow(temp), 2])), na.rm = TRUE)
+  all_labs <- rbind(all_labs,
+                    data.frame(
+                      Laboratório = name <- names(temp[1]),
+                      Equipamentos = as.character(num_equip)
+                    ))
+}
+
+# as dataframe
+all_labs$Equipamentos <- as.character(all_labs$Equipamentos)
+
+# print summary table
+cat("### **", as.character(j), "**", "\n", sep = "")
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(all_labs, title = "Programa - Laboratórios - Resumo")
+cat('\n\n')
+cat('**Fontes**: **PPG**')
+cat('\n\n')
+
 # display each sheet in a tab
 for (j in 1:length(abas)) {
   cat('\n\n<!-- -->\n\n')
