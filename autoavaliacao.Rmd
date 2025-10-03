@@ -5607,7 +5607,7 @@ lista.kw <- list()
 bancas.with.words <- c()
 table.bancas.long <- data.frame()
 
-if (!sjmisc::is_empty(id.TCC)) {
+if (!sjmisc::is_empty(id.TCC) && length(unique(bancas$`Linha de Pesquisa`[!is.na(bancas$Título) & bancas$Título != ""])) >= 2) {
   # loop over each ID
   for (i in 1:length(id.TCC)) {
     # select current ID
@@ -8411,8 +8411,13 @@ for(i in 1:length(ID)){
       }
     }
   }
-  if(dim(subset)[1] > 0){
-    # get name of protagonista
+if (!is.na(coluna) &&
+    (coluna + 1) <= ncol(table.docente) &&
+    dim(subset)[1] > 0 &&
+    !is.null(table.docente[i, coluna + 1]) &&
+    length(table.docente[i, coluna + 1]) > 0 &&
+    !is.na(table.docente[i, coluna + 1])) {
+  # get name of protagonista
     protagonismo$Protagonista[i] <- table.docente[i, coluna + 1]
     # format citation
     if(!is.na(table.docente[i, coluna + 1])){
