@@ -68,7 +68,7 @@ while (tries < max_tries && !correct_site) {
 }
 
 # verifica se dispoe das informações corretas antes de salvar
-df <- data.frame(Nome, Email, Site)
+df <- data.frame(Nome, Email, Site, check.names = FALSE)
 if (correct_email && correct_site) {
   message <- paste0("Os dados estão corretos?\n\n",
                     paste(names(df), df, collapse = "\n", sep = ": "))

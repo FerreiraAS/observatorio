@@ -10,16 +10,16 @@ for (i in 1:length(summ.data)) {
   )
   text(
     x = 0.5,
-    y = 0.6,
+    y = 0.675,
     labels = as.character(summ.data[i]),
-    cex = 4.2,
+    cex = 3.75,
     col = RColorBrewer::brewer.pal(n = 9, name = "Set3")[3]
   )
   text(
     x = 0.5,
-    y = 0.2,
+    y = 0.275,
     labels = names(summ.data)[i],
-    cex = 1.7,
+    cex = 1.25,
     col = RColorBrewer::brewer.pal(n = 9, name = "Set3")[2]
   )
   box(lty = "solid",

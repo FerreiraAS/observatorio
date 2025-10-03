@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE,
   fig.align = 'center',
-  results = "asis",
+  results = 'asis',
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
@@ -27,6 +27,14 @@ knitr::opts_chunk$set(
   webshot = "webshot",
   dev = "png"
 )
+```
+
+<!--load caches-->
+```{r load-caches, echo = FALSE, include = FALSE}
+folders <- list.dirs(file.path("cache/"), full.names = FALSE, recursive = FALSE)
+for(folder in folders){
+    knitr::load_cache(label = folder, path = paste0(file.path("cache", folder), "/"))
+}
 ```
 
 <!--script for inserting LOGO ABOVE THE TOC-->
@@ -55,14 +63,10 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Egressos** {#egressos-destaque .tabset}
+## **Egressos de destaque** {#egressos-destaque .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !has.destaques}
-cat('<br>')
-```
 
 ```{r egressos-destaque, eval = has.destaques}
 egressos.destaque <-
@@ -116,184 +120,178 @@ cat('<br>')
 
 <br>
 
-## **Produções: Visibilidade** {#destaque-visibilidade .tabset}
+## **Engajamento com a produção** {#destaque-altmetric .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = !any(has.producao.sucupira, has.producao.ppg)}
+```{r, eval = !has.sucupira.files}
 cat('<br>')
 ```
 
-```{r destaque-visibilidade, eval = any(has.producao.sucupira, has.producao.ppg)}
-# Sources
-doi_with_altmetric <- doi_with_altmetric_all
-doi_without_altmetric <- data.frame() # do not have Altmetric score anyway
-references <- references_all
-
-# Sort columns by Altmetric then year
-ordering <-
-  order(
-    as.numeric(doi_with_altmetric$altmetric_score),
-    as.numeric(doi_with_altmetric$published_on),
-    decreasing = TRUE
-  )
-doi_with_altmetric <- doi_with_altmetric[ordering, ]
-references <- references[ordering, ]
-
-# TOP (removing papers with no Altmetric)
-top <- min(dim(doi_with_altmetric)[1], 20)
-doi_with_altmetric <- doi_with_altmetric[1:top, ]
-references <- references[1:top, ]
-
+```{r destaque-altmetric, eval = has.sucupira.files}
 # Check if there are DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-} else {
-  # Print export buttons
-  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
-  print_buttons_dt(references, title = "Produção de destaque - Atenção e visibilidade")
-}
-
-# Check if there are DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
+if (sjmisc::is_empty(metricas_all)) {
   cat('\n')
   cat('*Sem produção para exibir*')
   cat('\n')
 } else {
-  # Section header
-  cat('\n\n<!-- -->\n\n')
-  cat(
-    paste0(
-      "**Produtos (n = ",
-      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-      ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n"
-    )
-  )
-  cat('<br>')
-  
-  # Print tab header
-  cat('\n\n<!-- -->\n\n')
-  
-  # Print table of papers with/without badges
-  source("Scripts/papers-with-badges.R", local = knitr::knit_global())
-  table.with.badges(
-    show.Altmetric = TRUE,
-    show.Dimensions = TRUE,
-    show.PlumX = TRUE,
-    show.CiteScore = TRUE,
-    show.SJR = TRUE,
-    show.Qualis = TRUE,
-    doi_with_altmetric = tryCatch(
-      doi_with_altmetric,
-      error = function(e) {
-        doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
-      }
-    ),
-    doi_without_altmetric = tryCatch(
-      doi_without_altmetric,
-      error = function(e) {
-        doi_without_altmetric <- list()
-      }
-    ),
-    citescore = citescore,
-    scimago = scimago,
-    qualis = qualis
-  )
+  # available years of publication
+  years <- sort(unique(na.omit(metricas_all$"Ano da Produção")), decreasing = TRUE)
+  for (year in 1:length(years)) {
+    metricas_all_sort <- metricas_all[metricas_all$"Ano da Produção" == years[year], ]
+    
+    # Sort columns by Altmetric
+    ordering <-
+      order(as.numeric(metricas_all_sort$altmetric_score),
+            decreasing = TRUE)
+    metricas_all_sort <- metricas_all_sort[ordering, ]
+    # drop rows with NA in Altmetric
+    metricas_all_sort <- metricas_all_sort[!is.na(metricas_all_sort$altmetric_score), ]
+    
+    # get top 10 unique IDs
+    uniqueID <- unique(metricas_all_sort$"ID da Produção")
+    top <- min(length(uniqueID), 10, na.rm = TRUE)
+    uniqueID_top <- uniqueID[1:top]
+    metricas_all_sort_top <- metricas_all_sort[metricas_all_sort$"ID da Produção" %in% uniqueID_top, ]
+    
+    # Check for empty data
+    if (!sjmisc::is_empty(metricas_all_sort_top)) {
+      # print tab header
+      cat('\n\n<!-- -->\n\n')
+      cat("### **", as.character(years[year]), "**", "\n", sep = "")
+      
+      # print table of papers with/without badges
+      source("Scripts/table-with-badges.R", local = knitr::knit_global())
+      table.with.badges(
+        show.Altmetric = TRUE,
+        show.Dimensions = TRUE,
+        show.PlumX = TRUE,
+        show.CiteScore = TRUE,
+        show.SJR = TRUE,
+        show.Qualis = TRUE,
+        metricas_all_produtos = metricas_all_sort_top
+      )
+    }
+  }
 }
 ```
 
 <br>
 
-## **Produções: Prestígio** {#destaque-prestigio .tabset}
+## **Citações recentes do periódico** {#destaque-citescore .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = !any(has.producao.sucupira, has.producao.ppg)}
+```{r, eval = !has.sucupira.files}
 cat('<br>')
 ```
 
-```{r destaque-prestigio, eval = any(has.producao.sucupira, has.producao.ppg)}
-# Sources
-doi_all_sorted <- doi_all[!is.na(doi_all$CiteScore), ]
-
-ordering <- order(
-  as.numeric(doi_all_sorted$CiteScore),
-  as.numeric(doi_all_sorted$published_on),
-  decreasing = TRUE
-  )
-
-doi_all_sorted <- doi_all_sorted[ordering, ]
-references_all <- references_all[ordering, ]
-
-# TOP CiteScore
-top <- min(dim(doi_all_sorted)[1], 20)
-doi_all_sorted <- doi_all_sorted[1:top, ]
-references <- references_all[1:top, ]
-
-# Split into papers with/without Altmetric
-doi_with_altmetric <- doi_all_sorted[!is.na(doi_all_sorted$altmetric_score),]
-doi_without_altmetric <- doi_all_sorted[is.na(doi_all_sorted$altmetric_score),]
-
+```{r destaque-citescore, eval = has.sucupira.files}
 # Check if there are DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
-  cat('\n')
-} else {
-  # Print export buttons
-  source("Scripts/print-only-buttons.R", local = knitr::knit_global())
-  print_buttons_dt(references, title = "Produção de destaque - Prestígio do peridódico")
-}
-
-# Check if there are DOIs
-if (max(dim(doi_with_altmetric)[1], 0) == 0 &
-    max(dim(doi_without_altmetric)[1], 0) == 0) {
+if (sjmisc::is_empty(metricas_all)) {
   cat('\n')
   cat('*Sem produção para exibir*')
   cat('\n')
 } else {
-  # Section header
-  cat('\n\n<!-- -->\n\n')
-  cat(
-    paste0(
-      "**Produtos (n = ",
-      max(dim(doi_with_altmetric)[1], 0) + max(dim(doi_without_altmetric)[1], 0),
-      ") e Impactos (Altmetric^1^, Dimensions^2^, PlumX^3^, CiteScore^4^, SJR^5^, Qualis^6^, Open Access^7^)** \n\n"
-    )
-  )
-  cat('<br>')
-  
-  # Print tab header
-  cat('\n\n<!-- -->\n\n')
-  
-  # Print table of papers with/without badges
-  source("Scripts/papers-with-badges.R", local = knitr::knit_global())
-  table.with.badges(
-    show.Altmetric = TRUE,
-    show.Dimensions = TRUE,
-    show.PlumX = TRUE,
-    show.CiteScore = TRUE,
-    show.SJR = TRUE,
-    show.Qualis = TRUE,
-    doi_with_altmetric = tryCatch(
-      doi_with_altmetric,
-      error = function(e) {
-        doi_with_altmetric <- as.data.frame(matrix(nrow = 0, ncol = 0))
-      }
-    ),
-    doi_without_altmetric = tryCatch(
-      doi_without_altmetric,
-      error = function(e) {
-        doi_without_altmetric <- list()
-      }
-    ),
-    citescore = citescore,
-    scimago = scimago,
-    qualis = qualis
-  )
+  # available years of publication
+  years <- sort(unique(na.omit(metricas_all$"Ano da Produção")), decreasing = TRUE)
+  for (year in 1:length(years)) {
+    metricas_all_sort <- metricas_all[metricas_all$"Ano da Produção" == years[year], ]
+    
+    # Sort columns by CiteScore
+    ordering <-
+      order(as.numeric(metricas_all_sort$CiteScore),
+            decreasing = TRUE)
+    metricas_all_sort <- metricas_all_sort[ordering, ]
+    # drop rows with NA in CiteScore
+    metricas_all_sort <- metricas_all_sort[!is.na(metricas_all_sort$CiteScore), ]
+    
+    # get top 10 unique IDs
+    uniqueID <- unique(metricas_all_sort$"ID da Produção")
+    top <- min(length(uniqueID), 10, na.rm = TRUE)
+    uniqueID_top <- uniqueID[1:top]
+    metricas_all_sort_top <- metricas_all_sort[metricas_all_sort$"ID da Produção" %in% uniqueID_top, ]
+    
+    # Check for empty data
+    if (!sjmisc::is_empty(metricas_all_sort_top)) {
+      # print tab header
+      cat('\n\n<!-- -->\n\n')
+      cat("### **", as.character(years[year]), "**", "\n", sep = "")
+      
+      # print table of papers with/without badges
+      source("Scripts/table-with-badges.R", local = knitr::knit_global())
+      table.with.badges(
+        show.Altmetric = TRUE,
+        show.Dimensions = TRUE,
+        show.PlumX = TRUE,
+        show.CiteScore = TRUE,
+        show.SJR = TRUE,
+        show.Qualis = TRUE,
+        metricas_all_produtos = metricas_all_sort_top
+      )
+    }
+  }
+}
+```
+
+<br>
+
+## **Prestígio do periódico** {#destaque-sjr .tabset}
+
+<!--script for generating HORIZONTAL LINE-->
+<hr style="height:2px;border-width:0;color:black;background-color:black">
+
+```{r, eval = !has.sucupira.files}
+cat('<br>')
+```
+
+```{r destaque-sjr, eval = has.sucupira.files}
+# Check if there are DOIs
+if (sjmisc::is_empty(metricas_all)) {
+  cat('\n')
+  cat('*Sem produção para exibir*')
+  cat('\n')
+} else {
+  # available years of publication
+  years <- sort(unique(na.omit(metricas_all$"Ano da Produção")), decreasing = TRUE)
+  for (year in 1:length(years)) {
+    metricas_all_sort <- metricas_all[metricas_all$"Ano da Produção" == years[year], ]
+    
+    # Sort columns by SJR
+    ordering <-
+      order(as.numeric(metricas_all_sort$SJR),
+            decreasing = TRUE)
+    metricas_all_sort <- metricas_all_sort[ordering, ]
+    # drop rows with NA in SJR
+    metricas_all_sort <- metricas_all_sort[!is.na(metricas_all_sort$SJR), ]
+    
+    # get top 10 unique IDs
+    uniqueID <- unique(metricas_all_sort$"ID da Produção")
+    top <- min(length(uniqueID), 10, na.rm = TRUE)
+    uniqueID_top <- uniqueID[1:top]
+    metricas_all_sort_top <- metricas_all_sort[metricas_all_sort$"ID da Produção" %in% uniqueID_top, ]
+    
+    # Check for empty data
+    if (!sjmisc::is_empty(metricas_all_sort_top)) {
+      # print tab header
+      cat('\n\n<!-- -->\n\n')
+      cat("### **", as.character(years[year]), "**", "\n", sep = "")
+      
+      # print table of papers with/without badges
+      source("Scripts/table-with-badges.R", local = knitr::knit_global())
+      table.with.badges(
+        show.Altmetric = TRUE,
+        show.Dimensions = TRUE,
+        show.PlumX = TRUE,
+        show.CiteScore = TRUE,
+        show.SJR = TRUE,
+        show.Qualis = TRUE,
+        metricas_all_produtos = metricas_all_sort_top
+      )
+    }
+  }
 }
 ```
 
@@ -404,45 +402,9 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-```{r, eval = !has.sucupira.files}
-cat('<br>')
-```
-
-### **Associações** {.tabset}
-
-```{r associacoes, cache = TRUE, cache.path = "cache/associacoes/", eval = has.sucupira.files}
-# Docentes
-sheet <- "Docentes"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# Keep active professors and remove duplicated data
-sucupira <- sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`), ]
-sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupira$ORCID),]
-
-orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
-               gsub("(.{9})(.*)$", "\\1-\\2",
-                    gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
-                  )
-              )
-
-for (id in 1:length(orcids)) {
-  assoc.name <- sucupira.unique$`Nome Docente`[id]
-  my_orcid <- orcids[id]
-
-  cat('\n\n<!-- -->\n\n')
-  cat('#### **', as.character(id), '**', sep = "")
-  cat('\n\n<!-- -->\n\n')
-  cat('##### **', assoc.name, '**', sep = "")
-  cat('\n\n<!-- -->\n\n')
-  source("Scripts/memberships-services.R", local = knitr::knit_global())
-  cat('\n\n<!-- -->\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-}
-```
-
 ### **Corpo editorial de periódicos** {.tabset}
 
-```{r corpo-editorial, cache = TRUE, cache.path = "cache/corpo-editorial/", eval = has.sucupira.files}
+```{r corpo-editorial, eval = all(has.sucupira.files, curl::has_internet())}
 # Docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -454,27 +416,36 @@ sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupi
 orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
                gsub("(.{9})(.*)$", "\\1-\\2",
                     gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
-                  )
-              )
+               )
+)
 
-for (id in 1:length(orcids)) {
-  editor.name <- sucupira.unique$`Nome Docente`[id]
-  my_orcid <- orcids[id]
-
-  cat('\n\n<!-- -->\n\n')
-  cat('#### **', as.character(id), '**', sep = "")
-  cat('\n\n<!-- -->\n\n')
-  cat('##### **', editor.name, '**', sep = "")
-  cat('\n\n<!-- -->\n\n')
-  source("Scripts/invited-positions.R", local = knitr::knit_global())
-  cat('\n\n<!-- -->\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+if (file.exists(file.path("cache", "impactos", "invited-positions.Rds"))) {
+  editor.name.all <- readRDS(file.path("cache", "impactos", "invited-positions.Rds"))
+} else {
+  dir.create(file.path("cache", "impactos"), showWarnings = FALSE, recursive = TRUE)
+  editor.name.all <- c()
+  for (id in 1:length(orcids)) {
+    my_orcid <- orcids[id]
+    docente.name <- sucupira.unique$`Nome Docente`[id]
+    source("Scripts/orcid-invited-positions.R", local = knitr::knit_global())
+    editor.name.all <- rbind(editor.name.all, invited.pos)
+  }
+  rownames(editor.name.all) <- NULL
+  
+  saveRDS(editor.name.all, file.path("cache", "impactos", "invited-positions.Rds"))
 }
+
+# print tables
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(editor.name.all, title = "Destaques - Representação em Corpo Editorial de Periódicos Científicos")
+source("Scripts/fonte-orcid.R", local = knitr::knit_global())
 ```
+
+<br>
 
 ### **Revisor de periódicos** {.tabset}
 
-```{r revisores, cache = TRUE, cache.path = "cache/revisores/", eval = has.sucupira.files}
+```{r revisores, eval = all(has.sucupira.files, curl::has_internet())}
 # Docentes
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -486,26 +457,79 @@ sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupi
 orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
                gsub("(.{9})(.*)$", "\\1-\\2",
                     gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
-                  )
-              )
+               )
+)
 
-for (id in 1:length(orcids)) {
-  reviewer.name <- sucupira.unique$`Nome Docente`[id]
-  my_orcid <- orcids[id]
-
-  cat('\n\n<!-- -->\n\n')
-  cat('#### **', as.character(id), '**', sep = "")
-  cat('\n\n<!-- -->\n\n')
-  cat('##### **', reviewer.name, '**', sep = "")
-  cat('\n\n<!-- -->\n\n')
-  source("Scripts/reviewer-board.R", local = knitr::knit_global())
-  cat('\n\n<!-- -->\n\n')
-  cat(
-    "**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), [**ORCID**](https://orcid.org)"
-  )
-  cat('\n\n<!-- -->\n\n')
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+if (file.exists(file.path("cache", "impactos", "reviewer-board.Rds"))) {
+  peer.review.all <- readRDS(file.path("cache", "impactos", "reviewer-board.Rds"))
+} else {
+  dir.create(file.path("cache", "impactos"), showWarnings = FALSE, recursive = TRUE)
+  peer.review.all <- c()
+  for (id in 1:length(orcids)) {
+    my_orcid <- orcids[id]
+    docente.name <- sucupira.unique$`Nome Docente`[id]
+    source("Scripts/orcid-reviewer-board.R", local = knitr::knit_global())
+    peer.review.all <- rbind(peer.review.all, peer.review)
+  }
+  rownames(peer.review.all) <- NULL
+  
+  saveRDS(peer.review.all, file.path("cache", "impactos", "reviewer-board.Rds"))
 }
+
+# print tables
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(peer.review.all, title = "Destaques - Representação em Corpo de Revisores de Periódicos Científicos")
+source("Scripts/fonte-orcid.R", local = knitr::knit_global())
+```
+
+<br>
+
+### **Associações** {.tabset}
+
+```{r associacoes, eval = all(has.sucupira.files, curl::has_internet())}
+# Docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# Keep active professors and remove duplicated data
+sucupira <- sucupira.raw[is.na(sucupira.raw$`Data de Desligamento`), ]
+sucupira.unique <- sucupira[!duplicated(sucupira$`Nome Docente`) & !is.na(sucupira$ORCID),]
+
+orcids <- gsub("(.{14})(.*)$", "\\1-\\2",
+               gsub("(.{9})(.*)$", "\\1-\\2",
+                    gsub("(.{4})(.*)$", "\\1-\\2", sucupira.unique$ORCID)
+               )
+)
+
+if (file.exists(file.path("cache", "impactos", "membership.Rds")) | file.exists(file.path("cache", "impactos", "services.Rds"))) {
+  member.all <- readRDS(file.path("cache", "impactos", "membership.Rds"))
+  services.all <- readRDS(file.path("cache", "impactos", "services.Rds"))
+} else {
+  dir.create(file.path("cache", "impactos"), showWarnings = FALSE, recursive = TRUE)
+  member.all <- c()
+  services.all <- c()
+  for (id in 1:length(orcids)) {
+    my_orcid <- orcids[id]
+    docente.name <- sucupira.unique$`Nome Docente`[id]
+    source("Scripts/orcid-memberships-services.R", local = knitr::knit_global())
+    member.all <- rbind(member.all, member)
+    services.all <- rbind(services.all, services)
+  }
+  rownames(member.all) <- NULL
+  rownames(services.all) <- NULL
+  
+  saveRDS(peer.review.all, file.path("cache", "impactos", "membership.Rds"))
+  saveRDS(services.all, file.path("cache", "impactos", "services.Rds"))
+}
+
+# print tables
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(member.all, title = "Destaques - Representação em Entidades Científicas")
+source("Scripts/fonte-orcid.R", local = knitr::knit_global())
+
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(services.all, title = "Destaques - Representação em Periódicos Científicos")
+source("Scripts/fonte-orcid.R", local = knitr::knit_global())
 ```
 
 <br>
@@ -514,10 +538,6 @@ for (id in 1:length(orcids)) {
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !any(has.blog.ies, has.blogs.externos)}
-cat('<br>')
-```
 
 ### **Blog institucional** {.tabset}
 
@@ -548,8 +568,7 @@ blog.ies <- cbind(blog.ies[,-ncol(blog.ies)], Abrir)
 blog.ies <-
   blog.ies[order(
     blog.ies[, 1],
-    blog.ies[, 2],
-    decreasing = FALSE
+    decreasing = TRUE
   ),]
 
 # print tables
@@ -559,6 +578,8 @@ create_dt(blog.ies, title = "Destaques - Blog institucional")
 # Print end of tab rows
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
+
+<br>
 
 ### **Blogs externos** {.tabset}
 
@@ -589,8 +610,7 @@ blog.externos <- cbind(blog.externos[,-ncol(blog.externos)], Abrir)
 blog.externos <-
   blog.externos[order(
     blog.externos[, 1],
-    blog.externos[, 2],
-    decreasing = FALSE
+    decreasing = TRUE
   ),]
 
 # print tables
@@ -600,3 +620,5 @@ create_dt(blog.externos, title = "Destaques - Blogs externos")
 # Print end of tab rows
 cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
+
+<br>

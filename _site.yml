@@ -91,49 +91,83 @@ navbar:
           href: [pessoas.html#discentes]
         - text: "Egressos"
           href: [pessoas.html#egressos]
-        - text: "Iniciação científica"
-          href: [pessoas.html#iniciacao-cientifica]
+        - text: "Encerrados"
+          href: [pessoas.html#encerrados]
+        - text: "Bacharelado"
+          href: [pessoas.html#bacharelado]
         - text: "Grupos de pesquisa"
           href: [pessoas.html#grupos-pesquisa]
         - text: "Participantes externos"
           href: [pessoas.html#participantes-externos]
-    - text: "Produções"
-      href: [producoes.html]
+    - text: "Teses e dissertações"
+      href: [repositorio.html]
       menu:
-        - text: "-Produções-"
-          href: [producoes.html]
-        - text: "Repositório"
-          href: [producoes.html#repositorio]
+        - text: "-Teses e dissertações-"
+          href: [repositorio.html]
+        - text: "Bancas examinadoras"
+          href: [repositorio.html#bancas-examinadoras]
         - text: "Tese"
-          href: [producoes.html#tese]
+          href: [repositorio.html#tese]
         - text: "Dissertação"
-          href: [producoes.html#dissertacao]
+          href: [repositorio.html#dissertacao]
+        - text: "Repositório"
+          href: [repositorio.html#repositorio]
+    - text: "Bibliográfica"
+      href: [bibliografica.html]
+      menu:
+        - text: "-Bibliográfica-"
+          href: [bibliografica.html]
+        - text: "Artigo em jornal ou revista"
+          href: [bibliografica.html#jornal-revista]
         - text: "Artigo em periódico"
-          href: [producoes.html#artigo-periodico]
-        - text: "Preprint"
-          href: [producoes.html#preprint]
-        - text: "Editoria"
-          href: [producoes.html#editoria]
+          href: [bibliografica.html#artigo-periodico]
         - text: "Livro"
-          href: [producoes.html#livro]
-        - text: "Capítulo"
-          href: [producoes.html#capitulo]
+          href: [bibliografica.html#livro]
+        - text: "Partitura"
+          href: [bibliografica.html#partitura]
         - text: "Trabalho em anais"
-          href: [producoes.html#trabalho-em-anais]
+          href: [bibliografica.html#trabalho-em-anais]
+        - text: "Tradução"
+          href: [bibliografica.html#traducao]
+        - text: "Outro"
+          href: [bibliografica.html#outro]
+    - text: "Técnica"
+      href: [tecnica.html]
+      menu:
+        - text: "-Técnica-"
+          href: [tecnica.html]
         - text: "Apresentação de trabalho"
-          href: [producoes.html#apresentacao-trabalho]
-        - text: "Organização de evento"
-          href: [producoes.html#organizacao-evento]
+          href: [tecnica.html#apresentacao-trabalho]
+        - text: "Cartas, mapas ou similares"
+          href: [tecnica.html#cartas-mapas]
         - text: "Curso de curta duração"
-          href: [producoes.html#curso-curta-duracao]
-        - text: "Material didático e instrucional"
-          href: [producoes.html#didatico-instrucional]
+          href: [tecnica.html#curso-curta-duracao]
+        - text: "Desenvolvimento de aplicativo"
+          href: [tecnica.html#aplicativo]
+        - text: "Desenvolvimento de material didático e instrucional"
+          href: [tecnica.html#didatico-instrucional]
+        - text: "Desenvolvimento de produto"
+          href: [tecnica.html#produto]
+        - text: "Desenvolvimento de técnica"
+          href: [tecnica.html#tecnica]
+        - text: "Editoria"
+          href: [tecnica.html#editoria]
+        - text: "Manutenção de obra artística"
+          href: [tecnica.html#manutencao-obra]
+        - text: "Maquete"
+          href: [tecnica.html#maquete]
+        - text: "Organização de evento"
+          href: [tecnica.html#organizacao-evento]
         - text: "Patente"
-          href: [producoes.html#patente]
-        - text: "Aplicativo"
-          href: [producoes.html#aplicativo]
-        - text: "Retratação"
-          href: [producoes.html#retratacao]
+          href: [tecnica.html#patente]
+        - text: "Programa de rádio ou TV"
+          href: [tecnica.html#radio-tv]
+        - text: "Relatório de pesquisa"
+          href: [tecnica.html#relatorio-pesquisa]
+        - text: "Serviço técnico"
+          href: [tecnica.html#servico-tecnico]
+        - text: "Outro"
+          href: [tecnica.html#outro]
     - text: "Destaques"
       href: [destaques.html]
       menu:
@@ -143,10 +177,12 @@ navbar:
           href: [destaques.html#egressos-destaque]
         - text: "Dissertações/Teses"
           href: [destaques.html#TCC-destaque]
-        - text: "Produções: Visibilidade"
-          href: [destaques.html#destaque-visibilidade]
-        - text: "Produções: Prestígio"
-          href: [destaques.html#destaque-prestigio]
+        - text: "Engajamento com a produção"
+          href: [destaques.html#destaque-altmetric]
+        - text: "Citações recentes do periódico"
+          href: [destaques.html#destaque-citescore]
+        - text: "Prestígio do periódico"
+          href: [destaques.html#destaque-sjr]
         - text: "Prêmios"
           href: [destaques.html#premios]
         - text: "Prêmio CAPES de Tese"
@@ -170,55 +206,46 @@ navbar:
           href: [impactos.html#impacto-sociocultural]
         - text: "Ações durante a pandemia"
           href: [impactos.html#acoes-pandemia]
-    - text: "Galeria"
-      href: [galeria.html]
-      menu:
-        - text: "-Galeria-"
-          href: [galeria.html]
-        - text: "Videos"
-          href: [galeria.html#videos]
-        - text: "Podcasts"
-          href: [galeria.html#podcasts]
     - text: "Downloads"
       href: [downloads.html]
     - text: "Autoavaliação"
       href: [autoavaliacao.html]
       menu:
-        - text: "-Autoavaliação-"
-          href: [autoavaliacao.html]
-        - text: "Metodologia"
-          href: [autoavaliacao.html#metodologia]
-        - text: "Autoavaliação PPG"
-          href: [autoavaliacao.html#autoavaliacao-ppg]
-        - text: "Avaliação CAPES"
-          href: [autoavaliacao.html#avaliacao-capes]
-        - text: "Dados do Coleta"
-          href: [autoavaliacao.html#coleta]
-        - text: "Ficha de avaliação"
-          href: [autoavaliacao.html#ficha-avaliacao]
-        - text: "1. Programa"
-          href: [autoavaliacao.html#programa]
-        - text: "2. Formação"
-          href: [autoavaliacao.html#formacao]
-        - text: "3. Impacto na sociedade"
-          href: [autoavaliacao.html#impacto]
-        - text: "Relatório quadrienal"
-          href: [autoavaliacao.html#relatorio-quadrienal]
-        - text: "Relatório quadrienal"
+        - text: "2025-2028"
+          href: [autoavaliacao-2025-2028.html]
+        - text: "2021-2024"
+          href: [autoavaliacao-2021-2024.html]
+        - text: "2017-2020"
+          href: [autoavaliacao-2017-2020.html]
+        - text: "2013-2016"
+          href: [autoavaliacao-2013-2016.html]
+        - text: "2010-2012"
+          href: [autoavaliacao-2010-2012.html]
+    - text: "Relatórios"
+      menu:
+        - text: "2025-2028"
           icon: "fa-file-pdf"
-          href: [autoavaliacao.pdf]
-    - text: "Links"
-      href: [links.html]
-    - text: ""
-      icon: "fa-binoculars"
-      href: [https://sucupira-beta.capes.gov.br/sucupira4/observatorio/detalhamento/programas/798]
+          href: [autoavaliacao-2025-2028.pdf]
+        - text: "2021-2024"
+          icon: "fa-file-pdf"
+          href: [autoavaliacao-2021-2024.pdf]
+        - text: "2017-2020"
+          icon: "fa-file-pdf"
+          href: [autoavaliacao-2017-2020.pdf]
+        - text: "2013-2016"
+          icon: "fa-file-pdf"
+          href: [autoavaliacao-2013-2016.pdf]
+        - text: "2010-2012"
+          icon: "fa-file-pdf"
+          href: [autoavaliacao-2010-2012.pdf]
+  right:
     - text: ""
       icon: "fa-share-nodes"
       menu:
         - text: "E-mail"
           icon: "fa-envelope"
           href: [mailto:coordenacaoppgcr@gmail.com]
-        - text: "Site institucional"
+        - text: "Site"
           icon: "fa-globe"
           href: [http://www.eeffto.ufmg.br/eeffto/]
         - text: "Instagram"
@@ -227,7 +254,9 @@ navbar:
         - text: "Facebook"
           icon: "fa-facebook"
           href: [https://www.facebook.com/cienciasdareabilitacaoufmg/]
-  right:
+        - text: "Observatório CAPES"
+          icon: "fa-binoculars"
+          href: [https://sucupira-v2.capes.gov.br/observatorio/detalhamento/programas/798]
     - text: ""
       icon: "fa-github"
       href: [https://github.com/FerreiraAS/observatorio]

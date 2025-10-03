@@ -1,16 +1,16 @@
-# Twitter
-# https://twitter.com
+# X-Twitter
+# https://developer.x.com/en/docs/twitter-for-websites/tweet-button/overview
 cat("[", sep = "")
 cat(
   fontawesome::fa(
-    "twitter-square",
+    "x-twitter",
     margin_left = "0.2em",
     margin_right = "0.2em",
     height = "2em",
     width = "2em"
   )
 )
-cat("](https://twitter.com/share?url=", home, ") ", sep = "")
+cat("](https://twitter.com/intent/tweet?url=", home, ") ", sep = "")
 
 # facebook
 # https://www.facebook.com

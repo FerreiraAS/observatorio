@@ -7,6 +7,7 @@ output:
     css:
       - ./CSS/index.css
       - ./CSS/main-color.css
+      - ./CSS/narrow-margins.css
       - ./CSS/responsive.css
 ---
 
@@ -17,7 +18,7 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE,
   fig.align = 'center',
-  results = "asis",
+  results = 'asis',
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
@@ -27,8 +28,16 @@ knitr::opts_chunk$set(
 )
 ```
 
+<!--load caches-->
+```{r load-caches, echo = FALSE, include = FALSE}
+folders <- list.dirs(file.path("cache/"), full.names = FALSE, recursive = FALSE)
+for(folder in folders){
+    knitr::load_cache(label = folder, path = paste0(file.path("cache", folder), "/"))
+}
+```
+
 ---
-title: "OBSERVATÓRIO `r ifelse(and(has.dados.cadastrais, has.sucupira.files), sigla.PPG, "")`"
+title: "OBSERVATÓRIO `r ifelse(all(has.dados.cadastrais, has.sucupira.files), sigla.PPG, "")`"
 ---
 
 <br>
@@ -39,7 +48,7 @@ title: "OBSERVATÓRIO `r ifelse(and(has.dados.cadastrais, has.sucupira.files), s
 
 ```{r logo-ppg}
 if(file.exists("PPG/Images/logo-programa.png")) {
-  cat('<img src=\"PPG/Images/logo-programa.png\" height="100px" align=\"center\"/>')
+  cat('<img src=\"PPG/Images/logo-programa.png\" width=\"600px\" height=\"auto\" align=\"center\"/>')
   has.logo.ppg <- TRUE
 } else {
   has.logo.ppg <- FALSE
@@ -49,7 +58,7 @@ if(file.exists("PPG/Images/logo-programa.png")) {
 <br>
 
 <p style="font-size:1.5em">
-```{r intro, results = "asis"}
+```{r intro, results = 'asis'}
 if (has.dados.cadastrais && has.sucupira.files) {
   cat(
     'O **Observatório ', toupper(as.character(sigla.PPG)),
@@ -68,7 +77,7 @@ if (has.dados.cadastrais && has.sucupira.files) {
 
 </center>
 
-```{r meta-observatorio, eval = !any(has.logo.ppg, has.sucupira.files, has.financiadores, has.producao.ppg, has.producao.sucupira, has.discentes, has.posdocs)}
+```{r meta-observatorio, eval = !any(has.logo.ppg, has.sucupira.files, has.financiadores, has.metricas.doi.ppg, has.metricas.doi.sucupira, has.discentes)}
 # se não ná nada para exibir, mostre os observatórios existentes
 cat('<br>')
 cat('<br>')
@@ -131,180 +140,91 @@ source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
-# remove duplicated lines across years
-sucupira.raw <- unique(sucupira.raw)
+# convert sucupira.list into dataframe adding a new colum with the respective ano
+sucupira <- dplyr::bind_rows(sucupira.list, .id = "Ano")
 
-# remove duplicated projects ("EM ANDAMENTO" vs. "CONCLUÍDO" -> keep "CONCLUÍDO")
-projetos.id <- unique(sucupira.raw$`Identificador do Projeto`)
-sucupira <- c()
-for (i in 1:length(projetos.id)) {
-  matches <-
-    sucupira.raw[sucupira.raw$`Identificador do Projeto` == projetos.id[i], ]
-  if (dim(matches)[1] == 1) {
-    sucupira <- dplyr::bind_rows(sucupira, matches)
-  } else {
-    keep <-
-      matches[matches$Situação == "CONCLUÍDO" |
-                !is.na(matches$`Data de Fim da Linha`), ]
-    sucupira <- dplyr::bind_rows(sucupira, keep)
-  }
-}
+# crosstable of projects by year EM ANDAMENTO by Área de Concentração and Linha de Pesquisa
+projetos.em.andamento <- sucupira[sucupira$Situação == "EM ANDAMENTO", ]
+projetos.em.andamento <- projetos.em.andamento %>%
+  dplyr::group_by(Ano, `Área de Concentração`, `Linha de Pesquisa`) %>%
+  dplyr::summarise(n = n())
 
-# update base data
-sucupira.raw <- sucupira
+# crosstable of projects by year CONCLUÍDO by Linha de Pesquisa
+projetos.concluido <- sucupira[sucupira$Situação == "CONCLUÍDO", ]
+projetos.concluido <- projetos.concluido %>%
+  dplyr::group_by(Ano, `Área de Concentração`, `Linha de Pesquisa`) %>%
+  dplyr::summarise(n = n())
 
-# structure the alluvial plot
-alluv.data <-
-  data.frame(
-    sucupira.raw$`Área de Concentração`,
-    sucupira.raw$`Linha de Pesquisa`,
-    sucupira.raw$`Nome do Projeto de Pesquisa`,
-    sucupira.raw$`Data de Início da Linha`,
-    sucupira.raw$`Data de Fim da Linha`
-  )
+# get current AC and LP
+current.AC <- unique(projetos.em.andamento$`Área de Concentração`)
+current.LP <- unique(projetos.em.andamento$`Linha de Pesquisa`)
 
-# replace full date by year only
-alluv.data$sucupira.raw..Data.de.Início.da.Linha. <-
-  format(as.Date(
-    alluv.data$sucupira.raw..Data.de.Início.da.Linha.,
-    "%d/%m/%Y"
-  ),
-  format = "%Y")
-alluv.data$sucupira.raw..Data.de.Fim.da.Linha. <-
-  format(as.Date(alluv.data$sucupira.raw..Data.de.Fim.da.Linha., "%d/%m/%Y"),
-         format = "%Y")
+# remove NA values
+current.AC <- current.AC[!is.na(current.AC)]
+current.LP <- current.LP[!is.na(current.LP)]
 
-# replace NA values by current year
-alluv.data$sucupira.raw..Data.de.Fim.da.Linha.[is.na(alluv.data$sucupira.raw..Data.de.Fim.da.Linha.)] <-
-  format(Sys.Date(), format = "%Y")
-
-# remove data without AC or LP
-alluv.data <-
-  alluv.data[!is.na(alluv.data$sucupira.raw..Área.de.Concentração.) &
-               !is.na(alluv.data$sucupira.raw..Linha.de.Pesquisa.), ]
-
-# ordering by dates
-alluv.data <-
-  alluv.data[order(
-    alluv.data$sucupira.raw..Data.de.Início.,
-    alluv.data$sucupira.raw..Data.de.Fim.da.Linha.,
-    alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa.,
-    decreasing = FALSE
-  ),]
+# remove projeto isolado da LP
+current.LP <- current.LP[current.LP != "PROJETO ISOLADO"]
 
 # summary data for plot table
-current.AC <-
-  unique(alluv.data$sucupira.raw..Área.de.Concentração.[alluv.data$sucupira.raw..Data.de.Fim.da.Linha. == format(Sys.Date(), format = "%Y")])
-
-old.AC <-
-  unique(alluv.data$sucupira.raw..Área.de.Concentração.[alluv.data$sucupira.raw..Data.de.Fim.da.Linha. == format(Sys.Date(), format = "%Y")])
-old.AC <- old.AC[!old.AC %in% c(current.AC, NA)]
-
-old.LP <-
-  unique(alluv.data$sucupira.raw..Linha.de.Pesquisa.[alluv.data$sucupira.raw..Data.de.Fim.da.Linha. != format(Sys.Date(), format = "%Y")])
-
-current.LP <-
-  unique(alluv.data$sucupira.raw..Linha.de.Pesquisa.)
-current.LP <- current.LP[!current.LP %in% c(old.LP, NA)]
-
-# remove data from inactive LP
-if (length(old.LP) != 0) {
-  alluv.data <-
-    alluv.data[!(alluv.data$sucupira.raw..Linha.de.Pesquisa. == old.LP),]
-  # alluv.data <-
-  #   alluv.data[!(
-  #     alluv.data$sucupira.raw..Data.de.Fim.da.Linha. == format(Sys.Date(), format = "%Y")
-  #   ), ]
-}
-
 summ.AC.LP <-
   as.data.frame(
     table(
-      alluv.data$sucupira.raw..Área.de.Concentração.,
-      alluv.data$sucupira.raw..Linha.de.Pesquisa.,
-      alluv.data$sucupira.raw..Data.de.Início.da.Linha.,
-      alluv.data$sucupira.raw..Data.de.Fim.da.Linha.
+      projetos.em.andamento$`Área de Concentração`,
+      projetos.em.andamento$`Linha de Pesquisa`
     )
   )
 
 # drop freq = 0 values
 summ.AC.LP <- summ.AC.LP[summ.AC.LP$Freq != 0, ]
 
-colnames(summ.AC.LP) <- c("AC", "LP", "Inicio", "Fim", "Freq")
-
-# insert data from later LP
-extra <- c()
-for (i in 1:dim(summ.AC.LP)[1]) {
-  if (as.character(summ.AC.LP$Inicio[i]) > min(as.character(summ.AC.LP$Inicio))) {
-    extra <-
-      rbind(extra,
-            c(
-              as.character(summ.AC.LP$AC[i]),
-              as.character(summ.AC.LP$LP[i]),
-              min(as.character(summ.AC.LP$Inicio)),
-              as.character(summ.AC.LP$Inicio[i]),
-              as.character(summ.AC.LP$Freq[i])
-            ))
-  }
+if(!sjmisc::is_empty(summ.AC.LP)){
+  
+  colnames(summ.AC.LP) <- c("AC", "LP", "Freq")
+  
+  data <- summ.AC.LP
+  
+  # Criar uma tabela de nós com identificadores únicos
+  nodes <- data %>%
+    dplyr::select(AC, LP) %>%
+    tidyr::pivot_longer(cols = c(AC, LP), names_to = "type", values_to = "label") %>%
+    dplyr::distinct() %>%
+    dplyr::mutate(id = as.character(row_number())) %>%
+    dplyr::select(id, label, type)
+  
+  # Calcular a frequência total para cada nó
+  node_freq <- data %>%
+    tidyr::pivot_longer(cols = c(AC, LP), names_to = "type", values_to = "label") %>%
+    dplyr::group_by(label) %>%
+    dplyr::summarise(Freq = sum(as.numeric(Freq))) %>%
+    dplyr::ungroup()
+  
+  # Adicionar a frequência dos nós ao dataframe 'nodes'
+  nodes <- nodes %>%
+    dplyr::left_join(node_freq, by = c("label" = "label")) %>%
+    dplyr::mutate(size = Freq)
+  
+  # Criar uma tabela de arestas
+  edges <- data %>%
+    dplyr::left_join(nodes %>% dplyr::select(label, id), by = c("AC" = "label")) %>%
+    dplyr::rename(from = id) %>%
+    dplyr::left_join(nodes %>% dplyr::select(label, id), by = c("LP" = "label")) %>%
+    dplyr::rename(to = id) %>%
+    dplyr::mutate(label = paste("Freq:", Freq)) %>%
+    dplyr::select(from, to, label)
+  
+  # Criar o grafo tree layout
+  g <- igraph::graph_from_data_frame(d = edges, vertices = nodes, directed = FALSE)
+  
+} else {
+  # empty igraph
+  g <- igraph::make_empty_graph()
 }
-extra <- as.data.frame(extra)
-try(colnames(extra) <- c("AC", "LP", "Inicio", "Fim", "Freq"), silent = TRUE)
-
-summ.AC.LP <- rbind(summ.AC.LP, extra)
-
-# code PP names for display
-alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa. <-
-  as.numeric(as.factor(alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa.))
-
-# drop names columns
-summ.AC.LP <- summ.AC.LP[, -(1:2)]
-
-# rename cols
-colnames(summ.AC.LP) <- c("source", "target", "value")
-
-summ.LP.PP <-
-  as.data.frame(
-    table(
-      alluv.data$sucupira.raw..Linha.de.Pesquisa.,
-      alluv.data$sucupira.raw..Nome.do.Projeto.de.Pesquisa.
-    )
-  )
-colnames(summ.LP.PP) <- c("source", "target", "value")
-
-# count projects only once
-summ.LP.PP$value[summ.LP.PP$value != 0] <- 1
-
-# remove zeroed-value data
-summ.AC.LP <- summ.AC.LP[summ.AC.LP$value != 0,]
-
-# A connection data frame is a list of flows with intensity for each flow
-links <- summ.AC.LP
-
-# From these flows we need to create a node data frame: it lists every entities involved in the flow
-nodes <- data.frame(name = c(as.character(links$source),
-                             as.character(links$target)) %>% unique())
-
-# We need a data frame giving a hierarchical structure. Lets consider the flare dataset
-edges1 <-
-  stats::aggregate(
-    alluv.data$sucupira.raw..Linha.de.Pesquisa.,
-    by = list(
-      alluv.data$sucupira.raw..Área.de.Concentração.,
-      alluv.data$sucupira.raw..Linha.de.Pesquisa.
-    ),
-    FUN = length
-  )
-
-# Usually we associate another dataset that give information about each node of the dataset
-vertices <- NULL
-
-# Then we have to make a 'graph' object using the igraph library
-mygraph <- graph_from_data_frame(edges1[, 1:2], vertices = vertices)
 
 # plot 1
 par(
   oma = c(0, 0, 0, 0),
-  mar = c(0, 0, 0, 0),
+  mar = c(1, 1, 2, 1),
   bg = main.color,
   col.lab = "white",
   col.axis = "white",
@@ -312,22 +232,25 @@ par(
   col.main = "white"
 )
 
-# Make the plot
-ggraph(mygraph, layout = "circlepack", weight = c(0, edges1[, 3])) +
-  geom_node_circle(aes(fill = as.factor(depth))) +
-  scale_colour_brewer(RColorBrewer::brewer.pal(n = 9, name = "Set3")) +
-  scale_fill_discrete(labels = c("Áreas de concentração", "Linhas de pesquisa")) +
-  theme_void() +
-  theme(
-    panel.border = element_blank(),
-    panel.background = element_rect(fill = main.color, color = main.color),
-    plot.background = element_rect(fill = main.color, color = main.color),
-    legend.background = element_rect(fill = main.color,  color = main.color),
-    legend.box.background = element_rect(fill = main.color,  color = main.color),
-    legend.position = "top",
-    legend.title = element_blank(),
-    legend.text = element_text(color = "white", size = 14)
-  )
+# Visualizar o grafo
+plot(
+  g,
+  vertex.size = igraph::V(g)$size,  # Tamanho dos vértices baseado na frequência
+  vertex.label = NA,  # Rótulos dos vértices
+  vertex.label.cex = 0.8,
+  vertex.label.color = ifelse(igraph::V(g)$type == "AC", main.color, "white"),
+  vertex.label.dist = ifelse(igraph::V(g)$type == "AC", 0, 2),
+  vertex.frame.color = ifelse(igraph::V(g)$type == "AC", main.color, main.color),
+  vertex.color = ifelse(igraph::V(g)$type == "AC", RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], RColorBrewer::brewer.pal(n = 9, name = "Set3")[2]),
+  edge.label = NA,
+  edge.label.cex = 0.8,
+  edge.label.color = "white",
+  layout = igraph::layout.fruchterman.reingold,
+  main = "Áreas de Concentração e Linhas de Pesquisa"
+)
+
+# add legend
+legend("bottomleft", legend = c("Área de Concentração", "Linha de Pesquisa"), fill = RColorBrewer::brewer.pal(n = 9, name = "Set3"), bty = "n")
 
 # plot 2
 
@@ -335,70 +258,26 @@ ggraph(mygraph, layout = "circlepack", weight = c(0, edges1[, 3])) +
 # layout.m <- matrix(c(1, 2, 3, 4), ncol = 2, byrow = FALSE)
 layout.m <- matrix(c(1, 2), ncol = 1, byrow = FALSE)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
-
-summ.coerencia.1 <- c(length(unique(current.AC)),
-                      length(unique(current.LP)))
+summ.coerencia.1 <- c(length(current.AC),
+                      length(current.LP))
 names(summ.coerencia.1) <-
   c("Áreas de Concentração",
     "Linhas de Pesquisa")
-
 summ.data <- c(summ.coerencia.1)
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-coerencia-carousel, eval = has.sucupira.files}
+```{r sintese-coerencia-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files, out.width = "70%"}
 cat('<br>')
 cat('<br>')
 
-# carousel
-bsplus::bs_carousel(id = "coerencia-carousel",
-            use_indicators = FALSE,
-            use_controls = TRUE) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-1.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-coerencia-2.png"))
-
+# show sintese-coerencia-1
+knitr::include_graphics("index_files/figure-html/sintese-coerencia-1.png")
+cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-```
 
-```{r sintese-temas, include = FALSE, eval = has.sucupira.files}
-# file path to save the wordclouds
-dir.path <- file.path(getwd(), "index_files", "figure-html")
-dir.create(dir.path, recursive = TRUE)
-
-# projetos
-sheet <- "Projetos"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-data.to.cloud <- sucupira.raw$`Nome do Projeto de Pesquisa`
-cloud.title <- "Temas de Projetos"
-source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
-
-# dissertações e teses
-sheet <- "TCC"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-data.to.cloud <- sucupira.raw$`Nome do Trabalho de Conclusão`
-cloud.title <- "Dissertações e Teses"
-source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
-
-# artigos
-sheet <- "Produções"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-data.to.cloud <- sucupira.raw$`Nome da Produção`
-cloud.title <- "Temas de Produção"
-source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
-```
-
-```{r sintese-temas-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", out.width = "100%", eval = has.sucupira.files}
-cat('<br>')
-cat('<br>')
-
-# carousel of wordclouds
-bsplus::bs_carousel(id = "temas-carousel",
-            use_indicators = FALSE,
-            use_controls = TRUE) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/Projetos.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/TCC.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/Produções.png"))
-
+# show sintese-coerencia-2
+knitr::include_graphics("index_files/figure-html/sintese-coerencia-2.png")
 cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -410,146 +289,436 @@ source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
 
-# get all history of 'linha de pesquisa'
-linhas <-
-  as.character(na.exclude(unique(sucupira.raw$`Linha de Pesquisa`)))
+# convert sucupira.list into dataframe adding a new colum with the respective ano
+sucupira <- dplyr::bind_rows(sucupira.list, .id = "Ano")
+# distinct entries
+sucupira <- dplyr::distinct(sucupira)
 
-# initialize data structure
-andamento.ano <-
-  matrix(NA, nrow = length(linhas), ncol = length(anos))
-colnames(andamento.ano) <- anos
-rownames(andamento.ano) <- linhas
-concluido.ano <- andamento.ano
+# plot 1 (total de projetos por área de concentração, por ano)
 
-# iterate across all Sucupira list elements to search for active and closed projects
-for (i in 1:length(anos)) {
-  # active
-  projetos <- sucupira.list[[i]]
-  projetos <-
-    projetos[projetos$`Membro Responsável` == "Sim" &
-               projetos$Situação == "EM ANDAMENTO",]
-  for (j in 1:length(linhas)) {
-    andamento.ano[j, i] <-
-      sum(projetos$`Linha de Pesquisa` == linhas[j], na.rm = TRUE)
-  }
-  # closed
-  projetos <- sucupira.list[[i]]
-  projetos <-
-    projetos[projetos$`Membro Responsável` == "Sim" &
-               projetos$Situação == "CONCLUÍDO",]
-  for (j in 1:length(linhas)) {
-    concluido.ano[j, i] <-
-      sum(projetos$`Linha de Pesquisa` == linhas[j], na.rm = TRUE)
-  }
-}
-projetos.ano <- andamento.ano + concluido.ano
-projetos.ano <-
-  projetos.ano[, order(colnames(projetos.ano), decreasing = FALSE)]
+# crosstable of projects by Área de Concentração
+projetos.ac <- sucupira %>%
+  dplyr::distinct(Ano, `Identificador do Projeto de Pesquisa`, .keep_all = TRUE) %>%
+  dplyr::group_by(Ano, `Área de Concentração`) %>%
+  dplyr::summarise(n = n())
 
-membros <-
-  data.frame(sucupira.raw$`Nome do Membro do Projeto`,
-             sucupira.raw$`Categoria do Membro do Projeto`)
-membros <- membros[!duplicated(membros), ]
-categorias <-
-  table(membros$sucupira.raw..Categoria.do.Membro.do.Projeto.)
-
-# calculate summary statistics for projetos
-summ.table.projetos <-
-  c(paste0(
-    formatC(
-      sum(concluido.ano, na.rm = TRUE),
-      format = "d",
-      digits = 0,
-      big.mark = ".",
-      decimal.mark = ","
-    )
-  ),
-  paste0(
-    formatC(
-      sum(andamento.ano[, dim(andamento.ano)[2]], na.rm = TRUE),
-      format = "d",
-      digits = 0,
-      big.mark = ".",
-      decimal.mark = ","
-    )
-  ),
-  categorias,
-  sum(categorias))
-names(summ.table.projetos) <-
-  c("Projetos concluídos",
-    "Projetos em andamento",
-    names(categorias),
-    "Total de membros")
+# replace NA values by Indefinida
+projetos.ac$`Área de Concentração`[is.na(projetos.ac$`Área de Concentração`)] <- "Indefinida"
 
 # plot area setup
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(unique(projetos.ac$`Área de Concentração`)), name = "Set3")
 
-# plot 1 (total de projetos por linha, por ano)
-barplot(projetos.ano,
-        ylab = "N",
-        col = RColorBrewer::brewer.pal(n = length(linhas), name = "Set3"))
-title(main = "Projetos por Linha de Pesquisa",
-      outer = TRUE,
-      cex.main = 1.7)
-legend(
-  "topright",
-  legend = linhas,
-  fill = RColorBrewer::brewer.pal(n = length(linhas), name = "Set3"),
-  text.col = "white",
-  box.lwd = 0,
-  bty = "n",
-  horiz = FALSE,
-  cex = 0.70,
+plot.1 <- plotly::plot_ly(
+  data = projetos.ac,
+  x = ~Ano,
+  y = ~n,
+  color = ~`Área de Concentração`,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
 )
 
-# plot 2 (percentual de projetos por linha, por ano)
-barplot(
-  scale(
-    as.matrix(projetos.ano),
-    center = FALSE,
-    scale = colSums(as.matrix(projetos.ano))
-  ) * 100,
-  ylab = "%",
-  col = RColorBrewer::brewer.pal(n = length(linhas), name = "Set3"),
-  ylim = c(0, 100)
-)
-title(main = "Projetos por Linha de Pesquisa",
-      outer = TRUE,
-      cex.main = 1.7)
+plot.1 <- plot.1 %>% plotly::layout(
+  title = list(
+    text = "Projetos por Área de Concentração",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(projetos.ac$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = FALSE)
 
-# plot 3 (summary table in plot)
+# plot 2 (total de projetos por linha, por ano)
+
+# crosstable of projects by Linha de Pesquisa
+projetos.lp <- sucupira %>%
+  dplyr::distinct(Ano, `Identificador do Projeto de Pesquisa`, .keep_all = TRUE) %>%
+  dplyr::group_by(Ano, `Linha de Pesquisa`) %>%
+  dplyr::summarise(n = n())
+
+# replace NA values by Indefinida
+projetos.lp$`Linha de Pesquisa`[is.na(projetos.lp$`Linha de Pesquisa`)] <- "Indefinida"
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(unique(projetos.lp$`Linha de Pesquisa`)), name = "Set3")
+
+plot.2 <- plotly::plot_ly(
+  data = projetos.lp,
+  x = ~Ano,
+  y = ~n,
+  color = ~`Linha de Pesquisa`,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.2 <- plot.2 %>% plotly::layout(
+  title = list(
+    text = "Projetos por Linha de Pesquisa",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(projetos.lp$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = FALSE)
+
+# plot 3 (total de projetos por situação, por ano)
+
+# crosstable of projects by Situação
+projetos.situacao <- sucupira %>%
+  dplyr::distinct(Ano, `Identificador do Projeto de Pesquisa`, .keep_all = TRUE) %>%
+  dplyr::group_by(Ano, Situação) %>%
+  dplyr::summarise(n = n())
+
+# replace NA values by Indefinida
+projetos.situacao$Situação[is.na(projetos.situacao$Situação)] <- "Indefinida"
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(unique(projetos.situacao$Situação)), name = "Set3")
+
+plot.3 <- plotly::plot_ly(
+  data = projetos.situacao,
+  x = ~Ano,
+  y = ~n,
+  color = ~Situação,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.3 <- plot.3 %>% plotly::layout(
+  title = list(
+    text = "Projetos por Situação",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(projetos.situacao$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = FALSE)
+
+# plot 4 (total de projetos por Natureza do Projeto de Pesquisa, por ano)
+
+# crosstable of projects by Natureza
+projetos.natureza <- sucupira %>%
+  dplyr::distinct(Ano, `Identificador do Projeto de Pesquisa`, .keep_all = TRUE) %>%
+  dplyr::group_by(Ano, `Natureza do Projeto de Pesquisa`) %>%
+  dplyr::summarise(n = n())
+
+# replace NA values by Indefinida
+projetos.natureza$`Natureza do Projeto de Pesquisa`[is.na(projetos.natureza$`Natureza do Projeto de Pesquisa`)] <- "Indefinida"
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(unique(projetos.natureza$`Natureza do Projeto de Pesquisa`)), name = "Set3")
+
+plot.4 <- plotly::plot_ly(
+  data = projetos.natureza,
+  x = ~Ano,
+  y = ~n,
+  color = ~`Natureza do Projeto de Pesquisa`,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.4 <- plot.4 %>% plotly::layout(
+  title = list(
+    text = "Projetos por Natureza",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(projetos.natureza$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = FALSE)
+
+# plot 5 (total de projetos por categoria de membro, por ano)
+
+# crosstable of projects by Categoria do Membro
+projetos.categoria <- sucupira %>%
+  dplyr::distinct(Ano, `Identificador da Pessoa do Membro`, .keep_all = TRUE) %>%
+  dplyr::group_by(Ano, `Categoria do Membro do Projeto`) %>%
+  dplyr::summarise(n = n())
+
+# replace NA values by Indefinida
+projetos.categoria$`Categoria do Membro do Projeto`[is.na(projetos.categoria$`Categoria do Membro do Projeto`)] <- "Indefinida"
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(unique(projetos.categoria$`Categoria do Membro do Projeto`)), name = "Set3")
+
+plot.5 <- plotly::plot_ly(
+  data = projetos.categoria,
+  x = ~Ano,
+  y = ~n,
+  color = ~`Categoria do Membro do Projeto`,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.5 <- plot.5 %>% plotly::layout(
+  title = list(
+    text = "Categoria dos Membros dos Projetos",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(projetos.categoria$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = FALSE)
+
+# plot 6 (summary table in plot)
+summ.table.projetos <- data.frame()
+
+# total per situação em andamento using filter current year
+summ.table.projetos.1 <- sucupira %>%
+  dplyr::filter(Ano == Ano[length(Ano)]) %>%
+  dplyr::distinct(`Identificador do Projeto de Pesquisa`, Situação, .keep_all = TRUE) %>%
+  dplyr::group_by(Situação) %>%
+  dplyr::summarise(n = n()) %>%
+  dplyr::filter(Situação == "EM ANDAMENTO")
+
+# total per situação concluído using all years
+summ.table.projetos.1 <- rbind(
+  summ.table.projetos.1,
+  sucupira %>%
+    dplyr::distinct(`Identificador do Projeto de Pesquisa`, Situação, .keep_all = TRUE) %>%
+    dplyr::group_by(Situação) %>%
+    dplyr::summarise(n = n()) %>%
+    dplyr::filter(Situação == "CONCLUÍDO")
+)
+
+# total per categoria
+summ.table.projetos.2 <- sucupira %>% 
+  dplyr::distinct(`Identificador da Pessoa do Membro`, `Categoria do Membro do Projeto`, .keep_all = TRUE) %>%
+  dplyr::group_by(`Categoria do Membro do Projeto`) %>%
+  dplyr::summarise(n = n())
+
+# total de membros
+summ.table.projetos.3 <- sucupira %>%
+  dplyr::distinct(`Identificador da Pessoa do Membro`, .keep_all = TRUE) %>%
+  dplyr::summarise(n = n())
+
+# merge datasets as two column 
+summ.table.projetos <- c(summ.table.projetos.1$n, summ.table.projetos.2$n, summ.table.projetos.3$n)
+names(summ.table.projetos) <- c(summ.table.projetos.1$Situação, summ.table.projetos.2$`Categoria do Membro do Projeto`, "Membros")
+
+# to title case
+names(summ.table.projetos) <- tools::toTitleCase(tolower(names(summ.table.projetos)))
 
 # plot area setup
 layout.m <- matrix(c(1, 1, 1, 2, 2, 2, 3, 4, 5, 6, 7, 8),
                    ncol = 3,
                    byrow = TRUE)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
-
 summ.data <- summ.table.projetos
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-projetos-carousel, eval = has.sucupira.files}
+```{r sintese-projetos-carousel-1, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files, out.width = "100%"}
 cat('<br>')
 cat('<br>')
 
-# carousel
-bsplus::bs_carousel(id = "projetos-carousel",
-            use_indicators = FALSE,
-            use_controls = TRUE) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-projetos-1.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-projetos-2.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-projetos-3.png"))
+cat('<div align="center">')
+plot.1
+cat('</div>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
+cat('<div align="center">')
+plot.2
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.3
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.4
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.5
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+```
+
+```{r sintese-projetos-carousel-2, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files, out.width = "70%"}
+cat('<br>')
+cat('<br>')
+
+# show sintese-projetos-1
+knitr::include_graphics("index_files/figure-html/sintese-projetos-1.png")
 cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-financiadores, include = FALSE, eval = has.financiadores}
-options("scipen" = 100)
-
 financiadores.raw <-
   readxl::read_excel("PPG/Financiadores.xlsx", sheet = "financiadores")
 
@@ -561,39 +730,78 @@ financiadores <-
 financiadores <- financiadores[complete.cases(financiadores), ]
 
 # generate cross-table
-N.editais.agencia.ano <-
+agencia.ano <-
   table(financiadores$'Agência', financiadores$'Ano')
-N.editais.agencia.ano <-
-  N.editais.agencia.ano[, order(colnames(N.editais.agencia.ano), decreasing = FALSE)]
+agencia.ano <-
+  agencia.ano[, order(colnames(agencia.ano), decreasing = FALSE)]
 
 # get all 'agencias'
-agencias <-
-  na.exclude(rownames(N.editais.agencia.ano))
+agencias <- na.exclude(rownames(agencia.ano))
+
+# plot 1 (financiadores per agency by year (absolute frequency)
 
 # plot area setup
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(agencias), name = "Set3")
 
-# plot 1 (financiadores per agency by year (absolute frequency)
-barplot(N.editais.agencia.ano,
-        ylab = "N",
-        col = RColorBrewer::brewer.pal(n = length(agencias), name = "Set3"))
-title(main = "Editais financiados por agência",
-      outer = TRUE,
-      cex.main = 1.7)
-legend(
-  "topleft",
-  legend = agencias,
-  fill = RColorBrewer::brewer.pal(n = length(agencias), name = "Set3"),
-  text.col = "white",
-  box.lwd = 0,
-  bty = "n",
-  horiz = FALSE,
-  cex = 1,
+# Reshape data for Plotly
+data_long <- reshape2::melt(agencia.ano, id.vars = "Agência", variable.name = "Ano", value.name = "Frequência")
+data_long <- data.frame(data_long, stringsAsFactors = FALSE)
+colnames(data_long) <- c("Agência", "Ano", "Frequência")
+
+plot.1 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = ~Agência,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
 )
 
+plot.1 <- plot.1 %>% plotly::layout(
+  title = list(
+    text = "Editais por Agências Financiadoras",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = FALSE)
+
+
 # generate cross-table
-T.editais.agencia.ano <-
+valor.ano <-
   with(financiadores, tapply(
     financiadores$Total,
     list(financiadores$'Agência', financiadores$'Ano'),
@@ -601,37 +809,75 @@ T.editais.agencia.ano <-
   ))
 
 # add zero to not available values
-T.editais.agencia.ano[is.na(T.editais.agencia.ano)] <- 0
+valor.ano[is.na(valor.ano)] <- 0
 
-T.editais.agencia.ano <-
-  T.editais.agencia.ano[, order(colnames(T.editais.agencia.ano), decreasing = FALSE)]
+valor.ano <-
+  valor.ano[, order(colnames(valor.ano), decreasing = FALSE)]
 
 # get all 'agencias'
-agencias <-
-  na.exclude(rownames(T.editais.agencia.ano))
+agencias <- na.exclude(rownames(valor.ano))
+
 
 # plot 2 (financiadores per agency by year (absolute frequency))
 
 # plot area setup
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(agencias), name = "Set3")
 
-barplot(T.editais.agencia.ano,
-        ylab = "R$",
-        col = RColorBrewer::brewer.pal(n = length(agencias), name = "Set3"))
-title(main = "Valores financiados por agência",
-      outer = TRUE,
-      cex.main = 1.7)
-legend(
-  "topleft",
-  legend = agencias,
-  fill = RColorBrewer::brewer.pal(n = length(agencias), name = "Set3"),
-  text.col = "white",
-  box.lwd = 0,
-  bty = "n",
-  horiz = FALSE,
-  cex = 1,
+# Reshape data for Plotly
+data_long <- reshape2::melt(valor.ano, id.vars = "Agência", variable.name = "Ano", value.name = "Valor")
+data_long <- data.frame(data_long, stringsAsFactors = FALSE)
+colnames(data_long) <- c("Agência", "Ano", "Valor")
+
+plot.2 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Valor,
+  color = ~Agência,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
 )
+
+plot.2 <- plot.2 %>% plotly::layout(
+  title = list(
+    text = "Valores por Agências Financiadoras",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "R$",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = FALSE)
 
 # generate cross-table
 professores.ano <-
@@ -642,26 +888,55 @@ professores.ano <-
 # plot area setup
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(agencias), name = "Set3")
 
-barplot(professores.ano,
-        ylab = "N",
-        col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(professores.ano)))
-title(main = "Docentes com financiamento",
-      outer = TRUE,
-      cex.main = 1.7)
+# Reshape data for Plotly
+data_long <- reshape2::melt(professores.ano, value.name = "Frequência")
+data_long$Ano <- names(professores.ano)
+# add column with years
+data_long <- data.frame(data_long, stringsAsFactors = FALSE)
+colnames(data_long) <- c("Frequência", "Ano")
 
-# plot 4 (top-10 editais)
+plot.3 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = colors[1],
+  type = 'bar',
+  colors = colors[1],
+  height = "50vmin"
+)
+
+plot.3 <- plot.3 %>% plotly::layout(
+  title = list(
+    text = "Docentes com Financiamentos",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = FALSE
+) %>% plotly::config(displayModeBar = FALSE)
+
 
 editais <- financiadores$Programa
-
-# plot area setup
-layout.m <- c(1)
-source("Scripts/plot-margins.R", local = knitr::knit_global())
-
-# plot area setup
-par(mar = c(1.5, 15, 1, 1))
-
-top <- min(length(do::unique_no.NA(editais)), 10)
+top <- min(length(editais[which(!is.na(editais))]), 10)
 data.editais <-
   na.omit(data.frame(name = names(sort(
     table(editais), decreasing = TRUE
@@ -669,39 +944,66 @@ data.editais <-
   value = as.numeric(sort(
     table(editais), decreasing = TRUE
   )[1:top])))
-
 # break vector names in 2 lines
 text.2.break <- data.editais$name
 source("Scripts/line-2-break.R", local = knitr::knit_global())
 data.editais$name <- broken_text
 
-barplot(
-  height = rev(data.editais$value),
-  names = rev(data.editais$name),
-  xlab = "N",
-  col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
-  horiz = T,
-  las = 1,
-  cex.names = 0.7
-)
-title(
-  main = paste0("Top-", top, " editais"),
-  outer = TRUE,
-  cex.main = 1.7
-)
-
-# plot 5 (top-10 agencias)
-
-agencias <- financiadores$Agência
+# plot 4 (top-10 editais)
 
 # plot area setup
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(agencias), name = "Set3")
 
-# plot area setup
-par(mar = c(1.5, 15, 1, 1))
+# Reshape data for Plotly
+data_long <- reshape2::melt(data.editais, value.name = "Frequência")
+data_long <- data_long[, -2]
+colnames(data_long) <- c("Edital", "Frequência")
+# set factor level for sorting
+data_long$Edital <- factor(data_long$Edital, levels = data.editais$name)
 
-top <- min(length(do::unique_no.NA(agencias)), 10)
+plot.4 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Frequência,
+  y = ~Edital,
+  color = colors[1],
+  type = 'bar',
+  colors = colors[1],
+  height = "50vmin"
+)
+
+plot.4 <- plot.4 %>% plotly::layout(
+  title = list(
+    text = paste0("Top-", top, " Editais Financiados"),
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = seq(0, max(data.editais$value), by = 1)
+  ),
+  yaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    # reverse axis
+    autorange = 'reversed'
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = FALSE
+) %>% plotly::config(displayModeBar = FALSE)
+
+
+agencias <- financiadores$Agência
+top <- min(length(agencias[which(!is.na(agencias))]), 10)
 data.agencias <-
   na.omit(data.frame(name = names(sort(
     table(agencias), decreasing = TRUE
@@ -709,26 +1011,63 @@ data.agencias <-
   value = as.numeric(sort(
     table(agencias), decreasing = TRUE
   )[1:top])))
-
 # break vector names in 2 lines
 text.2.break <- data.agencias$name
 source("Scripts/line-2-break.R", local = knitr::knit_global())
 data.agencias$name <- broken_text
 
-barplot(
-  height = rev(data.agencias$value),
-  names = rev(data.agencias$name),
-  xlab = "N",
-  col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
-  horiz = T,
-  las = 1,
-  cex.names = 0.7
+# plot 5 (top-10 agencias)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(agencias), name = "Set3")
+
+# Reshape data for Plotly
+data_long <- reshape2::melt(data.agencias, value.name = "Frequência")
+data_long <- data_long[, -2]
+colnames(data_long) <- c("Agência", "Frequência")
+# set factor level for sorting
+data_long$Agência <- factor(data_long$Agência, levels = data.agencias$name)
+
+plot.5 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Frequência,
+  y = ~Agência,
+  color = colors[1],
+  type = 'bar',
+  colors = colors[1],
+  height = "50vmin"
 )
-title(
-  main = paste0("Top-", top, " agências"),
-  outer = TRUE,
-  cex.main = 1.7
-)
+
+plot.5 <- plot.5 %>% plotly::layout(
+  title = list(
+    text = paste0("Top-", top, " Agências Financiadoras"),
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = seq(0, max(data.agencias$value), by = 1)
+  ),
+  yaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    # reverse axis
+    autorange = 'reversed'
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = FALSE
+) %>% plotly::config(displayModeBar = FALSE)
+
 
 # calculate summary statistics for financiamentos
 summ.table.financiadores <- matrix(0, nrow = 1, ncol = 5)
@@ -786,307 +1125,610 @@ names(summ.table.financiadores) <-
 layout.m <-
   matrix(c(1, 1, 2, 2, 3, 3, 4, 5), ncol = 2, byrow = TRUE)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
-
 summ.data <- summ.table.financiadores
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-financiadores-carousel, eval = has.financiadores}
+```{r sintese-financiadores-carousel-1, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.financiadores, out.width = "100%"}
 cat('<br>')
 cat('<br>')
 
-# carousel
-bsplus::bs_carousel(id = "financiadores-carousel",
-            use_indicators = FALSE,
-            use_controls = TRUE) %>%
-  bsplus::bs_append(
-    id = "financiadores-carousel",
-    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-1.png")
-  ) %>%
-  bsplus::bs_append(
-    id = "financiadores-carousel",
-    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-2.png")
-  ) %>%
-  bsplus::bs_append(
-    id = "financiadores-carousel",
-    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-3.png")
-  ) %>%
-  bsplus::bs_append(
-    id = "financiadores-carousel",
-    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-4.png")
-  ) %>%
-  bsplus::bs_append(
-    id = "financiadores-carousel",
-    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-5.png")
-  ) %>%
-  bsplus::bs_append(
-    id = "financiadores-carousel",
-    content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-financiadores-6.png")
-  )
+cat('<div align="center">')
+plot.1
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
-cat('\n\n')
-cat(
-  "**Fontes**: [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **PPG**"
-)
+cat('<div align="center">')
+plot.2
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.3
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.4
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.5
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
-```{r sintese-producao, include = FALSE, eval = any(has.producao.ppg, has.producao.sucupira)}
-# Qualis
-qualis.PPG <- c()
-for (i in 1:length(estratos)) {
-  qualis.PPG[i] <-
-    sum(doi_all$WebQualis == estratos[i], na.rm = TRUE) / length(doi_all$WebQualis) * 100
-}
-names(qualis.PPG) <- estratos
+```{r sintese-financiadores-carousel-2, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.financiadores, out.width = "70%"}
+cat('<br>')
+cat('<br>')
 
-qualis.PPG.up <- names(qualis.PPG[1])
-qualis.PPG.lr <- names(qualis.PPG[length(qualis.PPG)])
+# show sintese-financiadores-1
+knitr::include_graphics("index_files/figure-html/sintese-financiadores-1.png")
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+```{r sintese-producao, include = FALSE, eval = has.sucupira.files}
+# produção
+sheet <- "Produções - Autores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# get data for the current period
+produtos <- sucupira.list[as.character(anos)] %>%
+  plyr::compact()
+produtos <- data.frame(do.call(dplyr::bind_rows, produtos))
+names(produtos) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# remove duplicated ID rows
+produtos <- produtos[!duplicated(produtos$`ID da Produção`), ]
+
+# get years
+produtos$'Ano' <- substr(as.Date(produtos$`Ano da Produção`, format = "%Y"), 1, 4)
 
 # generate cross tables of artigos per year
-table.1 <- table(doi_all$published_on)
+table.1 <- table(produtos$`Tipo de Produção`, produtos$"Ano")
+subtipos.1 <- unique(produtos$`Tipo de Produção`)
 
-table.2 <-
-  matrix(0, ncol = length(unique(doi_all$published_on)), nrow = length(estratos))
-colnames(table.2) <- sort(unique(doi_all$published_on))
-rownames(table.2) <- estratos
-
-for (i in 1:length(doi_all$WebQualis)) {
-    table.2[match(doi_all$WebQualis[i], rownames(table.2)), match(doi_all$published_on[i], colnames(table.2))] <-
-      table.2[match(doi_all$WebQualis[i], rownames(table.2)), match(doi_all$published_on[i], colnames(table.2))] + 1
-}
-
-table.3 <- data.frame(doi_all$published_on, doi_all$SJR)
-
-table.4 <- data.frame(doi_all$published_on, doi_all$CiteScore)
-
-table.5 <- data.frame(doi_all$journal, doi_all$SJR)
+# plot 2 (total de produção bibliografica, por ano, por subtipo)
 
 # plot area setup
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(subtipos.1), name = "Set3")
 
-# Define the number of colors you want
-nb.cols <- length(rownames(table.2))
-mycolors <- colorRampPalette(RColorBrewer::brewer.pal(9, "Set3"))(nb.cols)
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.1, id.vars = "Subtipo", variable.name = "Ano", value.name = "Frequência")
+data_long <- data.frame(data_long, stringsAsFactors = FALSE)
+colnames(data_long) <- c("Tipo", "Ano", "Frequência")
 
-# plot 1 (total de produção bilbiográfica, por ano)
-barplot(table.1,
-        ylab = "N",
-        col = rep(mycolors[1], length(table.1)))
-title(main = "Produção Bibliográfica",
-      outer = TRUE,
-      cex.main = 1.7)
-
-# Define the number of colors you want
-nb.cols <- length(rownames(table.2))
-mycolors <- colorRampPalette(RColorBrewer::brewer.pal(9, "Blues"))(nb.cols)
-
-# plot 2 (total de produção bilbiográfica, por estrato, por ano)
-barplot(table.2,
-        ylab = "Estrato",
-        col = rev(mycolors))
-title(main = "Qualidade da produção (Qualis)",
-      outer = TRUE,
-      cex.main = 1.7)
-legend(
-  "topleft",
-  legend = rownames(table.2),
-  fill = rev(mycolors),
-  text.col = "white",
-  box.lwd = 0,
-  bty = "n",
-  horiz = FALSE,
-  cex = 1,
+plot.1 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = ~Tipo,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
 )
 
-# plot 4 (violin plot of SJR por ano)
-vioplot::vioplot(as.numeric(table.3[, 2]) ~ as.numeric(table.3[, 1]),
-        xlab = NA,
-        ylab = "SJR")
-title(main = "Qualidade da produção (SJR)",
-      outer = TRUE,
-      cex.main = 1.7)
+plot.1 <- plot.1 %>% plotly::layout(
+  title = list(
+    text = "Produção Total",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = FALSE)
 
-# plot 5 (violin plot of CiteScore por ano)
-vioplot::vioplot(as.numeric(table.4[, 2]) ~ as.numeric(table.4[, 1]),
-        xlab = NA,
-        ylab = "CiteScore")
-title(main = "Qualidade da produção (CiteScore)",
-      outer = TRUE,
-      cex.main = 1.7)
+# select products
+produtos.bib <- produtos[produtos$`Tipo de Produção` == "BIBLIOGRÁFICA", ]
 
-# plot 6 (top-10 journals)
-journals.SJR <- unique(table.5)
+# get years
+produtos.bib$'Ano' <- substr(as.Date(produtos.bib$`Ano da Produção`, format = "%Y"), 1, 4)
+
+# generate cross tables of artigos per year
+table.2 <- table(produtos.bib$`Subtipo de Produção`, produtos.bib$"Ano")
+subtipos.2 <- unique(produtos.bib$`Subtipo de Produção`)
+
+# plot 2 (total de produção bilbiográfica, por ano, por subtipo)
 
 # plot area setup
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(subtipos.2), name = "Set3")
+
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.2, id.vars = "Subtipo", variable.name = "Ano", value.name = "Frequência")
+data_long <- data.frame(data_long, stringsAsFactors = FALSE)
+colnames(data_long) <- c("Subtipo", "Ano", "Frequência")
+
+plot.2 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = ~Subtipo,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.2 <- plot.2 %>% plotly::layout(
+  title = list(
+    text = "Produção Bibliográfica",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = FALSE)
+
+
+# select products
+produtos.tec <- produtos[produtos$`Tipo de Produção` == "TÉCNICA", ]
+
+# get years
+produtos.tec$'Ano' <- substr(as.Date(produtos.tec$`Ano da Produção`, format = "%Y"), 1, 4)
+
+# generate cross tables of artigos per year
+table.3 <- table(produtos.tec$`Subtipo de Produção`, produtos.tec$"Ano")
+subtipos.3 <- unique(produtos.tec$`Subtipo de Produção`)
+
+# plot 3 (total de produção técnica, por ano, por subtipo)
 
 # plot area setup
-par(mar = c(1.5, 15, 1, 1))
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(subtipos.3), name = "Set3")
 
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.3, id.vars = "Subtipo", variable.name = "Ano", value.name = "Frequência")
+data_long <- data.frame(data_long, stringsAsFactors = FALSE)
+colnames(data_long) <- c("Subtipo", "Ano", "Frequência")
+
+plot.3 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = ~Subtipo,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.3 <- plot.3 %>% plotly::layout(
+  title = list(
+    text = "Produção Técnica",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = FALSE)
+```
+
+```{r sintese-producao-carousel-1, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files, out.width = "100%"}
+cat('<br>')
+cat('<br>')
+
+cat('<div align="center">')
+plot.1
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.2
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.3
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+```
+
+```{r sintese-artigos, include = FALSE, eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira)}
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+
+# select products
+metricas_artigos <- metricas_all[metricas_all$`Subtipo de Produção` == "ARTIGO EM PERIÓDICO", ]
+
+# keep journal titles
+metricas_artigos <- metricas_artigos[metricas_artigos$`Item de Detalhamento` == "ISSN / Título do periódico", ]
+
+# remove duplicated ID rows
+metricas_artigos <- metricas_artigos[!duplicated(metricas_artigos$`ID da Produção`), ]
+
+# convert NA values in "Indefinida"
+metricas_artigos$Qualis[is.na(metricas_artigos$Qualis)] <- "Indefinida"
+
+# Qualis
+estratos.capes <- c("A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "B5", "C")
+estratos <- sort(unique(na.omit(metricas_artigos$Qualis)))
+qualis.PPG <- vector("numeric", length(estratos.capes))
+for (i in 1:length(estratos.capes)) {
+  qualis.PPG[i] <-
+    sum(metricas_artigos$Qualis == estratos.capes[i], na.rm = TRUE) / length(metricas_artigos$Qualis) * 100
+}
+names(qualis.PPG) <- match(estratos.capes, estratos)
+qualis.PPG <- table(metricas_artigos$Qualis)
+
+# generate cross tables of artigos per year
+table.1 <- table(metricas_artigos$"Ano da Produção")
+
+table.2 <-
+  matrix(0, ncol = length(unique(metricas_artigos$"Ano da Produção")), nrow = length(estratos))
+colnames(table.2) <- sort(unique(metricas_artigos$"Ano da Produção"))
+rownames(table.2) <- estratos
+
+for (i in 1:length(metricas_artigos$Qualis)) {
+    table.2[match(metricas_artigos$Qualis[i], rownames(table.2)), match(metricas_artigos$"Ano da Produção"[i], colnames(table.2))] <-
+      table.2[match(metricas_artigos$Qualis[i], rownames(table.2)), match(metricas_artigos$"Ano da Produção"[i], colnames(table.2))] + 1
+}
+nb.cols <- length(rownames(table.2))
+
+table.3 <- data.frame(metricas_artigos$"Ano da Produção", metricas_artigos$SJR)
+
+table.4 <- data.frame(metricas_artigos$"Ano da Produção", metricas_artigos$CiteScore)
+
+table.5 <- data.frame(metricas_artigos$`Valor do Item de Detalhamento`, metricas_artigos$SJR)
+
+# plot 1 (total de produção bibliográfica, por estrato, por ano)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(estratos), name = "Blues")
+
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.2, id.vars = "Estrato", variable.name = "Ano", value.name = "Frequência")
+data_long <- data.frame(data_long, stringsAsFactors = FALSE)
+colnames(data_long) <- c("Estrato", "Ano", "Frequência")
+
+plot.1 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = ~Estrato,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.1 <- plot.1 %>% plotly::layout(
+  title = list(
+    text = "Métricas da Produção (Qualis)",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = FALSE)
+
+
+# plot 2 (boxplot of SJR por ano)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = 9, name = "Set3")
+
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.3, id.vars = "metricas_artigos..Ano.da.Produção.", value.name = "SJR")
+data_long <- data.frame(data_long, stringsAsFactors = FALSE)
+data_long <- data_long[, -2]
+data_long$SJR <- as.numeric(data_long$SJR)
+colnames(data_long) <- c("Ano", "SJR")
+
+plot.2 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~SJR,
+  color = colors[1],
+  type = 'box',
+  colors = colors[1],
+  height = "50vmin"
+)
+
+plot.2 <- plot.2 %>% plotly::layout(
+  title = list(
+    text = "Métricas da Produção (SJR)",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "SciMAGO Journal Rank (SJR)",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    # discrete ticks
+    tickformat = ".0d",
+    type = "log"
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = FALSE
+) %>% plotly::config(displayModeBar = FALSE)
+
+
+# plot 3 (boxplot of CiteScore por ano)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = 9, name = "Set3")
+
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.4, id.vars = "metricas_artigos..Ano.da.Produção.", value.name = "CiteScore")
+data_long <- data.frame(data_long, stringsAsFactors = FALSE)
+data_long <- data_long[, -2]
+data_long$CiteScore <- as.numeric(data_long$CiteScore)
+colnames(data_long) <- c("Ano", "CiteScore")
+
+plot.3 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~CiteScore,
+  color = colors[1],
+  type = 'box',
+  colors = colors[1],
+  height = "50vmin"
+)
+
+plot.3 <- plot.3 %>% plotly::layout(
+  title = list(
+    text = "Métricas da Produção (CiteScore)",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "CiteScore",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    # discrete ticks
+    tickformat = ".0d",
+    type = "log"
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = FALSE
+) %>% plotly::config(displayModeBar = FALSE)
+
+
+journals.SJR <- unique(table.5)
+# rename columns
+colnames(journals.SJR) <- c("metricas_artigos.journal", "metricas_artigos.SJR")
 top <- min((as.numeric(journals.SJR$SJR)), 10)
 data.journals <-
   data.frame(
-    name = journals.SJR$doi_all.journal[order(as.numeric(journals.SJR$doi_all.SJR), decreasing = TRUE)][1:top],
-    value = as.numeric(sort(as.numeric(journals.SJR$doi_all.SJR), decreasing = TRUE
+    name = journals.SJR$metricas_artigos.journal[order(as.numeric(journals.SJR$metricas_artigos.SJR), decreasing = TRUE)][1:top],
+    value = as.numeric(sort(as.numeric(journals.SJR$metricas_artigos.SJR), decreasing = TRUE
              )[1:top])
     )
-
 # break vector names in 2 lines
 text.2.break <- data.journals$name
 source("Scripts/line-2-break.R", local = knitr::knit_global())
 data.journals$name <- broken_text
 
-# Define the number of colors you want
-nb.cols <- length(rownames(table.2))
-mycolors <- colorRampPalette(RColorBrewer::brewer.pal(9, "Set3"))(nb.cols)
-
-options(digits = 10)
-barplot(
-  height = rev(data.journals$value),
-  names = rev(data.journals$name),
-  xlab = "SJR",
-  col = rep(mycolors[1], length(1:top)),
-  horiz = T,
-  las = 1,
-  cex.names = 0.7
-)
-title(
-  main = paste0("Top-", top, " periódicos (SJR)"),
-  outer = TRUE,
-  cex.main = 1.7
-)
-options(digits = 2)
-
-# plot 7 (barplot of QUALIS e SJR)
+# plot 4 (top-10 journals)
 
 # plot area setup
-layout.m <- matrix(c(1, 2, 3),
-                   ncol = 3,
-                   byrow = TRUE)
+layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = top, name = "Set3")
 
-barplot(
-  -rev(qualis.base),
-  horiz = TRUE,
-  xlab = "%",
-  ylab = "Estratos",
-  xlim = c(-max(qualis.base, qualis.PPG), max(qualis.base, qualis.PPG)),
-  ylim = c(0, length(unique(qualis.base)) + 3),
-  col = mycolors[1],
-  sub = "Base",
-  cex.names = 0.7,
-  xaxt = 'n',
-  ann = FALSE
-)
-barplot(
-  rev(qualis.PPG),
-  horiz = TRUE,
-  xlab = "%",
-  ylab = "Estratos",
-  xlim = c(-max(qualis.base, qualis.PPG), max(qualis.base, qualis.PPG)),
-  ylim = c(0, length(unique(qualis.base)) + 3),
-  col = mycolors[2],
-  sub = "Programa",
-  cex.names = 0.7,
-  xaxt = 'n',
-  ann = FALSE,
-  add = TRUE
-)
-axis(1, at = round(c(
-  -max(qualis.base, qualis.PPG), 0, max(qualis.base, qualis.PPG)
-)), labels = round(c(
-  max(qualis.base, qualis.PPG), 0, max(qualis.base, qualis.PPG)
-)))
-title(main = "Distribuição Bases vs. Programa (Qualis, SJR, CiteScore)",
-      outer = TRUE,
-      cex.main = 1.7)
-legend(
-  "topleft",
-  legend = c("Base", "Programa"),
-  fill = mycolors[1:2],
-  text.col = "white",
-  box.lwd = 0,
-  bty = "n",
-  horiz = TRUE,
-  cex = 1
+# Reshape data for Plotly
+data_long <- reshape2::melt(data.journals, value.name = "SJR")
+data_long <- data_long[, -2]
+colnames(data_long) <- c("Periódico", "SJR")
+# set factor level for sorting
+data_long$Periódico <- factor(data_long$Periódico, levels = data.journals$name)
+
+plot.4 <- plotly::plot_ly(
+  data = data_long,
+  x = ~SJR,
+  y = ~Periódico,
+  color = colors[1],
+  type = 'bar',
+  colors = colors[1],
+  height = "50vmin"
 )
 
-# hist SJR base e PPG
-SJR.base <- scimago$SJR[!is.na(scimago$SJR)]
-SJR.PPG <- doi_all$SJR[!is.na(doi_all$SJR)]
+plot.4 <- plot.4 %>% plotly::layout(
+  title = list(
+    text = paste0("Top-", top, " Periódicos (SJR)"),
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = seq(0, top, 1)
+  ),
+  yaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    # reverse axis
+    autorange = 'reversed'
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = FALSE
+) %>% plotly::config(displayModeBar = FALSE)
 
-vioplot::vioplot(
-  as.numeric(SJR.base),
-  col = mycolors[1],
-  xlab = NA,
-  side = "left",
-  ylim = c(min(
-    as.numeric(SJR.base), as.numeric(SJR.PPG)
-  ), max(
-    as.numeric(SJR.base), as.numeric(SJR.PPG)
-  )),
-  ylab = "SJR",
-  xaxt = 'n',
-  ann = FALSE
-)
-vioplot::vioplot(
-  as.numeric(SJR.PPG),
-  col = mycolors[2],
-  xlab = NA,
-  side = "right",
-  ylim = c(min(
-    as.numeric(SJR.base), as.numeric(SJR.PPG)
-  ), max(
-    as.numeric(SJR.base), as.numeric(SJR.PPG)
-  )),
-  ylab = "SJR",
-  xaxt = 'n',
-  ann = FALSE,
-  add = TRUE
-)
 
-# hist CiteScore base e PPG
-CITESCORE.base <- citescore$CiteScore[!is.na(citescore$CiteScore)]
-CITESCORE.PPG <- doi_all$CiteScore[!is.na(doi_all$CiteScore)]
-
-vioplot::vioplot(
-  as.numeric(CITESCORE.base),
-  col = mycolors[1],
-  xlab = NA,
-  side = "left",
-  ylim = c(min(
-    as.numeric(CITESCORE.base), as.numeric(CITESCORE.PPG)
-  ), max(
-    as.numeric(CITESCORE.base), as.numeric(CITESCORE.PPG)
-  )),
-  ylab = "SJR",
-  xaxt = 'n',
-  ann = FALSE
-)
-vioplot::vioplot(
-  as.numeric(CITESCORE.PPG),
-  col = mycolors[2],
-  xlab = NA,
-  side = "right",
-  ylim = c(min(
-    as.numeric(CITESCORE.base), as.numeric(CITESCORE.PPG)
-  ), max(
-    as.numeric(CITESCORE.base), as.numeric(CITESCORE.PPG)
-  )),
-  ylab = "SJR",
-  xaxt = 'n',
-  ann = FALSE,
-  add = TRUE
-)
-
-# plot 8 (summary table in plot)
+# plot 5 (summary table in plot)
 
 # calculate summary statistics for producao
 summ.table.producao <-
   cbind(
-    sum(table.1),
+    sum(table.1, na.rm = FALSE),
     formatC(
       min(table.1, na.rm = TRUE),
       format = "d",
@@ -1106,44 +1748,47 @@ summ.table.producao <-
       big.mark = "."
     ),
     formatC(
-      min(doi_all$SJR, na.rm = TRUE),
+      min(as.numeric(metricas_artigos$SJR), na.rm = TRUE),
       format = "f",
       digits = 3,
       big.mark = "."
     ),
     formatC(
-      median(doi_all$SJR, na.rm = TRUE),
+      median(as.numeric(metricas_artigos$SJR), na.rm = TRUE),
       format = "f",
       digits = 3,
       big.mark = "."
     ),
     formatC(
-      max(doi_all$SJR, na.rm = TRUE),
+      max(as.numeric(metricas_artigos$SJR), na.rm = TRUE),
       format = "f",
       digits = 3,
       big.mark = "."
     ),
+    # sum Estrato different than A or B
     paste0(
       formatC(
-        100 - round((sum(table.2[1:8,]) / sum(table.2) * 100), 0),
+        100 - sum(table.2[na.omit(match(c("A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "B5"), rownames(table.2))), ], na.rm = FALSE) / sum(table.2, na.rm = FALSE) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
       ),
       "%"
     ),
+    # sum Estrato B
     paste0(
       formatC(
-        sum(table.2[5:8,]) / sum(table.2) * 100,
+        sum(table.2[na.omit(match(c("B1", "B2", "B3", "B4", "B5"), rownames(table.2))), ], na.rm = FALSE) / sum(table.2, na.rm = FALSE) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
       ),
       "%"
     ),
+    # sum Estrato A
     paste0(
       formatC(
-        sum(table.2[1:4,]) / sum(table.2) * 100,
+        sum(table.2[na.omit(match(c("A1", "A2", "A3", "A4"), rownames(table.2))), ], na.rm = FALSE) / sum(table.2, na.rm = FALSE) * 100,
         format = "d",
         digits = 0,
         big.mark = "."
@@ -1161,9 +1806,9 @@ names(summ.table.producao) <-
     "Menor",
     "Mediana SJR",
     "Maior",
-    "Outros",
-    "B1-B4",
-    "A1-A4"
+    "Aguardando estrato",
+    "Estrato B",
+    "Estrato A"
   )
 
 # plot area setup
@@ -1176,142 +1821,399 @@ summ.data <- summ.table.producao
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-producao-carousel, eval = any(has.producao.ppg, has.producao.sucupira)}
+```{r sintese-artigos-carousel-1, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira), out.width = "100%"}
 cat('<br>')
 cat('<br>')
 
-# carousel
-bsplus::bs_carousel(id = "producao-carousel",
-            use_indicators = FALSE,
-            use_controls = TRUE) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-1.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-2.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-3.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-4.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-5.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-6.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-producao-7.png"))
+cat('<div align="center">')
+plot.1
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
-cat('\n\n')
-cat(
-  "**Fontes**: [**WebQualis**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf), [**SJR**](https://www.scimagojr.com), [**Scopus**](https://www.scopus.com/home.uri), **PPG**"
-)
+cat('<div align="center">')
+plot.2
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.3
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.4
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
-```{r sintese-visibilidade, include = FALSE, eval = any(has.producao.ppg, has.producao.sucupira)}
+```{r sintese-artigos-carousel-2, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira), out.width = "70%"}
+cat('<br>')
+cat('<br>')
+
+# show sintese-artigos-1
+knitr::include_graphics("index_files/figure-html/sintese-artigos-1.png")
+cat('\n\n')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+```
+
+```{r sintese-visibilidade, include = FALSE, eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira)}
+# select products
+metricas_artigos <- metricas_all[metricas_all$`Subtipo de Produção` == "ARTIGO EM PERIÓDICO", ]
+
+# keep journal titles
+metricas_artigos <- metricas_artigos[metricas_artigos$`Item de Detalhamento` == "ISSN / Título do periódico", ]
+
+# remove duplicated ID rows
+metricas_artigos <- metricas_artigos[!duplicated(metricas_artigos$`ID da Produção`), ]
+
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 
-table.1 <- data.frame(doi_all$published_on, doi_all$altmetric_score)
+table.1 <- data.frame(metricas_artigos$"Ano da Produção", metricas_artigos$altmetric_score)
+
+# plot 1 (boxplot of Altmetric por ano)
 
 # plot area setup
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = 9, name = "Set3")
 
-# plot 1 (violin plot of Altmetric por ano)
-vioplot::vioplot(as.numeric(table.1[, 2]) ~ as.numeric(table.1[, 1]),
-                 xlab = NA,
-                 ylab = "Altmetric")
-title(main = "Atenção e visibilidade (Altmetric)",
-      outer = TRUE,
-      cex.main = 1.7)
-# add Altmetric logo and summary
-par(new = TRUE)
-my_image <-
-  png::readPNG("Metrics/Altmetric/cropped-altmetric-symbol.png")
-img <- as.raster(my_image)
-lm <- par("usr")
-r <- (lm[2] - lm[1]) / (lm[4] - lm[3])
-h <- (lm[4] - lm[3]) / 5
-w <- ((lm[2] - lm[1]) / 5)
-x1 <- lm[1]
-x2 <- lm[1] + w
-y1 <- lm[4] - h
-y2 <- lm[4]
-rasterImage(
-  img,
-  xleft = x1,
-  xright = x2,
-  ybottom = y1,
-  ytop = y2
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.1, id.vars = "metricas_artigos..Ano.da.Produção.", value.name = "Altmetric")
+data_long <- data.frame(data_long, stringsAsFactors = FALSE)
+data_long <- data_long[, -2]
+colnames(data_long) <- c("Ano", "Altmetric")
+
+plot.1 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Altmetric,
+  color = colors[1],
+  type = 'box',
+  colors = colors[1],
+  height = "50vmin"
 )
-text(
-  x = (x1 + x2) / 2,
-  y = (y1 + y2) / 2,
-  labels = as.character(sum(as.numeric(table.1[, 2]), na.rm = TRUE)),
-  adj = 0.5
+
+plot.1 <- plot.1 %>% plotly::layout(
+  title = list(
+    text = "Atenção e Visibilidade",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "Altmetric Attention Score",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = FALSE
+) %>% plotly::config(displayModeBar = FALSE)
+
+# plot 2 (Altmetric breakdown)
+
+table.2 <- metricas_artigos %>% dplyr::select(
+    "Ano da Produção",
+#    "altmetric_score",
+    "cited_by_fbwalls_count",
+    "cited_by_feeds_count",
+    "cited_by_gplus_count",
+    "cited_by_msm_count",
+    "cited_by_rdts_count",
+    "cited_by_qna_count", # NEW
+    "cited_by_tweeters_count",
+    "cited_by_bluesky_count", #NEW
+    "cited_by_wikipedia_count", # NEW
+    "cited_by_policies_count", # NEW
+    "cited_by_patents_count",
+    "cited_by_videos_count",
+    "cited_by_posts_count",
+    "mendeley"
+  )
+
+colnames(table.2) <- 
+  c(
+    "Ano",
+#    "Altmetric \n score",
+    "Facebook",
+    "Blogs",
+    "Google+",
+    "Notícias",
+    "Reddit",
+    "Stack\nExchange",
+    "X",
+    "BlueSky",
+    "Wikipedia",
+    "Policies",
+    "Patentes",
+    "YouTube\nVimeo",
+    "Posts",
+    "Mendeley"
+  )
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = 9, name = "Set3")
+
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.2, id.vars = "Ano", value.name = "Frequência")
+data_long <- data.frame(data_long, stringsAsFactors = FALSE, check.names = FALSE)
+colnames(data_long) <- c("Ano", "Altmetric", "Frequência")
+
+plot.2 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = ~Altmetric,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
 )
+
+plot.2 <- plot.2 %>% plotly::layout(
+  title = list(
+    text = "Altmetric Attention Score (breakdown)",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = FALSE)
+
+# plot 3 (IS_OA in plot)
 
 # generate cross tables of IS_OA artigos per year
-table.2 <-
-  t(table(doi_all$published_on,
-          as.logical(doi_all$is_oa)))
-table.2 <- table.2[order(rownames(table.2)), ]
-rownames(table.2) <- c("Open access", "Paywall")
+table.3 <-
+  t(table(metricas_artigos$"Ano da Produção",
+          as.logical(metricas_artigos$is_oa)))
+table.3 <- table.3[order(rownames(table.3)), ]
+rownames(table.3) <- c("Open access", "Paywall")
 # swap lines
-table.2 <- table.2[seq_len(nrow(table.2)) + c(1, -1),]
+table.3 <- table.3[seq_len(nrow(table.3)) + c(1, -1),]
 
 # Define the number of colors you want
-nb.cols <- length(rownames(table.2))
+nb.cols <- length(rownames(table.3))
 mycolors <-
   colorRampPalette(RColorBrewer::brewer.pal(9, "Set3"))(nb.cols)
 
-# plot 2 (IS_OA in plot)
+# plot area setup
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = dim(table.3)[1], name = "Set3")
 
-barplot(
-  scale(
-    as.matrix(table.2),
-    center = FALSE,
-    scale = colSums(as.matrix(table.2))
-  ) * 100,
-  ylab = "%",
-  col = mycolors,
-  ylim = c(0, 100)
-)
-title(main = "Produção em periódicos de acesso aberto",
-      outer = TRUE,
-      cex.main = 1.7)
-legend(
-  "topleft",
-  legend = rownames(table.2),
-  fill = rev(mycolors),
-  text.col = "white",
-  box.lwd = 0,
-  bty = "n",
-  horiz = FALSE,
-  cex = 1,
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.3, id.vars = "Linhas de Pesquisa", variable.name = "Acesso", value.name = "Frequência")
+data_long <- data.frame(data_long, stringsAsFactors = FALSE)
+colnames(data_long) <- c("Acesso", "Ano", "Frequência")
+
+# convert absolute to relative frequency
+data_long <- data_long %>%
+  dplyr::group_by(Ano) %>%
+  dplyr::mutate(Frequência = Frequência / sum(Frequência / 100, na.rm = TRUE))
+
+plot.3 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = ~Acesso,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
 )
 
-if (sjmisc::is_empty(doi_all$citations)) {
-  table.3 <- as.matrix(rep(0, length(max(anos) - min(anos) + 1)))
+plot.3 <- plot.3 %>% plotly::layout(
+  title = list(
+    text = "Acesso",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "%",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = FALSE)
+
+
+# plot 4 (CITATIONS in plot)
+
+if (sjmisc::is_empty(metricas_artigos$citations)) {
+  table.4 <- as.matrix(rep(0, length(max(anos) - min(anos) + 1)))
 } else {
   # generate cross tables of citations per year
-  table.3 <-
-    t(table(doi_all$published_on,
-            doi_all$citations))
-  table.3 <- table.3[order(rownames(table.3)),]
-  table.3 <- colSums(table.3)
+  table.4 <-
+    t(table(metricas_artigos$"Ano da Produção",
+            metricas_artigos$citations))
+  table.4 <- table.4[order(rownames(table.4)),]
+  table.4 <- colSums(table.4)
 }
 
-# Define the number of colors you want
-nb.cols <- length(table.3)
-mycolors <-
-  colorRampPalette(RColorBrewer::brewer.pal(9, "Set3"))(nb.cols)
-
-# plot 3 (CITATIONS in plot)
+# plot area setup
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+nb.cols <- length(table.4)
+mycolors <- colorRampPalette(RColorBrewer::brewer.pal(9, "Set3"))(nb.cols)
 
-barplot(table.3,
-        ylab = "N",
-        col = rep(mycolors[1], length(table.3)))
-title(main = "Total de citações",
-      outer = TRUE,
-      cex.main = 1.7)
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.4, value.name = "Citações")
+data_long$Ano <- as.numeric(names(table.4))
+data_long <- data.frame(data_long, stringsAsFactors = FALSE)
 
-# plot 4 (summary table in plot)
+colnames(data_long) <- c("Citações", "Ano")
+
+plot.4 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Citações,
+  color = colors[1],
+  type = 'bar',
+  colors = colors[1],
+  height = "50vmin"
+)
+
+plot.4 <- plot.4 %>% plotly::layout(
+  title = list(
+    text = "Citações",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = FALSE
+) %>% plotly::config(displayModeBar = FALSE)
+
+
+# plot 5 (summary table for Altmetric breakdown)
+
+# convert to numeric and get total of each column
+table.2.sum <- data.frame(lapply(table.2, type.convert, as.is = TRUE))
+table.2.sum <- colSums(table.2.sum, na.rm = TRUE)
+# drop Ano
+table.2.sum <- table.2.sum[-1]
+# add Altmetric total as first value
+table.2.sum <- c(sum(metricas_artigos$altmetric_score, na.rm = TRUE), table.2.sum)
+
+# rename columns
+names(table.2.sum) <-
+  c(
+    "Altmetric \n score",
+    "Facebook",
+    "Blogs",
+    "Google+",
+    "Notícias",
+    "Reddit",
+    "Stack \n Exchange",
+    "X",
+    "BlueSky",
+    "Wikipedia",
+    "Policies",
+    "Patentes",
+    "YouTube \n Vimeo",
+    "Posts",
+    "Mendeley"
+  )
+
+# plot area setup
+layout.m <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
+                   ncol = 5,
+                   byrow = TRUE)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+summ.data <- table.2.sum
+source("Scripts/plot-summaries.R", local = knitr::knit_global())
+
+
+# plot 6 (summary table in plot)
 
 # calculate summary statistics for visibilidade
 summ.table.visibilidade <-
@@ -1335,7 +2237,7 @@ summ.table.visibilidade <-
       digits = 0,
       big.mark = "."
     ),
-    sum(as.numeric(table.3), na.rm = TRUE),
+    sum(as.numeric(table.4), na.rm = TRUE),
     formatC(
       min(table.3, na.rm = TRUE),
       format = "d",
@@ -1343,13 +2245,13 @@ summ.table.visibilidade <-
       big.mark = "."
     ),
     formatC(
-      median(table.3, na.rm = TRUE),
+      median(table.4, na.rm = TRUE),
       format = "d",
       digits = 0,
       big.mark = "."
     ),
     formatC(
-      max(table.3, na.rm = TRUE),
+      max(table.4, na.rm = TRUE),
       format = "d",
       digits = 0,
       big.mark = "."
@@ -1373,31 +2275,62 @@ layout.m <- matrix(c(1, 1, 1, 2, 3, 4, 5, 5, 5, 6, 7, 8),
                    ncol = 3,
                    byrow = TRUE)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
-
 summ.data <- summ.table.visibilidade
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-visibilidade-carousel, eval = any(has.producao.ppg, has.producao.sucupira)}
+```{r sintese-visibilidade-carousel-1, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira), out.width = "100%"}
 cat('<br>')
 cat('<br>')
 
-# carousel
-bsplus::bs_carousel(id = "visibilidade-carousel",
-            use_indicators = FALSE,
-            use_controls = TRUE) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-1.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-2.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-3.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-visibilidade-4.png"))
+cat('<div align="center">')
+plot.1
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
-cat('\n\n')
-cat(
-  "**Fontes**: [**Altmetric**](https://www.altmetric.com), [**CrossRef**](https://www.crossref.org), **PPG**"
-)
+cat('<div align="center">')
+plot.2
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.3
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.4
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
-```{r sintese-pessoal, include = FALSE, eval = has.discentes}
+```{r sintese-visibilidade-carousel-2, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira), out.width = "70%"}
+cat('<br>')
+cat('<br>')
+
+# show sintese-visibilidade-1
+knitr::include_graphics("index_files/figure-html/sintese-visibilidade-1.png")
+cat('\n\n')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+
+cat('<br>')
+cat('<br>')
+
+# show sintese-visibilidade-1
+knitr::include_graphics("index_files/figure-html/sintese-visibilidade-2.png")
+cat('\n\n')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+```
+
+```{r sintese-pessoal-ies, include = FALSE, eval = has.discentes}
 discentes.raw <-
   readxl::read_excel(
     "PPG/Discentes.xlsx",
@@ -1406,19 +2339,19 @@ discentes.raw <-
   )
 discentes.raw <- discentes.raw[discentes.raw$País == "Brasil",]
 discentes.raw$'Data Matrícula' <-
-  as.Date(discentes.raw$'Data Matrícula', format = "%d/%m/%Y")
+  as.Date(openxlsx::convertToDate(discentes.raw$`Data Matrícula`), format = "%d/%m/%Y")
 discentes.raw$'Data Situação' <-
-  as.Date(discentes.raw$'Data Situação', format = "%d/%m/%Y")
+  as.Date(openxlsx::convertToDate(discentes.raw$`Data Situação`), format = "%d/%m/%Y")
 discentes.raw$'Ano Titulação' <-
   substr(as.Date(discentes.raw$'Data Situação', format = "%d/%m/%Y"), 1, 4)
 # tempo de curso
 discentes.raw$`Tempo de Curso (meses)` <-
-  lubridate::interval(start = ymd(gsub("-", "", discentes.raw$'Data Matrícula')), end = ymd(gsub("-", "", discentes.raw$'Data Situação'))) %/% months(1)
-discentes.raw %>%
-  mutate(`Tempo de Curso (meses)` = as.numeric(`Tempo de Curso (meses)`)) %>%
-  mutate(`Ano Titulação` = as.numeric(`Ano Titulação`))
+  lubridate::interval(start = lubridate::ymd(gsub("-", "", discentes.raw$'Data Matrícula')), end = lubridate::ymd(gsub("-", "", discentes.raw$'Data Situação'))) %/% months(1)
+discentes.raw <- discentes.raw %>%
+  dplyr::mutate(`Tempo de Curso (meses)` = as.numeric(`Tempo de Curso (meses)`)) %>%
+  dplyr::mutate(`Ano Titulação` = as.numeric(`Ano Titulação`))
 discentes.raw$Curso[grepl("Mestrado", discentes.raw$Curso)] <- "Mestrado"
-discentes.raw$Curso[grepl("Doutorado", discentes.raw$Curso)] <-"Doutorado"
+discentes.raw$Curso[grepl("Doutorado", discentes.raw$Curso)] <- "Doutorado"
 
 discentes <- discentes.raw[is.na(discentes.raw$'Data Situação'), ]
 discentes <- discentes[discentes$'Situação' != "Cancelado", ]
@@ -1432,42 +2365,8 @@ doutores <- egressos[grepl("doutorado", tolower(egressos$Curso)), ]
 # identifying available courses
 cursos <- levels(as.factor(c(discentes$Curso, egressos$Curso)))
 
-# reading BR geospatial data from IPEA
-datasets <- geobr::list_geobr()$years[3]
-last.update <-
-  as.numeric(strsplit(datasets, ", ")[[1]][length(strsplit(datasets, ", ")[[1]]) - 1])
-states <-
-  geobr::read_state(
-    code_state = "all",
-    year = last.update,
-    simplified = TRUE,
-    showProgress = FALSE
-  )
-
-# plot area setup
-layout.m <- c(1)
-source("Scripts/plot-margins.R", local = knitr::knit_global())
-
 # generate plot of egressos per year
 table.1 <- table(egressos$Curso, egressos$`Ano Titulação`)
-
-# plot 1 (egressos titulados)
-barplot(as.matrix(table.1),
-        ylab = "Egressos",
-        col = RColorBrewer::brewer.pal(n = 9, name = "Set3"))
-title(main = "Formação de pessoal de nível superior",
-      outer = TRUE,
-      cex.main = 1.7)
-legend(
-  "topleft",
-  legend = cursos,
-  fill = RColorBrewer::brewer.pal(n = 9, name = "Set3"),
-  text.col = "white",
-  box.lwd = 0,
-  bty = "n",
-  horiz = FALSE,
-  cex = 1
-)
 
 # generate plot of tempo para titulação per year
 table.2.msc <-
@@ -1477,49 +2376,8 @@ table.2.dsc <-
   data.frame(doutores$`Ano Titulação`,
              as.numeric(doutores$`Tempo de Curso (meses)`))
 
-# plot 2 (violin plot of tempo para titulação por ano)
-vioplot::vioplot(
-  as.numeric(table.2.msc[, 2]) ~ as.numeric(table.2.msc[, 1]),
-  col = RColorBrewer::brewer.pal(n = 9, name = "Set3")[2],
-  xlab = NA,
-  side = "left",
-  at = sort(unique(as.numeric(table.2.msc[, 1]))),
-  ylim = c(min(
-    as.numeric(table.2.msc[, 2]), as.numeric(table.2.dsc[, 2])
-  ), max(
-    as.numeric(table.2.msc[, 2]), as.numeric(table.2.dsc[, 2])
-  )),
-  ylab = "Meses"
-)
-vioplot::vioplot(
-  as.numeric(table.2.dsc[, 2]) ~ as.numeric(table.2.dsc[, 1]),
-  col = RColorBrewer::brewer.pal(n = 9, name = "Set3")[1],
-  xlab = NA,
-  side = "right",
-  ylab = "Meses",
-  at = sort(unique(as.numeric(table.2.dsc[, 1]))),
-  ylim = c(min(
-    as.numeric(table.2.msc[, 2]), as.numeric(table.2.dsc[, 2])
-  ), max(
-    as.numeric(table.2.msc[, 2]), as.numeric(table.2.dsc[, 2])
-  )),
-  add = TRUE
-)
-title(main = "Tempo para titulação",
-      outer = TRUE,
-      cex.main = 1.7)
-legend(
-  "topleft",
-  legend = cursos,
-  fill = RColorBrewer::brewer.pal(n = 9, name = "Set3"),
-  text.col = "white",
-  box.lwd = 0,
-  bty = "n",
-  horiz = FALSE,
-  cex = 1
-)
-
-# plot 3 (geospatial plot of candidates)
+# plot 1 (geospatial plot of candidates)
+# reading BR geospatial data from IPEA
 states$discentes <- rep(NA, dim(states)[1])
 UF <- as.data.frame(table(discentes$UF))
 for (i in 1:length(UF$Var1)) {
@@ -1553,7 +2411,7 @@ p1 <- ggplot2::ggplot() +
       face = "bold"
     )
   ) +
-  ggplot2::ggtitle("Distribuição regional de discentes")
+  ggplot2::ggtitle("Distribuição Regional de Discentes")
 
 data <-
   as.data.frame(table(c(discentes$UF[discentes$UF == "RJ"], rep(
@@ -1603,12 +2461,12 @@ g <-
               layout_matrix = rbind(c(1, 2), c(1, 3)),
               widths = c(7 / 10, 3 / 10))
 
-g2 <- cowplot::ggdraw(g) +
+g1 <- cowplot::ggdraw(g) +
   ggplot2::theme(plot.background = ggplot2::element_rect(fill = main.color, color = NA))
 
-plot(g2)
+plot(g1)
 
-# plot 4 (geospatial plot of egressos)
+# plot 2 (geospatial plot of egressos)
 states$egressos <- rep(NA, dim(states)[1])
 UF <- as.data.frame(table(egressos$UF))
 for (i in 1:length(UF$Var1)) {
@@ -1629,8 +2487,8 @@ p1 <- ggplot2::ggplot() +
   ggplot2::theme_minimal() +
   ggplot2::theme(
     legend.position = 'bottom',
-    legend.title = element_text(color = "white"),
-    legend.text = element_text(color = "white")
+    legend.title = ggplot2::element_text(color = "white"),
+    legend.text = ggplot2::element_text(color = "white")
   ) +
   ggplot2::theme(
     plot.margin = ggplot2::unit(c(0, 0, 0, 0), "cm"),
@@ -1645,7 +2503,7 @@ p1 <- ggplot2::ggplot() +
       face = "bold"
     )
   ) +
-  ggplot2::ggtitle("Distribuição regional de egressos")
+  ggplot2::ggtitle("Distribuição Regional de Egressos")
 
 data <-
   as.data.frame(table(c(egressos$UF[egressos$UF == "RJ"], rep(
@@ -1696,49 +2554,477 @@ g <-
               widths = c(7 / 10, 3 / 10))
 
 g2 <- cowplot::ggdraw(g) +
-  ggplot2::theme(plot.background = element_rect(fill = main.color, color = NA))
+  ggplot2::theme(plot.background = ggplot2::element_rect(fill = main.color, color = NA))
 
 plot(g2)
+```
 
-# plot 5 (summary table in plot)
+```{r sintese-pessoal-ies-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.discentes, out.width = "70%"}
+cat('<br>')
+cat('<br>')
+
+# show sintese-pessoal-1
+knitr::include_graphics("index_files/figure-html/sintese-pessoal-ies-1.png")
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+# show sintese-pessoal-2
+knitr::include_graphics("index_files/figure-html/sintese-pessoal-ies-2.png")
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+```{r sintese-pessoal, include = FALSE, eval = has.sucupira.files}
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+
+# periodo
+periodo <- min(as.numeric(anos)):max(as.numeric(anos))
+
+# discentes
+sheet <- "Discentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+names(sucupira.list) <- as.character(anos)
+
+# get number of discentes by year from sucupira.list
+discentes <- data.frame(
+  Ano = anos,
+  Mestrado = rep(0, length(anos)),
+  Doutorado = rep(0, length(anos)),
+  stringsAsFactors = FALSE
+)
+for (i in 1:length(anos)){
+  sucupira.list[[i]]$`Nível Discente`[grepl("Mestrado", sucupira.list[[i]]$`Nível Discente`)] <- "Mestrado"
+  sucupira.list[[i]]$`Nível Discente`[grepl("Doutorado", sucupira.list[[i]]$`Nível Discente`)] <- "Doutorado"
+
+  discentes$Mestrado[i] <- sum(sucupira.list[[i]]$`Nível Discente` == "Mestrado")
+  discentes$Doutorado[i] <- sum(sucupira.list[[i]]$`Nível Discente` == "Doutorado")
+}
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+# Reshape data for Plotly
+data_long <- reshape2::melt(discentes, id.vars = "Ano", variable.name = "Nível", value.name = "Frequência")
+
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(unique(data_long$Nível)), name = "Set3")
+
+data_long <- data.frame(data_long, stringsAsFactors = FALSE)
+colnames(data_long) <- c("Ano", "Nível", "Frequência")
+
+plot.1 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = ~Nível,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.1 <- plot.1 %>% plotly::layout(
+  title = list(
+    text = "Discentes",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = FALSE)
+
+
+# get number of discentes by year from sucupira.list
+situacao <- data.frame(
+  Ano = anos,
+  Matriculado = rep(0, length(anos)),
+  Titulado = rep(0, length(anos)),
+  Desligado = rep(0, length(anos)),
+  Abandonou = rep(0, length(anos)),
+  'Mudança com defesa' = rep(0, length(anos)),
+  'Mudança sem defesa' = rep(0, length(anos)),
+  check.names = FALSE
+)
+for (i in 1:length(anos)){
+  # drop nível Bacharelado
+  sucupira.list[[i]] <- sucupira.list[[i]][!grepl("Bacharelado", sucupira.list[[i]]$`Nível Discente`),]
+
+  situacao$Matriculado[i] <- sum(sucupira.list[[i]]$Situação == "MATRICULADO")
+  situacao$Titulado[i] <- sum(sucupira.list[[i]]$Situação == "TITULADO")
+  situacao$Desligado[i] <- sum(sucupira.list[[i]]$Situação == "DESLIGADO")
+  situacao$Abandonou[i] <- sum(sucupira.list[[i]]$Situação == "ABANDONOU")
+  situacao$"Mudança com defesa"[i] <- sum(sucupira.list[[i]]$Situação == "MUDANCA DE NÍVEL COM DEFESA")
+  situacao$"Mudança sem defesa"[i] <- sum(sucupira.list[[i]]$Situação == "MUDANCA DE NÍVEL SEM DEFESA")
+}
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+# Reshape data for Plotly
+data_long <- reshape2::melt(situacao, id.vars = "Ano", variable.name = "Situação", value.name = "Frequência")
+
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = length(unique(data_long$Situação)), name = "Set3")
+
+data_long <- data.frame(data_long, stringsAsFactors = FALSE)
+colnames(data_long) <- c("Ano", "Situação", "Frequência")
+
+plot.2 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = ~Situação,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.2 <- plot.2 %>% plotly::layout(
+  title = list(
+    text = "Discentes",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = FALSE)
+
+# Discentes - Orientadores
+sheet <- "Discentes - Orientadores"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+names(sucupira.list) <- as.character(anos)
+
+# get egressos for the current period
+egressos <- sucupira.list[as.character(periodo)] %>%
+  plyr::compact()
+egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
+names(egressos) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# dplyr::select former students
+egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
+
+# dplyr::select main supervisors (NO SUPERVISORS FOR UNDERGRAD STUDENTS)
+egressos <- egressos[egressos$`Orientador Principal?` == "Sim", ]
+
+# tempo de curso
+egressos$`Tempo de Curso (meses)` <-
+  lubridate::interval(start = lubridate::dmy(gsub("-", "", egressos$`Data Matrícula`)), end = lubridate::dmy(gsub("-", "", egressos$`Data Situação`))) %/% months(1)
+egressos %>%
+  dplyr::mutate(`Tempo de Curso (meses)` = as.numeric(`Tempo de Curso (meses)`))
+egressos$`Nível Discente`[grepl("Mestrado", egressos$`Nível Discente`)] <- "Mestrado"
+egressos$`Nível Discente`[grepl("Doutorado", egressos$`Nível Discente`)] <-"Doutorado"
+
+# get data de nascimento para calcular idade
+egressos$`Idade (anos)` <- 
+    lubridate::interval(start = lubridate::dmy(gsub("-", "", egressos$`Data de Nascimento`)), end = lubridate::dmy(gsub("-", "", egressos$`Data Situação`))) %/% lubridate::years(1)
+
+# get years
+egressos$'Ano' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
+
+# drop columns
+egressos <- egressos %>% dplyr::select("Nível Discente", "Ano", "Nome do Orientador", "Nome Discente", "Tempo de Curso (meses)", "Idade (anos)", "Gênero")
+
+# remove duplicates
+egressos <- unique(egressos)
+colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
+
+# generate table of egressos per year
+table.1 <- table(egressos$`Nível Discente`, egressos$`Ano`)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = dim(table.1)[1], name = "Set3")
+
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.1, id.vars = "Nível Discente", variable.name = "Ano", value.name = "Frequência")
+data_long <- data.frame(data_long, stringsAsFactors = FALSE)
+colnames(data_long) <- c("Nível", "Ano", "Frequência")
+
+plot.3 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = ~Nível,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.3 <- plot.3 %>% plotly::layout(
+  title = list(
+    text = "Egressos",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = FALSE)
+
+
+# plot 4 (boxplot of Tempo de Curso por ano)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = dim(table.1)[1], name = "Set3")
+
+# generate table of tempo de curso per year
+table.2 <- egressos %>%
+  dplyr::group_by(`Nível Discente`, `Ano`)
+
+# Reshape data for Plotly
+data_long <- dplyr::select(table.2, `Nível Discente`, `Ano`, `Tempo de Curso (meses)`)
+
+plot.4 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~`Tempo de Curso (meses)`,
+  color = ~`Nível Discente`,
+  type = 'box',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.4 <- plot.4 %>% plotly::layout(
+  title = list(
+    text = "Tempo de Curso",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "Meses",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE
+) %>% plotly::config(displayModeBar = FALSE)
+
+
+# plot 5 (boxplot of Idade por ano)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = dim(table.1)[1], name = "Set3")
+
+# generate table of tempo de curso per year
+table.3 <- egressos %>%
+  dplyr::group_by(`Nível Discente`, `Ano`)
+
+# Reshape data for Plotly
+data_long <- dplyr::select(table.3, `Nível Discente`, `Ano`, `Idade (anos)`)
+
+plot.5 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~`Idade (anos)`,
+  color = ~`Nível Discente`,
+  type = 'box',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.5 <- plot.5 %>% plotly::layout(
+  title = list(
+    text = "Idade na titulação",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "Anos",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE
+) %>% plotly::config(displayModeBar = FALSE)
+
+
+# plot 6 (summary table in plot)
 
 # calculate summary statistics for pessoal
 summ.table.pessoal <-
   cbind(
-    sum(table.1),
+    dim(egressos)[1],
     formatC(
-      sum(table.1[2,], na.rm = TRUE),
+      sum(egressos$`Nível Discente` == "Mestrado", na.rm = TRUE),
       format = "d",
       digits = 0,
       big.mark = "."
     ),
     formatC(
-      sum(table.1[1,], na.rm = TRUE),
+      sum(egressos$`Nível Discente` == "Doutorado", na.rm = TRUE),
       format = "d",
       digits = 0,
       big.mark = "."
     ),
     formatC(
-      median(
-        table.2.msc$as.numeric.mestres..Tempo.de.Curso..meses...,
-        na.rm = TRUE
-      ),
+      if(sum(egressos$`Nível Discente` == "Mestrado", na.rm = TRUE) > 0) {
+        median(
+          egressos$`Tempo de Curso (meses)`[egressos$`Nível Discente` == "Mestrado"],
+          na.rm = TRUE
+        )
+      } else {
+        "-"
+      },
       format = "d",
       digits = 0,
       big.mark = "."
     ),
     formatC(
-      median(
-        table.2.dsc$as.numeric.doutores..Tempo.de.Curso..meses...,
-        na.rm = TRUE
-      ),
+      if(sum(egressos$`Nível Discente` == "Doutorado", na.rm = TRUE) > 0) {
+        median(
+          egressos$`Tempo de Curso (meses)`[egressos$`Nível Discente` == "Doutorado"],
+          na.rm = TRUE
+        )
+      } else {
+        "-"
+      },
       format = "d",
       digits = 0,
       big.mark = "."
     ),
-    dim(discentes)[1],
-    sum(discentes$Curso == "Mestrado"),
-    sum(discentes$Curso == "Doutorado")
+    sum(discentes$Mestrado[discentes$Ano == max(discentes$Ano)] + discentes$Doutorado[discentes$Ano == max(discentes$Ano)]),
+    sum(discentes$Mestrado[discentes$Ano == max(discentes$Ano)]),
+    sum(discentes$Doutorado[discentes$Ano == max(discentes$Ano)])
   )
 
 names(summ.table.pessoal) <-
@@ -1746,8 +3032,8 @@ names(summ.table.pessoal) <-
     "Egressos",
     "Mestres",
     "Doutores",
-    "Meses",
-    "Meses",
+    "Titulação (Meses)",
+    "Titulação (Meses)",
     "Candidatos",
     "Mestrandos",
     "Doutorandos"
@@ -1763,119 +3049,555 @@ summ.data <- summ.table.pessoal
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-pessoal-carousel, eval = has.discentes}
+```{r sintese-pessoal-carousel-1, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files, out.width = "100%"}
 cat('<br>')
 cat('<br>')
 
-# carousel
-bsplus::bs_carousel(id = "pessoal-carousel",
-            use_indicators = FALSE,
-            use_controls = TRUE) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-1.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-2.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-3.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-4.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-pessoal-5.png"))
+cat('<div align="center">')
+plot.1
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
-cat('\n\n')
-cat(
-  "**Fontes**: [**Plataforma Sucupira**](https://sucupira.capes.gov.br/sucupira/), **PPG**"
-)
+cat('<div align="center">')
+plot.2
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.3
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.4
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.5
+cat('</div>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
-```{r sintese-posdoc, include = FALSE, eval = has.posdocs}
+```{r sintese-pessoal-carousel-2, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files, out.width = "70%"}
+cat('<br>')
+cat('<br>')
+
+# show sintese-pessoal-1
+knitr::include_graphics("index_files/figure-html/sintese-pessoal-1.png")
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+```{r sintese-diversidade, include = FALSE, eval = has.sucupira.files}
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+
+# periodo
+periodo <- min(as.numeric(anos)):max(as.numeric(anos))
+
+# discentes
+sheet <- "Discentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+names(sucupira.list) <- as.character(anos)
+
+# get egressos for the current period
+egressos <- sucupira.list[as.character(periodo)] %>%
+  plyr::compact()
+egressos <- data.frame(do.call(dplyr::bind_rows, egressos))
+names(egressos) <-
+  names(sucupira.list[[as.character(max(as.numeric(names(sucupira.list))))]])
+
+# dplyr::select former students
+egressos <- egressos[egressos$`Situação Discente` == "TITULADO", ]
+
+# tempo de curso
+egressos$`Tempo de Curso (meses)` <-
+  lubridate::interval(start = lubridate::dmy(gsub("-", "", egressos$`Data Matrícula`)), end = lubridate::dmy(gsub("-", "", egressos$`Data Situação`))) %/% months(1)
+egressos %>%
+  dplyr::mutate(`Tempo de Curso (meses)` = as.numeric(`Tempo de Curso (meses)`))
+egressos$`Nível Discente`[grepl("Mestrado", egressos$`Nível Discente`)] <- "Mestrado"
+egressos$`Nível Discente`[grepl("Doutorado", egressos$`Nível Discente`)] <-"Doutorado"
+
+# get data de nascimento para calcular idade
+egressos$`Idade (anos)` <- 
+    lubridate::interval(start = lubridate::dmy(gsub("-", "", egressos$`Data de Nascimento`)), end = lubridate::dmy(gsub("-", "", egressos$`Data Situação`))) %/% lubridate::years(1)
+
+# get years
+egressos$'Ano' <- substr(as.Date(egressos$`Data Situação`, format = "%d/%m/%Y"), 1, 4)
+
+# drop columns
+egressos <- egressos %>% dplyr::select("Nível Discente", "Ano", "Idade (anos)", "Gênero", "Raça/Cor", "Portador de Deficiência")
+
+# remove duplicates
+egressos <- unique(egressos)
+colnames(egressos)[which(names(egressos) == "Nome Discente")] <- "Nome"
+
+# group non available data ("Não declarado", "Não dispõe da informação", "Não declarada") into "Não disponível"
+egressos <- egressos %>%
+  dplyr::mutate(
+    `Raça/Cor` = ifelse(`Raça/Cor` %in% c("Não declarado", "Não dispõe da informação", "Não declarada"), "Não disponível", `Raça/Cor`)
+  )
+
+# sort levels of Raça/Cor
+egressos$`Raça/Cor` <- factor(
+  egressos$`Raça/Cor`,
+  levels = c("Amarela", "Branca", "Indígena", "Parda", "Preta", "Não disponível")
+)
+
+# generate table of egressos per year
+table.1 <- table(egressos$`Nível Discente`, egressos$`Ano`)
+
+# plot 1 (Lineplot of Proporção de Mulheres/Homens entre os titulados por ano)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = dim(table.1)[1], name = "Set3")
+
+# generate table of tempo de curso per year
+table.2 <- egressos %>%
+  dplyr::group_by(`Nível Discente`, `Ano`)
+
+# Reshape data for Plotly
+data_long <- dplyr::select(table.2, `Nível Discente`, `Ano`, `Gênero`)
+
+# calculate proporção de mulheres/homens por ano
+data_long <- data_long %>%
+  dplyr::group_by(Ano, `Nível Discente`) %>%
+  dplyr::summarise(
+    `Proporção Mulheres/Homens` = sum(`Gênero` == "Feminino", na.rm = TRUE) / sum(`Gênero` %in% c("Feminino", "Masculino"), na.rm = TRUE) * 100
+  ) %>%
+  dplyr::ungroup()
+
+plot.1 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~`Proporção Mulheres/Homens`,
+  color = ~`Nível Discente`,
+  type = 'scatter',
+  mode = 'lines+markers',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.1 <- plot.1 %>% plotly::layout(
+  title = list(
+    text = "Proporção Mulheres/Homens entre os titulados",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "Percentual",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE
+) %>% plotly::config(displayModeBar = TRUE)
+
+# plot 2 (Lineplot of Proporção de Raça/Cor entre os titulados por ano)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = dim(table.1)[1], name = "Set3")
+
+# generate table of raça/cor per year
+table.3 <- egressos %>%
+  dplyr::group_by(`Raça/Cor`, `Ano`)
+
+# Reshape data for Plotly
+data_long <- dplyr::select(table.3, `Raça/Cor`, `Ano`)
+
+table.4 <- table(data_long$`Raça/Cor`, data_long$Ano)
+
+# normalize table 4 by sum year
+table.4 <- prop.table(table.4, margin = 2) * 100
+
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.4, varnames = c("Raça/Cor", "Ano"), value.name = "Frequência")
+
+plot.2 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = ~`Raça/Cor`,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.2 <- plot.2 %>% plotly::layout(
+  title = list(
+    text = "Raça/Cor entre os titulados",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = TRUE)
+
+# plot 3 (Lineplot of Proporção de Portadores de Deficiência entre os titulados por ano)
+
+# plot area setup
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = dim(table.1)[1], name = "Set3")
+
+# generate table of raça/cor per year
+table.5 <- egressos %>%
+  dplyr::group_by(`Portador de Deficiência`, `Ano`)
+
+# Reshape data for Plotly
+data_long <- dplyr::select(table.5, `Portador de Deficiência`, `Ano`)
+
+table.6 <- table(data_long$`Portador de Deficiência`, data_long$Ano)
+
+# normalize table 4 by sum year
+table.6 <- prop.table(table.6, margin = 2) * 100
+
+# Reshape data for Plotly
+data_long <- reshape2::melt(table.6, varnames = c("Portador de Deficiência", "Ano"), value.name = "Frequência")
+
+plot.3 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~Frequência,
+  color = ~`Portador de Deficiência`,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
+)
+
+plot.3 <- plot.3 %>% plotly::layout(
+  title = list(
+    text = "Portadores de Deficiência entre os titulados",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white')
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = TRUE)
+
+# plot 4 (summary table in plot)
+
+# calculate summary statistics for pessoal
+summ.table.pessoal <-
+  cbind(
+    sum(egressos$`Gênero` == "Feminino", na.rm = TRUE),
+    sum(egressos$`Gênero` == "Masculino", na.rm = TRUE),
+    sum(egressos$`Gênero` == "Não Informado", na.rm = TRUE),
+    sum(egressos$`Raça/Cor` == "Amarela", na.rm = TRUE),
+    sum(egressos$`Raça/Cor` == "Branca", na.rm = TRUE),
+    sum(egressos$`Raça/Cor` == "Indígena", na.rm = TRUE),
+    sum(egressos$`Raça/Cor` == "Parda", na.rm = TRUE),
+    sum(egressos$`Raça/Cor` == "Preta", na.rm = TRUE),
+    sum(egressos$`Raça/Cor` == "Não disponível", na.rm = TRUE),
+    sum(egressos$`Portador de Deficiência` == "Não", na.rm = TRUE),
+    sum(egressos$`Portador de Deficiência` == "Sim", na.rm = TRUE)
+  )
+
+# rename Sim/Não em Portador de deficiência para "Portador de Deficiência" e "Não Portador de Deficiência"
+egressos$`Portador de Deficiência` <-
+  factor(egressos$`Portador de Deficiência`,
+         levels = c("Não", "Sim"),
+         labels = c("Não Portador", "Portador de Deficiência"))
+
+names(summ.table.pessoal) <-
+  c(
+    unique(egressos$Gênero),
+    levels(egressos$`Raça/Cor`),
+    levels(egressos$`Portador de Deficiência`)
+  )
+
+# plot area setup
+layout.m <- matrix(c(1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11, 11, 11),
+                   ncol = 6,
+                   byrow = TRUE)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+
+summ.data <- summ.table.pessoal
+source("Scripts/plot-summaries.R", local = knitr::knit_global())
+```
+
+```{r sintese-diversidade-carousel-1, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files, out.width = "100%"}
+cat('<br>')
+cat('<br>')
+
+cat('<div align="center">')
+plot.1
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.2
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.3
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+```{r sintese-diversidade-carousel-2, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files, out.width = "70%"}
+cat('<br>')
+cat('<br>')
+
+# show sintese-diversidade-1
+knitr::include_graphics("index_files/figure-html/sintese-diversidade-1.png")
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+```{r sintese-posdoc, include = FALSE, eval = all(has.sucupira.files, has.posdoc)}
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+
+# periodo
+periodo <- min(as.numeric(anos)):max(as.numeric(anos))
+
 # posdocs
 sheet <- "Pós-Doc"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
-posdoc.raw <- sucupira.raw
-posdoc.raw$`Vínculo Início` <-
-  as.Date(posdoc.raw$`Vínculo Início`, format = "%d/%m/%Y")
-posdoc.raw$`Vínculo Fim` <-
-  substr(as.Date(posdoc.raw$`Vínculo Fim`, format = "%d/%m/%Y"), 1, 4)
-posdoc.raw$'Ano Matrícula' <-
-  substr(as.Date(posdoc.raw$`Vínculo Início`, format = "%d/%m/%Y"), 1, 4)
+# get table of posdocs per ano in list
+posdoc.raw <- sucupira.raw %>%
+  plyr::compact()
 
-posdocs <- posdoc.raw[!is.na(posdoc.raw$`Vínculo Fim`), ]
-posdocs <- posdocs[!is.na(posdocs$`Pós-Doc Nome`), ]
-posdocs <- posdocs[!duplicated(posdocs), ]
+posdoc.list <- sucupira.list
+names(posdoc.list) <- as.character(anos)
+
+# frequency table of posdocs per year (list element)
+posdoc <- data.frame(
+  Ano = rep(NA, length(posdoc.list)),
+  Frequência = rep(NA, length(posdoc.list))
+)
+posdoc$Ano <- anos
+posdoc$Frequência <- lapply(posdoc.list, function(x) {
+  dim(x)[1]
+})
+# repeate Ano based on each Frequência
+posdocs.long <- c()
+for (i in 1:nrow(posdoc)){
+  if(posdoc$Frequência[i] == 0){
+    posdocs.long <- rbind(
+      posdocs.long,
+      data.frame(
+        Ano = rep(posdoc$Ano[i], 1),
+        Nacionalidade = NA
+      )
+    )
+  }
+  posdocs.long <- rbind(
+    posdocs.long,
+    data.frame(
+      Ano = rep(posdoc$Ano[i], posdoc$Frequência[i]),
+      Nacionalidade = posdoc.list[[as.character(posdoc$Ano[i])]]$Nacionalidade
+    )
+  )
+}
+# drop rows with NA
+posdocs.long <- posdocs.long[!is.na(posdocs.long$Nacionalidade), ]
 
 posdocs.atuais <- posdoc.raw[is.na(posdoc.raw$`Vínculo Fim`), ]
 posdocs.atuais <- posdocs.atuais[!is.na(posdocs.atuais$`Pós-Doc Nome`), ]
 posdocs.atuais <- posdocs.atuais[!duplicated(posdocs.atuais), ]
 
+# generate plot of posdocs per year
+table.1 <- posdocs.long %>%
+  dplyr::group_by(Ano, Nacionalidade) %>%
+  dplyr::summarise(Frequência = n())
+
+# plot 1 (posdocs titulados)
+
 # plot area setup
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
+# Define colors using RColorBrewer
+colors <- RColorBrewer::brewer.pal(n = dim(table.1)[1], name = "Set3")
 
-# generate plot of posdocs per year
-table.1 <- table(posdocs$Nacionalidade, posdocs$'Ano Matrícula')
-table.2 <- table(posdocs.atuais$Nacionalidade, posdocs.atuais$'Ano Matrícula')
+# summary table
+data_long <- table.1
 
-# all posdocs
-posdoc.years <- min(posdocs$'Ano Matrícula', posdocs.atuais$'Ano Matrícula'):max(posdocs$'Ano Matrícula', posdocs.atuais$'Ano Matrícula')
-
-table.3 <- matrix(0, nrow = length(unique(posdoc.raw$Nacionalidade)), ncol = length(posdoc.years))
-rownames(table.3) <- unique(posdoc.raw$Nacionalidade)
-colnames(table.3) <- posdoc.years
-
-table.3a <- table.3
-table.3b <- table.3
-
-if(sum(table.1) != 0) {
-  for (i in 1:dim(table.1)[1]) {
-    for (j in 1:dim(table.1)[2]) {
-      table.3a[match(rownames(table.1)[i], rownames(table.3)),
-               match(colnames(table.1)[j], colnames(table.3))] <-
-        table.1[i, j]
-    }
-  }
-}
-if (sum(table.2) != 0) {
-  for (i in 1:dim(table.2)[1]) {
-    for (j in 1:dim(table.2)[2]) {
-      table.3b[match(rownames(table.2)[i], rownames(table.3)),
-               match(colnames(table.2)[j], colnames(table.3))] <-
-        table.2[i, j]
-    }
-  }
-}
-table.3 <- as.matrix(table.3a) + as.matrix(table.3b)
-
-# plot 1 (posdocs titulados)
-barplot(as.matrix(table.3),
-        ylab = "Pós-docs",
-        col = RColorBrewer::brewer.pal(n = 9, name = "Set3"))
-title(main = "Estágio Pós-Doutoral",
-      outer = TRUE,
-      cex.main = 1.7)
-legend(
-  "topleft",
-  legend = unique(posdoc.raw$Nacionalidade),
-  fill = RColorBrewer::brewer.pal(n = 9, name = "Set3"),
-  text.col = "white",
-  box.lwd = 0,
-  bty = "n",
-  horiz = FALSE,
-  cex = 1
+plot.1 <- plotly::plot_ly(
+  data = data_long,
+  x = ~Ano,
+  y = ~`Frequência`,
+  color = ~`Nacionalidade`,
+  type = 'bar',
+  colors = colors,
+  height = "50vmin"
 )
 
+plot.1 <- plot.1 %>% plotly::layout(
+  title = list(
+    text = "Estágio Pós-Doutoral",
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = unique(data_long$Ano),
+    range = anos
+  ),
+  yaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = seq(0, max(data_long$Frequência), by = 1)
+  ),
+  legend = list(
+    title = 'Legenda',
+    titlefont = list(color = 'white'),
+    font = list(color = 'white'),
+    bgcolor = 'black',
+    bordercolor = 'white',
+    borderwidth = 1,
+    orientation = 'h',
+    xanchor = 'center',
+    x = 0.5
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = TRUE,
+  barmode = 'stack'
+) %>% plotly::config(displayModeBar = FALSE)
+
+
+# calculate summary statistics for posdocs
+# frequency table of unique posdocs per country
+IDs <- unique(posdoc.raw$`Identificador do Pós-Doc`)
+total <- length(IDs)
+
+posdocs.pais.long <- c()
+for (i in 1:total){
+  posdocs.pais.long <- rbind(
+    posdocs.pais.long,
+    data.frame(
+      País = unique(posdoc.raw[posdoc.raw$`Identificador do Pós-Doc` == IDs[i], ]$`País`)
+    )
+  )
+}
+
 # plot 2 (geospatial plot of posdocs)
-paises <- as.data.frame(table(c(posdocs$País, posdocs.atuais$País)))
+paises <- as.data.frame(table(posdocs.pais.long$País))
 source("Scripts/worldmap.R", local = knitr::knit_global())
 
 ggplot2::ggplot() +
-  ggplot2::geom_polygon(data = worldmap,
-                        ggplot2::aes(
-                          x = long,
-                          y = lat,
-                          group = group,
-                          fill = Freq
-                        )) +
+  ggplot2::geom_polygon(data = worldmap, ggplot2::aes(
+    x = long,
+    y = lat,
+    group = group,
+    fill = Freq
+  )) +
   cowplot::theme_map() +
   ggplot2::scale_fill_distiller(
     palette = "Spectral",
-    name = "Pós-Docs, n",
+    name = "Pesquisadores, n",
     limits = c(min(0, paises$Freq), max(paises$Freq)),
     na.value = "grey"
   ) +
@@ -1893,64 +3615,108 @@ ggplot2::ggplot() +
   ) +
   ggplot2::theme(
     plot.margin = ggplot2::unit(c(0, 0, 0, 0), "cm"),
-    panel.background = ggplot2::element_rect(fill = main.color,  color = main.color),
-    plot.background = ggplot2::element_rect(fill = main.color,  color = main.color),
+    panel.background = ggplot2::element_rect(fill = main.color, color = main.color),
+    plot.background = ggplot2::element_rect(fill = main.color, color = main.color),
     panel.grid.major = ggplot2::element_line(color = "transparent"),
     panel.grid.minor = ggplot2::element_line(color = "transparent"),
     axis.text.x = ggplot2::element_blank(),
     axis.text.y = ggplot2::element_blank(),
     plot.title = ggplot2::element_text(
-      size = 18,
+      size = 15,
       color = "white",
       face = "bold",
       hjust = 0.5
     )
   ) +
-  ggplot2::ggtitle("Distribuição global de Pós-Docs")
+  ggplot2::ggtitle("Distribuição Global de Pós-Docs")
 
 # plot 3 (summary table in plot)
 
-# calculate summary statistics for posdocs
+concluidos <- 0
+for (i in IDs){
+  posdoc.data <- posdoc.raw[posdoc.raw$`Identificador do Pós-Doc` == i, ]
+  if(any(!is.na(posdoc.data$`Vínculo Fim`))){
+    concluidos <- concluidos + 1
+  }
+}
+brasileiros.concluidos <- 0
+for(i in IDs){
+  posdoc.data <- posdoc.raw[posdoc.raw$`Identificador do Pós-Doc` == i, ]
+  if(any(!is.na(posdoc.data$`Vínculo Fim`) & posdoc.data$País == "Brasil")){
+    brasileiros.concluidos <- brasileiros.concluidos + 1
+  }
+}
+estrangeiros.concluidos <- 0
+for(i in IDs){
+  posdoc.data <- posdoc.raw[posdoc.raw$`Identificador do Pós-Doc` == i, ]
+  if(any(!is.na(posdoc.data$`Vínculo Fim`) & posdoc.data$País != "Brasil")){
+    estrangeiros.concluidos <- estrangeiros.concluidos + 1
+  }
+}
+
+em.andamento <- sum(is.na(posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$`Vínculo Fim`))
+brasileiros.em.andamento <- sum(
+  is.na(posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$`Vínculo Fim`) &
+  posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$País == "Brasil"
+)
+estrangeiros.em.andamento <- sum(
+  is.na(posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$`Vínculo Fim`) &
+  posdoc.list[[as.character(max(as.numeric(names(posdoc.list))))]]$País != "Brasil"
+)
+
 summ.table.posdoc <-
   c(
-    sum(table.3),
-    sum(table.1),
-    as.numeric(rowSums(table.1)),
-    sum(table.2),
-    as.numeric(rowSums(table.2))
+    total,
+    concluidos,
+    brasileiros.concluidos,
+    estrangeiros.concluidos,
+    em.andamento,
+    brasileiros.em.andamento,
+    estrangeiros.em.andamento
   )
 
 names(summ.table.posdoc) <-
-  c(
-    "Pós-Docs total",
+  c("Pós-Docs total",
     "Concluídos",
-    names(rowSums(table.1)),
+    "Brasileiro",
+    "Estrangeiro",
     "Em andamento",
-    names(rowSums(table.2))
+    "Brasileiro",
+    "Estrangeiro"
   )
 
 # plot area setup
-layout.m <- matrix(c(1,1,1,2,3,4,5,6,7),
-                   ncol = 3,
-                   byrow = TRUE)
+layout.m <- matrix(c(1, 1, 1, 2, 3, 4, 5, 6, 7), ncol = 3, byrow = TRUE)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 
 summ.data <- summ.table.posdoc
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-posdoc-carousel, eval = has.posdocs}
+```{r sintese-posdoc-carousel-1, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = all(has.sucupira.files, has.posdoc), out.width = "100%"}
 cat('<br>')
 cat('<br>')
 
-# carousel
-bsplus::bs_carousel(id = "posdoc-carousel",
-            use_indicators = FALSE,
-            use_controls = TRUE) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-1.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-2.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-posdoc-3.png"))
+cat('<div align="center">')
+plot.1
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
 
+```{r sintese-posdoc-carousel-2, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = all(has.sucupira.files, has.posdoc), out.width = "70%"}
+cat('<br>')
+cat('<br>')
+
+# show sintese-posdoc-1
+knitr::include_graphics("index_files/figure-html/sintese-posdoc-1.png")
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+# show sintese-posdoc-2
+knitr::include_graphics("index_files/figure-html/sintese-posdoc-2.png")
+cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 
@@ -1970,38 +3736,47 @@ n.categ <- nlevels(categ)
 edge.matrix <- matrix(NA, nrow = 0, ncol = 2)
 colnames(edge.matrix) <- c("from", "to")
 
-# loop across all projects to populate the edge matrix
-for (i in 1:n.proj) {
-  # get the members by project id
-  membros.proj <-
-    unique(sucupira.raw$`Nome do Membro do Projeto`[proj.id == levels(proj.id)[i]])
-  # only vote for upper diagonal elements
-  for (n in 1:length(membros.proj)) {
-    for (m in n:length(membros.proj)) {
-      if (n != m) {
-        # find members
-        row.n <- match(membros.proj[n], membros)
-        col.m <- match(membros.proj[m], membros)
-        new.edge <- cbind(membros[row.n], membros[col.m])
-        # add edges
-        edge.matrix <- rbind(edge.matrix, new.edge)
+if(!sjmisc::is_empty(proj.id)){
+  # loop across all projects to populate the edge matrix
+  for (i in 1:n.proj) {
+    # get the members by project id
+    membros.proj <-
+      unique(sucupira.raw$`Nome do Membro do Projeto`[proj.id == levels(proj.id)[i]])
+    # only vote for upper diagonal elements
+    for (n in 1:length(membros.proj)) {
+      for (m in n:length(membros.proj)) {
+        if (n != m) {
+          # find members
+          row.n <- match(membros.proj[n], membros)
+          col.m <- match(membros.proj[m], membros)
+          new.edge <- cbind(membros[row.n], membros[col.m])
+          # add edges
+          edge.matrix <- rbind(edge.matrix, new.edge)
+        }
       }
     }
   }
-}
-
-# build the graph object
-network <- igraph::graph_from_edgelist(edge.matrix, directed = FALSE)
-
-# set member category and color
-colrs <- RColorBrewer::brewer.pal(n = n.categ, name = "Set3")
-for (i in 1:length(igraph::V(network))) {
-  categ.id <-
-    match(igraph::V(network)[[i]]$name, sucupira.raw$`Nome do Membro do Projeto`)
-  igraph::V(network)[[i]]$categ <-
-    sucupira.raw$`Categoria do Membro do Projeto`[categ.id]
-  col.id <- match(igraph::V(network)[[i]]$categ, levels(categ))
-  igraph::V(network)[i]$color <- colrs[col.id]
+  
+  # complete cases only
+  edge.matrix <- edge.matrix[complete.cases(edge.matrix), ]
+  
+  # build the graph object
+  network <- igraph::graph_from_edgelist(edge.matrix, directed = FALSE)
+  
+  # set member category and color
+  colrs <- RColorBrewer::brewer.pal(n = n.categ, name = "Set3")
+  for (i in 1:length(igraph::V(network))) {
+    categ.id <-
+      match(igraph::V(network)[[i]]$name, sucupira.raw$`Nome do Membro do Projeto`)
+    igraph::V(network)[[i]]$categ <-
+      sucupira.raw$`Categoria do Membro do Projeto`[categ.id]
+    col.id <- match(igraph::V(network)[[i]]$categ, levels(categ))
+    igraph::V(network)[i]$color <- colrs[col.id]
+  }
+} else {
+  network <- igraph::make_empty_graph()
+  categ <- factor("", levels = "")
+  colrs <- main.color
 }
 
 # plot area setup
@@ -2031,14 +3806,9 @@ legend(
   horiz = FALSE,
   cex = 0.8
 )
-title(main = "Membros de projetos de pesquisa",
+title(main = "Membros de Projetos de Pesquisa",
       outer = TRUE,
       cex.main = 1.7)
-
-
-# file path to save the wordclouds
-dir.path <- file.path(getwd(), "index_files", "figure-html")
-dir.create(dir.path, recursive = TRUE)
 
 # IES participantes externos
 sheet <- "Participante Externo"
@@ -2060,32 +3830,7 @@ IES.nac <- IES.nac[!is.na(IES.nac)]
 IES.inter <- sucupira.raw$`Instituição de Origem`[sucupira.raw$`País da Instituição de Origem` != "Brasil"]
 IES.inter <- IES.inter[!is.na(IES.inter)]
 
-# get initials
-data.to.abbrev <- IES
-source("Scripts/get-abbrev.R", local = knitr::knit_global())
-
-ranked.ies <- c()
-for (i in 1:length(sort(table(abbrev), decreasing = FALSE))) {
-  ranked.ies <-
-    c(ranked.ies, rep(names(sort(table(
-      abbrev
-    ))[i]), match(sort(table(
-      abbrev
-    ))[i][[1]], unique(sort(
-      table(abbrev)
-    )))))
-}
-data.to.cloud <- ranked.ies
-cloud.title <- "Instituições"
-source("Scripts/docs-to-wordcloud.R", local = knitr::knit_global())
-
 # plot 3
-# plot area setup
-layout.m <- c(1)
-source("Scripts/plot-margins.R", local = knitr::knit_global())
-
-# plot area setup
-par(mar = c(1.5, 15, 1, 1))
 
 # check if there are IES
 if (length(IES.nac) > 0) {
@@ -2102,38 +3847,54 @@ if (length(IES.nac) > 0) {
   source("Scripts/line-2-break.R", local = knitr::knit_global())
   data.nac$name <- broken_text
   
-  barplot(
-    height = rev(data.nac$value),
-    names = rev(data.nac$name),
-    xlab = "N",
-    col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
-    horiz = T,
-    las = 1,
-    cex.names = 0.7
+  # plot area setup
+  layout.m <- c(1)
+  source("Scripts/plot-margins.R", local = knitr::knit_global())
+  # Define colors using RColorBrewer
+  colors <- RColorBrewer::brewer.pal(n = top, name = "Set3")
+  
+  # set factor level for sorting
+  data.nac$name <- factor(data.nac$name, levels = data.nac$name)
+
+  plot.3 <- plotly::plot_ly(
+    data = data.nac,
+    x = ~value,
+    y = ~name,
+    color = colors[1],
+    type = 'bar',
+    colors = colors[1],
+    height = "50vmin"
   )
-  title(
-    main = paste0("Top-", top, " nacionais"),
-    outer = TRUE,
-    cex.main = 1.7
-  )
-} else {
-  # plot empty plot
-  plot.new()
-  title(
-    main = "Top-10 nacionais",
-    outer = TRUE,
-    cex.main = 1.7
-  )
+  
+  plot.3 <- plot.3 %>% plotly::layout(
+    title = list(
+      text = paste0("Top-", top, " Nacionais"),
+      x = 0.5,
+      xanchor = 'center',
+      font = list(size = '100vw', color = 'white')
+    ),
+    xaxis = list(
+      title = "N",
+      titlefont = list(color = 'white'),
+      tickfont = list(color = 'white'),
+      tickvals = seq(0, max(data.nac$value), by = 1)
+    ),
+    yaxis = list(
+      title = "",
+      titlefont = list(color = 'white'),
+      tickfont = list(color = 'white'),
+      # reverse axis
+      autorange = 'reversed'
+    ),
+    plot_bgcolor = 'black',
+    paper_bgcolor = 'black',
+    font = list(color = 'white'),
+    margin = list(l = 60, r = 60, t = 60, b = 60),
+    showlegend = FALSE
+  ) %>% plotly::config(displayModeBar = FALSE)
 }
 
 # plot 4
-
-# plot area setup
-layout.m <- c(1)
-source("Scripts/plot-margins.R", local = knitr::knit_global())
-
-# plot area setup
-par(mar = c(1.5, 15, 1, 1))
 
 # check if there are IES
 if (length(IES.inter) > 0) {
@@ -2150,37 +3911,55 @@ if (length(IES.inter) > 0) {
   source("Scripts/line-2-break.R", local = knitr::knit_global())
   data.inter$name <- broken_text
   
-  barplot(
-    height = rev(data.inter$value),
-    names = rev(data.inter$name),
-    xlab = "N",
-    col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
-    horiz = T,
-    las = 1,
-    cex.names = 0.7
+  # plot area setup
+  layout.m <- c(1)
+  source("Scripts/plot-margins.R", local = knitr::knit_global())
+  # Define colors using RColorBrewer
+  colors <- RColorBrewer::brewer.pal(n = top, name = "Set3")
+  
+  # set factor level for sorting
+  data.inter$name <- factor(data.inter$name, levels = data.inter$name)
+
+  plot.4 <- plotly::plot_ly(
+    data = data.inter,
+    x = ~value,
+    y = ~name,
+    color = colors[1],
+    type = 'bar',
+    colors = colors[1],
+    height = "50vmin"
   )
-  title(
-    main = paste0("Top-", top, " internacionais"),
-    outer = TRUE,
-    cex.main = 1.7
-  )
-} else {
-  # plot empty plot
-  plot.new()
-  title(
-    main = "Top-10 internacionais",
-    outer = TRUE,
-    cex.main = 1.7
-  )
+  
+  plot.4 <- plot.4 %>% plotly::layout(
+    title = list(
+      text = paste0("Top-", top, " Internacionais"),
+      x = 0.5,
+      xanchor = 'center',
+      font = list(size = '100vw', color = 'white')
+    ),
+    xaxis = list(
+      title = "N",
+      titlefont = list(color = 'white'),
+      tickfont = list(color = 'white'),
+      tickvals = seq(0, max(data.inter$value), by = 1)
+    ),
+    yaxis = list(
+      title = "",
+      titlefont = list(color = 'white'),
+      tickfont = list(color = 'white'),
+      # reverse axis
+      autorange = 'reversed'
+    ),
+    plot_bgcolor = 'black',
+    paper_bgcolor = 'black',
+    font = list(color = 'white'),
+    margin = list(l = 60, r = 60, t = 60, b = 60),
+    showlegend = FALSE
+  ) %>% plotly::config(displayModeBar = FALSE)
 }
 
-# plot 5
-# plot area setup
-layout.m <- c(1)
-source("Scripts/plot-margins.R", local = knitr::knit_global())
 
-# plot area setup
-par(mar = c(1.5, 15, 1, 1))
+# plot 5
 
 # check if there are mundo
 if (length(mundo) > 0) {
@@ -2197,26 +3976,45 @@ if (length(mundo) > 0) {
   source("Scripts/line-2-break.R", local = knitr::knit_global())
   data.pais$name <- broken_text
   
-  barplot(
-    height = rev(data.pais$value),
-    names = rev(data.pais$name),
-    xlab = "N",
-    col = rep(RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], length(1:top)),
-    horiz = T,
-    las = 1,
-    cex.names = 0.7
+  # set factor level for sorting
+  data.pais$name <- factor(data.pais$name, levels = data.pais$name)
+
+  plot.5 <- plotly::plot_ly(
+    data = data.pais,
+    x = ~value,
+    y = ~name,
+    color = colors[1],
+    type = 'bar',
+    colors = colors[1],
+    height = "50vmin"
   )
-  title(
-    main = paste0("Top-", top, " países"),
-    outer = TRUE,
-    cex.main = 1.7
-  )
-} else {
-  # plot empty plot
-  plot.new()
-  title(main = "Top-10 países",
-        outer = TRUE,
-        cex.main = 1.7)
+  
+  plot.5 <- plot.5 %>% plotly::layout(
+    title = list(
+      text = paste0("Top-", top, " Países"),
+      x = 0.5,
+      xanchor = 'center',
+      font = list(size = '100vw', color = 'white')
+    ),
+    xaxis = list(
+      title = "N",
+      titlefont = list(color = 'white'),
+      tickfont = list(color = 'white'),
+      tickvals = seq(0, max(data.pais$value), by = 1)
+    ),
+    yaxis = list(
+      title = "",
+      titlefont = list(color = 'white'),
+      tickfont = list(color = 'white'),
+      # reverse axis
+      autorange = 'reversed'
+    ),
+    plot_bgcolor = 'black',
+    paper_bgcolor = 'black',
+    font = list(color = 'white'),
+    margin = list(l = 60, r = 60, t = 60, b = 60),
+    showlegend = FALSE
+  ) %>% plotly::config(displayModeBar = FALSE)
 }
   
 # check if there are mundo
@@ -2226,7 +4024,7 @@ if (length(mundo) > 0) {
   source("Scripts/worldmap.R", local = knitr::knit_global())
   
   ggplot2::ggplot() +
-    ggplot2::geom_polygon(data = worldmap, aes(
+    ggplot2::geom_polygon(data = worldmap, ggplot2::aes(
       x = long,
       y = lat,
       group = group,
@@ -2266,7 +4064,7 @@ if (length(mundo) > 0) {
         hjust = 0.5
       )
     ) +
-    ggplot2::ggtitle("Distribuição global de Participantes Externos")
+    ggplot2::ggtitle("Distribuição Global de Participantes Externos")
 } else {
   # plot empty plot
   plot.new()
@@ -2308,22 +4106,44 @@ summ.data <- summ.table.ies
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
-```{r sintese-rede-carousel, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = "asis", out.width = "100%", eval = has.sucupira.files}
+```{r sintese-rede-carousel-1, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files, out.width = "100%"}
 cat('<br>')
 cat('<br>')
 
-# carousel
-bsplus::bs_carousel(id = "rede-carousel",
-            use_indicators = FALSE,
-            use_controls = TRUE) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-1.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/Participante Externo.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-2.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-3.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-4.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-5.png")) %>%
-  bsplus::bs_append(content = bsplus::bs_carousel_image(src = "index_files/figure-html/sintese-rede-6.png"))
+cat('<div align="center">')
+plot.3
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
+cat('<div align="center">')
+plot.4
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.5
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+```
+
+```{r sintese-rede-carousel-2, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', eval = has.sucupira.files, out.width = "70%"}
+cat('<br>')
+cat('<br>')
+
+# show sintese-rede-1
+knitr::include_graphics("index_files/figure-html/sintese-rede-1.png")
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+# show sintese-rede-2
+knitr::include_graphics("index_files/figure-html/sintese-rede-2.png")
+cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
 

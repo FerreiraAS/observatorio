@@ -12,14 +12,26 @@ output:
       - ./CSS/responsive.css
 ---
 
+<!--start-->
+```{r start, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%"}
+# restart all variables
+rm(list = ls(all = TRUE))
+
+# initialize variables
+has.metricas.doi.sucupira <- FALSE
+has.metricas.doi.ppg <- FALSE
+```
+
+## **Set up**
+
 <!--set up-->
-```{r setup, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%", results = "hide"}
+```{r setup-main, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%", results = "hide"}
 knitr::opts_chunk$set(
   echo = FALSE,
   warning = FALSE,
   message = FALSE,
   fig.align = 'center',
-  results = "asis",
+  results = 'asis',
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
@@ -29,25 +41,37 @@ knitr::opts_chunk$set(
 )
 ```
 
-<!--start-->
-```{r start, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%"}
-# restart all variables
-rm(list = ls(all = TRUE))
+## **Load caches**
+
+<!--load caches-->
+```{r load-caches-main, echo = FALSE, include = FALSE}
+folders <- list.dirs(file.path("cache/"), full.names = FALSE, recursive = FALSE)
+for(folder in folders){
+    knitr::load_cache(label = folder, path = paste0(file.path("cache", folder), "/"))
+}
 ```
+
+## **Install packages**
 
 <!--install and/or load all packages-->
 ```{r install-update-packages, echo = FALSE, include = FALSE}
 source("Scripts/all-required-packages.R", local = knitr::knit_global())
 ```
 
-```{r custom-yaml}
+## **YAML**
+
+```{r yaml, eval = FALSE}
 source("Scripts/custom-yaml.R", local = knitr::knit_global())
 ```
 
-```{r yml-metadata}
+## **Metadata**
+
+```{r metadata, cache = TRUE, cache.path = "cache/metadata/"}
 metadata <- c()
 metadata$repository_url <- yaml::read_yaml("_site.yml")$repository_url
 ```
+
+## **Jekyll**
 
 ```{r nojekyll}
 if(!file.exists(".nojekyll")) {
@@ -55,11 +79,43 @@ if(!file.exists(".nojekyll")) {
 }
 ```
 
-```{r main-color}
+## **Main color**
+
+```{r main-color, cache = TRUE, cache.path = "cache/main-color/"}
 # read css color for this page
 css <- cssparser::read_css("./CSS/main-color.css")
 main.color <- css$`:root`$`--mybackgroundcolor`
 ```
+
+## **Qualis CAPES**
+
+```{r qualis-capes, cache = TRUE, cache.path = "cache/qualis-capes/"}
+# read XLSX file
+qualis <- readxl::read_xlsx(list.files(
+  path = "Metrics/Qualis",
+  pattern = ".xlsx",
+  full.names = TRUE
+))
+```
+
+## **GeoBR data**
+
+```{r geobr-data, cache = TRUE, cache.path = "cache/geobr-data/", eval = curl::has_internet()}
+# reading BR geospatial data from IPEA
+geoBRdata <- geobr::list_geobr()$years[3]
+# reading BR geospatial data from IPEA
+last.update <-
+  as.numeric(strsplit(geoBRdata, ", ")[[1]][length(strsplit(geoBRdata, ", ")[[1]]) - 1])
+states <-
+  geobr::read_state(
+    code_state = "all",
+    year = last.update,
+    simplified = TRUE,
+    showProgress = FALSE
+  )
+```
+
+## **Diretórios**
 
 <!--create (if non existent) all required folders-->
 ```{r check-create-folders}
@@ -76,19 +132,20 @@ for (i in 1:length(paths)) {
 }
 ```
 
-<!--read METRIC files-->
-```{r source-metrics-scripts}
-source(file.path("Scripts", "citescore.R"), local = knitr::knit_global())
-source(file.path("Scripts", "sjr.R"), local = knitr::knit_global())
-source(file.path("Scripts", "webqualis.R"), local = knitr::knit_global())
+## **Check arquivos Impacto**
 
-source(file.path("Scripts", "doi-cleaner.R"), local = knitr::knit_global())
-
-source(file.path("Scripts", "get_citescore.R"), local = knitr::knit_global())
-source(file.path("Scripts", "get_sjr.R"), local = knitr::knit_global())
-source(file.path("Scripts", "get_webqualis.R"), local = knitr::knit_global())
-source(file.path("Scripts", "get-metrics-from-sources.R"), local = knitr::knit_global())
+<!--check Impacto/Sage folder-->
+```{r try-impacto-sage-files}
+# list all Sage Profiles
+files.to.read <-
+  list.files(file.path(getwd(), "Impacto", "Sage Policy Profiles"),
+            full.names = TRUE,
+            recursive = FALSE,
+            pattern = ".csv")
+has.sage.files <- length(files.to.read) != 0
 ```
+
+## **Check arquivos Sucupira**
 
 <!--check Sucupira folder-->
 ```{r try-sucupira-files}
@@ -99,38 +156,15 @@ files.to.read <-
             pattern = "xlsx"
 )
 has.sucupira.files <- length(files.to.read) != 0
-has.artigos.completos.sucupira <- FALSE
-has.artigos.resumos.sucupira <- FALSE
-has.anais.sucupira <- FALSE
-has.livros.sucupira <- FALSE
-has.producao.sucupira <- FALSE
-has.2024.2021 <- FALSE
-has.2020.2017 <- FALSE
-has.2016.2013 <- FALSE
-has.2012.2010 <- FALSE
-has.posdocs <- FALSE
+
+# check posdoc data
+sheet <- "Pós-Doc"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+posdoc.raw <- sucupira.raw
+has.posdoc <- !sjmisc::is_empty(posdoc.raw)
 ```
 
-```{r try-periodos, eval = has.sucupira.files}
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-
-# periodo
-periodo <- 2021:min(as.numeric(format(Sys.Date(), "%Y")), 2024)
-has.2024.2021 <- any(!is.na(match(periodo, anos)))
-
-# periodo
-periodo <- 2017:min(as.numeric(format(Sys.Date(), "%Y")), 2020)
-has.2020.2017 <- any(!is.na(match(periodo, anos)))
-
-# periodo
-periodo <- 2013:min(as.numeric(format(Sys.Date(), "%Y")), 2016)
-has.2016.2013 <- any(!is.na(match(periodo, anos)))
-
-# periodo
-periodo <- 2010:min(as.numeric(format(Sys.Date(), "%Y")), 2012)
-has.2012.2010 <- any(!is.na(match(periodo, anos)))
-```
+## **Check diretório PPG**
 
 <!--check PPG folder-->
 ```{r try-ppg-files}
@@ -141,32 +175,14 @@ files.to.read <-
             recursive = TRUE,
             pattern = "xlsx")
 has.ppg.files <- length(files.to.read) != 0
-has.artigos.completos.ppg <- FALSE
-has.artigos.resumos.ppg <- FALSE
-has.producao.ppg <- FALSE
 ```
 
-<!--check Impacto/Sage folder-->
-```{r try-impacto-sage-files}
-# list all Sage Profiles
-files.to.read <-
-  list.files(file.path(getwd(), "Impacto", "Sage Policy Profiles"),
-            full.names = TRUE,
-            recursive = FALSE,
-            pattern = ".csv")
-has.impacto.sage.files <- length(files.to.read) != 0
-```
+## **Check arquivos PPG**
 
 <!--check available files in PPG folder-->
 ```{r try-agendas-pesquisa}
 has.agendas.pesquisa <-
   !BBmisc::is.error(try(readxl::read_excel("PPG/Agendas de Pesquisa.xlsx", sheet = 1),
-                silent = TRUE))
-```
-
-```{r try-apresentacao}
-has.apresentacao <-
-  !BBmisc::is.error(try(readxl::read_excel("PPG/Apresentação.xlsx", sheet = 1),
                 silent = TRUE))
 ```
 
@@ -178,13 +194,13 @@ has.area.capes <-
 
 ```{r try-autoavaliacoes}
 has.autoavaliacao <-
-  !BBmisc::is.error(try(readxl::read_excel("PPG/Autoavaliação.xlsx", sheet = 1),
+  !BBmisc::is.error(try(readxl::read_excel("PPG/Autoavaliação PPG.xlsx", sheet = 1),
                 silent = TRUE))
 ```
 
 ```{r try-avaliacao}
 has.avaliacao <-
-  !BBmisc::is.error(try(readxl::read_excel("PPG/Avaliação.xlsx", sheet = 1),
+  !BBmisc::is.error(try(readxl::read_excel("PPG/Avaliação CAPES.xlsx", sheet = 1),
                 silent = TRUE))
 ```
 
@@ -355,13 +371,6 @@ has.planejamento <-
   )
 ```
 
-```{r try-podcasts}
-has.podcasts <-
-  !BBmisc::is.error(try(readxl::read_excel("PPG/Podcasts.xlsx", sheet = 1),
-                silent = TRUE)
-  )
-```
-
 ```{r try-politicas}
 has.politicas <-
   !BBmisc::is.error(try(readxl::read_excel("PPG/Políticas.xlsx", sheet = 1),
@@ -390,14 +399,6 @@ has.producao <-
   )
 ```
 
-```{r try-posdocs-sucupira, eval = has.sucupira.files}
-# posdocs
-sheet <- "Pós-Doc"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-has.posdocs <- !sjmisc::is_empty(sucupira.raw)
-```
-
 ```{r try-repositorios}
 has.repositorios.sede <-
   !BBmisc::is.error(try(readxl::read_excel("PPG/Repositórios.xlsx", sheet =  "Sede"),
@@ -409,14 +410,9 @@ has.repositorios.cooperacao <-
   )
 ```
 
-```{r try-videos}
-has.videos <-
-  !BBmisc::is.error(try(readxl::read_excel("PPG/Videos.xlsx", sheet = 1),
-                silent = TRUE)
-  )
-```
+## **Check dados PPG**
 
-```{r ppg-data, eval = all(has.dados.cadastrais, has.sucupira.files)}
+```{r ppg-data, eval = has.sucupira.files}
 # projetos - membros
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -442,11 +438,7 @@ nome.PPG.no.stopwords <- paste(nome.PPG.split[is.na(match.stopwords)], collapse 
 source("Scripts/get-initials.R", local = knitr::knit_global())
 sigla.PPG <- initials(nome.PPG.no.stopwords)
 
-try(site.PPG <-
-  readxl::read_excel("PPG/Dados Cadastrais.xlsx",
-             sheet = "Endereço",
-             col_types = c("text"))[7, 2],
-  silent = TRUE)
+site.PPG <- yaml::read_yaml(file = "./_site.yml")$navbar$right[[1]]$menu[[2]]$href
 
 # qualquer planilha para obter os dados da IES
 sheet <- "Docentes"
@@ -457,830 +449,270 @@ nome.IES <- tools::toTitleCase(as.character(nome.IES))
 sigla.IES <- unique(sucupira.raw$`IES Sigla`)
 ```
 
-```{r producao-sucupira, eval = has.sucupira.files}
-# produções
+## **Check metricas pelo DOI da produção Sucupira**
+
+```{r metricas-doi-sucupira, cache = TRUE, cache.path = "cache/metricas-doi-sucupira/", eval = has.sucupira.files}
+# produção
+sheet <- "Produções"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+
+# get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+names(sucupira.list) <- as.character(anos)
+
+# retrieve produções to search for ISSN
+produtos.sucupira <- sucupira.raw
+
+# produção detalhes
 sheet <- "Produções - Detalhes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
+# get data for the current period
+produtos.detalhes.sucupira <- sucupira.raw %>%
+  plyr::compact()
 
-# características
-subtipo <- "ARTIGO EM PERIÓDICO"
-detalhamento <- "Completo"
-item.detalhamento <- c("Número do DOI", "URL do DOI", "URL")
+# reorder columns (ano first)
+produtos.detalhes.sucupira <- produtos.detalhes.sucupira %>%
+  dplyr::select('Ano da Produção', tidyselect::everything())
 
-# Data selection
-produtos <-
-  sucupira.raw %>% dplyr::select(
-    c(
-      "Nome da Produção",
-      "Subtipo de Produção",
-      "Item de Detalhamento",
-      "Valor do Item de Detalhamento"
-    )
+# add columns for metrics and details from Altmetric, CrossRef, Scopus and CAPES
+produtos.detalhes.sucupira <- produtos.detalhes.sucupira %>%
+  dplyr::mutate(
+    # from CAPES
+    Qualis = NA,
+    ISSN = NA,
+    DOI = NA,
+    # from Altmetric
+    cited_by_fbwalls_count = NA,
+    cited_by_feeds_count = NA,
+    cited_by_gplus_count = NA,
+    cited_by_msm_count = NA,
+    cited_by_rdts_count = NA,
+    cited_by_qna_count = NA,
+    cited_by_tweeters_count = NA,
+    cited_by_bluesky_count = NA,
+    cited_by_wikipedia_count = NA,
+    cited_by_policies_count = NA,
+    cited_by_patents_count = NA,
+    cited_by_videos_count = NA,
+    cited_by_accounts_count = NA,
+    cited_by_posts_count = NA,
+    mendeley = NA,
+    score = NA,
+    # from Altmetric and CrossRef
+    is_oa = NA,
+    # from CrossRef
+    citations = NA,
+    # from Scopus
+    source_id = NA,
+    SJR = NA,
+    SJR_year = NA,
+    CiteScore = NA,
+    CiteScore_year = NA,
+    PlumX = NA
   )
-# find titles of artigos completos
-titles <- (produtos$"Nome da Produção"[
-  produtos$"Subtipo de Produção" == subtipo &
-    produtos$"Valor do Item de Detalhamento" == detalhamento])
-titles <- titles[!is.na(titles)]
 
-doi_artigos_completos_sucupira <- data.frame()
-if (dim(produtos)[1] != 0) {
-  # data filter
-  for (i in 1:length(titles)) {
-    idx1 <- produtos$`Nome da Produção` %in% titles[i]
-    idx2 <- produtos$`Item de Detalhamento` %in% item.detalhamento
-    idx <- and(idx1, idx2)
-    doi_artigos_completos_sucupira <- rbind(
-      doi_artigos_completos_sucupira,
-      produtos$`Valor do Item de Detalhamento`[which(idx == TRUE)]
-    )
-  }
-  doi_artigos_completos_sucupira <-
-    as.data.frame(doi_artigos_completos_sucupira[!is.na(doi_artigos_completos_sucupira)])
-  names(doi_artigos_completos_sucupira) <- "DOI"
+# iterate item-wise
+for (item in 1:nrow(produtos.sucupira)) {
+  # match ID da Produção entre produtos.sucupira e produtos.detalhes.sucupira
+  matches <- which(produtos.detalhes.sucupira$`ID da Produção` == produtos.sucupira$`ID da Produção`[item], arr.ind = TRUE)
+  # get and replace Qualis values
+  produtos.detalhes.sucupira$Qualis[matches] <- produtos.sucupira$Estrato[item]
+  # get and replace ISSN values
+  produtos.detalhes.sucupira$ISSN[matches] <- produtos.sucupira$ISSN[item]
 }
-has.artigos.completos.sucupira <-
-  !sjmisc::is_empty(doi_artigos_completos_sucupira)
 
-
-# características
-subtipo <- "ARTIGO EM PERIÓDICO"
-detalhamento <- "Resumo"
-item.detalhamento <- c("Número do DOI", "URL do DOI", "URL")
-
-# Data selection
-produtos <-
-  sucupira.raw %>% dplyr::select(
-    c(
-      "Nome da Produção",
-      "Subtipo de Produção",
-      "Item de Detalhamento",
-      "Valor do Item de Detalhamento"
-    )
-  )
-# find titles of artigos completos
-titles <- (
-  produtos$"Nome da Produção"[
-  produtos$"Subtipo de Produção" == subtipo & 
-  produtos$"Valor do Item de Detalhamento" == detalhamento]
+# clean DOI that are "Número do DOI", "URL do DOI" or "URL" in Item de Detalhamento
+source("Scripts/doi-cleaner.R", local = knitr::knit_global())
+clean_dois <- ifelse(
+  grepl("Número do DOI|URL do DOI|URL", produtos.detalhes.sucupira$`Item de Detalhamento`),
+  doi_cleaner(data.frame(DOI = produtos.detalhes.sucupira$`Valor do Item de Detalhamento`, check.names = FALSE))$DOI,
+  produtos.detalhes.sucupira$DOI
 )
-titles <- titles[!is.na(titles)]
 
-doi_artigos_resumos_sucupira <- data.frame()
-if (dim(produtos)[1] != 0) {
-  # data filter
-  for (i in 1:length(titles)) {
-    idx1 <- produtos$`Nome da Produção` %in% titles[i]
-    idx2 <- produtos$`Item de Detalhamento` %in% item.detalhamento
-    idx <- and(idx1, idx2)
-    doi_artigos_resumos_sucupira <- rbind(
-      doi_artigos_resumos_sucupira,
-      produtos$`Valor do Item de Detalhamento`[which(idx == TRUE)]
-    )
-  }
-  doi_artigos_resumos_sucupira <-
-    as.data.frame(doi_artigos_resumos_sucupira[!is.na(doi_artigos_resumos_sucupira)])
-  names(doi_artigos_resumos_sucupira) <- "DOI"
-}
-has.artigos.resumos.sucupira <-
-  !sjmisc::is_empty(doi_artigos_resumos_sucupira)
-
-
-# características
-subtipo <- "TRABALHO EM ANAIS"
-item.detalhamento <- "URL"
-
-# Data selection
-produtos <-
-  sucupira.raw %>% dplyr::select(
-    c(
-      "Nome da Produção",
-      "Subtipo de Produção",
-      "Item de Detalhamento",
-      "Valor do Item de Detalhamento"
-    )
-  )
-# find titles of artigos completos
-titles <- (
-  produtos$"Nome da Produção"[
-  produtos$"Subtipo de Produção" == subtipo]
+# fill rows that are "Número do DOI", "URL do DOI" or "URL" in Item de Detalhamento
+produtos.detalhes.sucupira$DOI <- ifelse(
+  grepl("Número do DOI|URL do DOI|URL", produtos.detalhes.sucupira$`Item de Detalhamento`),
+  clean_dois,
+  produtos.detalhes.sucupira$DOI
 )
-titles <- titles[!is.na(titles)]
 
-doi_anais_sucupira <- data.frame()
-if (dim(produtos)[1] != 0) {
-  # data filter
-  for (i in 1:length(titles)) {
-    idx1 <- produtos$`Nome da Produção` %in% titles[i]
-    idx2 <- produtos$`Item de Detalhamento` %in% item.detalhamento
-    idx <- and(idx1, idx2)
-    doi_anais_sucupira <- rbind(
-      doi_anais_sucupira,
-      produtos$`Valor do Item de Detalhamento`[which(idx == TRUE)]
-    )
-  }
-  doi_anais_sucupira <-
-    as.data.frame(doi_anais_sucupira[!is.na(doi_anais_sucupira)])
-  names(doi_anais_sucupira) <- "DOI"
-}
-has.anais.sucupira <-
-  !sjmisc::is_empty(doi_anais_sucupira)
+has.metricas.doi.sucupira <- !sjmisc::is_empty(produtos.detalhes.sucupira)
 
+doi_with_error <- c()
+source_with_error <- c()
+```
 
-# características
-subtipo <- "LIVROS"
-item.detalhamento <- "URL"
+### **Altmetric (score)**
 
-# Data selection
-produtos <-
-  sucupira.raw %>% dplyr::select(
-    c(
-      "Nome da Produção",
-      "Subtipo de Produção",
-      "Item de Detalhamento",
-      "Valor do Item de Detalhamento"
-    )
+```{r altmetric-doi-sucupira, cache = TRUE, cache.path = "cache/altmetric-doi-sucupira/", eval = all(has.metricas.doi.sucupira, curl::has_internet())}
+# iterate item-wise
+for (item in 1:nrow(produtos.sucupira)) {
+  # match ID da Produção entre produtos.sucupira e produtos.detalhes.sucupira
+  matches <- which(
+    produtos.detalhes.sucupira$`ID da Produção` == produtos.sucupira$`ID da Produção`[item],
+    arr.ind = TRUE
   )
-# find titles of artigos completos
-titles <- (
-  produtos$"Nome da Produção"[
-  produtos$"Subtipo de Produção" == subtipo]
-)
-titles <- titles[!is.na(titles)]
-
-doi_livros_sucupira <- data.frame()
-if (dim(produtos)[1] != 0) {
-  # data filter
-  for (i in 1:length(titles)) {
-    idx1 <- produtos$`Nome da Produção` %in% titles[i]
-    idx2 <- produtos$`Item de Detalhamento` %in% item.detalhamento
-    idx <- and(idx1, idx2)
-    doi_livros_sucupira <- rbind(
-      doi_livros_sucupira,
-      produtos$`Valor do Item de Detalhamento`[which(idx == TRUE)]
-    )
-  }
-  doi_livros_sucupira <-
-    as.data.frame(doi_livros_sucupira[!is.na(doi_livros_sucupira)])
-  names(doi_livros_sucupira) <- "DOI"
-}
-has.livros.sucupira <-
-  !sjmisc::is_empty(doi_livros_sucupira)
-
-
-has.producao.sucupira <-
-  any(has.artigos.completos.sucupira,
-      has.artigos.resumos.sucupira,
-      has.anais.sucupira,
-      has.livros.sucupira)
-```
-
-```{r producao-ppg}
-has.artigos.completos.ppg <-
-  !BBmisc::is.error(try(readxl::read_excel("PPG/Produção.xlsx", sheet = "PI.completos"),
-                silent = TRUE))
-if(!has.artigos.completos.ppg){
-  doi_with_altmetric_artigos = data.frame()
-  doi_without_altmetric_artigos = data.frame()
-  references_artigos = data.frame()
-  doi_with_altmetric_artigos_impacto = data.frame()
-  doi_without_altmetric_artigos_impacto = data.frame()
-  references_artigos_impacto = data.frame()
-  }
-
-has.artigos.resumos.ppg <-
-  !BBmisc::is.error(try(readxl::read_excel("PPG/Produção.xlsx", sheet = "PI.resumos"), silent = TRUE))
-if(!has.artigos.resumos.ppg){
-  doi_with_altmetric_resumos = data.frame()
-  doi_without_altmetric_resumos = data.frame()
-  references_resumos = data.frame()
-  doi_with_altmetric_resumos_impacto = data.frame()
-  doi_without_altmetric_resumos_impacto = data.frame()
-  references_resumos_impacto = data.frame()
-  }
-
-has.preprints.ppg <-
-  !BBmisc::is.error(try(readxl::read_excel("PPG/Produção.xlsx", sheet = "PI.preprints"),
-                silent = TRUE))
-if(!has.preprints.ppg){
-  doi_with_altmetric_preprints = data.frame()
-  doi_without_altmetric_preprints = data.frame()
-  references_preprints = data.frame()
-  doi_with_altmetric_preprints_impacto = data.frame()
-  doi_without_altmetric_preprints_impacto = data.frame()
-  references_preprints_impacto = data.frame()
-  }
-
-has.livros.ppg <-
-  !BBmisc::is.error(try(readxl::read_excel("PPG/Produção.xlsx", sheet = "PI.livros"), silent = TRUE))
-if(!has.livros.ppg){
-  doi_with_altmetric_livros = data.frame()
-  doi_without_altmetric_livros = data.frame()
-  references_livros = data.frame()
-  doi_with_altmetric_livros_impacto = data.frame()
-  doi_without_altmetric_livros_impacto = data.frame()
-  references_livros_impacto = data.frame()
-  }
-
-has.capitulos.ppg <-
-  !BBmisc::is.error(try(readxl::read_excel("PPG/Produção.xlsx", sheet = "PI.capitulos"), silent = TRUE))
-if(!has.capitulos.ppg){
-  doi_with_altmetric_capitulos = data.frame()
-  doi_without_altmetric_capitulos = data.frame()
-  references_capitulos = data.frame()
-  doi_with_altmetric_capitulos_impacto = data.frame()
-  doi_without_altmetric_capitulos_impacto = data.frame()
-  references_capitulos_impacto = data.frame()
-  }
-
-has.anais.ppg <-
-  !BBmisc::is.error(try(readxl::read_excel("PPG/Produção.xlsx", sheet = "PI.anais"), silent = TRUE))
-if(!has.anais.ppg){
-  doi_with_altmetric_anais = data.frame()
-  doi_without_altmetric_anais = data.frame()
-  references_anais = data.frame()
-  doi_with_altmetric_anais_impacto = data.frame()
-  doi_without_altmetric_anais_impacto = data.frame()
-  references_anais_impacto = data.frame()
-}
-
-has.producao.ppg <-
-  any(has.artigos.completos.ppg,
-      has.artigos.resumos.ppg,
-      has.preprints.ppg,
-      has.livros.ppg,
-      has.capitulos.ppg,
-      has.anais.ppg)
-```
-
-```{r metrics-artigos-completos, cache = TRUE, cache.path = "cache/artigos-completos/", eval = any(has.artigos.completos.ppg, has.artigos.completos.sucupira)}
-# bind PPG and SUCUPIRA DOIs
-dois.ppg <- data.frame()
-if(has.artigos.completos.ppg) {
-  # read data
-  data.sheet <-
-    data.frame(readxl::read_excel(
-      "PPG/Produção.xlsx",
-      sheet = "PI.completos",
-      col_types = c("text")
-    ))
-  # select DOI column
-  dois.ppg <-
-    data.frame(DOI = data.sheet[, match("DOI", names(data.sheet))])
-}
-dois.sucupira <- data.frame()
-if(has.artigos.completos.sucupira) {
-  dois.sucupira <- doi_artigos_completos_sucupira
-}
-dois <- data.frame(DOI = c(dois.sucupira$DOI, dois.ppg$DOI))
-
-# limpa as entradas de DOI
-dois <- doi_cleaner(dois)
-
-# Data cleaning
-dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
-dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
-
-if(!sjmisc::is_empty(dois)) {
-  # cria metadados para rastreio pelo Altmetric
-  source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
   
-  # get metrics from Altmetric and CrossRef
-  source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
+  # get DOI values
+  dois <- data.frame(DOI = unique(na.omit(produtos.detalhes.sucupira$DOI[matches]))[1], check.names = FALSE)
   
-  # store to use downstream
-  doi_with_altmetric_artigos <-
-    get_metrics(
-      doi_with_altmetric = doi_with_altmetric,
-      doi_without_altmetric = NULL,
-      citescore,
-      scimago,
-      qualis
-    )
-  doi_without_altmetric_artigos <-
-    get_metrics(
-      doi_with_altmetric = NULL,
-      doi_without_altmetric = doi_without_altmetric,
-      citescore,
-      scimago,
-      qualis
-    )
-  
-  # obtain formatted references
-  formatted_citations <-
-    rcrossref::cr_cn(
-      c(
-        doi_with_altmetric_artigos$doi,
-        doi_without_altmetric_artigos$doi
-      ),
-      format = "text",
-      raw = TRUE,
-      style = "american-medical-association"
-    )
-  formatted_citations <- substring(formatted_citations, 3)
-  formatted_citations <-
-    cbind(seq(1, length(formatted_citations)), formatted_citations)
-  names(formatted_citations) <- c("ID", "Reference")
-  
-  references_artigos <- formatted_citations %>%
-    data.frame()
-} else {
-  doi_with_altmetric_artigos = data.frame()
-  doi_without_altmetric_artigos = data.frame()
-  references_artigos = data.frame()
-  doi_with_altmetric_artigos_impacto = data.frame()
-  doi_without_altmetric_artigos_impacto = data.frame()
-  references_artigos_impacto = data.frame()
-}
-```
-
-```{r metrics-artigos-resumos, cache = TRUE, cache.path = "cache/artigos-resumos/", eval = any(has.artigos.resumos.ppg, has.artigos.resumos.sucupira)}
-# bind PPG and SUCUPIRA DOIs
-dois.ppg <- data.frame()
-if (has.artigos.resumos.ppg) {
-  # read data
-  data.sheet <-
-    data.frame(readxl::read_excel(
-      "PPG/Produção.xlsx",
-      sheet = "PI.resumos",
-      col_types = c("text")
-    ))
-  # select DOI column
-  dois.ppg <-
-    data.frame(DOI = data.sheet[, match("DOI", names(data.sheet))])
-}
-dois.sucupira <- data.frame()
-if (has.artigos.resumos.sucupira) {
-  dois.sucupira <- doi_artigos_resumos_sucupira
-}
-dois <- data.frame(DOI = c(dois.sucupira$DOI, dois.ppg$DOI))
-
-# limpa as entradas de DOI
-dois <- doi_cleaner(dois)
-
-# Data cleaning
-dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
-dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
-
-if (!sjmisc::is_empty(dois)) {
-  # cria metadados para rastreio pelo Altmetric
-  source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
-  
-  # get metrics from Altmetric and CrossRef
-  source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
-  
-  # store to use downstream
-  doi_with_altmetric_resumos <-
-    get_metrics(
-      doi_with_altmetric = doi_with_altmetric,
-      doi_without_altmetric = NULL,
-      citescore,
-      scimago,
-      qualis
-    )
-  doi_without_altmetric_resumos <-
-    get_metrics(
-      doi_with_altmetric = NULL,
-      doi_without_altmetric = doi_without_altmetric,
-      citescore,
-      scimago,
-      qualis
-    )
-  
-  # obtain formatted references
-  formatted_citations <-
-    rcrossref::cr_cn(
-      c(
-        doi_with_altmetric_resumos$doi,
-        doi_without_altmetric_resumos$doi
-      ),
-      format = "text",
-      raw = TRUE,
-      style = "american-medical-association"
-    )
-  formatted_citations <- substring(formatted_citations, 3)
-  formatted_citations <-
-    cbind(seq(1, length(formatted_citations)), formatted_citations)
-  names(formatted_citations) <- c("ID", "Reference")
-  
-  references_resumos <- formatted_citations %>%
-    data.frame()
-} else {
-  doi_with_altmetric_resumos = data.frame()
-  doi_without_altmetric_resumos = data.frame()
-  references_resumos = data.frame()
-  doi_with_altmetric_resumos_impacto = data.frame()
-  doi_without_altmetric_resumos_impacto = data.frame()
-  references_resumos_impacto = data.frame()
-}
-```
-
-```{r metrics-preprints, cache = TRUE, cache.path = "cache/preprints/", eval = has.preprints.ppg}
-# read data
-data.sheet <-
-  data.frame(readxl::read_excel(
-    "PPG/Produção.xlsx",
-    sheet = "PI.preprints",
-    col_types = c("text")
-  ))
-
-# select DOI column
-dois <-
-  data.frame(DOI = data.sheet[, match("DOI", names(data.sheet))])
-
-# limpa as entradas de DOI
-dois <- doi_cleaner(dois)
-
-# Data cleaning
-dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
-dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
-
-if (!sjmisc::is_empty(dois)) {
-  # cria metadados para rastreio pelo Altmetric
-  source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
-  
-  # get metrics from Altmetric and CrossRef
-  source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
-  
-  # store to use downstream
-  doi_with_altmetric_preprints <-
-    get_metrics(
-      doi_with_altmetric = doi_with_altmetric,
-      doi_without_altmetric = NULL,
-      citescore,
-      scimago,
-      qualis
-    )
-  doi_without_altmetric_preprints <-
-    get_metrics(
-      doi_with_altmetric = NULL,
-      doi_without_altmetric = doi_without_altmetric,
-      citescore,
-      scimago,
-      qualis
-    )
-  
-  # obtain formatted references
-  formatted_citations <-
-    rcrossref::cr_cn(
-      c(
-        doi_with_altmetric_preprints$doi,
-        doi_without_altmetric_preprints$doi
-      ),
-      format = "text",
-      raw = TRUE,
-      style = "american-medical-association"
-    )
-  formatted_citations <- substring(formatted_citations, 3)
-  formatted_citations <-
-    cbind(seq(1, length(formatted_citations)), formatted_citations)
-  names(formatted_citations) <- c("ID", "Reference")
-  
-  references_preprints <- formatted_citations %>%
-    data.frame()
-} else {
-  doi_with_altmetric_preprints = data.frame()
-  doi_without_altmetric_preprints = data.frame()
-  references_preprints = data.frame()
-  doi_with_altmetric_preprints_impacto = data.frame()
-  doi_without_altmetric_preprints_impacto = data.frame()
-  references_preprints_impacto = data.frame()
-}
-```
-
-```{r metrics-livros, cache = TRUE, cache.path = "cache/livros/", eval = any(has.livros.ppg, has.livros.sucupira)}
-# bind PPG and SUCUPIRA DOIs
-dois.ppg <- data.frame()
-if(has.livros.ppg) {
-  # read data
-  data.sheet <-
-    data.frame(readxl::read_excel(
-      "PPG/Produção.xlsx",
-      sheet = "PI.livros",
-      col_types = c("text")
-    ))
-  # select DOI column
-  dois.ppg <-
-    data.frame(DOI = data.sheet[, match("DOI", names(data.sheet))])
-}
-dois.sucupira <- data.frame()
-if(has.livros.sucupira) {
-  dois.sucupira <- doi_livros_sucupira
-}
-dois <- data.frame(DOI = c(dois.sucupira$DOI, dois.ppg$DOI))
-
-# limpa as entradas de DOI
-dois <- doi_cleaner(dois)
-
-# Data cleaning
-dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
-dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
-
-if (!sjmisc::is_empty(dois)) {
-  # cria metadados para rastreio pelo Altmetric
-  source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
-  
-  # get metrics from Altmetric and CrossRef
-  source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
-  
-  # store to use downstream
-  doi_with_altmetric_livros <-
-    get_metrics(
-      doi_with_altmetric = doi_with_altmetric,
-      doi_without_altmetric = NULL,
-      citescore,
-      scimago,
-      qualis
-    )
-  doi_without_altmetric_livros <-
-    get_metrics(
-      doi_with_altmetric = NULL,
-      doi_without_altmetric = doi_without_altmetric,
-      citescore,
-      scimago,
-      qualis
-    )
-  
-  # obtain formatted references
-  formatted_citations <-
-    rcrossref::cr_cn(
-      c(
-        doi_with_altmetric_livros$doi,
-        doi_without_altmetric_livros$doi
-      ),
-      format = "text",
-      raw = TRUE,
-      style = "american-medical-association"
-    )
-  formatted_citations <- substring(formatted_citations, 3)
-  formatted_citations <-
-    cbind(seq(1, length(formatted_citations)), formatted_citations)
-  names(formatted_citations) <- c("ID", "Reference")
-  
-  references_livros <- formatted_citations %>%
-    data.frame()
-} else {
-  doi_with_altmetric_livros = data.frame()
-  doi_without_altmetric_livros = data.frame()
-  references_livros = data.frame()
-  doi_with_altmetric_livros_impacto = data.frame()
-  doi_without_altmetric_livros_impacto = data.frame()
-  references_livros_impacto = data.frame()
-}
-```
-
-```{r metrics-capitulos, cache = TRUE, cache.path = "cache/capitulos/", eval = has.capitulos.ppg}
-# read data
-data.sheet <-
-  data.frame(readxl::read_excel(
-    "PPG/Produção.xlsx",
-    sheet = "PI.capitulos",
-    col_types = c("text")
-  ))
-
-# select DOI column
-dois <-
-  data.frame(DOI = data.sheet[, match("DOI", names(data.sheet))])
-
-# limpa as entradas de DOI
-dois <- doi_cleaner(dois)
-
-# Data cleaning
-dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
-dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
-
-if (!sjmisc::is_empty(dois)) {
-  # cria metadados para rastreio pelo Altmetric
-  source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
-  
-  # get metrics from Altmetric and CrossRef
-  source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
-  
-  # store to use downstream
-  doi_with_altmetric_capitulos <-
-    get_metrics(
-      doi_with_altmetric = doi_with_altmetric,
-      doi_without_altmetric = NULL,
-      citescore,
-      scimago,
-      qualis
-    )
-  doi_without_altmetric_capitulos <-
-    get_metrics(
-      doi_with_altmetric = NULL,
-      doi_without_altmetric = doi_without_altmetric,
-      citescore,
-      scimago,
-      qualis
-    )
-  
-  # obtain formatted references
-  formatted_citations <-
-    rcrossref::cr_cn(
-      c(
-        doi_with_altmetric_capitulos$doi,
-        doi_without_altmetric_capitulos$doi
-      ),
-      format = "text",
-      raw = TRUE,
-      style = "american-medical-association"
-    )
-  formatted_citations <- substring(formatted_citations, 3)
-  formatted_citations <-
-    cbind(seq(1, length(formatted_citations)), formatted_citations)
-  names(formatted_citations) <- c("ID", "Reference")
-  
-  references_capitulos <- formatted_citations %>%
-    data.frame()
-} else {
-  doi_with_altmetric_capitulos = data.frame()
-  doi_without_altmetric_capitulos = data.frame()
-  references_capitulos = data.frame()
-  doi_with_altmetric_capitulos_impacto = data.frame()
-  doi_without_altmetric_capitulos_impacto = data.frame()
-  references_capitulos_impacto = data.frame()
-}
-```
-
-```{r metrics-anais, cache = TRUE, cache.path = "cache/anais/", eval = any(has.anais.ppg, has.anais.sucupira)}
-# bind PPG and SUCUPIRA DOIs
-dois.ppg <- data.frame()
-if(has.anais.ppg) {
-  # read data
-  data.sheet <-
-    data.frame(readxl::read_excel(
-      "PPG/Produção.xlsx",
-      sheet = "PI.anais",
-      col_types = c("text")
-    ))
-  # select DOI column
-  dois.ppg <-
-    data.frame(DOI = data.sheet[, match("DOI", names(data.sheet))])
-}
-dois.sucupira <- data.frame()
-if(has.anais.ppg) {
-  dois.sucupira <- doi_anais_sucupira
-}
-dois <- data.frame(DOI = c(dois.sucupira$DOI, dois.ppg$DOI))
-
-# limpa as entradas de DOI
-dois <- doi_cleaner(dois)
-
-# Data cleaning
-dois <- data.frame(DOI = dois$DOI[!duplicated(dois)])
-dois <- data.frame(DOI = dois$DOI[!is.na(dois$DOI)])
-
-if (!sjmisc::is_empty(dois)) {
-  # cria metadados para rastreio pelo Altmetric
-  source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
-  
-  # get metrics from Altmetric and CrossRef
-  source("Scripts/get-metrics-from-dois.R", local = knitr::knit_global())
-  
-  # store to use downstream
-  doi_with_altmetric_anais <-
-    get_metrics(
-      doi_with_altmetric = doi_with_altmetric,
-      doi_without_altmetric = NULL,
-      citescore,
-      scimago,
-      qualis
-    )
-  doi_without_altmetric_anais <-
-    get_metrics(
-      doi_with_altmetric = NULL,
-      doi_without_altmetric = doi_without_altmetric,
-      citescore,
-      scimago,
-      qualis
-    )
-  
-  # obtain formatted references
-  formatted_citations <-
-    rcrossref::cr_cn(
-      c(
-        doi_with_altmetric_anais$doi,
-        doi_without_altmetric_anais$doi
-      ),
-      format = "text",
-      raw = TRUE,
-      style = "american-medical-association"
-    )
-  formatted_citations <- substring(formatted_citations, 3)
-  formatted_citations <-
-    cbind(seq(1, length(formatted_citations)), formatted_citations)
-  names(formatted_citations) <- c("ID", "Reference")
-  
-  references_anais <- formatted_citations %>%
-    data.frame()
-} else {
-  doi_with_altmetric_anais = data.frame()
-  doi_without_altmetric_anais = data.frame()
-  references_anais = data.frame()
-  doi_with_altmetric_anais_impacto = data.frame()
-  doi_without_altmetric_anais_impacto = data.frame()
-  references_anais_impacto = data.frame()
-}
-```
-
-```{r bind-all, cache = TRUE, cache.path = "cache/bind-all/", eval = any(has.producao.sucupira, has.producao.ppg)}
-# recall for cache
-doi_with_altmetric_artigos <- doi_with_altmetric_artigos
-doi_with_altmetric_resumos <- doi_with_altmetric_resumos
-doi_with_altmetric_preprints <- doi_with_altmetric_preprints
-doi_with_altmetric_livros <- doi_with_altmetric_livros
-doi_with_altmetric_capitulos <- doi_with_altmetric_capitulos
-doi_with_altmetric_anais <- doi_with_altmetric_anais
-
-# bind sources
-doi_with_altmetric_all <-
-  dplyr::bind_rows(
-    doi_with_altmetric_artigos,
-    doi_with_altmetric_resumos,
-    doi_with_altmetric_preprints,
-    doi_with_altmetric_livros,
-    doi_with_altmetric_capitulos,
-    doi_with_altmetric_anais
-  ) %>%
-  as.data.frame()
-
-# recall for cache
-doi_without_altmetric_artigos <- doi_without_altmetric_artigos
-doi_without_altmetric_resumos <- doi_without_altmetric_resumos
-doi_without_altmetric_preprints <- doi_without_altmetric_preprints
-doi_without_altmetric_livros <- doi_without_altmetric_livros
-doi_without_altmetric_capitulos <- doi_without_altmetric_capitulos
-doi_without_altmetric_anais <- doi_without_altmetric_anais
-
-# bind sources
-doi_without_altmetric_all <-
-  dplyr::bind_rows(
-    doi_without_altmetric_artigos,
-    doi_without_altmetric_resumos,
-    doi_without_altmetric_preprints,
-    doi_without_altmetric_livros,
-    doi_without_altmetric_capitulos,
-    doi_without_altmetric_anais
-  ) %>%
-  as.data.frame()
-
-# bind common data
-doi_all <-
-  dplyr::bind_rows(doi_with_altmetric_all,
-                   doi_without_altmetric_all) %>%
-  as.data.frame()
-
-# bind common data
-references_all <-
-  dplyr::bind_rows(
-    references_artigos,
-    references_resumos,
-    references_preprints,
-    references_livros,
-    references_capitulos,
-    references_anais
-  ) %>%
-  data.frame()
-```
-
-```{r retratacoes, cache = TRUE, cache.path = "cache/retratacoes/", eval = any(has.producao.sucupira, has.producao.ppg)}
-doi_with_altmetric_retracted <- c()
-if (!sjmisc::is_empty(doi_with_altmetric_all)) {
-  for (i in 1:dim(doi_with_altmetric_all)[1]) {
-    has.retraction <- data.frame(retracted = NA)
-    try(has.retraction <- retractcheck::query_or(doi_with_altmetric_all$doi[i]), silent = TRUE)
-    if (!is.na(has.retraction$retracted)) {
-      doi_with_altmetric_retracted <-
-        rbind(doi_with_altmetric_retracted,
-              doi_with_altmetric_all[i,])
-    }
+  # check if DOI is not NA
+  if (!sjmisc::is_empty(dois$DOI)) {
+    # cria metadados para rastreio pelo Altmetric
+    source("Scripts/altmetric-meta-from-dois.R", local = knitr::knit_global())
+    
+    # get Altmetric from DOI
+    source("Scripts/altmetric-from-dois.R", local = knitr::knit_global())
+    produtos.detalhes.sucupira$cited_by_fbwalls_count[matches] <-
+      doi_with_metrics$cited_by_fbwalls_count
+    produtos.detalhes.sucupira$cited_by_feeds_count[matches] <-
+      doi_with_metrics$cited_by_feeds_count
+    produtos.detalhes.sucupira$cited_by_gplus_count[matches] <-
+      doi_with_metrics$cited_by_gplus_count
+    produtos.detalhes.sucupira$cited_by_msm_count[matches] <-
+      doi_with_metrics$cited_by_msm_count
+    produtos.detalhes.sucupira$cited_by_rdts_count[matches] <-
+      doi_with_metrics$cited_by_rdts_count
+    produtos.detalhes.sucupira$cited_by_qna_count[matches] <-
+      doi_with_metrics$cited_by_qna_count
+    produtos.detalhes.sucupira$cited_by_tweeters_count[matches] <-
+      doi_with_metrics$cited_by_tweeters_count
+    produtos.detalhes.sucupira$cited_by_bluesky_count[matches] <-
+      doi_with_metrics$cited_by_bluesky_count
+    produtos.detalhes.sucupira$cited_by_wikipedia_count[matches] <-
+      doi_with_metrics$cited_by_wikipedia_count
+    produtos.detalhes.sucupira$cited_by_policies_count[matches] <-
+      doi_with_metrics$cited_by_policies_count
+    produtos.detalhes.sucupira$cited_by_patents_count[matches] <-
+      doi_with_metrics$cited_by_patents_count
+    produtos.detalhes.sucupira$cited_by_videos_count[matches] <-
+      doi_with_metrics$cited_by_videos_count
+    produtos.detalhes.sucupira$cited_by_accounts_count[matches] <-
+      doi_with_metrics$cited_by_accounts_count
+    produtos.detalhes.sucupira$cited_by_posts_count[matches] <-
+      doi_with_metrics$cited_by_posts_count
+    produtos.detalhes.sucupira$mendeley[matches] <-
+      doi_with_metrics$mendeley
+    produtos.detalhes.sucupira$score[matches] <-
+      doi_with_metrics$score
+    
+    # wait to respect API rate limit (polite request)
+    Sys.sleep(1)
+    # beep to alert
+    beepr::beep("coin")
   }
 }
 
-doi_without_altmetric_retracted <- c()
-if (!sjmisc::is_empty(doi_without_altmetric_all)) {
-  for (i in 1:dim(doi_without_altmetric_all)[1]) {
-    has.retraction <- data.frame(retracted = NA)
-    try(has.retraction <- retractcheck::query_or(doi_without_altmetric_all$doi[i]), silent = TRUE)
-    if (!is.na(has.retraction$retracted)) {
-      doi_without_altmetric_retracted <-
-        rbind(doi_without_altmetric_retracted,
-              doi_without_altmetric_all[i,])
-    }
+# rename column
+data.table::setnames(produtos.detalhes.sucupira, 'score', 'altmetric_score')
+```
+
+### **CrossRef (Open Access, Citations)**
+
+```{r crossref-doi-sucupira, cache = TRUE, cache.path = "cache/crossref-doi-sucupira/", eval = all(has.metricas.doi.sucupira, curl::has_internet())}
+# continue from previous chunk
+
+# iterate item-wise
+for (item in 1:nrow(produtos.sucupira)) {
+  # match ID da Produção entre produtos.sucupira e produtos.detalhes.sucupira
+  matches <- which(
+    produtos.detalhes.sucupira$`ID da Produção` == produtos.sucupira$`ID da Produção`[item],
+    arr.ind = TRUE
+  )
+  
+  # get DOI values
+  dois <- data.frame(DOI = unique(na.omit(produtos.detalhes.sucupira$DOI[matches]))[1], check.names = FALSE)
+  
+  # check if DOI is not NA
+  if (!sjmisc::is_empty(dois$DOI)) {
+    # get OA and citations from DOI after Altmetric
+    source("Scripts/crossref-from-dois.R", local = knitr::knit_global())
+    produtos.detalhes.sucupira$is_oa[matches] <-
+      doi_with_metrics$is_oa
+    produtos.detalhes.sucupira$citations[matches] <-
+      doi_with_metrics$citations
+
+    # wait to respect API rate limit (polite request)
+    Sys.sleep(1)
+    # beep to alert
+    beepr::beep("coin")
   }
 }
 ```
+
+### **Scopus (SJR, CiteScore)**
+
+```{r scopus-issn-sucupira, cache = TRUE, cache.path = "cache/scopus-issn-sucupira/", eval = all(has.metricas.doi.sucupira, curl::has_internet())}
+# continue from previous chunk
+
+# get unique ISSN
+issn.unique <- data.frame(ISSN = as.character(unique(na.omit(produtos.detalhes.sucupira$ISSN))), check.names = FALSE)
+
+# iterate item-wise
+for (item in 1:nrow(issn.unique)) {
+  # match ID da Produção entre produtos.sucupira e produtos.detalhes.sucupira
+  matches <- which(
+    produtos.detalhes.sucupira$ISSN == issn.unique$ISSN[item],
+    arr.ind = TRUE
+  )
+  
+  # get ISSN values
+  df_scopus <- data.frame(issn = issn.unique$ISSN[item], check.names = FALSE)
+  
+  # remove - from ISSN
+  df_scopus$issn <- gsub("-", "", df_scopus$issn)
+  
+  # check if df_scopus is empty
+  if (!sjmisc::is_empty(df_scopus)) {
+    source("Scripts/scopus-from-issn.R", local = knitr::knit_global())
+    produtos.detalhes.sucupira$source_id[matches] <-
+      doi_with_metrics$source_id
+    produtos.detalhes.sucupira$SJR[matches] <-
+      doi_with_metrics$SJR
+    produtos.detalhes.sucupira$SJR_year[matches] <-
+      doi_with_metrics$SJR_year
+    produtos.detalhes.sucupira$CiteScore[matches] <-
+      doi_with_metrics$CiteScore
+    produtos.detalhes.sucupira$CiteScore_year[matches] <-
+      doi_with_metrics$CiteScore_year
+    
+    # wait to respect API rate limit (polite request)
+    Sys.sleep(1)
+    # beep to alert
+    beepr::beep("coin")
+  }
+}
+```
+
+### **PlumX (score)**
+
+```{r plumx-doi-sucupira, cache = TRUE, cache.path = "cache/plumx-doi-sucupira/", eval = all(has.metricas.doi.sucupira, curl::has_internet())}
+# add to data.frame
+```
+
+### **Dimensions (score)**
+
+```{r dimensions-doi-sucupira, cache = TRUE, cache.path = "cache/dimensions-doi-sucupira/", eval = all(has.metricas.doi.sucupira, curl::has_internet())}
+# add to data.frame
+```
+
+## **Check DOI produção PPG**
+
+```{r metricas-doi-ppg, cache = TRUE, cache.path = "cache/metricas-doi-ppg/", eval = all(has.metricas.doi.sucupira, curl::has_internet())}
+
+```
+
+## **Check HAS**
 
 ```{r has, cache = TRUE, cache.path = "cache/has/"}
 # directories
+has.sage.files <- as.logical(has.sage.files)
 has.sucupira.files <- as.logical(has.sucupira.files)
 has.ppg.files <- as.logical(has.ppg.files)
-has.impacto.sage.files <- as.logical(has.impacto.sage.files)
 
 # PPG files
 has.agendas.pesquisa <- as.logical(has.agendas.pesquisa)
-has.apresentacao <- as.logical(has.apresentacao)
 has.area.capes <- as.logical(has.area.capes)
 has.autoavaliacao <- as.logical(has.autoavaliacao)
 has.avaliacao <- as.logical(has.avaliacao)
@@ -1308,77 +740,178 @@ has.metodologia <- as.logical(has.metodologia)
 has.notas <- as.logical(has.notas)
 has.periodicos <- as.logical(has.periodicos)
 has.planejamento <- as.logical(has.planejamento)
-has.podcasts <- as.logical(has.podcasts)
 has.politicas <- as.logical(has.politicas)
 has.premios <- as.logical(has.premios)
 has.premio.capes <- as.logical(has.premio.capes)
 has.producao <- as.logical(has.producao)
 has.repositorios.cooperacao <- as.logical(has.repositorios.cooperacao)
 has.repositorios.sede <- as.logical(has.repositorios.sede)
-has.videos <- as.logical(has.videos)
 
-# data sucupira
-has.artigos.completos.sucupira <- as.logical(has.artigos.completos.sucupira)
-has.artigos.resumos.sucupira <- as.logical(has.artigos.resumos.sucupira)
-has.livros.sucupira <- as.logical(has.livros.sucupira)
-has.anais.sucupira <- as.logical(has.anais.sucupira)
-has.producao.sucupira <- as.logical(has.producao.sucupira)
-has.2024.2021 <- as.logical(has.2024.2021)
-has.2020.2017 <- as.logical(has.2020.2017)
-has.2016.2013 <- as.logical(has.2016.2013)
-has.2012.2010 <- as.logical(has.2012.2010)
-has.posdocs <- as.logical(has.posdocs)
+# metrics sucupira
+has.metricas.doi.sucupira <- as.logical(has.metricas.doi.sucupira)
+has.metricas.doi.ppg <- as.logical(has.metricas.doi.ppg)
 
-# data ppg
-has.artigos.completos.ppg <- as.logical(has.artigos.completos.ppg)
-has.artigos.resumos.ppg <- as.logical(has.artigos.resumos.ppg)
-has.preprints.ppg <- as.logical(has.preprints.ppg)
-has.livros.ppg <- as.logical(has.livros.ppg)
-has.capitulos.ppg <- as.logical(has.capitulos.ppg)
-has.anais.ppg <- as.logical(has.anais.ppg)
-has.producao.ppg <- as.logical(has.producao.ppg)
+# has.posdoc
+has.posdoc <- as.logical(has.posdoc)
+
+# has.tables
+has.table.msc <- FALSE
+has.table.dsc <- FALSE
 ```
 
-```{r save, eval = FALSE}
-# Write doi_with_altmetric_all to TSV file
-try(
-  write.table(
-    doi_with_altmetric_all,
-    "doi_with_altmetric_all.tsv",
-    quote = FALSE,
-    sep = "\t",
-    row.names = FALSE,
-    col.names = TRUE
-  ),
-  silent = TRUE
-)
+## **Agregar dados de produção**
 
-# Write doi_without_altmetric_all to TSV file
-try(
-  write.table(
-    doi_without_altmetric_all,
-    "doi_without_altmetric_all.tsv",
-    quote = FALSE,
-    sep = "\t",
-    row.names = FALSE,
-    col.names = TRUE
-  ),
-  silent = TRUE
-)
+```{r bind-all, cache = TRUE, cache.path = "cache/bind-all/", eval = any(has.sucupira.files, has.ppg.files)}
+# drop lines with empty ID or Ano de publicação
+produtos.detalhes.sucupira <- produtos.detalhes.sucupira[
+  !is.na(produtos.detalhes.sucupira$`ID da Produção`) | 
+  !is.na(produtos.detalhes.sucupira$`Ano da Produção`), 
+]
 
-# Write doi_all to TSV file
-try(
-  write.table(
-    doi_all,
-    "doi_all.tsv",
-    quote = FALSE,
-    sep = "\t",
-    row.names = FALSE,
-    col.names = TRUE
-  ),
-  silent = TRUE
-)
+# bind sources
+metricas_all <-
+  dplyr::bind_rows(
+    produtos.detalhes.sucupira
+  ) %>%
+  as.data.frame(check.names = FALSE)
 ```
+
+## **Gravar TSV**
+
+```{r save-tsv, eval = FALSE}
+# Write data to TSV file
+try(write.table(
+  metricas_all,
+  "metricas_all.tsv",
+  quote = FALSE,
+  sep = "\t",
+  row.names = FALSE,
+  col.names = TRUE
+),
+silent = TRUE)
+
+try(write.table(
+  doi_with_error,
+  "doi_with_error.tsv",
+  quote = FALSE,
+  sep = "\t",
+  row.names = FALSE,
+  col.names = TRUE
+),
+silent = TRUE)
+```
+
+## **Sites**
+
+```{r site, eval = !file.exists("site.png")}
+yml <- yaml::read_yaml("_site.yml")
+URL.site <- yml$navbar$right[[1]]$menu[[2]]$href
+
+screen_width <- 1920
+screen_height <- 1080
+
+# function to vget screenshot
+library("chromote")
+screenshot <- function(b, img_path,
+                       selector = "html",
+                       cliprect = c(top = 0, left = 0, width = screen_width, height = screen_height),
+                       expand = NULL) {
+  
+  b$screenshot(
+    img_path,
+    selector = selector,
+    delay = 15,
+    cliprect = cliprect,
+    expand = expand
+  )
+  
+  magick::image_read(img_path) |>
+    magick::image_shadow() |>
+    magick::image_write(img_path, quality = 100)
+}
+
+# get URL screenshot (site)
+if(!sjmisc::is_empty(URL.site)){
+  a <- ChromoteSession$new(height = screen_height, width = screen_width)
+  try(invisible(a$Page$navigate(URL.site)), silent = TRUE)
+  Sys.sleep(1)
+  try(screenshot(a, "site.png"), silent = TRUE)
+}
+```
+
+```{r observatorio, eval = !file.exists("observatorio.png")}
+yml <- yaml::read_yaml("_site.yml")
+URL.obs <- yml$href
+
+screen_width <- 1920
+screen_height <- 1080
+
+# function to vget screenshot
+library("chromote")
+screenshot <- function(b, img_path,
+                       selector = "html",
+                       cliprect = c(top = 0, left = 0, width = screen_width, height = screen_height),
+                       expand = NULL) {
+  
+  b$screenshot(
+    img_path,
+    selector = selector,
+    delay = 15,
+    cliprect = cliprect,
+    expand = expand
+  )
+  
+  magick::image_read(img_path) |>
+    magick::image_shadow() |>
+    magick::image_write(img_path, quality = 100)
+}
+
+# get URL screenshot (observatório)
+if(!sjmisc::is_empty(URL.obs)){
+  b <- ChromoteSession$new(height = screen_height, width = screen_width)
+  try(invisible(b$Page$navigate(URL.obs)), silent = TRUE)
+  Sys.sleep(1)
+  try(screenshot(b, "observatorio.png"), silent = TRUE)
+}
+```
+
+## **Relatórios de autoavaliação**
+
+```{r autoavaliacao, echo = FALSE, include = FALSE, eval = TRUE}
+# Define periods
+periodos <- c("2010-2012", "2013-2016", "2017-2020", "2021-2024", "2025-2028")
+
+# Spam periods by vector element in a new list
+spam.periodos <- list()
+for (periodo in periodos) {
+  spam.periodos[[periodo]] <- seq(as.numeric(strsplit(periodo, "-")[[1]][1]), as.numeric(strsplit(periodo, "-")[[1]][2]))
+}
+
+# Get years
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+anos <- as.character(anos)
+
+# Get spam.periodos elements that have anos in range
+periodos <- names(spam.periodos)[sapply(spam.periodos, function(x) any(x %in% anos))]
+
+# Rmd files
+for (periodo in periodos) {
+  # Clean metadata
+  knitr::knit_meta(class = NULL, clean = TRUE)
+  # Knit Rmd file
+  rmarkdown::render(
+    input = "autoavaliacao.Rmd",
+    output_format = "all",
+    output_file = paste0("autoavaliacao-", periodo),
+    params = list(
+      quadrienal.vigente = paste0(as.numeric(strsplit(periodo, "-")[[1]][1]):as.numeric(strsplit(periodo, "-")[[1]][2]), collapse = ";"),
+      render_document = TRUE
+    )
+  )
+}
+```
+
+## **Session info**
 
 ```{r session-info}
 sessioninfo::session_info() %>%

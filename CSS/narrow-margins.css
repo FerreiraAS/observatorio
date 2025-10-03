@@ -1,6 +1,19 @@
-/* script for narrow margins */
-div.main-container {
-  max-width: 1280px;
+/* wide container HEADER */
+.container {
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* wide container BODY */
+div.container-fluid.main-container{
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.main-container {
+  max-width: 95% !important;
   margin-left: auto;
   margin-right: auto;
 }

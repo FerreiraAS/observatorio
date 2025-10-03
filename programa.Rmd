@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE,
   fig.align = 'center',
-  results = "asis",
+  results = 'asis',
   include = TRUE,
   out.width = "100%",
   knitr.kable.NA = '',
@@ -27,6 +27,14 @@ knitr::opts_chunk$set(
   webshot = "webshot",
   dev = "png"
 )
+```
+
+<!--load caches-->
+```{r load-caches, echo = FALSE, include = FALSE}
+folders <- list.dirs(file.path("cache/"), full.names = FALSE, recursive = FALSE)
+for(folder in folders){
+    knitr::load_cache(label = folder, path = paste0(file.path("cache", folder), "/"))
+}
 ```
 
 <!--script for inserting LOGO ABOVE THE TOC-->
@@ -43,29 +51,6 @@ home <- metadata$repository_url
 source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 ```
 </p>
-
-<br>
-
-## **Dados básicos do Programa** {#dados-basicos .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !has.apresentacao}
-cat('<br>')
-```
-
-```{r apresentacao, eval = has.apresentacao}
-cat(
-  paste0(
-    '<iframe src=\"',
-    readxl::read_excel("PPG/Apresentação.xlsx", sheet = "Sucupira")[1, 1],
-    '\" style=\"width:100%; height:600px; border:2px solid black;\"></iframe>'
-  )
-)
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-```
 
 <br>
 
@@ -299,38 +284,101 @@ names(sucupira.list) <- as.character(anos)
 projetos.all <-
   do.call(rbind.data.frame, sucupira.list[as.character(max(anos))])
 
+# 
+
 # filter ongoing projects only
 projetos <-
   unique(projetos.all[projetos.all$`Membro Responsável` == "Sim" &
                  projetos.all$Situação == "EM ANDAMENTO", ])
 
+# remove rows with all missing values
+projetos <- projetos[rowSums(is.na(projetos)) < ncol(projetos), ]
+
 table.projetos <-
   data.frame(
+    projetos$`Identificador da Pessoa do Membro`,
     projetos$`Área de Concentração`,
     projetos$`Linha de Pesquisa`,
     projetos$`Nome do Projeto de Pesquisa`,
-    projetos$`Nome do Membro do Projeto`,
-    projetos$`Data de Início`
+    projetos$`Natureza do Projeto de Pesquisa`,
+    projetos$`Data de Início`,
+    projetos$`Nome do Membro do Projeto`
   )
 table.projetos <- table.projetos[order(table.projetos[, 1]),]
-labels <- colnames(table.projetos)
-# print tables
-table.projetos[, 1] <-
-  as.vector(unlist(lapply(table.projetos[, 1], FUN = stringr::str_to_upper)))
-table.projetos[, 2] <-
-  as.vector(unlist(lapply(table.projetos[, 2], FUN = stringr::str_to_sentence)))
-table.projetos[, 3] <-
-  as.vector(unlist(lapply(table.projetos[, 3], FUN = stringr::str_to_title)))
 
 colnames(table.projetos) <-
-  c("Área de Concentração",
+  c("Identificador da Pessoa do Membro",
+    "Área de Concentração",
     "Linha de Pesquisa",
-    "Projeto de Pesquisa",
-    "Membro Responsável",
-    "Início")
+    "Projeto",
+    "Natureza",
+    "Início",
+    "Responsável"
+    )
+
+# docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+docentes <- data.frame(
+  sucupira.raw$`Identificador da Pessoa`,
+  sucupira.raw$`País`
+)
+colnames(docentes) <- c("Identificador", "País")
+docentes <- unique(docentes)
+
+# posdocs
+sheet <- "Pós-Doc"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+posdocs <- data.frame(
+  sucupira.raw$`Identificador da Pessoa`,
+  sucupira.raw$`País`
+)
+colnames(posdocs) <- c("Identificador", "País")
+posdocs <- unique(posdocs)
+
+# participantes externos
+sheet <- "Participante Externo"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+externos <- data.frame(
+  sucupira.raw$`Identificador da Pessoa`,
+  sucupira.raw$`País`
+)
+colnames(externos) <- c("Identificador", "País")
+externos <- unique(externos)
+
+# bind all
+responsaveis <- rbind(docentes, posdocs, externos)
+
+if(!sjmisc::is_empty(table.projetos)){
+  # get País based on the docente's ID
+  table.projetos$País <- rep(NA, nrow(table.projetos))
+  for (i in 1:nrow(table.projetos)) {
+    table.projetos$País[i] <- unique(na.omit(
+      responsaveis$País[table.projetos$`Identificador da Pessoa do Membro`[i] == responsaveis$Identificador]
+    ))
+  }
+  
+  # drop 1st column
+  table.projetos$'Identificador da Pessoa do Membro' <- NULL
+  
+  # print tables
+  table.projetos[, 1] <-
+    as.vector(unlist(lapply(table.projetos[, 1], FUN = stringr::str_to_upper)))
+  table.projetos[, 2] <-
+    as.vector(unlist(lapply(table.projetos[, 2], FUN = stringr::str_to_upper)))
+  table.projetos[, 3] <-
+    as.vector(unlist(lapply(table.projetos[, 3], FUN = stringr::str_to_sentence)))
+  table.projetos[, 4] <-
+    as.vector(unlist(lapply(table.projetos[, 4], FUN = stringr::str_to_sentence)))
+  table.projetos[, 6] <-
+    as.vector(unlist(lapply(table.projetos[, 6], FUN = stringr::str_to_title)))
+}
+
+# sort by Área de concentração, Linha de pesquisa, Projeto de pesquisa
+table.projetos <- table.projetos[order(table.projetos[, 1], table.projetos[, 2], table.projetos[, 3]),]
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-create_dt(table.projetos, title = "Programa - Projetos de Pesquisa - Em andamento")
+create_dt(table.projetos, title = "Programa - Projetos - Em andamento")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -348,41 +396,99 @@ source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
 names(sucupira.list) <- as.character(anos)
 
-# get data from all Sucupira years available
-projetos.all <-
-  do.call(rbind.data.frame, sucupira.list)
+# Bind all sheets for disciplines
+periodos <- names(sucupira.list)[na.omit(match(anos, names(sucupira.list)))]
+projetos.all <- do.call(rbind.data.frame, sucupira.list[periodos])
 
-# filter closed projects only
+# filter CONCLUIDOS projects only
 projetos <-
   unique(projetos.all[projetos.all$`Membro Responsável` == "Sim" &
                  projetos.all$Situação != "EM ANDAMENTO", ])
 
+# remove rows with all missing values
+projetos <- projetos[rowSums(is.na(projetos)) < ncol(projetos), ]
+
 table.projetos <-
   data.frame(
+    projetos$`Identificador da Pessoa do Membro`,
     projetos$`Área de Concentração`,
     projetos$`Linha de Pesquisa`,
     projetos$`Nome do Projeto de Pesquisa`,
-    projetos$`Nome do Membro do Projeto`,
+    projetos$`Natureza do Projeto de Pesquisa`,
     projetos$`Data de Início`,
-    projetos$`Data da Situação`
+    projetos$`Data da Situação`,
+    projetos$`Nome do Membro do Projeto`
   )
 table.projetos <- table.projetos[order(table.projetos[, 1]),]
-labels <- colnames(table.projetos)
-# print tables
-table.projetos[, 1] <-
-  as.vector(unlist(lapply(table.projetos[, 1], FUN = stringr::str_to_upper)))
-table.projetos[, 2] <-
-  as.vector(unlist(lapply(table.projetos[, 2], FUN = stringr::str_to_sentence)))
-table.projetos[, 3] <-
-  as.vector(unlist(lapply(table.projetos[, 3], FUN = stringr::str_to_title)))
 
 colnames(table.projetos) <-
-  c("Área de Concentração",
+  c("Identificador da Pessoa do Membro",
+    "Área de Concentração",
     "Linha de Pesquisa",
-    "Projeto de Pesquisa",
-    "Membro Responsável",
+    "Projeto",
+    "Natureza",
     "Início",
-    "Fim")
+    "Fim",
+    "Responsável"
+    )
+
+# docentes
+sheet <- "Docentes"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+docentes <- data.frame(
+  sucupira.raw$`Identificador da Pessoa`,
+  sucupira.raw$`País`
+)
+colnames(docentes) <- c("Identificador", "País")
+docentes <- unique(docentes)
+
+# posdocs
+sheet <- "Pós-Doc"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+posdocs <- data.frame(
+  sucupira.raw$`Identificador da Pessoa`,
+  sucupira.raw$`País`
+)
+colnames(posdocs) <- c("Identificador", "País")
+posdocs <- unique(posdocs)
+
+# participantes externos
+sheet <- "Participante Externo"
+source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
+externos <- data.frame(
+  sucupira.raw$`Identificador da Pessoa`,
+  sucupira.raw$`País`
+)
+colnames(externos) <- c("Identificador", "País")
+externos <- unique(externos)
+
+# bind all
+responsaveis <- rbind(docentes, posdocs, externos)
+
+if(!sjmisc::is_empty(table.projetos)){
+  # get País based on the docente's ID
+  table.projetos$País <- rep(NA, nrow(table.projetos))
+  for (i in 1:nrow(table.projetos)) {
+    table.projetos$País[i] <- unique(na.omit(
+      responsaveis$País[table.projetos$`Identificador da Pessoa do Membro`[i] == responsaveis$Identificador]
+    ))
+  }
+  
+  # drop 1st column
+  table.projetos$'Identificador da Pessoa do Membro' <- NULL
+  
+  # print tables
+  table.projetos[, 1] <-
+    as.vector(unlist(lapply(table.projetos[, 1], FUN = stringr::str_to_upper)))
+  table.projetos[, 2] <-
+    as.vector(unlist(lapply(table.projetos[, 2], FUN = stringr::str_to_upper)))
+  table.projetos[, 3] <-
+    as.vector(unlist(lapply(table.projetos[, 3], FUN = stringr::str_to_sentence)))
+  table.projetos[, 4] <-
+    as.vector(unlist(lapply(table.projetos[, 4], FUN = stringr::str_to_sentence)))
+  table.projetos[, 7] <- 
+    as.vector(unlist(lapply(table.projetos[, 7], FUN = stringr::str_to_title)))
+}
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(table.projetos, title = "Programa - Projetos de Pesquisa - Encerrados")
@@ -458,7 +564,12 @@ if (dim(financiadores.all)[1] != 0) {
                                       c("Nome do Financiador",
                                         "Natureza do Financiador",
                                         "Data Início Financiador",
-                                        "Data Fim Financiador"))
+                                        "Data Fim Financiador",
+                                        "Financiador Estrangeiro"))
+  
+  # revise foreing funders
+  table.financiadores$`Financiador Estrangeiro`[financiadores.all$`Tipo de Documento do Financiador` == "Pessoa Jurídica Estrangeira"] <- "Sim"
+  
   table.financiadores <- table.financiadores[order(financiadores.all[, 1]), ]
   # print tables
   table.financiadores[, 1] <-
@@ -476,12 +587,14 @@ if (dim(financiadores.all)[1] != 0) {
     c("Agência",
       "Natureza",
       "Início",
-      "Fim")
+      "Fim",
+      "Estrangeiro")
+  table.financiadores <- table.financiadores[order(table.financiadores$Início, table.financiadores$Fim, table.financiadores$Agência, decreasing = FALSE), ]
+  
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table.financiadores, title = "Programa - Financiadores - Projetos de Pesquisa - Auxílios")
 } else {
   cat('\n\n')
-  cat('*Sem produção para exibir no período*')
   cat('\n\n')
 }
 
@@ -511,7 +624,12 @@ if (dim(financiadores.all)[1] != 0) {
                                       c("Nome do Financiador",
                                         "Natureza do Financiador",
                                         "Data Início Financiador",
-                                        "Data Fim Financiador"))
+                                        "Data Fim Financiador",
+                                        "Financiador Estrangeiro"))
+  
+  # revise foreing funders
+  table.financiadores$`Financiador Estrangeiro`[financiadores.all$`Tipo de Documento do Financiador` == "Pessoa Jurídica Estrangeira"] <- "Sim"
+  
   table.financiadores <- table.financiadores[order(financiadores.all[, 1]), ]
   # print tables
   table.financiadores[, 1] <-
@@ -529,12 +647,14 @@ if (dim(financiadores.all)[1] != 0) {
     c("Agência",
       "Natureza",
       "Início",
-      "Fim")
+      "Fim", 
+      "Estrangeira")
+  table.financiadores <- table.financiadores[order(table.financiadores$Início, table.financiadores$Fim, table.financiadores$Agência, decreasing = FALSE), ]
+  
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table.financiadores, title = "Programa - Financiadores - Projetos de Pesquisa - Bolsas")
 } else {
   cat('\n\n')
-  cat('*Sem produção para exibir no período*')
   cat('\n\n')
 }
 
@@ -583,11 +703,13 @@ if (dim(financiadores.all)[1] != 0) {
       "Natureza",
       "Início",
       "Fim")
+  
+  table.financiadores <- table.financiadores[order(table.financiadores$Início, table.financiadores$Fim, table.financiadores$Agência, decreasing = FALSE), ]
+  
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   create_dt(table.financiadores, title = "Financiadores - Trabalhos de Conclusão de Curso")
 } else {
   cat('\n\n')
-  cat('*Sem produção para exibir no período*')
   cat('\n\n')
 }
 
@@ -608,7 +730,9 @@ financiadores.sub <-
                                "Edital",
                                "Processo No.",
                                "Título do projeto",
-                               "Programa")
+                               "Proponente",
+                               "Programa",
+                               "País")
 fonte.sub <- financiadores.raw %>% dplyr::select("Fonte")
 
 financiadores <-
@@ -636,14 +760,9 @@ if (dim(financiadores)[1] != 0) {
   financiadores <- cbind(financiadores, Abrir)
   financiadores <-
     financiadores[order(financiadores$Ano, decreasing = TRUE), ]
-} else {
-  cat('\n\n')
-  cat('*Sem dados para exibir*')
-  cat('\n\n')
 }
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
-try(create_dt(financiadores, title = "Programa - Financiadores - 2024-2021"),
-    silent = TRUE)
+create_dt(financiadores, title = "Programa - Financiadores - Detalhamento")
 
 cat('\n\n')
 cat(
@@ -703,6 +822,38 @@ cat('<br>')
 ```{r laboratorios-equipamentos, eval = has.laboratorios}
 # initialize all sheets
 abas <- readxl::excel_sheets("PPG/Laboratórios.xlsx")
+abas <- abas[order(abas, decreasing = FALSE)]
+
+# create a sumary table of all labs (each sheet is a laboratory)
+all_labs <- data.frame(
+  Laboratório = character(),
+  Equipamentos = character(),
+  stringsAsFactors = FALSE
+)
+
+for (j in 1:length(abas)) {
+  temp <- readxl::read_excel("PPG/Laboratórios.xlsx",
+                             sheet = abas[j],
+                             col_types = c("text"))
+  # quantidade de equipamentos é a soma da coluna 2
+  num_equip <- sum(as.numeric(unlist(temp[2:nrow(temp), 2])), na.rm = TRUE)
+  all_labs <- rbind(all_labs,
+                    data.frame(
+                      Laboratório = name <- names(temp[1]),
+                      Equipamentos = as.character(num_equip)
+                    ))
+}
+
+# as dataframe
+all_labs$Equipamentos <- as.character(all_labs$Equipamentos)
+
+# print summary table
+cat("### **", as.character(j), "**", "\n", sep = "")
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(all_labs, title = "Programa - Laboratórios - Resumo")
+cat('\n\n')
+cat('**Fontes**: **PPG**')
+cat('\n\n')
 
 # display each sheet in a tab
 for (j in 1:length(abas)) {
@@ -718,7 +869,7 @@ for (j in 1:length(abas)) {
   name <- names(laboratorios.raw[1])
   names(laboratorios.raw) <- laboratorios.raw[1,]
   lab.data <- laboratorios.raw[-1,]
-
+  
   # print table
   cat(paste0("**", unlist(name), "**"))
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -842,21 +993,23 @@ if (dim(disciplinas.dsc)[1] != 0) {
   table.dsc <- table.dsc[complete.cases(table.dsc),]
   table.dsc <- table.dsc[,-2]
   
-  cat('<form name=formOBRDSC method=post action=check.php>')
-  cat('<table class=\"table table-striped\">')
-  for (i in 1:dim(table.dsc)[1]) {
-    cat(
-      '<tr><td><input type=\"checkbox\" name=\"ckb\" value=\"',
-      table.dsc[i, 2],
-      '\" onclick=\"chkcontrol3(',
-      i - 1,
-      ')\">',
-      paste0(table.dsc[i, 1], ' (', table.dsc[i, 2], ' CR) (', table.dsc[i, 3]),
-      ' CH)',
-      '</input></td></tr>'
-    )
+  if(dim(table.dsc)[1] != 0){
+    cat('<form name=formOBRDSC method=post action=check.php>')
+    cat('<table class=\"table table-striped\">')
+    for (i in 1:dim(table.dsc)[1]) {
+      cat(
+        '<tr><td><input type=\"checkbox\" name=\"ckb\" value=\"',
+        table.dsc[i, 2],
+        '\" onclick=\"chkcontrol3(',
+        i - 1,
+        ')\">',
+        paste0(table.dsc[i, 1], ' (', table.dsc[i, 2], ' CR) (', table.dsc[i, 3]),
+        ' CH)',
+        '</input></td></tr>'
+      )
+    }
+    cat('</table></form>')
   }
-  cat('</table></form>')
 }
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
@@ -915,21 +1068,23 @@ if (dim(disciplinas.dsc)[1] != 0) {
   table.dsc <- table.dsc[complete.cases(table.dsc),]
   table.dsc <- table.dsc[,-2]
   
-  cat('<form name=formELEDSC method=post action=check.php>')
-  cat('<table class=\"table table-striped\">')
-  for (i in 1:dim(table.dsc)[1]) {
-    cat(
-      '<tr><td><input type=\"checkbox\" name=\"ckb\" value=\"',
-      table.dsc[i, 2],
-      '\" onclick=\"chkcontrol4(',
-      i - 1,
-      ')\">',
-      paste0(table.dsc[i, 1], ' (', table.dsc[i, 2], ' CR) (', table.dsc[i, 3]),
-      ' CH)',
-      '</input></td></tr>'
-    )
+  if(dim(table.dsc)[1] != 0){
+    cat('<form name=formELEDSC method=post action=check.php>')
+    cat('<table class=\"table table-striped\">')
+    for (i in 1:dim(table.dsc)[1]) {
+      cat(
+        '<tr><td><input type=\"checkbox\" name=\"ckb\" value=\"',
+        table.dsc[i, 2],
+        '\" onclick=\"chkcontrol4(',
+        i - 1,
+        ')\">',
+        paste0(table.dsc[i, 1], ' (', table.dsc[i, 2], ' CR) (', table.dsc[i, 3]),
+        ' CH)',
+        '</input></td></tr>'
+      )
+    }
+    cat('</table></form>')
   }
-  cat('</table></form>')
 }
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
@@ -998,21 +1153,23 @@ if (dim(disciplinas.msc)[1] != 0) {
   table.msc <- table.msc[complete.cases(table.msc),]
   table.msc <- table.msc[,-2]
   
-  cat('<form name=formOBRMSC method=post action=check.php>')
-  cat('<table class=\"table table-striped\">')
-  for (i in 1:dim(table.msc)[1]) {
-    cat(
-      '<tr><td><input type=\"checkbox\" name=\"ckb\" value=\"',
-      table.msc[i, 2],
-      '\" onclick=\"chkcontrol1(',
-      i - 1,
-      ')\">',
-      paste0(table.msc[i, 1], ' (', table.msc[i, 2], ' CR) (', table.msc[i, 3]),
-      ' CH)',
-      '</input></td></tr>'
-    )
+  if(dim(table.msc)[1] != 0){
+    cat('<form name=formOBRMSC method=post action=check.php>')
+    cat('<table class=\"table table-striped\">')
+    for (i in 1:dim(table.msc)[1]) {
+      cat(
+        '<tr><td><input type=\"checkbox\" name=\"ckb\" value=\"',
+        table.msc[i, 2],
+        '\" onclick=\"chkcontrol1(',
+        i - 1,
+        ')\">',
+        paste0(table.msc[i, 1], ' (', table.msc[i, 2], ' CR) (', table.msc[i, 3]),
+        ' CH)',
+        '</input></td></tr>'
+      )
+    }
+    cat('</table></form>')
   }
-  cat('</table></form>')
 }
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
@@ -1071,21 +1228,23 @@ if (dim(disciplinas.msc)[1] != 0) {
   table.msc <- table.msc[complete.cases(table.msc),]
   table.msc <- table.msc[,-2]
   
-  cat('<form name=formELEMSC method=post action=check.php>')
-  cat('<table class=\"table table-striped\">')
-  for (i in 1:dim(table.msc)[1]) {
-    cat(
-      '<tr><td><input type=\"checkbox\" name=\"ckb\" value=\"',
-      table.msc[i, 2],
-      '\" onclick=\"chkcontrol2(',
-      i - 1,
-      ')\">',
-      paste0(table.msc[i, 1], ' (', table.msc[i, 2], ' CR) (', table.msc[i, 3]),
-      ' CH)',
-      '</input></td></tr>'
-    )
+  if(dim(table.msc)[1] != 0){
+    cat('<form name=formELEMSC method=post action=check.php>')
+    cat('<table class=\"table table-striped\">')
+    for (i in 1:dim(table.msc)[1]) {
+      cat(
+        '<tr><td><input type=\"checkbox\" name=\"ckb\" value=\"',
+        table.msc[i, 2],
+        '\" onclick=\"chkcontrol2(',
+        i - 1,
+        ')\">',
+        paste0(table.msc[i, 1], ' (', table.msc[i, 2], ' CR) (', table.msc[i, 3]),
+        ' CH)',
+        '</input></td></tr>'
+      )
+    }
+    cat('</table></form>')
   }
-  cat('</table></form>')
 }
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
@@ -1221,46 +1380,15 @@ bibliografia.raw <-
                      sheet = "Bibliografia",
                      col_types = c("text"))
 
-ids <- order(bibliografia.raw$'Disciplina', decreasing = FALSE)
-bibliografia.raw <- bibliografia.raw[ids, ]
+# caps lock
+bibliografia.raw$Disciplina <- toupper(bibliografia.raw$Disciplina)
+
+bibliografia.raw <- bibliografia.raw[order(bibliografia.raw$'Disciplina', decreasing = FALSE), ]
 
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(bibliografia.raw, title = "Programa - Bibliografia")
 
 cat('<br>')
-```
-
-```{r bibliografia-ano, eval = has.bibliografia}
-# read separate sheets
-bibliografia.raw <-
-  readxl::read_excel("PPG/Bibliografia.xlsx",
-                     sheet = "Bibliografia",
-                     col_types = c("text"))
-
-bib.ano.raw <- bibliografia.raw$Referência
-bib.ano <-
-  as.numeric(na.exclude(str_extract(bib.ano.raw, "[' '][2-2][0-9][0-9][0-9]")))
-bib.ano <-
-  as.numeric(na.exclude(
-    str_extract(
-      bib.ano.raw,
-      "[' '][1-1][9-9][5-9][0-9]|[2-2][0-0][0-2][0-1]"
-    )
-  ))
-
-par(oma = c(2, 0.1, 2, 0.1), mar = c(5, 4, 2, 2))
-# generate plot of conceitos per year
-hist(
-  bib.ano,
-  xlab = "Ano de publicação",
-  ylab = "Referências (N)",
-  col = RColorBrewer::brewer.pal(n = 3, name = "Set3")[1],
-  main = NULL
-)
-title("Referências bibliográficas, por ano de publicação", outer = TRUE)
-
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -1390,9 +1518,8 @@ for (j in 1:length(abas)) {
   }
   editais <- cbind(editais.raw[, -3], Abrir)
   
-  ids <- order(editais[, 1], decreasing = TRUE)
-  editais <- editais[ids,]
-
+  editais <- editais[order(editais[, 1], decreasing = TRUE),]
+  
   # print table
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   cat(knitr::knit_print(create_dt(editais, title = paste0("Programa - Editais - ", abas[j]))))
@@ -1447,6 +1574,8 @@ for (j in 1:length(abas)) {
   }
   bolsas.raw <- cbind(bolsas.raw[, -3], Abrir)
   
+  bolsas.raw <- bolsas.raw[order(bolsas.raw[, 1], decreasing = TRUE),]
+  
   # print table
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
   cat(knitr::knit_print(create_dt(bolsas.raw, title = paste0("Programa - Bolsas de estudo - ", abas[j]))))
@@ -1500,8 +1629,7 @@ for (j in 1:length(abas)) {
   }
   calendarios <- cbind(calendarios.raw[, -3], Abrir)
   
-  ids <- order(calendarios[, 1], decreasing = TRUE)
-  calendarios <- calendarios[ids,]
+  calendarios <- calendarios[order(calendarios[, 1], decreasing = TRUE),]
 
   # print table
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -1521,332 +1649,124 @@ for (j in 1:length(abas)) {
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-### **2024-2021**
+```{r, eval = !has.sucupira.files}
+cat('<br>')
+```
 
-```{r turmas-2024-2021, eval = has.sucupira.files}
+```{r turmas, eval = has.sucupira.files}
 # turmas
 sheet <- "Turmas"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
 
 # get years
 source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
+periodos <- as.character(anos)
 
-# bind all sheets
-periodos <-
-  names(sucupira.list)[na.omit(match(c(2021:2024), names(sucupira.list)))]
+turmas <- dplyr::select(
+  sucupira.raw,
+  "Identificador da Turma",
+  "Período/Ano",
+  "Nome da Disciplina",
+  "Nível do curso",
+  "Nome do responsável",
+  "Categoria do responsável",
+  "Indicador de responsável principal"
+)
 
-has.avaliacao <- as.logical(length(periodos) != 0)
-```
+turmas$`Nome do responsável` <- tools::toTitleCase(tolower(turmas$`Nome do responsável`))
 
-```{r turmas-2024, eval = all(has.sucupira.files, has.avaliacao)}
-# load custom function
-source("Scripts/get-initials.R", local = knitr::knit_global())
+# unique ID de turma
+turmas.ID <- unique(turmas$`Identificador da Turma`)
 
-periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
-turmas.raw <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
+table.turmas <- data.frame(
+  "Ano" = rep(NA, length(turmas.ID)),
+  "Período" = rep(NA, length(turmas.ID)),
+  "Disciplina" = rep(NA, length(turmas.ID)),
+  "Nível" = rep(NA, length(turmas.ID)),
+  "Responsável" = rep(NA, length(turmas.ID)),
+  "Colaboradores" = rep(NA, length(turmas.ID)),
+  check.names = FALSE
+)
 
-if (dim(turmas.raw)[1] != 0) {
-  # build a cross table DISCIPLINA vs. ANO
-  turmas.raw$`Período/Ano` <-
-    paste(
-      sub(".*/", "", turmas.raw$`Período/Ano`),
-      sub("/.*", "", turmas.raw$`Período/Ano`),
-      sep = "/"
+# create table of unique turmas
+if(!sjmisc::is_empty(turmas.ID)){
+  for (i in 1:length(turmas.ID)) {
+    # get turma data
+    turma <- turmas[turmas$`Identificador da Turma` == turmas.ID[i], ]
+    # get turma ano e periodo
+    table.turmas$Ano[i] <- as.numeric(unlist(strsplit(unique(
+      turma$`Período/Ano`
+    ), "/"))[2])
+    table.turmas$Período[i] <- as.numeric(unlist(strsplit(unique(
+      turma$`Período/Ano`
+    ), "/"))[1])
+    # get turma disciplina
+    table.turmas$`Disciplina`[i] <- unique(turma$`Nome da Disciplina`)
+    # get turma nível
+    table.turmas$`Nível`[i] <- unique(turma$`Nível do curso`)
+    # get turma responsável if existent
+    responsaveis <- turma[turma$`Indicador de responsável principal` == "Sim",]
+    if (!sjmisc::is_empty(responsaveis)) {
+      for (j in 1:dim(responsaveis)[1]) {
+        try(if (responsaveis$`Categoria do responsável`[j] == "Discente") {
+          responsaveis$Responsável[j] <-
+            paste0("<b>", responsaveis$`Nome do responsável`[j], "¹", "</b>")
+        } else if (responsaveis$`Categoria do responsável`[j] == "Egresso") {
+          responsaveis$Responsável[j] <-
+            paste0("<b>", responsaveis$`Nome do responsável`[j], "²", "</b>")
+        } else if (responsaveis$`Categoria do responsável`[j] == "Docente") {
+          responsaveis$Responsável[j] <-
+            paste0("<b>", responsaveis$`Nome do responsável`[j], "³", "</b>")
+        } else {
+          responsaveis$Responsável[j] <-
+            responsaveis$`Nome do responsável`[j]
+        }, silent = TRUE)
+      }
+    }
+    # paste colaboradores
+    table.turmas$Responsável[i] <- paste0(
+      paste0(responsaveis$Responsável, collapse = ", "),
+      collapse = ", "
     )
-  cross.table.turmas <-
-    as.matrix(table(
-      initials(turmas.raw$`Nome da Disciplina`),
-      turmas.raw$`Período/Ano`
-    ))
-  Oferecida <- colSums(cross.table.turmas)
-  Oferecida[Oferecida > 0] <- "✅"
-  Oferecida[Oferecida == 0] <- ""
-  turmas.oferecidas <- rbind(Oferecida, cross.table.turmas)
-  turmas.oferecidas[turmas.oferecidas > 0] <- "✔"
-  turmas.oferecidas[turmas.oferecidas == 0] <- ""
-  if (length(colnames(turmas.oferecidas)) > 1) {
-    turmas.oferecidas <-
-      turmas.oferecidas[, order(colnames(turmas.oferecidas), decreasing = TRUE)]
+    
+    # get turma colaboradores if existent
+    colaboradores <- turma[turma$`Indicador de responsável principal` == "Não", ]
+    if (!sjmisc::is_empty(colaboradores)) {
+      for (j in 1:dim(colaboradores)[1]) {
+        try(if (colaboradores$`Categoria do responsável`[j] == "Discente") {
+          colaboradores$Colaboradores[j] <-
+            paste0("<b>", colaboradores$`Nome do responsável`[j], "¹", "</b>")
+        } else if (colaboradores$`Categoria do responsável`[j] == "Egresso") {
+          colaboradores$Colaboradores[j] <-
+            paste0("<b>", colaboradores$`Nome do responsável`[j], "²", "</b>")
+        } else if (colaboradores$`Categoria do responsável`[j] == "Docente") {
+          colaboradores$Colaboradores[j] <-
+            paste0("<b>", colaboradores$`Nome do responsável`[j], "³", "</b>")
+        } else {
+          colaboradores$Colaboradores[j] <-
+            colaboradores$`Nome do responsável`[j]
+        }, silent = TRUE)
+      }
+      # paste colaboradores
+      table.turmas$`Colaboradores`[i] <- paste0(
+        paste0(colaboradores$Colaboradores, collapse = ", "),
+        collapse = ", "
+      )
+    }
   }
-  print(
-    knitr::kable(turmas.oferecidas, align = c("l", rep(
-      "c",  max(0, ncol(turmas.oferecidas) - 2)
-    ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
-  
-  # line break
-  cat("  \n")
-  cat("  \n")
-  
-  legenda.turma <-
-    unique(cbind(
-      initials(turmas.raw$`Nome da Disciplina`),
-      turmas.raw$`Nome da Disciplina`
-    ))
-  legenda.turma <- legenda.turma[order(legenda.turma[, 1]),]
-  cat(paste0(
-    "*",
-    legenda.turma[, 1],
-    ": ",
-    lapply(legenda.turma[, 2], stringr::str_to_title),
-    "*",
-    collapse = "; "
-  ))
 }
+# sort by Ano, Período, Disciplina, Nivel
+table.turmas <- table.turmas[order(
+  -table.turmas$Ano,
+  -table.turmas$Período,
+  table.turmas$Disciplina,
+  table.turmas$Nível
+), ]
 
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-### **2020-2017**
-
-```{r turmas-2020-2017, eval = has.sucupira.files}
-# turmas
-sheet <- "Turmas"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# bind all sheets
-periodos <-
-  names(sucupira.list)[na.omit(match(c(2017:2020), names(sucupira.list)))]
-
-has.avaliacao <- as.logical(length(periodos) != 0)
-```
-
-```{r turmas-2020, eval = all(has.sucupira.files, has.avaliacao)}
-# load custom function
-source("Scripts/get-initials.R", local = knitr::knit_global())
-
-periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
-turmas.raw <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
-
-if (dim(turmas.raw)[1] != 0) {
-  # build a cross table DISCIPLINA vs. ANO
-  turmas.raw$`Período/Ano` <-
-    paste(
-      sub(".*/", "", turmas.raw$`Período/Ano`),
-      sub("/.*", "", turmas.raw$`Período/Ano`),
-      sep = "/"
-    )
-  cross.table.turmas <-
-    as.matrix(table(
-      initials(turmas.raw$`Nome da Disciplina`),
-      turmas.raw$`Período/Ano`
-    ))
-  Oferecida <- colSums(cross.table.turmas)
-  Oferecida[Oferecida > 0] <- "✅"
-  Oferecida[Oferecida == 0] <- ""
-  turmas.oferecidas <- rbind(Oferecida, cross.table.turmas)
-  turmas.oferecidas[turmas.oferecidas > 0] <- "✔"
-  turmas.oferecidas[turmas.oferecidas == 0] <- ""
-  if (length(colnames(turmas.oferecidas)) > 1) {
-    turmas.oferecidas <-
-      turmas.oferecidas[, order(colnames(turmas.oferecidas), decreasing = TRUE)]
-  }
-  print(
-    knitr::kable(turmas.oferecidas, align = c("l", rep(
-      "c",  max(0, ncol(turmas.oferecidas) - 2)
-    ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
-  
-  # line break
-  cat("  \n")
-  cat("  \n")
-  
-  legenda.turma <-
-    unique(cbind(
-      initials(turmas.raw$`Nome da Disciplina`),
-      turmas.raw$`Nome da Disciplina`
-    ))
-  legenda.turma <- legenda.turma[order(legenda.turma[, 1]),]
-  cat(paste0(
-    "*",
-    legenda.turma[, 1],
-    ": ",
-    lapply(legenda.turma[, 2], stringr::str_to_title),
-    "*",
-    collapse = "; "
-  ))
-}
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-### **2016-2013**
-
-```{r turmas-2016-2013, eval = has.sucupira.files}
-# turmas
-sheet <- "Turmas"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# bind all sheets
-periodos <-
-  names(sucupira.list)[na.omit(match(c(2013:2016), names(sucupira.list)))]
-
-has.avaliacao <- as.logical(length(periodos) != 0)
-```
-
-```{r turmas-2016, eval = all(has.sucupira.files, has.avaliacao)}
-# load custom function
-source("Scripts/get-initials.R", local = knitr::knit_global())
-
-periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
-turmas.raw <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
-
-if (dim(turmas.raw)[1] != 0) {
-  # build a cross table DISCIPLINA vs. ANO
-  turmas.raw$`Período/Ano` <-
-    paste(
-      sub(".*/", "", turmas.raw$`Período/Ano`),
-      sub("/.*", "", turmas.raw$`Período/Ano`),
-      sep = "/"
-    )
-  cross.table.turmas <-
-    as.matrix(table(
-      initials(turmas.raw$`Nome da Disciplina`),
-      turmas.raw$`Período/Ano`
-    ))
-  Oferecida <- colSums(cross.table.turmas)
-  Oferecida[Oferecida > 0] <- "✅"
-  Oferecida[Oferecida == 0] <- ""
-  turmas.oferecidas <- rbind(Oferecida, cross.table.turmas)
-  turmas.oferecidas[turmas.oferecidas > 0] <- "✔"
-  turmas.oferecidas[turmas.oferecidas == 0] <- ""
-  if (length(colnames(turmas.oferecidas)) > 1) {
-    turmas.oferecidas <-
-      turmas.oferecidas[, order(colnames(turmas.oferecidas), decreasing = TRUE)]
-  }
-  print(
-    knitr::kable(turmas.oferecidas, align = c("l", rep(
-      "c",  max(0, ncol(turmas.oferecidas) - 2)
-    ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
-  
-  # line break
-  cat("  \n")
-  cat("  \n")
-  
-  legenda.turma <-
-    unique(cbind(
-      initials(turmas.raw$`Nome da Disciplina`),
-      turmas.raw$`Nome da Disciplina`
-    ))
-  legenda.turma <- legenda.turma[order(legenda.turma[, 1]),]
-  cat(paste0(
-    "*",
-    legenda.turma[, 1],
-    ": ",
-    lapply(legenda.turma[, 2], stringr::str_to_title),
-    "*",
-    collapse = "; "
-  ))
-}
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-### **2012-2010**
-
-```{r turmas-2012-2010, eval = has.sucupira.files}
-# turmas
-sheet <- "Turmas"
-source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
-
-# get years
-source("Scripts/years-sucupira.R", local = knitr::knit_global())
-names(sucupira.list) <- as.character(anos)
-
-# bind all sheets
-periodos <-
-  names(sucupira.list)[na.omit(match(c(2010:2012), names(sucupira.list)))]
-
-has.avaliacao <- as.logical(length(periodos) != 0)
-```
-
-```{r turmas-2012, eval = all(has.sucupira.files, has.avaliacao)}
-# load custom function
-source("Scripts/get-initials.R", local = knitr::knit_global())
-
-periodo <- as.character(seq(min(periodos), max(periodos), by = 1))
-turmas.raw <- do.call(rbind.data.frame, sucupira.list[as.character(periodos)])
-
-if (dim(turmas.raw)[1] != 0) {
-  # build a cross table DISCIPLINA vs. ANO
-  turmas.raw$`Período/Ano` <-
-    paste(
-      sub(".*/", "", turmas.raw$`Período/Ano`),
-      sub("/.*", "", turmas.raw$`Período/Ano`),
-      sep = "/"
-    )
-  cross.table.turmas <-
-    as.matrix(table(
-      initials(turmas.raw$`Nome da Disciplina`),
-      turmas.raw$`Período/Ano`
-    ))
-  Oferecida <- colSums(cross.table.turmas)
-  Oferecida[Oferecida > 0] <- "✅"
-  Oferecida[Oferecida == 0] <- ""
-  turmas.oferecidas <- rbind(Oferecida, cross.table.turmas)
-  turmas.oferecidas[turmas.oferecidas > 0] <- "✔"
-  turmas.oferecidas[turmas.oferecidas == 0] <- ""
-  if (length(colnames(turmas.oferecidas)) > 1) {
-    turmas.oferecidas <-
-      turmas.oferecidas[, order(colnames(turmas.oferecidas), decreasing = TRUE)]
-  }
-  print(
-    knitr::kable(turmas.oferecidas, align = c("l", rep(
-      "c",  max(0, ncol(turmas.oferecidas) - 2)
-    ), "r"), escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
-  
-  # line break
-  cat("  \n")
-  cat("  \n")
-  
-  legenda.turma <-
-    unique(cbind(
-      initials(turmas.raw$`Nome da Disciplina`),
-      turmas.raw$`Nome da Disciplina`
-    ))
-  legenda.turma <- legenda.turma[order(legenda.turma[, 1]),]
-  cat(paste0(
-    "*",
-    legenda.turma[, 1],
-    ": ",
-    lapply(legenda.turma[, 2], stringr::str_to_title),
-    "*",
-    collapse = "; "
-  ))
-}
+# print table
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(table.turmas, title = "Programa - Turmas")
+cat("**Autoria**: ¹Discente, ²Egresso, ³Docente")
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1881,10 +1801,10 @@ for (j in 1:length(abas)) {
   colnames(Abrir) <- "Abrir"
   # add hyperlinks
   for (i in 1:dim(convenios.raw)[1]) {
-    if (!is.na(convenios.raw[i, 3])) {
+    if (!is.na(convenios.raw[i, ncol(convenios.raw)])) {
       Abrir[i] <-
         paste0('<a href="',
-               convenios.raw[i, 3],
+               convenios.raw[i, ncol(convenios.raw)],
                '" target="_blank"',
                '>',
                # fontawesome icon
@@ -1892,7 +1812,10 @@ for (j in 1:length(abas)) {
                '</a>')
     }
   }
-  convenios <- cbind(convenios.raw[, -3], Abrir)
+  convenios <- cbind(convenios.raw[, -ncol(convenios.raw)], Abrir)
+  
+  # order by 1st column
+  convenios <- convenios[order(convenios[, 1], decreasing = TRUE),]
   
   # print table
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -1935,10 +1858,10 @@ for (j in 1:length(abas)) {
   colnames(Abrir) <- "Abrir"
   # add hyperlinks
   for (i in 1:dim(cooperacoes.raw)[1]) {
-    if (!is.na(cooperacoes.raw[i, 3])) {
+    if (!is.na(cooperacoes.raw[i, ncol(cooperacoes.raw)])) {
       Abrir[i] <-
         paste0('<a href="',
-               cooperacoes.raw[i, 3],
+               cooperacoes.raw[i, ncol(cooperacoes.raw)],
                '" target="_blank"',
                '>',
                # fontawesome icon
@@ -1946,7 +1869,10 @@ for (j in 1:length(abas)) {
                '</a>')
     }
   }
-  cooperacoes <- cbind(cooperacoes.raw[, -3], Abrir)
+  cooperacoes <- cbind(cooperacoes.raw[, -ncol(cooperacoes.raw)], Abrir)
+  
+  # order by 1st column
+  cooperacoes <- cooperacoes[order(cooperacoes[, 1], decreasing = TRUE),]
   
   # print table
   source("Scripts/table-with-buttons.R", local = knitr::knit_global())
@@ -1972,7 +1898,7 @@ for (j in 1:length(abas)) {
 cat('<br>')
 ```
 
-```{r internacional, eval = has.internacionalizacao}
+```{r internacionalizacao, eval = has.internacionalizacao}
 # read separate sheets
 internacional.raw <-
   readxl::read_excel("PPG/Internacionalização.xlsx",
@@ -1995,6 +1921,8 @@ for (i in 1:dim(internacional.raw)[1]) {
   }
 }
 internacional <- cbind(internacional.raw[,-ncol(internacional.raw)], Abrir)
+
+internacional <- internacional[order(internacional$`Publicação`, decreasing = TRUE),]
 
 # print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())

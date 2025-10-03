@@ -7,7 +7,7 @@ paises_dataset <-
     ),
     sheet = 1,
     col_types = c("text")
-  )) %>%
+  ), check.names = FALSE) %>%
   dplyr::mutate(dplyr::across(tidyselect::everything(), as.character))
 
 paises_alpha3  <-
