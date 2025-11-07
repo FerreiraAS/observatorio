@@ -244,30 +244,19 @@ navbar:
       menu:
         - text: "E-mail"
           icon: "fa-envelope"
-<<<<<<< HEAD
           href: [mailto:arthur_sf@icloud.com]
-=======
-          href: [mailto:coordenacaoppgcr@gmail.com]
->>>>>>> 858580c73c0fcb3411d9170ab1d57e686d021e61
         - text: "Site"
           icon: "fa-globe"
-          href: [http://www.eeffto.ufmg.br/eeffto/]
+          href: []
         - text: "Instagram"
           icon: "fa-instagram"
-          href: [https://www.instagram.com/ppgcr.ufmg/]
+          href: [https://www.instagram.com/]
         - text: "Facebook"
           icon: "fa-facebook"
-<<<<<<< HEAD
-          href: [https://pt-br.facebook.com/arthur.sa.ferreira]
+          href: [https://pt-br.facebook.com/]
         - text: "Observatório CAPES"
           icon: "fa-binoculars"
           href: [https://sucupira-beta.capes.gov.br/sucupira4/observatorio/detalhamento/programas/]
-=======
-          href: [https://www.facebook.com/cienciasdareabilitacaoufmg/]
-        - text: "Observatório CAPES"
-          icon: "fa-binoculars"
-          href: [https://sucupira-v2.capes.gov.br/observatorio/detalhamento/programas/798]
->>>>>>> 858580c73c0fcb3411d9170ab1d57e686d021e61
     - text: ""
       icon: "fa-github"
       href: [https://github.com/FerreiraAS/observatorio]

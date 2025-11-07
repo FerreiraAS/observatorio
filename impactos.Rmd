@@ -2031,17 +2031,10 @@ if (file.exists(file.path("cache", "impactos", "sage-profile.Rds"))) {
   # rename columns
   colnames(sage.profiles) <- c("Ano",
                                "Título",
-<<<<<<< HEAD
                                "Fonte",
                                "Agência",
                                "País",
                                "Produção citada"
-=======
-                               "Tipo",
-                               "Pesquisas citadas (DOI)",
-                               "País",
-                               "Fonte"
->>>>>>> 858580c73c0fcb3411d9170ab1d57e686d021e61
   )
   
   saveRDS(sage.profiles, file.path("cache", "impactos", "sage-profile.Rds"))
