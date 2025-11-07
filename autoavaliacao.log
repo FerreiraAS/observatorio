@@ -1,11 +1,11 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.10.3)  3 OCT 2025 10:53
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.11.4)  7 NOV 2025 14:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **autoavaliacao.tex
 (./autoavaliacao.tex
-LaTeX2e <2025-06-01> patch level 1
-L3 programming layer <2025-09-02>
+LaTeX2e <2025-11-01>
+L3 programming layer <2025-10-24>
 (/usr/local/texlive/2025/texmf-dist/tex/latex/base/book.cls
 Document Class: book 2025/01/22 v1.4n Standard LaTeX document class
 (/usr/local/texlive/2025/texmf-dist/tex/latex/base/bk10.clo
@@ -30,7 +30,7 @@ File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package xcolor Info: Driver file: xetex.def on input line 274.
 (/usr/local/texlive/2025/texmf-dist/tex/latex/graphics-def/xetex.def
-File: xetex.def 2025/09/29 v5.0o Graphics/color driver for xetex
+File: xetex.def 2025/11/01 v5.0p Graphics/color driver for xetex
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/mathcolor.ltx)
 Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1349.
 Package xcolor Info: Model `RGB' extended on input line 1365.
@@ -63,7 +63,7 @@ Package: iftex 2024/12/12 v1.0g TeX engine tests
 \Gm@layoutvoffset=\dimen156
 \Gm@dimlist=\toks18
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/amsmath/amsmath.sty
-Package: amsmath 2025/06/16 v2.17y AMS math features
+Package: amsmath 2025/07/09 v2.17z AMS math features
 \@mathmargin=\skip51
 For additional information on amsmath, use the `?' option.
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsmath/amstext.sty
@@ -123,8 +123,8 @@ LaTeX Info: Redefining \Relbar on input line 970.
 \multlinegap=\skip52
 \multlinetaggap=\skip53
 \mathdisplay@stack=\toks23
-LaTeX Info: Redefining \[ on input line 2949.
-LaTeX Info: Redefining \] on input line 2950.
+LaTeX Info: Redefining \[ on input line 2950.
+LaTeX Info: Redefining \] on input line 2951.
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/amssymb.sty
 Package: amssymb 2013/01/14 v3.01 AMS font symbols
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/amsfonts.sty
@@ -136,9 +136,9 @@ LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 )) (/usr/local/texlive/2025/texmf-dist/tex/latex/unicode-math/unicode-math.sty 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2025-09-02 L3 programming layer (loader) 
+Package: expl3 2025-10-24 L3 programming layer (loader) 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-xetex.def
-File: l3backend-xetex.def 2025-06-09 L3 backend support: XeTeX
+File: l3backend-xetex.def 2025-10-09 L3 backend support: XeTeX
 \g__graphics_track_int=\count295
 \g__pdfannot_backend_int=\count296
 \g__pdfannot_backend_link_int=\count297
@@ -150,10 +150,10 @@ ty
 Package: unicode-math-xetex 2023/08/13 v0.8r Unicode maths in XeLaTeX and LuaLa
 TeX
 (/usr/local/texlive/2025/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
-Package: xparse 2024-08-16 L3 Experimental document command parser
+Package: xparse 2025-10-09 L3 Experimental document command parser
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.st
 y
-Package: l3keys2e 2024-08-16 LaTeX2e option processing using LaTeX3 keys
+Package: l3keys2e 2025-10-09 LaTeX2e option processing using LaTeX3 keys
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/fontspec/fontspec.sty
 Package: fontspec 2025/09/29 v2.9g Font selection for XeLaTeX and LuaLaTeX
 (/usr/local/texlive/2025/texmf-dist/tex/latex/fontspec/fontspec-xetex.sty
@@ -174,7 +174,7 @@ X
 \l__fontspec_tmpb_dim=\dimen167
 \l__fontspec_tmpc_dim=\dimen168
 (/usr/local/texlive/2025/texmf-dist/tex/latex/base/fontenc.sty
-Package: fontenc 2024/12/21 v2.1c Standard LaTeX package
+Package: fontenc 2025/07/18 v2.1d Standard LaTeX package
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/fontspec/fontspec.cfg))) (/usr/
 local/texlive/2025/texmf-dist/tex/latex/base/fix-cm.sty
 Package: fix-cm 2020/11/24 v1.1t fixes to LaTeX
@@ -519,7 +519,7 @@ Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
 Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
 ))) (/usr/local/texlive/2025/texmf-dist/tex/latex/tools/longtable.sty
-Package: longtable 2024-12-18 v4.23 Multi-page Table package (DPC)
+Package: longtable 2025-10-13 v4.24 Multi-page Table package (DPC)
 \LTleft=\skip55
 \LTright=\skip56
 \LTpre=\skip57
@@ -556,7 +556,7 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \@lastruleclass=\count323
 \@thisrulewidth=\dimen183
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/tools/array.sty
-Package: array 2025/06/08 v2.6j Tabular extension package (FMi)
+Package: array 2025/09/25 v2.6n Tabular extension package (FMi)
 \col@sep=\dimen184
 \ar@mcellbox=\box61
 \extrarowheight=\dimen185
@@ -597,36 +597,35 @@ Package graphics Info: Driver file: xetex.def on input line 106.
 )
 \pandoc@box=\box64
 (/usr/local/texlive/2025/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2025/10/01 v25.13 The multilingual framework for LuaLaTeX, pdfLa
+Package: babel 2025/10/22 v25.14 The multilingual framework for LuaLaTeX, pdfLa
 TeX and XeLaTeX
 \babel@savecnt=\count327
 LaTeX Encoding Info:    Redeclaring text command \ij (encoding OT1) on input li
-ne 2045.
+ne 2050.
 LaTeX Encoding Info:    Redeclaring text command \IJ (encoding OT1) on input li
-ne 2047.
+ne 2052.
 LaTeX Encoding Info:    Redeclaring text command \ij (encoding T1) on input lin
-e 2049.
+e 2054.
 LaTeX Encoding Info:    Redeclaring text command \IJ (encoding T1) on input lin
-e 2050.
+e 2055.
 LaTeX Encoding Info:    Ignoring declaration for text command \ij (encoding ?) 
-on input line 2051.
+on input line 2056.
 LaTeX Encoding Info:    Ignoring declaration for text command \IJ (encoding ?) 
-on input line 2053.
+on input line 2058.
 LaTeX Encoding Info:    Ignoring declaration for text command \SS (encoding ?) 
-on input line 2078.
+on input line 2083.
 \U@D=\dimen191
 \l@unhyphenated=\language90
 (/usr/local/texlive/2025/texmf-dist/tex/generic/babel/xebabel.def)
 \bbl@readstream=\read2
 \bbl@dirlevel=\count328
-(/usr/local/texlive/2025/texmf-dist/tex/generic/babel-portuges/brazilian.ldf
-Language: portuges 2021/07/09 v1.2t Portuguese support from the babel system
 
 (/usr/local/texlive/2025/texmf-dist/tex/generic/babel/locale/pt/babel-brazilian
-.tex
+.tex)
 Package babel Info: Importing font and identification data for brazilian
-(babel)             from babel-pt-BR.ini. Reported on input line 12.
-)
+(babel)             from babel-pt-BR.ini. Reported on input line 4295.
+(/usr/local/texlive/2025/texmf-dist/tex/generic/babel-portuges/brazilian.ldf
+Language: portuges 2021/07/09 v1.2t Portuguese support from the babel system
 Package babel Info: Hyphen rules for 'brazilian' set to \l@portuguese
 (babel)             (\language72). Reported on input line 111.
 Package babel Info: Making " an active character on input line 143.
@@ -724,7 +723,7 @@ Package: multirow 2024/11/12 v2.9 Span multiple rows of a table
 \multirow@dima=\skip65
 \bigstrutjot=\dimen192
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/tools/multicol.sty
-Package: multicol 2025/05/25 v2.0a multicolumn formatting (FMi)
+Package: multicol 2025/10/21 v2.0b multicolumn formatting (FMi)
 \c@tracingmulticols=\count330
 \mult@box=\box65
 \multicol@leftmargin=\dimen193
@@ -1878,38 +1877,34 @@ ern Roman (RS)
 )
 Package hyperref Info: Link coloring OFF on input line 185.
 File: PPG/Images/Cover-1.pdf Graphic file (type pdf)
-<PPG/Images/Cover-1.pdf>
+<use PPG/Images/Cover-1.pdf>
 File: PPG/Images/Cover-1.pdf Graphic file (type pdf)
-<PPG/Images/Cover-1.pdf>
+<use PPG/Images/Cover-1.pdf, page 1>
 File: PPG/Images/Cover-1.pdf Graphic file (type pdf)
-<PPG/Images/Cover-1.pdf>
+<use PPG/Images/Cover-1.pdf, page 1>
 File: PPG/Images/Cover-1.pdf Graphic file (type pdf)
-<PPG/Images/Cover-1.pdf>
+<use PPG/Images/Cover-1.pdf, page 1>
 File: PPG/Images/Cover-1.pdf Graphic file (type pdf)
-<PPG/Images/Cover-1.pdf>
-
-
+<use PPG/Images/Cover-1.pdf, page 1>
 File: PPG/Images/Cover-1.pdf Graphic file (type pdf)
-<PPG/Images/Cover-1.pdf>
+<use PPG/Images/Cover-1.pdf, page 1>
 [1
 
 
 
 ]
 File: PPG/Images/Cover-2.pdf Graphic file (type pdf)
-<PPG/Images/Cover-2.pdf>
+<use PPG/Images/Cover-2.pdf>
 File: PPG/Images/Cover-2.pdf Graphic file (type pdf)
-<PPG/Images/Cover-2.pdf>
+<use PPG/Images/Cover-2.pdf, page 1>
 File: PPG/Images/Cover-2.pdf Graphic file (type pdf)
-<PPG/Images/Cover-2.pdf>
+<use PPG/Images/Cover-2.pdf, page 1>
 File: PPG/Images/Cover-2.pdf Graphic file (type pdf)
-<PPG/Images/Cover-2.pdf>
+<use PPG/Images/Cover-2.pdf, page 1>
 File: PPG/Images/Cover-2.pdf Graphic file (type pdf)
-<PPG/Images/Cover-2.pdf>
-
-
+<use PPG/Images/Cover-2.pdf, page 1>
 File: PPG/Images/Cover-2.pdf Graphic file (type pdf)
-<PPG/Images/Cover-2.pdf>
+<use PPG/Images/Cover-2.pdf, page 1>
 [2
 
 ] (./autoavaliacao.toc
@@ -1949,17 +1944,11 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 \tf@toc=\write4
 \openout4 = `autoavaliacao.toc'.
 
-
-
-[3]
-
-[1
+[3] [1
 
 
 
-]
-
-[2
+] [2
 
 
 
@@ -1970,9 +1959,7 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 
 
 
-]
-
-[3
+] [3
 
 
 
@@ -1983,17 +1970,17 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 
 ] (./autoavaliacao.aux)
  ***********
-LaTeX2e <2025-06-01> patch level 1
-L3 programming layer <2025-09-02>
+LaTeX2e <2025-11-01>
+L3 programming layer <2025-10-24>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 40231 strings out of 468389
- 798261 string characters out of 5440620
- 1397291 words of memory out of 5000000
- 68120 multiletter control sequences out of 15000+600000
+ 40250 strings out of 468179
+ 798562 string characters out of 5433207
+ 1401330 words of memory out of 5000000
+ 68348 multiletter control sequences out of 15000+600000
  631736 words of font info for 74 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 99i,15n,126p,1202b,503s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 99i,19n,126p,1202b,505s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on autoavaliacao.pdf (6 pages).
