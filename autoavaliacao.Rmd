@@ -5607,7 +5607,11 @@ lista.kw <- list()
 bancas.with.words <- c()
 table.bancas.long <- data.frame()
 
+<<<<<<< HEAD
 if (!sjmisc::is_empty(id.TCC)) {
+=======
+if (!sjmisc::is_empty(id.TCC) && length(unique(bancas$`Linha de Pesquisa`[!is.na(bancas$Título) & bancas$Título != ""])) >= 2) {
+>>>>>>> 858580c73c0fcb3411d9170ab1d57e686d021e61
   # loop over each ID
   for (i in 1:length(id.TCC)) {
     # select current ID
@@ -11244,7 +11248,11 @@ if (knitr::is_latex_output() && !sjmisc::is_empty(síntese.ano)) {
         "\\\\textbf{\\\\href{https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf}{Qualis}}",
         "\\\\textbf{\\\\href{https://www.crossref.org}{CrossRef}}",
         "\\\\textbf{\\\\href{https://doaj.org}{DOAJ}}",
+<<<<<<< HEAD
         "As métricas são referentes apenas às produções com \\\\textit{digital object identifier} (DOI)",
+=======
+        "As métricas são referentes apenas às produções com *digital object identifier* (DOI)",
+>>>>>>> 858580c73c0fcb3411d9170ab1d57e686d021e61
         "A classificação dos periódicos pelo Qualis refere-se à Avaliação Quadrienal 2017-2020"
       ),
       escape = FALSE
@@ -11366,6 +11374,7 @@ if(knitr::is_latex_output()) {
 
 <br>
 
+<<<<<<< HEAD
 ```{r 3-2-1-altmetric-breakdown-blogs, eval = all(render_document, has.sucupira.files), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
 # select produção by Altmetric breakdown
 prod_table <- metricas_all %>%
@@ -12925,6 +12934,8 @@ if(knitr::is_latex_output()) {
 
 <br>
 
+=======
+>>>>>>> 858580c73c0fcb3411d9170ab1d57e686d021e61
 ```{r 3-2-2, eval = all(render_document, knitr::is_html_output())}
 cat("### **3.2.2**")
 cat('\n\n')
