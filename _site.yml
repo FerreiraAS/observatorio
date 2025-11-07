@@ -247,13 +247,13 @@ navbar:
           href: [mailto:arthur_sf@icloud.com]
         - text: "Site"
           icon: "fa-globe"
-          href: []
+          href: [https://orcid.org/0000-0001-7014-2002]
         - text: "Instagram"
           icon: "fa-instagram"
-          href: [https://www.instagram.com/]
+          href: [https://www.instagram.com/arthur.sa.ferreira]
         - text: "Facebook"
           icon: "fa-facebook"
-          href: [https://pt-br.facebook.com/]
+          href: [https://pt-br.facebook.com/arthur.sa.ferreira]
         - text: "Observatório CAPES"
           icon: "fa-binoculars"
           href: [https://sucupira-beta.capes.gov.br/sucupira4/observatorio/detalhamento/programas/]
