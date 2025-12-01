@@ -2191,39 +2191,40 @@ table.2.sum <- c(sum(metricas_artigos$altmetric_score, na.rm = TRUE), table.2.su
 # rename columns
 names(table.2.sum) <-
   c(
-    "Altmetric \n score",
+    "Altmetric",
     "Facebook",
     "Blogs",
     "Google+",
     "Notícias",
     "Reddit",
-    "Stack \n Exchange",
+    "Stack Exchange",
     "X",
     "BlueSky",
     "Wikipedia",
     "Policies",
     "Diretrizes",
     "Patentes",
-    "YouTube \n Vimeo",
+    "YouTube/Vimeo",
     "Podcasts",
     "Posts",
     "Mendeley"
   )
 
-# plot area setup
-# --- NEW LAYOUT ---
-# Total vai sozinho na linha 1
-# As outras 15 métricas seguem em blocos de 5 colunas
+# drop Altmetric column from table.2.sum
+table.2.sum <- table.2.sum[-1]
+
+# Plot area setup para layout 5x4 (5 linhas e 4 colunas)
 layout.m <- matrix(
   c(
-    1, 1, 1, 1, 1,
-    2, 3, 4, 5, 6,
-    7, 8, 9, 10, 11,
-    12, 13, 14, 15, 16
+    1, 2, 3, 4,
+    5, 6, 7, 8,
+    9, 10, 11, 12,
+    13, 14, 15, 16
   ),
-  ncol = 5,
+  ncol = 4,
   byrow = TRUE
 )
+
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 summ.data <- table.2.sum
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
