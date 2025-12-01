@@ -2202,20 +2202,31 @@ names(table.2.sum) <-
     "BlueSky",
     "Wikipedia",
     "Policies",
+    "Diretrizes",
     "Patentes",
     "YouTube \n Vimeo",
+    "Podcasts",
     "Posts",
     "Mendeley"
   )
 
 # plot area setup
-layout.m <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
-                   ncol = 5,
-                   byrow = TRUE)
+# --- NEW LAYOUT ---
+# Total vai sozinho na linha 1
+# As outras 15 métricas seguem em blocos de 5 colunas
+layout.m <- matrix(
+  c(
+    1, 1, 1, 1, 1,
+    2, 3, 4, 5, 6,
+    7, 8, 9, 10, 11,
+    12, 13, 14, 15, 16
+  ),
+  ncol = 5,
+  byrow = TRUE
+)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 summ.data <- table.2.sum
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
-
 
 # plot 6 (summary table in plot)
 
