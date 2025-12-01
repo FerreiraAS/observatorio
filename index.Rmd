@@ -3785,32 +3785,34 @@ if(!sjmisc::is_empty(proj.id)){
 layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 
-# plot 1
-plot(
-  network,
-  directed = FALSE,
-  arrow.mode = 0,
-  vertex.label = NA,
-  vertex.frame.color = "darkgrey",
-  vertex.size = log(igraph::degree(network, mode = "all")) * 1.2,
-  edge.color = "lightgrey",
-  edge.lty = "solid",
-  edge.size = igraph::edge.betweenness(network),
-  edge.curved = .2
-)
-legend(
-  "bottomleft",
-  legend = levels(categ),
-  pch = 19,
-  col = colrs,
-  text.col = "white",
-  bty = "n",
-  horiz = FALSE,
-  cex = 0.8
-)
-title(main = "Membros de Projetos de Pesquisa",
-      outer = TRUE,
-      cex.main = 1.7)
+# plot 1 (network of project members)
+if(network %>% igraph::vcount() != 0){
+  plot(
+    network,
+    directed = FALSE,
+    arrow.mode = 0,
+    vertex.label = NA,
+    vertex.frame.color = "darkgrey",
+    vertex.size = log(igraph::degree(network, mode = "all")) * 1.2,
+    edge.color = "lightgrey",
+    edge.lty = "solid",
+    edge.size = igraph::edge.betweenness(network),
+    edge.curved = .2
+  )
+  legend(
+    "bottomleft",
+    legend = levels(categ),
+    pch = 19,
+    col = colrs,
+    text.col = "white",
+    bty = "n",
+    horiz = FALSE,
+    cex = 0.8
+  )
+  title(main = "Membros de Projetos de Pesquisa",
+        outer = TRUE,
+        cex.main = 1.7)
+}
 
 # IES participantes externos
 sheet <- "Participante Externo"
