@@ -494,11 +494,10 @@ produtos.detalhes.sucupira <- produtos.detalhes.sucupira %>%
     cited_by_bluesky_count = NA,
     cited_by_wikipedia_count = NA,
     cited_by_policies_count = NA,
-    cited_by_guidelines_count = NA, # NEW Clinical Guidelines
+    cited_by_guidelines_count = NA,
     cited_by_patents_count = NA,
     cited_by_videos_count = NA,
-    cited_by_podcasts_count = NA, # NEW Podcasts
-    cited_by_accounts_count = NA,
+    cited_by_podcasts_count = NA,
     cited_by_posts_count = NA,
     mendeley = NA,
     score = NA,
@@ -595,8 +594,6 @@ for (item in 1:nrow(produtos.sucupira)) {
       doi_with_metrics$cited_by_videos_count
     produtos.detalhes.sucupira$cited_by_podcasts_count[matches] <-
       doi_with_metrics$cited_by_podcasts_count
-    produtos.detalhes.sucupira$cited_by_accounts_count[matches] <-
-      doi_with_metrics$cited_by_accounts_count
     produtos.detalhes.sucupira$cited_by_posts_count[matches] <-
       doi_with_metrics$cited_by_posts_count
     produtos.detalhes.sucupira$mendeley[matches] <-

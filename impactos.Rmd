@@ -1520,8 +1520,10 @@ síntese.ano <- síntese.ano %>%
     "BlueSky",
     "Wikipedia",
     "Policies",
+    "Diretrizes",
     "Patentes",
     "YouTube/Vimeo",
+    "Podcasts",
     "Posts",
     "Mendeley",
     "Acesso aberto"
@@ -1555,8 +1557,10 @@ table.3.2.1 <-
       "BlueSky" ~ "continuous",
       "Wikipedia" ~ "continuous",
       "Policies" ~ "continuous",
+      "Diretrizes" ~ "continuous",
       "Patentes" ~ "continuous",
       "YouTube/Vimeo" ~ "continuous",
+      "Podcasts" ~ "continuous",
       "Posts" ~ "continuous",
       "Mendeley" ~ "continuous",
       "Acesso aberto" ~ "categorical"

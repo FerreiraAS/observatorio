@@ -1966,8 +1966,10 @@ colnames(table.2) <-
     "BlueSky",
     "Wikipedia",
     "Policies",
+    "Diretrizes",
     "Patentes",
     "YouTube\nVimeo",
+    "Podcasts",
     "Posts",
     "Mendeley"
   )

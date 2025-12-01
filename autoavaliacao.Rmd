@@ -11114,8 +11114,10 @@ síntese.ano <- síntese.ano %>%
     "BlueSky",
     "Wikipedia",
     "Policies",
+    "Diretrizes",
     "Patentes",
     "YouTube/Vimeo",
+    "Podcasts",
     "Posts",
     "Mendeley",
     "Acesso aberto"
@@ -11150,8 +11152,10 @@ if(!sjmisc::is_empty(síntese.ano)){
         "BlueSky" ~ "continuous",
         "Wikipedia" ~ "continuous",
         "Policies" ~ "continuous",
+        "Diretrizes" ~ "continuous",
         "Patentes" ~ "continuous",
         "YouTube/Vimeo" ~ "continuous",
+        "Podcasts" ~ "continuous",
         "Posts" ~ "continuous",
         "Mendeley" ~ "continuous",
         "Acesso aberto" ~ "categorical"
@@ -11177,8 +11181,10 @@ if(!sjmisc::is_empty(síntese.ano)){
         "BlueSky" ~ 0,
         "Wikipedia" ~ 0,
         "Policies" ~ 0,
+        "Diretrizes" ~ 0,
         "Patentes" ~ 0,
         "YouTube/Vimeo" ~ 0,
+        "Podcasts" ~ 0,
         "Posts" ~ 0,
         "Mendeley" ~ 0,
         "Acesso aberto" ~ 0
