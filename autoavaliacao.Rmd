@@ -11086,8 +11086,10 @@ síntese.ano <- dplyr::bind_cols(
   BlueSky = as.numeric(metricas_all_ID$cited_by_bluesky_count),
   Wikipedia = as.numeric(metricas_all_ID$cited_by_wikipedia_count),
   Policies = as.numeric(metricas_all_ID$cited_by_policies_count),
+  Diretrizes = as.numeric(metricas_all_ID$cited_by_guidelines_count),
   Patentes = as.numeric(metricas_all_ID$cited_by_patents_count),
   'YouTube/Vimeo' = as.numeric(metricas_all_ID$cited_by_videos_count),
+  Podcasts = as.numeric(metricas_all_ID$cited_by_podcasts_count),
   Posts = as.numeric(metricas_all_ID$cited_by_posts_count),
   Mendeley = as.numeric(metricas_all_ID$mendeley),
   'Acesso aberto' = factor(as.logical(metricas_all_ID$is_oa), levels = c(TRUE, FALSE), labels = c("Sim", "Não"))
@@ -12329,6 +12331,113 @@ if(knitr::is_latex_output()) {
 
 <br>
 
+```{r 3-2-1-altmetric-breakdown-guidelines, eval = all(render_document, has.sucupira.files), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+# select produção by Altmetric breakdown
+prod_table <- metricas_all %>%
+  dplyr::filter(
+    !is.na(cited_by_guidelines_count) &
+      cited_by_guidelines_count > 0
+  )
+
+# filter by quadrienio vigente
+prod_table <- prod_table[prod_table$`Ano da Produção` == quadrienal.vigente, ]
+prod_label <- "Produções com compartilhamentos em Diretrizes"
+
+if (!sjmisc::is_empty(prod_table)) {
+  # format citation
+  prod_table <- prod_table %>%
+    dplyr::select(
+      ID = "ID da Produção",
+      Ano = "Ano da Produção",
+      Título  = "Nome da Produção",
+      Tipo = "Tipo de Produção",
+      Subtipo = "Subtipo de Produção",
+      DOI,
+      'Diretrizes' = "cited_by_guidelines_count"
+    ) %>%
+    # format title case
+    dplyr::mutate(
+      Título = stringr::str_to_title(Título),
+      Tipo = stringr::str_to_title(Tipo),
+      Subtipo = stringr::str_to_title(Subtipo)
+    )
+  
+  # keep complete cases only
+  prod_table <- prod_table[complete.cases(prod_table), ]
+  
+  # remove duplicates
+  prod_table <- prod_table[!duplicated(prod_table$ID), ]
+  
+  # drop ID
+  prod_table <- dplyr::select(prod_table, -ID)
+  
+  # convert last column to numeric and sort by it
+  prod_table[[ncol(prod_table)]] <- as.numeric(prod_table[[ncol(prod_table)]])
+  prod_table <- prod_table %>%
+    dplyr::arrange(dplyr::desc(prod_table[[ncol(prod_table)]]))
+}
+
+# print tables
+if (knitr::is_html_output() && !sjmisc::is_empty(prod_table)) {
+  # use kable for HTML output
+  knitr::kable(
+    prod_table,
+    align = "l",
+    escape = FALSE,
+    format = "html",
+    booktabs = TRUE,
+    linesep = "",
+    caption = prod_label
+  ) %>% kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = TRUE,
+    position = "center"
+  )  %>% kableExtra::column_spec(column = 1:dim(prod_table)[2], width = paste0(c(0.05,0.30,0.15,0.15,0.25,0.10)*(29-3-3), "cm")) %>%
+    kableExtra::column_spec(column = 1, bold = TRUE) %>%
+    kableExtra::row_spec(row = 0, bold = TRUE) %>%
+    kableExtra::footnote(
+      general_title = "<strong>Fontes</strong>: ",
+      general = c(
+        "<a href='https://sucupira.capes.gov.br/sucupira/'>Plataforma Sucupira</a>",
+        "<a href='https://www.altmetric.com/'>Altmetric</a>"
+      ),
+      escape = FALSE)
+} else if (knitr::is_latex_output() && !sjmisc::is_empty(prod_table)) {
+  # use tinytable for LaTeX output
+  prod_table <- data.frame(prod_table, check.names = FALSE)
+  options(tinytable_print_output = "latex")
+  tinytable::tt(
+    prod_table,
+    width = c(0.05,0.30,0.15,0.15,0.25,0.10)*(29-3-3),
+    align = "l",
+    caption = ifelse(knitr::is_html_output(), "", prod_label),
+    escape = TRUE
+  ) %>%
+    tinytable::theme_latex(
+      rowhead = 1,
+      table = FALSE,
+      multipage	= TRUE,
+      placement = "H"
+    ) %>%
+    tinytable::style_tt(i = 0, j = 1:ncol(prod_table), bold = TRUE) %>%
+    tinytable::style_tt(i = 1:nrow(prod_table), j = 1, bold = TRUE)
+}
+
+
+if (!sjmisc::is_empty(prod_table)) {
+  # add LaTeX-formatted note manually
+  cat("\\textbf{Fontes}: \\href{https://sucupira.capes.gov.br/sucupira/}{\\textbf{Plataforma Sucupira}}, ",
+      "\\href{https://www.altmetric.com/}{\\textbf{Altmetric}}\n\n")
+}
+
+# Add LaTeX commands for new page and float barrier
+if(knitr::is_latex_output()) {
+  cat('\\newpage')
+}
+```
+
+<br>
+
 ```{r 3-2-1-altmetric-breakdown-patentes, eval = all(render_document, has.sucupira.files), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
 # select produção by Altmetric breakdown
 prod_table <- metricas_all %>%
@@ -12459,6 +12568,113 @@ if (!sjmisc::is_empty(prod_table)) {
       Subtipo = "Subtipo de Produção",
       DOI,
       'YouTube/Vimeo' = "cited_by_videos_count"
+    ) %>%
+    # format title case
+    dplyr::mutate(
+      Título = stringr::str_to_title(Título),
+      Tipo = stringr::str_to_title(Tipo),
+      Subtipo = stringr::str_to_title(Subtipo)
+    )
+  
+  # keep complete cases only
+  prod_table <- prod_table[complete.cases(prod_table), ]
+  
+  # remove duplicates
+  prod_table <- prod_table[!duplicated(prod_table$ID), ]
+  
+  # drop ID
+  prod_table <- dplyr::select(prod_table, -ID)
+  
+  # convert last column to numeric and sort by it
+  prod_table[[ncol(prod_table)]] <- as.numeric(prod_table[[ncol(prod_table)]])
+  prod_table <- prod_table %>%
+    dplyr::arrange(dplyr::desc(prod_table[[ncol(prod_table)]]))
+}
+
+# print tables
+if (knitr::is_html_output() && !sjmisc::is_empty(prod_table)) {
+  # use kable for HTML output
+  knitr::kable(
+    prod_table,
+    align = "l",
+    escape = FALSE,
+    format = "html",
+    booktabs = TRUE,
+    linesep = "",
+    caption = prod_label
+  ) %>% kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = TRUE,
+    position = "center"
+  )  %>% kableExtra::column_spec(column = 1:dim(prod_table)[2], width = paste0(c(0.05,0.30,0.15,0.15,0.25,0.10)*(29-3-3), "cm")) %>%
+    kableExtra::column_spec(column = 1, bold = TRUE) %>%
+    kableExtra::row_spec(row = 0, bold = TRUE) %>%
+    kableExtra::footnote(
+      general_title = "<strong>Fontes</strong>: ",
+      general = c(
+        "<a href='https://sucupira.capes.gov.br/sucupira/'>Plataforma Sucupira</a>",
+        "<a href='https://www.altmetric.com/'>Altmetric</a>"
+      ),
+      escape = FALSE)
+} else if (knitr::is_latex_output() && !sjmisc::is_empty(prod_table)) {
+  # use tinytable for LaTeX output
+  prod_table <- data.frame(prod_table, check.names = FALSE)
+  options(tinytable_print_output = "latex")
+  tinytable::tt(
+    prod_table,
+    width = c(0.05,0.30,0.15,0.15,0.25,0.10)*(29-3-3),
+    align = "l",
+    caption = ifelse(knitr::is_html_output(), "", prod_label),
+    escape = TRUE
+  ) %>%
+    tinytable::theme_latex(
+      rowhead = 1,
+      table = FALSE,
+      multipage	= TRUE,
+      placement = "H"
+    ) %>%
+    tinytable::style_tt(i = 0, j = 1:ncol(prod_table), bold = TRUE) %>%
+    tinytable::style_tt(i = 1:nrow(prod_table), j = 1, bold = TRUE)
+}
+
+
+if (!sjmisc::is_empty(prod_table)) {
+  # add LaTeX-formatted note manually
+  cat("\\textbf{Fontes}: \\href{https://sucupira.capes.gov.br/sucupira/}{\\textbf{Plataforma Sucupira}}, ",
+      "\\href{https://www.altmetric.com/}{\\textbf{Altmetric}}\n\n")
+}
+
+# Add LaTeX commands for new page and float barrier
+if(knitr::is_latex_output()) {
+  cat('\\newpage')
+}
+```
+
+<br>
+
+```{r 3-2-1-altmetric-breakdown-podcasts, eval = all(render_document, has.sucupira.files), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+# select produção by Altmetric breakdown
+prod_table <- metricas_all %>%
+  dplyr::filter(
+    !is.na(cited_by_podcasts_count) &
+      cited_by_podcasts_count > 0
+  )
+
+# filter by quadrienio vigente
+prod_table <- prod_table[prod_table$`Ano da Produção` == quadrienal.vigente, ]
+prod_label <- "Produções com compartilhamentos em Podcasts"
+
+if (!sjmisc::is_empty(prod_table)) {
+  # format citation
+  prod_table <- prod_table %>%
+    dplyr::select(
+      ID = "ID da Produção",
+      Ano = "Ano da Produção",
+      Título  = "Nome da Produção",
+      Tipo = "Tipo de Produção",
+      Subtipo = "Subtipo de Produção",
+      DOI,
+      Podcasts = "cited_by_podcasts_count"
     ) %>%
     # format title case
     dplyr::mutate(

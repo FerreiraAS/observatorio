@@ -476,6 +476,7 @@ produtos.detalhes.sucupira <- produtos.detalhes.sucupira %>%
   dplyr::select('Ano da Produção', tidyselect::everything())
 
 # add columns for metrics and details from Altmetric, CrossRef, Scopus and CAPES
+# https://details-page-api-docs.altmetric.com/data-endpoints-counts.html
 produtos.detalhes.sucupira <- produtos.detalhes.sucupira %>%
   dplyr::mutate(
     # from CAPES
@@ -493,8 +494,10 @@ produtos.detalhes.sucupira <- produtos.detalhes.sucupira %>%
     cited_by_bluesky_count = NA,
     cited_by_wikipedia_count = NA,
     cited_by_policies_count = NA,
+    cited_by_guidelines_count = NA, # NEW Clinical Guidelines
     cited_by_patents_count = NA,
     cited_by_videos_count = NA,
+    cited_by_podcasts_count = NA, # NEW Podcasts
     cited_by_accounts_count = NA,
     cited_by_posts_count = NA,
     mendeley = NA,
@@ -584,10 +587,14 @@ for (item in 1:nrow(produtos.sucupira)) {
       doi_with_metrics$cited_by_wikipedia_count
     produtos.detalhes.sucupira$cited_by_policies_count[matches] <-
       doi_with_metrics$cited_by_policies_count
+    produtos.detalhes.sucupira$cited_by_guidelines_count[matches] <-
+      doi_with_metrics$cited_by_guidelines_count
     produtos.detalhes.sucupira$cited_by_patents_count[matches] <-
       doi_with_metrics$cited_by_patents_count
     produtos.detalhes.sucupira$cited_by_videos_count[matches] <-
       doi_with_metrics$cited_by_videos_count
+    produtos.detalhes.sucupira$cited_by_podcasts_count[matches] <-
+      doi_with_metrics$cited_by_podcasts_count
     produtos.detalhes.sucupira$cited_by_accounts_count[matches] <-
       doi_with_metrics$cited_by_accounts_count
     produtos.detalhes.sucupira$cited_by_posts_count[matches] <-

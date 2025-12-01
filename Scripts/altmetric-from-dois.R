@@ -13,13 +13,15 @@ columns_to_grab <-
     "cited_by_gplus_count",
     "cited_by_msm_count",
     "cited_by_rdts_count",
-    "cited_by_qna_count", # NEW
+    "cited_by_qna_count",
     "cited_by_tweeters_count",
-    "cited_by_bluesky_count", #NEW
-    "cited_by_wikipedia_count", # NEW
-    "cited_by_policies_count", # NEW
+    "cited_by_bluesky_count",
+    "cited_by_wikipedia_count",
+    "cited_by_policies_count",
+    "cited_by_guidelines_count",
     "cited_by_patents_count",
     "cited_by_videos_count",
+    "cited_by_podcasts_count",
     "cited_by_accounts_count",
     "cited_by_posts_count",
     "mendeley",
@@ -85,9 +87,11 @@ for (input in 1:dim(dois)[1]) {
         doi_with_metrics$cited_by_tweeters_count[doi_with_metrics$cited_by_tweeters_count == ""] <- 0
         doi_with_metrics$cited_by_bluesky_count[doi_with_metrics$cited_by_bluesky_count == ""] <- 0
         doi_with_metrics$cited_by_wikipedia_count[doi_with_metrics$cited_by_wikipedia_count == ""] <- 0
+        doi_with_metrics$cited_by_guidelines_count[doi_with_metrics$cited_by_guidelines_count == ""] <- 0
         doi_with_metrics$cited_by_policies_count[doi_with_metrics$cited_by_policies_count == ""] <- 0
         doi_with_metrics$cited_by_patents_count[doi_with_metrics$cited_by_patents_count == ""] <- 0
         doi_with_metrics$cited_by_videos_count[doi_with_metrics$cited_by_videos_count == ""] <- 0
+        doi_with_metrics$cited_by_podcasts_count[doi_with_metrics$cited_by_podcasts_count == ""] <- 0
         doi_with_metrics$cited_by_accounts_count[doi_with_metrics$cited_by_accounts_count == ""] <- 0
         doi_with_metrics$cited_by_posts_count[doi_with_metrics$cited_by_posts_count == ""] <- 0
         doi_with_metrics$mendeley[doi_with_metrics$mendeley == ""] <- 0

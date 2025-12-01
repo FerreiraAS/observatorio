@@ -1492,8 +1492,10 @@ síntese.ano <- dplyr::bind_cols(
       BlueSky = as.numeric(metricas_all_ID$cited_by_bluesky_count),
       Wikipedia = as.numeric(metricas_all_ID$cited_by_wikipedia_count),
       Policies = as.numeric(metricas_all_ID$cited_by_policies_count),
+      Diretrizes = as.numeric(metricas_all_ID$cited_by_guidelines_count),
       Patentes = as.numeric(metricas_all_ID$cited_by_patents_count),
       'YouTube/Vimeo' = as.numeric(metricas_all_ID$cited_by_videos_count),
+      Podcasts = as.numeric(metricas_all_ID$cited_by_podcasts_count),
       Posts = as.numeric(metricas_all_ID$cited_by_posts_count),
       Mendeley = as.numeric(metricas_all_ID$mendeley),
       'Acesso aberto' = factor(as.logical(metricas_all_ID$is_oa), levels = c(TRUE, FALSE), labels = c("Sim", "Não"))
