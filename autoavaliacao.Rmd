@@ -28,7 +28,8 @@ link-citations: true
 always_allow_html: true
 tables: true
 params:
-  quadrienal.vigente: 2025;2026;2027;2028
+#  quadrienal.vigente: 2025;2026;2027;2028
+  quadrienal.vigente: 2010;2011;2012
   render_document: FALSE
 ---
 
@@ -6091,6 +6092,9 @@ for(i in 1:dim(table.bib)[1]) {
   }
 }
 
+# patch to "Indefinido" in case of NA
+table.bib[is.na(table.bib)] <- "Indefinido"
+
 table.bib.long <-
   tidyr::gather(dplyr::select(table.bib, -1),
                 "Ano",
@@ -6181,6 +6185,9 @@ for(i in 1:dim(table.nat)[1]) {
   }
 }
 
+# patch to "Indefinido" in case of NA
+table.nat[is.na(table.nat)] <- "Indefinido"
+
 table.nat.long <-
   tidyr::gather(dplyr::select(table.nat, -1),
                 "Ano",
@@ -6270,6 +6277,9 @@ for(i in 1:dim(table.local)[1]) {
     )
   }
 }
+
+# patch to "Indefinido" in case of NA
+table.local[is.na(table.local)] <- "Indefinido"
 
 table.local.long <-
   tidyr::gather(dplyr::select(table.local, -1),
@@ -6381,6 +6391,9 @@ for(i in 1:dim(table.disc)[1]) {
   }
 }
 
+# patch to "Indefinido" in case of NA
+table.disc[is.na(table.disc)] <- "Indefinido"
+
 table.disc.long <-
   tidyr::gather(dplyr::select(table.disc, -1),
                 "Ano",
@@ -6462,6 +6475,9 @@ for(i in 1:dim(table.nivel)[1]) {
     )
   }
 }
+
+# patch to "Indefinido" in case of NA
+table.nivel[is.na(table.nivel)] <- "Indefinido"
 
 table.nivel.long <-
   tidyr::gather(dplyr::select(table.nivel, -1),
@@ -6870,6 +6886,9 @@ for(i in 1:dim(table.bib)[1]) {
   }
 }
 
+# patch to "Indefinido" in case of NA
+table.bib[is.na(table.bib)] <- "Indefinido"
+
 table.bib.long <-
   tidyr::gather(dplyr::select(table.bib, -1),
                 "Ano",
@@ -6975,6 +6994,9 @@ for(i in 1:dim(table.nat)[1]) {
   }
 }
 
+# patch to "Indefinido" in case of NA
+table.nat[is.na(table.nat)] <- "Indefinido"
+
 table.nat.long <-
   tidyr::gather(dplyr::select(table.nat, -1),
                 "Ano",
@@ -7064,6 +7086,9 @@ for(i in 1:dim(table.local)[1]) {
     )
   }
 }
+
+# patch to "Indefinido" in case of NA
+table.local[is.na(table.local)] <- "Indefinido"
 
 table.local.long <-
   tidyr::gather(dplyr::select(table.local, -1),
@@ -7170,6 +7195,9 @@ for(i in 1:dim(table.disc)[1]) {
   }
 }
 
+# patch to "Indefinido" in case of NA
+table.disc[is.na(table.disc)] <- "Indefinido"
+
 table.disc.long <-
   tidyr::gather(dplyr::select(table.disc, -1),
                 "Ano",
@@ -7251,6 +7279,9 @@ for(i in 1:dim(table.nivel)[1]) {
     )
   }
 }
+
+# patch to "Indefinido" in case of NA
+table.nivel[is.na(table.nivel)] <- "Indefinido"
 
 table.nivel.long <-
   tidyr::gather(dplyr::select(table.nivel, -1),
@@ -8080,6 +8111,9 @@ for(i in 1:dim(table.bib)[1]) {
   }
 }
 
+# patch to "Indefinido" in case of NA
+table.bib[is.na(table.bib)] <- "Indefinido"
+
 table.bib.long <-
   tidyr::gather(dplyr::select(table.bib, -1),
                 "Ano",
@@ -8185,6 +8219,9 @@ for(i in 1:dim(table.nat)[1]) {
   }
 }
 
+# patch to "Indefinido" in case of NA
+table.nat[is.na(table.nat)] <- "Indefinido"
+
 table.nat.long <-
   tidyr::gather(dplyr::select(table.nat, -1),
                 "Ano",
@@ -8274,6 +8311,9 @@ for(i in 1:dim(table.local)[1]) {
     )
   }
 }
+
+# patch to "Indefinido" in case of NA
+table.local[is.na(table.local)] <- "Indefinido"
 
 table.local.long <-
   tidyr::gather(dplyr::select(table.local, -1),
@@ -9057,6 +9097,9 @@ for (i in 1:length(rowSums(!is.na(table.doc)))) {
                                                  data$`Nome do Projeto de Pesquisa`)], silent = TRUE)
   }
 }
+
+# patch to "Indefinido" in case of NA
+table.doc[is.na(table.doc)] <- "Indefinido"
 
 table.doc.long <-
   tidyr::gather(dplyr::select(table.doc, -1),
