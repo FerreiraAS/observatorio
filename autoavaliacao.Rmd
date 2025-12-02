@@ -5679,7 +5679,15 @@ if (!sjmisc::is_empty(id.TCC)) {
     all.words[,i] <- all.words[,i] %>% as.numeric()
   }
   # sort by overall frequency
-  all.words <- dplyr::arrange(all.words, dplyr::desc(rowSums(all.words[, -1])))
+  # all.words <- dplyr::arrange(all.words, dplyr::desc(rowSums(all.words[, -1])))
+  if (ncol(all.words) > 2) {
+    # OK: temos duas ou mais Linhas de Pesquisa
+    all.words <- dplyr::arrange(all.words, dplyr::desc(rowSums(all.words[, -1])))
+  } else {
+    # Apenas uma Linha de Pesquisa → não é possível ordenar por rowSums
+    all.words$Total <- all.words[, 2]
+    all.words <- dplyr::arrange(all.words, dplyr::desc(Total))
+  }
   
   # create all unique pairs of Linhas de Pesquisa
   pairs <- combn(colnames(all.words)[-1], 2, simplify = TRUE)
