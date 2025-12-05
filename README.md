@@ -264,6 +264,26 @@ Ao completar esta etapa, a estrutura dos diretórios será esta:
 │   │   └── policy-impact-export-2024-01-07_DOCENTE_N.csv
 ```
 
+### **Currículo Lattes**
+
+O **Observatório** utiliza arquivos XML exportados pela [Plataforma Lattes](https://lattes.cnpq.br). Para gerar os
+arquivos, siga as seguintes etapas:
+
+1. Faça login na Plataforma Lattes.
+2. Exporte o currícuio em formato XML.
+3. Salve o arquivo na pasta *Lattes xml*.
+
+Ao completar esta etapa, a estrutura dos diretórios será esta:
+
+``` bash
+├── Lattes XML
+│   ├── lattes_DOCENTE_1.csv
+│   ├── lattes_DOCENTE_2.csv
+│   ├── lattes_DOCENTE_3.csv
+│   └── ...
+│   └── lattes_DOCENTE_N.csv
+```
+
 ### **API**
 
 Para obter dados de métricas, as seguintes API são utilizadas:
@@ -340,6 +360,7 @@ O Observatório é atualizado periodicamente. Para receber atualizações no seu
 
 -   [**Observatório CR**](https://ppgcr-unisuam.github.io/observatoriocr) \| Programa de Pós-graduação em Ciências da Reabilitação
 -   [**Observatório DL**](https://ppgdl-unisuam.github.io/observatoriodl) \| Programa de Pós-graduação em Desenvolvimento Local
+-   [**Observatório SB**](https://hs.unisuam.edu.br/ppgsb-saude-biopsicossocial) \| Programa de Pós-graduação em Saúde Biopsicossocial
 
 ### [**UFC**](https://www.ufc.br) **\| Universidade Federal do Ceará**
 

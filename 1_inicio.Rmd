@@ -122,7 +122,8 @@ states <-
 paths <- c(
   file.path(getwd(), "PPG"),
   file.path(getwd(), "Sucupira"),
-  file.path(getwd(), "Impacto", "Sage Policy Profiles")
+  file.path(getwd(), "Impacto", "Sage Policy Profiles"),
+  file.path(getwd(), "Lattes xml")
 )
 
 for (i in 1:length(paths)) {
@@ -184,6 +185,19 @@ has.ppg.files <- length(files.to.read) != 0
 has.agendas.pesquisa <-
   !BBmisc::is.error(try(readxl::read_excel("PPG/Agendas de Pesquisa.xlsx", sheet = 1),
                 silent = TRUE))
+```
+
+## **Check arquivos Lattes (xml)**
+
+<!--check available files in Lattes folder-->
+```{r try-xml-lattes}
+# list all xml files
+files.to.read <-
+  list.files(file.path(getwd(), "Lattes xml"),
+            full.names = TRUE,
+            recursive = TRUE,
+            pattern = "xml")
+has.lattes.files <- length(files.to.read) != 0
 ```
 
 ```{r try-area-capes}
@@ -714,6 +728,7 @@ for (item in 1:nrow(issn.unique)) {
 has.sage.files <- as.logical(has.sage.files)
 has.sucupira.files <- as.logical(has.sucupira.files)
 has.ppg.files <- as.logical(has.ppg.files)
+has.lattes.files <- as.logical(has.lattes.files)
 
 # PPG files
 has.agendas.pesquisa <- as.logical(has.agendas.pesquisa)

@@ -2036,13 +2036,13 @@ plot.2 <- plot.2 %>% plotly::layout(
 # plot 3 (IS_OA in plot)
 
 # generate cross tables of IS_OA artigos per year
-table.3 <-
-  t(table(metricas_artigos$"Ano da Produção",
-          as.logical(metricas_artigos$is_oa)))
-table.3 <- table.3[order(rownames(table.3)), ]
+tab <- table(
+  metricas_artigos$`Ano da Produção`,
+  as.logical(metricas_artigos$is_oa)
+)
+table.3 <- as.table(t(tab))
+table.3 <- table.3[order(rownames(table.3)), , drop = FALSE]
 rownames(table.3) <- c("Open access", "Paywall")
-# swap lines
-table.3 <- table.3[seq_len(nrow(table.3)) + c(1, -1),]
 
 # Define the number of colors you want
 nb.cols <- length(rownames(table.3))
@@ -2056,7 +2056,7 @@ source("Scripts/plot-margins.R", local = knitr::knit_global())
 colors <- RColorBrewer::brewer.pal(n = dim(table.3)[1], name = "Set3")
 
 # Reshape data for Plotly
-data_long <- reshape2::melt(table.3, id.vars = "Linhas de Pesquisa", variable.name = "Acesso", value.name = "Frequência")
+data_long <- reshape2::melt(table.3, variable.name = "Acesso", value.name = "Frequência")
 data_long <- data.frame(data_long, stringsAsFactors = FALSE)
 colnames(data_long) <- c("Acesso", "Ano", "Frequência")
 
@@ -2124,7 +2124,6 @@ if (sjmisc::is_empty(metricas_artigos$citations)) {
     t(table(metricas_artigos$"Ano da Produção",
             metricas_artigos$citations))
   table.4 <- table.4[order(rownames(table.4)),]
-  table.4 <- colSums(table.4)
 }
 
 # plot area setup
