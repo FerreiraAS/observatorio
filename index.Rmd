@@ -1865,6 +1865,8 @@ source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 ```
 
 ```{r sintese-visibilidade, include = FALSE, eval = any(has.metricas.doi.ppg, has.metricas.doi.sucupira)}
+library(dplyr)
+
 # select products
 metricas_artigos <- metricas_all[metricas_all$`Subtipo de Produção` == "ARTIGO EM PERIÓDICO", ]
 
@@ -2124,6 +2126,8 @@ if (sjmisc::is_empty(metricas_artigos$citations)) {
     t(table(metricas_artigos$"Ano da Produção",
             metricas_artigos$citations))
   table.4 <- table.4[order(rownames(table.4)),]
+  # sum colums
+  table.4 <- colSums(table.4, na.rm = TRUE)
 }
 
 # plot area setup
