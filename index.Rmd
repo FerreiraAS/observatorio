@@ -2126,6 +2126,10 @@ if (sjmisc::is_empty(metricas_artigos$citations)) {
     t(table(metricas_artigos$"Ano da Produção",
             metricas_artigos$citations))
   table.4 <- table.4[order(rownames(table.4)),]
+  # force matrix 
+  table.4 <- as.matrix(table.4, ncol = ncol(table.4), nrow = nrow(table.4))
+  # colum names
+  colnames(table.4) <- sort(unique(metricas_artigos$"Ano da Produção"))
   # sum colums
   table.4 <- colSums(table.4, na.rm = TRUE)
 }
