@@ -534,6 +534,66 @@ source("Scripts/fonte-orcid.R", local = knitr::knit_global())
 
 <br>
 
+### **Bancas examinadoras** {.tabset}
+
+```{r bancas-examinadoras, eval = all(has.lattes.files, curl::has_internet())}
+source("Scripts/lattes_xml.parse.R", local = knitr::knit_global())
+
+# Example usage:
+data <- process_lattes_folder("./Lattes xml", "./Lattes xml", save_format = "flat-excel", output_filename = "all_bancas")
+
+data$titulo <- stringr::str_to_title(data$titulo)
+data$nome_candidato <- stringr::str_to_title(data$nome_candidato)
+data$nome_completo <- stringr::str_to_title(data$nome_completo)
+data$tipo <- stringr::str_to_title(data$tipo)
+data$nome_instituicao <- stringr::str_to_upper(tolower(data$nome_instituicao))
+
+# to title case
+subset_banca <- dplyr::select(
+  data,
+  'Ano'= ano,
+  'Título' = titulo,
+  'Natureza' = natureza,
+  'IES' = nome_instituicao,
+  'Tipo' = tipo,
+  'Candidato' = nome_candidato,
+  'Examinador' = nome_completo,
+  'Idioma' = idioma,
+  'Ordem' = ordem
+)
+
+# paste examinadores by order
+bancas_summary <- subset_banca |>
+  dplyr::group_by(Ano, Título, Natureza, IES, Tipo, Candidato, Idioma) |>
+  dplyr::summarise(
+    Examinadores = paste(Examinador[order(Ordem)], collapse = "; ")
+  ) |>
+  dplyr::ungroup()
+
+# Reorder columns
+bancas_summary <- bancas_summary |>
+  dplyr::select(
+    Ano,
+    Natureza,
+    Tipo,
+    IES,
+    Título,
+    Candidato,
+    Examinadores,
+    Idioma
+  )
+
+# remove duplicates
+bancas_summary <- bancas_summary[!duplicated(bancas_summary), ]
+
+# print table
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(bancas_summary, title = "Destaques - Bancas de Trabalho de Conclusão de Curso")
+source("Scripts/fonte-lattes.R", local = knitr::knit_global())
+```
+
+<br>
+
 ## **Divulgação científica** {#divulgacao .tabset}
 
 <!--script for generating HORIZONTAL LINE-->

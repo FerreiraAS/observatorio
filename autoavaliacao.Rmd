@@ -28,8 +28,7 @@ link-citations: true
 always_allow_html: true
 tables: true
 params:
-#  quadrienal.vigente: 2025;2026;2027;2028
-  quadrienal.vigente: 2010;2011;2012
+  quadrienal.vigente: 2025;2026;2027;2028
   render_document: FALSE
 ---
 

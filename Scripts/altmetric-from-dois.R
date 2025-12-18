@@ -44,6 +44,8 @@ for (input in 1:dim(dois)[1]) {
       # open Altmetric url
       url <- paste0("https://api.altmetric.com/v1/doi/",
                     dois$DOI[input],
+                    # key expires in 06/01/2029
+                    "?key=27dbc5051afb81fa14776416c5a91ad1",
                     collapse = "")
       raw_data <- read.csv(url,
                            sep = ",",
