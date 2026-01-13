@@ -1,11 +1,11 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.12.14)  18 DEC 2025 12:53
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.1.2)  13 JAN 2026 20:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **autoavaliacao.tex
 (./autoavaliacao.tex
 LaTeX2e <2025-11-01>
-L3 programming layer <2025-11-14>
+L3 programming layer <2025-12-29>
 (/usr/local/texlive/2025/texmf-dist/tex/latex/base/book.cls
 Document Class: book 2025/01/22 v1.4n Standard LaTeX document class
 (/usr/local/texlive/2025/texmf-dist/tex/latex/base/bk10.clo
@@ -136,7 +136,7 @@ LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 )) (/usr/local/texlive/2025/texmf-dist/tex/latex/unicode-math/unicode-math.sty 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2025-11-14 L3 programming layer (loader) 
+Package: expl3 2025-12-29 L3 programming layer (loader) 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-xetex.def
 File: l3backend-xetex.def 2025-10-09 L3 backend support: XeTeX
 \g__graphics_track_int=\count295
@@ -597,7 +597,7 @@ Package graphics Info: Driver file: xetex.def on input line 106.
 )
 \pandoc@box=\box64
 (/usr/local/texlive/2025/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2025/12/11 v25.17 The multilingual framework for LuaLaTeX, pdfLa
+Package: babel 2025/12/30 v25.18 The multilingual framework for LuaLaTeX, pdfLa
 TeX and XeLaTeX
 \babel@savecnt=\count327
 LaTeX Encoding Info:    Redeclaring text command \ij (encoding OT1) on input li
@@ -623,7 +623,7 @@ on input line 2101.
 (/usr/local/texlive/2025/texmf-dist/tex/generic/babel/locale/pt/babel-brazilian
 .tex)
 Package babel Info: Importing font and identification data for brazilian
-(babel)             from babel-pt-BR.ini. Reported on input line 4320.
+(babel)             from babel-pt-BR.ini. Reported on input line 4321.
 (/usr/local/texlive/2025/texmf-dist/tex/generic/babel-portuges/brazilian.ldf
 Language: portuges 2021/07/09 v1.2t Portuguese support from the babel system
 Package babel Info: Hyphen rules for 'brazilian' set to \l@portuguese
@@ -1976,13 +1976,13 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 ] (./autoavaliacao.aux)
  ***********
 LaTeX2e <2025-11-01>
-L3 programming layer <2025-11-14>
+L3 programming layer <2025-12-29>
  ***********
  ) 
 Here is how much of TeX's memory you used:
  40305 strings out of 468179
- 800479 string characters out of 5433206
- 1402168 words of memory out of 5000000
+ 800479 string characters out of 5433208
+ 1402171 words of memory out of 5000000
  68403 multiletter control sequences out of 15000+600000
  631736 words of font info for 74 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191

@@ -146,6 +146,19 @@ files.to.read <-
 has.sage.files <- length(files.to.read) != 0
 ```
 
+## **Check arquivos Lattes**
+
+<!--check available files in Lattes folder-->
+```{r try-xml-lattes}
+# list all xml files
+files.to.read <-
+  list.files(file.path(getwd(), "Lattes xml"),
+            full.names = TRUE,
+            recursive = TRUE,
+            pattern = "xml")
+has.lattes.files <- length(files.to.read) != 0
+```
+
 ## **Check arquivos Sucupira**
 
 <!--check Sucupira folder-->
@@ -185,19 +198,6 @@ has.ppg.files <- length(files.to.read) != 0
 has.agendas.pesquisa <-
   !BBmisc::is.error(try(readxl::read_excel("PPG/Agendas de Pesquisa.xlsx", sheet = 1),
                 silent = TRUE))
-```
-
-## **Check arquivos Lattes (xml)**
-
-<!--check available files in Lattes folder-->
-```{r try-xml-lattes}
-# list all xml files
-files.to.read <-
-  list.files(file.path(getwd(), "Lattes xml"),
-            full.names = TRUE,
-            recursive = TRUE,
-            pattern = "xml")
-has.lattes.files <- length(files.to.read) != 0
 ```
 
 ```{r try-area-capes}
@@ -463,6 +463,35 @@ nome.IES <- tools::toTitleCase(as.character(nome.IES))
 sigla.IES <- unique(sucupira.raw$`IES Sigla`)
 ```
 
+## **Check produção PPG**
+
+```{r metricas-doi-ppg, cache = TRUE, cache.path = "cache/metricas-doi-ppg/", eval = all(has.producao)}
+# read PPG/Produção.xlsx
+produtos.ppg <- readxl::read_excel("PPG/Produção.xlsx", sheet = 1)
+# extract ano, DOI and titulo
+produtos.ppg <- produtos.ppg %>%
+  dplyr::select(Ano = `Publicado em`, DOI = `DOI`, Título = `Título`)
+# rename to match Sucupira
+data.table::setnames(produtos.ppg, c("Ano da Produção", "Valor do Item de Detalhamento", "Nome da Produção"))
+
+# add column: Item de Detalhamento <- "Número do DOI"
+produtos.ppg$`Item de Detalhamento` <- "Número do DOI"
+
+# add column: Tipo de Produção <- "BIBLIOGRÁFICA"
+produtos.ppg$`Tipo de Produção` <- "BIBLIOGRÁFICA"
+
+# add column: Subtipo de Produção <- "ARTIGO EM PERIÓDICO"
+produtos.ppg$`Subtipo de Produção` <- "ARTIGO EM PERIÓDICO"
+
+# convert "Aceito" to current Year
+produtos.ppg$`Ano da Produção` <-
+  ifelse(
+    produtos.ppg$`Ano da Produção` == "Aceito",
+    format(Sys.Date(), "%Y"),
+    as.character(produtos.ppg$`Ano da Produção`)
+  )
+```
+
 ## **Check metricas pelo DOI da produção Sucupira**
 
 ```{r metricas-doi-sucupira, cache = TRUE, cache.path = "cache/metricas-doi-sucupira/", eval = has.sucupira.files}
@@ -488,6 +517,16 @@ produtos.detalhes.sucupira <- sucupira.raw %>%
 # reorder columns (ano first)
 produtos.detalhes.sucupira <- produtos.detalhes.sucupira %>%
   dplyr::select('Ano da Produção', tidyselect::everything())
+
+if(has.producao){
+  # remove DOI from produtos.ppg already in produtos.detalhes.sucupira
+  produtos.ppg <- produtos.ppg %>%
+    dplyr::filter(!`Valor do Item de Detalhamento` %in% produtos.detalhes.sucupira$`Valor do Item de Detalhamento`[produtos.detalhes.sucupira$`Item de Detalhamento` == "Número do DOI"])
+  
+  # bind columns by name: produtos.ppg e produtos.detalhes.sucupira
+  produtos.detalhes.sucupira <- 
+    dplyr::bind_rows(produtos.detalhes.sucupira, produtos.ppg)
+}
 
 # add columns for metrics and details from Altmetric, CrossRef, Scopus and CAPES
 # https://details-page-api-docs.altmetric.com/data-endpoints-counts.html
@@ -713,12 +752,6 @@ for (item in 1:nrow(issn.unique)) {
 
 ```{r dimensions-doi-sucupira, cache = TRUE, cache.path = "cache/dimensions-doi-sucupira/", eval = all(has.metricas.doi.sucupira, curl::has_internet())}
 # add to data.frame
-```
-
-## **Check DOI produção PPG**
-
-```{r metricas-doi-ppg, cache = TRUE, cache.path = "cache/metricas-doi-ppg/", eval = all(has.metricas.doi.sucupira, curl::has_internet())}
-
 ```
 
 ## **Check HAS**

@@ -178,50 +178,61 @@ summ.AC.LP <-
 # drop freq = 0 values
 summ.AC.LP <- summ.AC.LP[summ.AC.LP$Freq != 0, ]
 
-if(!sjmisc::is_empty(summ.AC.LP)){
-  
-  colnames(summ.AC.LP) <- c("AC", "LP", "Freq")
-  
-  data <- summ.AC.LP
-  
-  # Criar uma tabela de nós com identificadores únicos
-  nodes <- data %>%
-    dplyr::select(AC, LP) %>%
-    tidyr::pivot_longer(cols = c(AC, LP), names_to = "type", values_to = "label") %>%
-    dplyr::distinct() %>%
-    dplyr::mutate(id = as.character(row_number())) %>%
-    dplyr::select(id, label, type)
-  
-  # Calcular a frequência total para cada nó
-  node_freq <- data %>%
-    tidyr::pivot_longer(cols = c(AC, LP), names_to = "type", values_to = "label") %>%
-    dplyr::group_by(label) %>%
-    dplyr::summarise(Freq = sum(as.numeric(Freq))) %>%
-    dplyr::ungroup()
-  
-  # Adicionar a frequência dos nós ao dataframe 'nodes'
-  nodes <- nodes %>%
-    dplyr::left_join(node_freq, by = c("label" = "label")) %>%
-    dplyr::mutate(size = Freq)
-  
-  # Criar uma tabela de arestas
-  edges <- data %>%
-    dplyr::left_join(nodes %>% dplyr::select(label, id), by = c("AC" = "label")) %>%
-    dplyr::rename(from = id) %>%
-    dplyr::left_join(nodes %>% dplyr::select(label, id), by = c("LP" = "label")) %>%
-    dplyr::rename(to = id) %>%
-    dplyr::mutate(label = paste("Freq:", Freq)) %>%
-    dplyr::select(from, to, label)
-  
-  # Criar o grafo tree layout
-  g <- igraph::graph_from_data_frame(d = edges, vertices = nodes, directed = FALSE)
-  
-} else {
-  # empty igraph
-  g <- igraph::make_empty_graph()
-}
 
-# plot 1
+# plot 1: AC
+
+dados_ac <- projetos.em.andamento %>%
+  dplyr::filter(!is.na(`Área de Concentração`)) %>%
+  dplyr::group_by(Ano, AC = `Área de Concentração`) %>%
+  dplyr::summarise(n = sum(n), .groups = "drop") %>%
+  dplyr::mutate(
+    Ano = factor(Ano, levels = sort(unique(Ano)))
+  )
+
+ggplot2::ggplot(
+  dados_ac,
+  ggplot2::aes(
+    x = Ano,
+    stratum = AC,
+    alluvium = AC,
+    y = n,
+    fill = AC
+  )
+) +
+  ggalluvial::geom_flow(alpha = 0.7, width = 0.25) +
+  ggalluvial::geom_stratum(width = 0.25, color = "grey30") +
+  ggplot2::scale_fill_brewer(palette = "Set3") +
+  ggplot2::labs(
+    title = "Áreas de Concentração",
+    x = "Ano",
+    y = "Número de Projetos",
+    fill = "Área de Concentração"
+  ) +
+  ggplot2::theme_minimal(base_size = 12) +
+  ggplot2::theme(
+    panel.grid = element_blank(),
+    axis.ticks = element_blank(),
+    plot.background = element_rect(fill = main.color, color = NA),
+    panel.background = element_rect(fill = main.color, color = NA),
+    text = element_text(color = "white"),
+    legend.position = "bottom",
+    plot.title    = element_text(hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5)
+  )
+
+
+# plot 2: LP
+
+dados_alluvial <- projetos.em.andamento %>%
+  dplyr::filter(!is.na(`Área de Concentração`),
+         !is.na(`Linha de Pesquisa`),
+         `Linha de Pesquisa` != "PROJETO ISOLADO") %>%
+  dplyr::mutate(
+    Ano = factor(Ano, levels = sort(unique(Ano))),
+    AC  = `Área de Concentração`,
+    LP  = `Linha de Pesquisa`
+  )
+
 par(
   oma = c(0, 0, 0, 0),
   mar = c(1, 1, 2, 1),
@@ -232,27 +243,44 @@ par(
   col.main = "white"
 )
 
-# Visualizar o grafo
-plot(
-  g,
-  vertex.size = igraph::V(g)$size,  # Tamanho dos vértices baseado na frequência
-  vertex.label = NA,  # Rótulos dos vértices
-  vertex.label.cex = 0.8,
-  vertex.label.color = ifelse(igraph::V(g)$type == "AC", main.color, "white"),
-  vertex.label.dist = ifelse(igraph::V(g)$type == "AC", 0, 2),
-  vertex.frame.color = ifelse(igraph::V(g)$type == "AC", main.color, main.color),
-  vertex.color = ifelse(igraph::V(g)$type == "AC", RColorBrewer::brewer.pal(n = 9, name = "Set3")[1], RColorBrewer::brewer.pal(n = 9, name = "Set3")[2]),
-  edge.label = NA,
-  edge.label.cex = 0.8,
-  edge.label.color = "white",
-  layout = igraph::layout.fruchterman.reingold,
-  main = "Áreas de Concentração e Linhas de Pesquisa"
-)
+ggplot2::ggplot(
+  dados_alluvial,
+  ggplot2::aes(
+    x = Ano,
+    stratum = LP,
+    alluvium = interaction(AC, LP),
+    y = n,
+    fill = LP
+  )
+) +
+  ggalluvial::geom_flow(alpha = 0.7, width = 0.25) +
+  ggalluvial::geom_stratum(
+    width = 0.25,
+    color = "grey30"
+  ) +
+  ggplot2::scale_fill_brewer(palette = "Set3") +
+  ggplot2::labs(
+    title = "Linhas de Pesquisa vs. Projetos de Pesquisa",
+    x = "Ano",
+    y = "Número de Projetos",
+    fill = "Linha de Pesquisa"
+  ) +
+  ggplot2::theme_minimal(base_size = 12) +
+  ggplot2::theme(
+    plot.title = element_text(hjust = 0.5),
+    panel.grid = ggplot2::element_blank(),
+    axis.ticks = ggplot2::element_blank(),
+    plot.background = ggplot2::element_rect(fill = main.color, color = NA),
+    panel.background = ggplot2::element_rect(fill = main.color, color = NA),
+    text = ggplot2::element_text(color = "white"),
+    legend.position = "bottom",
+  legend.text  = ggplot2::element_text(size = 8),
+  legend.title = ggplot2::element_text(size = 9)
+  ) +
+  ggplot2::guides(fill = ggplot2::guide_legend(nrow = 2, byrow = TRUE))
 
-# add legend
-legend("bottomleft", legend = c("Área de Concentração", "Linha de Pesquisa"), fill = RColorBrewer::brewer.pal(n = 9, name = "Set3"), bty = "n")
 
-# plot 2
+# plot 3: summary table
 
 # plot area setup
 # layout.m <- matrix(c(1, 2, 3, 4), ncol = 2, byrow = FALSE)
@@ -278,6 +306,11 @@ source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 
 # show sintese-coerencia-2
 knitr::include_graphics("index_files/figure-html/sintese-coerencia-2.png")
+cat('\n\n')
+source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
+
+# show sintese-coerencia-3
+knitr::include_graphics("index_files/figure-html/sintese-coerencia-3.png")
 cat('\n\n')
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -1483,6 +1516,8 @@ table.4 <- data.frame(metricas_artigos$"Ano da Produção", metricas_artigos$Cit
 
 table.5 <- data.frame(metricas_artigos$`Valor do Item de Detalhamento`, metricas_artigos$SJR)
 
+table.6 <- data.frame(metricas_artigos$`Valor do Item de Detalhamento`, metricas_artigos$CiteScore)
+
 # plot 1 (total de produção bibliográfica, por estrato, por ano)
 
 # plot area setup
@@ -1670,6 +1705,13 @@ text.2.break <- data.journals$name
 source("Scripts/line-2-break.R", local = knitr::knit_global())
 data.journals$name <- broken_text
 
+# Reshape data for Plotly
+data_long <- reshape2::melt(data.journals, value.name = "SJR")
+data_long <- data_long[, -2]
+colnames(data_long) <- c("Periódico", "SJR")
+# set factor level for sorting
+data_long$Periódico <- factor(data_long$Periódico, levels = data.journals$name)
+
 # plot 4 (top-10 journals)
 
 # plot area setup
@@ -1677,13 +1719,6 @@ layout.m <- c(1)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 # Define colors using RColorBrewer
 colors <- RColorBrewer::brewer.pal(n = top, name = "Set3")
-
-# Reshape data for Plotly
-data_long <- reshape2::melt(data.journals, value.name = "SJR")
-data_long <- data_long[, -2]
-colnames(data_long) <- c("Periódico", "SJR")
-# set factor level for sorting
-data_long$Periódico <- factor(data_long$Periódico, levels = data.journals$name)
 
 plot.4 <- plotly::plot_ly(
   data = data_long,
@@ -1723,7 +1758,68 @@ plot.4 <- plot.4 %>% plotly::layout(
 ) %>% plotly::config(displayModeBar = FALSE)
 
 
-# plot 5 (summary table in plot)
+journals.CiteScore <- unique(table.6)
+# rename columns
+colnames(journals.CiteScore) <- c("metricas_artigos.journal", "metricas_artigos.CiteScore")
+top <- min((as.numeric(journals.CiteScore$CiteScore)), 10)
+data.journals <-
+  data.frame(
+    name = journals.CiteScore$metricas_artigos.journal[order(as.numeric(journals.CiteScore$metricas_artigos.CiteScore), decreasing = TRUE)][1:top],
+    value = as.numeric(sort(as.numeric(journals.CiteScore$metricas_artigos.CiteScore), decreasing = TRUE
+             )[1:top])
+    )
+# break vector names in 2 lines
+text.2.break <- data.journals$name
+source("Scripts/line-2-break.R", local = knitr::knit_global())
+data.journals$name <- broken_text
+
+# Reshape data for Plotly
+data_long <- reshape2::melt(data.journals, value.name = "CiteScore")
+data_long <- data_long[, -2]
+colnames(data_long) <- c("Periódico", "CiteScore")
+# set factor level for sorting
+data_long$Periódico <- factor(data_long$Periódico, levels = data.journals$name)
+
+# plot 5 (top-10 journals)
+plot.5 <- plotly::plot_ly(
+  data = data_long,
+  x = ~CiteScore,
+  y = ~Periódico,
+  color = colors[1],
+  type = 'bar',
+  colors = colors[1],
+  height = "50vmin"
+)
+
+plot.5 <- plot.5 %>% plotly::layout(
+  title = list(
+    text = paste0("Top-", top, " Periódicos (CiteScore)"),
+    x = 0.5,
+    xanchor = 'center',
+    font = list(size = '100vw', color = 'white')
+  ),
+  xaxis = list(
+    title = "N",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    tickvals = seq(0, top, 1)
+  ),
+  yaxis = list(
+    title = "",
+    titlefont = list(color = 'white'),
+    tickfont = list(color = 'white'),
+    # reverse axis
+    autorange = 'reversed'
+  ),
+  plot_bgcolor = 'black',
+  paper_bgcolor = 'black',
+  font = list(color = 'white'),
+  margin = list(l = 60, r = 60, t = 60, b = 60),
+  showlegend = FALSE
+) %>% plotly::config(displayModeBar = FALSE)
+
+
+# plot 6 (summary table in plot)
 
 # calculate summary statistics for producao
 summ.table.producao <-
@@ -1765,36 +1861,54 @@ summ.table.producao <-
       digits = 3,
       big.mark = "."
     ),
-    # sum Estrato different than A or B
-    paste0(
-      formatC(
-        100 - sum(table.2[na.omit(match(c("A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "B5"), rownames(table.2))), ], na.rm = FALSE) / sum(table.2, na.rm = FALSE) * 100,
-        format = "d",
-        digits = 0,
-        big.mark = "."
-      ),
-      "%"
+    formatC(
+      min(as.numeric(metricas_artigos$CiteScore), na.rm = TRUE),
+      format = "f",
+      digits = 3,
+      big.mark = "."
     ),
-    # sum Estrato B
-    paste0(
-      formatC(
-        sum(table.2[na.omit(match(c("B1", "B2", "B3", "B4", "B5"), rownames(table.2))), ], na.rm = FALSE) / sum(table.2, na.rm = FALSE) * 100,
-        format = "d",
-        digits = 0,
-        big.mark = "."
-      ),
-      "%"
+    formatC(
+      median(as.numeric(metricas_artigos$CiteScore), na.rm = TRUE),
+      format = "f",
+      digits = 3,
+      big.mark = "."
     ),
-    # sum Estrato A
-    paste0(
-      formatC(
-        sum(table.2[na.omit(match(c("A1", "A2", "A3", "A4"), rownames(table.2))), ], na.rm = FALSE) / sum(table.2, na.rm = FALSE) * 100,
-        format = "d",
-        digits = 0,
-        big.mark = "."
-      ),
-      "%"
+    formatC(
+      max(as.numeric(metricas_artigos$CiteScore), na.rm = TRUE),
+      format = "f",
+      digits = 3,
+      big.mark = "."
     )
+    # # sum Estrato different than A or B
+    # paste0(
+    #   formatC(
+    #     100 - sum(table.2[na.omit(match(c("A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "B5"), rownames(table.2))), ], na.rm = FALSE) / sum(table.2, na.rm = FALSE) * 100,
+    #     format = "d",
+    #     digits = 0,
+    #     big.mark = "."
+    #   ),
+    #   "%"
+    # ),
+    # # sum Estrato B
+    # paste0(
+    #   formatC(
+    #     sum(table.2[na.omit(match(c("B1", "B2", "B3", "B4", "B5"), rownames(table.2))), ], na.rm = FALSE) / sum(table.2, na.rm = FALSE) * 100,
+    #     format = "d",
+    #     digits = 0,
+    #     big.mark = "."
+    #   ),
+    #   "%"
+    # ),
+    # # sum Estrato A
+    # paste0(
+    #   formatC(
+    #     sum(table.2[na.omit(match(c("A1", "A2", "A3", "A4"), rownames(table.2))), ], na.rm = FALSE) / sum(table.2, na.rm = FALSE) * 100,
+    #     format = "d",
+    #     digits = 0,
+    #     big.mark = "."
+    #   ),
+    #   "%"
+    # )
   )
 
 names(summ.table.producao) <-
@@ -1803,12 +1917,15 @@ names(summ.table.producao) <-
     "Mínimo",
     "Mediana anual",
     "Máximo",
-    "Menor",
-    "Mediana SJR",
-    "Maior",
-    "Aguardando estrato",
-    "Estrato B",
-    "Estrato A"
+    "Menor SJR",
+    "Mediana anual",
+    "Maior SJR",
+    "Menor CiteScore",
+    "Mediana anual",
+    "Maior CiteScore"
+    # "Aguardando estrato",
+    # "Estrato B",
+    # "Estrato A"
   )
 
 # plot area setup
@@ -1848,6 +1965,13 @@ source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 cat('<div align="center">')
 plot.4
+cat('</div>')
+cat('<br>')
+cat('<br>')
+source("Scripts/fonte-metricas.R", local = knitr::knit_global())
+
+cat('<div align="center">')
+plot.5
 cat('</div>')
 cat('<br>')
 cat('<br>')
@@ -1922,7 +2046,8 @@ plot.1 <- plot.1 %>% plotly::layout(
   yaxis = list(
     title = "Altmetric Attention Score",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    type = "log"
   ),
   plot_bgcolor = 'black',
   paper_bgcolor = 'black',
@@ -2185,58 +2310,7 @@ plot.4 <- plot.4 %>% plotly::layout(
 ) %>% plotly::config(displayModeBar = FALSE)
 
 
-# plot 5 (summary table for Altmetric breakdown)
-
-# convert to numeric and get total of each column
-table.2.sum <- data.frame(lapply(table.2, type.convert, as.is = TRUE))
-table.2.sum <- colSums(table.2.sum, na.rm = TRUE)
-# drop Ano
-table.2.sum <- table.2.sum[-1]
-# add Altmetric total as first value
-table.2.sum <- c(sum(metricas_artigos$altmetric_score, na.rm = TRUE), table.2.sum)
-
-# rename columns
-names(table.2.sum) <-
-  c(
-    "Altmetric",
-    "Facebook",
-    "Blogs",
-    "Google+",
-    "Notícias",
-    "Reddit",
-    "Stack Exchange",
-    "X",
-    "BlueSky",
-    "Wikipedia",
-    "Policies",
-    "Diretrizes",
-    "Patentes",
-    "YouTube/Vimeo",
-    "Podcasts",
-    "Posts",
-    "Mendeley"
-  )
-
-# drop Altmetric column from table.2.sum
-table.2.sum <- table.2.sum[-1]
-
-# Plot area setup para layout 5x4 (5 linhas e 4 colunas)
-layout.m <- matrix(
-  c(
-    1, 2, 3, 4,
-    5, 6, 7, 8,
-    9, 10, 11, 12,
-    13, 14, 15, 16
-  ),
-  ncol = 4,
-  byrow = TRUE
-)
-
-source("Scripts/plot-margins.R", local = knitr::knit_global())
-summ.data <- table.2.sum
-source("Scripts/plot-summaries.R", local = knitr::knit_global())
-
-# plot 6 (summary table in plot)
+# plot 5 (summary table in plot)
 
 # calculate summary statistics for visibilidade
 summ.table.visibilidade <-
@@ -2299,6 +2373,60 @@ layout.m <- matrix(c(1, 1, 1, 2, 3, 4, 5, 5, 5, 6, 7, 8),
                    byrow = TRUE)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 summ.data <- summ.table.visibilidade
+source("Scripts/plot-summaries.R", local = knitr::knit_global())
+
+# plot 6 (summary table for Altmetric breakdown)
+
+# convert to numeric and get total of each column
+table.2.sum <- data.frame(lapply(table.2, type.convert, as.is = TRUE))
+table.2.sum <- colSums(table.2.sum, na.rm = TRUE)
+# drop Ano
+table.2.sum <- table.2.sum[-1]
+# add Altmetric total as first value
+table.2.sum <- c(sum(metricas_artigos$altmetric_score, na.rm = TRUE), table.2.sum)
+
+# rename columns
+names(table.2.sum) <-
+  c(
+    "Altmetric",
+    "Facebook",
+    "Blogs",
+    "Google+",
+    "Notícias",
+    "Reddit",
+    "Stack Exchange",
+    "X",
+    "BlueSky",
+    "Wikipedia",
+    "Policies",
+    "Diretrizes",
+    "Patentes",
+    "YouTube/Vimeo",
+    "Podcasts",
+    "Posts",
+    "Mendeley"
+  )
+
+# drop Altmetric column from table.2.sum
+table.2.sum <- table.2.sum[-1]
+
+# sort by decreasing frequency
+table.2.sum <- sort(table.2.sum, decreasing = TRUE)
+
+# Plot area setup para layout 5x4 (5 linhas e 4 colunas)
+layout.m <- matrix(
+  c(
+    1, 2, 3, 4,
+    5, 6, 7, 8,
+    9, 10, 11, 12,
+    13, 14, 15, 16
+  ),
+  ncol = 4,
+  byrow = TRUE
+)
+
+source("Scripts/plot-margins.R", local = knitr::knit_global())
+summ.data <- table.2.sum
 source("Scripts/plot-summaries.R", local = knitr::knit_global())
 ```
 
@@ -2438,7 +2566,7 @@ p1 <- ggplot2::ggplot() +
 
 data <-
   as.data.frame(table(c(discentes$UF[discentes$UF == "RJ"], rep(
-    "Outras UF", length(discentes$UF[discentes$UF != "RJ"])
+    "Outra UF", length(discentes$UF[discentes$UF != "RJ"])
   ))))
 colnames(data) <- c("Regiões", "N")
 
@@ -2530,7 +2658,7 @@ p1 <- ggplot2::ggplot() +
 
 data <-
   as.data.frame(table(c(egressos$UF[egressos$UF == "RJ"], rep(
-    "Outras UF", length(egressos$UF[egressos$UF != "RJ"])
+    "Outra UF", length(egressos$UF[egressos$UF != "RJ"])
   ))))
 colnames(data) <- c("Regiões", "N")
 
@@ -2650,7 +2778,7 @@ plot.1 <- plotly::plot_ly(
 
 plot.1 <- plot.1 %>% plotly::layout(
   title = list(
-    text = "Discentes",
+    text = "Discentes por Nível",
     x = 0.5,
     xanchor = 'center',
     font = list(size = '100vw', color = 'white')
@@ -2735,7 +2863,7 @@ plot.2 <- plotly::plot_ly(
 
 plot.2 <- plot.2 %>% plotly::layout(
   title = list(
-    text = "Discentes",
+    text = "Discentes por Situação",
     x = 0.5,
     xanchor = 'center',
     font = list(size = '100vw', color = 'white')
@@ -2965,7 +3093,7 @@ plot.5 <- plotly::plot_ly(
 
 plot.5 <- plot.5 %>% plotly::layout(
   title = list(
-    text = "Idade na titulação",
+    text = "Idade na Titulação",
     x = 0.5,
     xanchor = 'center',
     font = list(size = '100vw', color = 'white')
@@ -3671,7 +3799,9 @@ ggplot2::ggplot() +
       hjust = 0.5
     )
   ) +
-  ggplot2::ggtitle("Distribuição Global de Pós-Docs")
+  ggplot2::ggtitle("Distribuição Global de Pós-Docs") +
+  ggplot2::scale_x_continuous(labels = scales::label_number(accuracy = 1))
+
 
 # plot 3 (summary table in plot)
 
@@ -3913,7 +4043,7 @@ if (length(IES.nac) > 0) {
   
   plot.3 <- plot.3 %>% plotly::layout(
     title = list(
-      text = paste0("Top-", top, " Nacionais"),
+      text = paste0("Top-", top, " Instituições Colaboradoras Nacionais"),
       x = 0.5,
       xanchor = 'center',
       font = list(size = '100vw', color = 'white')
@@ -3977,7 +4107,7 @@ if (length(IES.inter) > 0) {
   
   plot.4 <- plot.4 %>% plotly::layout(
     title = list(
-      text = paste0("Top-", top, " Internacionais"),
+      text = paste0("Top-", top, " Instituições Colaboradoras Internacionais"),
       x = 0.5,
       xanchor = 'center',
       font = list(size = '100vw', color = 'white')
@@ -4036,7 +4166,7 @@ if (length(mundo) > 0) {
   
   plot.5 <- plot.5 %>% plotly::layout(
     title = list(
-      text = paste0("Top-", top, " Países"),
+      text = paste0("Top-", top, " Países com Colaboração"),
       x = 0.5,
       xanchor = 'center',
       font = list(size = '100vw', color = 'white')
@@ -4109,11 +4239,12 @@ if (length(mundo) > 0) {
         hjust = 0.5
       )
     ) +
-    ggplot2::ggtitle("Distribuição Global de Participantes Externos")
+    ggplot2::ggtitle("Distribuição Global de Participantes Externos") +
+    ggplot2::scale_x_continuous(labels = scales::label_number(accuracy = 1))
 } else {
   # plot empty plot
   plot.new()
-  title(main = "Distribuição global de Participantes Externos",
+  title(main = "Distribuição Global de Participantes Externos",
         outer = TRUE,
         cex.main = 1.7)
 }
