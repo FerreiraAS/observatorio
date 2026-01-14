@@ -109,18 +109,7 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 
 <br>
 
-## **Dissertações/Teses** {#TCC-destaque .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !has.sucupira.files}
-cat('<br>')
-```
-
-<br>
-
-## **Engajamento com a produção** {#destaque-altmetric .tabset}
+## **Produção: Engajamento** {#destaque-altmetric .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -179,7 +168,7 @@ if (sjmisc::is_empty(metricas_all)) {
 
 <br>
 
-## **Citações recentes do periódico** {#destaque-citescore .tabset}
+## **Produção: Citações** {#destaque-citescore .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -238,7 +227,7 @@ if (sjmisc::is_empty(metricas_all)) {
 
 <br>
 
-## **Prestígio do periódico** {#destaque-sjr .tabset}
+## **Produção: Prestígio do periódico** {#destaque-sjr .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
 <hr style="height:2px;border-width:0;color:black;background-color:black">
@@ -548,7 +537,7 @@ data$nome_completo <- stringr::str_to_title(data$nome_completo)
 data$tipo <- stringr::str_to_title(data$tipo)
 data$nome_instituicao <- stringr::str_to_upper(tolower(data$nome_instituicao))
 
-# to title case
+# select relevant columns
 subset_banca <- dplyr::select(
   data,
   'Ano'= ano,
@@ -561,6 +550,9 @@ subset_banca <- dplyr::select(
   'Idioma' = idioma,
   'Ordem' = ordem
 )
+
+# remove dupicated rows
+subset_banca <- subset_banca[!duplicated(subset_banca), ]
 
 # paste examinadores by order
 bancas_summary <- subset_banca |>

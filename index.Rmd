@@ -227,10 +227,13 @@ ggplot2::ggplot(
     panel.background = ggplot2::element_rect(fill = main.color, color = NA),
     text = ggplot2::element_text(color = "white"),
     legend.position = "bottom",
-  legend.text  = ggplot2::element_text(size = 7),
-  legend.title = ggplot2::element_text(size = 8)
+    legend.text  = ggplot2::element_text(size = 7),
+    legend.title = ggplot2::element_text(size = 8),
+    plot.margin = ggplot2::margin(0, 0, 0, 0)
   ) +
-  ggplot2::guides(fill = ggplot2::guide_legend(nrow = 3, byrow = TRUE))
+  ggplot2::guides(fill = ggplot2::guide_legend(nrow = 3, byrow = TRUE)) +
+  ggplot2::scale_x_discrete(expand = c(0, 0)) +
+  ggplot2::coord_cartesian(clip = "off")
 
 # plot 2: LP
 
@@ -285,11 +288,13 @@ ggplot2::ggplot(
     panel.background = ggplot2::element_rect(fill = main.color, color = NA),
     text = ggplot2::element_text(color = "white"),
     legend.position = "bottom",
-  legend.text  = ggplot2::element_text(size = 7),
-  legend.title = ggplot2::element_text(size = 8)
+    legend.text  = ggplot2::element_text(size = 7),
+    legend.title = ggplot2::element_text(size = 8),
+    plot.margin = ggplot2::margin(0, 0, 0, 0)
   ) +
-  ggplot2::guides(fill = ggplot2::guide_legend(nrow = 3, byrow = TRUE))
-
+  ggplot2::guides(fill = ggplot2::guide_legend(nrow = 3, byrow = TRUE)) +
+  ggplot2::scale_x_discrete(expand = c(0, 0)) +
+  ggplot2::coord_cartesian(clip = "off")
 
 # plot 3: summary table
 
