@@ -54,48 +54,6 @@ source("Scripts/social-media-sharing.R", local = knitr::knit_global())
 
 <br>
 
-## **Breve histórico** {#breve-historico .tabset}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !has.historico}
-cat('<br>')
-```
-
-```{r programa-historico, eval = has.historico}
-# initialize all sheets
-abas <- readxl::excel_sheets("PPG/Histórico.xlsx")
-
-# display each sheet in a tab
-for (i in 1:length(abas)) {
-  cat('\n\n<!-- -->\n\n')
-  cat(paste0('### **', abas[i], '**'))
-  cat('\n\n<!-- -->\n\n')
-  historico.raw <-
-    readxl::read_excel("PPG/Histórico.xlsx",
-               sheet = abas[i],
-               col_types = c("text"))
-  
-  # print table
-  print(
-    knitr::kable(historico.raw, align = "l", col.names = NULL, escape = FALSE, format = ifelse(knitr::is_html_output(), "html", "latex")) %>% kableExtra::kable_styling(
-      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-      full_width = T,
-      position = "center"
-    )
-  )
-  
-  cat('\n\n')
-  cat('**Fontes**: **PPG**')
-
-  # print end of tab rows
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
-}
-```
-
-<br>
-
 ## **Área de avaliação** {#area-avaliacao .tabset}
 
 <!--script for generating HORIZONTAL LINE-->
@@ -115,10 +73,10 @@ Abrir <- matrix(NA, nrow = dim(area.capes)[1])
 colnames(Abrir) <- "Abrir"
 # add hyperlinks
 for (i in 1:dim(area.capes)[1]) {
-  if (!is.na(area.capes[i, 2])) {
+  if (!is.na(area.capes[i, ncol(area.capes)])) {
     Abrir[i] <-
       paste0('<a href="',
-             area.capes[i, 2],
+             area.capes[i, ncol(area.capes)],
              '" target="_blank"',
              '>',
              # fontawesome icon
@@ -126,34 +84,11 @@ for (i in 1:dim(area.capes)[1]) {
              '</a>')
   }
 }
-area.capes <- cbind(area.capes[,-2], Abrir)
+area.capes <- cbind(area.capes[,-ncol(area.capes)], Abrir)
 
 # print tables
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(area.capes, title = "Programa - Área CAPES")
-
-source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
-```
-
-<br>
-
-## **Nota** {#nota}
-
-<!--script for generating HORIZONTAL LINE-->
-<hr style="height:2px;border-width:0;color:black;background-color:black">
-
-```{r, eval = !has.notas}
-cat('<br>')
-```
-
-```{r auto-notas, eval = has.notas}
-cat(
-  paste0(
-    '<iframe src=\"',
-    readxl::read_excel("PPG/Notas.xlsx", sheet = "Notas")[1, 1],
-    '\" style=\"width:100%; height:600px; border:2px solid black;\"></iframe>'
-  )
-)
 
 source("Scripts/fonte-sucupira.R", local = knitr::knit_global())
 ```
@@ -508,30 +443,36 @@ cat('<br>')
 ```
 
 ```{r agendas-pesquisa, eval = has.agendas.pesquisa}
-# initialize all sheets
-abas <- readxl::excel_sheets("PPG/Agendas de Pesquisa.xlsx")
+agendas <-
+  readxl::read_excel("PPG/Agendas de Pesquisa.xlsx",
+             sheet = "Agendas",
+             col_types = c("text"))
 
-# display each sheet in a tab
-for (i in 1:length(abas)) {
-  cat('\n\n<!-- -->\n\n')
-  cat(paste0('### **', abas[i], '**'))
-  cat('\n\n<!-- -->\n\n')
-  agendas <-
-    readxl::read_excel("PPG/Agendas de Pesquisa.xlsx",
-               sheet = abas[i],
-               col_types = c("text"))
-  
-  cat(
-    paste0(
-      '<iframe src="',
-      agendas[1],
-      '" style=\"width:100%; height:600px; border:2px solid black;"></iframe>'
-    )
-  )
-  
-  # print end of tab rows
-  cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+Abrir <- matrix(NA, nrow = dim(agendas)[1])
+colnames(Abrir) <- "Abrir"
+# add hyperlinks
+for (i in 1:dim(agendas)[1]) {
+  if (!is.na(agendas[i, ncol(agendas)])) {
+    Abrir[i] <-
+      paste0('<a href="',
+             agendas[i, ncol(agendas)],
+             '" target="_blank"',
+             '>',
+             # fontawesome icon
+             fontawesome::fa("up-right-from-square"),
+             '</a>')
+  }
 }
+agendas <- cbind(agendas[,-ncol(agendas)], Abrir)
+
+# print tables
+source("Scripts/table-with-buttons.R", local = knitr::knit_global())
+create_dt(agendas, title = "Programa - Área CAPES")
+
+# print end of tab rows
+cat('\n\n')
+cat('**Fontes**: **PPG**')
+cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
 ```
 
 <br>
@@ -848,7 +789,7 @@ for (j in 1:length(abas)) {
 all_labs$Equipamentos <- as.character(all_labs$Equipamentos)
 
 # print summary table
-cat("### **", as.character(j), "**", "\n", sep = "")
+cat("### **Equipamentos**", "\n", sep = "")
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(all_labs, title = "Programa - Laboratórios - Resumo")
 cat('\n\n')

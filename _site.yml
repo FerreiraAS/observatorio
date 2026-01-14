@@ -34,14 +34,8 @@ navbar:
       menu:
         - text: "-Programa-"
           href: [programa.html]
-        - text: "Dados básicos do Programa"
-          href: [programa.html#dados-basicos]
-        - text: "Breve histórico"
-          href: [programa.html#breve-historico]
         - text: "Área de avaliação"
           href: [programa#area-avaliacao.html]
-        - text: "Nota"
-          href: [programa.html#nota]
         - text: "Área de concentração"
           href: [programa.html#area-concentracao]
         - text: "Linhas de pesquisa"
@@ -106,12 +100,10 @@ navbar:
           href: [repositorio.html]
         - text: "Bancas examinadoras"
           href: [repositorio.html#bancas-examinadoras]
-        - text: "Tese"
-          href: [repositorio.html#tese]
-        - text: "Dissertação"
-          href: [repositorio.html#dissertacao]
-        - text: "Repositório"
-          href: [repositorio.html#repositorio]
+        - text: "Teses"
+          href: [repositorio.html#teses]
+        - text: "Dissertações"
+          href: [repositorio.html#dissertacões]
     - text: "Bibliográfica"
       href: [bibliografica.html]
       menu:

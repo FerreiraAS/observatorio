@@ -173,19 +173,16 @@ O **Observatório** pode exibir informações complementares, não disponíveis 
 │   └── Editais.xlsx
 │   └── Financiadores.xlsx
 │   └── Grupos de Pesquisa.xlsx
-│   └── Histórico.xlsx
 │   └── Infraestrutura.xlsx
 │   └── Internacionalização.xlsx
 │   └── Laboratórios.xlsx
 │   └── Metodologia.xlsx
-│   └── Notas.xlsx
 │   └── Periódicos institucionais.xlsx
 │   └── Planejamento estratégico.xlsx
 │   └── Políticas.xlsx
 │   └── Prêmio CAPES de Tese.xlsx
 │   └── Prêmios.xlsx
 │   └── Produção.xlsx
-│   └── Repositórios.xlsx
 ```
 
 Um arquivo-modelo de cada planilha está disponível no [repositório do Observatório CR](https://github.com/ppgcr-unisuam/observatoriocr/tree/76185c88ea0ead961c03c0a09f6c5fb9eb104e39/PPG).

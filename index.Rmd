@@ -181,6 +181,16 @@ summ.AC.LP <- summ.AC.LP[summ.AC.LP$Freq != 0, ]
 
 # plot 1: AC
 
+par(
+  oma = c(0, 0, 0, 0),
+  mar = c(1, 1, 2, 1),
+  bg = main.color,
+  col.lab = "white",
+  col.axis = "white",
+  fg = "white",
+  col.main = "white"
+)
+
 dados_ac <- projetos.em.andamento %>%
   dplyr::filter(!is.na(`Área de Concentração`)) %>%
   dplyr::group_by(Ano, AC = `Área de Concentração`) %>%
@@ -210,28 +220,19 @@ ggplot2::ggplot(
   ) +
   ggplot2::theme_minimal(base_size = 12) +
   ggplot2::theme(
-    panel.grid = element_blank(),
-    axis.ticks = element_blank(),
-    plot.background = element_rect(fill = main.color, color = NA),
-    panel.background = element_rect(fill = main.color, color = NA),
-    text = element_text(color = "white"),
+    plot.title = element_text(hjust = 0.5),
+    panel.grid = ggplot2::element_blank(),
+    axis.ticks = ggplot2::element_blank(),
+    plot.background = ggplot2::element_rect(fill = main.color, color = NA),
+    panel.background = ggplot2::element_rect(fill = main.color, color = NA),
+    text = ggplot2::element_text(color = "white"),
     legend.position = "bottom",
-    plot.title    = element_text(hjust = 0.5),
-    plot.subtitle = element_text(hjust = 0.5)
-  )
-
+  legend.text  = ggplot2::element_text(size = 7),
+  legend.title = ggplot2::element_text(size = 8)
+  ) +
+  ggplot2::guides(fill = ggplot2::guide_legend(nrow = 3, byrow = TRUE))
 
 # plot 2: LP
-
-dados_alluvial <- projetos.em.andamento %>%
-  dplyr::filter(!is.na(`Área de Concentração`),
-         !is.na(`Linha de Pesquisa`),
-         `Linha de Pesquisa` != "PROJETO ISOLADO") %>%
-  dplyr::mutate(
-    Ano = factor(Ano, levels = sort(unique(Ano))),
-    AC  = `Área de Concentração`,
-    LP  = `Linha de Pesquisa`
-  )
 
 par(
   oma = c(0, 0, 0, 0),
@@ -242,6 +243,16 @@ par(
   fg = "white",
   col.main = "white"
 )
+
+dados_alluvial <- projetos.em.andamento %>%
+  dplyr::filter(!is.na(`Área de Concentração`),
+         !is.na(`Linha de Pesquisa`),
+         `Linha de Pesquisa` != "PROJETO ISOLADO") %>%
+  dplyr::mutate(
+    Ano = factor(Ano, levels = sort(unique(Ano))),
+    AC  = `Área de Concentração`,
+    LP  = `Linha de Pesquisa`
+  )
 
 ggplot2::ggplot(
   dados_alluvial,
@@ -274,16 +285,15 @@ ggplot2::ggplot(
     panel.background = ggplot2::element_rect(fill = main.color, color = NA),
     text = ggplot2::element_text(color = "white"),
     legend.position = "bottom",
-  legend.text  = ggplot2::element_text(size = 8),
-  legend.title = ggplot2::element_text(size = 9)
+  legend.text  = ggplot2::element_text(size = 7),
+  legend.title = ggplot2::element_text(size = 8)
   ) +
-  ggplot2::guides(fill = ggplot2::guide_legend(nrow = 2, byrow = TRUE))
+  ggplot2::guides(fill = ggplot2::guide_legend(nrow = 3, byrow = TRUE))
 
 
 # plot 3: summary table
 
 # plot area setup
-# layout.m <- matrix(c(1, 2, 3, 4), ncol = 2, byrow = FALSE)
 layout.m <- matrix(c(1, 2), ncol = 1, byrow = FALSE)
 source("Scripts/plot-margins.R", local = knitr::knit_global())
 summ.coerencia.1 <- c(length(current.AC),

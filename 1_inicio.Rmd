@@ -329,13 +329,6 @@ has.grupos.pesquisa <-
   )
 ```
 
-```{r try-historico}
-has.historico <-
-  !BBmisc::is.error(try(readxl::read_excel("PPG/Histórico.xlsx", sheet = 1),
-                silent = TRUE)
-  )
-```
-
 ```{r try-infraestrutura}
 has.infraestrutura <-
   !BBmisc::is.error(try(readxl::read_excel("PPG/Infraestrutura.xlsx", sheet = 1),
@@ -360,13 +353,6 @@ has.laboratorios <-
 ```{r try-metodologia}
 has.metodologia <-
   !BBmisc::is.error(try(readxl::read_excel("PPG/Metodologia.xlsx", sheet = 1),
-                silent = TRUE)
-  )
-```
-
-```{r try-notas}
-has.notas <-
-  !BBmisc::is.error(try(readxl::read_excel("PPG/Notas.xlsx", sheet = 1),
                 silent = TRUE)
   )
 ```
