@@ -1942,7 +1942,8 @@ cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome:
 files.to.read <-
   list.files(file.path(getwd(), "Impacto", "Sage Policy Profiles"),
              full.names = TRUE,
-             recursive = FALSE)
+             recursive = FALSE,
+             pattern = "csv$")
 
 # column bind all into a single dataframe
 sage.profiles.raw <- data.frame()
