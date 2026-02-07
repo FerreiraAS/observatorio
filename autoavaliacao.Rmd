@@ -11111,11 +11111,18 @@ metricas_all_ID$Qualis[is.na(metricas_all_ID$Qualis)] <- "Não classificado"
 # get only artigos
 metricas_all_ID <- metricas_all_ID[metricas_all_ID$"Subtipo de Produção" == "ARTIGO EM PERIÓDICO",]
 
-# loop to get Qualis values from matched ISSN values
-for(i in 1:dim(metricas_all_ID)[1]) {
-  # check if ISSN exists in the list
-  if(!sjmisc::is_empty(which(metricas_all_ID$ISSN[i] == qualis$ISSN))){
-    metricas_all_ID$Qualis[i] <- as.character(unique(qualis[which(metricas_all_ID$ISSN[i] == qualis$ISSN), "Estrato"]))
+# if metricas_all_ID$Estrato is empty for this quadrienal.vigente, use latest Qualis
+if (sjmisc::is_empty(
+  metricas_all_ID$Estrato[
+    metricas_all_ID$`Ano da Produção` %in% quadrienal.vigente
+  ]
+)) {
+  # loop to get Qualis values from matched ISSN values
+  for(i in 1:dim(metricas_all_ID)[1]) {
+    # check if ISSN exists in the list
+    if(!sjmisc::is_empty(which(metricas_all_ID$ISSN[i] == qualis$ISSN))){
+      metricas_all_ID$Qualis[i] <- as.character(unique(qualis[which(metricas_all_ID$ISSN[i] == qualis$ISSN), "Estrato"]))
+    }
   }
 }
 
@@ -11303,7 +11310,7 @@ if (knitr::is_latex_output() && !sjmisc::is_empty(síntese.ano)) {
         "\\\\textbf{\\\\href{https://www.crossref.org}{CrossRef}}",
         "\\\\textbf{\\\\href{https://doaj.org}{DOAJ}}",
         "As métricas são referentes apenas às produções com \\\\textit{digital object identifier} (DOI)",
-        "A classificação dos periódicos pelo Qualis refere-se à Avaliação Quadrienal 2017-2020"
+        "A classificação dos periódicos pelo Qualis refere-se à Avaliação Quadrienal 2021-2024"
       ),
       escape = FALSE
     )
