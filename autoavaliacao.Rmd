@@ -6160,6 +6160,9 @@ sucupira.df.nat <- sucupira.df.anais %>%
 # to title case
 sucupira.df.nat$`Valor do Item de Detalhamento` <- tools::toTitleCase(tolower(sucupira.df.nat$`Valor do Item de Detalhamento`))
 
+# patch to replace NA values with "Indefinido"
+sucupira.df.nat$`Valor do Item de Detalhamento`[is.na(sucupira.df.nat$`Valor do Item de Detalhamento`)] <- "Indefinido"
+
 table.nat <- data.frame(matrix(
   NA,
   nrow = length(unique(sucupira.df.nat$`ID da Produção`)),
@@ -6249,6 +6252,9 @@ sucupira.df.local <- sucupira.df.anais %>%
 
 # to title case
 sucupira.df.local$`Valor do Item de Detalhamento` <- tools::toTitleCase(tolower(sucupira.df.local$`Valor do Item de Detalhamento`))
+
+# patch to replace NA values with "Indefinido"
+sucupira.df.local$`Valor do Item de Detalhamento`[is.na(sucupira.df.local$`Valor do Item de Detalhamento`)] <- "Indefinido"
 
 table.local <- data.frame(matrix(
   NA,
@@ -6937,6 +6943,9 @@ sucupira.df.nat <- sucupira.df.bibl %>%
   dplyr::filter(`Item de Detalhamento` == "Natureza" | `Item de Detalhamento` == "Tipo da Contribuição na Obra"
   )
 
+# patch to replace NA values with "Indefinido"
+sucupira.df.nat$`Valor do Item de Detalhamento`[is.na(sucupira.df.nat$`Valor do Item de Detalhamento`)] <- "Indefinido"
+
 # to title case
 sucupira.df.nat$`Valor do Item de Detalhamento` <- tools::toTitleCase(tolower(sucupira.df.nat$`Valor do Item de Detalhamento`))
 
@@ -7043,6 +7052,9 @@ sucupira.df.local <- sucupira.df.bibl %>%
 
 # to title case
 sucupira.df.local$`Valor do Item de Detalhamento` <- tools::toTitleCase(tolower(sucupira.df.local$`Valor do Item de Detalhamento`))
+
+# patch to replace NA values with "Indefinido"
+sucupira.df.local$`Valor do Item de Detalhamento`[is.na(sucupira.df.local$`Valor do Item de Detalhamento`)] <- "Indefinido"
 
 table.local <- data.frame(matrix(
   NA,
@@ -8150,6 +8162,9 @@ sucupira.df.nat <- sucupira.df.details %>%
 # to title case
 sucupira.df.nat$`Valor do Item de Detalhamento` <- tools::toTitleCase(tolower(sucupira.df.nat$`Valor do Item de Detalhamento`))
 
+# patch to convert NA to "Indefinido"
+sucupira.df.nat$`Valor do Item de Detalhamento`[is.na(sucupira.df.nat$`Valor do Item de Detalhamento`)] <- "Indefinido"
+
 # replace completo por artigo completo
 sucupira.df.nat$`Valor do Item de Detalhamento` <- ifelse(
   sucupira.df.nat$`Valor do Item de Detalhamento` == "Completo",
@@ -8253,6 +8268,9 @@ sucupira.df.local <- sucupira.df.details %>%
 
 # to title case
 sucupira.df.local$`Valor do Item de Detalhamento` <- tools::toTitleCase(tolower(sucupira.df.local$`Valor do Item de Detalhamento`))
+
+# patch to replace NA values with "Indefinido"
+sucupira.df.local$`Valor do Item de Detalhamento`[is.na(sucupira.df.local$`Valor do Item de Detalhamento`)] <- "Indefinido"
 
 table.local <- data.frame(matrix(
   NA,
