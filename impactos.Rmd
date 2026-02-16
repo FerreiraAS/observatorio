@@ -1586,8 +1586,10 @@ table.3.2.1 <-
       "BlueSky" ~ 0,
       "Wikipedia" ~ 0,
       "Policies" ~ 0,
+      "Diretrizes" ~ 0,
       "Patentes" ~ 0,
       "YouTube/Vimeo" ~ 0,
+      "Podcasts" ~ 0,
       "Posts" ~ 0,
       "Mendeley" ~ 0,
       "Acesso aberto" ~ 0
@@ -1616,7 +1618,7 @@ if (knitr::is_html_output()) {
 source("Scripts/fonte-metricas.R", local = knitr::knit_global())
 
 cat('\n\n')
-cat('**Nota**: A classificação dos periódicos pelo Qualis refere-se à Avaliação Quadrienal 2017-2020 conforme arquivo disponibilizado na [Plataforma Sucupira](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.xhtml) e não substitui a classificação da CAPES da Avaliação Quadrienal ', min(periodo.vigente), '-', max(periodo.vigente), '.', sep = "")
+cat('**Nota**: A classificação dos periódicos pelo Qualis refere-se à Avaliação Quadrienal 2017-2020 conforme arquivo disponibilizado na [Plataforma Sucupira](https://sucupira.capes.gov.brpublic/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.xhtml) e não substitui a classificação da CAPES da Avaliação Quadrienal ', min(periodo.vigente), '-', max(periodo.vigente), '.', sep = "")
 cat('\n\n')
 ```
 

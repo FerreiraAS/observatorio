@@ -176,7 +176,7 @@ table.with.badges <-
     cat(', ', sep = "")
     cat('^5^ [**SJR**](https://www.scimagojr.com)', sep = "")
     cat(', ', sep = "")
-    cat('^6^ [**Qualis**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)', sep = "")
+    cat('^6^ [**Qualis**](https://sucupira.capes.gov.brpublic/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)', sep = "")
     cat(', ', sep = "")
     cat('^7^ [**DOAJ**](https://doaj.org)', sep = "")
     cat('<br>')

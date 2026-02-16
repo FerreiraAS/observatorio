@@ -2981,7 +2981,7 @@ plot.3 <- plotly::plot_ly(
 
 plot.3 <- plot.3 %>% plotly::layout(
   title = list(
-    text = "Egressos",
+    text = "Egressos por Nível",
     x = 0.5,
     xanchor = 'center',
     font = list(size = '100vw', color = 'white')
@@ -3045,7 +3045,7 @@ plot.4 <- plotly::plot_ly(
 
 plot.4 <- plot.4 %>% plotly::layout(
   title = list(
-    text = "Tempo de Curso",
+    text = "Tempo de Curso por Nível",
     x = 0.5,
     xanchor = 'center',
     font = list(size = '100vw', color = 'white')
@@ -3108,7 +3108,7 @@ plot.5 <- plotly::plot_ly(
 
 plot.5 <- plot.5 %>% plotly::layout(
   title = list(
-    text = "Idade na Titulação",
+    text = "Idade na Titulação por Nível",
     x = 0.5,
     xanchor = 'center',
     font = list(size = '100vw', color = 'white')
@@ -3375,7 +3375,8 @@ plot.1 <- plot.1 %>% plotly::layout(
   yaxis = list(
     title = "Percentual",
     titlefont = list(color = 'white'),
-    tickfont = list(color = 'white')
+    tickfont = list(color = 'white'),
+    range = c(0, 100)
   ),
   legend = list(
     title = 'Legenda',
