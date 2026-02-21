@@ -389,7 +389,7 @@ O Observatório é atualizado periodicamente. Para receber atualizações no seu
 
 ### [**UFF**](https://www.uff.br) **\| Universidade Federal de Minas Gerais**
 
--   [**Observatório PPGCN**]() \| Programa de Pós-graduação em Ciências da Nutrição
+-   [**Observatório PPGCN**](https://ppgcn-uff.github.io/observatorio/) \| Programa de Pós-graduação em Ciências da Nutrição
 
 ### [**UNIEVANGÉLICA**](https://www4.unievangelica.edu.br) **\| Universidade Evangélica de Goiás**
 
