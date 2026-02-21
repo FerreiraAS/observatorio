@@ -1,0 +1,287 @@
+---
+title: Consolidado
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 4
+    number_sections: false
+    includes:
+      in_header: tex/preamble.tex
+      before_body: [tex/cover-3.tex]
+    dev: cairo_pdf
+    latex_engine: xelatex
+    keep_tex: false
+  html_document:
+    toc: true
+    toc_float: true
+    css:
+      - ./CSS/generic.css
+      - ./CSS/logo-above-toc.css
+      - ./CSS/main-color.css
+      - ./CSS/narrow-margins.css
+      - ./CSS/responsive.css
+documentclass: book
+classoption: oneside
+papersize: a4
+geometry: "top=2cm,left=2cm,right=2cm,bottom=2cm"
+link-citations: true
+always_allow_html: true
+tables: true
+---
+
+<!--set up-->
+```{r setup, include = FALSE, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', out.width = "100%", results = "hide"}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = 'center',
+  results = 'asis',
+  include = TRUE,
+  out.width = "100%",
+  knitr.kable.NA = '',
+  knitr.table.format = ifelse(knitr::is_html_output(), "html", "latex"),
+  webshot = "webshot",
+  dev = "png"
+)
+```
+
+<!--load caches-->
+```{r load-caches, echo = FALSE, include = FALSE}
+folders <- list.dirs(file.path("cache/"), full.names = FALSE, recursive = FALSE)
+for(folder in folders){
+  knitr::load_cache(label = folder, path = paste0(file.path("cache", folder), "/"))
+}
+```
+
+<!--script for inserting LOGO ABOVE THE TOC-->
+```{js}
+$(document).ready(function() {
+$('#TOC').parent().prepend('<div id=\"nav_logo\"><img src="PPG/Images/logo-programa.png"></div>');
+});
+```
+
+<!--script for sharing-->
+<p align="right">
+```{r share, eval = all(knitr::is_html_output())}
+home <- metadata$repository_url
+source("Scripts/social-media-sharing.R", local = knitr::knit_global())
+```
+</p>
+
+```{r cover-one, echo = FALSE, include = FALSE, eval = all(knitr::is_html_output())}
+source("Scripts/years-sucupira.R", local = knitr::knit_global())
+source("Scripts/cover-3.R", local = knitr::knit_global())
+```
+
+```{=latex}
+% unnumbered chapters and arabic page numbering
+\backmatter
+
+\clearpage
+\markboth{}{}
+
+\EnableFootNotes
+```
+
+```{r, eval = all(knitr::is_html_output(), has.avaliacao)}
+cat("## **Consolidado** {#avalicao-capes .tabset}")
+cat('\n\n')
+cat('<hr style="height:2px;border-width:0;color:black;background-color:black">')
+cat('\n\n')
+```
+
+```{r, eval = all(!knitr::is_html_output(), has.avaliacao)}
+cat("## **Consolidado**")
+cat('\n\n')
+```
+
+```{r, eval = all(!has.avaliacao)}
+cat('<br>')
+```
+
+```{r, eval = all(knitr::is_html_output(), has.sucupira.files)}
+cat("## **Análises** {#coleta .tabset}")
+cat('\n\n')
+cat('<hr style="height:2px;border-width:0;color:black;background-color:black">')
+cat('\n\n')
+```
+
+```{r, eval = all(!knitr::is_html_output(), has.sucupira.files)}
+cat('\\FloatBarrier\n')
+cat("## **Análises**")
+cat('\n\n')
+```
+
+<br>
+
+```{r bigdata, eval = all(has.sucupira.files), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+# read bigdata
+source("Scripts/sucupira.bigdata.R", local = knitr::knit_global())
+sucupira_bigdata <- tabelao
+```
+
+```{r tb1, eval = all(has.sucupira.files), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+library(dplyr)
+
+# Totais por ano
+total_docentes <- sucupira_bigdata %>%
+  dplyr::group_by(dir_name) %>%
+  dplyr::summarise(total_docentes = dplyr::n_distinct(`Identificador do Docente`, na.rm = TRUE))
+
+total_discentes <- sucupira_bigdata %>%
+  dplyr::group_by(dir_name) %>%
+  dplyr::summarise(total_discentes = dplyr::n_distinct(`Identificador do Discente`, na.rm = TRUE))
+
+# Juntar e criar razão
+dados_modelo <- total_docentes %>%
+  dplyr::inner_join(total_discentes, by = "dir_name") %>%
+  dplyr::mutate(razao = total_discentes / total_docentes)
+
+dados_modelo$ano <- as.numeric(dados_modelo$dir_name)
+
+# DESCRITIVA com gtsummary
+tb_descritiva <- dados_modelo %>%
+  dplyr::select(ano, total_docentes, total_discentes, razao) %>%
+  gtsummary::tbl_summary(
+    include = c(
+      total_docentes,
+      total_discentes,
+      razao),
+    type = list(
+      total_docentes ~ "continuous",
+      total_discentes ~ "continuous",
+      razao ~ "continuous"
+    ),
+    label = list(
+      total_docentes ~ "Total de docentes",
+      total_discentes ~ "Total de discentes",
+      razao ~ "Razão discentes/docentes"
+    ),
+    digits = list(
+      total_docentes ~ 0,
+      total_discentes ~ 0,
+      razao ~ 2
+    ),
+    statistic = gtsummary::all_continuous() ~ "{mean} ({sd})"
+  ) %>%
+  gtsummary::modify_header(label = "**Variável**") %>%
+  gtsummary::modify_footnote(
+    gtsummary::all_stat_cols() ~ "Média (Desvio-padrão)"
+  )
+
+# print table
+tb_descritiva %>%
+  gtsummary::as_kable_extra(
+    format = ifelse(knitr::is_html_output(), "html", "latex"),
+    booktabs = TRUE,
+    linesep = "",
+    caption = paste0(
+      "Razão discentes/docentes por ano (",
+      min(dados_modelo$ano, na.rm = TRUE), "-", max(dados_modelo$ano, na.rm = TRUE),
+      ")"
+    )
+  ) %>%
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = TRUE,
+    position = "center",
+    latex_options = "hold_position"
+  ) %>%
+  kableExtra::footnote(
+    general_title = "Fonte: ",
+    general = c("Plataforma Sucupira (https://sucupira.capes.gov.br)"),
+    escape = FALSE
+  )
+
+# Add LaTeX commands for new page and float barrier
+cat("\\FloatBarrier\n")
+
+# MODELOS
+# Modelo bruto
+model_bruto <- lm(razao ~ total_docentes, data = dados_modelo)
+
+# Modelo ajustado por ano
+model_ajustado <- lm(razao ~ total_docentes + ano, data = dados_modelo)
+
+# TABELA MERGED
+tb_merged <-
+  gtsummary::tbl_merge(
+    tbls = list(
+      gtsummary::tbl_regression(
+        model_bruto,
+        exponentiate = FALSE,
+        include = total_docentes,
+        label = list(
+          total_docentes ~ "Total de docentes"
+        ),
+        tidy_fun = broom.helpers::tidy_parameters
+      ),
+      gtsummary::tbl_regression(
+        model_ajustado,
+        exponentiate = FALSE,
+        include = total_docentes,
+        label = list(
+          total_docentes ~ "Total de docentes"
+        ),
+        tidy_fun = broom.helpers::tidy_parameters
+      )
+    ),
+    tab_spanner = c("**Modelo Bruto**", "**Modelo Ajustado**")
+  )
+
+tb_merged <-
+  tb_merged %>%
+  gtsummary::modify_fmt_fun(
+    list(
+      estimate_1 ~ function(x) gtsummary::style_number(x, digits = 0),
+      estimate_2 ~ function(x) gtsummary::style_number(x, digits = 0),
+      conf.low_1 ~ function(x) gtsummary::style_number(x, digits = 0),
+      conf.high_1 ~ function(x) gtsummary::style_number(x, digits = 0),
+      conf.low_2 ~ function(x) gtsummary::style_number(x, digits = 0),
+      conf.high_2 ~ function(x) gtsummary::style_number(x, digits = 0)
+    )
+  ) %>%
+  gtsummary::modify_header(
+    conf.low_1 ~ "**IC 95%**",
+    conf.low_2 ~ "**IC 95%**"
+  ) %>%
+  gtsummary::modify_footnote(
+    gtsummary::all_stat_cols() ~ "Coeficiente (Intervalo de Confiança de 95%)",
+    replace = TRUE
+  )
+
+tb_merged %>%
+  gtsummary::as_kable_extra(
+    format = ifelse(knitr::is_html_output(), "html", "latex"),
+    booktabs = TRUE,
+    linesep = "",
+    caption = paste0(
+      "Razão discentes/docente por ano, com modelos bruto e ajustado(",
+      min(dados_modelo$ano, na.rm = TRUE), "-", max(dados_modelo$ano, na.rm = TRUE),
+      ")"
+    )
+  ) %>%
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = TRUE,
+    position = "center",
+    latex_options = "hold_position"
+  ) %>%
+  kableExtra::footnote(
+    general_title = "Fonte: ",
+    general = c("Plataforma Sucupira (https://sucupira.capes.gov.br)"),
+    escape = FALSE
+  )
+
+# Add LaTeX commands for new page and float barrier
+if(knitr::is_latex_output() && !sjmisc::is_empty(tb_merged)) {
+  cat('\\newpage')
+}
+```
+
+<br>
+
+```{=latex}
+\DisableFootNotes
+```

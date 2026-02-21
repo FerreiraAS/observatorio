@@ -11,7 +11,7 @@
 
 
 
-<title>OBSERVATÓRIO</title>
+<title>Consolidado</title>
 
 <script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -74,7 +77,8 @@ if (window.hljs) {
 
 
 
-<link rel="stylesheet" href="CSS/index.css" type="text/css" />
+<link rel="stylesheet" href="CSS/generic.css" type="text/css" />
+<link rel="stylesheet" href="CSS/logo-above-toc.css" type="text/css" />
 <link rel="stylesheet" href="CSS/main-color.css" type="text/css" />
 <link rel="stylesheet" href="CSS/narrow-margins.css" type="text/css" />
 <link rel="stylesheet" href="CSS/responsive.css" type="text/css" />
@@ -239,6 +243,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -246,6 +313,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -710,49 +787,30 @@ function googleTranslateElementInit() {
 
 
 
-<h1 class="title toc-ignore">OBSERVATÓRIO</h1>
+<h1 class="title toc-ignore">Consolidado</h1>
 
 </div>
 
 
 <!--set up-->
 <!--load caches-->
-<p><br></p>
-<p><br></p>
-<center>
-<p><br></p>
-<p style="font-size:1.5em">
-O <strong>Observatório</strong> é uma iniciativa que envolve o registro,
-o acompanhamento e a análise agregada e estruturada de dados para
-divulgação transparente de suas atividades, planejamentos, ações e
-impactos, tornando-os acessíveis à sociedade
+<!--script for inserting LOGO ABOVE THE TOC-->
+<script>
+$(document).ready(function() {
+$('#TOC').parent().prepend('<div id=\"nav_logo\"><img src="PPG/Images/logo-programa.png"></div>');
+});
+</script>
+<!--script for sharing-->
+<p align="right">
+<a
+href="https://twitter.com/intent/tweet?url=https://github.com/FerreiraAS"><svg preserveAspectRatio="none" aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:2em;width:2em;vertical-align:-0.125em;margin-left:0.2em;margin-right:0.2em;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg></a>
+<a
+href="https://www.facebook.com/sharer.php?u=https://github.com/FerreiraAS"><svg preserveAspectRatio="none" aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:2em;width:2em;vertical-align:-0.125em;margin-left:0.2em;margin-right:0.2em;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64h98.2V334.2H109.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H255V480H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64z"/></svg></a>
+<a
+href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://github.com/FerreiraAS"><svg preserveAspectRatio="none" aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:2em;width:2em;vertical-align:-0.125em;margin-left:0.2em;margin-right:0.2em;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg></a>
 </p>
-</center>
-<p><br><br></p>
-<h1>UNISUAM | PPGCR</h1>
-<iframe src="https://ppgcr-unisuam.github.io/observatoriocr/" style="width:100%; height:600px; border:2px solid white;"></iframe>
-<p><br><br></p>
-<h1>UFC | PPGFisio</h1>
-<iframe id="scaled-frame" src="https://ppgfisioufc.github.io/PPGFisio_UFC/" style="width:100%; height:600px; border:2px solid white;"></iframe>
-<p><br><br></p>
-<h1>UFTM-UFU | PPGFisio</h1>
-<iframe id="scaled-frame" src="https://ppgfisiouftmufu.github.io/ObservatorioUFTM_UFU/" style="width:100%; height:600px; border:2px solid white;"></iframe>
-<p><br><br></p>
-<h1>UFRN | PPGCR</h1>
-<iframe id="scaled-frame" src="https://ppgfisioterapia.github.io/observatorioUFRN/" style="width:100%; height:600px; border:2px solid white;"></iframe>
-<p><br><br></p>
-<h1>USP | PPGReab</h1>
-<iframe id="scaled-frame" src="https://ppgreab.github.io/Observatorio-PPGPosReab-USP/" style="width:100%; height:600px; border:2px solid white;"></iframe>
-<p><br><br></p>
-<h1>UNISUAM | PPGDL</h1>
-<iframe id="scaled-frame" src="https://ppgdl-unisuam.github.io/observatoriodl/" style="width:100%; height:600px; border:2px solid white;"></iframe>
-<p><br><br></p>
-<h1>IFRJ | PPGCTIS</h1>
-<iframe id="scaled-frame" src="https://ppgctis.github.io/ObservatorioCTIS/" style="width:100%; height:600px; border:2px solid white;"></iframe>
-<p><br><br></p>
-<h1>UPE | PPGRDF</h1>
-<iframe id="scaled-frame" src="https://ppgrdf-upe.github.io/Observatorio_PPGRDF/" style="width:100%; height:600px; border:2px solid white;"></iframe>
-<p><br><br></p>
+<p><br></p>
+<p><br></p>
 <p><br></p>
 
 <!--script for generating HORIZONTAL LINE-->
@@ -779,6 +837,8 @@ impactos, tornando-os acessíveis à sociedade
 </div>
 
 
+</div>
+</div>
 
 </div>
 
@@ -811,6 +871,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

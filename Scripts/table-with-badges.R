@@ -48,12 +48,32 @@ table.with.badges <-
         
         cat("<tr><td valign=top;>")
         cat("<br>")
-        # add title with link to DOI
-        if (length(doi) != 0 | !sjmisc::is_empty(doi)) {
-          cat(paste0('[**', title, '**](https://doi.org/', doi, '){target="_blank"}'), sep = "")
-        } else {
-          cat(paste0('**', title, '**'), sep = "")
+        
+        citation <- tryCatch(
+          rcrossref::cr_cn(
+            dois = doi,
+            format = "text",
+            style = "american-medical-association-10th-edition",
+            locale = "pt-BR"
+          ),
+          error = function(e) character(0)
+        )
+        # remove numbering (e.g., "1. ")
+        citation <- gsub("^[0-9]+\\.\\s+", "", citation)
+        
+        if (!is.null(doi) && !sjmisc::is_empty(doi) && length(citation) > 0) {
+          doi_link <- paste0(
+            'doi:<a href="https://doi.org/', doi, '" target="_blank">', doi, '</a>'
+          )
+          # substitui DOI com ou sem prefixo
+          citation <- gsub(
+            paste0("(doi:\\s*)?", doi),
+            doi_link,
+            citation,
+            ignore.case = TRUE
+          )
         }
+        cat(citation)
         
         # add OPEN ACCESS badge
         # if (length(is_oa) != 0 & !sjmisc::is_empty(is_oa)) {
@@ -78,7 +98,7 @@ table.with.badges <-
         
         # add Altmetric badge
         if (show.Altmetric == TRUE) {
-          if (!sjmisc::is_empty(altmetric)) {
+            if (!sjmisc::is_empty(altmetric)) {
             cat(
               "<a style=\"display: inline-block; float: left; margin:0.1em 0.3em 0.1em 0.3em;\" class=\"altmetric-embed\" data-badge-type=\"donut\" data-badge-popover=\"right\" data-doi=\"",
               doi,
@@ -176,7 +196,7 @@ table.with.badges <-
     cat(', ', sep = "")
     cat('^5^ [**SJR**](https://www.scimagojr.com)', sep = "")
     cat(', ', sep = "")
-    cat('^6^ [**Qualis**](https://sucupira.capes.gov.brpublic/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)', sep = "")
+    cat('^6^ [**Qualis**](https://sucupira.capes.gov.br/sucupira/public/consultas/coleta/veiculoPublicacaoQualis/listaConsultaGeralPeriodicos.jsf)', sep = "")
     cat(', ', sep = "")
     cat('^7^ [**DOAJ**](https://doaj.org)', sep = "")
     cat('<br>')

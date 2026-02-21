@@ -1,8 +1,8 @@
 options(pillar.sigfig = 5)
 
 # list excel files in the current directory
-folders <- list.dirs(file.path("../Sucupira"), full.names = FALSE, recursive = FALSE)
-files <- list.files(file.path("../Sucupira"), pattern = '*.xlsx', full.names = TRUE, recursive = TRUE)
+folders <- list.dirs(file.path("./Sucupira"), full.names = FALSE, recursive = FALSE)
+files <- list.files(file.path("./Sucupira"), pattern = '*.xlsx', full.names = TRUE, recursive = TRUE)
 
 get_file <- function (file, sheet = NULL){
   return(
@@ -40,14 +40,14 @@ even_bigger_dataframe <- function (files, folders){
   
   tabelao <- c()
   for (index in 1:length(folders) ){
-    print(folders[index])
+    # print(folders[index])
     temp_df <- big_dataframe(files[index],folders[index])
     tabelao <- dplyr::bind_rows(tabelao, temp_df)
   }
   return(tabelao)
 }
 
-tabelao2023_2024 <- even_bigger_dataframe(files,folders)
+tabelao <- even_bigger_dataframe(files,folders)
 
 
 write_fun <- function (payload, dir_path, filename){
@@ -100,10 +100,9 @@ output_path <- paste(getwd())
 file_name <- 'tabelao_conferencia_programa.xlsx'
 
 # write_to_file(tabela, output_path,file_name, flag = 'seguro')
-write_to_file(tabelao2023_2024, output_path,file_name, flag = 'sobreescrever')
-'Lembre-se de fechar o arquivo antes de executar o script, ou será lançado um warning the permissão negada.'
-
+# write_to_file(tabelao, output_path,file_name, flag = 'sobreescrever')
+# 'Lembre-se de fechar o arquivo antes de executar o script, ou será lançado um warning the permissão negada.'
+# 
 # Referência
 # 'https://stackoverflow.com/questions/44464441/
 #   r-is-there-a-good-replacement-for-plyrrbind-fill-in-dplyr'
-

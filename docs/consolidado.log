@@ -2,8 +2,8 @@ This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded forma
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**autoavaliacao.tex
-(./autoavaliacao.tex
+**consolidado.tex
+(./consolidado.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
 (/usr/local/texlive/2025/texmf-dist/tex/latex/base/book.cls
@@ -1541,11 +1541,11 @@ File: bkm-dvipdfm.def 2023-12-10 v1.31 bookmark driver for dvipdfm (HO)
 \BKM@id=\count438
 )) (/usr/local/texlive/2025/texmf-dist/tex/latex/xurl/xurl.sty
 Package: xurl 2022/01/09 v 0.10 modify URL breaks
-) (./autoavaliacao.aux
+) (./consolidado.aux
 Package babel Info: 'brazilian' activates 'portuges' shorthands.
 (babel)             Reported on input line 8.
 )
-\openout1 = `autoavaliacao.aux'.
+\openout1 = `consolidado.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 185.
 LaTeX Font Info:    ... okay on input line 185.
@@ -1883,111 +1883,39 @@ File: mt-LatinModernRoman.cfg 2021/02/21 v1.1 microtype config. file: Latin Mod
 ern Roman (RS)
 )
 Package hyperref Info: Link coloring OFF on input line 185.
-File: PPG/Images/Cover-1.pdf Graphic file (type pdf)
-<use PPG/Images/Cover-1.pdf>
-File: PPG/Images/Cover-1.pdf Graphic file (type pdf)
-<use PPG/Images/Cover-1.pdf, page 1>
-File: PPG/Images/Cover-1.pdf Graphic file (type pdf)
-<use PPG/Images/Cover-1.pdf, page 1>
-File: PPG/Images/Cover-1.pdf Graphic file (type pdf)
-<use PPG/Images/Cover-1.pdf, page 1>
-File: PPG/Images/Cover-1.pdf Graphic file (type pdf)
-<use PPG/Images/Cover-1.pdf, page 1>
-File: PPG/Images/Cover-1.pdf Graphic file (type pdf)
-<use PPG/Images/Cover-1.pdf, page 1>
+File: PPG/Images/Cover-3.pdf Graphic file (type pdf)
+<use PPG/Images/Cover-3.pdf>
+File: PPG/Images/Cover-3.pdf Graphic file (type pdf)
+<use PPG/Images/Cover-3.pdf, page 1>
+File: PPG/Images/Cover-3.pdf Graphic file (type pdf)
+<use PPG/Images/Cover-3.pdf, page 1>
+File: PPG/Images/Cover-3.pdf Graphic file (type pdf)
+<use PPG/Images/Cover-3.pdf, page 1>
+File: PPG/Images/Cover-3.pdf Graphic file (type pdf)
+<use PPG/Images/Cover-3.pdf, page 1>
+File: PPG/Images/Cover-3.pdf Graphic file (type pdf)
+<use PPG/Images/Cover-3.pdf, page 1>
 [1
 
 
 
-]
-File: PPG/Images/Cover-2.pdf Graphic file (type pdf)
-<use PPG/Images/Cover-2.pdf>
-File: PPG/Images/Cover-2.pdf Graphic file (type pdf)
-<use PPG/Images/Cover-2.pdf, page 1>
-File: PPG/Images/Cover-2.pdf Graphic file (type pdf)
-<use PPG/Images/Cover-2.pdf, page 1>
-File: PPG/Images/Cover-2.pdf Graphic file (type pdf)
-<use PPG/Images/Cover-2.pdf, page 1>
-File: PPG/Images/Cover-2.pdf Graphic file (type pdf)
-<use PPG/Images/Cover-2.pdf, page 1>
-File: PPG/Images/Cover-2.pdf Graphic file (type pdf)
-<use PPG/Images/Cover-2.pdf, page 1>
-[2
-
-] (./autoavaliacao.toc
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.0pt on input line 2.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.0pt on input line 2.
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 2
-.
-(/usr/local/texlive/2025/texmf-dist/tex/latex/lm/omllmm.fd
-File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.00092pt on input line 2.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.00064pt on input line 2.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.00046pt on input line 2.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 2.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.99925pt on input line 2.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 4.99947pt on input line 2.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 2.
-(/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-) (/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/mt-msa.cfg
-File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 2.
-(/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) (/usr/local/texlive/2025/texmf-dist/tex/latex/microtype/mt-msb.cfg
-File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-))
+] (./consolidado.toc)
 \tf@toc=\write4
-\openout4 = `autoavaliacao.toc'.
+\openout4 = `consolidado.toc'.
 
-[3] [1
-
-
-
-] [2
-
-
-
-
-
-
-
-
-
-
-] [3
-
-
-
-
-
-
-
-
-] (./autoavaliacao.aux)
+[2] (./consolidado.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 40308 strings out of 468174
- 800526 string characters out of 5433150
- 1402258 words of memory out of 5000000
- 68411 multiletter control sequences out of 15000+600000
- 631736 words of font info for 74 fonts, out of 8000000 for 9000
+ 40164 strings out of 468174
+ 796762 string characters out of 5433150
+ 1402219 words of memory out of 5000000
+ 68311 multiletter control sequences out of 15000+600000
+ 628875 words of font info for 54 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 99i,19n,126p,1202b,505s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 99i,18n,126p,1200b,504s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on autoavaliacao.pdf (6 pages).
+Output written on consolidado.pdf (2 pages).
