@@ -108,47 +108,56 @@ produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria 
 # produção detalhes
 produtos.detalhes <- metricas_all
 
-# loop
 produtos.list <- list()
 if (dim(produtos)[1] != 0) {
-  for (i in 1:length(unique(produtos$"ID da Produção"))) {
-    id <- unique(produtos$"ID da Produção")[i]
+  ids_unicos <- unique(produtos$"ID da Produção")
+  for (i in seq_along(ids_unicos)) {
+    id <- ids_unicos[i]
     produtos.id <- produtos[produtos$"ID da Produção" == id,]
-    for (j in 1:length(produtos.id$"Nome do Autor")) {
-      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
-      }, silent = TRUE)
+    # calcular estrela AGORA (depois de criar produtos.id)
+    tem_discente_ou_egresso <- any(produtos.id$"Categoria do Autor" %in% c("Discente", "Egresso"), na.rm = TRUE)
+    tem_docente <- any(produtos.id$"Categoria do Autor" == "Docente", na.rm = TRUE)
+    estrela <- if (tem_discente_ou_egresso & tem_docente) "⭐️ " else ""
+    for (j in seq_along(produtos.id$"Nome do Autor")) {
+      if (!is.na(produtos.id$"Categoria do Autor"[j])) {
+        if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "¹</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "²</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "³</b>")
+        }
+      }
     }
-    # get product metadata
     source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = "APRESENTAÇÃO DE TRABALHO", produtos.detalhes = produtos.detalhes)
+    metadata <- get_id_metadata(
+      id = id,
+      subtipo = "APRESENTAÇÃO DE TRABALHO",
+      produtos.detalhes = produtos.detalhes
+    )
     produtos.list[[i]] <- data.frame(
       "Ano" = produtos.id$"Ano da Produção"[1],
-      "Título" = produtos.id$"Nome da Produção"[1],
-      "Autores" = paste0(
-        # remove NA values from Nome do Autor
+      "Título" = paste0(estrela, produtos.id$"Nome da Produção"[1]),
+      "Autores" = paste(
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
       "Detalhamento" = metadata$detalhamento[1],
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
-      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
-      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
       "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <- dplyr::bind_rows(produtos.list)
+
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -213,47 +222,56 @@ produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria 
 # produção detalhes
 produtos.detalhes <- metricas_all
 
-# loop
 produtos.list <- list()
 if (dim(produtos)[1] != 0) {
-  for (i in 1:length(unique(produtos$"ID da Produção"))) {
-    id <- unique(produtos$"ID da Produção")[i]
+  ids_unicos <- unique(produtos$"ID da Produção")
+  for (i in seq_along(ids_unicos)) {
+    id <- ids_unicos[i]
     produtos.id <- produtos[produtos$"ID da Produção" == id,]
-    for (j in 1:length(produtos.id$"Nome do Autor")) {
-      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
-      }, silent = TRUE)
+    # calcular estrela AGORA (depois de criar produtos.id)
+    tem_discente_ou_egresso <- any(produtos.id$"Categoria do Autor" %in% c("Discente", "Egresso"), na.rm = TRUE)
+    tem_docente <- any(produtos.id$"Categoria do Autor" == "Docente", na.rm = TRUE)
+    estrela <- if (tem_discente_ou_egresso & tem_docente) "⭐️ " else ""
+    for (j in seq_along(produtos.id$"Nome do Autor")) {
+      if (!is.na(produtos.id$"Categoria do Autor"[j])) {
+        if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "¹</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "²</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "³</b>")
+        }
+      }
     }
-    # get product metadata
     source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = "CARTAS, MAPAS E SIMILARES", produtos.detalhes = produtos.detalhes)
+    metadata <- get_id_metadata(
+      id = id,
+      subtipo = "CARTAS, MAPAS E SIMILARES",
+      produtos.detalhes = produtos.detalhes
+    )
     produtos.list[[i]] <- data.frame(
       "Ano" = produtos.id$"Ano da Produção"[1],
-      "Título" = produtos.id$"Nome da Produção"[1],
-      "Autores" = paste0(
-        # remove NA values from Nome do Autor
+      "Título" = paste0(estrela, produtos.id$"Nome da Produção"[1]),
+      "Autores" = paste(
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
       "Detalhamento" = metadata$detalhamento[1],
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
-      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
-      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
       "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <- dplyr::bind_rows(produtos.list)
+
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -318,47 +336,55 @@ produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria 
 # produção detalhes
 produtos.detalhes <- metricas_all
 
-# loop
 produtos.list <- list()
 if (dim(produtos)[1] != 0) {
-  for (i in 1:length(unique(produtos$"ID da Produção"))) {
-    id <- unique(produtos$"ID da Produção")[i]
+  ids_unicos <- unique(produtos$"ID da Produção")
+  for (i in seq_along(ids_unicos)) {
+    id <- ids_unicos[i]
     produtos.id <- produtos[produtos$"ID da Produção" == id,]
-    for (j in 1:length(produtos.id$"Nome do Autor")) {
-      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
-      }, silent = TRUE)
+    # calcular estrela AGORA (depois de criar produtos.id)
+    tem_discente_ou_egresso <- any(produtos.id$"Categoria do Autor" %in% c("Discente", "Egresso"), na.rm = TRUE)
+    tem_docente <- any(produtos.id$"Categoria do Autor" == "Docente", na.rm = TRUE)
+    estrela <- if (tem_discente_ou_egresso & tem_docente) "⭐️ " else ""
+    for (j in seq_along(produtos.id$"Nome do Autor")) {
+      if (!is.na(produtos.id$"Categoria do Autor"[j])) {
+        if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "¹</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "²</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "³</b>")
+        }
+      }
     }
-    # get product metadata
     source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = "CURSO DE CURTA DURAÇÃO", produtos.detalhes = produtos.detalhes)
+    metadata <- get_id_metadata(
+      id = id,
+      subtipo = "CURSO DE CURTA DURAÇÃO",
+      produtos.detalhes = produtos.detalhes
+    )
     produtos.list[[i]] <- data.frame(
       "Ano" = produtos.id$"Ano da Produção"[1],
-      "Título" = produtos.id$"Nome da Produção"[1],
-      "Autores" = paste0(
-        # remove NA values from Nome do Autor
+      "Título" = paste0(estrela, produtos.id$"Nome da Produção"[1]),
+      "Autores" = paste(
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
       "Detalhamento" = metadata$detalhamento[1],
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
-      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
-      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
       "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <- dplyr::bind_rows(produtos.list)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -423,47 +449,55 @@ produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria 
 # produção detalhes
 produtos.detalhes <- metricas_all
 
-# loop
 produtos.list <- list()
 if (dim(produtos)[1] != 0) {
-  for (i in 1:length(unique(produtos$"ID da Produção"))) {
-    id <- unique(produtos$"ID da Produção")[i]
+  ids_unicos <- unique(produtos$"ID da Produção")
+  for (i in seq_along(ids_unicos)) {
+    id <- ids_unicos[i]
     produtos.id <- produtos[produtos$"ID da Produção" == id,]
-    for (j in 1:length(produtos.id$"Nome do Autor")) {
-      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
-      }, silent = TRUE)
+    # calcular estrela AGORA (depois de criar produtos.id)
+    tem_discente_ou_egresso <- any(produtos.id$"Categoria do Autor" %in% c("Discente", "Egresso"), na.rm = TRUE)
+    tem_docente <- any(produtos.id$"Categoria do Autor" == "Docente", na.rm = TRUE)
+    estrela <- if (tem_discente_ou_egresso & tem_docente) "⭐️ " else ""
+    for (j in seq_along(produtos.id$"Nome do Autor")) {
+      if (!is.na(produtos.id$"Categoria do Autor"[j])) {
+        if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "¹</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "²</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "³</b>")
+        }
+      }
     }
-    # get product metadata
     source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = "DESENVOLVIMENTO DE APLICATIVO", produtos.detalhes = produtos.detalhes)
+    metadata <- get_id_metadata(
+      id = id,
+      subtipo = "DESENVOLVIMENTO DE APLICATIVO",
+      produtos.detalhes = produtos.detalhes
+    )
     produtos.list[[i]] <- data.frame(
       "Ano" = produtos.id$"Ano da Produção"[1],
-      "Título" = produtos.id$"Nome da Produção"[1],
-      "Autores" = paste0(
-        # remove NA values from Nome do Autor
+      "Título" = paste0(estrela, produtos.id$"Nome da Produção"[1]),
+      "Autores" = paste(
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
       "Detalhamento" = metadata$detalhamento[1],
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
-      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
-      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
       "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <- dplyr::bind_rows(produtos.list)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -528,47 +562,55 @@ produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria 
 # produção detalhes
 produtos.detalhes <- metricas_all
 
-# loop
 produtos.list <- list()
 if (dim(produtos)[1] != 0) {
-  for (i in 1:length(unique(produtos$"ID da Produção"))) {
-    id <- unique(produtos$"ID da Produção")[i]
+  ids_unicos <- unique(produtos$"ID da Produção")
+  for (i in seq_along(ids_unicos)) {
+    id <- ids_unicos[i]
     produtos.id <- produtos[produtos$"ID da Produção" == id,]
-    for (j in 1:length(produtos.id$"Nome do Autor")) {
-      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
-      }, silent = TRUE)
+    # calcular estrela AGORA (depois de criar produtos.id)
+    tem_discente_ou_egresso <- any(produtos.id$"Categoria do Autor" %in% c("Discente", "Egresso"), na.rm = TRUE)
+    tem_docente <- any(produtos.id$"Categoria do Autor" == "Docente", na.rm = TRUE)
+    estrela <- if (tem_discente_ou_egresso & tem_docente) "⭐️ " else ""
+    for (j in seq_along(produtos.id$"Nome do Autor")) {
+      if (!is.na(produtos.id$"Categoria do Autor"[j])) {
+        if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "¹</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "²</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "³</b>")
+        }
+      }
     }
-    # get product metadata
     source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = "DESENVOLVIMENTO DE MATERIAL DIDÁTICO E INSTRUCIONAL", produtos.detalhes = produtos.detalhes)
+    metadata <- get_id_metadata(
+      id = id,
+      subtipo = "DESENVOLVIMENTO DE MATERIAL DIDÁTICO E INSTRUCIONAL",
+      produtos.detalhes = produtos.detalhes
+    )
     produtos.list[[i]] <- data.frame(
       "Ano" = produtos.id$"Ano da Produção"[1],
-      "Título" = produtos.id$"Nome da Produção"[1],
-      "Autores" = paste0(
-        # remove NA values from Nome do Autor
+      "Título" = paste0(estrela, produtos.id$"Nome da Produção"[1]),
+      "Autores" = paste(
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
       "Detalhamento" = metadata$detalhamento[1],
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
-      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
-      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
       "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <- dplyr::bind_rows(produtos.list)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -633,47 +675,55 @@ produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria 
 # produção detalhes
 produtos.detalhes <- metricas_all
 
-# loop
 produtos.list <- list()
 if (dim(produtos)[1] != 0) {
-  for (i in 1:length(unique(produtos$"ID da Produção"))) {
-    id <- unique(produtos$"ID da Produção")[i]
+  ids_unicos <- unique(produtos$"ID da Produção")
+  for (i in seq_along(ids_unicos)) {
+    id <- ids_unicos[i]
     produtos.id <- produtos[produtos$"ID da Produção" == id,]
-    for (j in 1:length(produtos.id$"Nome do Autor")) {
-      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
-      }, silent = TRUE)
+    # calcular estrela AGORA (depois de criar produtos.id)
+    tem_discente_ou_egresso <- any(produtos.id$"Categoria do Autor" %in% c("Discente", "Egresso"), na.rm = TRUE)
+    tem_docente <- any(produtos.id$"Categoria do Autor" == "Docente", na.rm = TRUE)
+    estrela <- if (tem_discente_ou_egresso & tem_docente) "⭐️ " else ""
+    for (j in seq_along(produtos.id$"Nome do Autor")) {
+      if (!is.na(produtos.id$"Categoria do Autor"[j])) {
+        if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "¹</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "²</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "³</b>")
+        }
+      }
     }
-    # get product metadata
     source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = "DESENVOLVIMENTO DE PRODUTO", produtos.detalhes = produtos.detalhes)
+    metadata <- get_id_metadata(
+      id = id,
+      subtipo = "DESENVOLVIMENTO DE PRODUTO",
+      produtos.detalhes = produtos.detalhes
+    )
     produtos.list[[i]] <- data.frame(
       "Ano" = produtos.id$"Ano da Produção"[1],
-      "Título" = produtos.id$"Nome da Produção"[1],
-      "Autores" = paste0(
-        # remove NA values from Nome do Autor
+      "Título" = paste0(estrela, produtos.id$"Nome da Produção"[1]),
+      "Autores" = paste(
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
       "Detalhamento" = metadata$detalhamento[1],
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
-      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
-      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
       "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <- dplyr::bind_rows(produtos.list)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -738,47 +788,55 @@ produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria 
 # produção detalhes
 produtos.detalhes <- metricas_all
 
-# loop
 produtos.list <- list()
 if (dim(produtos)[1] != 0) {
-  for (i in 1:length(unique(produtos$"ID da Produção"))) {
-    id <- unique(produtos$"ID da Produção")[i]
+  ids_unicos <- unique(produtos$"ID da Produção")
+  for (i in seq_along(ids_unicos)) {
+    id <- ids_unicos[i]
     produtos.id <- produtos[produtos$"ID da Produção" == id,]
-    for (j in 1:length(produtos.id$"Nome do Autor")) {
-      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
-      }, silent = TRUE)
+    # calcular estrela AGORA (depois de criar produtos.id)
+    tem_discente_ou_egresso <- any(produtos.id$"Categoria do Autor" %in% c("Discente", "Egresso"), na.rm = TRUE)
+    tem_docente <- any(produtos.id$"Categoria do Autor" == "Docente", na.rm = TRUE)
+    estrela <- if (tem_discente_ou_egresso & tem_docente) "⭐️ " else ""
+    for (j in seq_along(produtos.id$"Nome do Autor")) {
+      if (!is.na(produtos.id$"Categoria do Autor"[j])) {
+        if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "¹</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "²</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "³</b>")
+        }
+      }
     }
-    # get product metadata
     source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = "DESENVOLVIMENTO DE TÉCNICA", produtos.detalhes = produtos.detalhes)
+    metadata <- get_id_metadata(
+      id = id,
+      subtipo = "DESENVOLVIMENTO DE TÉCNICA",
+      produtos.detalhes = produtos.detalhes
+    )
     produtos.list[[i]] <- data.frame(
       "Ano" = produtos.id$"Ano da Produção"[1],
-      "Título" = produtos.id$"Nome da Produção"[1],
-      "Autores" = paste0(
-        # remove NA values from Nome do Autor
+      "Título" = paste0(estrela, produtos.id$"Nome da Produção"[1]),
+      "Autores" = paste(
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
       "Detalhamento" = metadata$detalhamento[1],
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
-      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
-      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
       "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <- dplyr::bind_rows(produtos.list)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -840,47 +898,55 @@ produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria 
 # produção detalhes
 produtos.detalhes <- metricas_all
 
-# loop
 produtos.list <- list()
 if (dim(produtos)[1] != 0) {
-  for (i in 1:length(unique(produtos$"ID da Produção"))) {
-    id <- unique(produtos$"ID da Produção")[i]
+  ids_unicos <- unique(produtos$"ID da Produção")
+  for (i in seq_along(ids_unicos)) {
+    id <- ids_unicos[i]
     produtos.id <- produtos[produtos$"ID da Produção" == id,]
-    for (j in 1:length(produtos.id$"Nome do Autor")) {
-      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
-      }, silent = TRUE)
+    # calcular estrela AGORA (depois de criar produtos.id)
+    tem_discente_ou_egresso <- any(produtos.id$"Categoria do Autor" %in% c("Discente", "Egresso"), na.rm = TRUE)
+    tem_docente <- any(produtos.id$"Categoria do Autor" == "Docente", na.rm = TRUE)
+    estrela <- if (tem_discente_ou_egresso & tem_docente) "⭐️ " else ""
+    for (j in seq_along(produtos.id$"Nome do Autor")) {
+      if (!is.na(produtos.id$"Categoria do Autor"[j])) {
+        if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "¹</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "²</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "³</b>")
+        }
+      }
     }
-    # get product metadata
     source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = "EDITORIA", produtos.detalhes = produtos.detalhes)
+    metadata <- get_id_metadata(
+      id = id,
+      subtipo = "EDITORIA",
+      produtos.detalhes = produtos.detalhes
+    )
     produtos.list[[i]] <- data.frame(
       "Ano" = produtos.id$"Ano da Produção"[1],
-      "Título" = produtos.id$"Nome da Produção"[1],
-      "Autores" = paste0(
-        # remove NA values from Nome do Autor
+      "Título" = paste0(estrela, produtos.id$"Nome da Produção"[1]),
+      "Autores" = paste(
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
       "Detalhamento" = metadata$detalhamento[1],
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
-      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
-      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
       "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <- dplyr::bind_rows(produtos.list)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -945,47 +1011,55 @@ produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria 
 # produção detalhes
 produtos.detalhes <- metricas_all
 
-# loop
 produtos.list <- list()
 if (dim(produtos)[1] != 0) {
-  for (i in 1:length(unique(produtos$"ID da Produção"))) {
-    id <- unique(produtos$"ID da Produção")[i]
+  ids_unicos <- unique(produtos$"ID da Produção")
+  for (i in seq_along(ids_unicos)) {
+    id <- ids_unicos[i]
     produtos.id <- produtos[produtos$"ID da Produção" == id,]
-    for (j in 1:length(produtos.id$"Nome do Autor")) {
-      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
-      }, silent = TRUE)
+    # calcular estrela AGORA (depois de criar produtos.id)
+    tem_discente_ou_egresso <- any(produtos.id$"Categoria do Autor" %in% c("Discente", "Egresso"), na.rm = TRUE)
+    tem_docente <- any(produtos.id$"Categoria do Autor" == "Docente", na.rm = TRUE)
+    estrela <- if (tem_discente_ou_egresso & tem_docente) "⭐️ " else ""
+    for (j in seq_along(produtos.id$"Nome do Autor")) {
+      if (!is.na(produtos.id$"Categoria do Autor"[j])) {
+        if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "¹</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "²</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "³</b>")
+        }
+      }
     }
-    # get product metadata
     source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = "MANUTENÇÃO DE OBRA ARTÍSTICA", produtos.detalhes = produtos.detalhes)
+    metadata <- get_id_metadata(
+      id = id,
+      subtipo = "MANUTENÇÃO DE OBRA ARTÍSTICA",
+      produtos.detalhes = produtos.detalhes
+    )
     produtos.list[[i]] <- data.frame(
       "Ano" = produtos.id$"Ano da Produção"[1],
-      "Título" = produtos.id$"Nome da Produção"[1],
-      "Autores" = paste0(
-        # remove NA values from Nome do Autor
+      "Título" = paste0(estrela, produtos.id$"Nome da Produção"[1]),
+      "Autores" = paste(
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
       "Detalhamento" = metadata$detalhamento[1],
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
-      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
-      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
       "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <- dplyr::bind_rows(produtos.list)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -1050,47 +1124,55 @@ produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria 
 # produção detalhes
 produtos.detalhes <- metricas_all
 
-# loop
 produtos.list <- list()
 if (dim(produtos)[1] != 0) {
-  for (i in 1:length(unique(produtos$"ID da Produção"))) {
-    id <- unique(produtos$"ID da Produção")[i]
+  ids_unicos <- unique(produtos$"ID da Produção")
+  for (i in seq_along(ids_unicos)) {
+    id <- ids_unicos[i]
     produtos.id <- produtos[produtos$"ID da Produção" == id,]
-    for (j in 1:length(produtos.id$"Nome do Autor")) {
-      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
-      }, silent = TRUE)
+    # calcular estrela AGORA (depois de criar produtos.id)
+    tem_discente_ou_egresso <- any(produtos.id$"Categoria do Autor" %in% c("Discente", "Egresso"), na.rm = TRUE)
+    tem_docente <- any(produtos.id$"Categoria do Autor" == "Docente", na.rm = TRUE)
+    estrela <- if (tem_discente_ou_egresso & tem_docente) "⭐️ " else ""
+    for (j in seq_along(produtos.id$"Nome do Autor")) {
+      if (!is.na(produtos.id$"Categoria do Autor"[j])) {
+        if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "¹</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "²</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "³</b>")
+        }
+      }
     }
-    # get product metadata
     source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = "MAQUETE", produtos.detalhes = produtos.detalhes)
+    metadata <- get_id_metadata(
+      id = id,
+      subtipo = "MAQUETE",
+      produtos.detalhes = produtos.detalhes
+    )
     produtos.list[[i]] <- data.frame(
       "Ano" = produtos.id$"Ano da Produção"[1],
-      "Título" = produtos.id$"Nome da Produção"[1],
-      "Autores" = paste0(
-        # remove NA values from Nome do Autor
+      "Título" = paste0(estrela, produtos.id$"Nome da Produção"[1]),
+      "Autores" = paste(
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
       "Detalhamento" = metadata$detalhamento[1],
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
-      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
-      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
       "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <- dplyr::bind_rows(produtos.list)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -1155,47 +1237,55 @@ produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria 
 # produção detalhes
 produtos.detalhes <- metricas_all
 
-# loop
 produtos.list <- list()
 if (dim(produtos)[1] != 0) {
-  for (i in 1:length(unique(produtos$"ID da Produção"))) {
-    id <- unique(produtos$"ID da Produção")[i]
+  ids_unicos <- unique(produtos$"ID da Produção")
+  for (i in seq_along(ids_unicos)) {
+    id <- ids_unicos[i]
     produtos.id <- produtos[produtos$"ID da Produção" == id,]
-    for (j in 1:length(produtos.id$"Nome do Autor")) {
-      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
-      }, silent = TRUE)
+    # calcular estrela AGORA (depois de criar produtos.id)
+    tem_discente_ou_egresso <- any(produtos.id$"Categoria do Autor" %in% c("Discente", "Egresso"), na.rm = TRUE)
+    tem_docente <- any(produtos.id$"Categoria do Autor" == "Docente", na.rm = TRUE)
+    estrela <- if (tem_discente_ou_egresso & tem_docente) "⭐️ " else ""
+    for (j in seq_along(produtos.id$"Nome do Autor")) {
+      if (!is.na(produtos.id$"Categoria do Autor"[j])) {
+        if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "¹</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "²</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "³</b>")
+        }
+      }
     }
-    # get product metadata
     source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = "ORGANIZAÇÃO DE EVENTO", produtos.detalhes = produtos.detalhes)
+    metadata <- get_id_metadata(
+      id = id,
+      subtipo = "ORGANIZAÇÃO DE EVENTO",
+      produtos.detalhes = produtos.detalhes
+    )
     produtos.list[[i]] <- data.frame(
       "Ano" = produtos.id$"Ano da Produção"[1],
-      "Título" = produtos.id$"Nome da Produção"[1],
-      "Autores" = paste0(
-        # remove NA values from Nome do Autor
+      "Título" = paste0(estrela, produtos.id$"Nome da Produção"[1]),
+      "Autores" = paste(
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
       "Detalhamento" = metadata$detalhamento[1],
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
-      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
-      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
       "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <- dplyr::bind_rows(produtos.list)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -1260,47 +1350,55 @@ produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria 
 # produção detalhes
 produtos.detalhes <- metricas_all
 
-# loop
 produtos.list <- list()
 if (dim(produtos)[1] != 0) {
-  for (i in 1:length(unique(produtos$"ID da Produção"))) {
-    id <- unique(produtos$"ID da Produção")[i]
+  ids_unicos <- unique(produtos$"ID da Produção")
+  for (i in seq_along(ids_unicos)) {
+    id <- ids_unicos[i]
     produtos.id <- produtos[produtos$"ID da Produção" == id,]
-    for (j in 1:length(produtos.id$"Nome do Autor")) {
-      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
-      }, silent = TRUE)
+    # calcular estrela AGORA (depois de criar produtos.id)
+    tem_discente_ou_egresso <- any(produtos.id$"Categoria do Autor" %in% c("Discente", "Egresso"), na.rm = TRUE)
+    tem_docente <- any(produtos.id$"Categoria do Autor" == "Docente", na.rm = TRUE)
+    estrela <- if (tem_discente_ou_egresso & tem_docente) "⭐️ " else ""
+    for (j in seq_along(produtos.id$"Nome do Autor")) {
+      if (!is.na(produtos.id$"Categoria do Autor"[j])) {
+        if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "¹</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "²</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "³</b>")
+        }
+      }
     }
-    # get product metadata
     source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = "PATENTE", produtos.detalhes = produtos.detalhes)
+    metadata <- get_id_metadata(
+      id = id,
+      subtipo = "PATENTE",
+      produtos.detalhes = produtos.detalhes
+    )
     produtos.list[[i]] <- data.frame(
       "Ano" = produtos.id$"Ano da Produção"[1],
-      "Título" = produtos.id$"Nome da Produção"[1],
-      "Autores" = paste0(
-        # remove NA values from Nome do Autor
+      "Título" = paste0(estrela, produtos.id$"Nome da Produção"[1]),
+      "Autores" = paste(
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
       "Detalhamento" = metadata$detalhamento[1],
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
-      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
-      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
       "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <- dplyr::bind_rows(produtos.list)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -1365,47 +1463,55 @@ produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria 
 # produção detalhes
 produtos.detalhes <- metricas_all
 
-# loop
 produtos.list <- list()
 if (dim(produtos)[1] != 0) {
-  for (i in 1:length(unique(produtos$"ID da Produção"))) {
-    id <- unique(produtos$"ID da Produção")[i]
+  ids_unicos <- unique(produtos$"ID da Produção")
+  for (i in seq_along(ids_unicos)) {
+    id <- ids_unicos[i]
     produtos.id <- produtos[produtos$"ID da Produção" == id,]
-    for (j in 1:length(produtos.id$"Nome do Autor")) {
-      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
-      }, silent = TRUE)
+    # calcular estrela AGORA (depois de criar produtos.id)
+    tem_discente_ou_egresso <- any(produtos.id$"Categoria do Autor" %in% c("Discente", "Egresso"), na.rm = TRUE)
+    tem_docente <- any(produtos.id$"Categoria do Autor" == "Docente", na.rm = TRUE)
+    estrela <- if (tem_discente_ou_egresso & tem_docente) "⭐️ " else ""
+    for (j in seq_along(produtos.id$"Nome do Autor")) {
+      if (!is.na(produtos.id$"Categoria do Autor"[j])) {
+        if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "¹</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "²</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "³</b>")
+        }
+      }
     }
-    # get product metadata
     source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = "PROGRAMA DE RÁDIO OU TV", produtos.detalhes = produtos.detalhes)
+    metadata <- get_id_metadata(
+      id = id,
+      subtipo = "PROGRAMA DE RÁDIO OU TV",
+      produtos.detalhes = produtos.detalhes
+    )
     produtos.list[[i]] <- data.frame(
       "Ano" = produtos.id$"Ano da Produção"[1],
-      "Título" = produtos.id$"Nome da Produção"[1],
-      "Autores" = paste0(
-        # remove NA values from Nome do Autor
+      "Título" = paste0(estrela, produtos.id$"Nome da Produção"[1]),
+      "Autores" = paste(
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
       "Detalhamento" = metadata$detalhamento[1],
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
-      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
-      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
       "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <- dplyr::bind_rows(produtos.list)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -1470,47 +1576,55 @@ produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria 
 # produção detalhes
 produtos.detalhes <- metricas_all
 
-# loop
 produtos.list <- list()
 if (dim(produtos)[1] != 0) {
-  for (i in 1:length(unique(produtos$"ID da Produção"))) {
-    id <- unique(produtos$"ID da Produção")[i]
+  ids_unicos <- unique(produtos$"ID da Produção")
+  for (i in seq_along(ids_unicos)) {
+    id <- ids_unicos[i]
     produtos.id <- produtos[produtos$"ID da Produção" == id,]
-    for (j in 1:length(produtos.id$"Nome do Autor")) {
-      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
-      }, silent = TRUE)
+    # calcular estrela AGORA (depois de criar produtos.id)
+    tem_discente_ou_egresso <- any(produtos.id$"Categoria do Autor" %in% c("Discente", "Egresso"), na.rm = TRUE)
+    tem_docente <- any(produtos.id$"Categoria do Autor" == "Docente", na.rm = TRUE)
+    estrela <- if (tem_discente_ou_egresso & tem_docente) "⭐️ " else ""
+    for (j in seq_along(produtos.id$"Nome do Autor")) {
+      if (!is.na(produtos.id$"Categoria do Autor"[j])) {
+        if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "¹</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "²</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "³</b>")
+        }
+      }
     }
-    # get product metadata
     source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = "RELATÓRIO DE PESQUISA", produtos.detalhes = produtos.detalhes)
+    metadata <- get_id_metadata(
+      id = id,
+      subtipo = "RELATÓRIO DE PESQUISA",
+      produtos.detalhes = produtos.detalhes
+    )
     produtos.list[[i]] <- data.frame(
       "Ano" = produtos.id$"Ano da Produção"[1],
-      "Título" = produtos.id$"Nome da Produção"[1],
-      "Autores" = paste0(
-        # remove NA values from Nome do Autor
+      "Título" = paste0(estrela, produtos.id$"Nome da Produção"[1]),
+      "Autores" = paste(
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
       "Detalhamento" = metadata$detalhamento[1],
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
-      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
-      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
       "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <- dplyr::bind_rows(produtos.list)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -1575,47 +1689,55 @@ produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria 
 # produção detalhes
 produtos.detalhes <- metricas_all
 
-# loop
 produtos.list <- list()
 if (dim(produtos)[1] != 0) {
-  for (i in 1:length(unique(produtos$"ID da Produção"))) {
-    id <- unique(produtos$"ID da Produção")[i]
+  ids_unicos <- unique(produtos$"ID da Produção")
+  for (i in seq_along(ids_unicos)) {
+    id <- ids_unicos[i]
     produtos.id <- produtos[produtos$"ID da Produção" == id,]
-    for (j in 1:length(produtos.id$"Nome do Autor")) {
-      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
-      }, silent = TRUE)
+    # calcular estrela AGORA (depois de criar produtos.id)
+    tem_discente_ou_egresso <- any(produtos.id$"Categoria do Autor" %in% c("Discente", "Egresso"), na.rm = TRUE)
+    tem_docente <- any(produtos.id$"Categoria do Autor" == "Docente", na.rm = TRUE)
+    estrela <- if (tem_discente_ou_egresso & tem_docente) "⭐️ " else ""
+    for (j in seq_along(produtos.id$"Nome do Autor")) {
+      if (!is.na(produtos.id$"Categoria do Autor"[j])) {
+        if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "¹</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "²</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "³</b>")
+        }
+      }
     }
-    # get product metadata
     source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = "SERVIÇOS TÉCNICOS", produtos.detalhes = produtos.detalhes)
+    metadata <- get_id_metadata(
+      id = id,
+      subtipo = "SERVIÇOS TÉCNICOS",
+      produtos.detalhes = produtos.detalhes
+    )
     produtos.list[[i]] <- data.frame(
       "Ano" = produtos.id$"Ano da Produção"[1],
-      "Título" = produtos.id$"Nome da Produção"[1],
-      "Autores" = paste0(
-        # remove NA values from Nome do Autor
+      "Título" = paste0(estrela, produtos.id$"Nome da Produção"[1]),
+      "Autores" = paste(
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
       "Detalhamento" = metadata$detalhamento[1],
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
-      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
-      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
       "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <- dplyr::bind_rows(produtos.list)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
@@ -1680,47 +1802,55 @@ produtos$`Categoria do Autor` <- tools::toTitleCase(tolower(produtos$`Categoria 
 # produção detalhes
 produtos.detalhes <- metricas_all
 
-# loop
 produtos.list <- list()
 if (dim(produtos)[1] != 0) {
-  for (i in 1:length(unique(produtos$"ID da Produção"))) {
-    id <- unique(produtos$"ID da Produção")[i]
+  ids_unicos <- unique(produtos$"ID da Produção")
+  for (i in seq_along(ids_unicos)) {
+    id <- ids_unicos[i]
     produtos.id <- produtos[produtos$"ID da Produção" == id,]
-    for (j in 1:length(produtos.id$"Nome do Autor")) {
-      try(if (produtos.id$"Categoria do Autor"[j] == "Discente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "¹", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "²", "</b>")
-      }, silent = TRUE)
-      try(if (produtos.id$"Categoria do Autor"[j] == "Docente") {
-        produtos.id$"Nome do Autor"[j] <-
-          paste0("<b>", produtos.id$"Nome do Autor"[j], "³", "</b>")
-      }, silent = TRUE)
+    # calcular estrela AGORA (depois de criar produtos.id)
+    tem_discente_ou_egresso <- any(produtos.id$"Categoria do Autor" %in% c("Discente", "Egresso"), na.rm = TRUE)
+    tem_docente <- any(produtos.id$"Categoria do Autor" == "Docente", na.rm = TRUE)
+    estrela <- if (tem_discente_ou_egresso & tem_docente) "⭐️ " else ""
+    for (j in seq_along(produtos.id$"Nome do Autor")) {
+      if (!is.na(produtos.id$"Categoria do Autor"[j])) {
+        if (produtos.id$"Categoria do Autor"[j] == "Discente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "¹</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Egresso") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "²</b>")
+        }
+        if (produtos.id$"Categoria do Autor"[j] == "Docente") {
+          produtos.id$"Nome do Autor"[j] <-
+            paste0("<b>", produtos.id$"Nome do Autor"[j], "³</b>")
+        }
+      }
     }
-    # get product metadata
     source("Scripts/get-producao-metadata.R", local = knitr::knit_global())
-    metadata <- get_id_metadata(id = id, subtipo = "TRADUÇÃO", produtos.detalhes = produtos.detalhes)
+    metadata <- get_id_metadata(
+      id = id,
+      subtipo = "OUTRO",
+      produtos.detalhes = produtos.detalhes
+    )
     produtos.list[[i]] <- data.frame(
       "Ano" = produtos.id$"Ano da Produção"[1],
-      "Título" = produtos.id$"Nome da Produção"[1],
-      "Autores" = paste0(
-        # remove NA values from Nome do Autor
+      "Título" = paste0(estrela, produtos.id$"Nome da Produção"[1]),
+      "Autores" = paste(
         produtos.id$"Nome do Autor"[!is.na(produtos.id$"Nome do Autor")],
         collapse = "; "
       ),
       "Detalhamento" = metadata$detalhamento[1],
       "Altmetric" = unique(produtos.detalhes$altmetric_score[produtos.detalhes$"ID da Produção" == id]),
-      "CiteScore" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
-      "SJR" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "CiteScore" = unique(produtos.detalhes$CiteScore[produtos.detalhes$"ID da Produção" == id]),
+      "SJR" = unique(produtos.detalhes$SJR[produtos.detalhes$"ID da Produção" == id]),
       "Qualis" = unique(produtos.detalhes$Qualis[produtos.detalhes$"ID da Produção" == id]),
       "Citações" = unique(produtos.detalhes$citations[produtos.detalhes$"ID da Produção" == id])
     )
   }
 }
-produtos.df <- data.frame(do.call(dplyr::bind_rows, produtos.list))
+produtos.df <- dplyr::bind_rows(produtos.list)
 
 # remove duplicates
 produtos.df <- unique(produtos.df)
