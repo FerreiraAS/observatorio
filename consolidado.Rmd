@@ -145,20 +145,24 @@ tb_descritiva <- dados_modelo %>%
   dplyr::select(ano, total_docentes, total_discentes, razao) %>%
   gtsummary::tbl_summary(
     include = c(
+      ano,
       total_docentes,
       total_discentes,
       razao),
     type = list(
+      ano ~ "categorical",
       total_docentes ~ "continuous",
       total_discentes ~ "continuous",
       razao ~ "continuous"
     ),
     label = list(
+      ano ~ "Ano",
       total_docentes ~ "Total de docentes",
       total_discentes ~ "Total de discentes",
       razao ~ "Razão discentes/docentes"
     ),
     digits = list(
+      ano ~ 0,
       total_docentes ~ 0,
       total_discentes ~ 0,
       razao ~ 2
@@ -199,83 +203,91 @@ cat("\\FloatBarrier\n")
 
 # MODELOS
 # Modelo bruto
-model_bruto <- lm(razao ~ total_docentes, data = dados_modelo)
+model_bruto <- lm(razao ~ ano, data = dados_modelo)
 
 # Modelo ajustado por ano
-model_ajustado <- lm(razao ~ total_docentes + ano, data = dados_modelo)
+model_poisson <- glm(
+  total_discentes ~ ano + offset(log(total_docentes)),
+  family = poisson(link = "log"),
+  data = dados_modelo
+)
 
-# TABELA MERGED
-tb_merged <-
-  gtsummary::tbl_merge(
-    tbls = list(
-      gtsummary::tbl_regression(
-        model_bruto,
-        exponentiate = FALSE,
-        include = total_docentes,
-        label = list(
-          total_docentes ~ "Total de docentes"
+if(nrow(dados_modelo) > 1) {
+  # TABELA MERGED
+  tb_merged <-
+    gtsummary::tbl_merge(
+      tbls = list(
+        gtsummary::tbl_regression(
+          model_bruto,
+          exponentiate = FALSE,
+          include = ano,
+          label = list(
+            ano ~ "Ano"
+          ),
+          tidy_fun = broom.helpers::tidy_parameters
         ),
-        tidy_fun = broom.helpers::tidy_parameters
+        gtsummary::tbl_regression(
+          model_ajustado,
+          exponentiate = FALSE,
+          include = ano,
+          label = list(
+            ano ~ "Anos"
+          ),
+          tidy_fun = broom.helpers::tidy_parameters
+        )
       ),
-      gtsummary::tbl_regression(
-        model_ajustado,
-        exponentiate = FALSE,
-        include = total_docentes,
-        label = list(
-          total_docentes ~ "Total de docentes"
-        ),
-        tidy_fun = broom.helpers::tidy_parameters
+      tab_spanner = c("**Modelo Bruto**", "**Modelo Ajustado**")
+    )
+  
+  tb_merged <-
+    tb_merged %>%
+    gtsummary::modify_fmt_fun(
+      list(
+        estimate_1 ~ function(x) gtsummary::style_number(x, digits = 0),
+        estimate_2 ~ function(x) gtsummary::style_number(x, digits = 0),
+        conf.low_1 ~ function(x) gtsummary::style_number(x, digits = 0),
+        conf.high_1 ~ function(x) gtsummary::style_number(x, digits = 0),
+        conf.low_2 ~ function(x) gtsummary::style_number(x, digits = 0),
+        conf.high_2 ~ function(x) gtsummary::style_number(x, digits = 0)
       )
-    ),
-    tab_spanner = c("**Modelo Bruto**", "**Modelo Ajustado**")
-  )
-
-tb_merged <-
+    ) %>%
+    gtsummary::modify_header(
+      conf.low_1 ~ "**IC 95%**",
+      conf.low_2 ~ "**IC 95%**"
+    ) %>%
+    gtsummary::modify_footnote(
+      gtsummary::all_stat_cols() ~ "Coeficiente (Intervalo de Confiança de 95%)",
+      replace = TRUE
+    )
+  
   tb_merged %>%
-  gtsummary::modify_fmt_fun(
-    list(
-      estimate_1 ~ function(x) gtsummary::style_number(x, digits = 0),
-      estimate_2 ~ function(x) gtsummary::style_number(x, digits = 0),
-      conf.low_1 ~ function(x) gtsummary::style_number(x, digits = 0),
-      conf.high_1 ~ function(x) gtsummary::style_number(x, digits = 0),
-      conf.low_2 ~ function(x) gtsummary::style_number(x, digits = 0),
-      conf.high_2 ~ function(x) gtsummary::style_number(x, digits = 0)
+    gtsummary::as_kable_extra(
+      format = ifelse(knitr::is_html_output(), "html", "latex"),
+      booktabs = TRUE,
+      linesep = "",
+      caption = paste0(
+        "Razão discentes/docente por ano, com modelos bruto e ajustado(",
+        min(dados_modelo$ano, na.rm = TRUE), "-", max(dados_modelo$ano, na.rm = TRUE),
+        ")"
+      )
+    ) %>%
+    kableExtra::kable_styling(
+      bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+      full_width = TRUE,
+      position = "center",
+      latex_options = "hold_position"
+    ) %>%
+    kableExtra::footnote(
+      general_title = "Fonte: ",
+      general = c("Plataforma Sucupira (https://sucupira.capes.gov.br)"),
+      escape = FALSE
     )
-  ) %>%
-  gtsummary::modify_header(
-    conf.low_1 ~ "**IC 95%**",
-    conf.low_2 ~ "**IC 95%**"
-  ) %>%
-  gtsummary::modify_footnote(
-    gtsummary::all_stat_cols() ~ "Coeficiente (Intervalo de Confiança de 95%)",
-    replace = TRUE
-  )
-
-tb_merged %>%
-  gtsummary::as_kable_extra(
-    format = ifelse(knitr::is_html_output(), "html", "latex"),
-    booktabs = TRUE,
-    linesep = "",
-    caption = paste0(
-      "Razão discentes/docente por ano, com modelos bruto e ajustado(",
-      min(dados_modelo$ano, na.rm = TRUE), "-", max(dados_modelo$ano, na.rm = TRUE),
-      ")"
-    )
-  ) %>%
-  kableExtra::kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-    full_width = TRUE,
-    position = "center",
-    latex_options = "hold_position"
-  ) %>%
-  kableExtra::footnote(
-    general_title = "Fonte: ",
-    general = c("Plataforma Sucupira (https://sucupira.capes.gov.br)"),
-    escape = FALSE
-  )
+} else {
+  cat('<p style="color: red; font-weight: bold;">Modelos não disponíveis para exibição.</p>')
+}
 
 # Add LaTeX commands for new page and float barrier
-if(knitr::is_latex_output() && !sjmisc::is_empty(tb_merged)) {
+if(knitr::is_latex_output() && !sjmisc::is_empty(nrow(dados_modelo) > 1)) {
   cat('\\newpage')
 }
 ```
