@@ -181,7 +181,7 @@ tb_descritiva %>%
     booktabs = TRUE,
     linesep = "",
     caption = paste0(
-      "Razão discentes/docentes por ano (",
+      "Características do corpo docente e discente por ano (",
       min(dados_modelo$ano, na.rm = TRUE), "-", max(dados_modelo$ano, na.rm = TRUE),
       ")"
     )
@@ -203,14 +203,15 @@ cat("\\FloatBarrier\n")
 
 # MODELOS
 # Modelo bruto
-model_bruto <- lm(razao ~ ano, data = dados_modelo)
+model_bruto <- lm(total_discentes ~ ano, data = dados_modelo)
 
 # Modelo ajustado por ano
-model_poisson <- glm(
-  total_discentes ~ ano + offset(log(total_docentes)),
-  family = poisson(link = "log"),
-  data = dados_modelo
-)
+model_ajustado <- lm(total_discentes ~  ano + total_docentes, data = dados_modelo)
+
+# print perguntas (modelo bruto e ajustado)
+cat("<p style='color: black; font-weight: bold;'>Existe tendência temporal no número total de discentes?</p>")
+cat("\n\n")
+cat("<p style='color: black; font-weight: bold;'>Existe tendência temporal no número total de discentes, ajustando pelo número total de docentes?/p>")
 
 if(nrow(dados_modelo) > 1) {
   # TABELA MERGED
@@ -222,7 +223,7 @@ if(nrow(dados_modelo) > 1) {
           exponentiate = FALSE,
           include = ano,
           label = list(
-            ano ~ "Ano"
+            ano ~ "Anos"
           ),
           tidy_fun = broom.helpers::tidy_parameters
         ),
@@ -236,7 +237,7 @@ if(nrow(dados_modelo) > 1) {
           tidy_fun = broom.helpers::tidy_parameters
         )
       ),
-      tab_spanner = c("**Modelo Bruto**", "**Modelo Ajustado**")
+      tab_spanner = c("**Modelo bruto**", "**Modelo ajustado**")
     )
   
   tb_merged <-
@@ -252,12 +253,21 @@ if(nrow(dados_modelo) > 1) {
       )
     ) %>%
     gtsummary::modify_header(
+      label = "**Variável**",
+      estimate_1 ~ "**Discentes (β)**",
+      estimate_2 ~ "**Discentes (β)**",
       conf.low_1 ~ "**IC 95%**",
       conf.low_2 ~ "**IC 95%**"
     ) %>%
-    gtsummary::modify_footnote(
-      gtsummary::all_stat_cols() ~ "Coeficiente (Intervalo de Confiança de 95%)",
-      replace = TRUE
+    gtsummary::remove_abbreviation() %>%
+    gtsummary::modify_source_note(
+      paste0(
+        "IC 95%: Intervalo de confiança de 95%.",
+        "<br>",
+        "Modelo ajustado pelo número total de docentes como covariável.",
+        "<br>",
+        "Fonte: Plataforma Sucupira (https://sucupira.capes.gov.br)"
+      )
     )
   
   tb_merged %>%
@@ -266,7 +276,7 @@ if(nrow(dados_modelo) > 1) {
       booktabs = TRUE,
       linesep = "",
       caption = paste0(
-        "Razão discentes/docente por ano, com modelos bruto e ajustado(",
+        "Modelos de regressão linear para o total de discentes por ano (",
         min(dados_modelo$ano, na.rm = TRUE), "-", max(dados_modelo$ano, na.rm = TRUE),
         ")"
       )
@@ -276,11 +286,6 @@ if(nrow(dados_modelo) > 1) {
       full_width = TRUE,
       position = "center",
       latex_options = "hold_position"
-    ) %>%
-    kableExtra::footnote(
-      general_title = "Fonte: ",
-      general = c("Plataforma Sucupira (https://sucupira.capes.gov.br)"),
-      escape = FALSE
     )
 } else {
   cat('<p style="color: red; font-weight: bold;">Modelos não disponíveis para exibição.</p>')
