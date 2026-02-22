@@ -259,15 +259,7 @@ if(nrow(dados_modelo) > 1) {
       conf.low_1 ~ "**IC 95%**",
       conf.low_2 ~ "**IC 95%**"
     ) %>%
-    gtsummary::remove_abbreviation() %>%
-    gtsummary::modify_source_note(
-      paste(
-        "IC 95%: Intervalo de confiança de 95%.",
-        "Modelo ajustado pelo número total de docentes como covariável.",
-        "Fonte: Plataforma Sucupira (https://sucupira.capes.gov.br)",
-        sep = " \\\\ "
-      )
-    )
+    gtsummary::remove_abbreviation()
   
   tb_merged %>%
     gtsummary::as_kable_extra(
