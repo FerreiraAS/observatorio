@@ -412,7 +412,7 @@ has.repositorios.cooperacao <-
 
 ## **Check dados PPG**
 
-```{r ppg-data, eval = has.sucupira.files}
+```{r ppg-data, eval = has.sucupira.files, cache = TRUE, cache.path = "cache/ppg-data/"}
 # projetos - membros
 sheet <- "Docentes"
 source("Scripts/read-xlsx-sucupira.R", local = knitr::knit_global())
@@ -914,6 +914,8 @@ if(!sjmisc::is_empty(URL.obs)){
 ## **Relatórios de autoavaliação**
 
 ```{r autoavaliacao, echo = FALSE, include = FALSE, eval = TRUE}
+options(knitr.duplicate.label = "allow")
+
 # Define periods
 periodos <- c("2010-2012", "2013-2016", "2017-2020", "2021-2024", "2025-2028")
 
