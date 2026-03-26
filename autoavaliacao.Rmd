@@ -6773,6 +6773,11 @@ if (knitr::is_latex_output() && !sjmisc::is_empty(table.2.1.2.b)) {
 
 # estratos qualis
 # List all tables
+# if non existent creat empty list
+if(!exists("table.bib.qualis")){
+  table.bib.qualis <- list()
+}
+
 table.2.1.2.c <- list(
   table.bib.qualis
 )
