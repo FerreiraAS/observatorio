@@ -8,7 +8,7 @@ dirs <-
 
 # load list of Sucupira files to read
 files.to.read <- c()
-for (i in 1:length(dirs)) {
+for (i in seq_along(dirs)) {
   files.to.read <- c(
     files.to.read,
     list.files(
@@ -25,7 +25,7 @@ sucupira <- c()
 sucupira.raw <- c()
 sucupira.list <- list()
 if (length(files.to.read) != 0) {
-  for (file in 1:length(files.to.read)) {
+  for (file in seq_along(files.to.read)) {
     sucupira <-
       as.data.frame(readxl::read_excel(
         files.to.read[file],

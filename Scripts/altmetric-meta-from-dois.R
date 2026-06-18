@@ -2,7 +2,7 @@
 # Source: https://help.altmetric.com/support/solutions/articles/6000240582-required-metadata-for-content-tracking
 
 if (length(dois$DOI) != 0) {
-  for (j in 1:length(dois$DOI)) {
+  for (j in seq_along(dois$DOI)) {
     if (!is.na(dois$DOI[j])) {
       cat('<head>')
       cat('<meta name="citation_doi" content="doi:',

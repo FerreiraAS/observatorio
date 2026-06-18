@@ -526,7 +526,7 @@ source("Scripts/fonte-orcid.R", local = knitr::knit_global())
 ### **Bancas examinadoras** {.tabset}
 
 ```{r bancas-examinadoras, eval = all(has.lattes.files, curl::has_internet())}
-source("Scripts/lattes_xml.parse.R", local = knitr::knit_global())
+source("Scripts/lattes-xml.parse.R", local = knitr::knit_global())
 
 # Example usage:
 data <- process_lattes_folder("./Lattes xml", "./Lattes xml", save_format = "flat-excel", output_filename = "all_bancas")

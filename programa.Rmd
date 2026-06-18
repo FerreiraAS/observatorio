@@ -705,12 +705,7 @@ if (dim(financiadores)[1] != 0) {
 source("Scripts/table-with-buttons.R", local = knitr::knit_global())
 create_dt(financiadores, title = "Programa - Financiadores - Detalhamento")
 
-cat('\n\n')
-cat(
-  '**Fontes**: [**CAPES**](https://www.gov.br/capes/pt-br), [**CNPq**](https://www.gov.br/cnpq/pt-br), [**FAPERJ**](http://www.faperj.br), **UNISUAM**'
-)
-cat('\n\n')
-cat('<br><a style="float:right" href="#top"><b>Início &nbsp;</b>', fontawesome::fa("circle-arrow-up"), '</a><br>')
+source("Scripts/fonte-agencias.R", local = knitr::knit_global())
 ```
 
 <br>

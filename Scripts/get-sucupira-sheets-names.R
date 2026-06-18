@@ -6,7 +6,7 @@ dirs <-
 
 # load list of Sucupira files to read
 files.to.read <- c()
-for (i in 1:length(dirs)) {
+for (i in seq_along(dirs)) {
   files.to.read <- c(
     files.to.read,
     list.files(
@@ -21,7 +21,7 @@ for (i in 1:length(dirs)) {
 # initialize vectors and lists
 sucupira.sheets <- c()
 
-for (file in 1:length(files.to.read)) {
+for (file in seq_along(files.to.read)) {
   abas <- readxl::excel_sheets(files.to.read[file])
   sucupira.sheets <- c(sucupira.sheets, abas)
 }

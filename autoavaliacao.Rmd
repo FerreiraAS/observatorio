@@ -977,7 +977,25 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.1.1.1.ac)) {
   table.1.1.1.ac <- table.1.1.1.ac %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.1.1.1.ac)
+    table.1.1.1.ac <- table.1.1.1.ac %>%
+    gtsummary::as_gt() %>%
+    gt::tab_style(
+      style = gt::cell_borders(
+        sides = c("top", "bottom"),
+        color = "black", 
+        style = "solid",
+        weight = gt::px(0.5)
+      ),
+      locations = gt::cells_body(
+        columns = gt::everything(),
+        rows = gt::everything()
+      )
+    ) %>%
+      gt::tab_options(
+        table.align = "center",
+        table.width = gt::pct(100)
+      )
+    print(table.1.1.1.ac)
 }
 
 # Print LaTeX table
@@ -1267,6 +1285,24 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.1.1.1.lp)) {
   table.1.1.1.lp <- table.1.1.1.lp %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
+    table.1.1.1.lp <- table.1.1.1.lp %>%
+    gtsummary::as_gt() %>%
+    gt::tab_style(
+      style = gt::cell_borders(
+        sides = c("top", "bottom"),
+        color = "black", 
+        style = "solid",
+        weight = gt::px(0.5)
+      ),
+      locations = gt::cells_body(
+        columns = gt::everything(),
+        rows = gt::everything()
+    )
+  ) %>%
+      gt::tab_options(
+        table.align = "center",
+        table.width = gt::pct(100)
+      )
   print(table.1.1.1.lp)
 }
 
@@ -1824,6 +1860,24 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.1.1.1.ppdp)) {
   table.1.1.1.ppdp <- table.1.1.1.ppdp %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
+  table.1.1.1.ppdp <- table.1.1.1.ppdp %>%
+    gtsummary::as_gt() %>%
+    gt::tab_style(
+      style = gt::cell_borders(
+        sides = c("top", "bottom"),
+        color = "black", 
+        style = "solid",
+        weight = gt::px(0.5)
+      ),
+      locations = gt::cells_body(
+        columns = gt::everything(),
+        rows = gt::everything()
+      )
+    ) %>%
+      gt::tab_options(
+        table.align = "center",
+        table.width = gt::pct(100)
+      )
   print(table.1.1.1.ppdp)
 }
 

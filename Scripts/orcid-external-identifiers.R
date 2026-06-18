@@ -3,17 +3,17 @@ get_external_ids <- function(my_orcid) {
   res <- rorcid::orcid_external_identifiers(my_orcid)
   res.all <- c()
   
-  for (id in 1:length(my_orcid)) {
+  for (id in seq_along(my_orcid)) {
     ext.id <- matrix("", nrow = 0, ncol = 0)
     colnames(ext.id) <- c()
     if (!is.null(res[[id]]$`external-identifier`$`external-id-type`)) {
       # select external ID and external ID value
       ext.id <- data.frame(cbind(
         if(!is.null(res[[id]]$`external-identifier`$`source.assertion-origin-name.value`)){
-          tools::toTitleCase(unique(na.omit(res[[id]]$`external-identifier`$`source.assertion-origin-name.value`)))
+          stringr::str_to_title(unique(na.omit(res[[id]]$`external-identifier`$`source.assertion-origin-name.value`)))
         } else {
           temp <- rorcid::orcid_id(my_orcid[id])
-          tools::toTitleCase(paste(temp[[1]]$name$`given-names`, temp[[1]]$name$`family-name`))
+          stringr::str_to_title(paste(temp[[1]]$name$`given-names`, temp[[1]]$name$`family-name`))
         },
         t(c(my_orcid[id], res[[id]]$`external-identifier`$`external-id-value`))
       ), check.names = FALSE)

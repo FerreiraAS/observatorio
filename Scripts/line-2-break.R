@@ -1,10 +1,10 @@
 broken_text <- text.2.break
-for (j in 1:length(text.2.break)) {
+for (j in seq_along(text.2.break)) {
   if (length(strsplit(text.2.break[j], split = " ")[[1]]) == 1) {
     broken_text[j] <- text.2.break[j]
   } else {
     k <- c()
-    for (i in 1:length(strsplit(text.2.break[j], split = " ")[[1]])) {
+    for (i in seq_along(strsplit(text.2.break[j], split = " ")[[1]])) {
       x <-
         nchar(paste0(strsplit(text.2.break[j], split = " ")[[1]][1:i], collapse = ""))
       k <- c(k, x)

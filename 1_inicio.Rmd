@@ -797,7 +797,7 @@ has.table.dsc <- FALSE
 
 ## **Agregar dados de produção**
 
-```{r bind-all, cache = TRUE, cache.path = "cache/bind-all/", eval = any(has.sucupira.files, has.ppg.files)}
+```{r bind-all, cache = TRUE, cache.path = "cache/bind-all/", eval = exists("produtos.detalhes.sucupira")}
 # drop lines with empty ID or Ano de publicação
 produtos.detalhes.sucupira <- produtos.detalhes.sucupira[
   !is.na(produtos.detalhes.sucupira$`ID da Produção`) | 

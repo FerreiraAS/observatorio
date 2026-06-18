@@ -186,16 +186,8 @@ summ.AC.LP <- summ.AC.LP[summ.AC.LP$Freq != 0, ]
 
 
 # plot 1: AC
-
-par(
-  oma = c(0, 0, 0, 0),
-  mar = c(1, 1, 2, 1),
-  bg = main.color,
-  col.lab = "white",
-  col.axis = "white",
-  fg = "white",
-  col.main = "white"
-)
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
 
 dados_ac <- projetos.em.andamento %>%
   dplyr::filter(!is.na(`Área de Concentração`)) %>%
@@ -242,16 +234,8 @@ ggplot2::ggplot(
   ggplot2::coord_cartesian(clip = "off")
 
 # plot 2: LP
-
-par(
-  oma = c(0, 0, 0, 0),
-  mar = c(1, 1, 2, 1),
-  bg = main.color,
-  col.lab = "white",
-  col.axis = "white",
-  fg = "white",
-  col.main = "white"
-)
+layout.m <- c(1)
+source("Scripts/plot-margins.R", local = knitr::knit_global())
 
 dados_alluvial <- projetos.em.andamento %>%
   dplyr::filter(!is.na(`Área de Concentração`),

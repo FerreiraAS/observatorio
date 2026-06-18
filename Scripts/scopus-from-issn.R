@@ -41,7 +41,7 @@ for (input in 1:dim(df_scopus)[1]) {
         split_names <- sapply(split_data, "[[", 1)
         
         split_data.2 <- c()
-        for (i in 1:length(columns_to_grab)) {
+        for (i in seq_along(columns_to_grab)) {
           # bind label and data
           label <- columns_to_grab[i]
           data <-

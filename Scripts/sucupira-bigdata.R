@@ -39,7 +39,7 @@ big_dataframe <- function(file_path, dir_name) {
 even_bigger_dataframe <- function (files, folders){
   
   tabelao <- c()
-  for (index in 1:length(folders) ){
+  for (index in seq_along(folders) ){
     # print(folders[index])
     temp_df <- big_dataframe(files[index],folders[index])
     tabelao <- dplyr::bind_rows(tabelao, temp_df)

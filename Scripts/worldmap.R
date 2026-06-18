@@ -6,7 +6,7 @@ paises_dataset <-
       "paises_e_territorios_codigos_e_abreviacoes.xls"
     ),
     sheet = 1,
-    col_types = c("text")
+    col_types = "text"
   ), check.names = FALSE) %>%
   dplyr::mutate(dplyr::across(tidyselect::everything(), as.character))
 

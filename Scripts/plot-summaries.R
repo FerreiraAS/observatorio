@@ -1,4 +1,4 @@
-for (i in 1:length(summ.data)) {
+for (i in seq_along(summ.data)) {
   plot(
     c(0, 1),
     c(0, 1),

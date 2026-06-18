@@ -55,7 +55,7 @@ if (is.null(res[[1]]$group$`external-ids.external-id`)) {
   # get SJR and CiteScore from database
   SJR <- c()
   CiteScore <- c()
-  for (i in 1:length(issn)) {
+  for (i in seq_along(issn)) {
     # get ISSN values
     df_scopus <- data.frame(issn = issn[i], check.names = FALSE)
     # remove - from ISSN

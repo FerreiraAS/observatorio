@@ -33,7 +33,7 @@ table.with.badges <-
     
     # print table with DOI and Altmetric
     if (!sjmisc::is_empty(uniqueID)) {
-      for (ix in 1:length(uniqueID)) {
+      for (ix in seq_along(uniqueID)) {
         # get sub metadata for the ID
         sub_metadata <- metricas_all_produtos[metricas_all_produtos$ID == uniqueID[ix], ]
         
