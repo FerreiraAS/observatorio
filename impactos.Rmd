@@ -408,7 +408,7 @@ table.part1 <-
 }
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.part1)) {
   table.part1 <- table.part1 %>%
     gtsummary::as_gt() %>%
     gt::tab_style(
@@ -512,7 +512,7 @@ table.part2 <-
 }
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.part2)) {
   table.part2 <- table.part2 %>%
     gtsummary::as_gt() %>%
     gt::tab_style(
@@ -617,7 +617,7 @@ gtsummary::tbl_summary(
   table.part3 <- list()
 }
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.part3)) {
   table.part3 <- table.part3 %>%
     gtsummary::as_gt() %>%
     gt::tab_style(
@@ -665,7 +665,7 @@ if(!sjmisc::is_empty(turmas.posdoc)){
 }
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.part4)) {
   table.part4 <- table.part4 %>%
     gtsummary::as_gt() %>%
     gt::tab_style(
@@ -1505,7 +1505,7 @@ if(any(lapply(table.3.1.2, length) > 0)){
 }
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && any(lapply(table.3.1.2, length) > 0)) {
   table.3.1.2 <- table.3.1.2 %>%
     gtsummary::as_gt() %>%
     gt::tab_style(
@@ -1681,7 +1681,7 @@ table.3.2.1 <-
 
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && any(lapply(table.3.2.1, length) > 0)) {
   table.3.2.1 <- table.3.2.1 %>%
     gtsummary::as_gt() %>%
     gt::tab_style(
@@ -1906,7 +1906,7 @@ table.1 <-
   gtsummary::bold_labels()
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.1)) {
   table.1 <- table.1 %>%
     gtsummary::as_gt() %>%
     gt::tab_style(
@@ -1967,7 +1967,7 @@ table.2 <-
   gtsummary::bold_labels()
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.2)) {
   table.2 <- table.2 %>%
     gtsummary::as_gt() %>%
     gt::tab_style(
@@ -2031,7 +2031,7 @@ table.2 <-
   gtsummary::bold_labels()
 
 # Print HTML table
-if (knitr::is_html_output()) {
+if (knitr::is_html_output() && !sjmisc::is_empty(table.2)) {
   table.2 <- table.2 %>%
     gtsummary::as_gt() %>%
     gt::tab_style(
