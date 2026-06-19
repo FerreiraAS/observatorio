@@ -102,7 +102,7 @@ qualis <- readxl::read_xlsx(list.files(
 
 ```{r geobr-data, cache = TRUE, cache.path = "cache/geobr-data/", eval = curl::has_internet()}
 # reading BR geospatial data from IPEA
-geoBRdata <- geobr::list_geobr()$years[3]
+geoBRdata <- geobr::list_geobr()$year[3]
 # reading BR geospatial data from IPEA
 last.update <-
   as.numeric(strsplit(geoBRdata, ", ")[[1]][length(strsplit(geoBRdata, ", ")[[1]]) - 1])

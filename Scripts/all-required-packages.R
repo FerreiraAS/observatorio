@@ -100,11 +100,11 @@ packs.git <-
     "geobr",
     "packup",
     "rcrossref",
-#    "retractcheck",
+    #    "retractcheck",
     "rscopus",
     "sf",
     "pacman"
-#    "textreadr"
+    #    "textreadr"
   )
 
 # check if there is internet connection
@@ -124,7 +124,10 @@ if (curl::has_internet()) {
   }
   
   if (!require("geobr", character.only = TRUE, quietly = TRUE)) {
-    devtools::install_github("ipeaGIT/geobr", subdir = "r-package")
+    remotes::install_github(
+      "ipeaGIT/geobr",
+      subdir = "r-package"
+    )
   }
   
   if (!require("packup", character.only = TRUE, quietly = TRUE)) {
