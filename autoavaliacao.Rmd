@@ -908,10 +908,10 @@ if(!sjmisc::is_empty(table.ac)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Área de Concentração'),
       type = "level",
@@ -937,10 +937,10 @@ if(!sjmisc::is_empty(table.ac)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Docente Permanente'),
       type = "level",
@@ -995,7 +995,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.1.1.1.ac)) {
         table.align = "center",
         table.width = gt::pct(100)
       )
-    print(table.1.1.1.ac)
+    table.1.1.1.ac
 }
 
 # Print LaTeX table
@@ -1216,10 +1216,10 @@ if(!sjmisc::is_empty(table.lp)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Linha de Pesquisa'),
       type = "level",
@@ -1244,10 +1244,10 @@ if(!sjmisc::is_empty(table.lp)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Docente Permanente'),
       type = "level",
@@ -1303,7 +1303,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.1.1.1.lp)) {
         table.align = "center",
         table.width = gt::pct(100)
       )
-  print(table.1.1.1.lp)
+  table.1.1.1.lp
 }
 
 # Print LaTeX table
@@ -1487,10 +1487,10 @@ if(!sjmisc::is_empty(table.pp)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Projeto por Linha de Pesquisa'),
       type = "level",
@@ -1565,10 +1565,10 @@ if(!sjmisc::is_empty(table.pp.nt)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Natureza do projeto'),
       type = "level",
@@ -1647,10 +1647,10 @@ if(!sjmisc::is_empty(table.pp.membro)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Categoria do responsável'),
       type = "level",
@@ -1732,10 +1732,10 @@ if(!sjmisc::is_empty(table.pp.financiamento)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Auxílios'),
       type = "level",
@@ -1817,10 +1817,10 @@ if(!sjmisc::is_empty(table.pp.financiamento)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Bolsas'),
       type = "level",
@@ -1878,7 +1878,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.1.1.1.ppdp)) {
         table.align = "center",
         table.width = gt::pct(100)
       )
-  print(table.1.1.1.ppdp)
+  table.1.1.1.ppdp
 }
 
 # Print LaTeX table
@@ -2086,7 +2086,7 @@ if (!sjmisc::is_empty(lista.AC.LP)) {
       "    ),\n\n",
       "    row.names = FALSE\n\n",
       "  ) %>% \n\n",
-      "    tinytable::theme_tt('multipage', rowhead = 1, latex_float = 'H') %>% \n\n",
+      "    tinytable::theme_latex(multipage = TRUE, rowhead = 1) %>% \n\n",
       "    tinytable::style_tt(i = 0, j = 1:ncol(lista.AC.LP[[", i, "]]), bold = TRUE) %>% \n\n",
       "    tinytable::style_tt(i = 1:nrow(lista.AC.LP[[", i, "]]), j = 1, bold = TRUE)\n\n",
       "    cat('\\\\newpage')\n\n",
@@ -2308,7 +2308,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.1.1.2)) {
   table.1.1.2 <- table.1.1.2 %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.1.1.2)
+  table.1.1.2
 }
 
 # Print LaTeX table
@@ -2771,7 +2771,7 @@ if(!sjmisc::is_empty(bibliografia.raw)){
       gtsummary::all_stat_cols() ~ "**{level}**"
     ) %>%
     gtsummary::modify_header(
-      update = stat_0 ~ "**Total**",
+      stat_0 ~ "**Total**",
       gtsummary::all_stat_cols() ~ "**{level}**"
     ) %>%
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
@@ -2782,7 +2782,7 @@ if(!sjmisc::is_empty(bibliografia.raw)){
 
 # print table
 if (knitr::is_html_output() && !sjmisc::is_empty(table.refs)) {
-  print(table.refs)
+  table.refs
 }
 
 if(knitr::is_latex_output() && !sjmisc::is_empty(table.refs)) {
@@ -2968,7 +2968,7 @@ for (j in 1:length(abas)) {
       gtsummary::all_stat_cols() ~ "**{level}**"
     ) %>%
     gtsummary::modify_header(
-      update = stat_0 ~ "**Total**",
+      stat_0 ~ "**Total**",
       gtsummary::all_stat_cols() ~ "**{level}**"
     ) %>%
     gtsummary::modify_footnote(gtsummary::everything() ~ NA) %>%
@@ -2977,7 +2977,7 @@ for (j in 1:length(abas)) {
   # Print HTML table
   if (knitr::is_html_output() && !sjmisc::is_empty(table_summary)) {
     cat('\n\n')
-    print(table_summary)
+    table_summary
     cat('\n\n')
   }
   
@@ -3123,10 +3123,8 @@ if(!sjmisc::is_empty(table.doc)){
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
     gtsummary::modify_header(
-      list(
         add_stat_1 ~ "**Quadriênio**",
         gtsummary::all_stat_cols() ~ "**{level}**"
-      )
     ) %>%  
     gtsummary::remove_row_type(variables = c('Categoria'), 
                                type = "level", level_value = ("Docentes")) %>%
@@ -3227,10 +3225,8 @@ if(!sjmisc::is_empty(table.doc)){
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
     gtsummary::modify_header(
-      list(
         add_stat_1 ~ "**Quadriênio**",
         gtsummary::all_stat_cols() ~ "**{level}**"
-      )
     ) %>%  
     gtsummary::remove_row_type(variables = c('Tipo vínculo'), 
                                type = "level", level_value = ("Docentes")) %>%
@@ -3336,10 +3332,8 @@ if(!sjmisc::is_empty(table.doc)){
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
     gtsummary::modify_header(
-      list(
         add_stat_1 ~ "**Quadriênio**",
         gtsummary::all_stat_cols() ~ "**{level}**"
-      )
     ) %>%  
     gtsummary::remove_row_type(variables = c('Regime de Trabalho'), 
                                type = "level", level_value = ("Docentes")) %>%
@@ -3441,10 +3435,8 @@ if(!sjmisc::is_empty(table.doc)){
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
     gtsummary::modify_header(
-      list(
         add_stat_1 ~ "**Quadriênio**",
         gtsummary::all_stat_cols() ~ "**{level}**"
-      )
     ) %>%  
     gtsummary::remove_row_type(variables = c('Carga Horária PG (Semanal)'), 
                                type = "level", level_value = ("Docentes")) %>%
@@ -3475,7 +3467,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.1.1.1.dim)) {
   table.1.1.1.dim <- table.1.1.1.dim %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.1.1.1.dim)
+  table.1.1.1.dim
 }
 
 # Print LaTeX table
@@ -3623,10 +3615,8 @@ if(!sjmisc::is_empty(table.doc)){
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
     gtsummary::modify_header(
-      list(
         add_stat_1 ~ "**Quadriênio**",
         gtsummary::all_stat_cols() ~ "**{level}**"
-      )
     ) %>%
     gtsummary::remove_row_type(variables = c('Docentes Permanentes'), type = "level", level_value = ("Docentes")) %>%
     gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
@@ -3721,10 +3711,8 @@ if(!sjmisc::is_empty(table.doc)){
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
     gtsummary::modify_header(
-      list(
         add_stat_1 ~ "**Quadriênio**",
         gtsummary::all_stat_cols() ~ "**{level}**"
-      )
     ) %>%
     gtsummary::remove_row_type(variables = c('País de Titulação'), type = "level", level_value = ("País")) %>%
     gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
@@ -3751,7 +3739,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.1.2.2)) {
   table.1.2.2 <- table.1.2.2 %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.1.2.2)
+  table.1.2.2
 }
 
 # Print LaTeX table
@@ -3887,10 +3875,8 @@ if(!sjmisc::is_empty(table.doc)){
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
     gtsummary::modify_header(
-      list(
         add_stat_1 ~ "**Quadriênio**",
         gtsummary::all_stat_cols() ~ "**{level}**"
-      )
     ) %>%
     gtsummary::remove_row_type(variables = c('Docentes Colaboradores'), type = "level", level_value = ("Docentes")) %>%
     gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
@@ -4001,10 +3987,8 @@ if(!sjmisc::is_empty(table.doc)){
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
     gtsummary::modify_header(
-      list(
         add_stat_1 ~ "**Quadriênio**",
         gtsummary::all_stat_cols() ~ "**{level}**"
-      )
     ) %>%
     gtsummary::remove_row_type(variables = c('País de Titulação'), type = "level", level_value = ("País")) %>%
     gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
@@ -4031,7 +4015,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.1.2.2)) {
   table.1.2.2 <- table.1.2.2 %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.1.2.2)
+  table.1.2.2
 }
 
 # Print LaTeX table
@@ -4263,10 +4247,10 @@ if(!sjmisc::is_empty(df.estabilidade.long)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Tipo'),
       type = "level",
@@ -4299,7 +4283,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.1.2.3)) {
   table.1.2.3 <- table.1.2.3 %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.1.2.3)
+  table.1.2.3
 }
 
 # Print LaTeX table
@@ -4544,7 +4528,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.excl.gt)) {
   table.excl.gt <- table.excl.gt %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.excl.gt)
+  table.excl.gt
 }
 
 # Print LaTeX table
@@ -4679,10 +4663,10 @@ if(!sjmisc::is_empty(table.cap.aux)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Auxílios'),
       type = "level",
@@ -4702,7 +4686,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.cap.aux)) {
   table.1.2.5 <- table.1.2.5 %>% 
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.1.2.5)
+  table.1.2.5
 }
 
 # Print LaTeX table
@@ -4817,10 +4801,10 @@ if(!sjmisc::is_empty(table.cap.bolsa)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Bolsas'),
       type = "level",
@@ -4840,7 +4824,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.cap.bolsa)) {
   table.1.2.5 <- table.1.2.5 %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.1.2.5)
+  table.1.2.5
 }
 
 # Print LaTeX table
@@ -4971,10 +4955,8 @@ if(!sjmisc::is_empty(table.cap.pq)){
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
     gtsummary::modify_header(
-      list(
         add_stat_1 ~ "**Quadriênio**",
         gtsummary::all_stat_cols() ~ "**{level}**"
-      )
     ) %>%  
     gtsummary::remove_row_type(variables = c('Bolsa CNPq'), 
                                type = "level", level_value = ("Modalidade")) %>%
@@ -4990,7 +4972,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.cap.pq)) {
   table.1.2.5 <- table.1.2.5 %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.1.2.5)
+  table.1.2.5
 }
 
 # Print LaTeX table
@@ -5357,7 +5339,7 @@ if (nlevels(sucupira.perfil.disc$`Nível Discente`) != 0 && !sjmisc::is_empty(su
     table.matr.gt <- table.matr.gt %>%
       gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
     
-    print(table.matr.gt)
+    table.matr.gt
   }
   
   # Print LaTeX table
@@ -5374,11 +5356,11 @@ if (nlevels(sucupira.perfil.disc$`Nível Discente`) != 0 && !sjmisc::is_empty(su
     ) %>%
       kableExtra::kable_styling(
         bootstrap_options = c("basic", "hover", "condensed", "responsive"),
-        latex_options = c("basic", "repeat_header", "HOLD_position", "scale_down"), # scale_down added to fit page width
+        latex_options = c("basic", "repeat_header", "HOLD_position", "scale_down"),
         latex_table_env = "tabularx",
         full_width = TRUE,
         position = "center"
-      ) %>% kableExtra::column_spec(column = 1:(1 + length(unique(sucupira.perfil.disc$Anos))*nlevels(sucupira.perfil.disc$"Nível Discente")), width = paste0(c(0.15, rep(0.85/(length(unique(sucupira.perfil.disc$Anos))*nlevels(sucupira.perfil.disc$"Nível Discente")), times = length(unique(sucupira.perfil.disc$Anos))*nlevels(sucupira.perfil.disc$"Nível Discente")))*(29-3-3), "cm")) %>%
+      ) %>% kableExtra::column_spec(column = 1:(1 + length(unique(sucupira.perfil.disc$Anos))*nlevels(droplevels(sucupira.perfil.disc$`Nível Discente`))), width = paste0(c(0.15, rep(0.85/(length(unique(sucupira.perfil.disc$Anos))*nlevels(droplevels(sucupira.perfil.disc$`Nível Discente`))), times = length(unique(sucupira.perfil.disc$Anos))*nlevels(droplevels(sucupira.perfil.disc$`Nível Discente`))))*(29-3-3), "cm")) %>%
     kableExtra::footnote(
       general_title = "",
       general = c(
@@ -5465,7 +5447,7 @@ for (j in 1:length(abas)) {
       latex_table_env = "tabularx",
       full_width = TRUE,
       position = "center"
-    ) %>% kableExtra::column_spec(column = 1:ncol(table), width = paste0(c(0.10,0.45,0.45)*(21-3-3), "cm")) %>%
+    ) %>% kableExtra::column_spec(column = 1:ncol(table), width = paste0(c(0.50,0.50)*(21-3-3), "cm")) %>%
       kableExtra::column_spec(column = 1, bold = TRUE) %>%
       kableExtra::row_spec(row = 0, bold = TRUE)
   ))
@@ -5852,10 +5834,8 @@ if (!sjmisc::is_empty(id.TCC)) {
       tbl_fix_order() %>%
       gtsummary::add_stat(fns = list("Linha de Pesquisa" ~ my_N1, "Tipo" ~ my_N2)) %>%
       gtsummary::modify_header(
-        list(
           add_stat_1 ~ "**Quadriênio**",
           gtsummary::all_stat_cols() ~ "**{level}**"
-        )
       ) %>%
       gtsummary::remove_row_type(variables = c('Linha de Pesquisa'), type = "level", level_value = ("Data1")) %>%
       gtsummary::remove_row_type(variables = c('Tipo'), type = "level", level_value = ("Data2")) %>%
@@ -5869,7 +5849,7 @@ if (!sjmisc::is_empty(id.TCC)) {
     table.2.1.1 <- table.2.1.1 %>%
       gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
     
-    print(table.2.1.1)
+    table.2.1.1
   }
   
   # Print LaTeX table
@@ -6172,10 +6152,10 @@ if(!sjmisc::is_empty(table.bib)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Produção bibliográfica com discente/egresso vinculada à TCC concluído'),
       type = "level",
@@ -6280,10 +6260,10 @@ if(!sjmisc::is_empty(table.nat)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Natureza da produção'),
       type = "level",
@@ -6372,10 +6352,10 @@ if(!sjmisc::is_empty(table.local)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('País'),
       type = "level",
@@ -6477,10 +6457,10 @@ if(!sjmisc::is_empty(table.egresso)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Titulações'),
       type = "level",
@@ -6559,10 +6539,10 @@ if(!sjmisc::is_empty(table.nivel)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Nível'),
       type = "level",
@@ -6709,10 +6689,10 @@ if(!sjmisc::is_empty(producao.ano) && !sjmisc::is_empty(egressos.ano)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::everything() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 } else {
   table.razao.gt <- list()
@@ -6741,7 +6721,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.2.1.2.a)) {
   table.2.1.2.a <- table.2.1.2.a %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.2.1.2.a)
+  table.2.1.2.a
 }
 
 # Print LaTeX table
@@ -6793,7 +6773,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.2.1.2.b)) {
   table.2.1.2.b <- table.2.1.2.b %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.2.1.2.b)
+  table.2.1.2.b
 }
 
 # Print LaTeX table
@@ -6849,7 +6829,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.2.1.2.c)) {
   table.2.1.2.c <- table.2.1.2.c %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.2.1.2.c)
+  table.2.1.2.c
 }
 
 # Print LaTeX table
@@ -6901,7 +6881,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.2.1.2.d)) {
   table.2.1.2.d <- table.2.1.2.d %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.2.1.2.d)
+  table.2.1.2.d
 }
 
 # Print LaTeX table
@@ -7108,10 +7088,10 @@ if(!sjmisc::is_empty(table.bib)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Produção bibliográfica com discente'),
       type = "level",
@@ -7201,10 +7181,10 @@ if(!sjmisc::is_empty(table.nat)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Natureza da produção'),
       type = "level",
@@ -7293,10 +7273,10 @@ if(!sjmisc::is_empty(table.local)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('País'),
       type = "level",
@@ -7403,10 +7383,10 @@ if(!sjmisc::is_empty(table.disc)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Discentes'),
       type = "level",
@@ -7485,10 +7465,10 @@ if(!sjmisc::is_empty(table.nivel)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Nível'),
       type = "level",
@@ -7558,10 +7538,10 @@ if(!sjmisc::is_empty(producao.ano) && !sjmisc::is_empty(alunos.ano)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::everything() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 } else {
   table.razao.gt <- list()
@@ -7590,7 +7570,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.2.2.1.a)) {
   table.2.2.1.a <- table.2.2.1.a %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.2.2.1.a)
+  table.2.2.1.a
 }
 
 # Print LaTeX table
@@ -7642,7 +7622,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.2.2.1.b)) {
   table.2.2.1.b <- table.2.2.1.b %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.2.2.1.b)
+  table.2.2.1.b
 }
 
 # Print LaTeX table
@@ -7693,7 +7673,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.2.2.1.c)) {
   table.2.2.1.c <- table.2.2.1.c %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.2.2.1.c)
+  table.2.2.1.c
 }
 
 # Print LaTeX table
@@ -7893,10 +7873,10 @@ if(!sjmisc::is_empty(table.bib)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Produção bibliográfica com discente'),
       type = "level",
@@ -8001,10 +7981,10 @@ if(!sjmisc::is_empty(table.nat)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Natureza da produção'),
       type = "level",
@@ -8093,10 +8073,10 @@ if(!sjmisc::is_empty(table.local)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('País'),
       type = "level",
@@ -8198,10 +8178,10 @@ if(!sjmisc::is_empty(table.disc)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Titulações'),
       type = "level",
@@ -8280,10 +8260,10 @@ if(!sjmisc::is_empty(table.nivel)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Nível'),
       type = "level",
@@ -8353,10 +8333,10 @@ if(!sjmisc::is_empty(producao.ano) && !sjmisc::is_empty(alunos.ano)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::everything() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::modify_column_hide(columns = paste0("stat_", as.character(length(quadrienal.vigente) + 1)))
 } else {
   table.razao.gt <- list()
@@ -8385,7 +8365,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.2.2.2.a)) {
   table.2.2.2.a <- table.2.2.2.a %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.2.2.2.a)
+  table.2.2.2.a
 }
 
 # Print LaTeX table
@@ -8437,7 +8417,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.2.2.2.b)) {
   table.2.2.2.b <- table.2.2.2.b %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.2.2.2.b)
+  table.2.2.2.b
 }
 
 # Print LaTeX table
@@ -8488,7 +8468,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.2.2.2.c)) {
   table.2.2.2.c <- table.2.2.2.c %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.2.2.2.c)
+  table.2.2.2.c
 }
 
 # Print LaTeX table
@@ -8788,7 +8768,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.2.3.1)) {
   table.2.3.1 <- table.2.3.1 %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.2.3.1)
+  table.2.3.1
 }
 
 # Print LaTeX table
@@ -9109,10 +9089,10 @@ if(!sjmisc::is_empty(table.bib)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Produção bibliográfica com discente'),
       type = "level",
@@ -9217,10 +9197,10 @@ if(!sjmisc::is_empty(table.nat)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Natureza da produção'),
       type = "level",
@@ -9309,10 +9289,10 @@ if(!sjmisc::is_empty(table.local)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('País'),
       type = "level",
@@ -9503,10 +9483,10 @@ if(!sjmisc::is_empty(table.docente)) {
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Docente (protagonista)'),
       type = "level",
@@ -9542,7 +9522,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.2.4.1.a)) {
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>") %>%
     gtsummary::modify_source_note("O protagonismo do docente permanente foi definido pela ordem de autoria: 1º autor, 2º autor, penúltmo ou último")
   
-  print(table.2.4.1.a)
+  table.2.4.1.a
 }
 
 # Print LaTeX table
@@ -9761,7 +9741,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.part1)) {
   table.part1 <- table.part1 %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.part1)
+  table.part1
 }
 
 # Print LaTeX table
@@ -9827,7 +9807,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.part2)) {
   table.part2 <- table.part2 %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.part2)
+  table.part2
 }
 
 # Print LaTeX table
@@ -9905,7 +9885,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.part3)) {
   table.part3 <- table.part3 %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.part3)
+  table.part3
 }
 
 # Print LaTeX table
@@ -9974,7 +9954,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(turmas.posdoc)) {
   table.part4 <- table.part4 %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.part4)
+  table.part4
 }
 
 # Print LaTeX table
@@ -10100,10 +10080,10 @@ table.doc.gt <-
   gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
   gtsummary::bold_labels() %>%
   gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-  gtsummary::modify_header(list(
+  gtsummary::modify_header(
     add_stat_1 ~ "**Quadriênio**",
     gtsummary::all_stat_cols() ~ "**{level}**"
-  )) %>%
+  ) %>%
   gtsummary::remove_row_type(
     variables = c('Projetos de pesquisa por Docente'),
     type = "level",
@@ -10123,7 +10103,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.doc.gt)) {
   table.doc.gt <- table.doc.gt %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.doc.gt)
+  table.doc.gt
 }
 
 # Print LaTeX table
@@ -10396,7 +10376,7 @@ if (nlevels(sucupira.df.matr$`Nível Discente`) != 0) {
       gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
     
     
-    print(table.matr.gt)
+    table.matr.gt
   }
   
   # Print LaTeX table
@@ -10512,7 +10492,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(sucupira.df.tit)) {
   table.tit.gt <- table.tit.gt %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.tit.gt)
+  table.tit.gt
 }
 
 # Print LaTeX table
@@ -10787,7 +10767,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.2.5.5a)) {
   table.2.5.5a <- table.2.5.5a %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.2.5.5a)
+  table.2.5.5a
 }
 
 # Print LaTeX table
@@ -10950,7 +10930,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.2.5.5b)) {
   table.2.5.5b <- table.2.5.5b %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.2.5.5b)
+  table.2.5.5b
 }
 
 # Print LaTeX table
@@ -11123,7 +11103,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.insercao.gt)) {
   table.insercao.gt <- table.insercao.gt %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.insercao.gt)
+  table.insercao.gt
 }
 
 # Print LaTeX table
@@ -11336,10 +11316,10 @@ if(!sjmisc::is_empty(table.total)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Produção total'),
       type = "level",
@@ -11423,10 +11403,10 @@ if(!sjmisc::is_empty(table.prd)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Tipo de Produção'),
       type = "level",
@@ -11513,10 +11493,10 @@ if(!sjmisc::is_empty(table.bib)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Produção bibliográfica'),
       type = "level",
@@ -11603,10 +11583,10 @@ if(!sjmisc::is_empty(table.tec)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Produção técnica'),
       type = "level",
@@ -11698,10 +11678,10 @@ if(!sjmisc::is_empty(table.tcc)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Produção vinculada a TCC concluído'),
       type = "level",
@@ -11785,10 +11765,10 @@ if(!sjmisc::is_empty(table.ac)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Produção vinculada a Área de Concentração'),
       type = "level",
@@ -11872,10 +11852,10 @@ if(!sjmisc::is_empty(table.lp)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Produção vinculada a Linha de Pesquisa'),
       type = "level",
@@ -11959,10 +11939,10 @@ if(!sjmisc::is_empty(table.aut)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Quadriênio**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Categoria do Autor Principal'),
       type = "level",
@@ -12000,7 +11980,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(table.3.1.2)) {
   table.3.1.2 <- table.3.1.2 %>%
     gtsummary::modify_source_note("<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>")
   
-  print(table.3.1.2)
+  table.3.1.2
 }
 
 # Print LaTeX table
@@ -12096,6 +12076,8 @@ síntese.ano <- dplyr::bind_cols(
   Patentes = as.numeric(metricas_all_ID$cited_by_patents_count),
   'YouTube/Vimeo' = as.numeric(metricas_all_ID$cited_by_videos_count),
   Podcasts = as.numeric(metricas_all_ID$cited_by_podcasts_count),
+  Seminários = as.numeric(metricas_all_ID$cited_by_seminars_count),
+  Contas = as.numeric(metricas_all_ID$cited_by_accounts_count),
   Posts = as.numeric(metricas_all_ID$cited_by_posts_count),
   Mendeley = as.numeric(metricas_all_ID$mendeley),
   'Acesso aberto' = factor(as.logical(metricas_all_ID$is_oa), levels = c(TRUE, FALSE), labels = c("Sim", "Não"))
@@ -12224,7 +12206,7 @@ if (knitr::is_html_output() && !sjmisc::is_empty(síntese.ano)) {
     gtsummary::modify_source_note("<a href='https://www.crossref.org'>CrossRef</a>") %>%
     gtsummary::modify_source_note("<a href='https://doaj.org'>DOAJ</a>")
   
-  print(table.3.2.1)
+  table.3.2.1
 }
 
 # Print LaTeX table
@@ -13682,6 +13664,218 @@ if (!sjmisc::is_empty(prod_table)) {
       Subtipo = "Subtipo de Produção",
       DOI,
       Podcasts = "cited_by_podcasts_count"
+    ) %>%
+    # format title case
+    dplyr::mutate(
+      Título = stringr::str_to_title(Título),
+      Tipo = stringr::str_to_title(Tipo),
+      Subtipo = stringr::str_to_title(Subtipo)
+    )
+  
+  # keep complete cases only
+  prod_table <- prod_table[complete.cases(prod_table), ]
+  
+  # remove duplicates
+  prod_table <- prod_table[!duplicated(prod_table$ID), ]
+  
+  # drop ID
+  prod_table <- dplyr::select(prod_table, -ID)
+  
+  # convert last column to numeric and sort by it
+  prod_table[[ncol(prod_table)]] <- as.numeric(prod_table[[ncol(prod_table)]])
+  prod_table <- prod_table %>%
+    dplyr::arrange(dplyr::desc(prod_table[[ncol(prod_table)]]))
+}
+
+# print tables
+if (knitr::is_html_output() && !sjmisc::is_empty(prod_table)) {
+  # use kable for HTML output
+  knitr::kable(
+    prod_table,
+    align = "l",
+    escape = FALSE,
+    format = "html",
+    booktabs = TRUE,
+    linesep = "",
+    caption = prod_label
+  ) %>% kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = TRUE,
+    position = "center"
+  )  %>% kableExtra::column_spec(column = 1:dim(prod_table)[2], width = paste0(c(0.05,0.30,0.15,0.15,0.25,0.10)*(29-3-3), "cm")) %>%
+    kableExtra::column_spec(column = 1, bold = TRUE) %>%
+    kableExtra::row_spec(row = 0, bold = TRUE) %>%
+    kableExtra::footnote(
+      general_title = "<strong>Fontes</strong>: ",
+      general = c(
+        "<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>",
+        "<a href='https://www.altmetric.com/'>Altmetric</a>"
+      ),
+      escape = FALSE)
+} else if (knitr::is_latex_output() && !sjmisc::is_empty(prod_table)) {
+  # use tinytable for LaTeX output
+  prod_table <- data.frame(prod_table, check.names = FALSE)
+  options(tinytable_print_output = "latex")
+  tinytable::tt(
+    prod_table,
+    width = c(0.05,0.30,0.15,0.15,0.25,0.10)*(29-3-3),
+    align = "l",
+    caption = ifelse(knitr::is_html_output(), "", prod_label),
+    escape = TRUE
+  ) %>%
+    tinytable::theme_latex(
+      rowhead = 1,
+      table = FALSE,
+      multipage	= TRUE,
+      placement = "H"
+    ) %>%
+    tinytable::style_tt(i = 0, j = 1:ncol(prod_table), bold = TRUE) %>%
+    tinytable::style_tt(i = 1:nrow(prod_table), j = 1, bold = TRUE)
+}
+
+
+if (!sjmisc::is_empty(prod_table)) {
+  # add LaTeX-formatted note manually
+  cat(make_fontes_note(), "\n\n")
+}
+
+# Add LaTeX commands for new page and float barrier
+if(knitr::is_latex_output()) {
+  cat('\\newpage')
+}
+```
+
+<br>
+
+```{r 3-2-1-altmetric-breakdown-seminars, eval = all(render_document, has.sucupira.files), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+# select produção by Altmetric breakdown
+prod_table <- metricas_all %>%
+  dplyr::filter(
+    !is.na(cited_by_seminars_count) &
+      cited_by_seminars_count > 0
+  )
+
+# filter by quadrienio vigente
+prod_table <- prod_table[prod_table$`Ano da Produção` == quadrienal.vigente, ]
+prod_label <- "Produções com compartilhamentos em Seminário"
+
+if (!sjmisc::is_empty(prod_table)) {
+  # format citation
+  prod_table <- prod_table %>%
+    dplyr::select(
+      ID = "ID da Produção",
+      Ano = "Ano da Produção",
+      Título  = "Nome da Produção",
+      Tipo = "Tipo de Produção",
+      Subtipo = "Subtipo de Produção",
+      DOI,
+      Podcasts = "cited_by_seminars_count"
+    ) %>%
+    # format title case
+    dplyr::mutate(
+      Título = stringr::str_to_title(Título),
+      Tipo = stringr::str_to_title(Tipo),
+      Subtipo = stringr::str_to_title(Subtipo)
+    )
+  
+  # keep complete cases only
+  prod_table <- prod_table[complete.cases(prod_table), ]
+  
+  # remove duplicates
+  prod_table <- prod_table[!duplicated(prod_table$ID), ]
+  
+  # drop ID
+  prod_table <- dplyr::select(prod_table, -ID)
+  
+  # convert last column to numeric and sort by it
+  prod_table[[ncol(prod_table)]] <- as.numeric(prod_table[[ncol(prod_table)]])
+  prod_table <- prod_table %>%
+    dplyr::arrange(dplyr::desc(prod_table[[ncol(prod_table)]]))
+}
+
+# print tables
+if (knitr::is_html_output() && !sjmisc::is_empty(prod_table)) {
+  # use kable for HTML output
+  knitr::kable(
+    prod_table,
+    align = "l",
+    escape = FALSE,
+    format = "html",
+    booktabs = TRUE,
+    linesep = "",
+    caption = prod_label
+  ) %>% kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = TRUE,
+    position = "center"
+  )  %>% kableExtra::column_spec(column = 1:dim(prod_table)[2], width = paste0(c(0.05,0.30,0.15,0.15,0.25,0.10)*(29-3-3), "cm")) %>%
+    kableExtra::column_spec(column = 1, bold = TRUE) %>%
+    kableExtra::row_spec(row = 0, bold = TRUE) %>%
+    kableExtra::footnote(
+      general_title = "<strong>Fontes</strong>: ",
+      general = c(
+        "<a href='https://sucupira.capes.gov.br'>Plataforma Sucupira</a>",
+        "<a href='https://www.altmetric.com/'>Altmetric</a>"
+      ),
+      escape = FALSE)
+} else if (knitr::is_latex_output() && !sjmisc::is_empty(prod_table)) {
+  # use tinytable for LaTeX output
+  prod_table <- data.frame(prod_table, check.names = FALSE)
+  options(tinytable_print_output = "latex")
+  tinytable::tt(
+    prod_table,
+    width = c(0.05,0.30,0.15,0.15,0.25,0.10)*(29-3-3),
+    align = "l",
+    caption = ifelse(knitr::is_html_output(), "", prod_label),
+    escape = TRUE
+  ) %>%
+    tinytable::theme_latex(
+      rowhead = 1,
+      table = FALSE,
+      multipage	= TRUE,
+      placement = "H"
+    ) %>%
+    tinytable::style_tt(i = 0, j = 1:ncol(prod_table), bold = TRUE) %>%
+    tinytable::style_tt(i = 1:nrow(prod_table), j = 1, bold = TRUE)
+}
+
+
+if (!sjmisc::is_empty(prod_table)) {
+  # add LaTeX-formatted note manually
+  cat(make_fontes_note(), "\n\n")
+}
+
+# Add LaTeX commands for new page and float barrier
+if(knitr::is_latex_output()) {
+  cat('\\newpage')
+}
+```
+
+<br>
+
+```{r 3-2-1-altmetric-breakdown-accounts, eval = all(render_document, has.sucupira.files), echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center', results = 'asis', fig.pos='H'}
+# select produção by Altmetric breakdown
+prod_table <- metricas_all %>%
+  dplyr::filter(
+    !is.na(cited_by_accounts_count) &
+      cited_by_accounts_count > 0
+  )
+
+# filter by quadrienio vigente
+prod_table <- prod_table[prod_table$`Ano da Produção` == quadrienal.vigente, ]
+prod_label <- "Produções com compartilhamentos em Contas"
+
+if (!sjmisc::is_empty(prod_table)) {
+  # format citation
+  prod_table <- prod_table %>%
+    dplyr::select(
+      ID = "ID da Produção",
+      Ano = "Ano da Produção",
+      Título  = "Nome da Produção",
+      Tipo = "Tipo de Produção",
+      Subtipo = "Subtipo de Produção",
+      DOI,
+      Podcasts = "cited_by_accounts_count"
     ) %>%
     # format title case
     dplyr::mutate(

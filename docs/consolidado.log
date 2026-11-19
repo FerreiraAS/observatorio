@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.2.16)  19 JUN 2026 19:28
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2026.2.16)  19 NOV 2026 15:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -820,190 +820,203 @@ Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
 )
 Package pdflscape Info: Auto-detected driver: dvipdfm (xetex) on input line 98.
 
+)) (/usr/local/texlive/2025/texmf-dist/tex/latex/xltabular/xltabular.sty
+Package: xltabular 2025/02/28 v0.2i `xltabular' package (hv,RN)
+(/usr/local/texlive/2025/texmf-dist/tex/latex/tools/tabularx.sty
+Package: tabularx 2023/12/11 v2.12a `tabularx' package (DPC)
+\TX@col@width=\dimen260
+\TX@old@table=\dimen261
+\TX@old@col=\dimen262
+\TX@target=\dimen263
+\TX@delta=\dimen264
+\TX@cols=\count344
+\TX@ftn=\toks31
+) (/usr/local/texlive/2025/texmf-dist/tex/latex/ltablex/ltablex.sty
+Package: ltablex 2014/08/13 v1.1 Modified tabularx
 )) (/usr/local/texlive/2025/texmf-dist/tex/latex/tabularray/tabularray.sty
 Package: tabularray 2025-11-27 v2025C Typeset tabulars and arrays with LaTeX3
 (/usr/local/texlive/2025/texmf-dist/tex/latex/ninecolors/ninecolors.sty
 Package: ninecolors 2022-02-13 v2022D Select colors with proper color contrast
 )
-\g__tblr_nohyper_int=\count344
-\l__tblr_a_int=\count345
-\l__tblr_c_int=\count346
-\l__tblr_r_int=\count347
-\l__tblr_d_dim=\dimen260
-\l__tblr_h_dim=\dimen261
-\l__tblr_o_dim=\dimen262
-\l__tblr_p_dim=\dimen263
-\l__tblr_q_dim=\dimen264
-\l__tblr_r_dim=\dimen265
-\l__tblr_s_dim=\dimen266
-\l__tblr_t_dim=\dimen267
-\l__tblr_v_dim=\dimen268
-\l__tblr_w_dim=\dimen269
+\g__tblr_nohyper_int=\count345
+\l__tblr_a_int=\count346
+\l__tblr_c_int=\count347
+\l__tblr_r_int=\count348
+\l__tblr_d_dim=\dimen265
+\l__tblr_h_dim=\dimen266
+\l__tblr_o_dim=\dimen267
+\l__tblr_p_dim=\dimen268
+\l__tblr_q_dim=\dimen269
+\l__tblr_r_dim=\dimen270
+\l__tblr_s_dim=\dimen271
+\l__tblr_t_dim=\dimen272
+\l__tblr_v_dim=\dimen273
+\l__tblr_w_dim=\dimen274
 \l__tblr_a_box=\box112
 \l__tblr_b_box=\box113
 \l__tblr_c_box=\box114
 \l__tblr_d_box=\box115
-\c@tblrcount=\count348
-\c@colnum=\count349
-\c@rowcount=\count350
-\c@colcount=\count351
-\abovesep=\dimen270
-\belowsep=\dimen271
-\leftsep=\dimen272
-\rightsep=\dimen273
-\gTblrLevelInt=\count352
-\g__tblr_data_row_key_count_int=\count353
-\g__tblr_data_column_key_count_int=\count354
-\g__tblr_data_cell_key_count_int=\count355
-\g__tblr_array_int=\count356
-\l__tblr_key_count_int=\count357
-\l__tblr_key_quotient_int=\count358
-\l__tblr_key_quotient_two_int=\count359
-\l__tblr_key_remainder_int=\count360
-\g__tblr_data_str_value_count_int=\count361
-\lTblrChildTotalInt=\count362
-\lTblrChildHtotalInt=\count363
-\lTblrChildVtotalInt=\count364
-\l__child_diff_h_int=\count365
-\l__child_diff_v_int=\count366
-\l__child_sign_h_int=\count367
-\l__child_sign_v_int=\count368
-\l__child_step_int=\count369
-\lTblrDefaultHruleWidthDim=\dimen274
-\lTblrDefaultVruleWidthDim=\dimen275
-\l__tblr_split_balance_int=\count370
-\l__tblr_strut_dp_dim=\dimen276
-\l__tblr_strut_ht_dim=\dimen277
-\g__tblr_cell_wd_dim=\dimen278
-\g__tblr_cell_ht_dim=\dimen279
-\g__tblr_cell_head_dim=\dimen280
-\g__tblr_cell_foot_dim=\dimen281
+\c@tblrcount=\count349
+\c@colnum=\count350
+\c@rowcount=\count351
+\c@colcount=\count352
+\abovesep=\dimen275
+\belowsep=\dimen276
+\leftsep=\dimen277
+\rightsep=\dimen278
+\gTblrLevelInt=\count353
+\g__tblr_data_row_key_count_int=\count354
+\g__tblr_data_column_key_count_int=\count355
+\g__tblr_data_cell_key_count_int=\count356
+\g__tblr_array_int=\count357
+\l__tblr_key_count_int=\count358
+\l__tblr_key_quotient_int=\count359
+\l__tblr_key_quotient_two_int=\count360
+\l__tblr_key_remainder_int=\count361
+\g__tblr_data_str_value_count_int=\count362
+\lTblrChildTotalInt=\count363
+\lTblrChildHtotalInt=\count364
+\lTblrChildVtotalInt=\count365
+\l__child_diff_h_int=\count366
+\l__child_diff_v_int=\count367
+\l__child_sign_h_int=\count368
+\l__child_sign_v_int=\count369
+\l__child_step_int=\count370
+\lTblrDefaultHruleWidthDim=\dimen279
+\lTblrDefaultVruleWidthDim=\dimen280
+\l__tblr_split_balance_int=\count371
+\l__tblr_strut_dp_dim=\dimen281
+\l__tblr_strut_ht_dim=\dimen282
+\g__tblr_cell_wd_dim=\dimen283
+\g__tblr_cell_ht_dim=\dimen284
+\g__tblr_cell_head_dim=\dimen285
+\g__tblr_cell_foot_dim=\dimen286
 \l__tblr_measured_cell_box=\box116
 \g__tblr_last_box=\box117
 \l__tblr_temp_box=\box118
-\l__tblr_column_target_dim=\dimen282
-\l__tblr_hfuzz_dim=\dimen283
+\l__tblr_column_target_dim=\dimen287
+\l__tblr_hfuzz_dim=\dimen288
 \l__tblr_caption_box=\box119
 \l__tblr_caption_left_box=\box120
-\lTblrRowHeadInt=\count371
-\lTblrRowFootInt=\count372
+\lTblrRowHeadInt=\count372
+\lTblrRowFootInt=\count373
 \l__tblr_row_head_box=\box121
 \l__tblr_row_foot_box=\box122
-\l__tblr_row_head_foot_dim=\dimen284
-\lTblrTableWidthDim=\dimen285
+\l__tblr_row_head_foot_dim=\dimen289
+\lTblrTableWidthDim=\dimen290
 \l__tblr_table_firsthead_box=\box123
 \l__tblr_table_middlehead_box=\box124
 \l__tblr_table_lasthead_box=\box125
 \l__tblr_table_firstfoot_box=\box126
 \l__tblr_table_middlefoot_box=\box127
 \l__tblr_table_lastfoot_box=\box128
-\l__tblr_remain_height_dim=\dimen286
-\l__tblr_next_rows_dim=\dimen287
-\l__tblr_page_overfill_dim=\dimen288
-\l__tblr_long_from_int=\count373
-\l__tblr_long_to_int=\count374
-\l__tblr_curr_i_int=\count375
-\l__tblr_prev_i_int=\count376
-\lTblrTablePageInt=\count377
+\l__tblr_remain_height_dim=\dimen291
+\l__tblr_next_rows_dim=\dimen292
+\l__tblr_page_overfill_dim=\dimen293
+\l__tblr_long_from_int=\count374
+\l__tblr_long_to_int=\count375
+\l__tblr_curr_i_int=\count376
+\l__tblr_prev_i_int=\count377
+\lTblrTablePageInt=\count378
 \l__tblr_table_head_box=\box129
 \l__tblr_table_foot_box=\box130
-\l__tblr_table_head_foot_dim=\dimen289
-\l__tblr_table_head_body_foot_dim=\dimen290
+\l__tblr_table_head_foot_dim=\dimen294
+\l__tblr_table_head_body_foot_dim=\dimen295
 \l__tblr_table_box=\box131
-\lTblrRowFirstInt=\count378
-\lTblrRowLastInt=\count379
-\l__tblr_cover_box_a_dim=\dimen291
-\l__tblr_cover_box_b_dim=\dimen292
+\lTblrRowFirstInt=\count379
+\lTblrRowLastInt=\count380
+\l__tblr_cover_box_a_dim=\dimen296
+\l__tblr_cover_box_b_dim=\dimen297
 \l__tblr_table_hlines_box=\box132
 \l__tblr_hline_box=\box133
 \l__tblr_row_box=\box134
-\l__tblr_col_o_wd_dim=\dimen293
-\l__tblr_col_b_wd_dim=\dimen294
-\l__tblr_hline_leftskip_dim=\dimen295
-\l__tblr_hline_rightskip_dim=\dimen296
-\l__tblr_row_ht_dim=\dimen297
-\l__tblr_row_dp_dim=\dimen298
-\l__tblr_row_abovesep_dim=\dimen299
-\l__tblr_row_belowsep_dim=\dimen300
+\l__tblr_col_o_wd_dim=\dimen298
+\l__tblr_col_b_wd_dim=\dimen299
+\l__tblr_hline_leftskip_dim=\dimen300
+\l__tblr_hline_rightskip_dim=\dimen301
+\l__tblr_row_ht_dim=\dimen302
+\l__tblr_row_dp_dim=\dimen303
+\l__tblr_row_abovesep_dim=\dimen304
+\l__tblr_row_belowsep_dim=\dimen305
 \l__tblr_row_vlines_box=\box135
 \l__tblr_vline_box=\box136
 \l__tblr_cell_box=\box137
-\l__tblr_row_upper_dim=\dimen301
-\l__tblr_row_lower_dim=\dimen302
-\l__tblr_row_vpace_dim=\dimen303
-\l__tblr_vline_aboveskip_dim=\dimen304
-\l__tblr_vline_belowskip_dim=\dimen305
-\lTblrCellRowSpanInt=\count380
-\lTblrCellColSpanInt=\count381
-\l__tblr_cell_wd_dim=\dimen306
-\l__tblr_cell_ht_dim=\dimen307
-\lTblrCellAboveBorderWidthDim=\dimen308
-\lTblrCellBelowBorderWidthDim=\dimen309
-\lTblrCellLeftBorderWidthDim=\dimen310
-\lTblrCellRightBorderWidthDim=\dimen311
+\l__tblr_row_upper_dim=\dimen306
+\l__tblr_row_lower_dim=\dimen307
+\l__tblr_row_vpace_dim=\dimen308
+\l__tblr_vline_aboveskip_dim=\dimen309
+\l__tblr_vline_belowskip_dim=\dimen310
+\lTblrCellRowSpanInt=\count381
+\lTblrCellColSpanInt=\count382
+\l__tblr_cell_wd_dim=\dimen311
+\l__tblr_cell_ht_dim=\dimen312
+\lTblrCellAboveBorderWidthDim=\dimen313
+\lTblrCellBelowBorderWidthDim=\dimen314
+\lTblrCellLeftBorderWidthDim=\dimen315
+\lTblrCellRightBorderWidthDim=\dimen316
 \l__tblr_diag_box=\box138
-\l__tblr_cell_inner_wd_dim=\dimen312
-\l__tblr_cell_inner_dp_dim=\dimen313
-\l__tblr_cell_hanchor_dim=\dimen314
-\l__tblr_last_cell_table_ht_dim=\dimen315
-\l__tblr_last_cell_table_dp_dim=\dimen316
-\l__tblr_last_vline_wd_dim=\dimen317
+\l__tblr_cell_inner_wd_dim=\dimen317
+\l__tblr_cell_inner_dp_dim=\dimen318
+\l__tblr_cell_hanchor_dim=\dimen319
+\l__tblr_last_cell_table_ht_dim=\dimen320
+\l__tblr_last_cell_table_dp_dim=\dimen321
+\l__tblr_last_vline_wd_dim=\dimen322
 \l__tblr_tikz_node_box=\box139
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count382
-\float@exts=\toks31
+\c@float@type=\count383
+\float@exts=\toks32
 \float@box=\box140
-\@float@everytoks=\toks32
+\@float@everytoks=\toks33
 \@floatcapt=\box141
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/rotating.sty
 Package: rotating 2025/01/14 v2.16e rotated objects in LaTeX
 (/usr/local/texlive/2025/texmf-dist/tex/latex/base/ifthen.sty
 Package: ifthen 2024/03/16 v1.1e Standard LaTeX ifthen package (DPC)
 )
-\c@r@tfl@t=\count383
+\c@r@tfl@t=\count384
 \rotFPtop=\skip69
 \rotFPbot=\skip70
 \rot@float@box=\box142
-\rot@mess@toks=\toks33
+\rot@mess@toks=\toks34
 ) (/usr/local/texlive/2025/texmf-dist/tex/generic/ulem/ulem.sty
 \UL@box=\box143
 \UL@hyphenbox=\box144
 \UL@skip=\skip71
-\UL@hook=\toks34
-\UL@height=\dimen318
-\UL@pe=\count384
-\UL@pixel=\dimen319
+\UL@hook=\toks35
+\UL@height=\dimen323
+\UL@pe=\count385
+\UL@pixel=\dimen324
 \ULC@box=\box145
 Package: ulem 2019/11/18
-\ULdepth=\dimen320
+\ULdepth=\dimen325
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/tabu/tabu.sty
 Package: tabu 2019/01/11 v2.9 - flexible LaTeX tabulars (FC+tabu-fixed)
 (/usr/local/texlive/2025/texmf-dist/tex/latex/varwidth/varwidth.sty
 Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 \@vwid@box=\box146
-\sift@deathcycles=\count385
-\@vwid@loff=\dimen321
-\@vwid@roff=\dimen322
+\sift@deathcycles=\count386
+\@vwid@loff=\dimen326
+\@vwid@roff=\dimen327
 )
 ==> First Aid for varwidth.sty applied!
-\c@taburow=\count386
-\tabu@nbcols=\count387
-\tabu@cnt=\count388
-\tabu@Xcol=\count389
-\tabu@alloc=\count390
-\tabu@nested=\count391
-\tabu@target=\dimen323
-\tabu@spreadtarget=\dimen324
-\tabu@naturalX=\dimen325
-\tabucolX=\dimen326
-\tabu@Xsum=\dimen327
-\extrarowdepth=\dimen328
-\abovetabulinesep=\dimen329
-\belowtabulinesep=\dimen330
-\tabustrutrule=\dimen331
-\tabu@thebody=\toks35
-\tabu@footnotes=\toks36
+\c@taburow=\count387
+\tabu@nbcols=\count388
+\tabu@cnt=\count389
+\tabu@Xcol=\count390
+\tabu@alloc=\count391
+\tabu@nested=\count392
+\tabu@target=\dimen328
+\tabu@spreadtarget=\dimen329
+\tabu@naturalX=\dimen330
+\tabucolX=\dimen331
+\tabu@Xsum=\dimen332
+\extrarowdepth=\dimen333
+\abovetabulinesep=\dimen334
+\belowtabulinesep=\dimen335
+\tabustrutrule=\dimen336
+\tabu@thebody=\toks36
+\tabu@footnotes=\toks37
 \tabu@box=\box147
 \tabu@arstrutbox=\box148
 \tabu@hleads=\box149
@@ -1025,21 +1038,10 @@ Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 \TPTL@width=\skip73
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/makecell/makecell.sty
 Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
-\rotheadsize=\dimen332
-\c@nlinenum=\count392
-\TeXr@lab=\toks37
-) (/usr/local/texlive/2025/texmf-dist/tex/latex/ltablex/ltablex.sty
-Package: ltablex 2014/08/13 v1.1 Modified tabularx
-(/usr/local/texlive/2025/texmf-dist/tex/latex/tools/tabularx.sty
-Package: tabularx 2023/12/11 v2.12a `tabularx' package (DPC)
-\TX@col@width=\dimen333
-\TX@old@table=\dimen334
-\TX@old@col=\dimen335
-\TX@target=\dimen336
-\TX@delta=\dimen337
-\TX@cols=\count393
-\TX@ftn=\toks38
-)) (/usr/local/texlive/2025/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty
+\rotheadsize=\dimen337
+\c@nlinenum=\count393
+\TeXr@lab=\toks38
+) (/usr/local/texlive/2025/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty
 Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/pdfpages/pdfpages.sty
 Package: pdfpages 2025/07/23 v0.6g Insert pages of external PDF documents (AM)
@@ -1549,26 +1551,26 @@ Package babel Info: 'brazilian' activates 'portuges' shorthands.
 )
 \openout1 = `consolidado.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 186.
-LaTeX Font Info:    ... okay on input line 186.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 186.
-LaTeX Font Info:    ... okay on input line 186.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 186.
-LaTeX Font Info:    ... okay on input line 186.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 186.
-LaTeX Font Info:    ... okay on input line 186.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 186.
-LaTeX Font Info:    ... okay on input line 186.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 186.
-LaTeX Font Info:    ... okay on input line 186.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 186.
-LaTeX Font Info:    ... okay on input line 186.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 186.
-LaTeX Font Info:    ... okay on input line 186.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 186.
-LaTeX Font Info:    ... okay on input line 186.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 186.
-LaTeX Font Info:    ... okay on input line 186.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 191.
+LaTeX Font Info:    ... okay on input line 191.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 191.
+LaTeX Font Info:    ... okay on input line 191.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 191.
+LaTeX Font Info:    ... okay on input line 191.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 191.
+LaTeX Font Info:    ... okay on input line 191.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 191.
+LaTeX Font Info:    ... okay on input line 191.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 191.
+LaTeX Font Info:    ... okay on input line 191.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 191.
+LaTeX Font Info:    ... okay on input line 191.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 191.
+LaTeX Font Info:    ... okay on input line 191.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 191.
+LaTeX Font Info:    ... okay on input line 191.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 191.
+LaTeX Font Info:    ... okay on input line 191.
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1604,19 +1606,19 @@ LaTeX Font Info:    ... okay on input line 186.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/lmr/m/n --> TU/lmr/m/n on input line 186.
+(Font)                  OT1/lmr/m/n --> TU/lmr/m/n on input line 191.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/lmr/m/it --> TU/lmr/m/it on input line 186.
+(Font)                  OT1/lmr/m/it --> TU/lmr/m/it on input line 191.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/lmr/bx/n --> TU/lmr/bx/n on input line 186.
+(Font)                  OT1/lmr/bx/n --> TU/lmr/bx/n on input line 191.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 186.
+(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 191.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> TU/lmss/bx/n on input line 186.
+(Font)                  OT1/lmss/bx/n --> TU/lmss/bx/n on input line 191.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 186.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 191.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/bx/n on input line 186.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/bx/n on input line 191.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1647,7 +1649,7 @@ pt=math;language=dflt;"
 pt=math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 186.
+(Font)              scaled to size 10.0pt on input line 191.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1690,18 +1692,18 @@ ath.otf]/OT:script=math;language=dflt;+ssty=1;"
 pt=math;language=dflt;"
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 186.
+(Font)              scaled to size 10.0pt on input line 191.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 186.
+(Font)              `operators' in the math version `normal' on input line 191.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/lmr/m/n --> TU/latinmodern-math.otf(1)/m/n on input
- line 186.
+ line 191.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 186.
+(Font)              `operators' in the math version `bold' on input line 191.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/lmr/bx/n --> TU/latinmodern-math.otf(1)/b/n on inpu
-t line 186.
+t line 191.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1775,15 +1777,15 @@ ript=math;language=dflt;"<6-8.5>s*[1.000096459334209]"[latinmodern-math.otf]/OT
 t=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 186.
+(Font)              `symbols' in the math version `normal' on input line 191.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  OMS/lmsy/m/n --> TU/latinmodern-math.otf(2)/m/n on inpu
-t line 186.
+t line 191.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 186.
+(Font)              `symbols' in the math version `bold' on input line 191.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  OMS/lmsy/b/n --> TU/latinmodern-math.otf(2)/b/n on inpu
-t line 186.
+t line 191.
 
 Package fontspec Info: 
 (fontspec)             latinmodern-math scale = 0.9999964596882403.
@@ -1852,26 +1854,26 @@ pt=math;language=dflt;"
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
 (Font)              `largesymbols' in the math version `normal' on input line 1
-86.
+91.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/m/n on inpu
-t line 186.
+t line 191.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 186
+(Font)              `largesymbols' in the math version `bold' on input line 191
 .
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  OMX/lmex/m/n --> TU/latinmodern-math.otf(3)/b/n on inpu
-t line 186.
+t line 191.
 Package microtype Info: Patching varwidth to enable character protrusion.
 \MT@vwid@leftmargin=\dimen403
 \MT@vwid@rightmargin=\dimen404
-LaTeX Info: Redefining \microtypecontext on input line 186.
-Package microtype Info: Applying patch `item' on input line 186.
-Package microtype Info: Applying patch `toc' on input line 186.
-Package microtype Info: Applying patch `eqnum' on input line 186.
-Package microtype Info: Applying patch `footnote' on input line 186.
-Package microtype Info: Applying patch `verbatim' on input line 186.
-LaTeX Info: Redefining \microtypesetup on input line 186.
+LaTeX Info: Redefining \microtypecontext on input line 191.
+Package microtype Info: Applying patch `item' on input line 191.
+Package microtype Info: Applying patch `toc' on input line 191.
+Package microtype Info: Applying patch `eqnum' on input line 191.
+Package microtype Info: Applying patch `footnote' on input line 191.
+Package microtype Info: Applying patch `verbatim' on input line 191.
+LaTeX Info: Redefining \microtypesetup on input line 191.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
 Package microtype Info: No adjustment of tracking.
@@ -1882,7 +1884,7 @@ Package microtype Info: No adjustment of kerning.
 File: mt-LatinModernRoman.cfg 2026/02/26 v1.2 microtype config. file: Latin Mod
 ern Roman (RS)
 )
-Package hyperref Info: Link coloring OFF on input line 186.
+Package hyperref Info: Link coloring OFF on input line 191.
 File: PPG/Images/Cover-3.pdf Graphic file (type pdf)
 <use PPG/Images/Cover-3.pdf>
 File: PPG/Images/Cover-3.pdf Graphic file (type pdf)
@@ -1910,12 +1912,12 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 40172 strings out of 468174
- 796875 string characters out of 5433150
- 1402271 words of memory out of 5000000
- 68319 multiletter control sequences out of 15000+600000
+ 40213 strings out of 468174
+ 797812 string characters out of 5433150
+ 1403051 words of memory out of 5000000
+ 68356 multiletter control sequences out of 15000+600000
  628875 words of font info for 54 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 99i,18n,126p,1200b,504s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 99i,18n,126p,1457b,504s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on consolidado.pdf (2 pages).

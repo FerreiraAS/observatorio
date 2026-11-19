@@ -34,6 +34,7 @@ packs.cran <-
     "fontawesome",
     "geobr",
     "glue",
+    "ggalluvial",
     "ggplot2",
     "ggpubr",
     "ggraph",
@@ -138,9 +139,9 @@ if (curl::has_internet()) {
     devtools::install_github("ropensci/rcrossref")
   }
   
-  if (!require("rscopus", character.only = TRUE, quietly = TRUE)) {
-    devtools::install_github("muschellij2/rscopus")
-  }
+  # if (!require("rscopus", character.only = TRUE, quietly = TRUE)) {
+  #   devtools::install_github("muschellij2/rscopus")
+  # }
   
   if (!require("sf", character.only = TRUE, quietly = TRUE)) {
     remotes::install_github("r-spatial/sf")

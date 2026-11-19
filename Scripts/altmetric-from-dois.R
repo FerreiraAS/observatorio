@@ -22,6 +22,8 @@ columns_to_grab <-
     "cited_by_patents_count",
     "cited_by_videos_count",
     "cited_by_podcasts_count",
+    "cited_by_seminars_count",
+    "cited_by_accounts_count",
     "cited_by_posts_count",
     "mendeley",
     "score",
@@ -93,6 +95,8 @@ for (input in 1:dim(dois)[1]) {
         doi_with_metrics$cited_by_patents_count[doi_with_metrics$cited_by_patents_count == ""] <- 0
         doi_with_metrics$cited_by_videos_count[doi_with_metrics$cited_by_videos_count == ""] <- 0
         doi_with_metrics$cited_by_podcasts_count[doi_with_metrics$cited_by_podcasts_count == ""] <- 0
+        doi_with_metrics$cited_by_seminars_count[doi_with_metrics$cited_by_seminars_count == ""] <- 0
+        doi_with_metrics$cited_by_accounts_count[doi_with_metrics$cited_by_accounts_count == ""] <- 0
         doi_with_metrics$cited_by_posts_count[doi_with_metrics$cited_by_posts_count == ""] <- 0
         doi_with_metrics$mendeley[doi_with_metrics$mendeley == ""] <- 0
         

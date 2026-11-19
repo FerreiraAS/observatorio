@@ -234,14 +234,12 @@ if(nrow(dados_modelo) > 1) {
   tb_merged <-
     tb_merged %>%
     gtsummary::modify_fmt_fun(
-      list(
         estimate_1 ~ function(x) gtsummary::style_number(x, digits = 0),
         estimate_2 ~ function(x) gtsummary::style_number(x, digits = 0),
         conf.low_1 ~ function(x) gtsummary::style_number(x, digits = 0),
         conf.high_1 ~ function(x) gtsummary::style_number(x, digits = 0),
         conf.low_2 ~ function(x) gtsummary::style_number(x, digits = 0),
         conf.high_2 ~ function(x) gtsummary::style_number(x, digits = 0)
-      )
     ) %>%
     gtsummary::modify_header(
       label = "**Variável**",

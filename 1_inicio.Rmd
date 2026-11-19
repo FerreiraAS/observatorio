@@ -102,14 +102,14 @@ qualis <- readxl::read_xlsx(list.files(
 
 ```{r geobr-data, cache = TRUE, cache.path = "cache/geobr-data/", eval = curl::has_internet()}
 # reading BR geospatial data from IPEA
-geoBRdata <- geobr::list_geobr()$year[3]
+geoBRdata <- geobr::list_geobr()$year
 # reading BR geospatial data from IPEA
-last.update <-
-  as.numeric(strsplit(geoBRdata, ", ")[[1]][length(strsplit(geoBRdata, ", ")[[1]]) - 1])
+last.update <- geoBRdata[3]
+
 states <-
   geobr::read_state(
-    code_state = "all",
     year = last.update,
+    code_state = "all",
     simplified = TRUE,
     showProgress = FALSE
   )
@@ -537,6 +537,8 @@ produtos.detalhes.sucupira <- produtos.detalhes.sucupira %>%
     cited_by_patents_count = NA,
     cited_by_videos_count = NA,
     cited_by_podcasts_count = NA,
+    cited_by_seminars_count = NA,
+    cited_by_accounts_count = NA,
     cited_by_posts_count = NA,
     mendeley = NA,
     score = NA,
@@ -633,6 +635,10 @@ for (item in 1:nrow(produtos.sucupira)) {
       doi_with_metrics$cited_by_videos_count
     produtos.detalhes.sucupira$cited_by_podcasts_count[matches] <-
       doi_with_metrics$cited_by_podcasts_count
+    produtos.detalhes.sucupira$cited_by_seminars_count[matches] <- 
+      doi_with_metrics$cited_by_seminars_count
+    produtos.detalhes.sucupira$cited_by_accounts_count[matches] <- 
+      doi_with_metrics$cited_by_accounts_count
     produtos.detalhes.sucupira$cited_by_posts_count[matches] <-
       doi_with_metrics$cited_by_posts_count
     produtos.detalhes.sucupira$mendeley[matches] <-

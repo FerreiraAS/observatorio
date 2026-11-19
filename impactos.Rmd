@@ -818,10 +818,10 @@ if(!sjmisc::is_empty(table.total)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Total**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Produção total'),
       type = "level",
@@ -909,10 +909,10 @@ if(!sjmisc::is_empty(table.prd)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Total**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Tipo de Produção'),
       type = "level",
@@ -1002,10 +1002,10 @@ if(!sjmisc::is_empty(table.bib)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Total**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Produção bibliográfica'),
       type = "level",
@@ -1096,10 +1096,10 @@ if(!sjmisc::is_empty(table.tec)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Total**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Produção técnica'),
       type = "level",
@@ -1195,10 +1195,10 @@ if(!sjmisc::is_empty(table.tcc)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Total**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Produção vinculada a TCC concluído'),
       type = "level",
@@ -1286,10 +1286,10 @@ if(!sjmisc::is_empty(table.ac)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Total**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Produção vinculada a Área de Concentração'),
       type = "level",
@@ -1377,10 +1377,10 @@ if(!sjmisc::is_empty(table.lp)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Total**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Produção vinculada a Linha de Pesquisa'),
       type = "level",
@@ -1468,10 +1468,10 @@ if(!sjmisc::is_empty(table.aut)){
     gtsummary::modify_footnote(gtsummary::all_stat_cols() ~ NA) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_stat(fns = gtsummary::all_categorical() ~ my_N) %>%
-    gtsummary::modify_header(list(
+    gtsummary::modify_header(
       add_stat_1 ~ "**Total**",
       gtsummary::all_stat_cols() ~ "**{level}**"
-    )) %>%
+    ) %>%
     gtsummary::remove_row_type(
       variables = c('Categoria do Autor Principal'),
       type = "level",
@@ -1566,6 +1566,8 @@ síntese.ano <- dplyr::bind_cols(
       Patentes = as.numeric(metricas_all_ID$cited_by_patents_count),
       'YouTube/Vimeo' = as.numeric(metricas_all_ID$cited_by_videos_count),
       Podcasts = as.numeric(metricas_all_ID$cited_by_podcasts_count),
+      Seminários = as.numeric(metricas_all_ID$cited_by_seminars_count),
+      Contas = as.numeric(metricas_all_ID$cited_by_accounts_count),
       Posts = as.numeric(metricas_all_ID$cited_by_posts_count),
       Mendeley = as.numeric(metricas_all_ID$mendeley),
       'Acesso aberto' = factor(as.logical(metricas_all_ID$is_oa), levels = c(TRUE, FALSE), labels = c("Sim", "Não"))
@@ -1902,7 +1904,7 @@ table.1 <-
   gtsummary::add_overall(last = TRUE,
               col_label = "Total") %>%
   gtsummary::modify_header(label = "**Agência**") %>%
-  gtsummary::modify_footnote(update = gtsummary::everything() ~ NA) %>%
+  gtsummary::modify_footnote(gtsummary::everything() ~ NA) %>%
   gtsummary::bold_labels()
 
 # Print HTML table
@@ -1963,7 +1965,7 @@ table.2 <-
   gtsummary::add_overall(last = TRUE,
               col_label = "Total") %>%
   gtsummary::modify_header(label = "**Agência**") %>%
-  gtsummary::modify_footnote(update = gtsummary::everything() ~ NA) %>%
+  gtsummary::modify_footnote(gtsummary::everything() ~ NA) %>%
   gtsummary::bold_labels()
 
 # Print HTML table
@@ -2027,7 +2029,7 @@ table.2 <-
   gtsummary::add_overall(last = TRUE,
               col_label = "Total") %>%
   gtsummary::modify_header(label = "**Programa**") %>%
-  gtsummary::modify_footnote(update = gtsummary::everything() ~ NA) %>%
+  gtsummary::modify_footnote(gtsummary::everything() ~ NA) %>%
   gtsummary::bold_labels()
 
 # Print HTML table

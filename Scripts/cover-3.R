@@ -41,18 +41,21 @@ plot(
 try(logo <-
       logo <- magick::image_read("PPG/Images/logo-programa.png"),
     silent = TRUE)
+
 # resize png file
 if (exists("logo")) {
-  logo <- magick::image_scale(logo, "x50")
-  size <- magick::image_info(logo)[c("height", "width")] / 72
+  info <- magick::image_info(logo)
+  altura <- 50 / 72
+  size <- c(altura, altura * info$width / info$height)
 }
+
 if (exists("logo")) {
   rasterImage(
     logo,
     ytop = H,
     ybottom = H - size[1],
-    xleft = W,
-    xright = W - size[2],
+    xleft = W - size[2],
+    xright = W,
     interpolate = FALSE
   )
 }
