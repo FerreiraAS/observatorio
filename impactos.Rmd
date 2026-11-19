@@ -1596,6 +1596,8 @@ síntese.ano <- síntese.ano %>%
     "Patentes",
     "YouTube/Vimeo",
     "Podcasts",
+    "Seminários",
+    "Contas",
     "Posts",
     "Mendeley",
     "Acesso aberto"
@@ -1633,6 +1635,8 @@ table.3.2.1 <-
       "Patentes" ~ "continuous",
       "YouTube/Vimeo" ~ "continuous",
       "Podcasts" ~ "continuous",
+      "Seminários" ~ "continuous",
+      "Contas" ~ "continuous",
       "Posts" ~ "continuous",
       "Mendeley" ~ "continuous",
       "Acesso aberto" ~ "categorical"
@@ -1662,6 +1666,8 @@ table.3.2.1 <-
       "Patentes" ~ 0,
       "YouTube/Vimeo" ~ 0,
       "Podcasts" ~ 0,
+      "Seminários" ~ 0,
+      "Contas" ~ 0,
       "Posts" ~ 0,
       "Mendeley" ~ 0,
       "Acesso aberto" ~ 0

@@ -12106,6 +12106,8 @@ síntese.ano <- síntese.ano %>%
     "Patentes",
     "YouTube/Vimeo",
     "Podcasts",
+    "Seminários",
+    "Contas",
     "Posts",
     "Mendeley",
     "Acesso aberto"
@@ -12144,6 +12146,8 @@ if(!sjmisc::is_empty(síntese.ano)){
         "Patentes" ~ "continuous",
         "YouTube/Vimeo" ~ "continuous",
         "Podcasts" ~ "continuous",
+        "Seminários" ~ "continuous",
+        "Contas" ~ "continuous",
         "Posts" ~ "continuous",
         "Mendeley" ~ "continuous",
         "Acesso aberto" ~ "categorical"
@@ -12173,6 +12177,8 @@ if(!sjmisc::is_empty(síntese.ano)){
         "Patentes" ~ 0,
         "YouTube/Vimeo" ~ 0,
         "Podcasts" ~ 0,
+        "Seminários" ~ 0,
+        "Contas" ~ 0,
         "Posts" ~ 0,
         "Mendeley" ~ 0,
         "Acesso aberto" ~ 0
@@ -13757,7 +13763,7 @@ prod_table <- metricas_all %>%
 
 # filter by quadrienio vigente
 prod_table <- prod_table[prod_table$`Ano da Produção` == quadrienal.vigente, ]
-prod_label <- "Produções com compartilhamentos em Seminário"
+prod_label <- "Produções com compartilhamentos em Seminários"
 
 if (!sjmisc::is_empty(prod_table)) {
   # format citation
@@ -13769,7 +13775,7 @@ if (!sjmisc::is_empty(prod_table)) {
       Tipo = "Tipo de Produção",
       Subtipo = "Subtipo de Produção",
       DOI,
-      Podcasts = "cited_by_seminars_count"
+      'Seminários' = "cited_by_seminars_count"
     ) %>%
     # format title case
     dplyr::mutate(
@@ -13875,7 +13881,7 @@ if (!sjmisc::is_empty(prod_table)) {
       Tipo = "Tipo de Produção",
       Subtipo = "Subtipo de Produção",
       DOI,
-      Podcasts = "cited_by_accounts_count"
+      'Contas' = "cited_by_accounts_count"
     ) %>%
     # format title case
     dplyr::mutate(

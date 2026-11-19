@@ -12,14 +12,14 @@ for (i in seq_along(summ.data)) {
     x = 0.5,
     y = 0.675,
     labels = as.character(summ.data[i]),
-    cex = 3.75,
+    cex = 3,
     col = RColorBrewer::brewer.pal(n = 9, name = "Set3")[3]
   )
   text(
     x = 0.5,
     y = 0.275,
     labels = names(summ.data)[i],
-    cex = 1.25,
+    cex = 1,
     col = RColorBrewer::brewer.pal(n = 9, name = "Set3")[2]
   )
   box(lty = "solid",
